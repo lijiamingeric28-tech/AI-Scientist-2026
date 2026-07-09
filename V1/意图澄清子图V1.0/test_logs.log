@@ -1,0 +1,29 @@
+2026-07-10 00:12:25 - __main__ - INFO - ✓ 日志已启用，保存到: E:\整合\sci_literature_pipeline\test_logs.log
+2026-07-10 00:12:38 - pipeline.intent.graph - INFO - Creating intent clarification graph
+2026-07-10 00:12:38 - pipeline.intent.graph - INFO - Intent clarification graph created successfully
+2026-07-10 00:12:38 - pipeline.intent.agents.evaluate_intent - INFO - [Node 1] Starting Schema Planning
+2026-07-10 00:12:38 - tools.evaluate_intent.generate_schema - INFO - Generating schema for domain=general
+2026-07-10 00:13:12 - httpx - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-10 00:13:12 - tools.evaluate_intent.generate_schema - INFO - Schema generated successfully with 3 slots
+2026-07-10 00:13:12 - pipeline.intent.agents.evaluate_intent - INFO - Generated schema: {'entities': {'required': True, 'description': '目标实体（材料、天体、化合物等）', 'examples': ['高强度低合金钢', 'Al-7075', '超新星'], 'filled': True}, 'properties': {'required': True, 'description': '目标属性（力学性能、物理常数等）', 'examples': ['屈服强度', '抗拉强度', '延伸率', '冲击韧性', '疲劳强度'], 'filled': True}, 'conditions': {'required': True, 'description': '约束条件（温度范围、时间范围、压力范围、数据来源等）', 'examples': ['-50°C到800°C', '0.1MPa到200MPa', '近五年', '同行评审顶级期刊或会议论文', '包含详细实验条件和材料成分信息'], 'filled': True}}
+2026-07-10 00:13:12 - pipeline.intent.agents.evaluate_intent - INFO - [Node 2] Starting Parameter Extraction
+2026-07-10 00:13:12 - tools.evaluate_intent.extract_parameters - INFO - Extracting parameters from query and chat history
+2026-07-10 00:13:42 - httpx - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-10 00:13:42 - tools.evaluate_intent.extract_parameters - INFO - Extracted parameters: {'entities': ['高强度低合金钢'], 'properties': ['屈服强度', '抗拉强度', '延伸率', '冲击韧性', '疲劳强度'], 'conditions': {'温度范围': '-50°C到800°C', '压力范围': '0.1MPa到200MPa', '时间范围': '近五年', '数据来源': '经过同行评审的顶级期刊或会议论文', '其他要求': '包含详细的实验条件和材料成分信息', '环境条件': '高温、低温、高压、腐蚀性介质'}}
+2026-07-10 00:13:42 - pipeline.intent.agents.evaluate_intent - INFO - Extracted parameters: {'entities': ['高强度低合金钢'], 'properties': ['屈服强度', '抗拉强度', '延伸率', '冲击韧性', '疲劳强度'], 'conditions': {'温度范围': '-50°C到800°C', '压力范围': '0.1MPa到200MPa', '时间范围': '近五年', '数据来源': '经过同行评审的顶级期刊或会议论文', '其他要求': '包含详细的实验条件和材料成分信息', '环境条件': '高温、低温、高压、腐蚀性介质'}}
+2026-07-10 00:13:42 - pipeline.intent.agents.evaluate_intent - INFO - [Node 3] Starting Completeness Check
+2026-07-10 00:13:42 - pipeline.intent.agents.evaluate_intent - INFO - Completeness check: is_complete=True, missing=[]
+2026-07-10 00:13:42 - pipeline.intent.agents.evaluate_intent - INFO - [Node 4] Starting Decision Routing
+2026-07-10 00:13:42 - pipeline.intent.agents.evaluate_intent - INFO - Intent is clear, routing to Agent C
+2026-07-10 00:13:42 - pipeline.intent.graph - INFO - Routing to confirm_intent (Agent C)
+2026-07-10 00:13:42 - pipeline.intent.agents.confirm_intent - INFO - [Node 1] Preparing confirmation display
+2026-07-10 00:13:42 - pipeline.intent.agents.confirm_intent - INFO - [Node 2] Interrupting for user confirmation
+2026-07-10 00:13:42 - pipeline.intent.agents.confirm_intent - INFO - Waiting for user confirmation...
+2026-07-10 00:13:51 - pipeline.intent.agents.confirm_intent - INFO - User input received: ok
+2026-07-10 00:13:51 - pipeline.intent.agents.confirm_intent - INFO - [Node 3] Parsing user modifications
+2026-07-10 00:13:51 - tools.confirm_intent.parse_user_modifications - INFO - Parsing user modifications: ok...
+2026-07-10 00:14:03 - httpx - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-10 00:14:03 - tools.confirm_intent.parse_user_modifications - INFO - LLM parsing succeeded: action=confirm
+2026-07-10 00:14:03 - pipeline.intent.agents.confirm_intent - INFO - Parsed result: action=confirm
+2026-07-10 00:14:03 - pipeline.intent.agents.confirm_intent - INFO - User confirmed parameters without modification
+2026-07-10 00:14:03 - pipeline.intent.agents.confirm_intent - INFO - Agent C completed, exiting intent clarification sub-graph
