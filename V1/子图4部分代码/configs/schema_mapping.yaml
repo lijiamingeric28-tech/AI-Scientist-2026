@@ -1,0 +1,86 @@
+# ==========================================================
+# schema_mapping.yaml
+# 目标 Schema 字段映射规则
+# ==========================================================
+
+# ── 目标 Schema 定义 ──
+# 描述最终输出数据的期望结构
+target_schema:
+  # 示例：材料科学领域
+  fields:
+    - name: "material"
+      type: "string"
+      description: "材料名称/牌号"
+      aliases: ["alloy", "composition", "sample", "specimen"]
+      standard_unit: null
+
+    - name: "yield_strength"
+      type: "number"
+      description: "屈服强度"
+      aliases: ["YS", "yield stress", "σ_y", "σy", "yield_stress"]
+      standard_unit: "MPa"
+
+    - name: "tensile_strength"
+      type: "number"
+      description: "抗拉/拉伸强度"
+      aliases: ["UTS", "ultimate tensile strength", "σ_uts", "tensile_stress", "tensile_stress"]
+      standard_unit: "MPa"
+
+    - name: "elongation"
+      type: "number"
+      description: "延伸率/断后伸长率"
+      aliases: ["EL", "elongation_at_break", "ductility", "total_elongation"]
+      standard_unit: "%"
+
+    - name: "hardness"
+      type: "number"
+      description: "硬度"
+      aliases: ["HV", "Vickers hardness", "microhardness", "Brinell", "Rockwell"]
+      standard_unit: "HV"
+
+    - name: "temperature"
+      type: "number"
+      description: "实验温度"
+      aliases: ["T", "test_temperature", "testing_temperature", "temp"]
+      standard_unit: "°C"
+
+    - name: "strain_rate"
+      type: "number"
+      description: "应变速率"
+      aliases: ["strain rate", "ε_dot", "deformation_rate"]
+      standard_unit: "s^-1"
+
+# ── 单位转换映射 ──
+# 用于 Normalization Agent 的单位统一
+unit_conversions:
+  # 强度单位 → MPa
+  strength:
+    MPa: 1.0
+    GPa: 1000.0
+    Pa: 0.000001
+    ksi: 6.895
+    psi: 0.006895
+  # 温度单位 → °C
+  temperature:
+    "°C": 1.0
+    "℃": 1.0
+    "K": "offset_273.15"    # K → °C: °C = K - 273.15
+    "°F": "offset_32_5_9"   # °F → °C: °C = (°F - 32) * 5/9
+  # 延伸率 → %
+  percentage:
+    "%": 1.0
+    "fraction": 100.0        # 小数 → %: 乘以 100
+
+# ── 字段标准化规则 ──
+field_standardization:
+  # 数值清洗规则
+  numeric_cleaning:
+    # 去除常见前缀（近似符号）
+    strip_prefixes: ["~", "≈", "ca.", "approx.", "about", "around"]
+    # 去除常见后缀
+    strip_suffixes: ["(typical)", "(nominal)", "(approx)"]
+  # 字符串值标准化规则
+  string_cleaning:
+    trim_whitespace: true
+    lowercase: true
+    replace_spaces_with_underscore: true
