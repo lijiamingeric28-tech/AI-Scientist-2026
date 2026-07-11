@@ -1,85 +1,168 @@
 # ==========================================================
-# schema_mapping.yaml
-# 目标 Schema 字段映射规则
+# schema_mapping.yaml — 材料科学领域完整 Schema 定义
 # ==========================================================
 
 # ── 目标 Schema 定义 ──
-# 描述最终输出数据的期望结构
 target_schema:
-  # 示例：材料科学领域
   fields:
     - name: "material"
       type: "string"
-      description: "材料名称/牌号"
-      aliases: ["alloy", "composition", "sample", "specimen"]
+      description: "材料名称/牌号 (如 Al-7075, Ti-6Al-4V)"
+      aliases: ["alloy", "composition", "sample", "specimen", "material_type", "material_name"]
       standard_unit: null
+      criticality: "critical"
 
     - name: "yield_strength"
       type: "number"
-      description: "屈服强度"
-      aliases: ["YS", "yield stress", "σ_y", "σy", "yield_stress"]
+      description: "屈服强度 (0.2% offset)"
+      aliases: ["YS", "yield_stress", "σ_y", "σy", "yield_stress", "yield point", "0.2%_YS", "Rp0.2"]
       standard_unit: "MPa"
+      criticality: "critical"
 
     - name: "tensile_strength"
       type: "number"
-      description: "抗拉/拉伸强度"
-      aliases: ["UTS", "ultimate tensile strength", "σ_uts", "tensile_stress", "tensile_stress"]
+      description: "抗拉/极限拉伸强度"
+      aliases: ["UTS", "ultimate_tensile_strength", "σ_uts", "tensile_stress",
+                "tensile_stress", "Rm", "σ_b", "TS", "ultimate_strength"]
       standard_unit: "MPa"
+      criticality: "critical"
 
     - name: "elongation"
       type: "number"
       description: "延伸率/断后伸长率"
-      aliases: ["EL", "elongation_at_break", "ductility", "total_elongation"]
+      aliases: ["EL", "elongation_at_break", "ductility", "total_elongation",
+                "A%", "A", "elongation_to_failure", "fracture_strain"]
       standard_unit: "%"
+      criticality: "important"
 
     - name: "hardness"
       type: "number"
-      description: "硬度"
-      aliases: ["HV", "Vickers hardness", "microhardness", "Brinell", "Rockwell"]
+      description: "硬度 (默认 Vickers)"
+      aliases: ["HV", "Vickers_hardness", "microhardness", "Brinell_hardness",
+                "HB", "Rockwell_hardness", "HRC", "HRB", "HRA"]
       standard_unit: "HV"
+      criticality: "important"
 
     - name: "temperature"
       type: "number"
-      description: "实验温度"
-      aliases: ["T", "test_temperature", "testing_temperature", "temp"]
+      description: "实验/测试温度"
+      aliases: ["T", "test_temperature", "testing_temperature", "temp",
+                "testing_temp", "experimental_temperature"]
       standard_unit: "°C"
+      criticality: "critical"
 
     - name: "strain_rate"
       type: "number"
       description: "应变速率"
-      aliases: ["strain rate", "ε_dot", "deformation_rate"]
+      aliases: ["strain_rate", "strain rate", "ε_dot", "deformation_rate",
+                "loading_rate", "crosshead_speed", "strainrate"]
       standard_unit: "s^-1"
+      criticality: "critical"
 
-# ── 单位转换映射 ──
-# 用于 Normalization Agent 的单位统一
+    - name: "density"
+      type: "number"
+      description: "材料密度"
+      aliases: ["rho", "ρ", "specific_weight", "mass_density"]
+      standard_unit: "g/cm^3"
+      criticality: "critical"
+
+    - name: "thermal_conductivity"
+      type: "number"
+      description: "热导率"
+      aliases: ["k", "thermal_k", "heat_conductivity", "thermal_conductivity", "κ"]
+      standard_unit: "W/mK"
+      criticality: "important"
+
+    - name: "fatigue_life"
+      type: "number"
+      description: "疲劳寿命 (循环数)"
+      aliases: ["N_f", "cycles_to_failure", "fatigue_cycles", "endurance"]
+      standard_unit: "cycles"
+      criticality: "important"
+
+    - name: "fracture_toughness"
+      type: "number"
+      description: "断裂韧性 K_IC"
+      aliases: ["K_IC", "KIC", "fracture_toughness", "plane_strain_toughness"]
+      standard_unit: "MPa√m"
+      criticality: "important"
+
+    - name: "grain_size"
+      type: "number"
+      description: "晶粒尺寸"
+      aliases: ["d_grain", "grain_size", "ASTM_grain_size", "average_grain_diameter"]
+      standard_unit: "μm"
+      criticality: "important"
+
+    - name: "elastic_modulus"
+      type: "number"
+      description: "弹性模量 (Young's modulus)"
+      aliases: ["E", "Youngs_modulus", "elastic_modulus", "modulus_of_elasticity"]
+      standard_unit: "GPa"
+      criticality: "important"
+
+# ── 单位转换映射 (材料科学) ──
 unit_conversions:
-  # 强度单位 → MPa
+  # 强度 → MPa
   strength:
     MPa: 1.0
     GPa: 1000.0
     Pa: 0.000001
     ksi: 6.895
     psi: 0.006895
-  # 温度单位 → °C
+    "N/mm²": 1.0
+  # 硬度 → HV
+  hardness:
+    HV: 1.0
+    GPa: 100.0       # GPa × 100 ≈ HV (近似)
+    HRC: "not_direct"  # 不能直接转换, 需查表
+    HB: "not_direct"
+  # 温度 → °C
   temperature:
     "°C": 1.0
     "℃": 1.0
-    "K": "offset_273.15"    # K → °C: °C = K - 273.15
-    "°F": "offset_32_5_9"   # °F → °C: °C = (°F - 32) * 5/9
+    "C": 1.0
+    "K": "offset_273.15"     # K → °C: value - 273.15
+    "°F": "offset_32_5_9"    # °F → °C: (value - 32) * 5/9
+    "F": "offset_32_5_9"
   # 延伸率 → %
   percentage:
     "%": 1.0
-    "fraction": 100.0        # 小数 → %: 乘以 100
+    "fraction": 100.0
+    "mm/mm": 100.0
+    "in/in": 100.0
+  # 密度
+  density:
+    "g/cm^3": 1.0
+    "g/cm³": 1.0
+    "kg/m^3": 0.001       # kg/m³ → g/cm³: /1000
+    "kg/m³": 0.001
+  # 应变率
+  strain_rate:
+    "s^-1": 1.0
+    "s⁻¹": 1.0
+    "/s": 1.0
+    "1/s": 1.0
+    "s-1": 1.0
+    "min^-1": 0.016667    # min⁻¹ → s⁻¹: /60
+  # 韧性
+  fracture_toughness:
+    "MPa√m": 1.0
+    "MPa·m^0.5": 1.0
+    "ksi√in": 1.099       # ksi√in → MPa√m: ×1.099
+  # 模量
+  modulus:
+    GPa: 1.0
+    MPa: 0.001
+    Pa: 0.000000001
+    ksi: 0.006895
 
 # ── 字段标准化规则 ──
 field_standardization:
-  # 数值清洗规则
   numeric_cleaning:
-    # 去除常见前缀（近似符号）
-    strip_prefixes: ["~", "≈", "ca.", "approx.", "about", "around"]
-    # 去除常见后缀
-    strip_suffixes: ["(typical)", "(nominal)", "(approx)"]
-  # 字符串值标准化规则
+    strip_prefixes: ["~", "≈", "ca.", "approx.", "about", "around", "<", ">", "≤", "≥"]
+    strip_suffixes: ["(typical)", "(nominal)", "(approx)", "(maximum)", "(minimum)", "(max)", "(min)"]
+    detect_scientific_notation: true
   string_cleaning:
     trim_whitespace: true
     lowercase: true
