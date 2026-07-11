@@ -79,7 +79,35 @@ class DecisionReasoningAgent:
             if missing_prov > 0:
                 issues_found.append(f"missing_provenance: {missing_prov} records")
 
-            # 5. 冲突
+            # 5a. 单位不一致 (同一字段多单位)
+            unit_cons = sr_consistency.get("unit_consistency", {})
+            unit_issues = {k: v for k, v in unit_cons.items()
+                           if isinstance(v, str) and "inconsistent" in v}
+            if unit_issues:
+                issues_found.append(f"unit_inconsistency: {sorted(unit_issues.keys())}")
+
+            # 5b. 单位与标准不符 (直接查 target_schema)
+            target_schema = state.get("context_state", {}).get("target_schema", {})
+            schema_fields = {f.get("name"): f.get("standard_unit") for f in target_schema.get("fields", [])
+                             if f.get("standard_unit")}
+            ds = state.get("data_state", {}).get("current_data", {})
+            src_records = [r for r in ds.get("records", []) if r.get("source_id") == sid]
+            for fn in set(r.get("field_name") for r in src_records):
+                std_unit = schema_fields.get(fn)
+                if not std_unit:
+                    continue
+                current_units = {r.get("field_unit") for r in src_records
+                                 if r.get("field_name") == fn and r.get("field_unit")}
+                if not current_units:
+                    continue  # already caught by missing_units check
+                # 标准化比较: "C" = "°C" = "℃"
+                def _norm_unit(u): return (u or "").replace("°","").replace("℃","C").strip()
+                norm_current = {_norm_unit(u) for u in current_units}
+                norm_std = _norm_unit(std_unit)
+                if norm_current != {norm_std}:
+                    issues_found.append(f"unit_mismatch: {fn} has {sorted(current_units)} (expected {std_unit})")
+
+            # 6. 冲突
             has_conflict = sr_conflict.get("has_conflicts", False)
             conflict_count = sr_conflict.get("conflict_count", 0)
             if has_conflict:
@@ -142,6 +170,10 @@ class DecisionReasoningAgent:
                     conditions.append({"condition": "missing_units", "route": "Normalization", "reason": "需补全缺失单位"})
                 if sr.get("completeness", {}).get("records_missing_provenance", 0) > 0:
                     conditions.append({"condition": "missing_provenance", "route": "Normalization", "reason": "需补全溯源信息"})
+                unit_cons = sr.get("consistency", {}).get("unit_consistency", {})
+                unit_issues = {k: v for k, v in unit_cons.items() if isinstance(v, str) and "inconsistent" in v}
+                if unit_issues:
+                    conditions.append({"condition": "unit_inconsistency", "route": "Normalization", "reason": f"需统一单位: {sorted(unit_issues.keys())}"})
                 if sr.get("format", {}).get("total_issues", 0) > 0:
                     conditions.append({"condition": "format_issues", "route": "Normalization", "reason": "需标准化字段格式"})
                 # per-source alias check
