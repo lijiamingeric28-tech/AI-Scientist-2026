@@ -633,25 +633,30 @@ S2-2: Sparsity Penalty (稀疏性):
   2. 所有数值字段都有 field_unit
   3. 所有数值值为干净数字 (无 ~ ≈ approx 前缀)
   4. 所有记录有完整 provenance (page + bbox)
-  5. 无跨来源冲突
-  6. completeness=1.0, consistency=1.0, format=1.0
+  5. 所有字段单位与 target_schema 标准单位一致 (无 GPa→MPa / C→°C)
+  6. 同一字段无多单位混用
+  7. 无跨来源冲突
+  8. completeness=1.0, consistency=1.0, format=1.0
 
 违反任意一条 → Normalization
 有冲突 → Conflict
-质量等级=poor → HumanReview
 全部满足 → Export
 ```
 
-**问题检测清单**:
+**问题检测清单 (8 项)**:
 
-| 检查项 | 检测方式 | 判定 |
-|--------|---------|------|
-| 别名字段 | per-source `present_fields - expected_fields` 非空 | → Normalization |
-| 格式问题 | `format.total_issues > 0` | → Normalization |
-| 缺失单位 | `completeness.records_missing_unit > 0` | → Normalization |
-| 缺失溯源 | `completeness.records_missing_provenance > 0` | → Normalization |
-| 跨来源冲突 | `conflict_risk.has_conflicts` | → Conflict |
-| 完整性不完美 | `completeness.score < 1.0` | → Normalization |
+| # | 检查项 | 检测方式 | 判定 |
+|---|--------|---------|------|
+| 1 | 别名字段 | per-source `present_fields - expected_fields` 非空 | → Normalization |
+| 2 | 格式问题 | `format.total_issues > 0` | → Normalization |
+| 3 | 缺失单位 | `completeness.records_missing_unit > 0` | → Normalization |
+| 4 | 缺失溯源 | `completeness.records_missing_provenance > 0` | → Normalization |
+| 5 | 单位不符标准 | record 的 field_unit ≠ target_schema standard_unit (如 GPa≠MPa) | → Normalization |
+| 6 | 单位不一致 | 同一字段多 unit 混用 (如 MPa + GPa 同时出现) | → Normalization |
+| 7 | 跨来源冲突 | `conflict_risk.has_conflicts` | → Conflict |
+| 8 | 完整性不完美 | `completeness.score < 1.0` | → Normalization |
+
+**单位比较标准化**: `"C"` = `"°C"` = `"℃"` (去除度数符号后比较, 避免假阳性)
 
 ### 5.2 实现: 确定性规则引擎 (V2.1 默认)
 
