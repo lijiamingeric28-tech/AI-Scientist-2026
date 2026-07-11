@@ -1,0 +1,44 @@
+"""missing_value_handler.py — Tool 4: Missing Value Handler"""
+from typing import Any
+from utils.logger import get_logger
+logger = get_logger(__name__)
+
+def handle_missing_values(records: list[dict], strategy: str = "mark",
+                          fill_value: Any = None, standard_units: dict[str, str] | None = None) -> dict[str, Any]:
+    """处理缺失值: mark / drop / fill_default。"""
+    marked, dropped = [], []
+    if strategy == "drop":
+        kept = []
+        for rec in records:
+            v = rec.get("field_value")
+            if v is None or (isinstance(v, str) and v.strip() == ""):
+                dropped.append(rec.get("record_id", "?"))
+                continue
+            prov = rec.get("provenance", {})
+            if prov and prov.get("page") is None and prov.get("bbox") is None:
+                dropped.append(rec.get("record_id", "?"))
+                continue
+            kept.append(rec)
+        records[:] = kept
+    elif strategy == "fill_default":
+        std = standard_units or {}
+        for rec in records:
+            v = rec.get("field_value")
+            if v is None or (isinstance(v, str) and v.strip() == ""):
+                rec["field_value"] = fill_value
+                marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "filled_value"})
+            if rec.get("field_unit") is None and isinstance(rec.get("field_value"), (int, float)):
+                tu = std.get(rec.get("field_name", ""))
+                if tu:
+                    rec["field_unit"] = tu
+                    marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "filled_unit"})
+    else:  # mark
+        for rec in records:
+            v = rec.get("field_value")
+            if v is None or (isinstance(v, str) and v.strip() == ""):
+                marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "marked", "issue": "empty_value"})
+            if rec.get("field_unit") is None and isinstance(v, (int, float)):
+                marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "marked", "issue": "missing_unit"})
+    logger.info("[MissingVal] strategy=%s, %d handled, %d dropped", strategy, len(marked), len(dropped))
+    return {"data": records, "handled_count": len(marked) + len(dropped), "dropped_ids": dropped,
+            "marked_issues": marked, "summary": f"Handled {len(marked)} marked, {len(dropped)} dropped"}
