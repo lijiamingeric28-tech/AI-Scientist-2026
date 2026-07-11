@@ -1,7 +1,8 @@
-# Assessment SubGraph 设计报告 V2.0
+# Assessment SubGraph 设计报告 V2.1
 
-> **版本**: V2.0 — 12 项优化完成  
-> **对应文件**: `pipeline/quality/assessment_graph.py` + `assessment/agents/*.py` + `tools/assessment/*.py`
+> **版本**: V2.1 — 严格路由策略  
+> **核心变更**: Export 仅对完美数据开放。任何别名/格式/缺失单位/缺失溯源 → Normalization。  
+> **对应文件**: `Data_Assessment_agentV1/assessment_graph.py` + `agents/*.py` + `tools/assessment/*.py`
 
 ---
 
@@ -622,43 +623,57 @@ S2-2: Sparsity Penalty (稀疏性):
 **职责**: Per-source LLM 决策 + 聚合 + 决策矩阵 + 条件路由。  
 **LLM**: D1 (per-source) + 聚合摘要 | **文件**: `assessment/agents/decision_reasoning_agent.py`
 
-### 5.1 LLM Per-Source Decision (V2.0 D1)
+### 5.1 Strict Route Decision (V2.1)
+
+**核心原则**: Export 仅对完美数据开放。任何可修复问题 → Normalization。
 
 ```
-逻辑:
-  for each source:
-    try:
-      1. 构建 LLM Prompt:
-         "Source: {title} ({year}), {n_recs} records.
-          Completeness={comp}, Consistency={cons}, Format={fmt},
-          Conflicts={cnt}({risk}), Quality={level}({score}).
-          Issues: {issues}. Outliers: {outliers}.
-          Decide route: Export/Normalization/Conflict/HumanReview.
-          Priority: Conflict > Normalization > Export.
-          Consider: small sample, outlier presence, research value."
+严格 Export 条件 (全部必须满足):
+  1. field_name 为标准名 (无 YS/UTS/EL/σ_y 等别名)
+  2. 所有数值字段都有 field_unit
+  3. 所有数值值为干净数字 (无 ~ ≈ approx 前缀)
+  4. 所有记录有完整 provenance (page + bbox)
+  5. 无跨来源冲突
+  6. completeness=1.0, consistency=1.0, format=1.0
 
-      2. LLM (get_structured_llm → AssessmentDecision):
-         返回 {route, reasoning, critical_issues, confidence}
+违反任意一条 → Normalization
+有冲突 → Conflict
+质量等级=poor → HumanReview
+全部满足 → Export
+```
 
-      3. Confidence check:
-          if confidence < 0.5 AND route ≠ "HumanReview":
-            → 降级 route = "HumanReview"
+**问题检测清单**:
 
-    except LLM失败:
-      → A1 自适应规则引擎回退
+| 检查项 | 检测方式 | 判定 |
+|--------|---------|------|
+| 别名字段 | per-source `present_fields - expected_fields` 非空 | → Normalization |
+| 格式问题 | `format.total_issues > 0` | → Normalization |
+| 缺失单位 | `completeness.records_missing_unit > 0` | → Normalization |
+| 缺失溯源 | `completeness.records_missing_provenance > 0` | → Normalization |
+| 跨来源冲突 | `conflict_risk.has_conflicts` | → Conflict |
+| 完整性不完美 | `completeness.score < 1.0` | → Normalization |
 
-  规则引擎回退逻辑:
-    comp_threshold = AdaptiveThresholdEngine.get_completeness_threshold("", n_recs)
+### 5.2 实现: 确定性规则引擎 (V2.1 默认)
+
+V2.1 主路径是确定性规则引擎 (见 5.1)。LLM 仅用于生成聚合摘要。规则引擎在 per-source 循环内直接运行:
+
+```python
+for each source:
+    # 1. 收集 per-source 问题
+    aliases = set(actual_fields) - set(expected_fields)
+    missing_units = completeness.records_missing_unit
+    missing_prov = completeness.records_missing_provenance
     has_conflict = conflict_risk.has_conflicts
-    need_norm = (comp < comp_threshold or cons < 0.9 or fmt < 0.9)
+    comp_imperfect = completeness.score < 1.0
 
-    if has_conflict:     → "Conflict"
-    elif need_norm:      → "Normalization"
-    elif quality=="poor":→ "HumanReview"
-    else:                → "Export"
+    # 2. 判断
+    if has_conflict:     → Conflict
+    elif any(issues):    → Normalization
+    elif quality==poor:  → HumanReview
+    else:                → Export  (全部检查通过)
 ```
 
-### 5.2 决策矩阵 (V2.0 D2)
+### 5.3 决策矩阵 (V2.0 D2)
 
 ```
 二维决策: Quality (4级) × Repair Cost (3级)
@@ -684,7 +699,7 @@ Repair Cost 估算:
 }
 ```
 
-### 5.3 条件路由 (V2.0 D3)
+### 5.4 条件路由 (V2.0 D3)
 
 ```
 逻辑:
@@ -720,7 +735,7 @@ Repair Cost 估算:
 输出: quality.conditional_routes = [{source_id, primary_route, conditions:[...]}]
 ```
 
-### 5.4 聚合决策
+### 5.5 聚合决策
 
 ```
 Per-source 路由 → 全局路由:
@@ -844,3 +859,84 @@ tools/assessment/
 ├── statistical_conflict.py   # V2.0 A2: Cohen's d 冲突检测
 └── llm_completeness.py       # V2.0 A3: LLM 完整性分析
 ```
+
+---
+
+## 9. 配置体系设计 (V2.1)
+
+### 9.1 配置分层
+
+```
+configs/
+├── quality_rules.yaml      # 质量规则: 阈值/权重/语义类型/异常检测/惩罚
+├── schema_mapping.yaml     # Schema 定义: 字段/别名/单位转换/标准化规则
+└── llm_config.yaml         # LLM 配置: model/api_key/base_url
+```
+
+### 9.2 quality_rules.yaml 结构
+
+| 配置段 | 用途 | 条目数 |
+|--------|------|--------|
+| `missing_value` | 缺失值策略 (mark/drop/fill) | 2 |
+| `duplicate` | 去重规则 | 3 |
+| `consistency` | Schema/Type/Unit 检查开关 | 3 |
+| `format` | 格式校验规则 + 前后缀列表 | 5 |
+| `source_reliability` | 期刊分级 (tier1/2/3, 16种期刊) + recency 退化 | 7 |
+| `conflict_detection` | 传统阈值 + Cohen's d 统计参数 | 6 |
+| `quality_scoring` | 评分权重 + 等级阈值 | 8 |
+| `adaptive_thresholds` | 三维自适应: critical/important/auxiliary 三档 + 5领域紧密度 | 15+ |
+| `domain_weights` | 5领域权重 (材料/天文/化学/生物/默认) | 25 |
+| `semantic_types` | 11 种物理量完整规则 (keywords + units + feasible_ranges + expected_in_study) | 60+ |
+| `outlier_detection` | IQR/Z-Score 参数 + per-field 阈值 | 6+ |
+| `nonlinear_penalties` | 系统性失败/集中度/稀疏性惩罚参数 | 6 |
+
+### 9.3 schema_mapping.yaml 结构
+
+| 配置段 | 用途 | 条目数 |
+|--------|------|--------|
+| `target_schema.fields` | 13 个材料科学标准字段, 含 aliases + criticality | 13 |
+| `unit_conversions` | 8 类单位转换规则 (strength/hardness/temperature/percentage/density/strain_rate/fracture_toughness/modulus) | 40+ |
+| `field_standardization` | 数值清洗前后缀 + 字符串标准化规则 | 6 |
+
+### 9.4 领域可扩展性
+
+添加新领域只需在 3 个配置文件中注册, **无需改代码**:
+
+```
+# 例: 添加"天体物理"领域
+quality_rules.yaml:
+  domain_weights.astrophysics          ← 权重定义
+  adaptive_thresholds.domain_tightness ← 紧密度: "exploratory"
+  semantic_types.redshift              ← 物理量: keywords + feasible_ranges
+  semantic_types.luminosity            ← 同上
+  semantic_types.parallax              ← 同上
+
+schema_mapping.yaml:
+  target_schema.fields:
+    - name: "redshift"
+      aliases: ["z", "spectroscopic_redshift"]
+      standard_unit: null
+    - name: "luminosity"
+      aliases: ["L", "bolometric_luminosity"]
+      standard_unit: "erg/s"
+      ...
+  unit_conversions.astronomy:          ← 新领域转换规则
+    ...
+
+llm_config.yaml:
+  (无需改动)
+```
+
+### 9.5 材料科学配置完整度
+
+| 维度 | 覆盖 |
+|------|------|
+| 标准字段 | 13 个 (yield/tensile/elongation/hardness/temperature/strain_rate/density/thermal_conductivity/fatigue_life/fracture_toughness/grain_size/elastic_modulus/material) |
+| 别名 | 79 个 (如 yield_strength 有 8 个别名: YS/σ_y/σy/Rp0.2...) |
+| 单位转换 | 8 类 40+ 条规则 (含 offset 转换: K↔°C, °F↔°C) |
+| 物理可行性范围 | 11 种物理量 (0K~6273K, 0~5000MPa, 0.5~22.6g/cm³...) |
+| 期刊分级 | 16 种期刊 3 tier |
+| 异常值检测 | 全局参数 + temperature/elongation/strain_rate per-field 阈值 |
+| 自适应阈值 | critical/important/auxiliary 三档 × 样本量 × 领域紧密度 |
+| 领域权重 | 5 套 (材料/天文/化学/生物/默认) |
+| 惩罚参数 | 系统性失败×0.7 + 集中度 + 稀疏性 |
