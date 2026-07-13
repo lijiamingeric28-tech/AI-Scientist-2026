@@ -14,7 +14,7 @@ from utils.llm import get_llm, set_agent_context, track_raw_llm_call
 from utils.logger import get_logger
 logger = get_logger(__name__)
 
-_CLASSIFICATION_SYSTEM = """You are a scientific data conflict classification expert in materials science and astrophysics.
+_CLASSIFICATION_SYSTEM = """You are a scientific data conflict classification expert. You classify data conflicts from any research domain (materials science, astrophysics, chemistry, biology, etc.).
 
 Classify each data conflict by determining its subtype and severity.
 

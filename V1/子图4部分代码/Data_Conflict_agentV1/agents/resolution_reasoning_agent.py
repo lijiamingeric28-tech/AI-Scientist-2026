@@ -12,23 +12,53 @@ from utils.llm import get_llm, set_agent_context, track_raw_llm_call
 from utils.logger import get_logger
 logger = get_logger(__name__)
 
-# 领域权重
-_DOMAIN_WEIGHTS = {
-    "materials_science": {"source_reliability": 0.35, "domain_rules": 0.25, "statistical": 0.25, "contextual": 0.15},
-    "astrophysics": {"source_reliability": 0.20, "domain_rules": 0.20, "statistical": 0.30, "contextual": 0.30},
-    "default": {"source_reliability": 0.30, "domain_rules": 0.25, "statistical": 0.25, "contextual": 0.20},
-}
+# ── V2.2: 证据融合权重从 config 加载, 代码只有 fallback ──
+_DEFAULT_WEIGHTS = {"source_reliability": 0.30, "domain_rules": 0.25,
+                     "statistical": 0.25, "contextual": 0.20}
 
-# 策略适用条件
-_STRATEGY_CONDITIONS = {
-    "prefer_source_a": {"min_gap": 0.08, "min_cohens_d": 0.3},
-    "prefer_source_b": {"min_gap": 0.08, "min_cohens_d": 0.3},
-    "compute_weighted_avg": {"max_gap": 0.15, "max_cohens_d": 0.5},
-    "retain_range": {"fields": {"elongation", "fatigue_life", "strain"}, "max_cohens_d": 2.0},
-    "retain_both": {},
-    "flag_outlier": {"min_cohens_d": 1.5},
-    "escalate_to_human": {},
-}
+# V2.2: 高变异语义类型 (从 config semantic_types.expected_in_study 也可推断,
+# 此处仅作 fallback)
+_VARIABLE_SEMANTIC_TYPES: set[str] = set()
+
+
+def _load_domain_weights(research_domain: str) -> dict:
+    """从 quality_rules.yaml 加载领域证据权重。"""
+    try:
+        from configs import load_yaml
+        config = load_yaml("quality_rules.yaml")
+        # 尝试 resolution_weights, fallback 到 domain_weights
+        rw = config.get("resolution_weights", config.get("domain_weights", {}))
+        domain_weights = rw.get(research_domain, rw.get("default", _DEFAULT_WEIGHTS))
+        return {
+            "source_reliability": domain_weights.get("source_reliability", 0.30),
+            "domain_rules": domain_weights.get("domain_rules", 0.25),
+            "statistical": domain_weights.get("statistical", 0.25),
+            "contextual": domain_weights.get("contextual", 0.20),
+        }
+    except Exception:
+        return dict(_DEFAULT_WEIGHTS)
+
+
+def _load_variable_types():
+    """从 config 加载高变异语义类型列表。"""
+    global _VARIABLE_SEMANTIC_TYPES
+    if _VARIABLE_SEMANTIC_TYPES:
+        return
+    try:
+        from configs import load_yaml
+        config = load_yaml("quality_rules.yaml")
+        semantic_cfg = config.get("semantic_types", {})
+        for st_name, st_info in semantic_cfg.items():
+            expected = st_info.get("expected_in_study", "")
+            if expected in ("conditional", "optional"):
+                _VARIABLE_SEMANTIC_TYPES.add(st_name)
+        # 通用高变异类型 (跨领域)
+        _VARIABLE_SEMANTIC_TYPES.update({
+            "elongation", "strain", "fatigue_life", "error", "uncertainty",
+            "flux", "count", "variability", "scatter",
+        })
+    except Exception:
+        pass
 
 _REASONING_SYSTEM = """You are a scientific data conflict resolution expert.
 
@@ -80,7 +110,7 @@ class ResolutionReasoningAgent:
         domain = state.get("context_state", {}).get("research_domain", "default")
         iteration = wf.get("iteration_counter", 0)
 
-        weights = _DOMAIN_WEIGHTS.get(domain, _DOMAIN_WEIGHTS["default"])
+        weights = _load_domain_weights(domain)
         llm_count = wf.get("llm_call_count", 0)
 
         # ── Step 1: 加权证据融合 (per-conflict) ──
