@@ -1,13 +1,16 @@
 """
-planning_agent.py — Stage 2: ToolPlanningAgent (V2.0)
+planning_agent.py — Stage 2: ToolPlanningAgent (V2.3)
 
 核心创新: LLM 根据数据问题自动规划工具链:
   Layer 1: 选择 Base Tools (6个确定性工具)
-  Layer 2: 生成 Adapted Tools (LLM 注入自定义参数)
+  Layer 2: 生成 Adapted Tools (规则注入自定义参数)
   Layer 3: 生成 Custom Tools (LLM 动态编写 Python 函数)
+
+V2.3: per-source 并行规划 (Layer 3 LLM 调用并行化)。
 """
 from __future__ import annotations
 import datetime, time, json, re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 from quality_state import QualityGraphState
 from utils.logger import get_logger
@@ -84,54 +87,65 @@ class PlanningAgent:
         semantic_types = profile.get("semantic_types", {})
         llm_count = wf.get("llm_call_count", 0)
 
-        for sid, src_info in sources_to_process.items():
-            conditions = src_info.get("conditions", [])
-            src_quality = sources_info.get(sid, {})
-            by_src = {"base": [], "adapted": [], "generated": []}
+        # ══════════════════════════════════════════════════
+        # V2.3: 并行规划 (Layer 1+2 快速确定性, Layer 3 LLM 并行)
+        # ══════════════════════════════════════════════════
+        n_workers = min(8, max(1, len(sources_to_process)))
+        logger.info("[ToolPlan] Planning %d sources with %d workers (PARALLEL)", len(sources_to_process), n_workers)
 
-            # ── Layer 1: Base Tools ──
-            base_tasks = []
-            for c in conditions:
-                task = _CONDITION_TOOL_MAP.get(c.get("condition", ""))
-                if task and task not in base_tasks:
-                    base_tasks.append(task)
-            if not base_tasks:
-                base_tasks = ["field_standardizer", "format_standardizer"]
-            by_src["base"] = base_tasks
-
-            # ── Layer 2: LLM Adapted Tools ──
-            try:
-                adaptations = self._llm_plan_adaptations(
-                    sid, src_quality, semantic_types, base_tasks, conditions)
-                by_src["adapted"] = adaptations
-                if adaptations:
-                    llm_count += 1
-                    logger.info("[ToolPlan] %s: %d adaptations", sid[:20], len(adaptations))
-            except Exception as e:
-                logger.warning("[ToolPlan] Adaptation failed for %s: %s", sid[:20], e)
-
-            # ── Layer 3: LLM Generated Tools (仅当有复杂问题) ──
-            unresolved = self._find_unresolved(by_src, src_quality)
-            if unresolved.get("needs_custom"):
+        # Step 1: 快速并行 Layer 1+2 (确定性, 无需 LLM)
+        source_plans: dict[str, dict] = {}
+        with ThreadPoolExecutor(max_workers=n_workers) as executor:
+            futs = {}
+            for sid, src_info in sources_to_process.items():
+                f = executor.submit(
+                    self._plan_layers_1_2,
+                    sid, src_info, sources_info, semantic_types
+                )
+                futs[f] = sid
+            for future in as_completed(futs):
+                sid = futs[future]
                 try:
-                    records_sample = self._get_sample(state, sid, 5)
-                    custom = self._llm_generate_tool(
-                        sid, unresolved, records_sample)
-                    if custom:
-                        by_src["generated"] = [custom]
-                        llm_count += 1
-                        logger.info("[ToolPlan] %s: generated tool=%s (conf=%.2f)",
-                                    sid[:20], custom["tool_name"], custom.get("confidence", 0))
+                    source_plans[sid] = future.result()
                 except Exception as e:
-                    logger.warning("[ToolPlan] Generation failed for %s: %s", sid[:20], e)
+                    logger.warning("[ToolPlan] Planning Layer1+2 failed for %s: %s", sid, e)
+                    source_plans[sid] = {"base": ["field_standardizer", "format_standardizer"],
+                                         "adapted": [], "generated": []}
 
-            tool_registry["by_source"][sid] = by_src
-            # 汇总到全局列表
-            for t in by_src["base"]:
+        # Step 2: 并行 Layer 3 LLM (只对 needs_custom 的 source)
+        llm_sources = [
+            (sid, plan) for sid, plan in source_plans.items()
+            if self._find_unresolved(plan, sources_info.get(sid, {})).get("needs_custom")
+        ]
+        if llm_sources:
+            logger.info("[ToolPlan] Layer 3 LLM generation for %d sources (parallel)", len(llm_sources))
+            with ThreadPoolExecutor(max_workers=min(n_workers, len(llm_sources))) as executor:
+                llm_futs = {}
+                for sid, plan in llm_sources:
+                    unresolved = self._find_unresolved(plan, sources_info.get(sid, {}))
+                    sample = self._get_sample(state, sid, 5)
+                    f = executor.submit(self._llm_generate_tool, sid, unresolved, sample)
+                    llm_futs[f] = sid
+                for future in as_completed(llm_futs):
+                    sid = llm_futs[future]
+                    try:
+                        custom = future.result()
+                        if custom:
+                            source_plans[sid]["generated"] = [custom]
+                            llm_count += 1
+                            logger.info("[ToolPlan] %s: generated tool=%s (conf=%.2f)",
+                                        sid[:20], custom["tool_name"], custom.get("confidence", 0))
+                    except Exception as e:
+                        logger.warning("[ToolPlan] Layer3 generation failed for %s: %s", sid, e)
+
+        # Step 3: 汇总到 tool_registry
+        for sid, plan in source_plans.items():
+            tool_registry["by_source"][sid] = plan
+            for t in plan["base"]:
                 if t not in tool_registry["base_tools"]:
                     tool_registry["base_tools"].append(t)
-            tool_registry["adapted_tools"].extend(by_src["adapted"])
-            tool_registry["generated_tools"].extend(by_src["generated"])
+            tool_registry["adapted_tools"].extend(plan["adapted"])
+            tool_registry["generated_tools"].extend(plan["generated"])
 
         norm["tool_registry"] = tool_registry
         norm["planning_method"] = "llm_enhanced" if llm_count > wf.get("llm_call_count", 0) else "rule_engine"
@@ -145,20 +159,42 @@ class PlanningAgent:
         return self._build_return(norm, wf, t0, norm["planning_method"],
                                    len(sources_to_process), llm_count)
 
-    # ── Layer 2: LLM Adaptations ──
-    def _llm_plan_adaptations(self, sid, src_quality, semantic_types, base_tasks, conditions):
-        """LLM 为 Base Tools 生成自定义参数。"""
+    # ── V2.3: Layer 1+2 快速规划 (独立函数, 供并行调用) ──
+    def _plan_layers_1_2(self, sid, src_info, sources_info, semantic_types):
+        """并行安全: 只读 state, 返回 plan dict (不修改实例状态)。"""
+        conditions = src_info.get("conditions", [])
+        src_quality = sources_info.get(sid, {})
+        # Layer 1
+        base_tasks = []
+        for c in conditions:
+            task = _CONDITION_TOOL_MAP.get(c.get("condition", ""))
+            if task and task not in base_tasks:
+                base_tasks.append(task)
+        if not base_tasks:
+            base_tasks = ["field_standardizer", "format_standardizer"]
+        # Layer 2
+        adaptations = []
+        try:
+            adaptations = self._rule_plan_adaptations(sid, src_quality, semantic_types, base_tasks, conditions)
+        except Exception as e:
+            logger.warning("[ToolPlan] Adaptation failed for %s: %s", sid, e)
+        return {"base": base_tasks, "adapted": adaptations, "generated": []}
+
+    # ── Layer 2: Rule-Based Adaptations (V2.1: 确定性规则注入参数) ──
+    def _rule_plan_adaptations(self, sid, src_quality, semantic_types, base_tasks, conditions):
+        """确定性规则为 Base Tools 生成自定义参数 (非 LLM)。"""
         adaptations = []
         completness = src_quality.get("completeness", {})
         fmt = src_quality.get("format", {})
         consistency = src_quality.get("consistency", {})
 
-        # schema_mapping: 注入 extra_fields 作为别名
+        # schema_mapping: 注入 extra_fields → field_mappings
         if "schema_mapping" in base_tasks:
             extra = set(completness.get("present_fields", [])) - set(completness.get("expected_fields", []))
             if extra:
+                # V2.1 fix: schema_mapping 参数名是 field_mappings (不是 extra_aliases)
                 adaptations.append({"base_tool": "schema_mapping", "adaptation": "add_extra_aliases",
-                                    "custom_params": {"extra_aliases": list(extra)},
+                                    "custom_params": {"field_mappings": {e: e for e in extra}},
                                     "reasoning": f"Extra fields detected: {sorted(extra)}"})
 
         # unit_converter: 自动推断目标单位
@@ -189,23 +225,102 @@ class PlanningAgent:
 
     # ── Layer 3: LLM Generated Tool ──
     def _find_unresolved(self, by_src, src_quality):
-        """判断是否需要 Layer 3 自定义工具。"""
+        """
+        判断是否需要 Layer 3 自定义工具 (V2.1 redesigned).
+
+        采用评分制: 每个未解决问题 +1 分, 累积 >=1 分即触发 LLM 工具生成。
+        不再硬编码特定单位/字段, 而是基于质量评估报告中的客观指标。
+        """
         issues = []
-        # 检查是否有 unit_converter 无法处理的单位
+        score = 0
+
+        completeness = src_quality.get("completeness", {})
         consistency = src_quality.get("consistency", {})
+        fmt = src_quality.get("format", {})
+        conflict_risk = src_quality.get("conflict_risk", {})
+
+        # ── 维度1: 单位问题 ──
+        # 1a: 单位不一致 (同一字段多个单位混用)
         unit_status = consistency.get("unit_consistency", {})
         for fn, status in unit_status.items():
-            if isinstance(status, str) and "inconsistent" in status and "GPa" in str(status) and "hardness" in fn.lower():
-                issues.append(f"Hardness units may need special conversion (GPa→HV, not simple ×1000)")
-                break
+            if isinstance(status, str) and "inconsistent" in status:
+                issues.append(f"Unit inconsistency in '{fn}': {status}")
+                score += 1
 
-        # 检查是否有复杂复合问题
-        issue_count = src_quality.get("issue_count", 0)
-        conflict_count = src_quality.get("conflict_risk", {}).get("conflict_count", 0)
-        if issue_count >= 3 and conflict_count >= 1:
-            issues.append(f"Multiple overlapping issues ({issue_count} issues + {conflict_count} conflicts)")
+        # 1b: 缺失单位的数值记录
+        missing_units = completeness.get("records_missing_unit", 0)
+        if missing_units > 0:
+            present_fields = completeness.get("present_fields", [])
+            issues.append(
+                f"{missing_units} numeric records missing units "
+                f"(fields: {present_fields[:5]})")
+            score += 1
 
-        return {"needs_custom": len(issues) > 0, "issues": issues}
+        # ── 维度2: 格式问题 ──
+        fmt_issues = fmt.get("total_issues", 0)
+        if fmt_issues > 0:
+            issues.append(f"{fmt_issues} format issues (e.g. ~prefix, NaN, non-numeric strings)")
+            score += 1
+
+        # ── 维度3: Schema 缺口 ──
+        # 3a: 数据中有的字段不在 target_schema 中
+        extra_fields = set(completeness.get("present_fields", [])) - set(completeness.get("expected_fields", []))
+        if extra_fields:
+            issues.append(f"Extra fields not in target schema: {sorted(extra_fields)[:5]}")
+            score += 1
+
+        # 3b: target_schema 中的字段在数据中缺失
+        missing_expected = completeness.get("missing_expected_fields", [])
+        if missing_expected:
+            issues.append(f"Expected fields missing from data: {missing_expected[:5]}")
+            score += 1
+
+        # ── 维度4: 溯源缺失 ──
+        missing_prov = completeness.get("records_missing_provenance", 0)
+        if missing_prov > 0:
+            issues.append(f"{missing_prov} records missing provenance (page/bbox)")
+            score += 1
+
+        # ── 维度5: 完整性不足 ──
+        comp_score = completeness.get("score", 1.0)
+        if comp_score < 0.85:
+            issues.append(f"Low completeness score ({comp_score:.2f}) — may need custom fill/repair")
+            score += 1
+
+        # ── 维度6: 跨来源冲突 ──
+        conflict_count = conflict_risk.get("conflict_count", 0)
+        if conflict_count > 0:
+            conflicts_detail = conflict_risk.get("conflicts", [])
+            conflict_fields = list(set(c.get("field_name", "?") for c in conflicts_detail))
+            issues.append(f"{conflict_count} cross-source conflicts in fields: {conflict_fields}")
+            score += 1
+
+        # ── 维度7: 复合问题 ──
+        # 多种问题同时存在时加分 (问题叠加意味着需要更智能的处理)
+        base_issue_dimensions = sum([
+            missing_units > 0,
+            fmt_issues > 0,
+            bool(extra_fields),
+            bool(missing_expected),
+            missing_prov > 0,
+            comp_score < 0.85,
+            conflict_count > 0,
+        ])
+        if base_issue_dimensions >= 2:
+            issues.append(
+                f"Multiple overlapping issue dimensions ({base_issue_dimensions}): "
+                f"units={missing_units>0} format={fmt_issues>0} "
+                f"schema_gap={bool(extra_fields or missing_expected)} "
+                f"provenance={missing_prov>0} completeness={comp_score<0.85} "
+                f"conflicts={conflict_count>0}")
+            score += 1
+
+        needs_custom = score >= 1
+        if needs_custom:
+            logger.info("[ToolPlan] Layer 3 triggered: score=%d, %d issue categories",
+                        score, len(issues))
+
+        return {"needs_custom": needs_custom, "issues": issues, "score": score}
 
     def _get_sample(self, state, sid, n):
         """获取 source 的前 n 条 sample records。"""
@@ -214,22 +329,40 @@ class PlanningAgent:
         return records[:n]
 
     def _llm_generate_tool(self, sid, unresolved, records_sample):
-        """LLM 生成自定义 Python 工具函数。"""
+        """LLM 生成自定义 Python 工具函数 (V2.1: 通用化 prompt)。"""
         from utils.llm import get_llm, set_agent_context
         set_agent_context("normalization")
 
-        sample_str = json.dumps([{k: str(v)[:50] for k, v in r.items()}
-                                  for r in records_sample[:3]], indent=2, ensure_ascii=False)
-        prompt = f"""Data issues for source {sid[:30]}:
-{chr(10).join(unresolved['issues'])}
+        # 构建详细的 sample (含字段名、值、单位、溯源状态)
+        sample_str = json.dumps([
+            {
+                "record_id": r.get("record_id", ""),
+                "field_name": r.get("field_name", ""),
+                "field_value": str(r.get("field_value", ""))[:80],
+                "field_unit": r.get("field_unit"),
+                "has_provenance": bool(r.get("provenance")),
+            }
+            for r in records_sample[:5]
+        ], indent=2, ensure_ascii=False)
 
-Sample records:
+        issues_str = "\n".join(f"  - {iss}" for iss in unresolved["issues"])
+
+        prompt = f"""This source (id={sid[:40]}) has {len(unresolved['issues'])} unresolved data quality issues:
+
+{issues_str}
+
+Sample records (first 5 of {len(records_sample)}):
 {sample_str}
 
 {_BASE_TOOL_SIGNATURES}
 
-Generate a custom Python function to fix these specific issues.
-Return JSON with tool_name, tool_code, confidence (0-1), and reasoning."""
+Analyze the issues and the sample data. Generate a custom Python function that fixes
+the specific problems in this data. The function should:
+- Handle edge cases (empty input, unexpected types, None values)
+- Work on the records in-place OR return updated records via result['data']
+- Be robust: if a fix cannot be applied safely, skip it and log the reason
+
+Return JSON with: tool_name, tool_code, confidence (0-1), reasoning."""
 
         llm = get_llm(temperature=0.0)
         resp = llm.invoke([{"role": "system", "content": _TOOL_GEN_SYSTEM},
@@ -242,9 +375,13 @@ Return JSON with tool_name, tool_code, confidence (0-1), and reasoning."""
         code = data.get("tool_code", "")
         confidence = data.get("confidence", 0.5)
 
-        # 安全检查
-        if any(kw in code for kw in ("os.", "sys.", "subprocess", "socket", "requests", "import os", "import sys")):
-            logger.warning("[ToolPlan] Generated code blocked: unsafe imports")
+        # ── V2.1: AST 白名单安全检查 ──
+        try:
+            from Data_Normalization_agentV1.agents.normalization_agent import _validate_code_ast
+        except ImportError:
+            _validate_code_ast = _validate_code_simple_fallback
+        if not _validate_code_ast(code):
+            logger.warning("[ToolPlan] Generated code blocked: AST validation failed")
             return None
 
         return {"tool_name": data.get("tool_name", f"custom_{sid[:10]}"),
@@ -252,13 +389,30 @@ Return JSON with tool_name, tool_code, confidence (0-1), and reasoning."""
                 "source_id": sid, "reasoning": data.get("reasoning", "")}
 
     def _build_return(self, norm, wf, t0, method, n_sources, llm_count=None):
-        history = list(wf.get("workflow_history", []))
-        history.append({"agent": "ToolPlanningAgent", "stage": "ToolPlanning", "status": "Success",
-                        "timestamp": datetime.datetime.now().isoformat(), "duration": round(time.time()-t0, 3),
-                        "reason": f"{n_sources} sources planned (method={method})"})
+        # V2.1 fix: 只返回新增的单条 history, 不携带旧列表 (避免重复累积)
         ret = {"report_state": {"normalization": norm},
                "workflow_state": {"current_node": "planning", "execution_status": "Success",
-                                  "workflow_history": history}}
+                                  "workflow_history": [{
+                                      "agent": "ToolPlanningAgent", "stage": "ToolPlanning",
+                                      "status": "Success",
+                                      "timestamp": datetime.datetime.now().isoformat(),
+                                      "duration": round(time.time()-t0, 3),
+                                      "reason": f"{n_sources} sources planned (method={method})",
+                                  }]}}
         if llm_count is not None:
             ret["workflow_state"]["llm_call_count"] = llm_count
         return ret
+
+
+def _validate_code_simple_fallback(code: str) -> bool:
+    """简易回退安全检查: 字符串黑名单 (当 AST 校验不可用时)。"""
+    forbidden = ("import os", "import sys", "import subprocess", "import socket",
+                 "import requests", "os.", "sys.", "subprocess.", "socket.",
+                 "__import__", "compile(", "exec(", "eval(", "open(",
+                 "shutil", "pathlib", "glob", "fnmatch")
+    code_lower = code.lower()
+    for kw in forbidden:
+        if kw in code_lower:
+            logger.warning("[ToolPlan] Blocked unsafe pattern: %s", kw)
+            return False
+    return True

@@ -25,12 +25,16 @@ class ValidationAgent:
         missing_units = sum(1 for r in records if isinstance(r.get("field_value"),(int,float)) and r.get("field_unit") is None)
         missing_prov = sum(1 for r in records if not r.get("provenance") or r["provenance"].get("page") is None)
 
-        # Conflict check
-        conflicts = 0
+        # ── V2.1: Conflict check — 保存完整 conflicts 数组 (P1-2 fix) ──
+        conflict_check_full = {"has_conflicts": False, "conflict_count": 0, "conflicts": [],
+                               "method": "cohens_d", "risk_level": "none"}
         try:
             from tools.assessment.statistical_conflict import detect_conflicts_statistical
-            conflicts = detect_conflicts_statistical(data).get("conflict_count", 0)
-        except Exception: pass
+            conflict_check_full = detect_conflicts_statistical(data)
+        except Exception as e:
+            logger.warning("[Validation] Conflict check failed: %s", e)
+
+        conflicts = conflict_check_full.get("conflict_count", 0)
 
         # Semantic check
         oor = 0
@@ -46,20 +50,38 @@ class ValidationAgent:
         needs_conflict = conflicts > 0
         is_valid = len(remaining) == 0
 
-        validation = {"is_valid": is_valid, "schema_check": {"passed": not still_missing},
-                      "format_check": {"passed": missing_units==0, "missing_units": missing_units},
-                      "conflict_check": {"has_conflicts": needs_conflict, "conflict_count": conflicts},
-                      "semantic_check": {"out_of_range_count": oor},
-                      "remaining_issues": remaining, "needs_conflict_analysis": needs_conflict,
-                      "retry_count": 0, "confidence": 0.7}
-        route = "Conflict" if needs_conflict else "Export"
+        # ── V2.1: retry 控制 — 校验不通过时输出 Retry ──
+        retry_count = norm.get("validation", {}).get("retry_count", 0)
+        if not is_valid and retry_count < 2:
+            status = "Retry"
+            route = ""
+            retry_count += 1  # V2.1 fix: 递增计数器
+            logger.info("[Validation] Not valid → retry %d/2", retry_count)
+        else:
+            status = "Success"
+            route = "Conflict" if needs_conflict else "Export"
+
+        validation = {
+            "is_valid": is_valid,
+            "schema_check": {"passed": not still_missing},
+            "format_check": {"passed": missing_units==0, "missing_units": missing_units},
+            "conflict_check": conflict_check_full,  # V2.1: 完整结果
+            "semantic_check": {"out_of_range_count": oor},
+            "remaining_issues": remaining,
+            "needs_conflict_analysis": needs_conflict,
+            "retry_count": retry_count,
+            "confidence": 0.7 if is_valid else 0.5,
+        }
         norm["validation"] = validation
 
-        history = list(wf.get("workflow_history", []))
-        history.append({"agent": "ValidationAgent", "stage": "Validation", "status": "Success",
-                        "timestamp": datetime.datetime.now().isoformat(), "duration": round(time.time()-t0,3),
-                        "reason": f"Valid={is_valid}, conflicts={conflicts}, route={route}"})
-        logger.info("[Validation] valid=%s conflicts=%d route=%s", is_valid, conflicts, route)
+        logger.info("[Validation] valid=%s conflicts=%d route=%s status=%s", is_valid, conflicts, route, status)
         return {"report_state": {"normalization": norm},
-                "workflow_state": {"route_decision": route, "execution_status": "Success",
-                                   "current_node": "validation", "workflow_history": history}}
+                "workflow_state": {"route_decision": route, "execution_status": status,
+                                   "current_node": "validation",
+                                   "workflow_history": [{
+                                       "agent": "ValidationAgent", "stage": "Validation",
+                                       "status": status,
+                                       "timestamp": datetime.datetime.now().isoformat(),
+                                       "duration": round(time.time()-t0, 3),
+                                       "reason": f"Valid={is_valid}, conflicts={conflicts}, route={route}",
+                                   }]}}
