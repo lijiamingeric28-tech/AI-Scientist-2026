@@ -36,9 +36,10 @@ class AdaptiveThresholdEngine:
         self,
         field_name: str,
         sample_size: int,
+        field_criticality: str = "",
     ) -> float:
         """
-        计算自适应 completeness 阈值。
+        计算自适应 completeness 阈值 (V2.2: 支持 target_schema criticality fallback)。
 
         公式: threshold = base × criticality_factor × sample_factor × domain_factor
 
@@ -46,16 +47,22 @@ class AdaptiveThresholdEngine:
             调整后的阈值 (0-1)
         """
         if not self._enabled:
-            return 0.90  # 默认值
+            return 0.90
 
-        # ── base: 根据字段关键性 ──
+        # ── base: 根据字段关键性 (V2.2: 三重 fallback) ──
         critical_fields = self._cfg.get("field_criticality", {}).get("critical_fields", [])
         auxiliary_fields = self._cfg.get("field_criticality", {}).get("auxiliary_fields", [])
 
-        if field_name in critical_fields:
+        if field_name and field_name in critical_fields:
             base = self._cfg.get("field_criticality", {}).get("critical_completeness", 0.95)
-        elif field_name in auxiliary_fields:
+        elif field_name and field_name in auxiliary_fields:
             base = self._cfg.get("field_criticality", {}).get("auxiliary_completeness", 0.70)
+        elif field_criticality == "critical":
+            base = self._cfg.get("field_criticality", {}).get("critical_completeness", 0.95)
+        elif field_criticality == "auxiliary":
+            base = self._cfg.get("field_criticality", {}).get("auxiliary_completeness", 0.70)
+        elif field_criticality == "important":
+            base = 0.85
         else:
             base = 0.90
 

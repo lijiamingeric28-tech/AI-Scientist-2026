@@ -1,102 +1,44 @@
 """
 semantic_type.py
 
-SemanticTypeInferrer — 语义类型推断工具 (V2.0 新增)
+SemanticTypeInferrer — 语义类型推断工具 (V2.2)
 
 从 field_name + field_unit 推断物理量类型，判断数值是否在物理可行范围内。
+V2.2: 规则从 quality_rules.yaml 动态加载，代码零领域强相关。
 """
 
 from __future__ import annotations
 
 from typing import Any
 
+from configs import load_yaml
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-# ==========================================================
-# 物理量规则库 (可扩展)
-# ==========================================================
+# 缓存: 从 config 加载的语义规则
+_SEMANTIC_RULES: dict[str, dict] | None = None
 
-_SEMANTIC_RULES: dict[str, dict] = {
-    "temperature": {
-        "keywords": ["temp", "temperature", "T"],
-        "units": ["°C", "C", "K", "F", "℃"],
-        "feasible_ranges": {
-            "°C": [-273.15, 6000],
-            "C": [-273.15, 6000],
-            "K": [0, 6273],
-            "F": [-459.67, 10832],
-            "℃": [-273.15, 6000],
-        },
-    },
-    "mechanical_stress": {
-        "keywords": ["strength", "stress", "yield", "tensile", "compressive", "ultimate"],
-        "units": ["MPa", "GPa", "psi", "ksi", "Pa", "N/mm²"],
-        "feasible_ranges": {
-            "MPa": [0, 5000],
-            "GPa": [0, 500],
-            "psi": [0, 725000],
-            "ksi": [0, 725],
-        },
-    },
-    "density": {
-        "keywords": ["density", "rho", "ρ", "specific_weight"],
-        "units": ["g/cm^3", "g/cm³", "kg/m^3", "kg/m³", "lb/in³"],
-        "feasible_ranges": {
-            "g/cm^3": [0.5, 22.6],
-            "g/cm³": [0.5, 22.6],
-            "kg/m^3": [500, 22600],
-            "kg/m³": [500, 22600],
-        },
-    },
-    "elongation": {
-        "keywords": ["elongation", "strain", "elong", "EL"],
-        "units": ["%", "mm/mm", "in/in"],
-        "feasible_ranges": {
-            "%": [0, 100],
-            "mm/mm": [0, 1.0],
-        },
-    },
-    "strain_rate": {
-        "keywords": ["strain_rate", "strain rate", "rate"],
-        "units": ["s^-1", "s⁻¹", "/s", "1/s", "s-1"],
-        "feasible_ranges": {
-            "s^-1": [1e-10, 1e8],
-            "s⁻¹": [1e-10, 1e8],
-        },
-    },
-    "hardness": {
-        "keywords": ["hardness", "HV", "HRC", "HB", "Vickers", "Brinell", "Rockwell"],
-        "units": ["HV", "HRC", "HB", "GPa"],
-        "feasible_ranges": {
-            "HV": [1, 3000],
-            "HRC": [0, 70],
-            "HB": [1, 800],
-        },
-    },
-    "thermal_conductivity": {
-        "keywords": ["thermal_conductivity", "thermal conductivity", "k_thermal"],
-        "units": ["W/mK", "W/(m·K)", "W/m·K"],
-        "feasible_ranges": {
-            "W/mK": [0.01, 2500],
-        },
-    },
-    "fatigue_life": {
-        "keywords": ["fatigue", "cycles", "N_f", "fatigue_life"],
-        "units": ["cycles", "N"],
-        "feasible_ranges": {
-            "cycles": [1, 1e10],
-        },
-    },
-    "fracture_toughness": {
-        "keywords": ["fracture", "toughness", "K_IC", "KIC"],
-        "units": ["MPa√m", "MPa·m^0.5", "ksi√in"],
-        "feasible_ranges": {
-            "MPa√m": [0.1, 300],
-        },
-    },
-}
+
+def _load_semantic_rules() -> dict[str, dict]:
+    """从 quality_rules.yaml 动态加载语义类型规则。"""
+    global _SEMANTIC_RULES
+    if _SEMANTIC_RULES is not None:
+        return _SEMANTIC_RULES
+    try:
+        config = load_yaml("quality_rules.yaml")
+        raw = config.get("semantic_types", {})
+        if raw:
+            _SEMANTIC_RULES = dict(raw)
+            logger.info("[SemanticType] Loaded %d semantic types from config", len(_SEMANTIC_RULES))
+            return _SEMANTIC_RULES
+    except Exception as e:
+        logger.warning("[SemanticType] Failed to load from config: %s", e)
+
+    # 终极 fallback: 空规则 — 不做语义推断, 不报错
+    logger.warning("[SemanticType] No semantic rules loaded — inference disabled")
+    _SEMANTIC_RULES = {}
+    return _SEMANTIC_RULES
 
 
 def infer_semantic_type(
@@ -136,11 +78,16 @@ def infer_semantic_type(
     fn_lower = field_name.lower()
     unit_str = (field_unit or "").strip()
 
+    # V2.2: 从 config 动态加载规则
+    rules_db = _load_semantic_rules()
+    if not rules_db:
+        return result
+
     # 按规则匹配
     best_match = None
     best_score = 0
 
-    for type_name, rules in _SEMANTIC_RULES.items():
+    for type_name, rules in rules_db.items():
         score = 0
         matched_by = "none"
 
@@ -164,22 +111,22 @@ def infer_semantic_type(
     if best_match is None:
         return result
 
-    rules = _SEMANTIC_RULES[best_match]
+    rules = rules_db[best_match]
     result["semantic_type"] = best_match
     result["confidence"] = 0.5 + best_score * 0.25  # 0.75 for keyword+unit, 0.5 for one
     result["unit_recognized"] = unit_str in rules["units"]
 
-    # 物理可行性校验
+    # 物理可行性校验 (V2.2: 简化, 直接从 rules 读取)
     if field_value is not None and isinstance(field_value, (int, float)):
-        feasible = rules["feasible_ranges"].get(unit_str)
+        feasible_ranges = rules.get("feasible_ranges", {})
+        feasible = feasible_ranges.get(unit_str)
         if feasible is None and unit_str:
-            # try normalized unit
-            from tools.assessment.field_standardizer import _NUMERIC_PREFIXES
-            import re
-            clean_unit = re.sub(r'^\s*[~≈<>≤≥]*\s*', '', unit_str)
-            feasible = rules["feasible_ranges"].get(clean_unit)
+            # try cleaned unit
+            clean_unit = unit_str.replace("°", "").replace("℃", "C").strip()
+            if clean_unit != unit_str:
+                feasible = feasible_ranges.get(clean_unit)
 
-        if feasible:
+        if feasible and len(feasible) == 2:
             result["feasible_range"] = feasible
             result["physically_plausible"] = feasible[0] <= field_value <= feasible[1]
             result["out_of_range"] = not result["physically_plausible"]

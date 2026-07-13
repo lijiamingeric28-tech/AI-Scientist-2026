@@ -26,27 +26,42 @@ _CONDITION_FIELDS = {"temperature", "strain_rate", "temp", "T", "strain rate"}
 # 条件字段的绝对差异阈值
 _CONDITION_ABS_THRESHOLD = 50.0   # temperature 差 50°C 以上=不同条件,不是冲突
 
-# 材料/实体提取正则
-_MATERIAL_PATTERNS = [
-    re.compile(r"(Al-\d+|Ti-\d+|Mg-\w+|Cu-\w+|NiTi|Inconel\s*\w*|Stainless\s*\w*|Hastelloy\s*\w*|CoCrMo|Zr-\w+|Fe-\w+|Invar\s*\w*|Monel\s*\w*|Haynes\s*\w*|AlBeMet\s*\w*|WC-Co)", re.IGNORECASE),
-    re.compile(r"(\d+\w+\s+(Aluminum|Stainless|Steel|Alloy|Magnesium|Titanium|Copper|Superalloy|Composite))", re.IGNORECASE),
-]
+# ── V2.2: 通用实体提取正则 (不限于材料科学) ──
+# 优先从 config 加载领域特有模式, 此处为跨领域通用 fallback
+_ENTITY_PATTERNS: list[re.Pattern] = []
+
+
+def _load_entity_patterns():
+    """从 config 加载领域特有的实体提取正则, fallback 到通用模式。"""
+    global _ENTITY_PATTERNS
+    if _ENTITY_PATTERNS:
+        return
+    try:
+        from configs import load_yaml
+        config = load_yaml("quality_rules.yaml")
+        patterns_raw = config.get("entity_extraction", {}).get("patterns", [])
+        for p in patterns_raw:
+            try:
+                _ENTITY_PATTERNS.append(re.compile(p, re.IGNORECASE))
+            except re.error:
+                pass
+    except Exception:
+        pass
+    # 通用 fallback: 大写字母+数字组合 (Al-7075, SN1987A, Fe2O3, etc.)
+    if not _ENTITY_PATTERNS:
+        _ENTITY_PATTERNS.append(
+            re.compile(r'([A-Z][a-z]?[-\d][\w-]{1,20})'))
 
 
 def _extract_entities_from_text(text: str) -> set[str]:
-    """从文本中提取实体名称（材料/天体/化合物等）。优先用标题正则，已泛化。"""
+    """从文本中提取实体名称 (材料/天体/化合物等)。V2.2: 泛化。"""
+    _load_entity_patterns()
     entities: set[str] = set()
-    # 通用模式：大写字母+数字组合 (Al-7075, SN1987A, Fe2O3)
-    import re as _re
-    generic_pat = _re.compile(r'([A-Z][a-z]?[-\d][\w-]{1,20})')
-    for m in generic_pat.findall(text or ""):
-        s = m.strip().rstrip(".,;")
-        if len(s) >= 3:
-            entities.add(s)
-    # 材料专用正则 (fallback)
-    for pat in _MATERIAL_PATTERNS:
+    for pat in _ENTITY_PATTERNS:
         for m in pat.findall(text or ""):
-            entities.add(m[0] if isinstance(m, tuple) else m)
+            s = (m[0] if isinstance(m, tuple) else m).strip().rstrip(".,;")
+            if len(s) >= 3:
+                entities.add(s)
     return entities
 
 

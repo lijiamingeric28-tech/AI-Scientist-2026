@@ -101,11 +101,16 @@ def _evaluate_single_source(source: dict[str, Any]) -> float:
     if authors and len(authors) > 0:
         score += 1.0
 
-    # 年份
+    # 年份 (V2.2: 放宽范围, 兼容历史数据和近期未来)
     checks += 1
     year = source.get("year")
-    if year is not None and isinstance(year, int) and 1900 <= year <= 2030:
-        score += 1.0
+    if year is not None:
+        try:
+            y = int(year)
+            if 1500 <= y <= 2100:
+                score += 1.0
+        except (ValueError, TypeError):
+            pass
 
     # 期刊
     checks += 1
