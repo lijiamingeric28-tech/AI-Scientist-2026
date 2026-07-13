@@ -51,8 +51,21 @@ class QualityScoringAgent:
         level_order = {"poor": 0, "fair": 1, "good": 2, "excellent": 3}
 
         for sid, sr in source_reports.items():
+            # ── V2.1: LLM completeness 调整 ──
+            raw_completeness = dict(sr.get("completeness", {}))
+            llm_comp = sr.get("llm_completeness")
+            if llm_comp and isinstance(llm_comp, dict):
+                adjusted = llm_comp.get("adjusted_completeness")
+                if adjusted is not None:
+                    # 保留原始分, 显式计算 effective score
+                    raw_completeness["raw_score"] = raw_completeness.get("score", 1.0)
+                    raw_completeness["score"] = round(
+                        raw_completeness.get("raw_score", 1.0) * adjusted, 4)
+                    raw_completeness["llm_adjusted"] = True
+                    sr["completeness"] = raw_completeness
+
             metrics = {
-                "completeness": sr.get("completeness", {}),
+                "completeness": raw_completeness,
                 "consistency": sr.get("consistency", {}),
                 "format": sr.get("format", {}),
                 "source_reliability": sr.get("source_reliability", {}),

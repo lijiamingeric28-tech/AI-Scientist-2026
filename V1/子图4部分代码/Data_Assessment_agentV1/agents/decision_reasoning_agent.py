@@ -118,31 +118,54 @@ class DecisionReasoningAgent:
             if comp_score < 1.0:
                 issues_found.append(f"completeness={comp_score:.2f}<1.0")
 
-            # ═══ 决策逻辑 ═══
+            # ═══ V2.2: 决策逻辑 — 8项检查 × 决策矩阵 ─
+            # Step 1: 计算 Repair Cost (通用公式, 不限于特定领域)
+            issue_count = len(issues_found)
+            repair_cost = "low"
+            if conflict_count >= 3 or issue_count >= 10:
+                repair_cost = "high"
+            elif conflict_count >= 1 or issue_count >= 3:
+                repair_cost = "medium"
+
+            # Step 2: 8项严格检查 → 基础路由
             if has_conflict:
-                route = "Conflict"
-                reason = f"Conflict: {conflict_count} cross-source conflicts detected"
+                base_route = "Conflict"
             elif issues_found:
-                route = "Normalization"
-                reason = "; ".join(issues_found[:5])
-            elif sr_scoring.get("quality_level") == "poor":
-                route = "HumanReview"
-                reason = f"Poor quality (score={sr_scoring.get('overall_score',0):.2f})"
+                base_route = "Normalization"
             else:
-                # 完美数据 → Export
-                route = "Export"
-                reason = f"All checks passed (score={sr_scoring.get('overall_score',0):.2f})"
+                base_route = "Export"
+
+            # Step 3: 决策矩阵调整 (Quality × Repair Cost)
+            ql = sr_scoring.get("quality_level", "good")
+            matrix = {
+                "excellent": {"low": "Export", "medium": "Export", "high": "Normalization"},
+                "good": {"low": "Export", "medium": "Normalization", "high": "Normalization"},
+                "fair": {"low": "Normalization", "medium": "Normalization", "high": "Conflict"},
+                "poor": {"low": "Normalization", "medium": "Conflict", "high": "HumanReview"},
+            }
+            matrix_route = matrix.get(ql, {}).get(repair_cost, base_route)
+
+            # Step 4: 取两路判断中最严重的
+            route_severity = {"Export": 0, "Normalization": 1, "Conflict": 2, "HumanReview": 3}
+            if route_severity.get(matrix_route, 0) > route_severity.get(base_route, 0):
+                route = matrix_route
+                reason = f"Matrix escalation: {ql} quality × {repair_cost} repair cost → {route}"
+            else:
+                route = base_route
+                if has_conflict:
+                    reason = f"Conflict: {conflict_count} cross-source conflicts detected"
+                elif issues_found:
+                    reason = "; ".join(issues_found[:5])
+                else:
+                    reason = f"All checks passed (score={sr_scoring.get('overall_score',0):.2f})"
 
             per_source_routes[sid] = route
             per_source_reasons[sid] = reason
             sr["route_decision"] = route
             sr["decision_reason"] = reason
 
-        # ── 聚合 ──
-        worst_route = "Export"
-        for route in per_source_routes.values():
-            if _ROUTE_SEVERITY.get(route, 0) > _ROUTE_SEVERITY.get(worst_route, 0):
-                worst_route = route
+        # ── V2.3: 仅保留 per-source 路由, 不再聚合为全局 worst_route ──
+        # 下游 dispatch 节点根据 per_source_routes 分发
 
         # ── 决策矩阵 (D2) ──
         matrix_routes = {}
@@ -176,7 +199,6 @@ class DecisionReasoningAgent:
                     conditions.append({"condition": "unit_inconsistency", "route": "Normalization", "reason": f"需统一单位: {sorted(unit_issues.keys())}"})
                 if sr.get("format", {}).get("total_issues", 0) > 0:
                     conditions.append({"condition": "format_issues", "route": "Normalization", "reason": "需标准化字段格式"})
-                # per-source alias check
                 src_expected = set(sr.get("completeness", {}).get("expected_fields", []))
                 src_actual = set(sr.get("completeness", {}).get("present_fields", []))
                 src_aliases = src_actual - src_expected
@@ -191,41 +213,28 @@ class DecisionReasoningAgent:
             conditional_routes.append({"source_id": sid, "primary_route": route, "conditions": conditions})
         quality["conditional_routes"] = conditional_routes
 
-        # ── LLM 聚合摘要 ──
-        try:
-            from utils.llm import get_llm
-            set_agent_context("assessment")
-            route_summary = ", ".join(f"{sid[:20]}={r}" for sid, r in per_source_routes.items())
-            llm = get_llm(temperature=0.0)
-            resp = llm.invoke([{"role": "system", "content": "你是科学数据评估专家。生成简短评估摘要。"},
-                               {"role": "user", "content": f"{len(source_reports)} sources. Routes: {route_summary}. Overall: {worst_route}. Generate 1-2 sentence summary."}])
-            llm_summary = (resp.content if hasattr(resp, "content") else str(resp))[:300]
-            llm_count += 1
-            from utils.llm import track_raw_llm_call; track_raw_llm_call(time.time() - t0, agent="assessment")
-        except Exception:
-            route_counts = {}
-            for r in per_source_routes.values(): route_counts[r] = route_counts.get(r, 0) + 1
-            llm_summary = f"{len(source_reports)} sources: {route_counts}. Overall→{worst_route}"
+        # ── V2.3: per-source 统计摘要 (无 LLM, 无全局聚合) ──
+        route_counts = {}
+        for r in per_source_routes.values():
+            route_counts[r] = route_counts.get(r, 0) + 1
 
         quality["per_source_routes"] = per_source_routes
         quality["per_source_reasons"] = per_source_reasons
-        quality["route_decision"] = worst_route
-        quality["decision_reasoning"] = llm_summary
-        quality["need_normalization"] = worst_route in ("Normalization",)
-        quality["need_conflict_analysis"] = worst_route in ("Conflict",)
+        quality["route_counts"] = route_counts  # 替换旧 route_decision
         quality["assessment_summary"] = (
-            f"{len(source_reports)} sources. " + ", ".join(f"{sid[:15]}→{r}" for sid, r in per_source_routes.items()) + f". Overall→{worst_route}."
+            f"{len(source_reports)} sources. "
+            + ", ".join(f"{sid[:15]}→{r}" for sid, r in per_source_routes.items())
+            + f". Distribution: {route_counts}."
         )
 
         elapsed = round(time.time() - t0, 3)
-        logger.info("[DecisionReasoningAgent] %d sources, overall=%s, %.2fs", len(source_reports), worst_route, elapsed)
-
-        history = list(wf.get("workflow_history", []))
-        history.append({"agent": "DecisionReasoningAgent", "stage": "DecisionReasoning", "status": "Success",
-                        "timestamp": datetime.datetime.now().isoformat(), "duration": elapsed,
-                        "reason": f"{len(source_reports)} sources, overall={worst_route}"})
+        logger.info("[DecisionReasoningAgent] %d sources, distribution=%s, %.2fs",
+                    len(source_reports), route_counts, elapsed)
 
         return {"report_state": {"quality": quality},
-                "workflow_state": {"route_decision": worst_route, "execution_status": "Success",
-                                   "current_node": "decision", "retry_counter": 0, "llm_call_count": llm_count,
-                                   "workflow_history": history}}
+                "workflow_state": {"execution_status": "Success",
+                                   "current_node": "decision", "retry_counter": 0,
+                                   "workflow_history": [{"agent": "DecisionReasoningAgent", "stage": "DecisionReasoning",
+                                        "status": "Success", "timestamp": datetime.datetime.now().isoformat(),
+                                        "duration": elapsed,
+                                        "reason": f"{len(source_reports)} sources, distribution={route_counts}"}]}}
