@@ -1,0 +1,31 @@
+{
+  "id": "W3180677679",
+  "doi": "10.1038/s41545-021-00127-0",
+  "title": "Removal of heavy metal ions from wastewater: a comprehensive and critical review",
+  "abstract": "Abstract Removal of heavy metal ions from wastewater is of prime importance for a clean environment and human health. Different reported methods were devoted to heavy metal ions removal from various wastewater sources. These methods could be classified into adsorption-, membrane-, chemical-, electric-, and photocatalytic-based treatments. This paper comprehensively and critically reviews and discusses these methods in terms of used agents/adsorbents, removal efficiency, operating conditions, and the pros and cons of each method. Besides, the key findings of the previous studies reported in the literature are summarized. Generally, it is noticed that most of the recent studies have focused on adsorption techniques. The major obstacles of the adsorption methods are the ability to remove different ion types concurrently, high retention time, and cycling stability of adsorbents. Even though the chemical and membrane methods are practical, the large-volume sludge formation and post-treatment requirements are vital issues that need to be solved for chemical techniques. Fouling and scaling inhibition could lead to further improvement in membrane separation. However, pre-treatment and periodic cleaning of membranes incur additional costs. Electrical-based methods were also reported to be efficient; however, industrial-scale separation is needed in addition to tackling the issue of large-volume sludge formation. Electric- and photocatalytic-based methods are still less mature. More attention should be drawn to using real wastewaters rather than synthetic ones when investigating heavy metals removal. Future research studies should focus on eco-friendly, cost-effective, and sustainable materials and methods.",
+  "authors": [
+    "Naef A.A. Qasem",
+    "Ramy H. Mohammed",
+    "Dahiru U. Lawal"
+  ],
+  "year": 2021,
+  "journal": "npj Clean Water",
+  "citation_count": 2100,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.nature.com/articles/s41545-021-00127-0.pdf",
+  "pdf_url": "https://www.nature.com/articles/s41545-021-00127-0.pdf",
+  "primary_topic": "Adsorption and biosorption for pollutant removal",
+  "concepts": [
+    "Adsorption",
+    "Wastewater",
+    "Sewage treatment",
+    "Heavy metals",
+    "Metal ions in aqueous solution"
+  ],
+  "score": 77.5,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W3180677679.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 2517424
+}

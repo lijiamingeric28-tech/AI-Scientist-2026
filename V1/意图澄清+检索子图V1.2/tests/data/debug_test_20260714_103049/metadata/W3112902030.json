@@ -1,0 +1,30 @@
+{
+  "id": "W3112902030",
+  "doi": "10.1056/nejmra2026131",
+  "title": "Cytokine Storm",
+  "abstract": "Common Terminology Criteria for Adverse",
+  "authors": [
+    "David C. Fajgenbaum",
+    "Carl H. June"
+  ],
+  "year": 2020,
+  "journal": "New England Journal of Medicine",
+  "citation_count": 3187,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://ctep.cancer.gov/protocolDevelopment/electronic_applications/docs/CTCAE_v5_Quick_Reference_5x7.pdf",
+  "pdf_url": "https://ctep.cancer.gov/protocolDevelopment/electronic_applications/docs/CTCAE_v5_Quick_Reference_5x7.pdf",
+  "primary_topic": "CAR-T cell therapy research",
+  "concepts": [
+    "Terminology",
+    "Storm",
+    "Cytokine storm",
+    "Cytokine",
+    "Medicine"
+  ],
+  "score": 76.0,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W3112902030.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 95672
+}

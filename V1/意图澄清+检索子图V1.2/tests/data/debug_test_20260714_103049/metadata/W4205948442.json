@@ -1,0 +1,39 @@
+{
+  "id": "W4205948442",
+  "doi": "10.1038/s41575-021-00440-6",
+  "title": "The International Scientific Association of Probiotics and Prebiotics (ISAPP) consensus statement on the definition and scope of postbiotics",
+  "abstract": "Abstract In 2019, the International Scientific Association for Probiotics and Prebiotics (ISAPP) convened a panel of experts specializing in nutrition, microbial physiology, gastroenterology, paediatrics, food science and microbiology to review the definition and scope of postbiotics. The term ‘postbiotics’ is increasingly found in the scientific literature and on commercial products, yet is inconsistently used and lacks a clear definition. The purpose of this panel was to consider the scientific, commercial and regulatory parameters encompassing this emerging term, propose a useful definition and thereby establish a foundation for future developments. The panel defined a postbiotic as a “preparation of inanimate microorganisms and/or their components that confers a health benefit on the host”. Effective postbiotics must contain inactivated microbial cells or cell components, with or without metabolites, that contribute to observed health benefits. The panel also discussed existing evidence of health-promoting effects of postbiotics, potential mechanisms of action, levels of evidence required to meet the stated definition, safety and implications for stakeholders. The panel determined that a definition of postbiotics is useful so that scientists, clinical triallists, industry, regulators and consumers have common ground for future activity in this area. A generally accepted definition will hopefully lead to regulatory clarity and promote innovation and the development of new postbiotic products.",
+  "authors": [
+    "Seppo Salminen",
+    "María Carmen Collado",
+    "Akihito Endo",
+    "Colin Hill",
+    "Sarah Lebeer",
+    "Eamonn M.M. Quigley",
+    "Mary Ellen Sanders",
+    "Raanan Shamir",
+    "Jonathan R. Swann",
+    "Hania Szajewska",
+    "Gabriel Vinderola"
+  ],
+  "year": 2021,
+  "journal": "Nature Reviews Gastroenterology & Hepatology",
+  "citation_count": 2170,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.nature.com/articles/s41575-021-00440-6.pdf",
+  "pdf_url": "https://www.nature.com/articles/s41575-021-00440-6.pdf",
+  "primary_topic": "Probiotics and Fermented Foods",
+  "concepts": [
+    "Scope (computer science)",
+    "CLARITY",
+    "Medicine",
+    "MEDLINE",
+    "Scientific evidence"
+  ],
+  "score": 77.5,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W4205948442.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 3883138
+}

@@ -1,0 +1,300 @@
+Unknown content type: application/pdf
+Unknown content type: application/pdf
+Unknown content type: application/pdf
+Unknown content type: application/pdf
+HTTP 403 (attempt 1)
+Unknown content type: application/pdf
+  W3022429852 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3133881043 download failed: All sources failed
+Error (attempt 1): HTTPSConnectionPool(host='www.mdpi.com', port=443): Max retries exceeded with url: /2073-4360/13/8/1345/pdf?version=1619057289 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1081)')))
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 2)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W4382584043 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3153486063 download failed: All sources failed
+  W4205155640 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W3011724868 download failed: All sources failed
+HTTP 403 (attempt 1)
+Unknown content type: image/jpeg
+All extracted PDF links failed
+Unknown content type: image/jpeg
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3161121665 download failed: All sources failed
+Unknown content type: image/jpeg
+Unknown content type: image/jpeg
+All extracted PDF links failed
+Unknown content type: image/jpeg
+HTTP 403 (attempt 1)
+Unknown content type: image/jpeg
+Unknown content type: image/jpeg
+Unknown content type: image/jpeg
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+Unknown content type: image/jpeg
+  W4318205606 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W3132122477 download failed: All sources failed
+HTTP 403 (attempt 1)
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+  W4316664297 download failed: All sources failed
+All extracted PDF links failed
+  W3134317565 download failed: All sources failed
+HTTP 404 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 404 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 404 (attempt 1)
+  W3090120030 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4200585601 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W4380200810 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4285013886 download failed: All sources failed
+HTTP 502 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 502 (attempt 2)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3093959671 download failed: All sources failed
+  W3092931547 download failed: All sources failed
+HTTP 502 (attempt 3)
+HTTP 502 (attempt 1)
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+HTTP 502 (attempt 2)
+No PDF links found in HTML
+No PDF links found in HTML
+  W3120338085 download failed: All sources failed
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+  W3133455371 download failed: All sources failed
+  W3108814662 download failed: All sources failed
+HTTP 502 (attempt 3)
+  W3129782884 download failed: All sources failed
+Error (attempt 1): HTTPSConnectionPool(host='pubs.rsc.org', port=443): Max retries exceeded with url: /en/content/articlepdf/2020/cs/d0cs00022a (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1081)')))
+HTTP 403 (attempt 2)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3084460821 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3082954565 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3047352725 download failed: All sources failed
+  W4307483263 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3010871159 download failed: All sources failed
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+  W4211093302 download failed: All sources failed
+No PDF links found in HTML
+Unknown content type: application/pdf
+No PDF links found in HTML
+HTTP 403 (attempt 1)
+No PDF links found in HTML
+  W3154116283 download failed: All sources failed
+Unknown content type: application/pdf
+HTTP 403 (attempt 1)
+  W3107853162 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4318754323 download failed: All sources failed
+Unknown content type: application/pdf
+  W3174561846 download failed: All sources failed
+No PDF links found in HTML
+No PDF links found in HTML
+Unknown content type: application/pdf
+No PDF links found in HTML
+  W4200084972 download failed: All sources failed
+Unknown content type: application/pdf
+HTTP 403 (attempt 1)
+  W4281759682 download failed: All sources failed
+  W3095083312 download failed: All sources failed
+Unknown content type: application/pdf
+  W3196209586 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4200436854 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4398775777 download failed: All sources failed
+  W4306842249 download failed: All sources failed
+  W3193772014 download failed: All sources failed
+Unknown content type: application/pdf
+Unknown content type: application/pdf
+HTTP 403 (attempt 1)
+Unknown content type: application/pdf
+HTTP 403 (attempt 1)
+  W4390977303 download failed: All sources failed
+Unknown content type: application/pdf
+Unknown content type: application/pdf
+Unknown content type: application/pdf
+  W4401194380 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W4400982080 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4400351426 download failed: All sources failed
+  W4404514180 download failed: All sources failed
+HTTP 403 (attempt 1)
+No PDF links found in HTML
+No PDF links found in HTML
+HTTP 403 (attempt 1)
+  W4404238022 download failed: All sources failed
+No PDF links found in HTML
+  W4390893876 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W4319317097 download failed: All sources failed
+  W4400986891 download failed: All sources failed
+  W4295106207 download failed: All sources failed
+  W4403423769 download failed: All sources failed
+  W4389331329 download failed: All sources failed
+nload failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W4395010444 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4327946446 download failed: All sources failed
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+No PDF links found in HTML
+  W4385490607 download failed: All sources failed
+No PDF links found in HTML
+  W4320495408 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4327550249 download failed: All sources failed
+HTTP 403 (attempt 1)
+No PDF links found in HTML
+No PDF links found in HTML
+HTTP 403 (attempt 1)
+  W4388464011 download failed: All sources failed
+HTTP 403 (attempt 1)
+No PDF links found in HTML
+  W4366262984 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4366988472 download failed: All sources failed
+HTTP 403 (attempt 1)
+No PDF links found in HTML
+HTTP 403 (attempt 1)
+No PDF links found in HTML
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+  W4213212652 download failed: All sources failed
+No PDF links found in HTML
+  W4291819654 download failed: All sources failed
+  W4210827551 download failed: All sources failed
+All extracted PDF links failed
+All extracted PDF links failed
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+  W4308616064 download failed: All sources failed
+All extracted PDF links failed
+All extracted PDF links failed
+All extracted PDF links failed
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+  W4383912288 download failed: All sources failed
+All extracted PDF links failed
+All extracted PDF links failed
+All extracted PDF links failed
+  W4205379795 download failed: All sources failed
+All extracted PDF links failed
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+  W3182706339 download failed: All sources failed
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W4247155454 download failed: All sources failed
+All extracted PDF links failed
+All extracted PDF links failed
+  W2747680751 download failed: All sources failed
+All extracted PDF links failed
+HTTP 418 (attempt 1)
+All extracted PDF links failed
+All extracted PDF links failed
+HTTP 418 (attempt 2)
+HTTP 418 (attempt 1)
+HTTP 418 (attempt 3)
+All extracted PDF links failed
+HTTP 418 (attempt 2)
+HTTP 418 (attempt 1)
+All extracted PDF links failed
+HTTP 418 (attempt 2)
+All extracted PDF links failed
+  W3135028703 download failed: All sources failed
+HTTP 418 (attempt 3)
+HTTP 418 (attempt 1)
+HTTP 418 (attempt 3)
+HTTP 418 (attempt 2)
+HTTP 418 (attempt 3)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W3156614709 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W3211795435 download failed: All sources failed
+  W3202105508 download failed: All sources failed
+  W4324135233 download failed: All sources failed
+All extracted PDF links failed
+All extracted PDF links failed
+All extracted PDF links failed
+  W4213248101 download failed: All sources failed
+No PDF links found in HTML
+ 1)
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+  W4247155454 download failed: All sources failed
+HTTP 502 (attempt 3)
+  W3129486236 download failed: All sources failed
+All extracted PDF links failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+All extracted PDF links failed
+  W3135028703 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W3120694366 download failed: All sources failed
+  W3202105508 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W3211795435 download failed: All sources failed
+  W2783539613 download failed: All sources failed
+HTTP 403 (attempt 1)
+HTTP 403 (attempt 1)
+  W2937444804 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4381982883 download failed: All sources failed
+HTTP 403 (attempt 1)
+  W4398182689 download failed: All sources failed
+  W2955088691 download failed: All sources failed
+  W4324135233 download failed: All sources failed

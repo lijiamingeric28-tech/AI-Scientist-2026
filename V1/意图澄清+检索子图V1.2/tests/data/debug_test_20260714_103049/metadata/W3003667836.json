@@ -1,0 +1,31 @@
+{
+  "id": "W3003667836",
+  "doi": "10.1109/access.2020.2970143",
+  "title": "Digital Twin: Values, Challenges and Enablers From a Modeling Perspective",
+  "abstract": "Digital twin can be defined as a virtual representation of a physical asset enabled through data and simulators for real-time prediction, optimization, monitoring, controlling, and improved decision making. Recent advances in computational pipelines, multiphysics solvers, artificial intelligence, big data cybernetics, data processing and management tools bring the promise of digital twins and their impact on society closer to reality. Digital twinning is now an important and emerging trend in many applications. Also referred to as a computational megamodel, device shadow, mirrored system, avatar or a synchronized virtual prototype, there can be no doubt that a digital twin plays a transformative role not only in how we design and operate cyber-physical intelligent systems, but also in how we advance the modularity of multi-disciplinary systems to tackle fundamental barriers not addressed by the current, evolutionary modeling practices. In this work, we review the recent status of methodologies and techniques related to the construction of digital twins mostly from a modeling perspective. Our aim is to provide a detailed coverage of the current challenges and enabling technologies along with recommendations and reflections for various stakeholders.",
+  "authors": [
+    "Adil Rasheed",
+    "Omer San",
+    "Trond Kvamsdal"
+  ],
+  "year": 2020,
+  "journal": "IEEE Access",
+  "citation_count": 1733,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://ieeexplore.ieee.org/ielx7/6287639/8948470/08972429.pdf",
+  "pdf_url": "https://ieeexplore.ieee.org/ielx7/6287639/8948470/08972429.pdf",
+  "primary_topic": "Digital Transformation in Industry",
+  "concepts": [
+    "Computer science",
+    "Data science",
+    "Big data",
+    "Perspective (graphical)",
+    "Data sharing"
+  ],
+  "score": 76.0,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W3003667836.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 9598713
+}

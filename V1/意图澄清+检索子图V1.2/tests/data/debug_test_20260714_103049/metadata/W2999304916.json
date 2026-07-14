@@ -1,0 +1,42 @@
+{
+  "id": "W2999304916",
+  "doi": "10.1038/s41467-019-13889-6",
+  "title": "PHD1 controls muscle mTORC1 in a hydroxylation-independent manner by stabilizing leucyl tRNA synthetase",
+  "abstract": "Abstract mTORC1 is an important regulator of muscle mass but how it is modulated by oxygen and nutrients is not completely understood. We show that loss of the prolyl hydroxylase domain isoform 1 oxygen sensor in mice (PHD1 KO ) reduces muscle mass. PHD1 KO muscles show impaired mTORC1 activation in response to leucine whereas mTORC1 activation by growth factors or eccentric contractions was preserved. The ability of PHD1 to promote mTORC1 activity is independent of its hydroxylation activity but is caused by decreased protein content of the leucyl tRNA synthetase (LRS) leucine sensor. Mechanistically, PHD1 interacts with and stabilizes LRS. This interaction is promoted during oxygen and amino acid depletion and protects LRS from degradation. Finally, elderly subjects have lower PHD1 levels and LRS activity in muscle from aged versus young human subjects. In conclusion, PHD1 ensures an optimal mTORC1 response to leucine after episodes of metabolic scarcity.",
+  "authors": [
+    "Gommaar D’Hulst",
+    "Inés Soro-Arnáiz",
+    "Evi Masschelein",
+    "Koen Veys",
+    "Gillian Fitzgerald",
+    "Benoit Smeuninx",
+    "Sung‐Hoon Kim",
+    "Louise Deldicque",
+    "Bert Blaauw",
+    "Peter Carmeliet",
+    "Leigh Breen",
+    "Peppi Koivunen",
+    "Shimin Zhao",
+    "Katrien De Bock"
+  ],
+  "year": 2020,
+  "journal": "Nature Communications",
+  "citation_count": 2317,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.nature.com/articles/s41467-019-13889-6.pdf",
+  "pdf_url": "https://www.nature.com/articles/s41467-019-13889-6.pdf",
+  "primary_topic": "Cancer, Hypoxia, and Metabolism",
+  "concepts": [
+    "Leucine",
+    "Hydroxylation",
+    "mTORC1",
+    "Biochemistry",
+    "Amino acid"
+  ],
+  "score": 76.0,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W2999304916.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 2618883
+}

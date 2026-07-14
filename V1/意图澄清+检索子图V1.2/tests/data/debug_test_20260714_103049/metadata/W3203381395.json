@@ -1,0 +1,30 @@
+{
+  "id": "W3203381395",
+  "doi": "10.3390/molecules26195905",
+  "title": "Controlled Drug Delivery Systems: Current Status and Future Directions",
+  "abstract": "The drug delivery system enables the release of the active pharmaceutical ingredient to achieve a desired therapeutic response. Conventional drug delivery systems (tablets, capsules, syrups, ointments, etc.) suffer from poor bioavailability and fluctuations in plasma drug level and are unable to achieve sustained release. Without an efficient delivery mechanism, the whole therapeutic process can be rendered useless. Moreover, the drug has to be delivered at a specified controlled rate and at the target site as precisely as possible to achieve maximum efficacy and safety. Controlled drug delivery systems are developed to combat the problems associated with conventional drug delivery. There has been a tremendous evolution in controlled drug delivery systems from the past two decades ranging from macro scale and nano scale to intelligent targeted delivery. The initial part of this review provides a basic understanding of drug delivery systems with an emphasis on the pharmacokinetics of the drug. It also discusses the conventional drug delivery systems and their limitations. Further, controlled drug delivery systems are discussed in detail with the design considerations, classifications and drawings. In addition, nano-drug delivery, targeted and smart drug delivery using stimuli-responsive and intelligent biomaterials is discussed with recent key findings. The paper concludes with the challenges faced and future directions in controlled drug delivery.",
+  "authors": [
+    "Shivakalyani Adepu",
+    "Seeram Ramakrishna"
+  ],
+  "year": 2021,
+  "journal": "Molecules",
+  "citation_count": 1643,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.mdpi.com/1420-3049/26/19/5905/pdf?version=1633919946",
+  "pdf_url": "https://www.mdpi.com/1420-3049/26/19/5905/pdf?version=1633919946",
+  "primary_topic": "Nanoparticle-Based Drug Delivery",
+  "concepts": [
+    "Drug delivery",
+    "Drug",
+    "Targeted drug delivery",
+    "Medicine",
+    "Nanotechnology"
+  ],
+  "score": 77.5,
+  "local_path": null,
+  "download_status": "failed",
+  "download_source": null,
+  "file_size": null
+}

@@ -1,0 +1,33 @@
+{
+  "id": "W3127184027",
+  "doi": "10.3390/antiox10020277",
+  "title": "Abiotic Stress and Reactive Oxygen Species: Generation, Signaling, and Defense Mechanisms",
+  "abstract": "Climate change is an invisible, silent killer with calamitous effects on living organisms. As the sessile organism, plants experience a diverse array of abiotic stresses during ontogenesis. The relentless climatic changes amplify the intensity and duration of stresses, making plants dwindle to survive. Plants convert 1–2% of consumed oxygen into reactive oxygen species (ROS), in particular, singlet oxygen (1O2), superoxide radical (O2•–), hydrogen peroxide (H2O2), hydroxyl radical (•OH), etc. as a byproduct of aerobic metabolism in different cell organelles such as chloroplast, mitochondria, etc. The regulatory network comprising enzymatic and non-enzymatic antioxidant systems tends to keep the magnitude of ROS within plant cells to a non-damaging level. However, under stress conditions, the production rate of ROS increases exponentially, exceeding the potential of antioxidant scavengers instigating oxidative burst, which affects biomolecules and disturbs cellular redox homeostasis. ROS are similar to a double-edged sword; and, when present below the threshold level, mediate redox signaling pathways that actuate plant growth, development, and acclimatization against stresses. The production of ROS in plant cells displays both detrimental and beneficial effects. However, exact pathways of ROS mediated stress alleviation are yet to be fully elucidated. Therefore, the review deposits information about the status of known sites of production, signaling mechanisms/pathways, effects, and management of ROS within plant cells under stress. In addition, the role played by advancement in modern techniques such as molecular priming, systems biology, phenomics, and crop modeling in preventing oxidative stress, as well as diverting ROS into signaling pathways has been canvassed.",
+  "authors": [
+    "Swati Sachdev",
+    "Shamim Akhtar Ansari",
+    "Mohammad Israil Ansari",
+    "Masayuki Fujita",
+    "Mirza Hasanuzzaman"
+  ],
+  "year": 2021,
+  "journal": "Antioxidants",
+  "citation_count": 1478,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.mdpi.com/2076-3921/10/2/277/pdf?version=1613032098",
+  "pdf_url": "https://www.mdpi.com/2076-3921/10/2/277/pdf?version=1613032098",
+  "primary_topic": "Plant Stress Responses and Tolerance",
+  "concepts": [
+    "Reactive oxygen species",
+    "Abiotic component",
+    "Oxidative stress",
+    "Abiotic stress",
+    "Chemistry"
+  ],
+  "score": 77.5,
+  "local_path": null,
+  "download_status": "failed",
+  "download_source": null,
+  "file_size": null
+}

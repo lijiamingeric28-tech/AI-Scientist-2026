@@ -1,0 +1,36 @@
+{
+  "id": "W3048565185",
+  "doi": "10.1002/wcms.1493",
+  "title": "Extended <scp>tight‐binding</scp> quantum chemistry methods",
+  "abstract": "Abstract This review covers a family of atomistic, mostly quantum chemistry (QC) based semiempirical methods for the fast and reasonably accurate description of large molecules in gas and condensed phase. The theory is derived from a density functional (DFT) perturbation expansion of the electron density in fluctuation terms to various orders similar to the original density functional tight binding model. The term “eXtended” in their name (xTB) emphasizes the parameter availability for almost the entire periodic table of elements ( Z ≤ 86) and improvements of the underlying theory regarding, for example, the atomic orbital basis set, the level of multipole approximation and the treatment of the important electrostatic and dispersion interactions. A common feature of most members is their consistent parameterization on accurate gas phase theoretical reference data for geometries, vibrational frequencies and noncovalent interactions, which are the primary properties of interest in typical applications to systems composed of up to a few thousand atoms. Further specialized versions were developed for the description of electronic spectra and corresponding response properties. Besides a provided common theoretical background with some important implementation details in the efficient and free xtb program, various benchmarks for structural and thermochemical properties including (transition‐)metal systems are discussed. The review is completed by recent extensions of the model to the force‐field (FF) level as well as its application to solids under periodic boundary conditions. The general applicability together with the excellent cost‐accuracy ratio and the high robustness make the xTB family of methods very attractive for various fields of computer‐aided chemical research. This article is categorized under: Electronic Structure Theory &gt; Ab Initio Electronic Structure Methods Electronic Structure Theory &gt; Semiempirical Electronic Structure Methods Software &gt; Quantum Chemistry",
+  "authors": [
+    "Christoph Bannwarth",
+    "Eike Caldeweyher",
+    "Sebastian Ehlert",
+    "Andreas Hansen",
+    "Philipp Pracht",
+    "Jakob Seibert",
+    "Sebastian Spicher",
+    "Stefan Grimme"
+  ],
+  "year": 2020,
+  "journal": "Wiley Interdisciplinary Reviews Computational Molecular Science",
+  "citation_count": 1589,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/wcms.1493",
+  "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/wcms.1493",
+  "primary_topic": "Advanced Chemical Physics Studies",
+  "concepts": [
+    "Multipole expansion",
+    "Statistical physics",
+    "Perturbation theory (quantum mechanics)",
+    "Density functional theory",
+    "Quantum chemistry"
+  ],
+  "score": 76.0,
+  "local_path": null,
+  "download_status": "failed",
+  "download_source": null,
+  "file_size": null
+}

@@ -1,0 +1,37 @@
+{
+  "id": "W4205498896",
+  "doi": "10.1038/s41392-021-00762-6",
+  "title": "Wnt/β-catenin signalling: function, biological mechanisms, and therapeutic opportunities",
+  "abstract": "The Wnt/β-catenin pathway comprises a family of proteins that play critical roles in embryonic development and adult tissue homeostasis. The deregulation of Wnt/β-catenin signalling often leads to various serious diseases, including cancer and non-cancer diseases. Although many articles have reviewed Wnt/β-catenin from various aspects, a systematic review encompassing the origin, composition, function, and clinical trials of the Wnt/β-catenin signalling pathway in tumour and diseases is lacking. In this article, we comprehensively review the Wnt/β-catenin pathway from the above five aspects in combination with the latest research. Finally, we propose challenges and opportunities for the development of small-molecular compounds targeting the Wnt signalling pathway in disease treatment.",
+  "authors": [
+    "Jiaqi Liu",
+    "Qing Xiao",
+    "Jiani Xiao",
+    "Chenxi Niu",
+    "Yuanyuan Li",
+    "Xiaojun Zhang",
+    "Zhengwei Zhou",
+    "Guang Shu",
+    "Gang Yin"
+  ],
+  "year": 2022,
+  "journal": "Signal Transduction and Targeted Therapy",
+  "citation_count": 2325,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.nature.com/articles/s41392-021-00762-6.pdf",
+  "pdf_url": "https://www.nature.com/articles/s41392-021-00762-6.pdf",
+  "primary_topic": "Wnt/β-catenin signaling in development and cancer",
+  "concepts": [
+    "Wnt signaling pathway",
+    "Catenin",
+    "Biology",
+    "Function (biology)",
+    "LRP6"
+  ],
+  "score": 79.0,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W4205498896.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 1742155
+}

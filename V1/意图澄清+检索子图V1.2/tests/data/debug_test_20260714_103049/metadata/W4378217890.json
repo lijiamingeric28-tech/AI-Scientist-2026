@@ -1,0 +1,34 @@
+{
+  "id": "W4378217890",
+  "doi": "10.1038/s41392-023-01481-w",
+  "title": "The blood–brain barrier: Structure, regulation and drug delivery",
+  "abstract": "Blood-brain barrier (BBB) is a natural protective membrane that prevents central nervous system (CNS) from toxins and pathogens in blood. However, the presence of BBB complicates the pharmacotherapy for CNS disorders as the most chemical drugs and biopharmaceuticals have been impeded to enter the brain. Insufficient drug delivery into the brain leads to low therapeutic efficacy as well as aggravated side effects due to the accumulation in other organs and tissues. Recent breakthrough in materials science and nanotechnology provides a library of advanced materials with customized structure and property serving as a powerful toolkit for targeted drug delivery. In-depth research in the field of anatomical and pathological study on brain and BBB further facilitates the development of brain-targeted strategies for enhanced BBB crossing. In this review, the physiological structure and different cells contributing to this barrier are summarized. Various emerging strategies for permeability regulation and BBB crossing including passive transcytosis, intranasal administration, ligands conjugation, membrane coating, stimuli-triggered BBB disruption, and other strategies to overcome BBB obstacle are highlighted. Versatile drug delivery systems ranging from organic, inorganic, and biologics-derived materials with their synthesis procedures and unique physio-chemical properties are summarized and analyzed. This review aims to provide an up-to-date and comprehensive guideline for researchers in diverse fields, offering perspectives on further development of brain-targeted drug delivery system.",
+  "authors": [
+    "Di Wu",
+    "Qi Chen",
+    "Xiaojie Chen",
+    "Feng Han",
+    "Zhong Chen",
+    "Yi Wang"
+  ],
+  "year": 2023,
+  "journal": "Signal Transduction and Targeted Therapy",
+  "citation_count": 1648,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://www.nature.com/articles/s41392-023-01481-w.pdf",
+  "pdf_url": "https://www.nature.com/articles/s41392-023-01481-w.pdf",
+  "primary_topic": "Barrier Structure and Function Studies",
+  "concepts": [
+    "Blood–brain barrier",
+    "Drug",
+    "Drug delivery",
+    "Medicine",
+    "Pharmacology"
+  ],
+  "score": 80.5,
+  "local_path": "E:\\整合\\意图澄清+检索子图V1.1\\tests\\data\\debug_test_20260714_103049\\papers\\W4378217890.pdf",
+  "download_status": "success",
+  "download_source": "pdf_url",
+  "file_size": 9668745
+}

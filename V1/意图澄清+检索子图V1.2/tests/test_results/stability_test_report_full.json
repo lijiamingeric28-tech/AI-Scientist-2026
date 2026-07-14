@@ -1,0 +1,183 @@
+{
+  "test_time": "2026-07-14T09:35:23.249863",
+  "summary": {
+    "total": 7,
+    "passed": 6,
+    "failed": 1,
+    "pass_rate": 85.71428571428571
+  },
+  "tests": [
+    {
+      "test_id": "1.1",
+      "test_name": "标准材料科学查询",
+      "success": true,
+      "start_time": "2026-07-14T09:35:23.249943",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "elapsed_time": 459.53,
+        "papers_searched": 50,
+        "citations_expanded": 99,
+        "papers_after_merge": 0,
+        "papers_filtered": 100,
+        "papers_downloaded": 0
+      },
+      "input": {
+        "query": "graphene mechanical properties",
+        "domain": "materials_science"
+      },
+      "output": {
+        "papers": 50,
+        "citation_papers": 99,
+        "filtered_papers": 100
+      },
+      "end_time": "2026-07-14T09:43:02.780817"
+    },
+    {
+      "test_id": "3.1",
+      "test_name": "引用扩展成功率",
+      "success": true,
+      "start_time": "2026-07-14T09:43:02.781581",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "elapsed_time": 259.14,
+        "papers_searched": 50,
+        "citations_expanded": 89,
+        "papers_after_merge": 0,
+        "papers_filtered": 87,
+        "papers_downloaded": 0
+      },
+      "input": {
+        "query": "deep learning materials discovery",
+        "domain": "materials_science"
+      },
+      "output": {
+        "papers": 50,
+        "citation_papers": 89,
+        "filtered_papers": 87
+      },
+      "end_time": "2026-07-14T09:47:21.926036"
+    },
+    {
+      "test_id": "1.2",
+      "test_name": "窄领域查询",
+      "success": true,
+      "start_time": "2026-07-14T09:47:21.926767",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "elapsed_time": 216.39,
+        "papers_searched": 50,
+        "citations_expanded": 80,
+        "papers_after_merge": 0,
+        "papers_filtered": 90,
+        "papers_downloaded": 0
+      },
+      "input": {
+        "query": "topological insulators Bi2Se3 quantum transport",
+        "domain": "materials_science"
+      },
+      "output": {
+        "papers": 50,
+        "citation_papers": 80,
+        "filtered_papers": 90
+      },
+      "end_time": "2026-07-14T09:50:58.312120"
+    },
+    {
+      "test_id": "1.3",
+      "test_name": "宽泛查询",
+      "success": false,
+      "start_time": "2026-07-14T09:50:58.312855",
+      "errors": [
+        "'gbk' codec can't encode character '\\xa0' in position 35: illegal multibyte sequence"
+      ],
+      "warnings": [],
+      "metrics": {},
+      "input": {
+        "query": "machine learning materials",
+        "domain": "materials_science"
+      },
+      "end_time": "2026-07-14T09:52:14.144381"
+    },
+    {
+      "test_id": "2.3",
+      "test_name": "零结果处理",
+      "success": true,
+      "start_time": "2026-07-14T09:52:14.144442",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "elapsed_time": 30.35,
+        "papers_searched": 0,
+        "citations_expanded": 0,
+        "papers_after_merge": 0,
+        "papers_filtered": 0,
+        "papers_downloaded": 0
+      },
+      "input": {
+        "query": "xyzabcdef123nonsense materials quantum",
+        "domain": "materials_science"
+      },
+      "output": {
+        "papers": 0,
+        "citation_papers": 0,
+        "filtered_papers": 0
+      },
+      "end_time": "2026-07-14T09:52:44.492142"
+    },
+    {
+      "test_id": "2.1",
+      "test_name": "极短查询",
+      "success": true,
+      "start_time": "2026-07-14T09:52:44.492241",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "elapsed_time": 270.75,
+        "papers_searched": 49,
+        "citations_expanded": 90,
+        "papers_after_merge": 0,
+        "papers_filtered": 97,
+        "papers_downloaded": 0
+      },
+      "input": {
+        "query": "graphene",
+        "domain": "materials_science"
+      },
+      "output": {
+        "papers": 49,
+        "citation_papers": 90,
+        "filtered_papers": 97
+      },
+      "end_time": "2026-07-14T09:57:15.242213"
+    },
+    {
+      "test_id": "2.4",
+      "test_name": "特殊字符查询",
+      "success": true,
+      "start_time": "2026-07-14T09:57:15.242323",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "elapsed_time": 483.83,
+        "papers_searched": 50,
+        "citations_expanded": 90,
+        "papers_after_merge": 0,
+        "papers_filtered": 90,
+        "papers_downloaded": 0
+      },
+      "input": {
+        "query": "Cu-Zn alloy (70/30) @ 300°C",
+        "domain": "materials_science"
+      },
+      "output": {
+        "papers": 50,
+        "citation_papers": 90,
+        "filtered_papers": 90
+      },
+      "end_time": "2026-07-14T10:05:19.072659"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "W4323544162",
+  "doi": "10.1021/acsmeasuresciau.2c00070",
+  "title": "Electrochemical Impedance Spectroscopy─A Tutorial",
+  "abstract": "This tutorial provides the theoretical background, the principles, and applications of Electrochemical Impedance Spectroscopy (EIS) in various research and technological sectors. The text has been organized in 17 sections starting with basic knowledge on sinusoidal signals, complex numbers, phasor notation, and transfer functions, continuing with the definition of impedance in electrical circuits, the principles of EIS, the validation of the experimental data, their simulation to equivalent electrical circuits, and ending with practical considerations and selected examples on the utility of EIS to corrosion, energy related applications, and biosensing. A user interactive excel file showing the Nyquist and Bode plots of some model circuits is provided in the Supporting Information. This tutorial aspires to provide the essential background to graduate students working on EIS, as well as to endow the knowledge of senior researchers on various fields where EIS is involved. We also believe that the content of this tutorial will be a useful educational tool for EIS instructors.",
+  "authors": [
+    "Alexandros Ch. Lazanas",
+    "Mamas I. Prodromidis"
+  ],
+  "year": 2023,
+  "journal": "ACS Measurement Science Au",
+  "citation_count": 2704,
+  "relevance_score": null,
+  "is_oa": true,
+  "oa_url": "https://pubs.acs.org/doi/pdf/10.1021/acsmeasuresciau.2c00070",
+  "pdf_url": "https://pubs.acs.org/doi/pdf/10.1021/acsmeasuresciau.2c00070",
+  "primary_topic": "Analytical Chemistry and Sensors",
+  "concepts": [
+    "Dielectric spectroscopy",
+    "Computer science",
+    "Electrical impedance",
+    "Notation",
+    "Electronic engineering"
+  ],
+  "score": 80.5,
+  "local_path": null,
+  "download_status": "failed",
+  "download_source": null,
+  "file_size": null
+}
