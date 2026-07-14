@@ -103,16 +103,15 @@ ASSESSMENT_ROUTE_MAP: dict[str, str] = {
 }
 
 NORMALIZATION_ROUTE_MAP: dict[str, str] = {
-    "Conflict": NODE_CONFLICT,
-    "Export": NODE_EXPORT,
+    "Export": NODE_EXPORT,         # B→D: 清洗完成直接导出
     "HumanReview": NODE_HUMAN_REVIEW,
-    "": NODE_HUMAN_REVIEW,
+    "": NODE_EXPORT,                # 默认出口
 }
 
 CONFLICT_ROUTE_MAP: dict[str, str] = {
-    "Normalization": NODE_NORMALIZATION,
-    "Export": NODE_EXPORT,
-    "HumanReview": NODE_HUMAN_REVIEW,
+    "Normalization": NODE_NORMALIZATION,  # C→B: 需要执行清洗
+    "Export": NODE_EXPORT,                # C→D: 冲突已解决
+    "HumanReview": NODE_HUMAN_REVIEW,     # C→E: 无法裁决
     "": NODE_HUMAN_REVIEW,
 }
 
