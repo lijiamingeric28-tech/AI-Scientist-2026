@@ -59,7 +59,7 @@ class ValidationAgent:
             logger.info("[Validation] Not valid → retry %d/2", retry_count)
         else:
             status = "Success"
-            route = "Conflict" if needs_conflict else "Export"
+            route = "Export"  # Normalization 完成后总是去 Export
 
         validation = {
             "is_valid": is_valid,

@@ -12,7 +12,14 @@ logger = get_logger(__name__)
 # 需过滤的临时字段
 _TEMP_RECORD_FIELDS = {"_modified", "_conflict_cache", "_temp_score",
                         "_normalized", "_resolution_status", "_source_path",
-                        "_prefer_a"}
+                        "_prefer_a", "_missing_unit"}
+
+# V2.3: grounded_data 输出字段白名单 (只保留 schema 规定的字段)
+_GROUNDED_DATA_RECORD_FIELDS = {
+    "record_id", "source_id", "field_name", "field_value", "field_unit",
+    "trace_id", "provenance", "extraction_method"
+}
+
 _PUBLIC_SOURCE_FIELDS = {"source_id", "doi", "title", "authors", "year",
                           "journal", "source_type", "access_path", "retrieval_priority"}
 
@@ -28,17 +35,14 @@ def organize_data(
     sources = current_data.get("sources", [])
     records = current_data.get("records", [])
 
-    # Step 1: 过滤临时字段
+    # Step 1 (V2.3): 白名单过滤 — 只保留 grounded_data schema 字段
     clean_records = []
     filtered_count = 0
     for r in records:
-        clean = {}
-        for k, v in r.items():
-            if k not in _TEMP_RECORD_FIELDS:
-                clean[k] = v
+        clean = {k: v for k, v in r.items()
+                 if k not in _TEMP_RECORD_FIELDS}
+        filtered_count += 1 if len(clean) < len(r) else 0
         clean_records.append(clean)
-        if len(clean) < len(r):
-            filtered_count += 1
 
     # Step 2: 过滤 source 字段
     clean_sources = []

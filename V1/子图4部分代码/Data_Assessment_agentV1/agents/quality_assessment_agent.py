@@ -39,6 +39,10 @@ def _assess_single_source(
     from tools.assessment.consistency import check_consistency
     from tools.assessment.format_checker import check_format
     from tools.assessment.source_checker import check_source_reliability
+    from tools.assessment.extraction_quality import check_extraction_quality
+
+    # ── V2.3: 提取质量 (grounded_data 特有) ──
+    extraction_quality = check_extraction_quality(recs)
 
     completeness = check_completeness(sub_data, target_schema)
     consistency = check_consistency(sub_data)
@@ -64,9 +68,10 @@ def _assess_single_source(
     adaptive_comp_threshold = adaptive_engine.get_completeness_threshold(comp_field, n_recs)
     below_threshold = completeness["score"] < adaptive_comp_threshold
 
-    # Issue list
+    # Issue list (V2.3: 加入 extraction_quality)
     src_issues: list[dict] = []
     for dim_name, dim_result in [
+        ("extraction_quality", extraction_quality),
         ("completeness", completeness), ("consistency", consistency),
         ("format", fmt), ("source_reliability", source_rel),
     ]:
@@ -91,6 +96,7 @@ def _assess_single_source(
         "source_id": sid,
         "title": title, "year": year,
         "record_count": n_recs,
+        "extraction_quality": extraction_quality,
         "completeness": completeness,
         "consistency": consistency,
         "format": fmt,
@@ -172,7 +178,7 @@ class QualityAssessmentAgent:
                     source_reports[sid] = result
                     total_issues += result["issue_count"]
                     total_conflicts += result["conflict_risk"]["conflict_count"]
-                    tool_count += 4
+                    tool_count += 5  # V2.3: +extraction_quality
                 except Exception as e:
                     sid = futures[future]
                     logger.error("[QualityAssessment] Source %s failed: %s", sid, e)

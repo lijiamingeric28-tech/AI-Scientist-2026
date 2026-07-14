@@ -125,6 +125,16 @@ def analyze_source_reliability(
                 pass
 
         reliability = 0.4 * quality + 0.35 * tier_weight + 0.25 * recency
+
+        # ── V2.3: extraction_method 可信度加成 ──
+        records_for_source = [r for r in current_data.get("records", [])
+                              if r.get("source_id") == source_id]
+        table_count = sum(1 for r in records_for_source if r.get("extraction_method") == "llm_table")
+        text_count = sum(1 for r in records_for_source if r.get("extraction_method") == "llm_text")
+        if table_count + text_count > 0:
+            extraction_bonus = 0.05 * (table_count / (table_count + text_count))
+            reliability += extraction_bonus
+
         reliability = max(0.0, min(1.0, reliability))
 
         return {

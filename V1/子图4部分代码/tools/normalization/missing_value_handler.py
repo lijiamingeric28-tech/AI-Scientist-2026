@@ -5,17 +5,17 @@ logger = get_logger(__name__)
 
 def handle_missing_values(records: list[dict], strategy: str = "mark",
                           fill_value: Any = None, standard_units: dict[str, str] | None = None) -> dict[str, Any]:
-    """处理缺失值: mark / drop / fill_default。"""
+    """处理缺失值: mark / drop / fill_default。
+
+    V2.3: grounded_data 感知 — 只处理 field_value/field_unit 缺失,
+    不因 provenance 不完整而删除记录 (那是 Assessment 的职责)。
+    """
     marked, dropped = [], []
     if strategy == "drop":
         kept = []
         for rec in records:
             v = rec.get("field_value")
             if v is None or (isinstance(v, str) and v.strip() == ""):
-                dropped.append(rec.get("record_id", "?"))
-                continue
-            prov = rec.get("provenance", {})
-            if prov and prov.get("page") is None and prov.get("bbox") is None:
                 dropped.append(rec.get("record_id", "?"))
                 continue
             kept.append(rec)

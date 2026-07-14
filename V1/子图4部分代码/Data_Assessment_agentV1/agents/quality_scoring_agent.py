@@ -64,7 +64,10 @@ class QualityScoringAgent:
                     raw_completeness["llm_adjusted"] = True
                     sr["completeness"] = raw_completeness
 
+            # ── V2.3: 加入 extraction_quality ──
+            extraction_q = sr.get("extraction_quality", {})
             metrics = {
+                "extraction_quality": extraction_q,
                 "completeness": raw_completeness,
                 "consistency": sr.get("consistency", {}),
                 "format": sr.get("format", {}),

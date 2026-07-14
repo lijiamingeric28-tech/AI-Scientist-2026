@@ -107,18 +107,13 @@ class DecisionReasoningAgent:
                 if norm_current != {norm_std}:
                     issues_found.append(f"unit_mismatch: {fn} has {sorted(current_units)} (expected {std_unit})")
 
-            # 6. 冲突
+            # 6. 冲突 — 不计入 issues_found, 单独用 has_conflict 判断路由
             has_conflict = sr_conflict.get("has_conflicts", False)
             conflict_count = sr_conflict.get("conflict_count", 0)
-            if has_conflict:
-                issues_found.append(f"conflicts: {conflict_count}")
 
-            # 6. 完整性不完美
-            comp_score = sr_completeness.get("score", 1.0)
-            if comp_score < 1.0:
-                issues_found.append(f"completeness={comp_score:.2f}<1.0")
+            # 6. 完整性不完美 — 不计入可操作路由 (缺失字段不是Normalization能修复的)
 
-            # ═══ V2.2: 决策逻辑 — 8项检查 × 决策矩阵 ─
+            # ═══ V3.0: 决策逻辑 — 只对可操作问题路由 ─
             # Step 1: 计算 Repair Cost (通用公式, 不限于特定领域)
             issue_count = len(issues_found)
             repair_cost = "low"
@@ -127,11 +122,19 @@ class DecisionReasoningAgent:
             elif conflict_count >= 1 or issue_count >= 3:
                 repair_cost = "medium"
 
-            # Step 2: 8项严格检查 → 基础路由
-            if has_conflict:
-                base_route = "Conflict"
+            # ── 路由决策: issues_found 优先于 has_conflict ──
+            # 同时有格式+冲突 → 先 Normalization 清洗, 再 Conflict 分析
+            # V3.0: 提取质量极低 → 无法评估 → HumanReview (A→E)
+            extraction_q = sr.get("extraction_quality", {})
+            extr_score = extraction_q.get("score", 1.0)
+
+            if extr_score < 0.3:
+                # 提取质量极差: trace_id/provenance/extraction_method 大面积缺失
+                base_route = "HumanReview"
             elif issues_found:
                 base_route = "Normalization"
+            elif has_conflict:
+                base_route = "Conflict"
             else:
                 base_route = "Export"
 
