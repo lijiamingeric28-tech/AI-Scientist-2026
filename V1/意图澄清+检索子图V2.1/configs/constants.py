@@ -117,7 +117,7 @@ PUBMED_DOWNLOAD_FORMATS = ["pdf", "xml", "txt"]  # 下载格式优先级
 PUBMED_DOWNLOAD_TIMEOUT = 60  # PubMed下载超时（秒）
 
 # ========== Unpaywall/CORE配置 ==========
-UNPAYWALL_EMAIL = os.getenv("UNPAYWALL_EMAIL", "lijiamingeric28@gmail.com")
+UNPAYWALL_EMAIL = "lijiamingeric28@gmail.com"  # 直接设置，不使用环境变量
 CORE_API_KEY = os.getenv("CORE_API_KEY", "")
 
 # ========== 通用配置 ==========

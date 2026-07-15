@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 def build_paper_query(
     expanded_entities: List[str],
     expanded_properties: List[str],
-    conditions: Dict[str, str]
+    conditions: Dict[str, str],
+    domain: str = "materials_science"
 ) -> Dict[str, Any]:
     """
     构建OpenAlex API查询参数
@@ -21,6 +22,7 @@ def build_paper_query(
         expanded_entities: 扩展后的实体列表
         expanded_properties: 扩展后的属性列表
         conditions: 条件字典
+        domain: 领域名称，用于学科过滤
 
     Returns:
         API查询参数字典
@@ -72,6 +74,12 @@ def build_paper_query(
         "cited_by_count": ">4"  # OpenAlex要求用>而不是>=
     }
 
+    # 添加学科过滤（根据领域）
+    domain_concepts = _get_domain_concepts(domain)
+    if domain_concepts:
+        filter_dict["concepts.id"] = domain_concepts
+        logger.info(f"Applied domain filter: {domain}")
+
     # 返回查询参数
     query_params = {
         "openalex": {
@@ -120,3 +128,30 @@ def _build_year_range(conditions: Dict[str, str]) -> str:
     logger.debug(f"Using default year range: {default_range}")
 
     return default_range
+
+
+def _get_domain_concepts(domain: str) -> str:
+    """
+    根据领域返回OpenAlex的学科概念ID
+
+    Args:
+        domain: 领域名称
+
+    Returns:
+        学科概念ID字符串（OR连接）
+    """
+    # OpenAlex学科概念ID映射
+    # 格式: domain_name -> concept_ids (OR连接)
+    domain_map = {
+        "astronomy": "https://openalex.org/C121332964|https://openalex.org/C16674752",  # Astronomy | Astrophysics
+        "physics": "https://openalex.org/C121332964|https://openalex.org/C185592680",  # Physics | Quantum mechanics
+        "materials_science": "https://openalex.org/C192562407|https://openalex.org/C159985019",  # Materials science | Metallurgy
+        "chemistry": "https://openalex.org/C185592680",  # Chemistry
+        "biology": "https://openalex.org/C86803240",  # Biology
+        "medicine": "https://openalex.org/C71924100",  # Medicine
+        "computer_science": "https://openalex.org/C41008148",  # Computer science
+    }
+
+    # 根据查询内容智能判断领域
+    # 如果是天文相关查询（包含超新星等关键词），强制使用天文学过滤
+    return domain_map.get(domain.lower(), "")

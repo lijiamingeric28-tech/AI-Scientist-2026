@@ -8,8 +8,61 @@ import logging
 from state.retrieval_state import RetrievalState
 from tools.expand_query import extract_core_entities, expand_synonyms, build_paper_query, build_pubmed_query
 from configs.constants import ENABLE_PUBMED
+from utils.llm_client import call_llm
 
 logger = logging.getLogger(__name__)
+
+
+def _detect_domain(user_query: str, entities: list) -> str:
+    """
+    使用LLM根据用户查询和实体智能检测学术领域
+
+    Args:
+        user_query: 用户查询
+        entities: 扩展后的实体列表
+
+    Returns:
+        领域名称
+    """
+    prompt = f"""请根据用户的查询内容，判断这是哪个学术领域的查询。
+
+用户查询：{user_query}
+提取的实体：{', '.join(entities)}
+
+可选领域（必须从以下选择一个）：
+- astronomy：天文学（超新星、星系、宇宙学、系外行星、光变曲线等）
+- physics：物理学（量子力学、粒子物理、凝聚态等）
+- materials_science：材料科学（合金、金属、陶瓷、材料性能等）
+- chemistry：化学
+- biology：生物学
+- medicine：医学
+- computer_science：计算机科学
+
+请只返回领域英文名称，不要有任何解释。例如：astronomy"""
+
+    try:
+        response = call_llm(
+            prompt=prompt,
+            temperature=0.0,  # 确定性输出
+            max_tokens=50
+        )
+
+        domain = response.strip().lower()
+
+        # 验证返回的领域是否有效
+        valid_domains = ["astronomy", "physics", "materials_science", "chemistry",
+                        "biology", "medicine", "computer_science"]
+
+        if domain in valid_domains:
+            logger.info(f"LLM detected domain: {domain}")
+            return domain
+        else:
+            logger.warning(f"LLM returned invalid domain: {domain}, using default")
+            return "materials_science"
+
+    except Exception as e:
+        logger.error(f"Domain detection failed: {e}, using default")
+        return "materials_science"
 
 
 class StateValidationError(Exception):
@@ -128,10 +181,17 @@ def expand_query_agent(state: RetrievalState) -> RetrievalState:
         )
 
         # 构建OpenAlex查询
+        # 根据查询内容智能判断领域
+        user_query = state.get("user_query", "").lower()
+        domain = _detect_domain(user_query, expanded_entities)
+
+        logger.info(f"Detected domain: {domain}")
+
         openalex_query_result = build_paper_query(
             expanded_entities=expanded_entities,
             expanded_properties=expanded_properties,
-            conditions=conditions
+            conditions=conditions,
+            domain=domain
         )
 
         # build_paper_query返回的是 {"openalex": {...}} 格式，需要提取

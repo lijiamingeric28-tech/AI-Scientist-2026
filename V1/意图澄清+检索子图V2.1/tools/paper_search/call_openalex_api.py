@@ -144,6 +144,10 @@ def _build_filter_string(filter_dict: Dict[str, Any]) -> str:
     if "cited_by_count" in filter_dict:
         filters.append(f"cited_by_count:{filter_dict['cited_by_count']}")
 
+    # 学科过滤（concepts.id）
+    if "concepts.id" in filter_dict:
+        filters.append(f"concepts.id:{filter_dict['concepts.id']}")
+
     filter_str = ",".join(filters)
     logger.debug(f"Built filter string: {filter_str}")
     return filter_str

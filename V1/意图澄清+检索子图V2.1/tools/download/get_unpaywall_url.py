@@ -12,11 +12,9 @@ import requests
 import logging
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from configs.constants import UNPAYWALL_EMAIL
 
 logger = logging.getLogger(__name__)
-
-# 使用环境变量或默认邮箱
-UNPAYWALL_EMAIL = os.getenv("UNPAYWALL_EMAIL", "lijiamingeric28@gmail.com")
 
 
 def get_unpaywall_urls(doi: Optional[str]) -> List[Dict[str, str]]:
