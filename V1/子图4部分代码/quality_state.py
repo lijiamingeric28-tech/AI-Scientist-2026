@@ -242,6 +242,12 @@ def make_initial_state(input_grounded_data: dict[str, Any]) -> QualityGraphState
     """
     now_iso = datetime.now(timezone.utc).isoformat()
 
+    # V3.0: 从 grounded_data 推断领域 (可通过 context_state 覆盖)
+    domain = input_grounded_data.get("research_domain", "")
+    if domain:
+        from configs import set_research_domain
+        set_research_domain(domain)
+
     return QualityGraphState(
         context_state={
             "research_domain": "",
