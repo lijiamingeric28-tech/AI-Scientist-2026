@@ -1,14 +1,17 @@
 """
 export_generation_agent.py — Stage 6: StructuredExportGenerationAgent
 
-构建 quality_summary + 组装 Output State + 完成 Workflow。
+构建 quality_summary + 组装 Output State + 导出 CSV/JSON 文件。
 """
 from __future__ import annotations
-import datetime, time
+import datetime, json, os, time
 from typing import Any
 from quality_state import QualityGraphState
 from utils.logger import get_logger
 logger = get_logger(__name__)
+
+# 默认输出目录
+_DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output")
 
 
 class StructuredExportGenerationAgent:
@@ -32,8 +35,14 @@ class StructuredExportGenerationAgent:
         is_valid = validation.get("is_valid", True)
         status = "Success" if is_valid else "Failed"
 
+        # ── 导出 CSV/JSON 文件 ──
+        output_dir = _resolve_output_dir(state)
+        exported_files = _write_export_files(output_dir, structured_data,
+                                              metadata, traceability, quality_summary, is_valid)
+
         elapsed = round(time.time() - t0, 3)
-        logger.info("[ExportGeneration] %s, route=END, %.2fs", status, elapsed)
+        logger.info("[ExportGeneration] %s, %d files exported to %s, %.2fs",
+                    status, len(exported_files), output_dir, elapsed)
 
         return {
             "output_state": {
@@ -43,6 +52,8 @@ class StructuredExportGenerationAgent:
                 "quality_summary": quality_summary,
                 "schema_version": "grounded_data_v1",
                 "export_format": "json",
+                "exported_files": exported_files,
+                "output_dir": output_dir,
             },
             "workflow_state": {
                 "route_decision": "",
@@ -146,3 +157,99 @@ def _generate_recommendation(quality_level: str, risk: dict, issues: dict) -> st
         return f"Data ready for analysis. Quality level: {quality_level}. No significant risks detected."
     else:
         return f"Data exported with {len(warnings)} warning(s): {'; '.join(warnings)}. Quality level: {quality_level}. Review recommended before use."
+
+
+# ══════════════════════════════════════════════════
+# 文件导出
+# ══════════════════════════════════════════════════
+
+def _resolve_output_dir(state: QualityGraphState) -> str:
+    """解析输出目录，使用 run_id 创建子目录。"""
+    wf = state.get("workflow_state", {})
+    run_id = wf.get("run_id", datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    run_dir = run_id[:8] if len(run_id) >= 8 else run_id
+    base = os.environ.get("EXPORT_OUTPUT_DIR", _DEFAULT_OUTPUT_DIR)
+    output_dir = os.path.join(os.path.abspath(base), run_dir)
+    os.makedirs(output_dir, exist_ok=True)
+    return output_dir
+
+
+def _write_export_files(
+    output_dir: str,
+    structured_data: dict,
+    metadata: dict,
+    traceability: dict,
+    quality_summary: dict,
+    is_valid: bool,
+) -> list[str]:
+    """将导出数据写入文件，返回文件路径列表。"""
+    files = []
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # 1. JSON (完整 grounded_data)
+    json_data = structured_data.get("json", {})
+    if json_data:
+        path = os.path.join(output_dir, f"grounded_data_{timestamp}.json")
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(json_data, f, ensure_ascii=False, indent=2, default=str)
+        files.append(path)
+        logger.info("[Export] JSON written: %s (%d records)", path,
+                    len(json_data.get("records", [])))
+
+    # 2. CSV 长表
+    csv_str = structured_data.get("csv", "")
+    if csv_str:
+        path = os.path.join(output_dir, f"data_long_{timestamp}.csv")
+        with open(path, "w", encoding="utf-8-sig") as f:
+            f.write(csv_str)
+        files.append(path)
+        logger.info("[Export] CSV (long) written: %s", path)
+
+    # 3. CSV 宽表 (Pivot)
+    csv_wide = structured_data.get("csv_wide", "")
+    if csv_wide:
+        path = os.path.join(output_dir, f"data_wide_{timestamp}.csv")
+        with open(path, "w", encoding="utf-8-sig") as f:
+            f.write(csv_wide)
+        files.append(path)
+        logger.info("[Export] CSV (wide) written: %s", path)
+
+    # 4. Quality Summary
+    path = os.path.join(output_dir, f"quality_summary_{timestamp}.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(quality_summary, f, ensure_ascii=False, indent=2, default=str)
+    files.append(path)
+
+    # 5. Metadata
+    path = os.path.join(output_dir, f"metadata_{timestamp}.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, ensure_ascii=False, indent=2, default=str)
+    files.append(path)
+
+    # 6. Traceability (简化版，避免过大)
+    trace_summary = {
+        "data_lineage": traceability.get("data_lineage", {}),
+        "trace_completeness": traceability.get("trace_completeness", {}),
+        "modified_count": traceability.get("trace_completeness", {}).get("modified_count", 0),
+        "decision_count": len(traceability.get("agent_decision_trail", [])),
+    }
+    path = os.path.join(output_dir, f"traceability_{timestamp}.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(trace_summary, f, ensure_ascii=False, indent=2, default=str)
+    files.append(path)
+
+    # 7. Export manifest
+    manifest = {
+        "exported_at": datetime.datetime.now().isoformat(),
+        "output_dir": output_dir,
+        "files": [os.path.basename(f) for f in files],
+        "validation_passed": is_valid,
+        "row_count": structured_data.get("row_count", 0),
+        "quality_level": quality_summary.get("quality_level", "unknown"),
+    }
+    path = os.path.join(output_dir, f"manifest_{timestamp}.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
+    files.append(path)
+
+    return files
