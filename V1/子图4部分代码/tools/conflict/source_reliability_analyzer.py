@@ -21,10 +21,13 @@ def _load_journal_tiers():
     if _JOURNAL_TIERS is not None:
         return
     try:
-        from configs import load_yaml
-        config = load_yaml("quality_rules.yaml")
-        sr = config.get("source_reliability", {})
-        tiers = sr.get("journal_tiers", {})
+        # V3.0: 领域感知 — 先加载领域专属分级, fallback 到通用
+        from configs import load_domain_config
+        tiers = load_domain_config("journal_tiers", "journal_tiers")
+        if not tiers:
+            from configs import load_yaml
+            config = load_yaml("quality_rules.yaml")
+            tiers = config.get("source_reliability", {}).get("journal_tiers", {})
         _JOURNAL_TIERS = {}
         for tier_name in ("tier1", "tier2", "tier3"):
             journals = tiers.get(tier_name, [])

@@ -6,10 +6,20 @@ logger = get_logger(__name__)
 
 def map_to_target_schema(records: list[dict], field_mappings: dict[str, str],
                          target_schema: dict | None = None) -> dict[str, Any]:
-    """将字段名映射到标准 Schema。"""
-    config = load_yaml("schema_mapping.yaml")
+    """将字段名映射到标准 Schema (V3.0: 自动领域切换)。"""
+    # 优先从 context 传入的 target_schema, fallback 到配置
+    if target_schema:
+        schema_fields = target_schema.get("fields", [])
+    else:
+        from configs import load_domain_schema_config
+        schema_cfg = load_domain_schema_config("target_schema")
+        schema_fields = schema_cfg.get("fields", [])
+        # 最后 fallback: 通用配置
+        if not schema_fields:
+            config = load_yaml("schema_mapping.yaml")
+            schema_fields = config.get("target_schema", {}).get("fields", [])
     aliases: dict[str, str] = {}
-    for f in config.get("target_schema", {}).get("fields", []):
+    for f in schema_fields:
         name = f.get("name", "")
         if name:
             aliases[name.lower()] = name

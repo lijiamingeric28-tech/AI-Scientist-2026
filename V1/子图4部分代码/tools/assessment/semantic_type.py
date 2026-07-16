@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from configs import load_yaml
+from configs import load_yaml, get_research_domain
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -21,21 +21,21 @@ _SEMANTIC_RULES: dict[str, dict] | None = None
 
 
 def _load_semantic_rules() -> dict[str, dict]:
-    """从 quality_rules.yaml 动态加载语义类型规则。"""
+    """从 quality_rules.yaml 动态加载语义类型规则 (V3.0: 自动领域切换)。"""
     global _SEMANTIC_RULES
     if _SEMANTIC_RULES is not None:
         return _SEMANTIC_RULES
     try:
-        config = load_yaml("quality_rules.yaml")
-        raw = config.get("semantic_types", {})
+        from configs import load_domain_config
+        raw = load_domain_config("semantic_types", "semantic_types")
         if raw:
             _SEMANTIC_RULES = dict(raw)
-            logger.info("[SemanticType] Loaded %d semantic types from config", len(_SEMANTIC_RULES))
+            domain = get_research_domain() or "default"
+            logger.info("[SemanticType] Loaded %d semantic types (domain=%s)", len(_SEMANTIC_RULES), domain)
             return _SEMANTIC_RULES
     except Exception as e:
         logger.warning("[SemanticType] Failed to load from config: %s", e)
 
-    # 终极 fallback: 空规则 — 不做语义推断, 不报错
     logger.warning("[SemanticType] No semantic rules loaded — inference disabled")
     _SEMANTIC_RULES = {}
     return _SEMANTIC_RULES
