@@ -287,3 +287,264 @@ nonlinear_penalties:
   sparsity_penalty:
     enabled: true
     small_n: 10               # n<10 → log(n)/log(10) 因子
+# ==========================================================
+# quality_rules.yaml — 天体物理领域扩展配置
+# 使用方法: 合并到 quality_rules.yaml 中, 或设置 research_domain=astrophysics
+# ==========================================================
+
+# ── 天体物理语义类型: 完整规则库 ──
+semantic_types_astrophysics:
+  redshift:
+    keywords: ["redshift", "z", "spectroscopic_redshift", "photometric_redshift", "z_spec", "z_phot"]
+    units: [""]
+    feasible_ranges:
+      "": [-0.01, 20.0]
+    unit_category: "redshift"
+    expected_in_study: "usually"
+
+  luminosity:
+    keywords: ["luminosity", "L", "bolometric_luminosity", "L_bol", "L_star", "L_x", "xray_luminosity", "L_sun"]
+    units: ["erg/s", "Lsun", "L☉", "W", "erg s^-1", "10^33 erg/s"]
+    feasible_ranges:
+      "erg/s": [1e25, 1e45]
+      "Lsun": [1e-5, 1e7]
+    unit_category: "luminosity"
+    expected_in_study: "usually"
+
+  parallax:
+    keywords: ["parallax", "pi", "ϖ", "trigonometric_parallax", "plx"]
+    units: ["mas", "arcsec", "μas"]
+    feasible_ranges:
+      "mas": [-10, 1000]
+      "arcsec": [-0.01, 1.0]
+      "μas": [-10000, 1000000]
+    unit_category: "parallax"
+    expected_in_study: "always"
+
+  effective_temperature:
+    keywords: ["teff", "T_eff", "effective_temperature", "temperature", "T", "temp"]
+    units: ["K"]
+    feasible_ranges:
+      "K": [500, 300000]
+    unit_category: "temperature"
+    expected_in_study: "always"
+
+  surface_gravity:
+    keywords: ["log_g", "logg", "surface_gravity", "log g", "gravity"]
+    units: ["dex", "cm/s^2", "cm/s²"]
+    feasible_ranges:
+      "dex": [-1.0, 8.0]
+      "cm/s^2": [0.1, 1e8]
+    unit_category: "surface_gravity"
+    expected_in_study: "usually"
+
+  metallicity:
+    keywords: ["metallicity", "fe_h", "fe/h", "[Fe/H]", "[M/H]", "iron_abundance", "metal", "Z"]
+    units: ["dex", ""]
+    feasible_ranges:
+      "dex": [-5.0, 1.0]
+    unit_category: "metallicity"
+    expected_in_study: "usually"
+
+  alpha_abundance:
+    keywords: ["alpha_fe", "alpha/fe", "α/Fe", "[α/Fe]", "alpha_to_iron", "Mg/Fe", "Si/Fe"]
+    units: ["dex", ""]
+    feasible_ranges:
+      "dex": [-0.5, 1.0]
+    unit_category: "metallicity"
+    expected_in_study: "optional"
+
+  stellar_mass:
+    keywords: ["mass", "M", "stellar_mass", "M_star", "M_sun", "M☉", "Msun"]
+    units: ["Msun", "M☉", "M_sun", "kg", "g"]
+    feasible_ranges:
+      "Msun": [0.01, 350]
+      "kg": [2e28, 7e32]
+    unit_category: "mass"
+    expected_in_study: "usually"
+
+  stellar_radius:
+    keywords: ["radius", "R", "stellar_radius", "R_star", "R_sun", "R☉", "Rsun"]
+    units: ["Rsun", "R☉", "R_sun", "cm", "m", "km"]
+    feasible_ranges:
+      "Rsun": [0.01, 2000]
+      "cm": [7e8, 1.4e14]
+    unit_category: "radius"
+    expected_in_study: "usually"
+
+  radial_velocity:
+    keywords: ["radial_velocity", "RV", "V_r", "Vr", "V_rad", "systemic_velocity", "V_sys", "heliocentric_velocity"]
+    units: ["km/s", "km s^-1", "m/s", "km s⁻¹"]
+    feasible_ranges:
+      "km/s": [-5000, 5000]
+      "km s^-1": [-5000, 5000]
+    unit_category: "velocity"
+    expected_in_study: "usually"
+
+  rotational_velocity:
+    keywords: ["v_sin_i", "vsini", "v_sini", "rotational_velocity", "V_rot", "projected_rotation", "vsin_i"]
+    units: ["km/s", "km s^-1", "km s⁻¹"]
+    feasible_ranges:
+      "km/s": [0, 600]
+      "km s^-1": [0, 600]
+    unit_category: "velocity"
+    expected_in_study: "optional"
+
+  proper_motion_ra:
+    keywords: ["pm_ra", "pmra", "μ_α", "proper_motion_ra", "PM_RA", "pmra_corr"]
+    units: ["mas/yr", "mas yr^-1", "mas/year", "arcsec/yr"]
+    feasible_ranges:
+      "mas/yr": [-10000, 10000]
+    unit_category: "proper_motion"
+    expected_in_study: "conditional"
+
+  proper_motion_dec:
+    keywords: ["pm_dec", "pmdec", "μ_δ", "proper_motion_dec", "PM_Dec", "pmdec_corr"]
+    units: ["mas/yr", "mas yr^-1", "mas/year", "arcsec/yr"]
+    feasible_ranges:
+      "mas/yr": [-10000, 10000]
+    unit_category: "proper_motion"
+    expected_in_study: "conditional"
+
+  distance:
+    keywords: ["distance", "d", "dist", "heliocentric_distance", "D"]
+    units: ["pc", "kpc", "Mpc", "Gpc", "ly", "light_year", "AU", "m"]
+    feasible_ranges:
+      "pc": [0.1, 1e10]
+      "kpc": [0.0001, 1e7]
+      "Mpc": [1e-7, 10000]
+    unit_category: "distance"
+    expected_in_study: "usually"
+
+  age:
+    keywords: ["age", "t", "stellar_age", "tau", "lifetime", "age_gyr"]
+    units: ["Gyr", "Myr", "yr", "years", "Ga"]
+    feasible_ranges:
+      "Gyr": [0.0, 13.8]
+      "Myr": [0.1, 13800]
+    unit_category: "age"
+    expected_in_study: "optional"
+
+  extinction:
+    keywords: ["extinction", "A_V", "Av", "E_BV", "E(B-V)", "reddening", "A_K", "interstellar_extinction"]
+    units: ["mag", "", "magnitudes"]
+    feasible_ranges:
+      "mag": [0.0, 50.0]
+    unit_category: "extinction"
+    expected_in_study: "optional"
+
+  apparent_magnitude:
+    keywords: ["apparent_magnitude", "V_mag", "B_mag", "G_mag", "magnitude", "mag", "V", "B", "G", "K_mag", "J_mag", "H_mag"]
+    units: ["mag", "magnitudes", ""]
+    feasible_ranges:
+      "mag": [-5.0, 35.0]
+    unit_category: "magnitude"
+    expected_in_study: "usually"
+
+  absolute_magnitude:
+    keywords: ["absolute_magnitude", "M_V", "M_B", "M_G", "M_K", "absolute_mag", "abs_mag"]
+    units: ["mag", "magnitudes", ""]
+    feasible_ranges:
+      "mag": [-10.0, 25.0]
+    unit_category: "magnitude"
+    expected_in_study: "optional"
+
+  orbital_period:
+    keywords: ["period", "P", "orbital_period", "P_orb", "rotation_period", "P_rot"]
+    units: ["d", "days", "hr", "hours", "yr", "years", "s", "seconds"]
+    feasible_ranges:
+      "d": [0.01, 1e9]
+    unit_category: "period"
+    expected_in_study: "conditional"
+
+  planet_radius:
+    keywords: ["planet_radius", "R_p", "Rp", "R_planet", "radius_planet", "R_Earth", "R_Jupiter"]
+    units: ["R_earth", "R_jup", "R⊕", "RJ", "km", "m", "cm"]
+    feasible_ranges:
+      "R_earth": [0.1, 30]
+      "R_jup": [0.01, 3]
+    unit_category: "radius"
+    expected_in_study: "conditional"
+
+  planet_mass:
+    keywords: ["planet_mass", "M_p", "Mp", "M_planet", "mass_planet", "M_Earth", "M_Jupiter", "M_sini"]
+    units: ["M_earth", "M_jup", "M⊕", "MJ", "kg", "g"]
+    feasible_ranges:
+      "M_earth": [0.001, 10000]
+      "M_jup": [0.0001, 30]
+    unit_category: "mass"
+    expected_in_study: "conditional"
+
+# ── 天体物理领域权重 ──
+domain_weights_astrophysics:
+  astrophysics:
+    completeness: 0.15
+    consistency: 0.20
+    format: 0.10
+    source_reliability: 0.30
+    conflict_risk: 0.25
+
+# ── 天体物理期刊分级 ──
+journal_tiers_astrophysics:
+  tier1:
+    - "Astrophysical Journal Letters"
+    - "Astrophysical Journal Supplement Series"
+    - "Annual Review of Astronomy and Astrophysics"
+    - "Nature Astronomy"
+    - "Astronomy and Astrophysics Review"
+  tier2:
+    - "Astrophysical Journal"
+    - "Monthly Notices of the Royal Astronomical Society"
+    - "Astronomy & Astrophysics"
+    - "Astronomical Journal"
+    - "Journal of Cosmology and Astroparticle Physics"
+    - "Publications of the Astronomical Society of the Pacific"
+    - "Icarus"
+  tier3:
+    - "Research in Astronomy and Astrophysics"
+    - "New Astronomy"
+    - "Astroparticle Physics"
+    - "Experimental Astronomy"
+    - "Advances in Space Research"
+    - "Planetary and Space Science"
+    - "Astronomische Nachrichten"
+  tier1_score: 1.0
+  tier2_score: 0.85
+  tier3_score: 0.70
+  unknown_score: 0.60
+
+# ── 冲突裁决证据权重 (天体物理) ──
+resolution_weights_astrophysics:
+  astrophysics:
+    source_reliability: 0.20
+    domain_rules: 0.20
+    statistical: 0.30
+    contextual: 0.30
+
+# ── 天体物理自适应阈值 ──
+adaptive_thresholds_astrophysics:
+  domain_tightness:
+    astrophysics: "exploratory"
+    exploratory_multiplier: 1.30  # 探索性科学, 阈值更宽松
+
+# ── 天体物理实体提取正则 ──
+entity_extraction_astrophysics:
+  patterns:
+    - '[A-Z][a-z]?[-\d][\w-]{1,20}'         # 通用标识符
+    - 'SN\s*\d{4}[A-Za-z]*'                 # 超新星: SN 1987A
+    - 'NGC\s*\d+'                            # NGC天体
+    - 'IC\s*\d+'                             # IC天体
+    - 'M\d{1,3}'                             # Messier天体
+    - '(?:HD|HIP|TYC|Gaia\s*DR\d)\s*\d+'    # 星表编号
+    - '(?:WASP|Kepler|K2|TESS|TOI)\s*[-\d]+[A-Za-z]?'  # 系外行星
+    - '(?:SDSS|2MASS|WISE)\s*J\d+'           # 巡天编号
+
+# ── 天体物理测量方法关键词 ──
+measurement_methods_astrophysics:
+  spectroscopy: ["spectroscopy", "spectrograph", "spectral", "R~", "resolution"]
+  photometry: ["photometry", "photometric", "UBVRI", "ugriz", "magnitude"]
+  astrometry: ["astrometry", "astrometric", "Gaia", "Hipparcos", "parallax"]
+  interferometry: ["interferometry", "interferometer", "VLTI", "CHARA"]
+  radial_velocity: ["radial velocity", "RV", "HARPS", "ESPRESSO", "CARMENES"]
+  transit: ["transit", "TESS", "Kepler", "light curve", "eclipse"]
+  imaging: ["imaging", "HST", "JWST", "VLT", "direct imaging"]

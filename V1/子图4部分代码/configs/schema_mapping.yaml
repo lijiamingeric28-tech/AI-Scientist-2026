@@ -167,3 +167,245 @@ field_standardization:
     trim_whitespace: true
     lowercase: true
     replace_spaces_with_underscore: true
+# ==========================================================
+# schema_mapping.yaml — 天体物理领域扩展配置
+# ==========================================================
+
+# ── 天体物理 Target Schema ──
+target_schema_astrophysics:
+  fields:
+    - name: "redshift"
+      aliases: ["z", "z_spec", "z_phot", "spectroscopic_redshift", "photometric_redshift"]
+      standard_unit: ""
+      criticality: "critical"
+      semantic_type: "redshift"
+      description: "Redshift (dimensionless)"
+
+    - name: "luminosity"
+      aliases: ["L", "L_bol", "bolometric_luminosity", "L_star", "L_x", "L_sun", "log_L"]
+      standard_unit: "erg/s"
+      criticality: "critical"
+      semantic_type: "luminosity"
+      description: "Bolometric luminosity"
+
+    - name: "parallax"
+      aliases: ["pi", "ϖ", "trigonometric_parallax", "plx", "parallax_mas"]
+      standard_unit: "mas"
+      criticality: "critical"
+      semantic_type: "parallax"
+      description: "Trigonometric parallax"
+
+    - name: "effective_temperature"
+      aliases: ["Teff", "T_eff", "T_effective", "temperature", "T", "temp", "T_phot"]
+      standard_unit: "K"
+      criticality: "critical"
+      semantic_type: "effective_temperature"
+      description: "Effective temperature"
+
+    - name: "surface_gravity"
+      aliases: ["log_g", "logg", "log gravity", "gravity", "log_surface_g"]
+      standard_unit: "dex"
+      criticality: "important"
+      semantic_type: "surface_gravity"
+      description: "Surface gravity (log g)"
+
+    - name: "metallicity"
+      aliases: ["fe_h", "Fe_H", "[Fe/H]", "M/H", "[M/H]", "iron_abundance", "Z", "metal"]
+      standard_unit: "dex"
+      criticality: "important"
+      semantic_type: "metallicity"
+      description: "Iron abundance relative to solar [Fe/H]"
+
+    - name: "alpha_abundance"
+      aliases: ["alpha_fe", "α/Fe", "alpha/Fe", "[α/Fe]", "alpha_to_iron", "Mg/Fe", "Si/Fe"]
+      standard_unit: "dex"
+      criticality: "auxiliary"
+      semantic_type: "alpha_abundance"
+      description: "Alpha-element to iron ratio"
+
+    - name: "stellar_mass"
+      aliases: ["mass", "M", "M_star", "M_sun", "Msun", "M☉", "stellar_mass", "mass_star"]
+      standard_unit: "Msun"
+      criticality: "important"
+      semantic_type: "stellar_mass"
+      description: "Stellar mass"
+
+    - name: "stellar_radius"
+      aliases: ["radius", "R", "R_star", "R_sun", "Rsun", "R☉", "stellar_radius", "radius_star"]
+      standard_unit: "Rsun"
+      criticality: "important"
+      semantic_type: "stellar_radius"
+      description: "Stellar radius"
+
+    - name: "radial_velocity"
+      aliases: ["RV", "V_r", "Vr", "V_rad", "V_radial", "systemic_velocity", "V_sys", "heliocentric_velocity", "RV_helio"]
+      standard_unit: "km/s"
+      criticality: "important"
+      semantic_type: "radial_velocity"
+      description: "Radial velocity"
+
+    - name: "rotational_velocity"
+      aliases: ["v_sin_i", "vsini", "v_sini", "V_rot", "v_rot", "projected_rotation", "vsin_i", "vsini_km_s"]
+      standard_unit: "km/s"
+      criticality: "auxiliary"
+      semantic_type: "rotational_velocity"
+      description: "Projected rotational velocity (v sin i)"
+
+    - name: "proper_motion_ra"
+      aliases: ["pm_ra", "pmra", "μ_α", "mu_alpha", "PM_RA", "pmra_corr", "pmra_error"]
+      standard_unit: "mas/yr"
+      criticality: "important"
+      semantic_type: "proper_motion_ra"
+      description: "Proper motion in Right Ascension"
+
+    - name: "proper_motion_dec"
+      aliases: ["pm_dec", "pmdec", "μ_δ", "mu_delta", "PM_Dec", "pmdec_corr", "pmdec_error"]
+      standard_unit: "mas/yr"
+      criticality: "important"
+      semantic_type: "proper_motion_dec"
+      description: "Proper motion in Declination"
+
+    - name: "distance"
+      aliases: ["d", "dist", "D", "distance_pc", "heliocentric_distance", "dist_pc", "dist_kpc"]
+      standard_unit: "pc"
+      criticality: "critical"
+      semantic_type: "distance"
+      description: "Distance"
+
+    - name: "age"
+      aliases: ["t", "tau", "stellar_age", "age_gyr", "age_Gyr", "lifetime", "age_myr"]
+      standard_unit: "Gyr"
+      criticality: "auxiliary"
+      semantic_type: "age"
+      description: "Stellar/system age"
+
+    - name: "extinction"
+      aliases: ["A_V", "Av", "E_BV", "E(B-V)", "reddening", "A_K", "extinction_Av", "interstellar_extinction"]
+      standard_unit: "mag"
+      criticality: "auxiliary"
+      semantic_type: "extinction"
+      description: "Visual extinction"
+
+    - name: "apparent_magnitude"
+      aliases: ["V_mag", "B_mag", "G_mag", "magnitude", "mag", "V", "B", "G", "K_mag", "J_mag", "H_mag", "app_mag", "V_band", "G_band", "BP_mag", "RP_mag"]
+      standard_unit: "mag"
+      criticality: "important"
+      semantic_type: "apparent_magnitude"
+      description: "Apparent magnitude"
+
+    - name: "absolute_magnitude"
+      aliases: ["M_V", "M_B", "M_G", "M_K", "absolute_mag", "abs_mag", "M_bol", "absolute_magnitude"]
+      standard_unit: "mag"
+      criticality: "auxiliary"
+      semantic_type: "absolute_magnitude"
+      description: "Absolute magnitude"
+
+    - name: "orbital_period"
+      aliases: ["P", "period", "P_orb", "orbital_period", "P_rot", "rotation_period", "period_days"]
+      standard_unit: "d"
+      criticality: "important"
+      semantic_type: "orbital_period"
+      description: "Orbital/rotation period"
+
+    - name: "planet_radius"
+      aliases: ["R_p", "Rp", "R_planet", "planet_radius", "radius_planet", "R_Earth", "R_Jupiter", "R_earth", "R_jup"]
+      standard_unit: "R_earth"
+      criticality: "important"
+      semantic_type: "planet_radius"
+      description: "Planet radius"
+
+    - name: "planet_mass"
+      aliases: ["M_p", "Mp", "M_planet", "planet_mass", "mass_planet", "M_Earth", "M_Jupiter", "M_earth", "M_jup", "M_sini"]
+      standard_unit: "M_earth"
+      criticality: "important"
+      semantic_type: "planet_mass"
+      description: "Planet mass"
+
+    - name: "spectral_type"
+      aliases: ["SpT", "spectral_type", "Sp_Type", "spectral_class", "MK_type", "MK_class", "SpType"]
+      standard_unit: ""
+      criticality: "auxiliary"
+      semantic_type: "spectral_type"
+      description: "Spectral type (e.g. G2V, K0III)"
+
+# ── 天体物理单位转换规则 ──
+unit_conversions_astrophysics:
+  distance:
+    pc: 1.0
+    kpc: 0.001
+    Mpc: 0.000001
+    Gpc: 0.000000001
+    AU: 206265.0
+    ly: 3.26156
+    m: 3.085677581e16
+    cm: 3.085677581e18
+  mass:
+    Msun: 1.0
+    kg: 1.9884e30
+    g: 1.9884e33
+    M_jup: 1047.35
+    M_earth: 332954.0
+  radius:
+    Rsun: 1.0
+    cm: 6.957e10
+    m: 6.957e8
+    km: 695700.0
+    R_jup: 9.73
+    R_earth: 109.2
+  luminosity:
+    "erg/s": 1.0
+    Lsun: 3.828e-33
+    W: 1.0e-7
+    "10^33 erg/s": 0.001
+  velocity:
+    "km/s": 1.0
+    "m/s": 0.001
+    "km s^-1": 1.0
+    "km s⁻¹": 1.0
+  proper_motion:
+    "mas/yr": 1.0
+    "arcsec/yr": 0.001
+    "mas/year": 1.0
+  period:
+    d: 1.0
+    days: 1.0
+    hr: 0.0416667
+    hours: 0.0416667
+    yr: 365.25
+    years: 365.25
+    s: 0.000011574
+    seconds: 0.000011574
+  age:
+    Gyr: 1.0
+    Myr: 0.001
+    yr: 1.0e-9
+    Ga: 1.0
+  magnitude:
+    mag: 1.0
+    magnitudes: 1.0
+  temperature:
+    K: 1.0
+  extinction:
+    mag: 1.0
+  parallax:
+    mas: 1.0
+    arcsec: 1000.0
+    μas: 0.001
+  metallicity:
+    dex: 1.0
+  surface_gravity:
+    dex: 1.0
+    "cm/s^2": 1.0
+    "cm/s²": 1.0
+  redshift:
+    "": 1.0
+  planet_radius:
+    R_earth: 1.0
+    R_jup: 11.209
+    km: 6371.0
+    m: 6371000.0
+  planet_mass:
+    M_earth: 1.0
+    M_jup: 317.8
+    kg: 5.9722e24
+    g: 5.9722e27
