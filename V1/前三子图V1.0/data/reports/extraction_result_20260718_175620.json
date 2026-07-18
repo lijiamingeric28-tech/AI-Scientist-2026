@@ -1,0 +1,21 @@
+{
+  "grounded_data": {
+    "schema_version": "1.1.0",
+    "sources": [],
+    "records": []
+  },
+  "vlm_stats": {
+    "total_pdfs": 1,
+    "success_pdfs": 1,
+    "failed_pdfs": 0,
+    "total_observations": 0,
+    "elapsed_time": 125.79428577423096
+  },
+  "ocr_stats": {
+    "total_pages": 0,
+    "success_pages": 0,
+    "failed_pages": 0,
+    "elapsed_time": 3.6716461181640625e-05
+  },
+  "verification_rate": 0.0
+}

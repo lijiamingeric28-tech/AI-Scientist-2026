@@ -1,0 +1,3188 @@
+{
+  "grounded_data": {
+    "schema_version": "1.1.0",
+    "sources": [
+      {
+        "source_id": "W2955902629",
+        "source_type": "paper",
+        "doi": "10.1126/science.aaw5903",
+        "title": "A single fast radio burst localized to a massive galaxy at cosmological distance",
+        "authors": [
+          "K. W. Bannister",
+          "Adam T. Deller",
+          "Chris Phillips",
+          "Jean‐Pierre Macquart",
+          "J. X. Prochaska",
+          "Nicolás Tejos",
+          "S. D. Ryder",
+          "E. M. Sadler",
+          "R. M. Shannon",
+          "Sunil Simha",
+          "Cherie K. Day",
+          "Matthew McQuinn",
+          "F. North-Hickey",
+          "Shivani Bhandari",
+          "W. Arcus",
+          "Vardha N. Bennert",
+          "Joseph N. Burchett",
+          "M.C. Bouwhuis",
+          "Richard Dodson",
+          "R. D. Ekers",
+          "Wael Farah",
+          "Chris Flynn",
+          "C. James",
+          "M. Kerr",
+          "E. Lenc",
+          "E. K. Mahony",
+          "John M. O’Meara",
+          "S. Osłowski",
+          "Hao Qiu",
+          "Tommaso Treu",
+          "V. U",
+          "T. Bateman",
+          "Douglas C.‐J. Bock",
+          "R. Bolton",
+          "Alex Brown",
+          "John D. Bunton",
+          "A. P. Chippendale",
+          "F. R. Cooray",
+          "T. J. Cornwell",
+          "N. Gupta",
+          "Douglas B. Hayman",
+          "M. J. Kesteven",
+          "B. Koribalski",
+          "A. Macleod",
+          "N. M. McClure‐Griffiths",
+          "S. Neuhold",
+          "R. P. Norris",
+          "M. A. Pilawa",
+          "Rui Qiao",
+          "J. E. Reynolds",
+          "Daniel N. Roxby",
+          "T. W. Shimwell",
+          "M. A. Voronkov",
+          "Chandra Wilson"
+        ],
+        "year": 2019,
+        "journal": "Science",
+        "access_path": "./data/papers\\W2955902629.pdf",
+        "retrieval_priority": 51.54
+      },
+      {
+        "source_id": "W2970847970",
+        "source_type": "paper",
+        "doi": "10.1146/annurev-astro-091918-104501",
+        "title": "Fast Radio Bursts: An Extragalactic Enigma",
+        "authors": [
+          "James M. Cordes",
+          "Shami Chatterjee"
+        ],
+        "year": 2019,
+        "journal": "Annual Review of Astronomy and Astrophysics",
+        "access_path": "./data/papers\\W2970847970.pdf",
+        "retrieval_priority": 53.74
+      },
+      {
+        "source_id": "W2542011985",
+        "source_type": "paper",
+        "doi": "10.3847/1538-4357/835/1/29",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "authors": [
+          "J. M. Yao",
+          "R. N. Manchester",
+          "N. Wang"
+        ],
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "access_path": "./data/papers\\W2542011985.pdf",
+        "retrieval_priority": 71.5
+      },
+      {
+        "source_id": "W4206329711",
+        "source_type": "paper",
+        "doi": "10.3847/1538-4365/ac33ab",
+        "title": "The First CHIME/FRB Fast Radio Burst Catalog",
+        "authors": [
+          "M. Amiri",
+          "Bridget C. Andersen",
+          "Kevin Bandura",
+          "Sabrina Berger",
+          "Mohit Bhardwaj",
+          "M. M. Boyce",
+          "P. J. Boyle",
+          "Charanjot Brar",
+          "Daniela Breitman",
+          "Tomás Cassanelli",
+          "Pragya Chawla",
+          "Tianyue Chen",
+          "Jean-François Cliche",
+          "Amanda M. Cook",
+          "Davor Čubranić",
+          "Alice P. Curtin",
+          "Meiling Deng",
+          "M. Dobbs",
+          "Fengqiu Adam Dong",
+          "Gwendolyn M. Eadie",
+          "Mateus Fandino",
+          "Emmanuel Fonseca",
+          "B. M. Gaensler",
+          "Utkarsh Giri",
+          "Deborah C. Good",
+          "M. Halpern",
+          "Alex S. Hill",
+          "G. Hinshaw",
+          "Alexander Josephy",
+          "Jane Kaczmarek",
+          "Zarif Kader",
+          "Joseph Kania",
+          "V. M. Kaspi",
+          "T. L. Landecker",
+          "Dustin Lang",
+          "Calvin Leung",
+          "Dongzi Li",
+          "Hsiu-Hsien Lin",
+          "Kiyoshi W. Masui",
+          "Ryan Mckinven",
+          "Juan Mena-Parra",
+          "Marcus Merryfield",
+          "Bradley W. Meyers",
+          "Daniele Michilli",
+          "Nikola Milutinović",
+          "Arash Mirhosseini",
+          "Moritz Münchmeyer",
+          "Arun Naidu",
+          "Laura Newburgh",
+          "Cherry Ng",
+          "C. Patel",
+          "Ue‐Li Pen",
+          "Emily Petroff",
+          "Tristan Pinsonneault-Marotte",
+          "Ziggy Pleunis",
+          "Masoud Rafiei-Ravandi",
+          "Mubdi Rahman",
+          "S. M. Ransom",
+          "Andre Renard",
+          "Pranav Sanghavi",
+          "Paul Scholz",
+          "J. Richard Shaw",
+          "Kaitlyn Shin",
+          "Seth R. Siegel",
+          "Andrew E. Sikora",
+          "Saurabh Singh",
+          "Kendrick M. Smith",
+          "I. H. Stairs",
+          "Chia Min Tan",
+          "Shriharsh P. Tendulkar",
+          "K. Vanderlinde",
+          "Haochen Wang",
+          "Dallas Wulf",
+          "A. V. Zwaniga"
+        ],
+        "year": 2021,
+        "journal": "The Astrophysical Journal Supplement Series",
+        "access_path": "./data/papers\\W4206329711.pdf",
+        "retrieval_priority": 56.5
+      },
+      {
+        "source_id": "W2982829710",
+        "source_type": "paper",
+        "doi": "10.3847/2041-8213/ab4a80",
+        "title": "CHIME/FRB Discovery of Eight New Repeating Fast Radio Burst Sources",
+        "authors": [
+          "Bridget C. Andersen",
+          "Kevin Bandura",
+          "Mohit Bhardwaj",
+          "Paula Boubel",
+          "M. M. Boyce",
+          "P. J. Boyle",
+          "Charanjot Brar",
+          "Tomás Cassanelli",
+          "Pragya Chawla",
+          "Davor Čubranić",
+          "Meiling Deng",
+          "M. Dobbs",
+          "Mateus Fandino",
+          "Emmanuel Fonseca",
+          "B. M. Gaensler",
+          "A. J. Gilbert",
+          "Utkarsh Giri",
+          "Deborah C. Good",
+          "M. Halpern",
+          "Alex S. Hill",
+          "G. Hinshaw",
+          "C. Höfer",
+          "Alexander Josephy",
+          "V. M. Kaspi",
+          "R. Kothes",
+          "T. L. Landecker",
+          "Dustin Lang",
+          "Dongzi Li",
+          "Hsiu-Hsien Lin",
+          "Kiyoshi W. Masui",
+          "Juan Mena-Parra",
+          "Marcus Merryfield",
+          "Ryan Mckinven",
+          "Daniele Michilli",
+          "Nikola Milutinović",
+          "Arun Naidu",
+          "Laura Newburgh",
+          "Cherry Ng",
+          "C. Patel",
+          "Ue‐Li Pen",
+          "Tristan Pinsonneault-Marotte",
+          "Ziggy Pleunis",
+          "Masoud Rafiei-Ravandi",
+          "Mubdi Rahman",
+          "S. M. Ransom",
+          "Andre Renard",
+          "Paul Scholz",
+          "Seth R. Siegel",
+          "Saurabh Singh",
+          "Kendrick M. Smith",
+          "I. H. Stairs",
+          "Shriharsh P. Tendulkar",
+          "Ian Tretyakov",
+          "K. Vanderlinde",
+          "Prakarsh Yadav",
+          "A. V. Zwaniga"
+        ],
+        "year": 2019,
+        "journal": "The Astrophysical Journal Letters",
+        "access_path": "./data/papers\\W2982829710.pdf",
+        "retrieval_priority": 51.62
+      },
+      {
+        "source_id": "W2754224307",
+        "source_type": "paper",
+        "doi": "10.1007/s00159-019-0116-6",
+        "title": "Fast radio bursts",
+        "authors": [
+          "E. Petroff",
+          "J. W. T. Hessels",
+          "D. R. Lorimer"
+        ],
+        "year": 2019,
+        "journal": "The Astronomy and Astrophysics Review",
+        "access_path": "./data/papers\\W2754224307.pdf",
+        "retrieval_priority": 57.7
+      },
+      {
+        "source_id": "W3030414242",
+        "source_type": "paper",
+        "doi": "10.1038/s41586-020-2300-2",
+        "title": "A census of baryons in the Universe from localized fast radio bursts",
+        "authors": [
+          "Jean‐Pierre Macquart",
+          "J. X. Prochaska",
+          "Matthew McQuinn",
+          "K. W. Bannister",
+          "Shivani Bhandari",
+          "Cherie K. Day",
+          "Adam T. Deller",
+          "R. D. Ekers",
+          "C. James",
+          "Lachlan Marnoch",
+          "S. Osłowski",
+          "Chris Phillips",
+          "S. D. Ryder",
+          "D. R. Scott",
+          "R. M. Shannon",
+          "Nicolás Tejos"
+        ],
+        "year": 2020,
+        "journal": "Nature",
+        "access_path": "./data/papers\\W3030414242.pdf",
+        "retrieval_priority": 60.16
+      },
+      {
+        "source_id": "W2112240717",
+        "source_type": "paper",
+        "doi": "10.1088/0004-637x/790/2/101",
+        "title": "FAST RADIO BURST DISCOVERED IN THE ARECIBO PULSAR ALFA SURVEY",
+        "authors": [
+          "L. G. Spitler",
+          "J. M. Cordes",
+          "J. W. T. Hessels",
+          "D. R. Lorimer",
+          "M. A. McLaughlin",
+          "Shami Chatterjee",
+          "F. Crawford",
+          "J. S. Deneva",
+          "V. M. Kaspi",
+          "Robert Wharton",
+          "B. Allen",
+          "Slavko Bogdanov",
+          "Adam Brazier",
+          "F. Camilo",
+          "P. C. C. Freire",
+          "Fredrick Jenet",
+          "C. Karako-Argaman",
+          "Benjamin Knispel",
+          "P. Lazarus",
+          "K. J. Lee",
+          "J. van Leeuwen",
+          "Ryan S. Lynch",
+          "S. M. Ransom",
+          "Paul Scholz",
+          "X. Siemens",
+          "I. H. Stairs",
+          "Kevin Stovall",
+          "Joseph K. Swiggum",
+          "A. Venkataraman",
+          "Weiwei Zhu",
+          "C. Aulbert",
+          "H. Fehrmann"
+        ],
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "access_path": "./data/papers\\W2112240717.pdf",
+        "retrieval_priority": 47.8
+      },
+      {
+        "source_id": "W2237502728",
+        "source_type": "paper",
+        "doi": "10.1017/pasa.2016.35",
+        "title": "FRBCAT: The Fast Radio Burst Catalogue",
+        "authors": [
+          "E. Petroff",
+          "E. D. Barr",
+          "A. Jameson",
+          "E. F. Keane",
+          "M. Bailes",
+          "M. Kramer",
+          "V. Morello",
+          "D. Tabbara",
+          "W. van Straten"
+        ],
+        "year": 2016,
+        "journal": "Publications of the Astronomical Society of Australia",
+        "access_path": "./data/papers\\W2237502728.pdf",
+        "retrieval_priority": 48.36
+      }
+    ],
+    "records": [
+      {
+        "record_id": "W2112240717_FRB_121102_dispersion_measure_0",
+        "source_id": "W2112240717",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": "557.4 ± 2.0",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc0_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            189,
+            1316,
+            1091,
+            1316,
+            1091,
+            1345,
+            189,
+            1345
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2112240717_FRB_121102_dispersion_measure_1",
+        "source_id": "W2112240717",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": "557.4 ± 2.0",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc1_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            137,
+            217,
+            154,
+            217,
+            154,
+            232,
+            137,
+            232
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2112240717_FRB_121102_dispersion_measure_2",
+        "source_id": "W2112240717",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": "557.4 ± 2.0",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc2_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            0,
+            243,
+            1280,
+            243,
+            1280,
+            261,
+            0,
+            261
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3030414242_FRB_180924_dispersion_measure_3",
+        "source_id": "W3030414242",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180924",
+        "property_value": 361.42,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc3_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            615,
+            308,
+            702,
+            309,
+            702,
+            330,
+            615,
+            329
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3030414242_FRB_181112_dispersion_measure_4",
+        "source_id": "W3030414242",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 181112",
+        "property_value": 589.27,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc4_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            616,
+            358,
+            701,
+            359,
+            701,
+            380,
+            616,
+            379
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3030414242_FRB_190102_dispersion_measure_5",
+        "source_id": "W3030414242",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 190102",
+        "property_value": 363.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc5_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            615,
+            408,
+            690,
+            409,
+            689,
+            430,
+            615,
+            429
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3030414242_FRB_190608_dispersion_measure_6",
+        "source_id": "W3030414242",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 190608",
+        "property_value": 338.7,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc6_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            615,
+            457,
+            690,
+            458,
+            689,
+            479,
+            615,
+            478
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3030414242_FRB_190611_dispersion_measure_7",
+        "source_id": "W3030414242",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 190611",
+        "property_value": 321.4,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc7_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            615,
+            507,
+            690,
+            508,
+            690,
+            529,
+            614,
+            528
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3030414242_FRB_190711_dispersion_measure_8",
+        "source_id": "W3030414242",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 190711",
+        "property_value": 593.1,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc8_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            616,
+            557,
+            690,
+            558,
+            689,
+            579,
+            615,
+            578
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2955902629_FRB_180924_dispersion_measure_9",
+        "source_id": "W2955902629",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180924",
+        "property_value": 361.42,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc9_p10",
+        "provenance": {
+          "page": 10,
+          "bbox": [
+            157,
+            1033,
+            1108,
+            1040,
+            1108,
+            1067,
+            157,
+            1060
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB010125_dispersion_measure_10",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB010125",
+        "property_value": 790.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc10_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            393,
+            289,
+            440,
+            290,
+            440,
+            305,
+            393,
+            304
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB010621_dispersion_measure_11",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB010621",
+        "property_value": 745.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc11_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            390,
+            314,
+            445,
+            315,
+            445,
+            330,
+            390,
+            329
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB010724_dispersion_measure_12",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB010724",
+        "property_value": 375.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc12_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            404,
+            340,
+            432,
+            340,
+            432,
+            353,
+            404,
+            353
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB090625_dispersion_measure_13",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB090625",
+        "property_value": 899.55,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc13_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            383,
+            364,
+            452,
+            365,
+            452,
+            379,
+            383,
+            379
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110220_dispersion_measure_14",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB110220",
+        "property_value": 944.38,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc14_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            383,
+            389,
+            452,
+            391,
+            451,
+            405,
+            383,
+            404
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110523_dispersion_measure_15",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB110523",
+        "property_value": 623.3,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc15_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            383,
+            414,
+            451,
+            416,
+            451,
+            430,
+            383,
+            428
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110627_dispersion_measure_16",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB110627",
+        "property_value": 723.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc16_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            387,
+            440,
+            447,
+            440,
+            447,
+            454,
+            387,
+            453
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110703_dispersion_measure_17",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB110703",
+        "property_value": 1103.6,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc17_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            385,
+            464,
+            451,
+            466,
+            451,
+            480,
+            384,
+            479
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB120127_dispersion_measure_18",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB120127",
+        "property_value": 553.3,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc18_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            386,
+            488,
+            447,
+            489,
+            447,
+            503,
+            386,
+            503
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB121002_dispersion_measure_19",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB121002",
+        "property_value": 1629.18,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc19_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            379,
+            513,
+            454,
+            514,
+            453,
+            529,
+            379,
+            527
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB121102_dispersion_measure_20",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB121102",
+        "property_value": 557.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc20_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            393,
+            538,
+            441,
+            539,
+            441,
+            554,
+            393,
+            553
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB130626_dispersion_measure_21",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB130626",
+        "property_value": 952.4,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc21_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            386,
+            563,
+            448,
+            564,
+            447,
+            579,
+            386,
+            578
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB130628_dispersion_measure_22",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB130628",
+        "property_value": 469.88,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc22_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            384,
+            588,
+            452,
+            589,
+            452,
+            604,
+            384,
+            603
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB130729_dispersion_measure_23",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB130729",
+        "property_value": 861.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc23_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            922,
+            291,
+            961,
+            290,
+            962,
+            303,
+            922,
+            303
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB131104_dispersion_measure_24",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB131104",
+        "property_value": 779.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc24_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            394,
+            638,
+            441,
+            639,
+            440,
+            654,
+            393,
+            653
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB140514_dispersion_measure_25",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB140514",
+        "property_value": 562.7,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc25_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            386,
+            663,
+            447,
+            664,
+            447,
+            679,
+            385,
+            678
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB150418_dispersion_measure_26",
+        "source_id": "W2542011985",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB150418",
+        "property_value": 776.2,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc26_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            386,
+            688,
+            448,
+            689,
+            447,
+            705,
+            386,
+            704
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010125_dispersion_measure_27",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010125",
+        "property_value": "790(3)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc27_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            611,
+            338,
+            658,
+            339,
+            657,
+            355,
+            610,
+            354
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010125_dispersion_measure_28",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010125",
+        "property_value": "790(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc28_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            611,
+            358,
+            658,
+            360,
+            657,
+            376,
+            611,
+            374
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010621_dispersion_measure_29",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010621",
+        "property_value": "745(10)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc29_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            607,
+            381,
+            661,
+            382,
+            661,
+            398,
+            607,
+            397
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010621_dispersion_measure_30",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010621",
+        "property_value": "748(3)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc30_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            609,
+            402,
+            658,
+            403,
+            658,
+            419,
+            609,
+            418
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010724_dispersion_measure_31",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "property_value": 375.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc31_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            619,
+            424,
+            647,
+            424,
+            647,
+            440,
+            619,
+            440
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010724_dispersion_measure_32",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "property_value": "375(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc32_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            609,
+            444,
+            658,
+            445,
+            658,
+            461,
+            609,
+            459
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010724_dispersion_measure_33",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "property_value": "375(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc33_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            609,
+            444,
+            658,
+            445,
+            658,
+            461,
+            609,
+            459
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_010724_dispersion_measure_34",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "property_value": "375(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc34_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            609,
+            444,
+            658,
+            445,
+            658,
+            461,
+            609,
+            459
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_090625_dispersion_measure_35",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 090625",
+        "property_value": "899.6(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc35_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            573,
+            664,
+            573,
+            664,
+            589,
+            605,
+            589
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_090625_dispersion_measure_36",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 090625",
+        "property_value": "899.6(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc36_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            573,
+            664,
+            573,
+            664,
+            589,
+            605,
+            589
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110220_dispersion_measure_37",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110220",
+        "property_value": "944.38(5)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc37_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            601,
+            616,
+            668,
+            617,
+            668,
+            632,
+            601,
+            632
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110220_dispersion_measure_38",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110220",
+        "property_value": "944.38(5)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc38_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            601,
+            616,
+            668,
+            617,
+            668,
+            632,
+            601,
+            632
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110523_dispersion_measure_39",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110523",
+        "property_value": "623.30(6)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc39_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            602,
+            659,
+            669,
+            660,
+            668,
+            676,
+            601,
+            675
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110626_dispersion_measure_40",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110626",
+        "property_value": "723.0(3)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc40_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            680,
+            664,
+            681,
+            664,
+            696,
+            605,
+            695
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110626_dispersion_measure_41",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110626",
+        "property_value": "723.0(3)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc41_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            680,
+            664,
+            681,
+            664,
+            696,
+            605,
+            695
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110703_dispersion_measure_42",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110703",
+        "property_value": "1103.6(7)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc42_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            602,
+            723,
+            669,
+            724,
+            669,
+            740,
+            602,
+            739
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_110703_dispersion_measure_43",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110703",
+        "property_value": "1103.6(7)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc43_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            602,
+            723,
+            669,
+            724,
+            669,
+            740,
+            602,
+            739
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_120127_dispersion_measure_44",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 120127",
+        "property_value": "553.3(3)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc44_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            766,
+            664,
+            767,
+            664,
+            783,
+            604,
+            782
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_120127_dispersion_measure_45",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 120127",
+        "property_value": "553.3(3)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc45_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            766,
+            664,
+            767,
+            664,
+            783,
+            604,
+            782
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_121002_dispersion_measure_46",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121002",
+        "property_value": "1629.18(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc46_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            598,
+            809,
+            672,
+            809,
+            672,
+            825,
+            598,
+            824
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_121002_dispersion_measure_47",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121002",
+        "property_value": "1629.18(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc47_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            598,
+            809,
+            672,
+            809,
+            672,
+            825,
+            598,
+            824
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_121102_dispersion_measure_48",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": "557(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc48_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            611,
+            852,
+            658,
+            853,
+            658,
+            869,
+            610,
+            868
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_130626_dispersion_measure_49",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 130626",
+        "property_value": "952.4(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc49_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            604,
+            874,
+            664,
+            875,
+            664,
+            890,
+            604,
+            890
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_130626_dispersion_measure_50",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 130626",
+        "property_value": "952.4(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc50_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            604,
+            874,
+            664,
+            875,
+            664,
+            890,
+            604,
+            890
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_130628_dispersion_measure_51",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 130628",
+        "property_value": "469.88(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc51_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            602,
+            917,
+            668,
+            918,
+            668,
+            933,
+            601,
+            932
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_130628_dispersion_measure_52",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 130628",
+        "property_value": "469.88(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc52_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            602,
+            917,
+            668,
+            918,
+            668,
+            933,
+            601,
+            932
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_130729_dispersion_measure_53",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 130729",
+        "property_value": "861(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc53_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            611,
+            959,
+            658,
+            960,
+            657,
+            975,
+            610,
+            975
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_130729_dispersion_measure_54",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 130729",
+        "property_value": "861(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc54_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            611,
+            959,
+            658,
+            960,
+            657,
+            975,
+            610,
+            975
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_131104_dispersion_measure_55",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 131104",
+        "property_value": "779(1)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc55_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            612,
+            1001,
+            658,
+            1003,
+            657,
+            1018,
+            611,
+            1017
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_131104_dispersion_measure_56",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 131104",
+        "property_value": "779(2)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc56_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            611,
+            1024,
+            658,
+            1025,
+            657,
+            1041,
+            611,
+            1040
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_140514_dispersion_measure_57",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 140514",
+        "property_value": "562.7(6)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc57_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            1046,
+            664,
+            1047,
+            664,
+            1062,
+            605,
+            1062
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_140514_dispersion_measure_58",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 140514",
+        "property_value": "562.7(6)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc58_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            605,
+            1046,
+            664,
+            1047,
+            664,
+            1062,
+            605,
+            1062
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2237502728_FRB_150418_dispersion_measure_59",
+        "source_id": "W2237502728",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 150418",
+        "property_value": "776.2(5)",
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc59_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            604,
+            1090,
+            665,
+            1091,
+            664,
+            1107,
+            604,
+            1106
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_010724_dispersion_measure_60",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "property_value": 375.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc60_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            0,
+            0,
+            1280,
+            0,
+            1280,
+            1664,
+            0,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_110220_dispersion_measure_61",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110220",
+        "property_value": 944.4,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc61_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            0,
+            0,
+            1280,
+            0,
+            1280,
+            1664,
+            0,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_121102_dispersion_measure_62",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": 557.4,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc62_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            0,
+            0,
+            1280,
+            0,
+            1280,
+            1664,
+            0,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_170827_dispersion_measure_63",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 170827",
+        "property_value": 899.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc63_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            325,
+            690,
+            1041,
+            692,
+            1041,
+            709,
+            325,
+            707
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_170922_dispersion_measure_64",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 170922",
+        "property_value": 1111.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc64_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            324,
+            732,
+            1036,
+            732,
+            1035,
+            749,
+            324,
+            749
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_180110_dispersion_measure_65",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180110",
+        "property_value": 716.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc65_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            323,
+            774,
+            746,
+            774,
+            746,
+            791,
+            323,
+            791
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_180725A_dispersion_measure_66",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180725A",
+        "property_value": 716.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc66_p5",
+        "provenance": {
+          "page": 5,
+          "bbox": [
+            176,
+            710,
+            879,
+            713,
+            879,
+            731,
+            176,
+            727
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_121102_dispersion_measure_67",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": 557.4,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc67_p24",
+        "provenance": {
+          "page": 24,
+          "bbox": [
+            388,
+            567,
+            891,
+            567,
+            891,
+            602,
+            388,
+            602
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_171020_dispersion_measure_68",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 171020",
+        "property_value": 114.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc68_p29",
+        "provenance": {
+          "page": 29,
+          "bbox": [
+            175,
+            1214,
+            937,
+            1213,
+            937,
+            1232,
+            175,
+            1233
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2970847970_FRB_160102_dispersion_measure_69",
+        "source_id": "W2970847970",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 160102",
+        "property_value": 2596.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc69_p35",
+        "provenance": {
+          "page": 35,
+          "bbox": [
+            175,
+            280,
+            938,
+            283,
+            938,
+            302,
+            175,
+            299
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_010724_dispersion_measure_70",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "property_value": 375.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc70_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            104,
+            514,
+            806,
+            515,
+            806,
+            532,
+            104,
+            531
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_010621_dispersion_measure_71",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 010621",
+        "property_value": 745.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc71_p32",
+        "provenance": {
+          "page": 32,
+          "bbox": [
+            108,
+            846,
+            211,
+            846,
+            211,
+            876,
+            108,
+            876
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_110220_dispersion_measure_72",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 110220",
+        "property_value": 944.38,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc72_p32",
+        "provenance": {
+          "page": 32,
+          "bbox": [
+            108,
+            2420,
+            211,
+            2420,
+            211,
+            2450,
+            108,
+            2450
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_140514_dispersion_measure_73",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 140514",
+        "property_value": 562.7,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc73_p32",
+        "provenance": {
+          "page": 32,
+          "bbox": [
+            108,
+            2457,
+            211,
+            2457,
+            211,
+            2487,
+            108,
+            2487
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_121102_dispersion_measure_74",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "property_value": 557.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc74_p33",
+        "provenance": {
+          "page": 33,
+          "bbox": [
+            0,
+            559,
+            927,
+            559,
+            927,
+            583,
+            0,
+            583
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_180814.J0422+73_dispersion_measure_75",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180814.J0422+73",
+        "property_value": 189.0,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc75_p35",
+        "provenance": {
+          "page": 35,
+          "bbox": [
+            102,
+            1147,
+            808,
+            1150,
+            808,
+            1173,
+            102,
+            1170
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_180729.J1316+55_dispersion_measure_76",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180729.J1316+55",
+        "property_value": 109.61,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc76_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            124,
+            242,
+            809,
+            245,
+            809,
+            268,
+            123,
+            264
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2754224307_FRB_160102_dispersion_measure_77",
+        "source_id": "W2754224307",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 160102",
+        "property_value": 2596.1,
+        "property_unit": "cm^-3 pc",
+        "trace_id": "doc77_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            102,
+            690,
+            808,
+            692,
+            808,
+            715,
+            102,
+            713
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_FRB_180916.J0158+65_dispersion_measure_78",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 180916.J0158+65",
+        "property_value": 349.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc78_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            162,
+            966,
+            829,
+            968,
+            829,
+            989,
+            162,
+            986
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_FRB_181030.J1054+73_dispersion_measure_79",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB 181030.J1054+73",
+        "property_value": 103.5,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc79_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            163,
+            896,
+            1111,
+            901,
+            1111,
+            922,
+            162,
+            916
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_80",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc80_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            836,
+            369,
+            896,
+            369,
+            896,
+            385,
+            836,
+            385
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_2_dispersion_measure_81",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 2",
+        "property_value": 103.5,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc81_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            838,
+            390,
+            895,
+            390,
+            895,
+            406,
+            837,
+            405
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_3_dispersion_measure_82",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 3",
+        "property_value": 450.5,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc82_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            836,
+            412,
+            895,
+            412,
+            895,
+            428,
+            835,
+            428
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_4_dispersion_measure_83",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 4",
+        "property_value": 364.05,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc83_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            831,
+            432,
+            898,
+            434,
+            898,
+            450,
+            831,
+            448
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_5_dispersion_measure_84",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 5",
+        "property_value": 441.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc84_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            840,
+            473,
+            889,
+            474,
+            888,
+            490,
+            840,
+            489
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_6_dispersion_measure_85",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 6",
+        "property_value": 1281.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc85_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            834,
+            495,
+            900,
+            496,
+            899,
+            512,
+            834,
+            510
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_7_dispersion_measure_86",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 7",
+        "property_value": 425.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc86_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            836,
+            516,
+            895,
+            517,
+            895,
+            532,
+            836,
+            531
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_8_dispersion_measure_87",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 8",
+        "property_value": 460.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc87_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            836,
+            538,
+            896,
+            539,
+            895,
+            554,
+            835,
+            553
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_88",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc88_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            249,
+            522,
+            250,
+            522,
+            265,
+            462,
+            265
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_89",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc89_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            270,
+            522,
+            271,
+            522,
+            287,
+            463,
+            286
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_90",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.5,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc90_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            293,
+            522,
+            293,
+            522,
+            309,
+            462,
+            308
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_91",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc91_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            460,
+            312,
+            526,
+            313,
+            526,
+            329,
+            460,
+            328
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_92",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.9,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc92_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            335,
+            522,
+            335,
+            522,
+            350,
+            462,
+            350
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_93",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.1,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc93_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            462,
+            355,
+            522,
+            356,
+            522,
+            372,
+            462,
+            371
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_94",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.7,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc94_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            400,
+            522,
+            401,
+            522,
+            417,
+            463,
+            416
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_95",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 348.9,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc95_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            423,
+            522,
+            424,
+            522,
+            439,
+            463,
+            439
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_96",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 348.8,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc96_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            444,
+            522,
+            445,
+            522,
+            460,
+            463,
+            460
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_1_dispersion_measure_97",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 1",
+        "property_value": 349.8,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc97_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            462,
+            467,
+            522,
+            468,
+            522,
+            484,
+            462,
+            483
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_2_dispersion_measure_98",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 2",
+        "property_value": 103.5,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc98_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            535,
+            522,
+            535,
+            522,
+            552,
+            463,
+            551
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_2_dispersion_measure_99",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 2",
+        "property_value": 103.5,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc99_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            535,
+            522,
+            535,
+            522,
+            552,
+            463,
+            551
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_3_dispersion_measure_100",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 3",
+        "property_value": 450.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc100_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            624,
+            522,
+            625,
+            522,
+            641,
+            462,
+            640
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_3_dispersion_measure_101",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 3",
+        "property_value": 450.8,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc101_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            462,
+            647,
+            522,
+            648,
+            522,
+            664,
+            462,
+            663
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_4_dispersion_measure_102",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 4",
+        "property_value": 364.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc102_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            456,
+            717,
+            528,
+            718,
+            528,
+            733,
+            456,
+            733
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_4_dispersion_measure_103",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 4",
+        "property_value": 364.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc103_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            738,
+            522,
+            739,
+            522,
+            754,
+            463,
+            754
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_4_dispersion_measure_104",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 4",
+        "property_value": 364.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc104_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            456,
+            717,
+            528,
+            718,
+            528,
+            733,
+            456,
+            733
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_5_dispersion_measure_105",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 5",
+        "property_value": 444.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc105_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            827,
+            522,
+            829,
+            522,
+            845,
+            463,
+            843
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_5_dispersion_measure_106",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 5",
+        "property_value": 443.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc106_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            462,
+            851,
+            522,
+            852,
+            522,
+            868,
+            462,
+            867
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_6_dispersion_measure_107",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 6",
+        "property_value": 1281.9,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc107_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            460,
+            919,
+            527,
+            920,
+            527,
+            937,
+            460,
+            936
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_6_dispersion_measure_108",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 6",
+        "property_value": 1281.0,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc108_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            457,
+            940,
+            530,
+            940,
+            530,
+            956,
+            457,
+            956
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_7_dispersion_measure_109",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 7",
+        "property_value": 424.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc109_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            1010,
+            522,
+            1011,
+            522,
+            1026,
+            462,
+            1025
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_7_dispersion_measure_110",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 7",
+        "property_value": 425.2,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc110_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            462,
+            1030,
+            522,
+            1032,
+            522,
+            1048,
+            462,
+            1046
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_8_dispersion_measure_111",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 8",
+        "property_value": 460.6,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc111_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            463,
+            1102,
+            522,
+            1103,
+            522,
+            1118,
+            462,
+            1117
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2982829710_Source_8_dispersion_measure_112",
+        "source_id": "W2982829710",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "Source 8",
+        "property_value": 459.8,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc112_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            462,
+            1122,
+            522,
+            1123,
+            522,
+            1139,
+            462,
+            1138
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W4206329711_FRB20180817A_dispersion_measure_113",
+        "source_id": "W4206329711",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB20180817A",
+        "property_value": 1006.7714,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc113_p39",
+        "provenance": {
+          "page": 39,
+          "bbox": [
+            88,
+            731,
+            160,
+            731,
+            160,
+            746,
+            88,
+            747
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W4206329711_FRB20180915B_dispersion_measure_114",
+        "source_id": "W4206329711",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB20180915B",
+        "property_value": 177.127,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc114_p39",
+        "provenance": {
+          "page": 39,
+          "bbox": [
+            88,
+            752,
+            143,
+            752,
+            143,
+            768,
+            88,
+            768
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W4206329711_FRB20180917A_dispersion_measure_115",
+        "source_id": "W4206329711",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB20180917A",
+        "property_value": 189.917,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc115_p39",
+        "provenance": {
+          "page": 39,
+          "bbox": [
+            88,
+            773,
+            143,
+            772,
+            143,
+            787,
+            88,
+            788
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W4206329711_FRB20180917A_dispersion_measure_116",
+        "source_id": "W4206329711",
+        "entity_type": "fast_radio_burst",
+        "property_name": "dispersion_measure",
+        "entity_name": "FRB20180917A",
+        "property_value": 189.917,
+        "property_unit": "pc cm^-3",
+        "trace_id": "doc116_p39",
+        "provenance": {
+          "page": 39,
+          "bbox": [
+            88,
+            773,
+            143,
+            772,
+            143,
+            787,
+            88,
+            788
+          ]
+        },
+        "extraction_method": "vlm_text"
+      }
+    ]
+  },
+  "vlm_stats": {
+    "total_pdfs": 19,
+    "success_pdfs": 19,
+    "failed_pdfs": 0,
+    "total_observations": 129,
+    "elapsed_time": 384.17722725868225
+  },
+  "ocr_stats": {
+    "total_pages": 25,
+    "success_pages": 25,
+    "failed_pages": 0,
+    "elapsed_time": 117.03773474693298
+  },
+  "verification_rate": 0.9069767441860465
+}

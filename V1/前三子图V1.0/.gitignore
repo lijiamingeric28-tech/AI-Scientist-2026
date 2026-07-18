@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 环境变量
+.env
+*.env
+!.env.example
+
+# 数据和输出
+data/papers/*.pdf
+data/logs/*.log
+data/reports/*.md
+tests/logs/*.log
+tests/output/*.json
+
+# 保留目录结构
+!data/papers/.gitkeep
+!data/logs/.gitkeep
+!data/reports/.gitkeep
+!tests/logs/.gitkeep
+!tests/output/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.bak
+*.cache
+*.backup
