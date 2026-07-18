@@ -1,0 +1,19 @@
+# 核心依赖
+langgraph>=0.2.0
+langchain>=0.3.0
+pydantic>=2.0.0
+
+# PDF处理
+PyMuPDF>=1.23.0
+Pillow>=10.0.0
+
+# API客户端
+openai>=1.0.0
+dashscope>=1.19.0
+
+# 验证工具
+thefuzz>=0.20.0
+python-Levenshtein>=0.21.0
+
+# 环境配置
+python-dotenv>=1.0.0
