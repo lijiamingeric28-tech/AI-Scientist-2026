@@ -27,7 +27,8 @@ def handle_missing_values(records: list[dict], strategy: str = "mark",
             if v is None or (isinstance(v, str) and v.strip() == ""):
                 rec["field_value"] = fill_value
                 marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "filled_value"})
-            if rec.get("field_unit") is None and isinstance(rec.get("field_value"), (int, float)):
+            from tools._parse_utils import is_numeric
+            if rec.get("field_unit") is None and is_numeric(rec.get("field_value")):
                 tu = std.get(rec.get("field_name", ""))
                 if tu:
                     rec["field_unit"] = tu
@@ -37,7 +38,8 @@ def handle_missing_values(records: list[dict], strategy: str = "mark",
             v = rec.get("field_value")
             if v is None or (isinstance(v, str) and v.strip() == ""):
                 marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "marked", "issue": "empty_value"})
-            if rec.get("field_unit") is None and isinstance(v, (int, float)):
+            from tools._parse_utils import is_numeric
+            if rec.get("field_unit") is None and is_numeric(v):
                 marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "marked", "issue": "missing_unit"})
     logger.info("[MissingVal] strategy=%s, %d handled, %d dropped", strategy, len(marked), len(dropped))
     return {"data": records, "handled_count": len(marked) + len(dropped), "dropped_ids": dropped,

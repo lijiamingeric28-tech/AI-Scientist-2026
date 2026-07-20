@@ -60,17 +60,23 @@ def detect_conflicts_statistical(
     conflicts = []
     skipped_insufficient = 0
 
-    # 按 field_name + source_id 分组
-    field_source_groups: dict[str, dict[str, list[float]]] = {}
+    # V1.1: 按 (entity_type, entity_name, property_name, source_id) 分组
+    from tools._parse_utils import parse_numeric
+    field_source_groups: dict[tuple, dict[str, list[float]]] = {}
     for rec in records:
         val = rec.get("field_value")
-        if not isinstance(val, (int, float)):
+        nv = parse_numeric(val)
+        if nv is None:
             continue
+        et = rec.get("entity_type", "")
+        en = rec.get("entity_name", "")
         fn = rec.get("field_name", "unknown")
         sid = rec.get("source_id", "unknown")
-        field_source_groups.setdefault(fn, {}).setdefault(sid, []).append(float(val))
+        key = (et, en, fn)
+        field_source_groups.setdefault(key, {}).setdefault(sid, []).append(nv)
 
-    for fn, source_groups in field_source_groups.items():
+    for key, source_groups in field_source_groups.items():
+        et, en, fn = key
         source_ids = list(source_groups.keys())
         if len(source_ids) < 2:
             continue
@@ -85,7 +91,7 @@ def detect_conflicts_statistical(
                 na, nb = len(vals_a), len(vals_b)
                 if na < 2 or nb < 2:
                     skipped_insufficient += 1
-                    continue  # 不够计算 std
+                    continue
 
                 mean_a = sum(vals_a) / na
                 mean_b = sum(vals_b) / nb
@@ -96,19 +102,17 @@ def detect_conflicts_statistical(
 
                 pooled_std = math.sqrt(((na - 1) * var_a + (nb - 1) * var_b) / (na + nb - 2))
                 if pooled_std == 0:
-                    # 两组值完全相同
                     continue
 
                 cohens_d = abs(mean_a - mean_b) / pooled_std
                 abs_diff = abs(mean_a - mean_b)
 
-                # Cohen's d 效应量分级
                 if cohens_d < 0.2:
                     effect = "negligible"
                     is_conflict = False
                 elif cohens_d < 0.5:
                     effect = "small"
-                    is_conflict = False  # 可能只是测量误差
+                    is_conflict = False
                 elif cohens_d < 0.8:
                     effect = "medium"
                     is_conflict = True
@@ -116,12 +120,10 @@ def detect_conflicts_statistical(
                     effect = "large"
                     is_conflict = True
 
-                # 置信区间 (approx)
                 se = math.sqrt((na + nb) / (na * nb) + cohens_d ** 2 / (2 * (na + nb)))
                 ci_low = round(cohens_d - 1.96 * se, 4)
                 ci_high = round(cohens_d + 1.96 * se, 4)
 
-                # 如果 CI 跨过 0.5 → 统计不显著
                 if ci_low < 0.5 and is_conflict:
                     is_conflict = False
                     effect = f"{effect} (not significant)"
@@ -131,6 +133,8 @@ def detect_conflicts_statistical(
                         "type": "cross_source_value_conflict",
                         "method": "cohens_d",
                         "field_name": fn,
+                        "entity_type": et,
+                        "entity_name": en,
                         "source_a": sia, "source_b": sib,
                         "mean_a": round(mean_a, 4), "mean_b": round(mean_b, 4),
                         "std_a": round(math.sqrt(var_a), 4),

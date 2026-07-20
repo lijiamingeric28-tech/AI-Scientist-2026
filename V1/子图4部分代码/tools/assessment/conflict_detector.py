@@ -159,16 +159,20 @@ def detect_conflicts(
     skipped_different_material = 0
     skipped_condition_field = 0
 
-    # ── 1. 跨来源数值冲突（带实体约束） ──
-    field_groups: dict[str, list[dict]] = {}
+    # ── 1. 跨来源数值冲突 (V1.1: entity 感知分组 + string 数值) ──
+    from tools._parse_utils import parse_numeric
+    field_groups: dict[tuple, list[dict]] = {}
     for rec in records:
         field_name = rec.get("field_name", "unknown")
         value = rec.get("field_value")
-        if not isinstance(value, (int, float)):
+        if parse_numeric(value) is None:
             continue
-        field_groups.setdefault(field_name, []).append(rec)
+        et = rec.get("entity_type", "")
+        en = rec.get("entity_name", "")
+        key = (et, en, field_name)
+        field_groups.setdefault(key, []).append(rec)
 
-    for field_name, group in field_groups.items():
+    for (et, en, field_name), group in field_groups.items():
         if len(group) < 2:
             continue
 

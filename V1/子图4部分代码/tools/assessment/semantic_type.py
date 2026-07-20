@@ -116,8 +116,10 @@ def infer_semantic_type(
     result["confidence"] = 0.5 + best_score * 0.25  # 0.75 for keyword+unit, 0.5 for one
     result["unit_recognized"] = unit_str in rules["units"]
 
-    # 物理可行性校验 (V2.2: 简化, 直接从 rules 读取)
-    if field_value is not None and isinstance(field_value, (int, float)):
+    # 物理可行性校验 (V1.1: property_value 是 string, 需要 parse)
+    from tools._parse_utils import parse_numeric
+    nv = parse_numeric(field_value)
+    if nv is not None:
         feasible_ranges = rules.get("feasible_ranges", {})
         feasible = feasible_ranges.get(unit_str)
         if feasible is None and unit_str:
@@ -128,7 +130,7 @@ def infer_semantic_type(
 
         if feasible and len(feasible) == 2:
             result["feasible_range"] = feasible
-            result["physically_plausible"] = feasible[0] <= field_value <= feasible[1]
+            result["physically_plausible"] = feasible[0] <= nv <= feasible[1]
             result["out_of_range"] = not result["physically_plausible"]
         else:
             result["physically_plausible"] = True  # 无规则时默认合理

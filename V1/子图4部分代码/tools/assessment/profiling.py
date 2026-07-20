@@ -78,9 +78,10 @@ def data_profiling(data: dict[str, Any]) -> dict[str, Any]:
         method = rec.get("extraction_method", "unknown")
         extraction_method_counts[method] = extraction_method_counts.get(method, 0) + 1
 
-        # 数据类型分析
+        # 数据类型分析 (V1.1: property_value 永远是 string, 用 is_numeric 判断)
         value = rec.get("field_value")
-        if isinstance(value, (int, float)):
+        from tools._parse_utils import is_numeric
+        if is_numeric(value):
             numeric_fields.add(field_name)
         elif isinstance(value, str):
             string_fields.add(field_name)

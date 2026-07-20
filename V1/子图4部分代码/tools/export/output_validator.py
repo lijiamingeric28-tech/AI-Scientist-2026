@@ -49,7 +49,8 @@ def validate_output(
 
     # ── 2. 数据完整性 ──
     records_without_source = sum(1 for r in records if not r.get("source_id"))
-    num_recs = [r for r in records if isinstance(r.get("field_value"), (int, float))]
+    from tools._parse_utils import is_numeric
+    num_recs = [r for r in records if is_numeric(r.get("field_value"))]
     records_without_unit = sum(1 for r in num_recs if not r.get("field_unit"))
     records_without_prov = sum(1 for r in records
                                if not r.get("provenance")

@@ -117,9 +117,9 @@ def _evaluate_single_source(source: dict[str, Any]) -> float:
     if source.get("journal") is not None and source.get("journal", "") != "":
         score += 0.5
 
-    # 检索优先级
+    # 检索优先级 (V1.1: 0-100 范围, 归一化到 0-1)
     checks += 1
     priority = source.get("retrieval_priority", 0.0)
-    score += priority
+    score += priority / 100.0 if priority > 1 else priority
 
     return score / checks if checks > 0 else 0.0

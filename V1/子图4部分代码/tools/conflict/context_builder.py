@@ -85,20 +85,21 @@ def build_conflict_context(
         src_a = source_map.get(sid_a, {})
         src_b = source_map.get(sid_b, {})
 
-        # ── V2.2: 实体提取 (通用, 不限于材料) ──
+        # ── V1.1: 直接读 entity_type/entity_name (不再推断) ──
         def _extract_entities(source_id: str, source: dict) -> set[str]:
             entities: set[str] = set()
-            title = source.get("title", "")
-            for m in _ENTITY_PATTERN.findall(title):
-                s = (m[0] if isinstance(m, tuple) else m).strip().rstrip(".,;")
-                if len(s) >= 3:
-                    entities.add(s)
-            # 也从 entity 类字段中提取
-            entity_fields = {"material", "sample", "alloy", "specimen", "entity",
-                             "compound", "target", "object", "composition", "source"}
             for r in source_records.get(source_id, []):
-                if r.get("field_name", "").lower() in entity_fields:
-                    entities.add(str(r.get("field_value", "")))
+                et = r.get("entity_type", "")
+                en = r.get("entity_name", "")
+                if en:
+                    entities.add(f"{et}:{en}")
+            # fallback: title 正则
+            if not entities:
+                title = source.get("title", "")
+                for m in _ENTITY_PATTERN.findall(title):
+                    s = (m[0] if isinstance(m, tuple) else m).strip().rstrip(".,;")
+                    if len(s) >= 3:
+                        entities.add(s)
             return entities
 
         ents_a = _extract_entities(sid_a, src_a)

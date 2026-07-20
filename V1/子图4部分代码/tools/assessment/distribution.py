@@ -127,17 +127,20 @@ def _classify_distribution(skew: float, kurt: float) -> str:
 
 
 def profile_field_distributions(records: list[dict]) -> dict[str, dict]:
-    """对所有数值字段做分布分析。"""
-    field_values: dict[str, list[float]] = {}
+    """对所有数值字段做分布分析 (V1.1: string 数值 + entity 感知)。"""
+    from tools._parse_utils import parse_numeric
+    entity_field_values: dict[tuple, list[float]] = {}
     for rec in records:
-        val = rec.get("field_value")
-        if isinstance(val, (int, float)):
-            fn = rec.get("field_name", "unknown")
-            field_values.setdefault(fn, []).append(float(val))
+        nv = parse_numeric(rec.get("field_value"))
+        if nv is None:
+            continue
+        key = (rec.get("entity_type", ""), rec.get("entity_name", ""), rec.get("field_name", "unknown"))
+        entity_field_values.setdefault(key, []).append(nv)
 
     results = {}
-    for fn, vals in field_values.items():
-        results[fn] = analyze_distribution(vals)
-        logger.debug("[DistProfiler] %s: %s", fn, results[fn]["summary"])
+    for (et, en, fn), vals in entity_field_values.items():
+        label = f"{fn}" if not en else f"{en}/{fn}"
+        results[label] = analyze_distribution(vals)
+        logger.debug("[DistProfiler] %s: %s", label, results[label]["summary"])
 
     return results

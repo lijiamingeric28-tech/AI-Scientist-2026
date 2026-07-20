@@ -103,16 +103,20 @@ def _quantile(data: list[float], q: float) -> float:
 
 
 def detect_all_fields(records: list[dict]) -> dict[str, dict]:
-    """对所有数值字段做异常值检测。"""
-    field_values: dict[str, list[float]] = {}
+    """对所有数值字段做异常值检测 (V1.1: entity 感知 + string 数值)。"""
+    from tools._parse_utils import parse_numeric
+    # 按 (entity_type, entity_name, field_name) 分组, 避免不同 entity 混在一起
+    entity_field_values: dict[tuple, list[float]] = {}
     for rec in records:
-        val = rec.get("field_value")
-        if isinstance(val, (int, float)):
-            fn = rec.get("field_name", "unknown")
-            field_values.setdefault(fn, []).append(float(val))
+        nv = parse_numeric(rec.get("field_value"))
+        if nv is None:
+            continue
+        key = (rec.get("entity_type", ""), rec.get("entity_name", ""), rec.get("field_name", "unknown"))
+        entity_field_values.setdefault(key, []).append(nv)
 
     results = {}
-    for fn, vals in field_values.items():
-        results[fn] = detect_outliers(vals)
+    for (et, en, fn), vals in entity_field_values.items():
+        label = f"{fn}" if not en else f"{en}/{fn}"
+        results[label] = detect_outliers(vals)
 
     return results

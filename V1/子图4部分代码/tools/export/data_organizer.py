@@ -14,10 +14,13 @@ _TEMP_RECORD_FIELDS = {"_modified", "_conflict_cache", "_temp_score",
                         "_normalized", "_resolution_status", "_source_path",
                         "_prefer_a", "_missing_unit"}
 
-# V2.3: grounded_data 输出字段白名单 (只保留 schema 规定的字段)
+# V1.1: grounded_data 输出字段白名单 (增加 entity 字段 + _uncertainty)
 _GROUNDED_DATA_RECORD_FIELDS = {
-    "record_id", "source_id", "field_name", "field_value", "field_unit",
-    "trace_id", "provenance", "extraction_method"
+    "record_id", "source_id",
+    "entity_type", "entity_name",
+    "field_name", "field_value", "field_unit",
+    "trace_id", "provenance", "extraction_method",
+    "_uncertainty",
 }
 
 _PUBLIC_SOURCE_FIELDS = {"source_id", "doi", "title", "authors", "year",
@@ -118,8 +121,9 @@ def organize_data(
 
 
 def _infer_type(values: list) -> str:
-    nums = [v for v in values if isinstance(v, (int, float))]
-    strs = [v for v in values if isinstance(v, str)]
+    from tools._parse_utils import is_numeric
+    nums = [v for v in values if isinstance(v, (int, float)) or is_numeric(v)]
+    strs = [v for v in values if isinstance(v, str) and not is_numeric(v)]
     if nums and not strs:
         return "numeric"
     elif strs and not nums:

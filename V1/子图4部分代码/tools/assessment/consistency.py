@@ -59,37 +59,47 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
         "is_consistent": missing_schema == 0,
     }
 
-    # ── 2. 字段类型一致性 ──
-    field_type_map: dict[str, set[type]] = {}
+    # ── 2. 字段值"形状"一致性 (V1.1: entity 感知) ──
+    from tools._parse_utils import parse_numeric, has_uncertainty
+    field_shape_map: dict[str, set[str]] = {}
     for rec in records:
-        field_name = rec.get("field_name", "unknown")
-        value = rec.get("field_value")
-        if field_name not in field_type_map:
-            field_type_map[field_name] = set()
-        field_type_map[field_name].add(type(value))
+        fn = rec.get("field_name", "unknown")
+        en = rec.get("entity_name", "")
+        key = f"{en}/{fn}" if en else fn
+        v = rec.get("field_value")
+        if v is None:
+            shape = "null"
+        elif has_uncertainty(v):
+            shape = "uncertainty"
+        elif parse_numeric(v) is not None:
+            shape = "numeric"
+        else:
+            shape = "text"
+        field_shape_map.setdefault(key, set()).add(shape)
 
     field_type_consistency: dict[str, bool] = {}
-    for fname, types in field_type_map.items():
-        field_type_consistency[fname] = len(types) == 1
+    for key, shapes in field_shape_map.items():
+        normalized = shapes - {"uncertainty", "numeric"}
+        field_type_consistency[key] = len(normalized) <= 1
 
-    # ── 3. 单位一致性 ──
+    # ── 3. 单位一致性 (V1.1: entity 感知) ──
     unit_map: dict[str, set[str]] = {}
     for rec in records:
-        field_name = rec.get("field_name", "unknown")
+        fn = rec.get("field_name", "unknown")
+        en = rec.get("entity_name", "")
+        key = f"{en}/{fn}" if en else fn
         unit = rec.get("field_unit")
         if unit is not None:
-            if field_name not in unit_map:
-                unit_map[field_name] = set()
-            unit_map[field_name].add(str(unit))
+            unit_map.setdefault(key, set()).add(str(unit))
 
     unit_consistency: dict[str, str] = {}
-    for fname, units in unit_map.items():
+    for key, units in unit_map.items():
         if len(units) == 1:
-            unit_consistency[fname] = "consistent"
+            unit_consistency[key] = "consistent"
         elif len(units) == 0:
-            unit_consistency[fname] = "no_units"
+            unit_consistency[key] = "no_units"
         else:
-            unit_consistency[fname] = f"inconsistent: {units}"
+            unit_consistency[key] = f"inconsistent: {units}"
 
     # ── 4. 汇总评分 ──
     issues: list[str] = []
@@ -97,8 +107,8 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
         issues.append(f"{missing_schema} 条记录缺少必填字段")
     for fname, consistent in field_type_consistency.items():
         if not consistent:
-            types_str = ", ".join(t.__name__ for t in field_type_map[fname])
-            issues.append(f"字段 '{fname}' 类型不一致: {types_str}")
+            shapes = field_shape_map.get(fname, set())
+            issues.append(f"字段 '{fname}' 值形状不一致: {sorted(shapes)}")
     for fname, status in unit_consistency.items():
         if status.startswith("inconsistent"):
             issues.append(f"字段 '{fname}' 单位不一致")

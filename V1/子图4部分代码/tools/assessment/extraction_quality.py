@@ -13,7 +13,8 @@ from typing import Any
 from utils.logger import get_logger
 logger = get_logger(__name__)
 
-_VALID_EXTRACTION_METHODS = {"llm_text", "llm_table"}
+# V1.1: 新 schema 中 "llm_text" → "vlm_text"
+_VALID_EXTRACTION_METHODS = {"vlm_text", "llm_table", "llm_text"}  # llm_text 向后兼容
 
 
 def check_extraction_quality(records: list[dict]) -> dict[str, Any]:
@@ -40,12 +41,21 @@ def check_extraction_quality(records: list[dict]) -> dict[str, Any]:
     missing_bbox = 0
     bad_extraction_method = 0
     bad_record_id = 0
+    # V1.1: entity 字段完整性
+    missing_entity_type = 0
+    missing_entity_name = 0
     method_counts: dict[str, int] = {}
 
     for r in records:
         # trace_id 检查
         if not r.get("trace_id"):
             missing_trace_id += 1
+
+        # V1.1: entity 字段检查
+        if not r.get("entity_type"):
+            missing_entity_type += 1
+        if not r.get("entity_name"):
+            missing_entity_name += 1
 
         # provenance 检查
         prov = r.get("provenance")
@@ -65,25 +75,27 @@ def check_extraction_quality(records: list[dict]) -> dict[str, Any]:
             if em not in _VALID_EXTRACTION_METHODS:
                 bad_extraction_method += 1
 
-        # record_id 格式检查: {source_id}_{field_name}_{n}
+        # V1.1 record_id 格式: {source_id}_{entity_name}_{property_name}_{n}
         rid = r.get("record_id", "")
         sid = r.get("source_id", "")
+        en = r.get("entity_name", "")
         fn = r.get("field_name", "")
         if rid and sid and fn:
-            # 标准化比较: DOI 中的 / . 在 record_id 中常被替换为 _
             def _norm(s):
-                return s.replace("/", "_").replace(".", "_")
-            expected_prefix = f"{_norm(sid)}_{fn}_"
-            if not _norm(rid).startswith(expected_prefix):
+                return s.replace("/", "_").replace(".", "_").replace(" ", "_")
+            expected = f"{_norm(sid)}_{_norm(en) if en else ''}{'_' if en else ''}{fn}_"
+            if not _norm(rid).startswith(expected):
                 bad_record_id += 1
 
-    # 加权评分
+    # V1.1 加权评分: 加入 entity 字段权重
     score = 1.0 - (
-        0.25 * (missing_trace_id / total) +
-        0.20 * (missing_page / total) +
-        0.15 * (missing_bbox / total) +
-        0.20 * (bad_extraction_method / total) +
-        0.20 * (bad_record_id / total)
+        0.15 * (missing_trace_id / total) +
+        0.10 * (missing_page / total) +
+        0.08 * (missing_bbox / total) +
+        0.10 * (bad_extraction_method / total) +
+        0.10 * (bad_record_id / total) +
+        0.10 * (missing_entity_type / total) +
+        0.10 * (missing_entity_name / total)
     )
     score = max(0.0, min(1.0, round(score, 4)))
 
@@ -94,6 +106,10 @@ def check_extraction_quality(records: list[dict]) -> dict[str, Any]:
     issues = []
     if missing_trace_id > 0:
         issues.append(f"{missing_trace_id}/{total} records missing trace_id")
+    if missing_entity_type > 0:
+        issues.append(f"{missing_entity_type}/{total} records missing entity_type")
+    if missing_entity_name > 0:
+        issues.append(f"{missing_entity_name}/{total} records missing entity_name")
     if missing_page > 0:
         issues.append(f"{missing_page}/{total} records missing provenance.page")
     if missing_bbox > 0:
@@ -114,11 +130,14 @@ def check_extraction_quality(records: list[dict]) -> dict[str, Any]:
         "score": score,
         "total_records": total,
         "missing_trace_id": missing_trace_id,
+        "missing_entity_type": missing_entity_type,
+        "missing_entity_name": missing_entity_name,
         "missing_page": missing_page,
         "missing_bbox": missing_bbox,
         "bad_extraction_method": bad_extraction_method,
         "bad_record_id": bad_record_id,
         "trace_id_coverage": round(trace_id_coverage, 4),
+        "entity_coverage": round(1.0 - (missing_entity_type + missing_entity_name) / (2 * max(total, 1)), 4),
         "provenance_coverage": round(provenance_coverage, 4),
         "extraction_method_distribution": method_counts,
         "issues": issues,

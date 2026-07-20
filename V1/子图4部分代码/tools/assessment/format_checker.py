@@ -65,10 +65,11 @@ def check_format(data: dict[str, Any]) -> dict[str, Any]:
         if not _RECORD_ID_PATTERN.match(record_id):
             record_id_issues.append(record_id)
 
-        # 数值格式检查
-        if isinstance(value, (int, float)):
+        # 数值格式检查 (V1.1: property_value 永远是 string)
+        from tools._parse_utils import is_numeric
+        if is_numeric(value):
+            # string 类型的数值不会有 NaN/Inf, 但保留检查
             if isinstance(value, float):
-                # 检查是否为 NaN 或 Infinity
                 import math
                 if math.isnan(value) or math.isinf(value):
                     numeric_issues.append({

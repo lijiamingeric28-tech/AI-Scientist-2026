@@ -23,7 +23,10 @@ def handle_duplicates(records: list[dict]) -> dict[str, Any]:
     seen_semantic, semantic_dupes = set(), []
     final = []
     for rec in deduped:
-        key = (rec.get("source_id",""), rec.get("field_name",""), str(rec.get("field_value","")))
+        # V1.1: entity 感知去重 — 不同实体的同值记录不应被去重
+        key = (rec.get("source_id",""), rec.get("entity_type",""),
+               rec.get("entity_name",""), rec.get("field_name",""),
+               str(rec.get("field_value","")))
         if key in seen_semantic:
             semantic_dupes.append(rec.get("record_id","?"))
         else:

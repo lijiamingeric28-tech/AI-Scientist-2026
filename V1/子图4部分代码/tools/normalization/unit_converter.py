@@ -97,7 +97,9 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
         unit = rec.get("field_unit")
         target = conv_map.get(fn) or std_units.get(fn)
 
-        if not target or not unit or unit == target or not isinstance(val, (int, float)):
+        from tools._parse_utils import parse_numeric
+        nv = parse_numeric(val)
+        if not target or not unit or unit == target or nv is None:
             continue
 
         # ── V2.1: 用 (category, unit) 查找转换因子 ──
@@ -141,7 +143,7 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
                 fn, unit, matched_cat, inferred_cat)
 
         try:
-            new_val = _apply_factor(val, factor)
+            new_val = _apply_factor(nv, factor)
             log.append({
                 "record_id": rec.get("record_id"), "field": fn,
                 "original_value": val, "new_value": new_val,

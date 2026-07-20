@@ -18,11 +18,22 @@ def standardize_field_values(records: list[dict]) -> dict[str, Any]:
             body = stripped[m.end():].strip() if m else stripped
             m2 = _SUFFIX_RE.search(body)
             if m2: body = body[:m2.start()].strip()
+            # V1.1: 先处理 ± 不确定度
+            uncertainty = None
+            if "±" in body:
+                parts = body.split("±")
+                body = parts[0].strip()
+                try:
+                    uncertainty = float(parts[1].strip().rstrip("%"))
+                except (ValueError, TypeError):
+                    pass
             try:
                 nv = float(body)
                 if nv == int(nv) and "." not in body: nv = int(nv)
                 log.append({"record_id": rec.get("record_id"), "original": val, "new": nv, "action": "string_to_numeric"})
                 rec["field_value"] = nv
+                if uncertainty is not None:
+                    rec["_uncertainty"] = uncertainty
             except (ValueError, TypeError):
                 cleaned = body.lower().replace(" ", "_")
                 if cleaned != val:

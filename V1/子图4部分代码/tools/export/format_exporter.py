@@ -40,13 +40,16 @@ def export_formats(
         "records": records,
     }
 
-    # ── CSV 长表 ──
-    csv_header = ["source_id", "field_name", "field_value", "field_unit", "page", "bbox"]
+    # ── CSV 长表 (V1.1: 增加 entity 列) ──
+    csv_header = ["source_id", "entity_type", "entity_name",
+                  "field_name", "field_value", "field_unit", "page", "bbox"]
     csv_lines = [delimiter.join(csv_header)]
     for r in records:
         prov = r.get("provenance") or {}
         row = [
             _csv_escape(str(r.get("source_id", ""))),
+            _csv_escape(str(r.get("entity_type", ""))),
+            _csv_escape(str(r.get("entity_name", ""))),
             _csv_escape(str(r.get("field_name", ""))),
             _csv_escape(str(r.get("field_value", ""))),
             _csv_escape(str(r.get("field_unit") or "")),
