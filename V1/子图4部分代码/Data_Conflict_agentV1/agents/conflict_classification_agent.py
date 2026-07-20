@@ -79,6 +79,8 @@ class ConflictClassificationAgent:
                     {
                         "conflict_id": c["conflict_id"],
                         "field_name": c.get("field_name", ""),
+                        "entity_type": c.get("entity_type", ""),
+                        "entity_name": c.get("entity_name", ""),
                         "value_a": c.get("value_a") or c.get("mean_a", "?"),
                         "value_b": c.get("value_b") or c.get("mean_b", "?"),
                         "cohens_d": c.get("cohens_d", 0),

@@ -67,24 +67,30 @@ def extract_conflicts(
                             if field:
                                 modified_fields.add(field)
 
-            if c.get("field_name") in modified_fields:
+            # V1.1: 检查 (entity_name, field_name) 是否已被修改
+            en = c.get("entity_name", "")
+            fn = c.get("field_name", "")
+            if fn in modified_fields and not en:
+                continue
+            if f"{en}/{fn}" in modified_fields or fn in modified_fields:
                 continue
             raw_conflicts.append(c)
 
-    # 去重: 同一 (field_name, source_a, source_b) 保留 cohens_d 最大者
+    # V1.1: 去重 key 加入 entity — 不同实体的同名冲突不去重
     deduped: dict[tuple, dict] = {}
     for c in raw_conflicts:
-        key = (c.get("field_name", ""), c.get("source_a", ""), c.get("source_b", ""))
+        key = (c.get("entity_type", ""), c.get("entity_name", ""),
+               c.get("field_name", ""), c.get("source_a", ""), c.get("source_b", ""))
         if key not in deduped or c.get("cohens_d", 0) > deduped[key].get("cohens_d", 0):
             deduped[key] = c
 
     conflicts = list(deduped.values())
-    # 按 cohens_d 降序排序
     conflicts.sort(key=lambda c: c.get("cohens_d", 0), reverse=True)
 
-    # 分配 ID
+    # 分配 ID + 汇总 entity 信息
     involved_sources: set[str] = set()
     involved_fields: set[str] = set()
+    involved_entities: set[str] = set()
     for i, c in enumerate(conflicts):
         cid = f"CF-{i+1:03d}"
         c["conflict_id"] = cid
@@ -92,20 +98,25 @@ def extract_conflicts(
             involved_sources.add(c["source_a"])
         if c.get("source_b"):
             involved_sources.add(c["source_b"])
-        if c.get("field_name"):
-            involved_fields.add(c["field_name"])
+        fn = c.get("field_name", "")
+        en = c.get("entity_name", "")
+        if fn:
+            involved_fields.add(f"{en}/{fn}" if en else fn)
+        if en:
+            involved_entities.add(en)
 
     total = len(conflicts)
-    summary = f"Identified {total} conflict(s) via {trigger_path} in fields: {sorted(involved_fields)}"
+    summary = f"Identified {total} conflict(s) via {trigger_path} in {len(involved_entities)} entities, fields: {sorted(involved_fields)}"
 
-    logger.info("[ConflictExtractor] %d conflicts extracted (%s), sources=%d, fields=%d",
-                total, trigger_path, len(involved_sources), len(involved_fields))
+    logger.info("[ConflictExtractor] %d conflicts extracted (%s), sources=%d, entities=%d, fields=%d",
+                total, trigger_path, len(involved_sources), len(involved_entities), len(involved_fields))
 
     return {
         "trigger_path": trigger_path,
         "total_conflicts": total,
         "conflicts": conflicts,
         "involved_sources": sorted(involved_sources),
+        "involved_entities": sorted(involved_entities),
         "involved_fields": sorted(involved_fields),
         "summary": summary,
     }
