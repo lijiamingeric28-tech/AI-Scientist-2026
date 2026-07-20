@@ -134,6 +134,8 @@ class ResolutionReasoningAgent:
             llm_input_data.append({
                 "conflict_id": cid,
                 "field_name": c.get("field_name", ""),
+                "entity_type": c.get("entity_type", ""),
+                "entity_name": c.get("entity_name", ""),
                 "semantic_type": c.get("semantic_type", ""),
                 "criticality": ctx.get("field_criticality", "important"),
                 "source_a": {
@@ -362,7 +364,9 @@ class ResolutionReasoningAgent:
                         "conflict_id": r["conflict_id"],
                         "action": "normalize",
                         "target_source": r.get("target_source", "*"),
-                        "field": r.get("conflict_id", ""),  # will be enriched by agent
+                        "entity_type": r.get("entity_type", ""),
+                        "entity_name": r.get("entity_name", ""),
+                        "field": r.get("field_name", r.get("conflict_id", "")),
                         "new_value": r.get("resolved_value"),
                         "reason": "; ".join(r.get("reasoning_chain", [])),
                     })

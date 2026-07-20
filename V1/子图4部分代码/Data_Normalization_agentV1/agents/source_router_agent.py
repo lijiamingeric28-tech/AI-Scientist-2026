@@ -56,6 +56,8 @@ class SourceRouterAgent:
                 if source_id:
                     conflict_actions.append({
                         "source_id": source_id, "field": field,
+                        "entity_type": action.get("entity_type", ""),
+                        "entity_name": action.get("entity_name", ""),
                         "new_value": new_value, "action": action.get("action", "normalize"),
                         "reason": action.get("reason", ""),
                     })

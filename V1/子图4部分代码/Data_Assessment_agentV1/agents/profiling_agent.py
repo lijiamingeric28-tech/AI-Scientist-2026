@@ -65,7 +65,8 @@ def _field_profiler(data: dict[str, Any]) -> list[dict[str, Any]]:
 
     stats = []
     for fn, vals in sorted(field_groups.items()):
-        numeric_vals = [v for v in vals if isinstance(v, (int, float))]
+        from tools._parse_utils import is_numeric, parse_numeric
+        numeric_vals = [parse_numeric(v) for v in vals if is_numeric(v)]
         null_count = sum(1 for v in vals if v is None)
         sample = vals[:5]
 

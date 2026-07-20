@@ -86,26 +86,33 @@ class DecisionReasoningAgent:
             if unit_issues:
                 issues_found.append(f"unit_inconsistency: {sorted(unit_issues.keys())}")
 
-            # 5b. 单位与标准不符 (直接查 target_schema)
+            # 5b. 单位与标准不符 (V1.1: entity 感知)
             target_schema = state.get("context_state", {}).get("target_schema", {})
             schema_fields = {f.get("name"): f.get("standard_unit") for f in target_schema.get("fields", [])
                              if f.get("standard_unit")}
             ds = state.get("data_state", {}).get("current_data", {})
             src_records = [r for r in ds.get("records", []) if r.get("source_id") == sid]
-            for fn in set(r.get("field_name") for r in src_records):
+
+            def _norm_unit(u):
+                return (u or "").replace("°", "").replace("℃", "C").strip()
+
+            # 按 (entity, field_name) 分组检查单位
+            entity_unit_groups: dict[tuple, set] = {}
+            for r in src_records:
+                fn = r.get("field_name", "")
                 std_unit = schema_fields.get(fn)
-                if not std_unit:
+                if not std_unit or not r.get("field_unit"):
                     continue
-                current_units = {r.get("field_unit") for r in src_records
-                                 if r.get("field_name") == fn and r.get("field_unit")}
-                if not current_units:
-                    continue  # already caught by missing_units check
-                # 标准化比较: "C" = "°C" = "℃"
-                def _norm_unit(u): return (u or "").replace("°","").replace("℃","C").strip()
-                norm_current = {_norm_unit(u) for u in current_units}
+                key = (r.get("entity_type", ""), r.get("entity_name", ""), fn)
+                entity_unit_groups.setdefault(key, set()).add(r["field_unit"])
+
+            for (et, en, fn), units in entity_unit_groups.items():
+                std_unit = schema_fields.get(fn)
+                norm_current = {_norm_unit(u) for u in units}
                 norm_std = _norm_unit(std_unit)
                 if norm_current != {norm_std}:
-                    issues_found.append(f"unit_mismatch: {fn} has {sorted(current_units)} (expected {std_unit})")
+                    entity_label = f" ({et}:{en})" if en else ""
+                    issues_found.append(f"unit_mismatch: {fn}{entity_label} has {sorted(units)} (expected {std_unit})")
 
             # 6. 冲突 — 不计入 issues_found, 单独用 has_conflict 判断路由
             has_conflict = sr_conflict.get("has_conflicts", False)

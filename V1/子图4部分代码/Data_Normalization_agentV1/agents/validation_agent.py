@@ -22,7 +22,8 @@ class ValidationAgent:
         still_missing = [f for f in expected if f not in present]
 
         # Format check
-        missing_units = sum(1 for r in records if isinstance(r.get("field_value"),(int,float)) and r.get("field_unit") is None)
+        from tools._parse_utils import is_numeric
+        missing_units = sum(1 for r in records if is_numeric(r.get("field_value")) and r.get("field_unit") is None)
         missing_prov = sum(1 for r in records if not r.get("provenance") or r["provenance"].get("page") is None)
 
         # ── V2.1: Conflict check — 保存完整 conflicts 数组 (P1-2 fix) ──
