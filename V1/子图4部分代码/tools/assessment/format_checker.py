@@ -89,23 +89,20 @@ def check_format(data: dict[str, Any]) -> dict[str, Any]:
                     body = stripped[len(p):].strip()
                     break
 
-            # 尝试解析 body 为数字
+            # V1.1: 使用 parse_numeric 处理 ± 不确定度
             if body:
-                try:
-                    float(body)
-                    # 成功：是有效的带前缀数值
+                from tools._parse_utils import parse_numeric
+                if parse_numeric(body) is not None:
                     if prefix:
                         logger.debug("带前缀数值: '%s' (prefix='%s', body='%s')",
                                      stripped, prefix, body)
-                except ValueError:
-                    # body 不是纯数字，检查是否为纯文本
-                    if prefix:
-                        string_issues.append({
-                            "record_id": record_id,
-                            "field_name": field_name,
-                            "value": value,
-                            "issue": f"前缀 '{prefix}' 后不是有效数值: '{body}'",
-                        })
+                elif prefix:
+                    string_issues.append({
+                        "record_id": record_id,
+                        "field_name": field_name,
+                        "value": value,
+                        "issue": f"前缀 '{prefix}' 后不是有效数值: '{body}'",
+                    })
 
     total_issues = len(record_id_issues) + len(numeric_issues) + len(string_issues)
 
