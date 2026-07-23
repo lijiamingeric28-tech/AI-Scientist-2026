@@ -2,7 +2,11 @@
 检索子图的State定义
 """
 
-from typing import TypedDict, NotRequired, Any, Dict
+from typing import TypedDict, Any, Dict
+try:
+    from typing import NotRequired  # Python 3.11+
+except ImportError:
+    from typing_extensions import NotRequired  # Python 3.10
 from shared.models.clarified_intent import ClarifiedIntent
 from shared.models.paper_metadata import PaperMetadata
 

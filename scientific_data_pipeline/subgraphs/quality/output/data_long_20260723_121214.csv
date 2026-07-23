@@ -1,0 +1,2 @@
+﻿source_id,entity_type,entity_name,field_name,field_value,field_unit,page,bbox
+s1,test,Test1,temp,25.0,K,1,"[0, 0, 1, 1]"

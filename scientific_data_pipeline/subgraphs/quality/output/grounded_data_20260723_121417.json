@@ -1,0 +1,49 @@
+{
+  "sources": [
+    {
+      "source_id": "s1"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1",
+      "source_id": "s1",
+      "field_name": "density",
+      "field_value": 7.85,
+      "field_unit": "g/cm3",
+      "entity_type": "test",
+      "entity_name": "T1",
+      "trace_id": "t1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "extraction_method": "vlm_text"
+    },
+    {
+      "record_id": "2",
+      "source_id": "s1",
+      "field_name": "hardness",
+      "field_value": 200,
+      "field_unit": "HV",
+      "entity_type": "test",
+      "entity_name": "T1",
+      "trace_id": "t2",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "extraction_method": "vlm_text"
+    }
+  ]
+}

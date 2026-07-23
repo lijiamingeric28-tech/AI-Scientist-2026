@@ -1,0 +1,4 @@
+﻿source_id,entity_type,entity_name,field_name,field_value,field_unit,page,bbox
+s1,alloy,Al7075,temperature,200,C,1,"[0, 0, 1, 1]"
+s1,alloy,Al7075,yield_strength,450,MPa,1,"[0, 0, 1, 1]"
+s2,alloy,Al7075,yield_strength,438,MPa,2,"[0, 0, 1, 1]"

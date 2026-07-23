@@ -1,0 +1,159 @@
+{
+  "field_definitions": {
+    "dispersion_measure": {
+      "standard_unit": "cm^-3 pc",
+      "semantic_type": null,
+      "criticality": "important",
+      "aliases": [],
+      "description": "Dispersion measure (DM) measures the integrated column density of free electrons along the line of sight, typically to a pulsar or fast radio burst, in units of cm^-3 pc."
+    },
+    "redshift": {
+      "standard_unit": "",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Redshift (z) measures the relative stretching of light's wavelength due to cosmic expansion or relative motion, a dimensionless quantity."
+    },
+    "flux": {
+      "standard_unit": "Jy",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Flux density (S) measures the power received per unit area per unit frequency from an astronomical source, in janskys (Jy)."
+    },
+    "fluence": {
+      "standard_unit": "Jy ms",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Fluence measures the time-integrated flux density of a transient event, in units of Jy ms, representing the total energy received per unit area."
+    },
+    "luminosity": {
+      "standard_unit": "erg/s",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Luminosity (L) measures the total energy emitted per unit time by an astronomical source, in erg per second."
+    },
+    "distance": {
+      "standard_unit": "Mpc",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Distance measures the line-of-sight separation between Earth and the astronomical source, in megaparsecs (Mpc)."
+    },
+    "event_rate": {
+      "standard_unit": "Gpc^-3 yr^-1",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Event rate measures the volumetric occurrence rate of transient events, in units of events per cubic gigaparsec per year (Gpc^-3 yr^-1)."
+    },
+    "rotation_measure": {
+      "standard_unit": "rad m^-2",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Rotation measure (RM) quantifies the Faraday rotation of polarized radio emission caused by a magnetized plasma along the line of sight, in radians per square meter (rad m^-2)."
+    },
+    "scattering_timescale": {
+      "standard_unit": "ms",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Scattering timescale measures the temporal broadening of a pulse due to multipath propagation through an inhomogeneous plasma, in milliseconds."
+    },
+    "spectral_index": {
+      "standard_unit": "",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Spectral index (α) quantifies the power-law slope of the flux density as a function of frequency, a dimensionless number typically defined such that flux ∝ ν^{α}."
+    },
+    "magnetic_field": {
+      "standard_unit": "G",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Magnetic field strength (B) measures the intensity of the magnetic field, in gauss (G), often along the line of sight or averaged over a region."
+    },
+    "electron_density": {
+      "standard_unit": "cm^-3",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Electron density (n_e) measures the number of free electrons per unit volume in a plasma, in particles per cubic centimeter (cm^-3)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 4,
+    "sources_exported": 4,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 17,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 36,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 46,
+        "quality_grade": "good",
+        "final_route": "Export"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 4,
+      "overall_quality": "good",
+      "total_issues": 0
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 32
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T11:30:16.274112",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "astronomy"
+  },
+  "field_descriptions_llm": true
+}

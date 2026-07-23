@@ -85,7 +85,7 @@ class Record(BaseModel):
         description="物理溯源坐标（页码 + bbox）。",
     )
 
-    extraction_method: Literal["llm_text", "llm_table"] = Field(
+    extraction_method: Literal["llm_text", "llm_table", "vlm_text"] = Field(
         ...,
-        description="提取方式：llm_text（文字段落提取）或 llm_table（表格提取）。",
+        description="提取方式：llm_text（文字段落提取）/ llm_table（表格提取）/ vlm_text（VLM视觉提取）。",
     )

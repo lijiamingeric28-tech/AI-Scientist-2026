@@ -49,7 +49,7 @@ def detect_conflicts_statistical(
         与 detect_conflicts() 相同格式的结果
     """
     if not use_advanced:
-        from tools.assessment.conflict_detector import detect_conflicts
+        from subgraphs.quality.tools.assessment.conflict_detector import detect_conflicts
         return detect_conflicts(data, threshold)
 
     records = data.get("records", [])

@@ -53,7 +53,7 @@ def _merge_dict(left: dict | None, right: dict | None) -> dict:
     result = dict(left)
     for k, v in right.items():
         # 特殊处理：这些字段总是替换，不递归合并
-        if k in ("current_data", "formatted_data", "organized_data") and isinstance(v, dict):
+        if k in ("current_data", "formatted_data", "organized_data", "input_data") and isinstance(v, dict):
             result[k] = dict(v)  # 完整替换
         elif k in result and isinstance(result[k], dict) and isinstance(v, dict):
             result[k] = _merge_dict(result[k], v)

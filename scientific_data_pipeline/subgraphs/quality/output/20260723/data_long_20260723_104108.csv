@@ -1,0 +1,2 @@
+﻿source_id,entity_type,entity_name,field_name,field_value,field_unit,page,bbox
+src-test,,,yield_strength,500.0,MPa,1,"[10, 20, 30, 40]"

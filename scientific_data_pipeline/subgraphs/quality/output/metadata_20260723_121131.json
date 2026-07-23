@@ -1,0 +1,30 @@
+{
+  "field_definitions": {},
+  "source_summary": {
+    "total_sources": 0,
+    "sources_exported": 0,
+    "sources_human_review": 0,
+    "per_source": []
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 0,
+      "overall_quality": "excellent",
+      "total_issues": 0
+    },
+    "normalization": {
+      "status": "Skipped"
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T12:11:30.066599",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "materials_science"
+  },
+  "field_descriptions_llm": true
+}

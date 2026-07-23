@@ -233,11 +233,45 @@ def create_quality_wrapper() -> Callable:
         # 1. MainState → QualityGraphState
         logger.debug("Converting MainState to QualityGraphState")
 
+        # 从 grounded_data 自动构建 target_schema
+        grounded_data = state.get("grounded_data", {})
+        records = grounded_data.get("records", [])
+        intent_params = state.get("intent_params", {})
+
+        # 提取实际数据的字段和单位
+        field_units = {}
+        for r in records:
+            fn = r.get("field_name", "")
+            fu = r.get("field_unit", "")
+            if fn not in field_units:
+                field_units[fn] = set()
+            if fu:
+                field_units[fn].add(fu)
+
+        target_schema = {
+            "fields": [
+                {"name": fn, "standard_unit": sorted(units)[0] if units else ""}
+                for fn, units in sorted(field_units.items())
+            ]
+        }
+
+        # 推断领域
+        entity_types = {r.get("entity_type", "") for r in records}
+        research_domain = state.get("query_context", {}).get("domain", "")
+        if not research_domain:
+            if "FRB" in str(entity_types) or "pulsar" in str(entity_types).lower():
+                research_domain = "astronomy"
+            else:
+                research_domain = "materials_science"
+
+        logger.info(f"Auto-detected: domain={research_domain}, schema_fields={len(target_schema['fields'])}")
+
         # 构建质检子图的输入
         quality_input = {
             "context_state": {
-                "clarified_intent": state.get("intent_params", {}),
-                "research_domain": "astronomy",  # 默认天文领域
+                "clarified_intent": intent_params,
+                "research_domain": research_domain,
+                "target_schema": target_schema,
             },
             "data_state": {
                 "input_data": state.get("grounded_data", {}),
@@ -317,80 +351,3 @@ def create_quality_wrapper() -> Callable:
         return state
 
     return quality_wrapper_node
-
-
-def create_quality_wrapper() -> Callable:
-    """
-    创建Quality子图的wrapper
-
-    输入: MainState（包含grounded_data）
-    输出: MainState（添加final_output和quality_summary）
-    """
-    from subgraphs.quality.graph import compile_quality_graph
-    from subgraphs.quality.state import QualityGraphState
-
-    quality_graph = compile_quality_graph()
-
-    def quality_wrapper(state: MainState) -> MainState:
-        """Quality子图的wrapper函数"""
-        logger.info("Executing quality control subgraph")
-
-        # 1. MainState → QualityGraphState
-        grounded_data = state.get("grounded_data", {})
-        intent_params = state.get("intent_params", {})
-
-        quality_input: QualityGraphState = {
-            "context_state": {
-                "clarified_intent": intent_params,
-                "research_domain": "astronomy",
-            },
-            "data_state": {
-                "input_data": grounded_data,
-                "current_data": grounded_data,
-                "data_trace": [],
-            },
-            "report_state": {},
-            "workflow_state": {
-                "current_node": "start",
-                "execution_status": "Success",
-                "iteration_counter": 0,
-                "retry_counter": 0,
-                "route_decision": "",
-                "workflow_history": [],
-            },
-            "output_state": {},
-        }
-
-        # 2. 调用Quality子图
-        logger.info("Invoking quality subgraph")
-        quality_output = quality_graph.invoke(quality_input)
-
-        # 3. QualityGraphState → MainState
-        logger.info("Converting quality output back to MainState")
-
-        output_state = quality_output.get("output_state", {})
-        report_state = quality_output.get("report_state", {})
-
-        # structured_data的结构是: {json: {sources, records}, csv: "...", ...}
-        structured_data = output_state.get("structured_data", {})
-        json_data = structured_data.get("json", {})
-
-        state["final_output"] = {
-            "sources": json_data.get("sources", []),
-            "records": json_data.get("records", []),
-            "schema_version": "1.1.0",
-        }
-
-        state["quality_summary"] = {
-            "quality_report": report_state.get("quality"),
-            "conflict_report": report_state.get("conflict"),
-            "normalization_report": report_state.get("normalization"),
-            "export_path": output_state.get("export_path", ""),
-            "row_count": structured_data.get("row_count", 0),
-            "column_count": structured_data.get("column_count", 0),
-        }
-
-        logger.info("Quality subgraph completed successfully")
-        return state
-
-    return quality_wrapper

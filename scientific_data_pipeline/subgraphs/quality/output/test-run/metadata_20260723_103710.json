@@ -1,0 +1,76 @@
+{
+  "field_definitions": {
+    "yield_strength": {
+      "standard_unit": "MPa",
+      "semantic_type": "mechanical_stress",
+      "criticality": "important",
+      "aliases": [],
+      "description": "yield_strength (mechanical_stress), measured in MPa"
+    },
+    "tensile_strength": {
+      "standard_unit": "MPa",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "tensile_strength (), measured in MPa"
+    },
+    "temperature": {
+      "standard_unit": "K",
+      "semantic_type": "temperature",
+      "criticality": "important",
+      "aliases": [],
+      "description": "temperature (temperature), measured in K"
+    },
+    "elongation": {
+      "standard_unit": "%",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "elongation (), measured in %"
+    }
+  },
+  "source_summary": {
+    "total_sources": 1,
+    "sources_exported": 1,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "src-001",
+        "title": "Test Paper: Material Properties",
+        "year": 2024,
+        "journal": "Test Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 1,
+      "overall_quality": "excellent",
+      "total_issues": 3
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 0
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T10:37:10.324297",
+    "run_id": "test-run",
+    "graph_version": "V2.1",
+    "research_domain": "materials_science"
+  },
+  "field_descriptions_llm": false
+}

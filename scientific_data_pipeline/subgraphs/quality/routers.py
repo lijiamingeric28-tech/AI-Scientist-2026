@@ -125,6 +125,7 @@ ASSESSMENT_ROUTE_MAP: dict[str, str] = {
 
 NORMALIZATION_ROUTE_MAP: dict[str, str] = {
     "Export": NODE_EXPORT,         # B→D: 清洗完成直接导出
+    "Conflict": NODE_CONFLICT,     # B→C: 清洗后仍需冲突分析
     "HumanReview": NODE_HUMAN_REVIEW,
     "": NODE_EXPORT,                # 默认出口
 }

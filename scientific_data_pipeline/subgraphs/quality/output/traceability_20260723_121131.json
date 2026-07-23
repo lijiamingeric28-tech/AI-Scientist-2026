@@ -1,0 +1,77 @@
+{
+  "data_lineage": {
+    "input": {
+      "sources": 0,
+      "records": 0,
+      "grounded_data_version": "unknown",
+      "received_at": ""
+    },
+    "processing": [
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "8 tools, 0 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 0.042,
+        "reason": "0 sources (parallel), 0 issues, 0 conflicts"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 0.044,
+        "reason": "0 sources, overall=0.00 (excellent)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "0 sources, distribution={}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=0 Conflict=0 Export=0 Human=0"
+      },
+      {
+        "stage": "DataOrganization",
+        "agent": "DataOrganizationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Organized 0 records (0 standard + 0 extra fields)"
+      },
+      {
+        "stage": "SchemaFormatting",
+        "agent": "SchemaFormattingAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Exported 0 rows × 1 cols, 0 format issues"
+      },
+      {
+        "stage": "MetadataGeneration",
+        "agent": "MetadataGenerationAgent",
+        "status": "Success",
+        "duration_s": 1.708,
+        "reason": "Generated 0 field definitions (LLM=True)"
+      }
+    ],
+    "output": {
+      "sources": 0,
+      "records": 0,
+      "standard_compliant": true,
+      "generated_at": ""
+    }
+  },
+  "trace_completeness": {},
+  "modified_count": 0,
+  "decision_count": 8
+}

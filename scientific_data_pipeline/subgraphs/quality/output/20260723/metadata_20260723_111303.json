@@ -1,0 +1,82 @@
+{
+  "field_definitions": {
+    "dispersion_measure": {
+      "standard_unit": "cm^-3 pc",
+      "semantic_type": null,
+      "criticality": "important",
+      "aliases": [],
+      "description": "dispersion_measure (None), measured in cm^-3 pc"
+    }
+  },
+  "source_summary": {
+    "total_sources": 4,
+    "sources_exported": 4,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 17,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 36,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 46,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 4,
+      "overall_quality": "excellent",
+      "total_issues": 0
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 0
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T11:13:03.153114",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "astronomy"
+  },
+  "field_descriptions_llm": false
+}

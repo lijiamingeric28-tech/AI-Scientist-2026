@@ -1,0 +1,30 @@
+{
+  "overall_score": 0.825,
+  "quality_level": "good",
+  "calibrated_confidence": 0.38,
+  "confidence_breakdown": {
+    "data_volume": 0.3,
+    "agreement": 0.5,
+    "sparsity": 0.3
+  },
+  "processing_statistics": {
+    "total_llm_calls": 1,
+    "total_tool_calls": 15,
+    "total_elapsed_seconds": 160.48,
+    "b_c_loop_iterations": 1
+  },
+  "issues_summary": {
+    "assessment_issues": 2,
+    "normalization_modifications": 0,
+    "conflicts_resolved": 0,
+    "remaining_issues": 0
+  },
+  "risk_indicators": {
+    "has_human_review_items": false,
+    "has_unresolved_conflicts": false,
+    "has_unconverted_units": false,
+    "data_completeness_warning": false,
+    "validation_passed": true
+  },
+  "recommendation": "Data ready for analysis. Quality level: good. No significant risks detected."
+}

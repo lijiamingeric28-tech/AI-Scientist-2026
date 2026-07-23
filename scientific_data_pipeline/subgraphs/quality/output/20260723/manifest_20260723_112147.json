@@ -1,0 +1,15 @@
+{
+  "exported_at": "2026-07-23T11:21:47.986244",
+  "output_dir": "C:\\Users\\YOGA\\Desktop\\挑战杯\\AI-Scientist-2026\\scientific_data_pipeline\\subgraphs\\quality\\output\\20260723",
+  "files": [
+    "grounded_data_20260723_112147.json",
+    "data_long_20260723_112147.csv",
+    "data_wide_20260723_112147.csv",
+    "quality_summary_20260723_112147.json",
+    "metadata_20260723_112147.json",
+    "traceability_20260723_112147.json"
+  ],
+  "validation_passed": false,
+  "row_count": 102,
+  "quality_level": "excellent"
+}

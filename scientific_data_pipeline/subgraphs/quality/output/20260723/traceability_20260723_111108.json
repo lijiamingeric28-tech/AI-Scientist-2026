@@ -1,0 +1,175 @@
+{
+  "data_lineage": {
+    "input": {
+      "sources": 4,
+      "records": 102,
+      "grounded_data_version": "1.1.0",
+      "received_at": ""
+    },
+    "processing": [
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.062,
+        "reason": "8 tools, 102 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 1.163,
+        "reason": "4 sources (parallel), 0 issues, 0 conflicts"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 0.054,
+        "reason": "4 sources, overall=0.97 (excellent)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "4 sources, distribution={'Export': 3, 'Normalization': 1}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=1 Conflict=0 Export=3 Human=0"
+      },
+      {
+        "stage": "SourceRouter",
+        "agent": "SourceRouterAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "1 to normalize, 3 skipped"
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "1 sources planned (method=rule_engine)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "0 mods (PARALLEL, base=0 adapted=0 generated=0)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Valid=True, conflicts=0, route=Export"
+      },
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.062,
+        "reason": "8 tools, 102 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 1.163,
+        "reason": "4 sources (parallel), 0 issues, 0 conflicts"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 0.054,
+        "reason": "4 sources, overall=0.97 (excellent)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "4 sources, distribution={'Export': 3, 'Normalization': 1}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=1 Conflict=0 Export=3 Human=0"
+      },
+      {
+        "stage": "SourceRouter",
+        "agent": "SourceRouterAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "1 to normalize, 3 skipped"
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "1 sources planned (method=rule_engine)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "0 mods (PARALLEL, base=0 adapted=0 generated=0)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Valid=True, conflicts=0, route=Export"
+      },
+      {
+        "stage": "Report",
+        "agent": "ReportAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Completed"
+      },
+      {
+        "stage": "DataOrganization",
+        "agent": "DataOrganizationAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "Organized 102 records (1 standard + 0 extra fields)"
+      },
+      {
+        "stage": "SchemaFormatting",
+        "agent": "SchemaFormattingAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "Exported 102 rows × 2 cols, 36 format issues"
+      },
+      {
+        "stage": "MetadataGeneration",
+        "agent": "MetadataGenerationAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "Generated 2 field definitions (LLM=False)"
+      }
+    ],
+    "output": {
+      "sources": 4,
+      "records": 102,
+      "standard_compliant": true,
+      "generated_at": ""
+    }
+  },
+  "trace_completeness": {},
+  "modified_count": 0,
+  "decision_count": 22
+}

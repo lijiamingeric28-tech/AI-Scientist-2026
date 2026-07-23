@@ -1,0 +1,92 @@
+{
+  "sources": [
+    {
+      "source_id": "s1",
+      "source_type": "paper",
+      "doi": "10.1234/a",
+      "title": "Paper A",
+      "authors": [
+        "A"
+      ],
+      "year": 2024,
+      "journal": "Test J",
+      "access_path": "/t",
+      "retrieval_priority": 0.9
+    },
+    {
+      "source_id": "s2",
+      "source_type": "paper",
+      "doi": "10.1234/b",
+      "title": "Paper B",
+      "authors": [
+        "B"
+      ],
+      "year": 2024,
+      "journal": "Test J",
+      "access_path": "/t",
+      "retrieval_priority": 0.8
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2",
+      "source_id": "s1",
+      "field_name": "temperature",
+      "field_value": 200,
+      "field_unit": "C",
+      "entity_type": "alloy",
+      "entity_name": "Al7075",
+      "trace_id": "t2",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "extraction_method": "llm_table"
+    },
+    {
+      "record_id": "1",
+      "source_id": "s1",
+      "field_name": "yield_strength",
+      "field_value": 450,
+      "field_unit": "MPa",
+      "entity_type": "alloy",
+      "entity_name": "Al7075",
+      "trace_id": "t1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "extraction_method": "llm_text"
+    },
+    {
+      "record_id": "3",
+      "source_id": "s2",
+      "field_name": "yield_strength",
+      "field_value": 438,
+      "field_unit": "MPa",
+      "entity_type": "alloy",
+      "entity_name": "Al7075",
+      "trace_id": "t3",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "extraction_method": "llm_text"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "field_definitions": {
+    "temperature": {
+      "standard_unit": "C",
+      "semantic_type": "temperature",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Temperature of the material or environment, measured in degrees Celsius (°C)."
+    },
+    "yield_strength": {
+      "standard_unit": "MPa",
+      "semantic_type": "mechanical_stress",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Yield strength, the mechanical stress at which a material begins to deform plastically, measured in megapascals (MPa)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 2,
+    "sources_exported": 2,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "s1",
+        "title": "Paper A",
+        "year": 2024,
+        "journal": "Test J",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "s2",
+        "title": "Paper B",
+        "year": 2024,
+        "journal": "Test J",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 2,
+      "overall_quality": "good",
+      "total_issues": 2
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 8
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T12:13:31.340197",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "materials_science"
+  },
+  "field_descriptions_llm": true
+}

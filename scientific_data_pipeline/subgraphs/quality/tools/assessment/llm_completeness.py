@@ -15,7 +15,7 @@ import json
 import re
 from typing import Any
 
-from utils.llm import set_agent_context, get_llm
+from subgraphs.quality.utils.llm import set_agent_context, get_llm
 from subgraphs.quality.utils.logger import get_logger
 
 logger = get_logger(__name__)

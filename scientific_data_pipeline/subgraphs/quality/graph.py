@@ -83,7 +83,7 @@ def dispatch_node(state: QualityGraphState) -> dict[str, Any]:
 
 def human_review_node(state: QualityGraphState) -> dict[str, Any]:
     """Human Review — 命令行交互。"""
-    from Data_HumanReview_agentV1.human_review_agent import HumanReviewAgent
+    from subgraphs.quality.Data_HumanReview_agentV1.human_review_agent import HumanReviewAgent
     return HumanReviewAgent().run(state)
 
 
@@ -127,7 +127,9 @@ def route_after_dispatch(state: QualityGraphState) -> str:
 def route_after_normalization(state: QualityGraphState) -> str:
     """
     Normalization 完成后:
-      - 来自 Assessment (A→B) → Export (A→B→D)
+      - 来自 Assessment (A→B):
+          - 无冲突 → Export (A→B→D)
+          - 仍需冲突分析 → Conflict (B→C)
       - 来自 Conflict  (C→B) → Conflict (C→B→C loop)
     """
     wf = state.get("workflow_state", {})
@@ -136,6 +138,15 @@ def route_after_normalization(state: QualityGraphState) -> str:
 
     if from_conflict:
         logger.info("[Router] C→B: Normalization done → back to Conflict (loop %d)", loop_count)
+        return NODE_CONFLICT
+
+    # V3.0 Merge Fix: A→B 路径 — 检查 Normalization 是否检测到剩余冲突
+    normalization = state.get("report_state", {}).get("normalization", {})
+    validation = normalization.get("validation", {})
+    needs_conflict = validation.get("needs_conflict_analysis", False)
+
+    if needs_conflict:
+        logger.info("[Router] A→B→C: Normalization detected remaining conflicts → Conflict")
         return NODE_CONFLICT
 
     logger.info("[Router] A→B→D: Normalization done → Export")
@@ -160,7 +171,8 @@ def route_after_conflict(state: QualityGraphState) -> str:
             logger.warning("[Router] C→B max loops (%d) → force Export", MAX_LOOP)
             return NODE_EXPORT
         logger.info("[Router] C→B: Need normalization (loop %d/%d)", loop_count, MAX_LOOP)
-        return "pre_normalization"  # 走 pre_norm → Normalization
+        # Merge Fix: 返回 NODE_NORMALIZATION, conditional edge map 会映射到 "pre_normalization"
+        return NODE_NORMALIZATION
     elif route == "HumanReview":
         return NODE_HUMAN_REVIEW
     else:
@@ -218,7 +230,7 @@ def build_quality_graph() -> StateGraph[QualityGraphState]:
 
     graph: StateGraph[QualityGraphState] = StateGraph(QualityGraphState)
 
-    # 节点
+    # 节点 — 与 V1 一致: 使用预编译的子图作为节点
     graph.add_node(NODE_ASSESSMENT, build_assessment_graph().compile())
     graph.add_node(NODE_NORMALIZATION, build_normalization_graph().compile())
     graph.add_node(NODE_CONFLICT, build_conflict_graph().compile())

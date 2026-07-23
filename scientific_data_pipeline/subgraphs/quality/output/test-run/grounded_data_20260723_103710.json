@@ -1,0 +1,55 @@
+{
+  "sources": [
+    {
+      "source_id": "src-001",
+      "source_type": "paper",
+      "doi": "10.1234/test.2024",
+      "title": "Test Paper: Material Properties",
+      "authors": [
+        "Author A"
+      ],
+      "year": 2024,
+      "journal": "Test Journal",
+      "access_path": "/test/path",
+      "retrieval_priority": 0.9
+    }
+  ],
+  "records": [
+    {
+      "record_id": "rec-002",
+      "source_id": "src-001",
+      "field_name": "temperature",
+      "field_value": 200.0,
+      "field_unit": "C",
+      "trace_id": "t2",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          100,
+          300,
+          150,
+          315
+        ]
+      },
+      "extraction_method": "llm_text"
+    },
+    {
+      "record_id": "rec-001",
+      "source_id": "src-001",
+      "field_name": "yield_strength",
+      "field_value": 450.0,
+      "field_unit": "MPa",
+      "trace_id": "t1",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          100,
+          200,
+          150,
+          215
+        ]
+      },
+      "extraction_method": "llm_text"
+    }
+  ]
+}

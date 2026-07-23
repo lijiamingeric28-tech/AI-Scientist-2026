@@ -19,13 +19,20 @@ logger = get_logger(__name__)
 # Base Tool 注册表
 _BASE_TOOLS = {}
 
-# AST 白名单: 允许的节点类型
+# AST 白名单: 允许的节点类型 (含操作符, ast.walk 会遍历 op 子节点)
 _ALLOWED_AST_NODES = {
     ast.Module, ast.FunctionDef, ast.Return, ast.Assign, ast.Expr,
     ast.Call, ast.Name, ast.Load, ast.Store, ast.Constant, ast.arg,
     ast.arguments, ast.BinOp, ast.UnaryOp, ast.Compare, ast.BoolOp,
     ast.If, ast.For, ast.While, ast.Attribute, ast.Subscript, ast.Index,
     ast.List, ast.Dict, ast.Tuple, ast.Set, ast.ListComp, ast.DictComp,
+    # 操作符 (ast.walk 会遍历到 BinOp/UnaryOp/Compare/BoolOp 的 op 子节点)
+    ast.Add, ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Pow,
+    ast.USub, ast.UAdd, ast.Not, ast.Invert,
+    ast.Eq, ast.NotEq, ast.Lt, ast.LtE, ast.Gt, ast.GtE, ast.Is, ast.IsNot,
+    ast.In, ast.NotIn, ast.And, ast.Or,
+    # 推导式中的迭代器
+    ast.comprehension,
     ast.comprehension, ast.Slice, ast.Add, ast.Sub, ast.Mult, ast.Div,
     ast.Mod, ast.Pow, ast.Eq, ast.NotEq, ast.Lt, ast.Gt, ast.LtE, ast.GtE,
     ast.And, ast.Or, ast.Not, ast.In, ast.NotIn, ast.Is, ast.IsNot,

@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "source_id": "s1"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1",
+      "source_id": "s1",
+      "field_name": "temp",
+      "field_value": 25.0,
+      "field_unit": "K",
+      "entity_type": "test",
+      "entity_name": "Test1",
+      "trace_id": "t1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "extraction_method": "vlm_text"
+    }
+  ]
+}

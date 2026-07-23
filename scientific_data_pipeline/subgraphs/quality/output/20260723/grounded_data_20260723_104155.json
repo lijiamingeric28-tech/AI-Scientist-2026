@@ -1,0 +1,37 @@
+{
+  "sources": [
+    {
+      "source_id": "src-test",
+      "source_type": "paper",
+      "doi": "10.1234/test.2025",
+      "title": "Test: Clean Data",
+      "authors": [
+        "Author X"
+      ],
+      "year": 2025,
+      "journal": "Nature Materials",
+      "access_path": "/test",
+      "retrieval_priority": 0.95
+    }
+  ],
+  "records": [
+    {
+      "record_id": "rec-test-1",
+      "source_id": "src-test",
+      "field_name": "yield_strength",
+      "field_value": 500.0,
+      "field_unit": "MPa",
+      "trace_id": "t1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          10,
+          20,
+          30,
+          40
+        ]
+      },
+      "extraction_method": "llm_table"
+    }
+  ]
+}

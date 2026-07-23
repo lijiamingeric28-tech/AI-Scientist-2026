@@ -1,0 +1,159 @@
+{
+  "field_definitions": {
+    "dispersion_measure": {
+      "standard_unit": "cm^-3 pc",
+      "semantic_type": null,
+      "criticality": "important",
+      "aliases": [],
+      "description": "The dispersion measure is the integrated column density of free electrons along the line of sight, measured in cm⁻³ pc."
+    },
+    "redshift": {
+      "standard_unit": "",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Redshift is the fractional shift in the wavelength of spectral lines due to cosmic expansion, a dimensionless quantity."
+    },
+    "flux": {
+      "standard_unit": "Jy",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Flux is the energy received per unit time per unit area per unit frequency, measured in Jy."
+    },
+    "fluence": {
+      "standard_unit": "Jy ms",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Fluence is the time-integrated flux of a transient event, measured in Jy ms."
+    },
+    "luminosity": {
+      "standard_unit": "erg/s",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Luminosity is the total power radiated by a source, measured in erg s⁻¹."
+    },
+    "distance": {
+      "standard_unit": "Mpc",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Distance is the line-of-sight separation to an astronomical object, measured in Mpc."
+    },
+    "event_rate": {
+      "standard_unit": "Gpc^-3 yr^-1",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Event rate is the volumetric rate of transient events, measured in Gpc⁻³ yr⁻¹."
+    },
+    "rotation_measure": {
+      "standard_unit": "rad m^-2",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Rotation measure quantifies Faraday rotation of polarized light due to magnetic fields and free electrons along the line of sight, measured in rad m⁻²."
+    },
+    "scattering_timescale": {
+      "standard_unit": "ms",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Scattering timescale is the temporal broadening of a pulse due to multi-path scattering in the interstellar medium, measured in ms."
+    },
+    "spectral_index": {
+      "standard_unit": "",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Spectral index describes the slope of the flux density spectrum assuming a power-law, a dimensionless quantity."
+    },
+    "magnetic_field": {
+      "standard_unit": "G",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Magnetic field is the strength of the magnetic field in the source or propagation medium, measured in G."
+    },
+    "electron_density": {
+      "standard_unit": "cm^-3",
+      "semantic_type": "",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Electron density is the number of free electrons per unit volume, measured in cm⁻³."
+    }
+  },
+  "source_summary": {
+    "total_sources": 4,
+    "sources_exported": 4,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 17,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 36,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 46,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 4,
+      "overall_quality": "good",
+      "total_issues": 0
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 36
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T11:50:10.465538",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "astronomy"
+  },
+  "field_descriptions_llm": true
+}

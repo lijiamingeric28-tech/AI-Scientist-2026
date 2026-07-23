@@ -1,0 +1,62 @@
+{
+  "field_definitions": {
+    "density": {
+      "standard_unit": "g/cm3",
+      "semantic_type": "temperature",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Density of the material, measured in grams per cubic centimeter (g/cm³)."
+    },
+    "hardness": {
+      "standard_unit": "HV",
+      "semantic_type": "hardness",
+      "criticality": "important",
+      "aliases": [],
+      "description": "Hardness of the material, measured using the Vickers hardness scale (HV)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 1,
+    "sources_exported": 1,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "s1",
+        "title": "",
+        "year": null,
+        "journal": "",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 1,
+      "overall_quality": "good",
+      "total_issues": 2
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 0
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T12:14:12.770913",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "materials_science"
+  },
+  "field_descriptions_llm": true
+}

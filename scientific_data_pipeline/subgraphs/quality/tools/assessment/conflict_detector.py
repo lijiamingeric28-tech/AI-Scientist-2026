@@ -15,7 +15,7 @@ _DEFAULT_THRESHOLD = 0.20
 def _is_condition_field(field_name: str) -> bool:
     """从 semantic_type 推断是否为条件字段 (V1.1: 不再硬编码字段名)。"""
     try:
-        from tools.assessment.semantic_type import _load_semantic_rules
+        from subgraphs.quality.tools.assessment.semantic_type import _load_semantic_rules
         rules = _load_semantic_rules()
         fn_lower = field_name.lower()
         # 检查语义类型
