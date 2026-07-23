@@ -1,0 +1,74 @@
+{
+  "field_definitions": {},
+  "source_summary": {
+    "total_sources": 4,
+    "sources_exported": 4,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "W1554821233",
+        "title": "Evidence for Reionization at [ITAL][CLC]z[/CLC][/ITAL] ∼ 6: Detection of a Gunn-Peterson Trough in a [ITAL][CLC]z[/CLC][/ITAL] = 6.28 Quasar",
+        "year": 2001,
+        "journal": "The Astronomical Journal",
+        "record_count": 4,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2135920379",
+        "title": "Baryon acoustic oscillations in the Ly<i>α</i>forest of BOSS DR11 quasars",
+        "year": 2014,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 4,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2005411300",
+        "title": "Constraining the Evolution of the Ionizing Background and the Epoch of Reionization with<i>z</i> ~ 6 Quasars. II. A Sample of 19 Quasars",
+        "year": 2006,
+        "journal": "The Astronomical Journal",
+        "record_count": 9,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W1821429365",
+        "title": "A Survey of [CLC][ITAL]z[/ITAL][/CLC] &gt; 5.8 Quasars in the Sloan Digital Sky Survey. I. Discovery of Three New Quasars and the Spatial Density of Luminous Quasars at [CLC][ITAL]z[/ITAL][/CLC] ∼ 6",
+        "year": 2001,
+        "journal": "The Astronomical Journal",
+        "record_count": 11,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 4,
+      "overall_quality": "excellent",
+      "total_issues": 0
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 16
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T09:58:03.466075",
+    "run_id": "",
+    "graph_version": "V2.1",
+    "research_domain": "astronomy"
+  },
+  "field_descriptions_llm": true
+}

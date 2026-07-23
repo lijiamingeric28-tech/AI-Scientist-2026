@@ -1,0 +1,743 @@
+{
+  "grounded_data": {
+    "schema_version": "1.1.0",
+    "sources": [
+      {
+        "source_id": "W1554821233",
+        "source_type": "paper",
+        "doi": "10.1086/324231",
+        "title": "Evidence for Reionization at [ITAL][CLC]z[/CLC][/ITAL] ∼ 6: Detection of a Gunn-Peterson Trough in a [ITAL][CLC]z[/CLC][/ITAL] = 6.28 Quasar",
+        "authors": [
+          "R. H. Becker",
+          "Xiaohui Fan",
+          "R. L. White",
+          "Michael A. Strauss",
+          "Vijay K. Narayanan",
+          "Robert H. Lupton",
+          "James E. Gunn",
+          "James Annis",
+          "Neta A. Bahcall",
+          "J. Brinkmann",
+          "Andrew J. Connolly",
+          "István Csabai",
+          "Paul C. Czarapata",
+          "Mamoru Doi",
+          "Timothy M. Heckman",
+          "G. S. Hennessy",
+          "Željko Ivezić",
+          "G. R. Knapp",
+          "D. Q. Lamb",
+          "Timothy A. McKay",
+          "Jeffrey A. Munn",
+          "Thomas Nash",
+          "Robert C. Nichol",
+          "Jeffrey R. Pier",
+          "Gordon T. Richards",
+          "Donald P. Schneider",
+          "Chris Stoughton",
+          "Alexander S. Szalay",
+          "Aniruddha R. Thakar",
+          "Donald G. York"
+        ],
+        "year": 2001,
+        "journal": "The Astronomical Journal",
+        "access_path": "./data/papers\\W1554821233.pdf",
+        "retrieval_priority": 0.5264
+      },
+      {
+        "source_id": "W2135920379",
+        "source_type": "paper",
+        "doi": "10.1051/0004-6361/201423969",
+        "title": "Baryon acoustic oscillations in the Ly<i>α</i>forest of BOSS DR11 quasars",
+        "authors": [
+          "Timothée Delubac",
+          "Julian Bautista",
+          "Nicolás G. Busca",
+          "James Rich",
+          "D. Kirkby",
+          "S. Bailey",
+          "Andreu Font-Ribera",
+          "Anže Slosar",
+          "Khee‐Gan Lee",
+          "Matthew M. Pieri",
+          "J.–Ch. Hamilton",
+          "É. Aubourg",
+          "Michael Blomqvist",
+          "Jo Bovy",
+          "J. Brinkmann",
+          "W. Carithers",
+          "Kyle Dawson",
+          "Daniel J. Eisenstein",
+          "Satya Gontcho A Gontcho",
+          "Jean‐Paul Kneib",
+          "Jean-Marc Le Goff",
+          "Daniel Margala",
+          "Jordi Miralda‐Escudé",
+          "Adam D. Myers",
+          "Robert C. Nichol",
+          "P. Noterdaeme",
+          "Ross O’Connell",
+          "Matthew D. Olmstead",
+          "N. Palanque‐Delabrouille",
+          "Isabelle Pâris",
+          "Patrick Petitjean",
+          "Nicholas P. Ross",
+          "Graziano Rossi",
+          "David J. Schlegel",
+          "Donald P. Schneider",
+          "David H. Weinberg",
+          "Christophe Yèche",
+          "Donald G. York"
+        ],
+        "year": 2014,
+        "journal": "Astronomy and Astrophysics",
+        "access_path": "./data/papers\\W2135920379.pdf",
+        "retrieval_priority": 0.6232
+      },
+      {
+        "source_id": "W2005411300",
+        "source_type": "paper",
+        "doi": "10.1086/504836",
+        "title": "Constraining the Evolution of the Ionizing Background and the Epoch of Reionization with<i>z</i> ~ 6 Quasars. II. A Sample of 19 Quasars",
+        "authors": [
+          "Xiaohui Fan",
+          "Michael A. Strauss",
+          "R. H. Becker",
+          "R. L. White",
+          "James E. Gunn",
+          "G. R. Knapp",
+          "Gordon T. Richards",
+          "Donald P. Schneider",
+          "J. Brinkmann",
+          "M. Fukugita"
+        ],
+        "year": 2006,
+        "journal": "The Astronomical Journal",
+        "access_path": "./data/papers\\W2005411300.pdf",
+        "retrieval_priority": 0.55
+      },
+      {
+        "source_id": "W1821429365",
+        "source_type": "paper",
+        "doi": "10.1086/324111",
+        "title": "A Survey of [CLC][ITAL]z[/ITAL][/CLC] &gt; 5.8 Quasars in the Sloan Digital Sky Survey. I. Discovery of Three New Quasars and the Spatial Density of Luminous Quasars at [CLC][ITAL]z[/ITAL][/CLC] ∼ 6",
+        "authors": [
+          "Xiaohui Fan",
+          "Vijay K. Narayanan",
+          "Robert H. Lupton",
+          "Michael A. Strauss",
+          "G. R. Knapp",
+          "R. H. Becker",
+          "R. L. White",
+          "L. Pentericci",
+          "S. K. Leggett",
+          "Zoltán Haiman",
+          "James E. Gunn",
+          "Željko Ivezić",
+          "Donald P. Schneider",
+          "Scott F. Anderson",
+          "J. Brinkmann",
+          "Neta A. Bahcall",
+          "Andrew J. Connolly",
+          "István Csabai",
+          "Mamoru Doi",
+          "M. Fukugita",
+          "T. R. Geballe",
+          "E. K. Grebel",
+          "Daniel Harbeck",
+          "G. S. Hennessy",
+          "D. Q. Lamb",
+          "G. Miknaitis",
+          "Jeffrey A. Munn",
+          "Robert C. Nichol",
+          "Sadanori Okamura",
+          "Jeffrey R. Pier",
+          "Francisco Prada",
+          "Gordon T. Richards",
+          "Alexander S. Szalay",
+          "Donald G. York"
+        ],
+        "year": 2001,
+        "journal": "The Astronomical Journal",
+        "access_path": "./data/papers\\W1821429365.pdf",
+        "retrieval_priority": 0.5352
+      }
+    ],
+    "records": [
+      {
+        "record_id": "W1554821233_SDSSp_J104433.04-012502.2_redshift_0",
+        "source_id": "W1554821233",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSSp J104433.04-012502.2",
+        "field_value": 5.8,
+        "field_unit": "",
+        "trace_id": "doc0_p2",
+        "provenance": {
+          "page": 2,
+          "bbox": [
+            901,
+            1471,
+            933,
+            1486
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1554821233_SDSSp_J083643.85+005453.3_redshift_1",
+        "source_id": "W1554821233",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSSp J083643.85+005453.3",
+        "field_value": 5.82,
+        "field_unit": "",
+        "trace_id": "doc1_p2",
+        "provenance": {
+          "page": 2,
+          "bbox": [
+            434,
+            652,
+            529,
+            674
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1554821233_SDSSp_J130608.26+035626.3_redshift_2",
+        "source_id": "W1554821233",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSSp J130608.26+035626.3",
+        "field_value": 5.99,
+        "field_unit": "",
+        "trace_id": "doc2_p2",
+        "provenance": {
+          "page": 2,
+          "bbox": [
+            336,
+            674,
+            430,
+            696
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1554821233_SDSSp_J103027.10+052455.0_redshift_3",
+        "source_id": "W1554821233",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSSp J103027.10+052455.0",
+        "field_value": 6.28,
+        "field_unit": "",
+        "trace_id": "doc3_p2",
+        "provenance": {
+          "page": 2,
+          "bbox": [
+            98,
+            195,
+            623,
+            218
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2135920379_high_redshift_quasar_redshift_4",
+        "source_id": "W2135920379",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "high_redshift_quasar",
+        "field_value": "2.1 <= z <= 3.5",
+        "field_unit": "redshift",
+        "trace_id": "doc4_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            77,
+            914,
+            100,
+            934
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2135920379_high_redshift_quasar_redshift_5",
+        "source_id": "W2135920379",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "high_redshift_quasar",
+        "field_value": 2.34,
+        "field_unit": "redshift",
+        "trace_id": "doc5_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            75,
+            777,
+            1164,
+            796
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2135920379_high_redshift_quasar_redshift_6",
+        "source_id": "W2135920379",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "high_redshift_quasar",
+        "field_value": 2.34,
+        "field_unit": "redshift",
+        "trace_id": "doc6_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            931,
+            772,
+            1028,
+            794
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2135920379_high_redshift_quasar_redshift_7",
+        "source_id": "W2135920379",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "high_redshift_quasar",
+        "field_value": 2.41,
+        "field_unit": "redshift",
+        "trace_id": "doc7_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            933,
+            1111,
+            1032,
+            1133
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J1623+3112_redshift_8",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J1623+3112",
+        "field_value": 6.22,
+        "field_unit": "",
+        "trace_id": "doc8_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            338,
+            547,
+            359
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J1048+4637_redshift_9",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J1048+4637",
+        "field_value": 6.2,
+        "field_unit": "",
+        "trace_id": "doc9_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            388,
+            547,
+            409
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J1602+4228_redshift_10",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J1602+4228",
+        "field_value": 6.07,
+        "field_unit": "",
+        "trace_id": "doc10_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            488,
+            547,
+            509
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J1630+4012_redshift_11",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J1630+4012",
+        "field_value": 6.05,
+        "field_unit": "",
+        "trace_id": "doc11_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            537,
+            547,
+            559
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J1306+0356_redshift_12",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J1306+0356",
+        "field_value": 5.99,
+        "field_unit": "",
+        "trace_id": "doc12_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            687,
+            547,
+            709
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J0840+5624_redshift_13",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J0840+5624",
+        "field_value": 5.85,
+        "field_unit": "",
+        "trace_id": "doc13_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            837,
+            547,
+            859
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J0005-0006_redshift_14",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J0005-0006",
+        "field_value": 5.85,
+        "field_unit": "",
+        "trace_id": "doc14_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            837,
+            547,
+            859
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J1436+5007_redshift_15",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J1436+5007",
+        "field_value": 5.83,
+        "field_unit": "",
+        "trace_id": "doc15_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            937,
+            547,
+            958
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2005411300_SDSS_J0836+0054_redshift_16",
+        "source_id": "W2005411300",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSS J0836+0054",
+        "field_value": 5.82,
+        "field_unit": "",
+        "trace_id": "doc16_p6",
+        "provenance": {
+          "page": 6,
+          "bbox": [
+            312,
+            987,
+            547,
+            1008
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_SDSSp_J083643.85+005453.3_redshift_17",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSSp J083643.85+005453.3",
+        "field_value": 5.82,
+        "field_unit": "",
+        "trace_id": "doc17_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            128,
+            617,
+            1151,
+            652
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J130608.26+035626.3_redshift_18",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J130608.26+035626.3",
+        "field_value": 5.99,
+        "field_unit": "",
+        "trace_id": "doc18_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            128,
+            617,
+            1151,
+            652
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J103027.10+052455.0_redshift_19",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J103027.10+052455.0",
+        "field_value": 6.28,
+        "field_unit": "",
+        "trace_id": "doc19_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            128,
+            617,
+            1151,
+            652
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_SDSSp_J104433.04-012502.2_redshift_20",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "SDSSp J104433.04-012502.2",
+        "field_value": 5.8,
+        "field_unit": "",
+        "trace_id": "doc20_p1",
+        "provenance": {
+          "page": 1,
+          "bbox": [
+            128,
+            65,
+            1151,
+            100
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J083643.85+005453.3_redshift_21",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J083643.85+005453.3",
+        "field_value": 5.82,
+        "field_unit": "",
+        "trace_id": "doc21_p9",
+        "provenance": {
+          "page": 9,
+          "bbox": [
+            115,
+            377,
+            623,
+            401
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J130608.26+035626.3_redshift_22",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J130608.26+035626.3",
+        "field_value": 5.99,
+        "field_unit": "",
+        "trace_id": "doc22_p9",
+        "provenance": {
+          "page": 9,
+          "bbox": [
+            116,
+            902,
+            623,
+            925
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J103027.10+052455.0_redshift_23",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J103027.10+052455.0",
+        "field_value": 6.28,
+        "field_unit": "",
+        "trace_id": "doc23_p9",
+        "provenance": {
+          "page": 9,
+          "bbox": [
+            115,
+            1175,
+            623,
+            1200
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J083643.85+005453.3_redshift_24",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J083643.85+005453.3",
+        "field_value": 5.82,
+        "field_unit": "",
+        "trace_id": "doc24_p10",
+        "provenance": {
+          "page": 10,
+          "bbox": [
+            450,
+            226,
+            481,
+            242
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J103027.10+052455.0_redshift_25",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J103027.10+052455.0",
+        "field_value": 6.28,
+        "field_unit": "",
+        "trace_id": "doc25_p10",
+        "provenance": {
+          "page": 10,
+          "bbox": [
+            450,
+            268,
+            482,
+            283
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J104433.04-012502.2_redshift_26",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J104433.04-012502.2",
+        "field_value": 5.8,
+        "field_unit": "",
+        "trace_id": "doc26_p10",
+        "provenance": {
+          "page": 10,
+          "bbox": [
+            450,
+            205,
+            482,
+            221
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W1821429365_J130608.26+035626.3_redshift_27",
+        "source_id": "W1821429365",
+        "entity_type": "high_redshift_quasar",
+        "field_name": "redshift",
+        "entity_name": "J130608.26+035626.3",
+        "field_value": 5.99,
+        "field_unit": "",
+        "trace_id": "doc27_p10",
+        "provenance": {
+          "page": 10,
+          "bbox": [
+            451,
+            246,
+            481,
+            262
+          ]
+        },
+        "extraction_method": "vlm_text"
+      }
+    ]
+  },
+  "vlm_stats": {
+    "total_pdfs": 19,
+    "success_pdfs": 19,
+    "failed_pdfs": 0,
+    "total_observations": 42,
+    "elapsed_time": 773.2406952381134
+  },
+  "ocr_stats": {
+    "total_pages": 8,
+    "success_pages": 8,
+    "failed_pages": 0,
+    "elapsed_time": 92.8538715839386
+  },
+  "verification_rate": 0.6666666666666666
+}

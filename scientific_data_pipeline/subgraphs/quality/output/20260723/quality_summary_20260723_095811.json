@@ -1,0 +1,30 @@
+{
+  "overall_score": 0.9765,
+  "quality_level": "excellent",
+  "calibrated_confidence": 0.8791,
+  "confidence_breakdown": {
+    "data_volume": 0.7,
+    "agreement": 0.9978091097699794,
+    "sparsity": 1.0
+  },
+  "processing_statistics": {
+    "total_llm_calls": 5,
+    "total_tool_calls": 28,
+    "total_elapsed_seconds": 139.76,
+    "b_c_loop_iterations": 1
+  },
+  "issues_summary": {
+    "assessment_issues": 0,
+    "normalization_modifications": 0,
+    "conflicts_resolved": 0,
+    "remaining_issues": 0
+  },
+  "risk_indicators": {
+    "has_human_review_items": false,
+    "has_unresolved_conflicts": false,
+    "has_unconverted_units": true,
+    "data_completeness_warning": false,
+    "validation_passed": true
+  },
+  "recommendation": "Data exported with 1 warning(s): some units could not be converted. Quality level: excellent. Review recommended before use."
+}

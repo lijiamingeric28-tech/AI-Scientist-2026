@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "main_pipeline": "./main_graph/graph.py:compile_main_pipeline"
+  },
+  "env": ".env",
+  "python_version": "3.10"
+}

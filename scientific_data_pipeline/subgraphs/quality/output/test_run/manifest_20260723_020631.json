@@ -1,0 +1,15 @@
+{
+  "exported_at": "2026-07-23T02:06:31.085816",
+  "output_dir": "D:\\combine\\scientific_data_pipeline\\subgraphs\\quality\\output\\test_run",
+  "files": [
+    "grounded_data_20260723_020631.json",
+    "data_long_20260723_020631.csv",
+    "data_wide_20260723_020631.csv",
+    "quality_summary_20260723_020631.json",
+    "metadata_20260723_020631.json",
+    "traceability_20260723_020631.json"
+  ],
+  "validation_passed": true,
+  "row_count": 612,
+  "quality_level": "excellent"
+}

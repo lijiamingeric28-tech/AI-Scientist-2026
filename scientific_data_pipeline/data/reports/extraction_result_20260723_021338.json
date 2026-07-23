@@ -1,0 +1,2162 @@
+{
+  "grounded_data": {
+    "schema_version": "1.1.0",
+    "sources": [
+      {
+        "source_id": "W2885497170",
+        "source_type": "paper",
+        "doi": "10.3847/2041-8213/aae8e3",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "authors": [
+          "Bing Zhang"
+        ],
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "access_path": "./data/papers\\W2885497170.pdf",
+        "retrieval_priority": 0.392
+      },
+      {
+        "source_id": "W2542011985",
+        "source_type": "paper",
+        "doi": "10.3847/1538-4357/835/1/29",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "authors": [
+          "J. M. Yao",
+          "R. N. Manchester",
+          "N. Wang"
+        ],
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "access_path": "./data/papers\\W2542011985.pdf",
+        "retrieval_priority": 0.715
+      },
+      {
+        "source_id": "W3010745702",
+        "source_type": "paper",
+        "doi": "10.1093/mnras/staa704",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "authors": [
+          "Rui Luo",
+          "Yunpeng Men",
+          "Kejia Lee",
+          "Weiyang Wang",
+          "D. R. Lorimer",
+          "Bing Zhang"
+        ],
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "access_path": "./data/papers\\W3010745702.pdf",
+        "retrieval_priority": 0.414
+      },
+      {
+        "source_id": "W2280104906",
+        "source_type": "paper",
+        "doi": "10.1038/nature17140",
+        "title": "The host galaxy of a fast radio burst",
+        "authors": [
+          "E. F. Keane",
+          "S. Johnston",
+          "Shivani Bhandari",
+          "E D Barr",
+          "N. D. R. Bhat",
+          "M. Burgay",
+          "Manisha Caleb",
+          "Chris Flynn",
+          "A. Jameson",
+          "M. Krämer",
+          "Emily Petroff",
+          "Andrea Possenti",
+          "W. van Straten",
+          "M. Bailes",
+          "Sarah Burke-Spolaor",
+          "Ralph P. Eatough",
+          "B. W. Stappers",
+          "Tomonori Totani",
+          "Mareki Honma",
+          "Hisanori Furusawa",
+          "Takashi Hattori",
+          "Tomoki Morokuma",
+          "Yuu Niino",
+          "Hajime Sugai",
+          "Tsuyoshi Terai",
+          "Nozomu Tominaga",
+          "Shotaro Yamasaki",
+          "Naoki Yasuda",
+          "Rebecca Allen",
+          "Jeff Cooke",
+          "J. Jencson",
+          "M. M. Kasliwal",
+          "D. L. Kaplan",
+          "S. J. Tingay",
+          "A. Williams",
+          "R. B. Wayth",
+          "P. Chandra",
+          "D. Perrodin",
+          "M. Berezina",
+          "M. B. Mickaliger",
+          "C. Bassa"
+        ],
+        "year": 2016,
+        "journal": "Nature",
+        "access_path": "./data/papers\\W2280104906.pdf",
+        "retrieval_priority": 0.4168
+      }
+    ],
+    "records": [
+      {
+        "record_id": "W2280104906_FRB_150418_dispersion_measure_0",
+        "source_id": "W2280104906",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150418",
+        "field_value": "776.2(5)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc0_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            146,
+            1368,
+            1184,
+            1413
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2280104906_FRB_150418_dispersion_measure_1",
+        "source_id": "W2280104906",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150418",
+        "field_value": "776.2(5)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc1_p16",
+        "provenance": {
+          "page": 16,
+          "bbox": [
+            0,
+            912,
+            1279,
+            957
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2280104906_FRB_150418_dispersion_measure_2",
+        "source_id": "W2280104906",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150418",
+        "field_value": "776.2(5)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc2_p22",
+        "provenance": {
+          "page": 22,
+          "bbox": [
+            147,
+            1063,
+            1133,
+            1098
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_010125_dispersion_measure_3",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 010125",
+        "field_value": "790 ± 3",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc3_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_010621_dispersion_measure_4",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 010621",
+        "field_value": "745 ± 10",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc4_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_010724_dispersion_measure_5",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 010724",
+        "field_value": 375.0,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc5_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            269,
+            275,
+            298,
+            291
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_090625_dispersion_measure_6",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 090625",
+        "field_value": "899.55 ± 0.01",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc6_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_110220_dispersion_measure_7",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 110220",
+        "field_value": "944.38 ± 0.05",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc7_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_110523_dispersion_measure_8",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 110523",
+        "field_value": "623.3 ± 0.06",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc8_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            1153,
+            277,
+            1172,
+            291
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_110626_dispersion_measure_9",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 110626",
+        "field_value": "723 ± 0.3",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc9_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            573,
+            235,
+            598,
+            249
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_110703_dispersion_measure_10",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 110703",
+        "field_value": "1103.6 ± 0.7",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc10_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_120127_dispersion_measure_11",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 120127",
+        "field_value": "553.3 ± 0.3",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc11_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            573,
+            235,
+            598,
+            249
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_121002_dispersion_measure_12",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 121002",
+        "field_value": "1629.18 ± 0.02",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc12_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            1154,
+            380,
+            1172,
+            394
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_121102_dispersion_measure_13",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 121102",
+        "field_value": "557 ± 2",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc13_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_130626_dispersion_measure_14",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 130626",
+        "field_value": "952.4 ± 0.1",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc14_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_130628_dispersion_measure_15",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 130628",
+        "field_value": "469.88 ± 0.01",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc15_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            1158,
+            629,
+            1176,
+            643
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_130729_dispersion_measure_16",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 130729",
+        "field_value": "861 ± 2",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc16_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            609,
+            670,
+            623
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_131104_dispersion_measure_17",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 131104",
+        "field_value": "779 ± 1",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc17_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_140514_dispersion_measure_18",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 140514",
+        "field_value": "562.7 ± 0.6",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc18_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_150215_dispersion_measure_19",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150215",
+        "field_value": "1105.6 ± 0.8",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc19_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_150418_dispersion_measure_20",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150418",
+        "field_value": "776.2 ± 0.5",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc20_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_150610_dispersion_measure_21",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150610",
+        "field_value": "1593.9 ± 0.6",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc21_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_150807_dispersion_measure_22",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 150807",
+        "field_value": "266.5 ± 0.1",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc22_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_151206_dispersion_measure_23",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 151206",
+        "field_value": "1909.8 ± 0.6",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc23_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            573,
+            339,
+            598,
+            353
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_151230_dispersion_measure_24",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 151230",
+        "field_value": "960.4 ± 0.5",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc24_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_160102_dispersion_measure_25",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 160102",
+        "field_value": "2596.1 ± 0.3",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc25_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            573,
+            235,
+            598,
+            249
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_160317_dispersion_measure_26",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 160317",
+        "field_value": "1165 ± 11",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc26_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_160410_dispersion_measure_27",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 160410",
+        "field_value": "278 ± 3",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc27_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_160608_dispersion_measure_28",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 160608",
+        "field_value": "682 ± 7",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc28_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            658,
+            257,
+            669,
+            271
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_170107_dispersion_measure_29",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 170107",
+        "field_value": "609.5 ± 0.5",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc29_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            659,
+            277,
+            670,
+            292
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_170827_dispersion_measure_30",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 170827",
+        "field_value": "176.4 ± 0",
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc30_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            1154,
+            235,
+            1173,
+            249
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_170922_dispersion_measure_31",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 170922",
+        "field_value": 1111.0,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc31_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            267,
+            815,
+            300,
+            830
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_171209_dispersion_measure_32",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 171209",
+        "field_value": 1458.0,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc32_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            268,
+            837,
+            302,
+            851
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_180301_dispersion_measure_33",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 180301",
+        "field_value": 520.0,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc33_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            270,
+            857,
+            298,
+            872
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_180309_dispersion_measure_34",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 180309",
+        "field_value": 263.47,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc34_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            260,
+            878,
+            308,
+            893
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_180311_dispersion_measure_35",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 180311",
+        "field_value": 1575.6,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc35_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            261,
+            899,
+            309,
+            913
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_180528_dispersion_measure_36",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 180528",
+        "field_value": 899.0,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc36_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            233,
+            296,
+            333,
+            312
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_180714_dispersion_measure_37",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 180714",
+        "field_value": 1469.873,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc37_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            254,
+            941,
+            316,
+            956
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2885497170_FRB_180725A_dispersion_measure_38",
+        "source_id": "W2885497170",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB 180725A",
+        "field_value": 716.6,
+        "field_unit": "pc cm^-3",
+        "trace_id": "doc38_p3",
+        "provenance": {
+          "page": 3,
+          "bbox": [
+            263,
+            962,
+            304,
+            977
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB010125_dispersion_measure_39",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB010125",
+        "field_value": "790(3)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc39_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB010621_dispersion_measure_40",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB010621",
+        "field_value": "745(10)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc40_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB010724_dispersion_measure_41",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB010724",
+        "field_value": 375.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc41_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB090625_dispersion_measure_42",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB090625",
+        "field_value": "899.55(1)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc42_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110220_dispersion_measure_43",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB110220",
+        "field_value": "944.38(5)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc43_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110523_dispersion_measure_44",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB110523",
+        "field_value": "623.30(6)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc44_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110627_dispersion_measure_45",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB110627",
+        "field_value": "723.0(3)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc45_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB110703_dispersion_measure_46",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB110703",
+        "field_value": "1103.6(7)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc46_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB120127_dispersion_measure_47",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB120127",
+        "field_value": "553.3(3)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc47_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB121002_dispersion_measure_48",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB121002",
+        "field_value": "1629.18(2)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc48_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB121102_dispersion_measure_49",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB121102",
+        "field_value": "557(2)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc49_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB130626_dispersion_measure_50",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB130626",
+        "field_value": "952.4(1)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc50_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB130628_dispersion_measure_51",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB130628",
+        "field_value": "469.88(1)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc51_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB130729_dispersion_measure_52",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB130729",
+        "field_value": "861(2)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc52_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB131104_dispersion_measure_53",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB131104",
+        "field_value": "779(1)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc53_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB140514_dispersion_measure_54",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB140514",
+        "field_value": "562.7(6)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc54_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W2542011985_FRB150418_dispersion_measure_55",
+        "source_id": "W2542011985",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "FRB150418",
+        "field_value": "776.2(5)",
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc55_p43",
+        "provenance": {
+          "page": 43,
+          "bbox": [
+            4,
+            0,
+            1280,
+            1664
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_010312_dispersion_measure_56",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "010312",
+        "field_value": 1187.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc56_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            565,
+            325,
+            614,
+            341
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_010724_dispersion_measure_57",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "010724",
+        "field_value": 375.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc57_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            346,
+            609,
+            362
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_090625_dispersion_measure_58",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "090625",
+        "field_value": 899.5,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc58_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            366,
+            609,
+            381
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_110214_dispersion_measure_59",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "110214",
+        "field_value": 168.8,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc59_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            569,
+            387,
+            609,
+            402
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_110220_dispersion_measure_60",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "110220",
+        "field_value": 944.4,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc60_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            408,
+            608,
+            423
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_110523_dispersion_measure_61",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "110523",
+        "field_value": 623.3,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc61_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            429,
+            608,
+            444
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_110626_dispersion_measure_62",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "110626",
+        "field_value": 723.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc62_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            449,
+            609,
+            465
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_110703_dispersion_measure_63",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "110703",
+        "field_value": 1103.6,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc63_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            566,
+            470,
+            612,
+            485
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_120127_dispersion_measure_64",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "120127",
+        "field_value": 553.3,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc64_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            491,
+            609,
+            506
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_121002_dispersion_measure_65",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "121002",
+        "field_value": 1629.2,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc65_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            566,
+            512,
+            612,
+            527
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_121102_dispersion_measure_66",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "121102",
+        "field_value": 557.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc66_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            533,
+            609,
+            547
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_130626_dispersion_measure_67",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "130626",
+        "field_value": 952.4,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc67_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            554,
+            606,
+            568
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_130628_dispersion_measure_68",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "130628",
+        "field_value": 469.9,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc68_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            574,
+            609,
+            589
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_130729_dispersion_measure_69",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "130729",
+        "field_value": 861.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc69_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            595,
+            609,
+            610
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_131104_dispersion_measure_70",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "131104",
+        "field_value": 779.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc70_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            615,
+            609,
+            630
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_140514_dispersion_measure_71",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "140514",
+        "field_value": 562.7,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc71_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            636,
+            609,
+            651
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_150215_dispersion_measure_72",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "150215",
+        "field_value": 1105.6,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc72_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            565,
+            657,
+            613,
+            672
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_150418_dispersion_measure_73",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "150418",
+        "field_value": 776.2,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc73_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            678,
+            609,
+            693
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_150610_dispersion_measure_74",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "150610",
+        "field_value": 1593.9,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc74_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            566,
+            698,
+            613,
+            713
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_150807_dispersion_measure_75",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "150807",
+        "field_value": 266.5,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc75_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            720,
+            609,
+            734
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_151206_dispersion_measure_76",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "151206",
+        "field_value": 1909.8,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc76_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            566,
+            740,
+            613,
+            755
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_151230_dispersion_measure_77",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "151230",
+        "field_value": 960.4,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc77_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            761,
+            609,
+            777
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_160102_dispersion_measure_78",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "160102",
+        "field_value": 2596.1,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc78_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            565,
+            781,
+            611,
+            797
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_160317_dispersion_measure_79",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "160317",
+        "field_value": 1165.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc79_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            565,
+            802,
+            613,
+            818
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_160410_dispersion_measure_80",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "160410",
+        "field_value": 278.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc80_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            823,
+            609,
+            839
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_160608_dispersion_measure_81",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "160608",
+        "field_value": 682.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc81_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            844,
+            609,
+            860
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_170107_dispersion_measure_82",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "170107",
+        "field_value": 609.5,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc82_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            864,
+            609,
+            880
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_170416_dispersion_measure_83",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "170416",
+        "field_value": 523.2,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc83_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            885,
+            609,
+            900
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_170428_dispersion_measure_84",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "170428",
+        "field_value": 991.7,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc84_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            907,
+            609,
+            921
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_170707_dispersion_measure_85",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "170707",
+        "field_value": 235.2,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc85_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            927,
+            609,
+            943
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_170712_dispersion_measure_86",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "170712",
+        "field_value": 312.8,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc86_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            948,
+            610,
+            965
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_170906_dispersion_measure_87",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "170906",
+        "field_value": 390.3,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc87_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            968,
+            609,
+            984
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171003_dispersion_measure_88",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171003",
+        "field_value": 463.2,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc88_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            989,
+            609,
+            1004
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171004_dispersion_measure_89",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171004",
+        "field_value": 304.0,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc89_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1010,
+            609,
+            1025
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171019_dispersion_measure_90",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171019",
+        "field_value": 460.8,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc90_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1031,
+            609,
+            1046
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171020_dispersion_measure_91",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171020",
+        "field_value": 114.1,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc91_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1052,
+            606,
+            1067
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171116_dispersion_measure_92",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171116",
+        "field_value": 618.5,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc92_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            1073,
+            608,
+            1087
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171213_dispersion_measure_93",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171213",
+        "field_value": 158.6,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc93_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1093,
+            609,
+            1109
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_171216_dispersion_measure_94",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "171216",
+        "field_value": 203.1,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc94_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            1114,
+            606,
+            1130
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180110_dispersion_measure_95",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180110",
+        "field_value": 715.7,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc95_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            1134,
+            609,
+            1150
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180119_dispersion_measure_96",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180119",
+        "field_value": 402.7,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc96_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1155,
+            606,
+            1171
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180128.0_dispersion_measure_97",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180128.0",
+        "field_value": 441.4,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc97_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1176,
+            606,
+            1191
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180128.2_dispersion_measure_98",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180128.2",
+        "field_value": 495.9,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc98_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            568,
+            1198,
+            606,
+            1212
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180130_dispersion_measure_99",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180130",
+        "field_value": 343.5,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc99_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            1217,
+            608,
+            1232
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180131_dispersion_measure_100",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180131",
+        "field_value": 657.7,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc100_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            567,
+            1238,
+            606,
+            1253
+          ]
+        },
+        "extraction_method": "vlm_text"
+      },
+      {
+        "record_id": "W3010745702_180212_dispersion_measure_101",
+        "source_id": "W3010745702",
+        "entity_type": "FRB",
+        "field_name": "dispersion_measure",
+        "entity_name": "180212",
+        "field_value": 167.5,
+        "field_unit": "cm^-3 pc",
+        "trace_id": "doc101_p4",
+        "provenance": {
+          "page": 4,
+          "bbox": [
+            569,
+            1260,
+            609,
+            1274
+          ]
+        },
+        "extraction_method": "vlm_text"
+      }
+    ]
+  },
+  "vlm_stats": {
+    "total_pdfs": 17,
+    "success_pdfs": 17,
+    "failed_pdfs": 0,
+    "total_observations": 102,
+    "elapsed_time": 259.1358344554901
+  },
+  "ocr_stats": {
+    "total_pages": 6,
+    "success_pages": 6,
+    "failed_pages": 0,
+    "elapsed_time": 88.06274485588074
+  },
+  "verification_rate": 1.0
+}

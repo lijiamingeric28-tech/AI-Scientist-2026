@@ -1,0 +1,254 @@
+{
+  "field_definitions": {},
+  "source_summary": {
+    "total_sources": 24,
+    "sources_exported": 24,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 18,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 102,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 216,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 276,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 18,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 102,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 216,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 276,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 18,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 102,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 216,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 276,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 18,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 102,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 216,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 276,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 18,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 102,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 216,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 276,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2280104906",
+        "title": "The host galaxy of a fast radio burst",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 18,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2542011985",
+        "title": "A NEW ELECTRON-DENSITY MODEL FOR ESTIMATION OF PULSAR AND FRB DISTANCES",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 102,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W2885497170",
+        "title": "Fast Radio Burst Energetics and Detectability from High Redshifts",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 216,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "W3010745702",
+        "title": "On the FRB luminosity function – – II. Event rate density",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 276,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 4,
+      "overall_quality": "excellent",
+      "total_issues": 0
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors": 16
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-07-23T02:06:18.208280",
+    "run_id": "test_run_001",
+    "graph_version": "V2.1",
+    "research_domain": "astronomy"
+  },
+  "field_descriptions_llm": true
+}

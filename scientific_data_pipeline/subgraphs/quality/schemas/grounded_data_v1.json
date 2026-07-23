@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sci-pipeline/v1/grounded_data",
+  "title": "Grounded Data — V1 Extraction Output",
+  "description": "提取子图最终产物，承载溯源锚定的结构化科学数据，供下游清洗子图消费。",
+  "type": "object",
+  "required": ["schema_version", "sources", "records"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.1.0",
+      "description": "接口版本号，用于前后端兼容校验。V1.1 固定 '1.1.0'。"
+    },
+    "sources": {
+      "type": "array",
+      "description": "本次提取涉及的所有源文献。",
+      "items": {
+        "type": "object",
+        "required": ["source_id", "source_type", "title", "access_path"],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "description": "源文献全局唯一标识，建议使用 DOI（如 10.xxx/xxx）或内部 hash。"
+          },
+          "source_type": {
+            "type": "string",
+            "const": "paper",
+            "description": "V1 固定为 paper。"
+          },
+          "doi": {
+            "type": ["string", "null"],
+            "description": "DOI，若无法获取则为 null。"
+          },
+          "title": {
+            "type": "string",
+            "description": "文献标题。"
+          },
+          "authors": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "作者姓名列表。"
+          },
+          "year": {
+            "type": ["integer", "null"],
+            "description": "出版年份。"
+          },
+          "journal": {
+            "type": ["string", "null"],
+            "description": "期刊/会议名称。"
+          },
+          "access_path": {
+            "type": "string",
+            "description": "PDF 获取 URL 或本地缓存路径。"
+          },
+          "retrieval_priority": {
+            "type": "number",
+            "description": "检索子图分配的优先级评分。"
+          }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "description": "成功提取的数据记录列表。每行一条，独立溯源。提取失败的字段不出现。",
+      "items": {
+        "type": "object",
+        "required": ["record_id", "source_id", "entity_type", "entity_name", "field_name", "field_value", "trace_id", "provenance", "extraction_method"],
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "description": "本条记录全局唯一标识。格式：{source_id}_{entity_name}_{field_name}_{n}。"
+          },
+          "source_id": {
+            "type": "string",
+            "description": "外键 → sources[].source_id。"
+          },
+          "entity_type": {
+            "type": "string",
+            "description": "实体类型（如 alloy, supernova, exoplanet_host_star）。V1.1 新增字段。"
+          },
+          "entity_name": {
+            "type": "string",
+            "description": "实体名称（如 Al-7075, SN1987A）。V1.1 新增字段。"
+          },
+          "field_name": {
+            "type": "string",
+            "description": "科学字段名，使用 snake_case（如 yield_strength、tensile_strength、temperature）。"
+          },
+          "field_value": {
+            "description": "提取值。number 或 string，不含 null。",
+            "oneOf": [
+              { "type": "number" },
+              { "type": "string" }
+            ]
+          },
+          "field_unit": {
+            "type": ["string", "null"],
+            "description": "单位（如 MPa、K、wt%）。若字段无量纲则为 null。"
+          },
+          "trace_id": {
+            "type": "string",
+            "description": "溯源 ID，对应 hard_mapping_dict 的 key，格式如 doc1_p3_tb2_r1。"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": ["integer", "null"],
+                "description": "PDF 页码（1-based）。若无法确定则为 null。"
+              },
+              "bbox": {
+                "type": ["array", "null"],
+                "items": { "type": "number" },
+                "minItems": 4,
+                "maxItems": 4,
+                "description": "边界框 [x0, y0, x1, y1]，单位 pt。"
+              }
+            }
+          },
+          "extraction_method": {
+            "type": "string",
+            "enum": ["llm_text", "llm_table"],
+            "description": "提取方式：llm_text（从文字段落提取）或 llm_table（从表格提取）。注意：子图3 实际使用 VLM，但为兼容性临时标记为 llm_text（见 TECHNICAL_DEBT.md TD-1）。"
+          }
+        }
+      }
+    }
+  }
+}
