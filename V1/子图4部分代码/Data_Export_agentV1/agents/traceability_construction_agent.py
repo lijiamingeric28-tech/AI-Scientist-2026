@@ -30,11 +30,12 @@ class TraceabilityConstructionAgent:
             input_data, current_data, data_trace, rs, wf
         )
         traceability = result["traceability"]
-        completeness = result["trace_completeness"]
+        # V3.1 fix: trace_completeness 已内嵌于 traceability dict, 不再冗余写入
 
         elapsed = round(time.time() - t0, 3)
+        tc = traceability.get("trace_completeness", {})
         logger.info("[TraceabilityConstruction] %d records traced, %d modified, %d decisions, %.2fs",
-                    completeness["records_with_trace"], completeness["modified_count"],
+                    tc.get("records_with_trace", 0), tc.get("modified_count", 0),
                     len(traceability.get("agent_decision_trail", [])), elapsed)
 
         return {
@@ -45,7 +46,6 @@ class TraceabilityConstructionAgent:
                 "format_issues": export_state.get("format_issues", []),
                 "metadata": export_state.get("metadata", {}),
                 "traceability": traceability,
-                "trace_completeness": completeness,
             }},
             "workflow_state": {
                 "current_node": "traceability_construction",
@@ -54,7 +54,7 @@ class TraceabilityConstructionAgent:
                     "agent": "TraceabilityConstructionAgent", "stage": "Traceability",
                     "status": "Success", "timestamp": datetime.datetime.now().isoformat(),
                     "duration": elapsed,
-                    "reason": f"Traced {completeness['records_with_trace']} records ({completeness['modified_count']} modified, {completeness['deleted_count']} deleted)",
+                    "reason": f"Traced {tc.get('records_with_trace', 0)} records ({tc.get('modified_count', 0)} modified, {tc.get('deleted_count', 0)} deleted)",
                 }],
             },
         }

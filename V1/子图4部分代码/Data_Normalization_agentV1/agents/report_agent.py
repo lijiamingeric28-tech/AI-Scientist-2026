@@ -42,11 +42,22 @@ class ReportAgent:
         norm["route_decision"] = route
         norm["total_tool_calls"] = wf.get("tool_call_count", 0)
 
-        history = list(wf.get("workflow_history", []))
-        history.append({"agent": "ReportAgent", "stage": "Report", "status": "Success",
-                        "timestamp": datetime.datetime.now().isoformat(), "duration": round(time.time()-t0,3),
-                        "reason": status})
+        # V2: per-entity normalization stats from modifications
+        per_entity_mods: dict[str, int] = {}
+        for mod_log in (mods.get("modification_log", []) or []):
+            et = mod_log.get("entity_type", "") or ""
+            en = mod_log.get("entity_name", "") or "unknown"
+            elabel = f"{et}:{en}" if et else en
+            per_entity_mods[elabel] = per_entity_mods.get(elabel, 0) + 1
+        norm["per_entity_modifications"] = per_entity_mods
+
+        # V3.1 fix: 只返回新增条目, 不携带旧 history (Reducer 会自动拼接, 避免重复)
         logger.info("[Report] status=%s, route=%s", status, route)
         return {"report_state": {"normalization": norm},
                 "workflow_state": {"route_decision": route, "current_node": "report",
-                                   "execution_status": "Success", "workflow_history": history}}
+                                   "execution_status": "Success",
+                                   "workflow_history": [{
+                                       "agent": "ReportAgent", "stage": "Report", "status": "Success",
+                                       "timestamp": datetime.datetime.now().isoformat(),
+                                       "duration": round(time.time()-t0, 3), "reason": status,
+                                   }]}}

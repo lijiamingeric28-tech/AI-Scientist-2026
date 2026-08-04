@@ -12,11 +12,13 @@ from pydantic import BaseModel, Field
 
 
 class Provenance(BaseModel):
-    """溯源锚点——描述数据在源文献中的物理位置。
+    """溯源锚点——描述数据在源文献或数据库中的物理位置。
 
-    前端据此在原文 PDF 上高亮定位。
+    Paper 类型: 前端据此在原文 PDF 上高亮定位 (page + bbox)。
+    Database 类型: 三坐标无损反向定位法 (db_table + key_column + key_value + raw_column)。
     """
 
+    # Paper 溯源
     page: Optional[int] = Field(
         default=None,
         description="PDF 页码（1-based）。若无法确定则为 None。",
@@ -30,17 +32,39 @@ class Provenance(BaseModel):
         "前端据此在原文 PDF 上画框。若无法确定则为 None。",
     )
 
+    # V3.1: Database 溯源 (三坐标无损反向定位法)
+    db_table: Optional[str] = Field(
+        default=None,
+        description="数据库/星表路径（如 I/355/gaiadr3）。",
+    )
+
+    key_column: Optional[str] = Field(
+        default=None,
+        description="数据库主键列名（如 Source, _2MASS, main_id）。",
+    )
+
+    key_value: Optional[str] = Field(
+        default=None,
+        description="数据库主键值（如 5854013331201520640）。",
+    )
+
+    raw_column: Optional[str] = Field(
+        default=None,
+        description="原始数据库列名（如 Plx, HG, B-V）。",
+    )
+
 
 class Record(BaseModel):
-    """单条数据提取记录。
+    """单条数据提取记录 — V2.0。
 
     对应 grounded_data.records[] 中的每一项。
-    提取失败的字段不会出现（不传 null record）。
+    V2.0 新增: entity_type, entity_name, extraction_confidence,
+              context_snippet, measurement_method, condition_tags。
     """
 
     record_id: str = Field(
         ...,
-        description="本条记录全局唯一标识。格式: {source_id}_{field_name}_{n}。",
+        description="本条记录全局唯一标识。格式: {source_id}_{entity_name}_{field_name}_{n}。",
     )
 
     source_id: str = Field(
@@ -48,9 +72,20 @@ class Record(BaseModel):
         description="外键 → sources[].source_id。",
     )
 
+    # ── V2.0: entity 字段 (optional) ──
+    entity_type: Optional[str] = Field(
+        default=None,
+        description="实体类型（FRB, Quasar, Galaxy, Pulsar, Exoplanet等）。V2.0 新增。",
+    )
+
+    entity_name: Optional[str] = Field(
+        default=None,
+        description="实体名称（FRB 20180916B, 3C 273, M31等）。V2.0 新增。",
+    )
+
     field_name: str = Field(
         ...,
-        description="科学字段名，使用 snake_case（如 yield_strength）。",
+        description="科学字段名，使用 snake_case（如 dispersion_measure）。",
     )
 
     field_value: Union[float, int, str] = Field(
@@ -60,21 +95,44 @@ class Record(BaseModel):
 
     field_unit: Optional[str] = Field(
         default=None,
-        description="单位（如 MPa、K、wt%）。若字段无量纲则为 None。",
+        description="单位（如 cm^-3 pc、Jy、K）。若字段无量纲则为 None。",
     )
 
-    trace_id: str = Field(
-        ...,
+    trace_id: Optional[str] = Field(
+        default=None,
         description="溯源 ID，对应 hard_mapping_dict 的 key。"
-        "格式: {doc_short_id}_p{page}_{type}{id}_{row_id}。",
+        "格式: {doc_short_id}_p{page}。database 类型无 trace_id。",
     )
 
     provenance: Provenance = Field(
         default_factory=Provenance,
-        description="物理溯源坐标（页码 + bbox）。",
+        description="物理溯源坐标（paper: page+bbox; database: db_table+key_column+key_value+raw_column）。",
     )
 
-    extraction_method: Literal["llm_text", "llm_table"] = Field(
+    extraction_method: Literal["llm_text", "llm_table", "vlm_pdf", "vlm_text", "database", "csv_parsing", "database_query"] = Field(
         ...,
-        description="提取方式：llm_text（文字段落提取）或 llm_table（表格提取）。",
+        description="提取方式。V3.1: database_query(数据库查询)。",
+    )
+
+    # ── V2.0: 提取上下文与观测元数据 (optional) ──
+    extraction_confidence: Optional[float] = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="提取模型对该条记录的置信度（0.0-1.0）。V2.0 新增。",
+    )
+
+    context_snippet: Optional[str] = Field(
+        default=None,
+        description="提取该值时的原文上下文（~200字符），包含观测设备、波段等。V2.0 新增。",
+    )
+
+    measurement_method: Optional[str] = Field(
+        default=None,
+        description="从上下文中识别出的观测方法/仪器（spectroscopy/photometry/radio interferometry等）。V2.0 新增。",
+    )
+
+    condition_tags: Optional[list[str]] = Field(
+        default=None,
+        description="从上下文中提取的观测条件标签（L-band/C-band/X-ray/optical等）。V2.0 新增。",
     )

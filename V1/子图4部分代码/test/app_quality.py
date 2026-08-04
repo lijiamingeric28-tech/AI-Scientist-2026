@@ -12,8 +12,9 @@ Quality 子图调试入口。支持:
     python app_quality.py --count 500              # 实时生成 500 条测试
 """
 
+from __future__ import annotations  # V3.1 fix: future import 必须在文件顶部
+
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from __future__ import annotations
 
 import argparse
 import json
@@ -21,7 +22,7 @@ import os
 import sys
 
 from quality_state import make_initial_state
-from pipeline.quality.graph import compile_quality_graph
+from graph import compile_quality_graph  # V3.1 fix: 实际路径是 graph.compile_quality_graph
 from utils.logger import setup_logging, get_logger
 
 logger = get_logger(__name__)
@@ -159,7 +160,12 @@ def main():
     from configs import load_yaml
     quality_rules = load_yaml("quality_rules.yaml")
     schema_mapping = load_yaml("schema_mapping.yaml")
-    target_schema = schema_mapping.get("target_schema", {})
+    # V3.1 fix: 根据领域加载对应 target_schema
+    domain = input_data.get("research_domain", "")
+    if domain == "astrophysics":
+        target_schema = schema_mapping.get("target_schema_astrophysics", {})
+    else:
+        target_schema = schema_mapping.get("target_schema", {})
 
     # ── 初始化 ──
     state = make_initial_state(input_data)

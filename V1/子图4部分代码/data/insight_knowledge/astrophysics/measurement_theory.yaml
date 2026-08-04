@@ -1,0 +1,505 @@
+entries:
+- id: radio_dm_measurement
+  title: 射电 DM 测量原理与精度
+  category: measurement_principle
+  tags:
+  - DM
+  - dispersion
+  - radio
+  - pulsar_timing
+  - FRB
+  - dedispersion
+  applies_to:
+    fields:
+    - dispersion_measure
+    methods:
+    - radio_interferometry
+    - pulsar_timing
+    - radio
+  content: 'DM 测量原理: Δt = 4.15 ms × DM × (ν_low⁻² - ν_high⁻²)
+
+
+    其中 Δt 为低频相对于高频的到达时间延迟 (cold plasma dispersion)。
+
+
+    DM 精度取决于:
+
+    1. 频率覆盖: 带宽越大精度越高 (∝ 1/Δν)
+
+    2. S/N: DM error ∝ 1/S/N
+
+    3. 时间分辨率: 亚毫秒采样可分辨精细结构 → 更精确的 DM
+
+    4. 脉冲宽度: 宽脉冲 (scattering) → 更大的 DM 不确定性
+
+
+    典型精度:
+
+    - FAST L-band, S/N>100, 128μs 采样: DM error ~0.1-0.3 pc cm⁻³
+
+    - Parkes multi-band, S/N~20: DM error ~0.5-2 pc cm⁻³
+
+    - CHIME 400-800MHz, S/N~10: DM error ~1-5 pc cm⁻³
+
+
+    因此 FAST 和 Parkes 间 ~0.5-2 pc cm⁻³ 的 DM 差异是正常的仪器系统误差
+
+    '
+  source: Lorimer & Kramer 2004, Handbook of Pulsar Astronomy
+  confidence: established
+- id: spectroscopic_redshift_method
+  title: 光谱红移测量原理
+  category: measurement_principle
+  tags:
+  - redshift
+  - spectroscopy
+  - absorption
+  - emission
+  - lines
+  applies_to:
+    fields:
+    - redshift
+    methods:
+    - spectroscopy
+  content: '光谱红移测量: 通过识别已知谱线 (如 Lyα, CIV, MgII, Hα)
+
+    的波长偏移 Δλ/λ₀ = z 来确定红移。
+
+
+    精度取决于:
+
+    1. 光谱分辨率 R=λ/Δλ: R~1000 → Δz~0.001; R~10000 → Δz~0.0001
+
+    2. 谱线信噪比: 弱线导致较大的质心不确定度
+
+    3. 谱线数量: 多条谱线可互相校验
+
+    4. 仪器波长校准: 弧光灯精度 ~0.1Å
+
+
+    典型仪器:
+
+    - SDSS/BOSS: R~2000, Δz~0.0001-0.001
+
+    - Keck/DEIMOS: R~5000, Δz~0.00005
+
+    - VLT/XSHOOTER: R~5000-10000, Δz~0.00005
+
+    '
+  source: Dawson et al. 2016, AJ
+  confidence: established
+- id: photometric_redshift_method
+  title: 测光红移原理与局限性
+  category: measurement_principle
+  tags:
+  - redshift
+  - photometry
+  - photo-z
+  - SED
+  - template_fitting
+  applies_to:
+    fields:
+    - redshift
+    methods:
+    - photometry
+  content: '测光红移 (photo-z): 通过多波段测光数据拟合 SED 模板来估计红移。
+
+
+    精度限制:
+
+    1. 滤光片数量: 宽带 (Δz~0.06) < 中带 (Δz~0.03) < 窄带 (Δz~0.01)
+
+    2. SED 模板完备性: 缺少稀有天体类型 → 系统偏差
+
+    3. 红移简并: 某些 SED 特征在不同 z 处无法区分 (如 Lyman break vs Balmer break)
+
+    4. 混染: 相邻天体污染测光孔径 → 错误 SED
+
+
+    关键: photo-z 与 spec-z 之间的偏差是系统性的, 不是数据错误
+
+    '
+  source: Salvato et al. 2019, Nature Astronomy
+  confidence: established
+- id: interferometry_basics
+  title: 射电干涉测量基本原理
+  category: measurement_principle
+  tags:
+  - interferometry
+  - VLBI
+  - resolution
+  - beam
+  - synthesis
+  applies_to:
+    methods:
+    - radio_interferometry
+    - VLBI
+    - interferometry
+  content: '射电干涉测量: 多个天线组成阵列, 空间分辨率 θ ≈ λ/D_max
+
+    其中 D_max 为最长基线, λ 为观测波长。
+
+
+    FAST (500m 单天线): θ ~ 3 arcmin at L-band (单天线衍射极限)
+
+    VLA (A 配置 36km): θ ~ 0.04 arcsec at C-band
+
+    VLBI (千公里基线): θ ~ 0.001 arcsec
+
+
+    系统误差来源:
+
+    - 相位校准误差 (大气 + 仪器)
+
+    - 流量校准 (标准源模型不确定度 ~5-10%)
+
+    - 带宽涂污 (bandwidth smearing)
+
+    '
+  source: Thompson, Moran & Swenson 2017, Interferometry and Synthesis in Radio Astronomy
+  confidence: established
+- id: astrometry_parallax_principle
+  title: 天体测量视差原理 (Gaia)
+  category: measurement_principle
+  tags:
+  - parallax
+  - astrometry
+  - Gaia
+  - proper_motion
+  - mas
+  applies_to:
+    fields:
+    - parallax
+    - proper_motion_ra
+    - proper_motion_dec
+    - right_ascension
+    - declination
+    entities:
+    - Star
+    - star
+  content: '视差 (parallax) 是地球轨道运动引起的天体位置周年视位移:
+
+    π (mas) = 1000 / d (pc)
+
+
+    关键性质:
+
+    - 视差越小 → 距离越远; π=1 mas → d=1 kpc
+
+    - 负视差 (π<0) 是测量噪声的体现, 常见于远距离/低 S/N 目标
+
+    - 距离误差: σ(d)/d ≈ σ(π)/π (小误差近似), 相对误差随距离恶化
+
+
+    Gaia DR3 精度:
+
+    - 亮源 (G<13): σ(π) ~ 0.02-0.03 mas
+
+    - 暗源 (G~19): σ(π) ~ 0.5-1 mas
+
+    - 系统误差: ~0.02-0.03 mas (zonal errors)
+
+
+    跨来源视差比较:
+
+    - Gaia vs Hipparcos 视差存在 ~0.05 mas 系统差异
+
+    - 比较时需考虑参考系 (ICRS) 和历元差 (proper motion 外推)
+
+    '
+  source: Gaia Collaboration 2023, A&A 674, A1; Lindegren et al. 2021, A&A 649, A4
+  confidence: established
+- id: photometric_system_differences
+  title: 测光系统差异 (G/BP/RP, J/H/K)
+  category: measurement_principle
+  tags:
+  - photometry
+  - magnitude
+  - Gmag
+  - Jmag
+  - Kmag
+  - filter
+  - zero_point
+  applies_to:
+    fields:
+    - apparent_magnitude
+    methods:
+    - photometry
+  content: '不同测光系统的星等不可直接比较:
+
+    - Gaia: G (broad), BP (blue), RP (red) — 无地面标准零点, 需转换
+
+    - 2MASS: J (1.25μm), H (1.65μm), Ks (2.16μm) — Vega 零点
+
+    - SDSS: u g r i z — AB 零点
+
+
+    转换注意事项:
+
+    - G 与 V 星等差异可达 0.1-0.5 mag (取决于颜色)
+
+    - J-K 颜色是恒星/星系分类的常用指标
+
+    - 测光系统转换需用恒星颜色关系 (如 G-K vs T_eff)
+
+    '
+  source: Jordi et al. 2010, A&A; Cutri et al. 2003, 2MASS Explanatory Supplement
+  confidence: established
+- id: mk_spectral_classification
+  title: MK 光谱分类原理
+  category: measurement_principle
+  tags:
+  - mk
+  - classification
+  applies_to:
+    fields:
+    - spectral_type
+    entities:
+    - star
+  content: 'MK 分类 = 温度序 (OBAFGKM, 谱线相对强度) × 光度级 (I-V, 线宽/强度)。
+
+    物理原理: 温度决定电离态与分子平衡; 光度级由表面重力 (线展宽) 判别 —
+
+    同光谱型巨星与矮星温度相同但重力不同。
+
+    判定线索: SpT 与 Teff 矛盾 (如标 M 型却给 20000 K) = 字段错位;
+
+    金属丰度低会使金属线变弱、误判为更热型; 双星 (SB2) 模糊线型。
+
+    测量方法: 目视比较标准星谱 + 自动分类 (MKCLASS/机器学习)。'
+  source: Gray 2005; MK 分类原始文献
+  confidence: established
+- id: agn_emission_line_diagnostics
+  title: AGN 谱线诊断 (BPT 图)
+  category: measurement_principle
+  tags:
+  - bpt
+  - agn
+  - diagnostics
+  applies_to:
+    entities:
+    - agn
+    - seyfert_galaxy
+    - liner
+    - emission_line_galaxy
+  content: 'BPT 图 ([OIII]/Hβ vs [NII]/Hα) 区分电离机制: Kewley 2001 最大星暴线上
+
+    需要 ≥30-50% AGN/激波贡献; Kauffmann 2003 经验线与 Kewley 线之间为 composite;
+
+    [SII]/Hα、[OI]/Hα 分离 Seyfert 与 LINER。
+
+    物理原理: 恒星形成 (O/B 星电离) 与 AGN (幂律电离) 产生不同的线强度比 —
+
+    AGN 硬光子产生更高的 [OIII]/Hβ 与 [OI]/Hα。
+
+    关键误区: LINER 不是单一物理类 — 低光度 AGN / post-AGB 老年恒星 / 激波
+
+    三机制共存; 宽 Hα + 硬 X 射线指向 AGN 型。'
+  source: Kewley 2001; Kauffmann 2003; 两类 LINER (0902.1023)
+  confidence: consensus
+- id: sersic_profile_fitting
+  title: Sérsic 剖面拟合
+  category: measurement_principle
+  tags:
+  - sersic
+  - profile
+  applies_to:
+    entities:
+    - galaxy
+  content: 'Sérsic 剖面 I(r) = I_e exp[-b_n ((r/r_e)^(1/n) - 1)]: n=1 指数盘 (旋涡),
+
+    n=4 de Vaucouleurs (椭圆), 中间值过渡形态。
+
+    物理原理: 表面亮度分布反映恒星轨道分布与松弛程度;
+
+    测量方法: 二维剖面拟合 (GALFIT 等), r_e 有效半径, n 形态参数。
+
+    判定线索: 单分量拟合残差大的星系 = 核球+盘双组分 (n 值需分别拟合);
+
+    LSB 星系 μ0(B) ≥ 23 mag/arcsec^2 是操作定义 (表面亮度受限巡天的物理根源)。'
+  source: Sérsic 1963; GALFIT 文档; UTK 星系讲义
+  confidence: established
+- id: iras_farir_photometry
+  title: IRAS 远红外测光口径
+  category: measurement_principle
+  tags:
+  - iras
+  - farir
+  - photometry
+  applies_to:
+    entities:
+    - far_infrared_source
+    - infrared_source
+  content: 'IRAS 60/100 μm 测光需注意: Cirrus 污染 (银河系红外 Cirrus 背景)、
+
+    色修正 (不同 SED 假设)、SES 误差列 (噪声)、q_* 质量标志 (质量等级,
+
+    q=2 表示可靠, 低质量需标注)。
+
+    物理原理: 远红外 = 尘埃再辐射 (消光免疫的恒星形成示踪);
+
+    IRAS 色-色图 (log(S60/S25) > 0.57 星暴 / 0-0.57 AGN) 是 AGN-恒星形成
+
+    最佳单色判据。
+
+    判定线索: q_* 标志低的通量不可直接用于定量分析;
+
+    FIR 光度 >1e13 Lsun 且无红移 = 需复核 (ULIRG 极罕见)。'
+  source: IRAS Explanatory Supplement 1988; Helou; de Grijp
+  confidence: consensus
+- id: extragalactic_distance_ladder
+  title: 河外距离阶梯
+  category: measurement_principle
+  tags:
+  - distance
+  - ladder
+  applies_to:
+    fields:
+    - distance
+    entities:
+    - galaxy
+  content: '河外距离由阶梯逐级校准: 几何视差 (Gaia) → Cepheid PL 关系 → TRGB →
+
+    SN Ia (Phillips 关系) → Tully-Fisher; 每级误差累积增大。
+
+    物理原理: 各级标准烛光/尺子在不同距离域可校准; 交叉验证约束系统差。
+
+    判定线索: 同一星系的距离记录方法不同时, 差异 <10% 属正常 (M31 ~780 kpc
+
+    Cepheid/TRGB/SN Ia 一致); 孤立方法异常值需复核;
+
+    距离与红移应满足 Hubble 流 (z=0.001 对应 ~4.3 Mpc)。'
+  source: 距离阶梯综述; McConnachie 2012; Benedict 2002
+  confidence: established
+- id: radial_velocity_measurement
+  title: 径向速度测量
+  category: measurement_principle
+  tags:
+  - radial_velocity
+  - doppler
+  applies_to:
+    fields:
+    - radial_velocity
+    entities:
+    - star
+    - galaxy
+  content: 'RV 由谱线多普勒位移测量: Δλ/λ = v/c; 精度受谱分辨率与信噪比限制
+
+    (典型 0.1-10 km/s, 高精度 spectrograph 可达 m/s 级)。
+
+    误差来源: 波长定标漂移、恒星活动 (星斑伪信号)、大气视向速度、
+
+    双星轨道相位 (同一源不同历元 RV 不同)。
+
+    物理原理: 谱线位置 vs 实验室波长; 天基 (Gaia RVS) 与地基联合。
+
+    判定线索: 同一恒星的 RV 记录差异 >50 km/s = 双星或测量错误;
+
+    星系 RV 与红移矛盾 = 本动速度 vs 宇宙学红移混淆。'
+  source: RV 测量方法文献; HARPS/ESPRESSO 综述
+  confidence: established
+- id: 2mass_jhk_photometry
+  title: 2MASS JHK 测光列语义
+  category: measurement_principle
+  tags:
+  - 2mass
+  - jhk
+  - photometry
+  applies_to:
+    entities:
+    - near_infrared_source
+    - galaxy
+  content: '2MASS XSC 列语义 (VII/233/xsc): J 1.25μm / H 1.65μm / K 2.16μm (Vega 零点);
+
+    J.K20e = 20 mag/arcsec^2 等照度椭圆口径星等; Jconc 集中度、Jb/a 轴比、
+
+    Jpa 位置角、Jmu 表面亮度、Jfe/Jext 标志位。
+
+    物理原理: 近红外对尘埃不敏感, 示踪恒星质量主导成分;
+
+    判定线索: K20e 是等照度口径 — 与 PSF 口径星等不可直接比较;
+
+    Jfe 标志位非零 = 星等质量存疑;
+
+    2MASS 零点与 Vega 一致, 跨目录同波段 (同为 2MASS) 可直接比较。'
+  source: Cutri 2003 2MASS Explanatory Supplement; VizieR VII/233
+  confidence: consensus
+- id: metallicity_measurement
+  title: 金属丰度测量与双标尺
+  category: measurement_principle
+  tags:
+  - metallicity
+  - feh
+  applies_to:
+    fields:
+    - metallicity
+    entities:
+    - star
+    - galaxy
+  content: '金属丰度两个标尺: 恒星 [Fe/H] (谱线等效宽度/曲线增长分析) 与
+
+    星云 12+log(O/H) (氧禁线比, 电子温度法); 太阳 12+log(O/H)=8.69,
+
+    换算 Z/Zsun = 10^(A-8.69)。
+
+    物理原理: Fe 由 SN Ia 主导, O/Mg 由核塌缩 SN 主导 — [O/Fe] 是恒星形成
+
+    时标探针, 两标尺间不是常数偏移。
+
+    判定线索: [Fe/H] 与 12+log(O/H) 数值混用 (差 ~8.7) 是常见单位错误;
+
+    [Fe/H] < -3 的恒星记录需高置信证据 (极贫金属星极罕见)。'
+  source: Asplund 2009; 氧丰度转换讨论; 谱线分析文献
+  confidence: consensus
+- id: galaxy_kinematics_measurement
+  title: 星系动力学测量
+  category: measurement_principle
+  tags:
+  - kinematics
+  - rotation
+  applies_to:
+    entities:
+    - galaxy
+  content: '星系动力学: 旋转曲线 (HI 21cm / Hα 长缝) 与速度弥散 σ;
+
+    logD25 等光度直径、logR25 轴比、i 倾角用于几何修正。
+
+    物理原理: 旋转速度 + 半径 → 动力学质量 (维里/盘模型);
+
+    平坦旋转曲线 = 暗物质晕主导。
+
+    判定线索: 旋转速度与形态矛盾 (矮星系 300 km/s 不可能) = 单位错误
+
+    (km/s vs km); 倾角未知时 v_rot 是下界 (投影效应);
+
+    团成员速度弥散 ~800-1000 km/s 是团级特征 (群 ~150 km/s)。'
+  source: 星系动力学讲义; HI 21cm 观测文献
+  confidence: established
+- id: photometric_redshift_galaxy
+  title: 星系测光红移
+  category: measurement_principle
+  tags:
+  - photoz
+  - redshift
+  applies_to:
+    fields:
+    - redshift
+    entities:
+    - galaxy
+  content: 'photo-z 由宽带/窄带测光 SED 模板拟合 (χ²) 或机器学习估计;
+
+    典型精度: 宽带 0.03-0.05 (σ(Δz/(1+z))), 多/窄带 0.007-0.02;
+
+    spec-z 精度 1e-3-1e-4 (基准方法)。
+
+    误差机制: 颜色-红移简并 (尘埃中间红移星系可伪装高 z 洁净星系 →
+
+    灾难性失败)、模板库不完备、测光定标误差; 现代方法输出整条 PDF。
+
+    判定线索: photo-z 与 spec-z 差异 >0.1 (1+z) 需标记;
+
+    z > 4 的 photo-z 误差 >0.2 是常态 — 高红移结论必须有 spec-z 或
+
+    多波段独立证据; 两步法 (先 photo-z 再固定 z 拟合) 会低估不确定度。'
+  source: Ilbert 2009 COSMOS; EDisCS; PAU; Conroy 2013
+  confidence: consensus

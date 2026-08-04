@@ -1,0 +1,390 @@
+entries:
+- id: DM_redshift_relation
+  title: 色散量-红移关系 (Macquart Relation)
+  category: empirical_relation
+  tags:
+  - DM
+  - dispersion_measure
+  - redshift
+  - z
+  - Macquart
+  - IGM
+  - cosmology
+  hypothetical_queries:
+  - 为什么DM和红移有关系？
+  - DM随红移怎么变化？
+  - 如何用DM估计FRB的红移？
+  applies_to:
+    fields:
+    - dispersion_measure
+    - redshift
+    entities:
+    - FRB
+    - fast_radio_burst
+  content: 'DM 与红移 z 的物理关系:
+
+    DM = DM_MW + DM_halo + DM_IGM(z) + DM_host/(1+z)
+
+
+    其中 DM_IGM(z) 是主要的 cosmology-dependent 项:
+
+    DM_IGM(z) ≈ 800-1200 pc cm⁻³ at z~1 (Macquart et al. 2020)
+
+
+    关键性质:
+
+    - DM 随 z 增大单调递增 (主要趋势)
+
+    - Host galaxy DM 贡献 ~50-200 pc cm⁻³ (较大散点)
+
+    - Milky Way DM 贡献 ~20-200 pc cm⁻³ (NE2001/YMW16 可扣除)
+
+    - 因此 DM-z 的散点主要来自 host 和 MW 的不确定性
+
+    '
+  related_entries:
+  - kb:NE2001_model
+  - kb:YMW16_model
+  - kb:Macquart_relation
+  - kb:radio_dm_measurement
+  source: Macquart et al. 2020, Nature, DOI:10.1038/s41586-020-2300-2
+  confidence: established
+  version: 1.0.0
+  last_updated: '2026-07-28'
+- id: scattering_frequency_relation
+  title: 散射时标-频率关系
+  category: physical_law
+  tags:
+  - scattering
+  - timescale
+  - frequency
+  - tau
+  - Kolmogorov
+  - turbulence
+  applies_to:
+    fields:
+    - scattering_timescale
+    - observing_frequency
+    entities:
+    - FRB
+    - pulsar
+  content: '脉冲散射展宽 tau_scat 与观测频率 nu 的关系:
+
+    tau_scat ∝ nu^(-alpha)
+
+
+    对于 Kolmogorov 湍流谱: alpha ≈ 4.0-4.4
+
+    因此 C-band (5 GHz) 的散射约为 L-band (1.3 GHz) 的 (1.3/5)^4 ≈ 0.0045 倍
+
+
+    重要推论:
+
+    - L-band 散射严重, C-band 几乎无散射 → 跨频段 tau 差异可达 200 倍
+
+    - 跨来源比较 tau 时必须考虑频率依赖性
+
+    - 同频段 tau 差异 < 30% 可能来自视线方向星际介质差异
+
+    '
+  source: Rickett 1990, ARA&A; Cordes & Lazio 2002, astro-ph/0207156
+  confidence: established
+- id: fluence_energy_relation
+  title: fluence-能量关系
+  category: physical_law
+  tags:
+  - fluence
+  - energy
+  - flux
+  - FRB
+  - radio
+  - isotropic
+  applies_to:
+    fields:
+    - fluence
+    - flux_density
+    - energy
+    entities:
+    - FRB
+  content: 'FRB 的 fluence F (Jy ms) 与各向同性能量 E 的关系:
+
+    E = 4π D_L² Δν F / (1+z)
+
+
+    其中 D_L 为光度距离, Δν 为观测带宽。
+
+
+    关键性质:
+
+    - fluence 取决于仪器带宽和中心频率 → 跨仪器比较需归一化
+
+    - 同一 FRB 不同爆发间 fluence 可差 10-100 倍
+
+    - fluence 与 DM 无强相关性 (弱正相关, ρ~0.3)
+
+    '
+  source: Petroff et al. 2019, A&ARv
+  confidence: established
+- id: photo_z_vs_spec_z
+  title: 测光红移 vs 光谱红移精度对比
+  category: method_comparison
+  tags:
+  - redshift
+  - photometric
+  - spectroscopic
+  - photo-z
+  - spec-z
+  - precision
+  applies_to:
+    fields:
+    - redshift
+    methods:
+    - photometry
+    - spectroscopy
+  content: '红移测量精度对比:
+
+    - 光谱红移 (spec-z): Δz/(1+z) ~ 0.0001 (高分辨率光谱 R>10000)
+
+    - 测光红移 (photo-z): Δz/(1+z) ~ 0.03-0.06 (取决于滤光片数量和S/N)
+
+
+    关键推论:
+
+    - spec-z 与 photo-z 间 3-5% 的差异是测量方法的系统差异, 不是数据错误
+
+    - 对高红移 (z>4) 天体, photo-z 的绝对误差可能 > 0.2
+
+    - 跨来源红移比较时, 必须区分测量方法
+
+    '
+  source: Salvato et al. 2019, Nature Astronomy
+  confidence: established
+- id: dm_galactic_contribution
+  title: 银河系 DM 贡献模型
+  category: galactic_model
+  tags:
+  - DM
+  - Milky_Way
+  - NE2001
+  - YMW16
+  - galactic
+  - foreground
+  applies_to:
+    fields:
+    - dispersion_measure
+    entities:
+    - FRB
+    - pulsar
+  content: '银河系星际介质对 DM 的贡献:
+
+    - 典型值: 20-200 pc cm⁻³ (取决于视线方向)
+
+    - 高银纬 (|b|>30°): ~20-50 pc cm⁻³
+
+    - 低银纬 (|b|<10°): ~100-200+ pc cm⁻³
+
+
+    常用模型:
+
+    - NE2001 (Cordes & Lazio 2002): 广泛使用, ~30% 不确定度
+
+    - YMW16 (Yao, Manchester & Wang 2017): 更新但可能 overfit
+
+
+    关键: 扣除银河系 DM 后, 剩余 DM_excess 才可用于红移推断
+
+    '
+  source: Cordes & Lazio 2002; Yao et al. 2017, ApJ
+  confidence: established
+- id: blackbody_radiation_law
+  title: 黑体辐射定律
+  category: physical_law
+  tags:
+  - blackbody
+  - stefan
+  applies_to:
+    fields:
+    - effective_temperature
+    - luminosity
+    entities:
+    - star
+  content: '斯特藩-玻尔兹曼定律: L = 4πR^2 σ T^4 — 恒星/尘埃的连续谱辐射基础;
+
+    维恩位移: λ_max ∝ 1/T (热源越热峰值越短)。
+
+    物理原理: 黑体辐射是热平衡辐射场, 光度=表面积×单位面积辐射功率。
+
+    应用: 由 (Teff, 半径) 或 (Teff, 光度) 推第三者; SED 拟合定 Teff。
+
+    判定线索: Teff 与颜色矛盾 (如 5000 K 却标为蓝源) = 消光未修正或字段错位;
+
+    恒星 SED 明显偏离黑体 (红外超) 提示尘埃盘/星风包层。'
+  source: 恒星物理教科书; OSU HR 图讲义
+  confidence: established
+- id: mass_luminosity_relation
+  title: 主序质光关系
+  category: empirical_relation
+  tags:
+  - mass_luminosity
+  applies_to:
+    entities:
+    - main_sequence_star
+  content: '主序质光关系 L ∝ M^3.5 (约 0.5-10 Msun 区间近似): 大质量端辐射压主导
+
+    趋向 L ∝ M^3, 低质量端对流主导斜率变平。
+
+    物理原理: 流体静力学平衡 + 辐射扩散近似 (光度 ∝ 内部温度梯度 × 半径)。
+
+    应用: 由质量估光度/寿命 (τ ∝ M^-2.5), 或反之;
+
+    判定线索: 主序星质量-光度组合明显偏离关系 (>1 dex) = 双星混合、
+
+    非主序成员, 或单位错误。'
+  source: 质光关系教科书; UNLV 主序表
+  confidence: established
+- id: eddington_luminosity
+  title: 爱丁顿光度界限
+  category: physical_law
+  tags:
+  - eddington
+  applies_to:
+    entities:
+    - star
+    - black_hole
+    - agn
+  content: '爱丁顿光度 L_Edd = 4πGMm_p c/σ_T ≈ 1.26e38 (M/Msun) erg/s: 辐射压
+
+    (电子 Thomson 散射) 平衡引力的上限, 与距离无关。
+
+    物理原理: 超过 L_Edd 时辐射压驱动外流, 吸积被截断 (对球对称吸积)。
+
+    应用: 恒星/黑洞质量的下限锚点; AGN 与 X 射线双星的 sanity check;
+
+    判定线索: L > L_Edd 数倍的持续辐射需要超 Eddington 几何解释 (盘风、
+
+    喷流) 或复核光度/质量 — 这是数据质量核查的第一性工具。'
+  source: JILA 讲义; Eddington 1916 原始推导
+  confidence: established
+- id: hubble_flow_law
+  title: Hubble 流与距离-红移
+  category: empirical_relation
+  tags:
+  - hubble
+  - redshift
+  applies_to:
+    fields:
+    - redshift
+    - distance
+    entities:
+    - galaxy
+  content: 'Hubble-Lemaître 定律: v = H0 d (H0 ≈ 67-73 km/s/Mpc); z << 1 时 cz ≈ H0 d。
+
+    物理原理: 宇宙膨胀使星系退行, 红移是尺度因子之比 z = a(t_obs)/a(t_emit) - 1;
+
+    z > 0.1 后线性近似失效, 需宇宙学模型 (ΛCDM) 换算距离。
+
+    判定线索: z 与距离明显矛盾 (如 z=0.5 却标 10 Mpc) = 单位/换算错误;
+
+    同一对象的多个红移源差异 >3-5% 属测量系统差, 更大差异提示双星/并合/透镜。'
+  source: Planck 2020; 宇宙学教科书
+  confidence: established
+- id: doppler_redshift_law
+  title: 多普勒红移与视向速度
+  category: empirical_relation
+  tags:
+  - doppler
+  - radial_velocity
+  applies_to:
+    fields:
+    - radial_velocity
+    entities:
+    - star
+    - galaxy
+  content: '多普勒效应: 谱线位移 Δλ/λ = v/c (非相对论) — 视向速度测量的基础。
+
+    物理原理: 光源沿视线运动压缩/拉伸波长; 热运动与湍流展宽限制精度。
+
+    应用: 恒星/星系 RV 测量 (精度 ~0.1-10 km/s 视谱分辨率);
+
+    双星轨道 (SB1 只给 m sin^3 i, SB2 可得两星质量 — 倾角需食/天体测量)。
+
+    判定线索: 负 RV (蓝移) 只可能来自本星系群成员 (宇宙学红移恒为正);
+
+    RV 与星系 z 矛盾 = 星系内运动 vs 宇宙学红移混淆。'
+  source: 多普勒效应讲义; RV 测量方法文献
+  confidence: established
+- id: virial_mass_theorem
+  title: 维里定理与动力学质量
+  category: physical_law
+  tags:
+  - virial
+  - dynamics
+  applies_to:
+    entities:
+    - galaxy
+    - galaxy_cluster
+    - galaxy_group
+  content: '维里定理: 束缚系统的 2⟨T⟩ + ⟨U⟩ = 0 → 动力学质量 M ≈ σ^2 R / G
+
+    (σ 速度弥散, R 特征半径)。
+
+    物理原理: 平衡系统的动能与势能之比固定 (各向同性无碰撞气体)。
+
+    应用: 星系团/椭圆星系质量估计 — 团质量 ~1e14-1e15 Msun 中 ~84% 是暗物质,
+
+    ~13% 热 ICM, 星系本身仅 ~1%。
+
+    判定线索: 动力学质量与光度质量差异 >10 倍 = 暗物质主导 (正常) 或
+
+    非平衡态 (并合中, 维里定理失效); 团 X 光度与温度应满足 L_X ∝ T^3。'
+  source: 维里定理讲义; 星系团质量综述 (Peterson)
+  confidence: established
+- id: radius_temp_luminosity
+  title: 恒星半径-温度-光度关系
+  category: physical_law
+  tags:
+  - radius
+  - teff
+  - luminosity
+  applies_to:
+    fields:
+    - stellar_radius
+    - effective_temperature
+    - luminosity
+    entities:
+    - star
+  content: 'L = 4πR^2 σ T^4 联立 Teff/半径/光度: 任取两者可推第三者 — 恒星参数的
+
+    一致性校验基础 (HR 图的坐标即 T 与 L)。
+
+    物理原理: 黑体辐射 + 几何 (光度=表面积×表面辐射通量)。
+
+    判定线索: 三者矛盾 (如 1 Rsun + 5000 K 却标 1e5 Lsun) = 单位混用
+
+    (常见: Rsun↔km、Lsun↔erg/s、Teff↔K 混淆);
+
+    红超巨星: 3000-4500 K + 200-1500 Rsun + 1e4-1e6 Lsun 的组合应自洽。'
+  source: 恒星物理教科书; HR 图讲义
+  confidence: established
+- id: schwarzschild_radius
+  title: Schwarzschild 半径
+  category: physical_law
+  tags:
+  - blackhole
+  - schwarzschild
+  applies_to:
+    entities:
+    - black_hole
+  content: 'Schwarzschild 半径 r_s = 2GM/c^2 ≈ 2.95 (M/Msun) km — 事件视界尺度。
+
+    物理原理: 牛顿逃逸速度 v = (2GM/r)^(1/2) 达光速的半径 (广义相对论精确解)。
+
+    尺度: 恒星质量 BH (5-100 Msun) → 15-300 km (与中子星同尺度);
+
+    SMBH (1e6-1e10 Msun) → 0.02-200 AU。
+
+    判定线索: 黑洞''密度'' ∝ 1/M^2 — 大质量黑洞是低密度物体 (可低于水),
+
+    这是常见直觉误区; 记录的黑洞质量与半径组合不满足 r_s 关系 = 单位错误。'
+  source: JILA 黑洞讲义; Schwarzschild 1916
+  confidence: established

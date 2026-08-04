@@ -71,22 +71,27 @@ def main():
         print(f'    [{sid[:25]}] score={score:.4f} ({lvl})')
     print(f'  Overall: {sc["overall_score"]:.4f} ({sc["quality_level"]})')
 
-    # ═══ Stage 4: Per-Source Decision ═══
-    print(f'\n{"─" * 70}\nStage 4: DecisionReasoningAgent (per-source + aggregate)\n{"─" * 70}')
+    # ═══ Stage 4: Per-Source Decision (V3.0) ═══
+    print(f'\n{"─" * 70}\nStage 4: DecisionReasoningAgent (V3.0 per-source routing)\n{"─" * 70}')
     from Data_Assessment_agentV1.agents.decision_reasoning_agent import DecisionReasoningAgent
     s4 = DecisionReasoningAgent().run(state); state = {**state, **s4}
     dq = s4['report_state']['quality']
-    print(f'  Per-source routes:')
+    print(f'  Per-source routes (V3.0: anomaly→Conflict, variance→Export):')
     for sid, route in dq['per_source_routes'].items():
         reason = dq['per_source_reasons'].get(sid, '')[:80]
         print(f'    [{sid[:25]}] → {route:15s} | {reason}')
     print(f'')
-    print(f'  Overall Route:    {dq["route_decision"]}')
-    print(f'  Need Normalize:   {dq["need_normalization"]}')
-    print(f'  Need Conflict:    {dq["need_conflict_analysis"]}')
-    print(f'  Summary:          {dq["assessment_summary"]}')
-    print(f'  LLM Reasoning:    {dq.get("decision_reasoning","")[:200]}')
-    print(f'  LLM calls:        {s4["workflow_state"]["llm_call_count"]}')
+    rc = dq.get('route_counts', {})
+    print(f'  Route Distribution: {rc}')
+    print(f'  Summary:            {dq.get("assessment_summary", "")}')
+    # V3.0: multi_source_variance summary
+    msv = dq.get('multi_source_variance', {})
+    if msv:
+        print(f'  Variance groups:    {msv.get("variance_count", 0)}')
+        print(f'  Anomaly count:      {msv.get("anomaly_count", 0)}')
+    # V4 fix: 手工分段合并 ({**state, **s4}) 无 reducer, DecisionReasoning 返回
+    # 不含 llm_call_count → 防御性 .get 读取
+    print(f'  LLM calls:          {s4["workflow_state"].get("llm_call_count", 0)}')
 
     # ═══ LLM Stats ═══
     from utils.llm import print_llm_stats

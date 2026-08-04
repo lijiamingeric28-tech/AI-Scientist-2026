@@ -1,8 +1,11 @@
 """
-decision_reasoning_agent.py — Stage 4: DecisionReasoningAgent (V2.1)
+decision_reasoning_agent.py — Stage 4: DecisionReasoningAgent (V3.0)
 
-严格路由策略: 只有数据格式完全无问题才能 Export。
-任何可修复问题 → Normalization, 冲突 → Conflict, 无法判断 → HumanReview。
+天文数据路由策略 (V3.0):
+  正常多源差异 (method/instrument/temporal variance) → Export (全量保留)
+  真正异常 (extraction_error/unit_error/cross_id_error) → Conflict
+  可修复问题 (别名/格式/单位) → Normalization
+  提取质量极差 → HumanReview
 """
 from __future__ import annotations
 import datetime, time
@@ -13,20 +16,12 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 _ROUTE_SEVERITY = {"Export": 0, "Normalization": 1, "Conflict": 2, "HumanReview": 3}
 
-_DECISION_SYSTEM = """你是科学数据质量评估专家。决定工作流路由: Export / Normalization / Conflict / HumanReview。
+_DECISION_SYSTEM = """你是天文数据质量评估专家。决定工作流路由: Export / Normalization / Conflict / HumanReview。
 
-**严格 Export 标准 (必须全部满足):**
-1. 所有 field_name 都是目标 Schema 中的标准名 (无别名 YS/UTS/EL/σ_y)
-2. 所有数值字段都有 field_unit (无缺失单位)
-3. 所有数值值都是干净数字 (无 ~ ≈ approx 前缀)
-4. 所有记录都有完整 provenance (page + bbox)
-5. 无跨来源冲突
-6. 无格式问题
-7. completeness=1.0, consistency=1.0, format=1.0
-
-**如果以上任何一条不满足 → Normalization**
-**如果有跨来源数值冲突 → Conflict**
-**只有全部满足才能 Export**
+**路由原则 (V3.0 天文领域):**
+1. 正常的多源测量差异 (不同仪器/波段/时间的测量值不同) → Export (全量保留+标注)
+2. 只有真正的异常 (提取错误/单位错误/交叉识别错误/极端统计离群) → Conflict
+3. 格式/别名/缺失单位等可修复问题 → Normalization
 
 返回 JSON: {"route": "string", "reasoning": "string", "critical_issues": [...], "confidence": 0.9}"""
 
@@ -58,11 +53,17 @@ class DecisionReasoningAgent:
             issues_found = []
 
             # 1. 别名检测: per-source present_fields vs expected_fields
+            # V2: 使用 per-entity 数据, 避免 Entity-A 掩盖 Entity-B 的别名
             expected = set(sr_completeness.get("expected_fields", []))
             actual = set(sr_completeness.get("present_fields", []))
             aliases = actual - expected  # fields present but not in target schema
             if aliases:
                 issues_found.append(f"alias_fields: {sorted(aliases)}")
+            # V2: per-entity 别名检测
+            per_entity_missing = sr_completeness.get("per_entity_missing", {})
+            for elabel, missing_fields in per_entity_missing.items():
+                if missing_fields:
+                    issues_found.append(f"[{elabel}] missing_expected_fields: {sorted(missing_fields)}")
 
             # 2. 格式问题: field_value 包含 ~ ≈ 前缀的字符串
             fmt_issues = sr_format.get("total_issues", 0)
@@ -114,34 +115,57 @@ class DecisionReasoningAgent:
                     entity_label = f" ({et}:{en})" if en else ""
                     issues_found.append(f"unit_mismatch: {fn}{entity_label} has {sorted(units)} (expected {std_unit})")
 
-            # 6. 冲突 — 不计入 issues_found, 单独用 has_conflict 判断路由
-            has_conflict = sr_conflict.get("has_conflicts", False)
-            conflict_count = sr_conflict.get("conflict_count", 0)
+            # ── V3.0: 异常检测 (替代旧冲突检测) ──
+            # has_conflicts 现在等于 has_anomalies (只有真正异常才标记)
+            has_anomaly = sr_conflict.get("has_conflicts", False)
+            anomaly_count = sr_conflict.get("conflict_count", 0)
+            # has_variance: 正常多源差异 (不阻塞 Export)
+            has_variance = sr_conflict.get("has_variance", False)
+            variance_count = sr_conflict.get("variance_count", 0)
 
-            # 6. 完整性不完美 — 不计入可操作路由 (缺失字段不是Normalization能修复的)
+            # ── V3.1 fix: 全局 cross_id_error 检查 ──
+            # cross_id_error 不属于任何特定 source (quality_assessment 不广播),
+            # 但需要全局判定 → 该实体相关 source 路由 HumanReview
+            global_anomalies = quality.get("multi_source_variance", {}).get("anomalies", [])
+            entity_cross_id = [
+                a for a in global_anomalies
+                if a.get("anomaly_type") == "cross_id_error"
+                and a.get("entity_name")
+            ]
+            sid_cross_id = any(
+                sid in a.get("source_ids", []) or
+                sid == a.get("source_a", "") or sid == a.get("source_b", "") or
+                sid == a.get("source_id", "")
+                for a in entity_cross_id
+            )
 
-            # ═══ V3.0: 决策逻辑 — 只对可操作问题路由 ─
-            # Step 1: 计算 Repair Cost (通用公式, 不限于特定领域)
+            # ═══ V3.0: 决策逻辑 — 只对可操作问题路由 ═══
+            # Step 1: 计算 Repair Cost (anomaly_count 替代旧 conflict_count)
             issue_count = len(issues_found)
             repair_cost = "low"
-            if conflict_count >= 3 or issue_count >= 10:
+            if anomaly_count >= 3 or issue_count >= 10:
                 repair_cost = "high"
-            elif conflict_count >= 1 or issue_count >= 3:
+            elif anomaly_count >= 1 or issue_count >= 3:
                 repair_cost = "medium"
 
-            # ── 路由决策: issues_found 优先于 has_conflict ──
-            # 同时有格式+冲突 → 先 Normalization 清洗, 再 Conflict 分析
-            # V3.0: 提取质量极低 → 无法评估 → HumanReview (A→E)
+            # ── V3.0 路由决策: issues_found 优先于 has_anomaly ──
+            # 同时有格式+异常 → 先 Normalization 清洗, 再 Conflict 分析
+            # V3.0: 正常多源差异 (has_variance) 不阻塞 Export
             extraction_q = sr.get("extraction_quality", {})
             extr_score = extraction_q.get("score", 1.0)
 
             if extr_score < 0.3:
                 # 提取质量极差: trace_id/provenance/extraction_method 大面积缺失
                 base_route = "HumanReview"
+            elif sid_cross_id:
+                # V3.1 fix: 全局 cross_id_error → HumanReview (跨源异常无法自动裁决)
+                base_route = "HumanReview"
             elif issues_found:
                 base_route = "Normalization"
-            elif has_conflict:
+            elif has_anomaly:
                 base_route = "Conflict"
+            elif has_variance:
+                base_route = "Export"
             else:
                 base_route = "Export"
 
@@ -162,10 +186,14 @@ class DecisionReasoningAgent:
                 reason = f"Matrix escalation: {ql} quality × {repair_cost} repair cost → {route}"
             else:
                 route = base_route
-                if has_conflict:
-                    reason = f"Conflict: {conflict_count} cross-source conflicts detected"
+                if sid_cross_id:
+                    reason = f"Global cross_id_error detected for entity (needs human review)"
+                elif has_anomaly:
+                    reason = f"Anomalies: {anomaly_count} record-level anomalies detected"
                 elif issues_found:
                     reason = "; ".join(issues_found[:5])
+                elif has_variance:
+                    reason = f"Multi-source variance: {variance_count} groups (normal, all preserved)"
                 else:
                     reason = f"All checks passed (score={sr_scoring.get('overall_score',0):.2f})"
 
@@ -182,8 +210,8 @@ class DecisionReasoningAgent:
         for sid, sr in source_reports.items():
             ql = sr.get("quality_scoring", {}).get("quality_level", "fair")
             issues = sr.get("issue_count", 0)
-            conflicts = sr.get("conflict_risk", {}).get("conflict_count", 0)
-            rc = "high" if conflicts >= 3 or issues >= 10 else ("medium" if conflicts >= 1 or issues >= 3 else "low")
+            anomalies = sr.get("conflict_risk", {}).get("conflict_count", 0)
+            rc = "high" if anomalies >= 3 or issues >= 10 else ("medium" if anomalies >= 1 or issues >= 3 else "low")
             matrix = {"excellent": {"low": "Export", "medium": "Export", "high": "Normalization"},
                       "good": {"low": "Export", "medium": "Normalization", "high": "Normalization"},
                       "fair": {"low": "Normalization", "medium": "Normalization", "high": "Conflict"},
@@ -217,9 +245,13 @@ class DecisionReasoningAgent:
                 if not conditions:
                     conditions.append({"condition": "general", "route": "Normalization", "reason": "需字段映射和单位转换"})
             elif route == "Conflict":
-                conditions.append({"condition": "has_conflict", "route": "Conflict", "reason": f"存在{sr.get('conflict_risk',{}).get('conflict_count',0)}个跨来源冲突"})
+                conditions.append({"condition": "has_anomaly", "route": "Conflict", "reason": f"存在{sr.get('conflict_risk',{}).get('conflict_count',0)}个数据异常需要分析"})
             elif route == "Export":
-                conditions.append({"condition": "clean", "route": "Export", "reason": "数据可直接使用"})
+                has_var = sr.get("conflict_risk", {}).get("has_variance", False)
+                if has_var:
+                    conditions.append({"condition": "multi_source_variance_annotated", "route": "Export", "reason": "存在多源差异(已标注),数据可直接使用"})
+                else:
+                    conditions.append({"condition": "clean", "route": "Export", "reason": "数据可直接使用"})
             conditional_routes.append({"source_id": sid, "primary_route": route, "conditions": conditions})
         quality["conditional_routes"] = conditional_routes
 

@@ -45,16 +45,21 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
             "summary": "无数据记录，跳过一致性检查。",
         }
 
-    # ── 1. Schema 一致性 ──
-    required_keys = {"record_id", "source_id", "field_name", "field_value",
-                     "trace_id", "extraction_method"}
+    # ── 1. Schema 一致性 (V3.1: paper/DB 分别检查) ──
+    from tools.assessment.source_utils import is_database_record
+    paper_required = {"record_id", "source_id", "field_name", "field_value",
+                      "trace_id", "extraction_method"}
+    db_required = {"record_id", "source_id", "field_name", "field_value",
+                   "extraction_method"}
     missing_schema = 0
     for rec in records:
-        if not required_keys.issubset(rec.keys()):
+        req = db_required if is_database_record(rec) else paper_required
+        if not req.issubset(rec.keys()):
             missing_schema += 1
 
     schema_consistency = {
-        "required_keys": sorted(required_keys),
+        "paper_required_keys": sorted(paper_required),
+        "db_required_keys": sorted(db_required),
         "records_missing_keys": missing_schema,
         "is_consistent": missing_schema == 0,
     }
@@ -101,7 +106,41 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
         else:
             unit_consistency[key] = f"inconsistent: {units}"
 
-    # ── 4. 汇总评分 ──
+    # ── 4. Per-Entity score aggregation (V2) ──
+    # 构建 entity→field 映射
+    entity_field_map: dict[str, set[str]] = {}
+    for rec in records:
+        et = rec.get("entity_type", "") or ""
+        en = rec.get("entity_name", "")
+        elabel = f"{et}:{en}" if et else (en or "unknown")
+        fn = rec.get("field_name", "unknown")
+        ekey = f"{en}/{fn}" if en else fn
+        entity_field_map.setdefault(elabel, set()).add(ekey)
+
+    # 计算 per-entity 一致性
+    per_entity_type_consistency: dict[str, float] = {}
+    per_entity_unit_consistency: dict[str, float] = {}
+    for elabel, ekeys in entity_field_map.items():
+        # Type 一致性
+        type_checks = 0
+        type_passed = 0
+        for k in ekeys:
+            if k in field_type_consistency:
+                type_checks += 1
+                if field_type_consistency[k]:
+                    type_passed += 1
+        per_entity_type_consistency[elabel] = round(type_passed / max(type_checks, 1), 4)
+        # Unit 一致性
+        unit_checks = 0
+        unit_passed = 0
+        for k in ekeys:
+            if k in unit_consistency:
+                unit_checks += 1
+                if not unit_consistency[k].startswith("inconsistent"):
+                    unit_passed += 1
+        per_entity_unit_consistency[elabel] = round(unit_passed / max(unit_checks, 1), 4)
+
+    # ── 5. 汇总评分 ──
     issues: list[str] = []
     if missing_schema > 0:
         issues.append(f"{missing_schema} 条记录缺少必填字段")
@@ -130,8 +169,11 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
         "field_type_consistency": field_type_consistency,
         "unit_consistency": unit_consistency,
         "issues": issues,
+        # V2: per-entity consistency scores
+        "per_entity_type_consistency": per_entity_type_consistency,
+        "per_entity_unit_consistency": per_entity_unit_consistency,
         "summary": "; ".join(issues) if issues else "数据一致性良好。",
     }
 
-    logger.info("一致性评估完成: score=%.2f, %d 个问题。", score, len(issues))
+    logger.info("一致性评估完成: score=%.2f, %d 个问题, %d entities。", score, len(issues), len(entity_field_map))
     return result

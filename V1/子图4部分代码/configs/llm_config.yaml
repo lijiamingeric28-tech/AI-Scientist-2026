@@ -6,13 +6,13 @@
 # ==========================================================
 
 # 模型名称
-model: "deepseek-v4-pro"
+model: "deepseek-v4-flash"
 
 # API Key（也可通过环境变量 OPENAI_API_KEY 覆盖）
 api_key: ""
 
 # API Base URL（OpenAI 官方可留空；DeepSeek 等第三方需填写）
-# 示例: https://api.deepseek.com/v1
+# 示例: https://api.deepseek.com
 base_url: "https://api.deepseek.com"
 
 # 请求参数
@@ -23,7 +23,7 @@ max_retries: 3            # 最大重试次数
 
 # 结构化输出策略: "auto"(自动探测) / "function_calling" / "json_schema" / "prompt_parsing"
 # DeepSeek 等非 OpenAI 模型建议设为 "prompt_parsing" 避免两次 400 浪费
-structured_output_method: "prompt_parsing"
+structured_output_method: "function_calling"
 
 # 结构化输出 Schema 名称前缀
 schema_prefix: "quality_pipeline"

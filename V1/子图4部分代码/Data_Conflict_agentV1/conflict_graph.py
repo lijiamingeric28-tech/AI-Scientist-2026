@@ -1,14 +1,15 @@
 """
-conflict_graph.py — Conflict Resolution SubGraph (V1.0)
+conflict_graph.py — Data Variance & Anomaly Detection SubGraph (V3.0)
 
-架构: 一个 Stage = 一个 Agent
-  START → ConflictIdentificationAgent → ConflictClassificationAgent
-        → EvidenceCollectionAgent → ResolutionReasoningAgent
-        → ConfidenceEvaluationAgent → ResolutionReportAgent → END
+V3.0 重构: 从 "冲突检测+裁决淘汰" 改为 "多源方差特征化+异常检测+全量保留标注"。
+
+5 Stage 流水线:
+  START → VarianceAggregation → DifferenceClassification
+        → AnomalyVerification → AnnotationConfidence → AnnotationReport → END
 
 条件边:
-  - Identification: total_conflicts==0 → 直接 END (跳过后续 Stage)
-  - Confidence: 置信度不足 + retry<2 → 重入 Reasoning (内部重试)
+  - Aggregation: total_variances==0 && total_anomalies==0 → 直接 END (route=Export)
+  - Confidence: 分类置信度不足 + retry<2 → 重入 Verification (内部重试)
 
 Graph 职责: 仅编排, 不调用 Tool/Prompt/LLM/Rule。
 """
@@ -23,42 +24,36 @@ from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-# ── 6 个 Agent ──
-from Data_Conflict_agentV1.agents.conflict_identification_agent import ConflictIdentificationAgent
-from Data_Conflict_agentV1.agents.conflict_classification_agent import ConflictClassificationAgent
-from Data_Conflict_agentV1.agents.evidence_collection_agent import EvidenceCollectionAgent
-from Data_Conflict_agentV1.agents.resolution_reasoning_agent import ResolutionReasoningAgent
-from Data_Conflict_agentV1.agents.confidence_evaluation_agent import ConfidenceEvaluationAgent
-from Data_Conflict_agentV1.agents.resolution_report_agent import ResolutionReportAgent
-
+# ── V3.0: 5 个 Agent ──
+from Data_Conflict_agentV1.agents.conflict_identification_agent import VarianceAggregationAgent
+from Data_Conflict_agentV1.agents.conflict_classification_agent import DifferenceClassificationAgent
+from Data_Conflict_agentV1.agents.evidence_collection_agent import AnomalyVerificationAgent
+from Data_Conflict_agentV1.agents.confidence_evaluation_agent import AnnotationConfidenceAgent
+from Data_Conflict_agentV1.agents.resolution_report_agent import AnnotationReportAgent
+# Note: resolution_reasoning_agent 在 V3.0 中被移除
 
 # ── 实例化 ──
-_identification = ConflictIdentificationAgent()
-_classification = ConflictClassificationAgent()
-_evidence = EvidenceCollectionAgent()
-_reasoning = ResolutionReasoningAgent()
-_confidence = ConfidenceEvaluationAgent()
-_report = ResolutionReportAgent()
+_aggregation = VarianceAggregationAgent()
+_classification = DifferenceClassificationAgent()
+_verification = AnomalyVerificationAgent()
+_confidence = AnnotationConfidenceAgent()
+_report = AnnotationReportAgent()
 
 
 # ==========================================================
-# Stage Nodes — 极简: 只调用 Agent.run()
+# Stage Nodes
 # ==========================================================
 
-def _identification_node(state: QualityGraphState) -> dict[str, Any]:
-    return _identification.run(state)
+def _aggregation_node(state: QualityGraphState) -> dict[str, Any]:
+    return _aggregation.run(state)
 
 
 def _classification_node(state: QualityGraphState) -> dict[str, Any]:
     return _classification.run(state)
 
 
-def _evidence_node(state: QualityGraphState) -> dict[str, Any]:
-    return _evidence.run(state)
-
-
-def _reasoning_node(state: QualityGraphState) -> dict[str, Any]:
-    return _reasoning.run(state)
+def _verification_node(state: QualityGraphState) -> dict[str, Any]:
+    return _verification.run(state)
 
 
 def _confidence_node(state: QualityGraphState) -> dict[str, Any]:
@@ -73,34 +68,43 @@ def _report_node(state: QualityGraphState) -> dict[str, Any]:
 # 条件边函数
 # ==========================================================
 
-def _after_identification(state: QualityGraphState) -> str:
+def _after_aggregation(state: QualityGraphState) -> str:
     """
-    Identification → Classification 或 跳过 (无冲突直接 Export)
+    Aggregation → Classification 或 跳过 (无方差/无异常直接 Export)
     """
     conflict_state = state.get("report_state", {}).get("conflict", {})
-    ident = conflict_state.get("identification", {})
-    total = ident.get("total_conflicts", 0)
-    if total == 0:
-        logger.info("[ConflictGraph] No conflicts → skip Stage 2-6 → END")
-        return END
-    return "conflict_classification"
+    agg = conflict_state.get("aggregation", {})
+    total_v = agg.get("total_variances", 0)
+    total_a = agg.get("total_anomalies", 0)
+    if total_v == 0 and total_a == 0:
+        logger.info("[VarianceGraph] No variances or anomalies → skip Stage 2-5")
+        return "finalize"  # V3.3: 统一出口
+    return "difference_classification"
 
 
 def _after_confidence(state: QualityGraphState) -> str:
     """
-    Confidence → Report 或 重入 Reasoning (内部重试)
+    Confidence → Report 或 重入 Verification (内部重试)
     """
     wf = state.get("workflow_state", {})
     status = wf.get("execution_status", "Success")
     if status == "Retry":
-        # 内部重试: 置信度不足 → 退回 Reasoning 重新推理
         retry_count = state.get("report_state", {}).get("conflict", {}).get(
-            "reasoning", {}).get("confidence_retry_count", 0)
+            "annotation_confidence", {}).get("retry_count", 0)
         if retry_count < 2:
-            logger.info("[ConflictGraph] Confidence below threshold → retry Reasoning (%d/2)", retry_count + 1)
-            return "resolution_reasoning"
-    # 正常流程 → Report
-    return "resolution_report"
+            logger.info("[VarianceGraph] Classification confidence low → retry Verification (%d/2)", retry_count + 1)
+            return "anomaly_verification"
+    return "annotation_report"
+
+
+# ==========================================================
+# 子图出口状态透传 (V3.3: 供主图 Stage Gate 消费)
+# ==========================================================
+
+def _finalize(state: QualityGraphState) -> dict[str, Any]:
+    """透传子图最终 execution_status (Retry/Failed 冒泡到主图 Gate)。"""
+    status = state.get("workflow_state", {}).get("execution_status", "Success")
+    return {"workflow_state": {"execution_status": status}}
 
 
 # ==========================================================
@@ -110,38 +114,38 @@ def _after_confidence(state: QualityGraphState) -> str:
 def build_conflict_graph() -> StateGraph[QualityGraphState]:
     graph: StateGraph[QualityGraphState] = StateGraph(QualityGraphState)
 
-    graph.add_node("conflict_identification", _identification_node)
-    graph.add_node("conflict_classification", _classification_node)
-    graph.add_node("evidence_collection", _evidence_node)
-    graph.add_node("resolution_reasoning", _reasoning_node)
-    graph.add_node("confidence_evaluation", _confidence_node)
-    graph.add_node("resolution_report", _report_node)
+    graph.add_node("variance_aggregation", _aggregation_node)
+    graph.add_node("difference_classification", _classification_node)
+    graph.add_node("anomaly_verification", _verification_node)
+    graph.add_node("annotation_confidence", _confidence_node)
+    graph.add_node("annotation_report", _report_node)
+    graph.add_node("finalize", _finalize)
 
-    graph.set_entry_point("conflict_identification")
+    graph.set_entry_point("variance_aggregation")
 
-    # Identification → Classification (or END)
+    # Aggregation → Classification (or finalize → END, V3.3 统一出口)
     graph.add_conditional_edges(
-        "conflict_identification",
-        _after_identification,
-        {"conflict_classification": "conflict_classification", END: END},
+        "variance_aggregation",
+        _after_aggregation,
+        {"difference_classification": "difference_classification", "finalize": "finalize"},
     )
 
-    # 线性流水线: Classification → Evidence → Reasoning
-    graph.add_edge("conflict_classification", "evidence_collection")
-    graph.add_edge("evidence_collection", "resolution_reasoning")
+    # 线性流水线: Classification → Verification
+    graph.add_edge("difference_classification", "anomaly_verification")
 
-    # Reasoning → Confidence
-    graph.add_edge("resolution_reasoning", "confidence_evaluation")
+    # Verification → Confidence
+    graph.add_edge("anomaly_verification", "annotation_confidence")
 
-    # Confidence → Report (or retry Reasoning)
+    # Confidence → Report (or retry Verification)
     graph.add_conditional_edges(
-        "confidence_evaluation",
+        "annotation_confidence",
         _after_confidence,
-        {"resolution_reasoning": "resolution_reasoning", "resolution_report": "resolution_report"},
+        {"anomaly_verification": "anomaly_verification", "annotation_report": "annotation_report"},
     )
 
-    # Report → END
-    graph.add_edge("resolution_report", END)
+    # Report → finalize → END
+    graph.add_edge("annotation_report", "finalize")
+    graph.add_edge("finalize", END)
 
-    logger.info("[Workflow] Conflict SubGraph built (6 Agents).")
+    logger.info("[Workflow] Variance SubGraph V3.0 built (5 Agents + finalize).")
     return graph

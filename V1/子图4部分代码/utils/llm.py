@@ -14,9 +14,11 @@ LLM 工厂模块 — 统一管理 LangChain ChatModel 实例。
 
 from __future__ import annotations
 
+import contextvars
 import json
 import os
 import re
+import threading
 import time
 from typing import Optional, Type
 
@@ -35,8 +37,10 @@ _llm_instance: Optional[ChatOpenAI] = None
 _config_cache: Optional[dict] = None
 
 # ==========================================================
-# LLM 调用统计
+# LLM 调用统计 (V3.5: 线程安全 — contextvars 隔离 agent + Lock 保护统计)
 # ==========================================================
+
+_stats_lock = threading.Lock()  # V3.5: 统计计数互斥
 
 _stats: dict = {
     "total_calls": 0,           # 总调用次数（含重试）
@@ -50,7 +54,8 @@ _stats: dict = {
     "call_log": [],             # 每次调用的详细日志
 }
 
-_current_agent: str = "unknown"
+# V3.5: 线程安全的 agent 上下文 (contextvars — 每线程独立, 防止并发串线)
+_current_agent_var: contextvars.ContextVar[str] = contextvars.ContextVar("llm_agent", default="unknown")
 
 
 def _load_config() -> dict:
@@ -157,7 +162,7 @@ class StructuredLLM:
             Pydantic BaseModel 实例。
         """
         t_start = time.time()
-        agent = _current_agent
+        agent = _current_agent_var.get()  # V3.5: contextvar (线程独立)
 
         # 读取配置的方法偏好
         config = _load_config()
@@ -330,52 +335,54 @@ def reset_llm():
 # ==========================================================
 
 def set_agent_context(agent_name: str):
-    """设置当前 LLM 调用所属的 Agent 名称（供统计分组）。"""
-    global _current_agent
-    _current_agent = agent_name
+    """设置当前 LLM 调用所属的 Agent 名称 (V3.5: contextvars — 线程独立)。"""
+    _current_agent_var.set(agent_name)
 
 
 def _record_success(agent: str, thinking_time: float, strategy: str):
-    """记录一次成功的 LLM 调用。"""
-    _stats["total_calls"] += 1
-    _stats["success_calls"] += 1
-    _stats["total_time_seconds"] += thinking_time
-    _stats["total_thinking_seconds"] += thinking_time
-    _stats["per_agent_calls"][agent] = _stats["per_agent_calls"].get(agent, 0) + 1
-    _stats["per_agent_time"][agent] = _stats["per_agent_time"].get(agent, 0.0) + thinking_time
-    _stats["call_log"].append({
-        "agent": agent, "success": True, "strategy": strategy,
-        "thinking_time": round(thinking_time, 3),
-    })
+    """记录一次成功的 LLM 调用 (V3.5: Lock 保护)。"""
+    with _stats_lock:
+        _stats["total_calls"] += 1
+        _stats["success_calls"] += 1
+        _stats["total_time_seconds"] += thinking_time
+        _stats["total_thinking_seconds"] += thinking_time
+        _stats["per_agent_calls"][agent] = _stats["per_agent_calls"].get(agent, 0) + 1
+        _stats["per_agent_time"][agent] = _stats["per_agent_time"].get(agent, 0.0) + thinking_time
+        _stats["call_log"].append({
+            "agent": agent, "success": True, "strategy": strategy,
+            "thinking_time": round(thinking_time, 3),
+        })
     logger.info("[LLM Stats] %s | %s | %.2fs", agent, strategy, thinking_time)
 
 
 def _record_fallback(agent: str, thinking_time: float, strategy: str):
-    """记录一次回退成功的 LLM 调用。"""
-    _stats["total_calls"] += 1
-    _stats["fallback_calls"] += 1
-    _stats["total_time_seconds"] += thinking_time
-    _stats["total_thinking_seconds"] += thinking_time
-    _stats["per_agent_calls"][agent] = _stats["per_agent_calls"].get(agent, 0) + 1
-    _stats["per_agent_time"][agent] = _stats["per_agent_time"].get(agent, 0.0) + thinking_time
-    _stats["call_log"].append({
-        "agent": agent, "success": True, "strategy": strategy,
-        "thinking_time": round(thinking_time, 3), "fallback": True,
-    })
+    """记录一次回退成功的 LLM 调用 (V3.5: Lock 保护)。"""
+    with _stats_lock:
+        _stats["total_calls"] += 1
+        _stats["fallback_calls"] += 1
+        _stats["total_time_seconds"] += thinking_time
+        _stats["total_thinking_seconds"] += thinking_time
+        _stats["per_agent_calls"][agent] = _stats["per_agent_calls"].get(agent, 0) + 1
+        _stats["per_agent_time"][agent] = _stats["per_agent_time"].get(agent, 0.0) + thinking_time
+        _stats["call_log"].append({
+            "agent": agent, "success": True, "strategy": strategy,
+            "thinking_time": round(thinking_time, 3), "fallback": True,
+        })
     logger.warning("[LLM Stats] %s | %s | %.2fs (回退)", agent, strategy, thinking_time)
 
 
 def _record_failed(agent: str, elapsed: float, error: str):
-    """记录一次完全失败的 LLM 调用。"""
-    _stats["total_calls"] += 1
-    _stats["failed_calls"] += 1
-    _stats["total_time_seconds"] += elapsed
-    _stats["per_agent_calls"][agent] = _stats["per_agent_calls"].get(agent, 0) + 1
-    _stats["per_agent_time"][agent] = _stats["per_agent_time"].get(agent, 0.0) + elapsed
-    _stats["call_log"].append({
-        "agent": agent, "success": False, "strategy": "all_failed",
-        "thinking_time": round(elapsed, 3), "error": _short_error_str(error),
-    })
+    """记录一次完全失败的 LLM 调用 (V3.5: Lock 保护)。"""
+    with _stats_lock:
+        _stats["total_calls"] += 1
+        _stats["failed_calls"] += 1
+        _stats["total_time_seconds"] += elapsed
+        _stats["per_agent_calls"][agent] = _stats["per_agent_calls"].get(agent, 0) + 1
+        _stats["per_agent_time"][agent] = _stats["per_agent_time"].get(agent, 0.0) + elapsed
+        _stats["call_log"].append({
+            "agent": agent, "success": False, "strategy": "all_failed",
+            "thinking_time": round(elapsed, 3), "error": _short_error_str(error),
+        })
     logger.error("[LLM Stats] %s | ALL FAILED | %.2fs | %s", agent, elapsed, _short_error_str(error))
 
 
@@ -432,18 +439,19 @@ def print_llm_stats():
 
 
 def track_raw_llm_call(elapsed: float, agent: str | None = None):
-    """记录一次原始 (非 structured) LLM 调用。"""
-    agent_name = agent or _current_agent or "unknown"
-    _stats["total_calls"] += 1
-    _stats["success_calls"] += 1
-    _stats["total_time_seconds"] += elapsed
-    _stats["total_thinking_seconds"] += elapsed
-    _stats["per_agent_calls"][agent_name] = _stats["per_agent_calls"].get(agent_name, 0) + 1
-    _stats["per_agent_time"][agent_name] = _stats["per_agent_time"].get(agent_name, 0.0) + elapsed
-    _stats["call_log"].append({
-        "agent": agent_name, "success": True, "strategy": "raw_llm",
-        "thinking_time": round(elapsed, 3),
-    })
+    """记录一次原始 (非 structured) LLM 调用 (V3.5: Lock + contextvar)。"""
+    agent_name = agent or _current_agent_var.get() or "unknown"
+    with _stats_lock:
+        _stats["total_calls"] += 1
+        _stats["success_calls"] += 1
+        _stats["total_time_seconds"] += elapsed
+        _stats["total_thinking_seconds"] += elapsed
+        _stats["per_agent_calls"][agent_name] = _stats["per_agent_calls"].get(agent_name, 0) + 1
+        _stats["per_agent_time"][agent_name] = _stats["per_agent_time"].get(agent_name, 0.0) + elapsed
+        _stats["call_log"].append({
+            "agent": agent_name, "success": True, "strategy": "raw_llm",
+            "thinking_time": round(elapsed, 3),
+        })
     logger.info("[LLM Stats] %s | raw_llm | %.2fs", agent_name, elapsed)
 
 

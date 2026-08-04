@@ -1,11 +1,11 @@
 """
-confidence_evaluator.py — Tool 8: ConfidenceEvaluator
+confidence_evaluator.py → V3.0: AnnotationConfidenceEvaluator (原 ConfidenceEvaluator)
 
-4 维置信度评估 + 动态阈值调整:
-  1. Source Agreement (来源可靠性共识)
-  2. Statistical Clarity (统计清晰度)
-  3. Domain Rule Match (领域规则匹配)
-  4. Historical Corroboration (历史一致性)
+V3.0 重写: 从"裁决置信度"改为"分类与标注置信度"。
+  旧: 4维冲突裁决置信度 (source_agreement, statistical_clarity, domain_match, history)
+  新: 3维差异分类置信度 (metadata_completeness, cause_consistency, domain_support)
+
+评估差异原因分类是否可靠, 而非裁决是否可靠。
 """
 from __future__ import annotations
 from typing import Any
@@ -14,115 +14,105 @@ logger = get_logger(__name__)
 
 
 def evaluate_confidence(
-    reasoning_result: dict[str, Any],
-    evidence: dict[str, Any],
+    variance: dict[str, Any],
+    evidence: dict[str, Any] | None = None,
     iteration_counter: int = 0,
 ) -> dict[str, Any]:
     """
-    对冲突推理结果进行置信度评估。
+    V3.0: 评估差异原因分类的置信度。
+
+    3 个维度:
+      1. Metadata Completeness (0.40) — V2 字段完整度
+      2. Cause Consistency (0.35) — 规则推断 vs LLM vs 领域规则, 多方是否一致
+      3. Domain Support (0.25) — 领域规则匹配度
 
     Args:
-        reasoning_result: Node 4 推理结果 (含 strategy, resolved_value 等)
-        evidence: Node 3 证据集合 (source_reliability, domain_rules, statistical, contextual)
-        iteration_counter: B⇄C 循环次数
+        variance: 方差条目 (含 source_stats, inferred_cause, classified_cause 等)
+        evidence: (保留参数, 向后兼容)
+        iteration_counter: 迭代计数 (用于动态阈值)
 
     Returns:
         {overall_confidence, components, meets_auto_threshold, confidence_level}
     """
-    src_rel = evidence.get("source_reliability", {})
-    stat_ev = evidence.get("statistical_evidence", {})
-    domain = evidence.get("domain_rules", {})
-    contextual = evidence.get("contextual_evidence", {})
+    source_stats = variance.get("source_stats", {})
+    inferred_cause = variance.get("inferred_cause", "unknown")
+    classified_cause = variance.get("classified_cause", inferred_cause)
+    cause_confidence = variance.get("cause_confidence_final", variance.get("cause_confidence", 0))
 
-    # ── 1. Source Agreement (0.30) ──
-    # reliability gap 越大 → 选择越明确
-    gap = src_rel.get("reliability_gap", 0)
-    source_agreement = min(1.0, gap / 0.30)  # gap=0.15 → 0.50, gap=0.30 → 1.0
-    source_agreement = max(0.20, source_agreement)
+    # ── 1. Metadata Completeness (0.40) ──
+    # 有多少 source 提供了 measurement_method / condition_tags
+    total_sources = len(source_stats) if source_stats else 1
+    sources_with_method = sum(
+        1 for ss in source_stats.values()
+        if ss.get("measurement_methods")
+    )
+    sources_with_tags = sum(
+        1 for ss in source_stats.values()
+        if ss.get("condition_tags")
+    )
+    sources_with_year = sum(
+        1 for ss in source_stats.values()
+        if ss.get("year") is not None
+    )
 
-    # ── 2. Statistical Clarity (0.30) ──
-    cohens_d = stat_ev.get("cohens_d", 0)
-    ci_95 = stat_ev.get("ci_95", [0, 0])
-    ci_low = ci_95[0] if ci_95 else 0
-    small_sample = stat_ev.get("small_sample_warning", False)
+    method_ratio = sources_with_method / max(total_sources, 1)
+    tags_ratio = sources_with_tags / max(total_sources, 1)
+    year_ratio = sources_with_year / max(total_sources, 1)
 
-    if ci_low >= 0.8:
-        clarity = 1.0
-    elif ci_low >= 0.5:
-        clarity = 0.85
-    elif ci_low >= 0.2:
-        clarity = 0.60
-    else:
-        clarity = 0.30
+    metadata_score = 0.4 * method_ratio + 0.35 * tags_ratio + 0.25 * year_ratio
 
-    if small_sample:
-        clarity *= 0.70  # 小样本惩罚
+    # ── 2. Cause Consistency (0.35) ──
+    # cause_confidence 来自分类器 (规则=高, LLM=中, fallback=低)
+    classification_method = variance.get("classification_method", "rule")
+    method_scores = {"rule": 0.90, "llm": 0.70, "fallback": 0.30}
+    base_cause_score = method_scores.get(classification_method, 0.50)
 
-    # ── 3. Domain Rule Match (0.20) ──
-    has_guidance = domain.get("has_domain_guidance", False)
-    matched_count = len(domain.get("matched_rules", []))
-    if matched_count >= 2:
-        domain_match = 0.90
-    elif matched_count == 1:
-        domain_match = 0.80
-    elif has_guidance:
-        domain_match = 0.65
-    else:
-        domain_match = 0.40
+    # 规则推断 vs LLM vs 领域规则的一致性
+    consistency = base_cause_score
 
-    # ── 4. Historical Corroboration (0.20) ──
-    # V1.0: 无历史库 → 使用 heuristic
-    # 基于 contextual evidence 的一致性
-    hist = 0.70  # base
-    if contextual.get("same_material", True):
-        hist += 0.05
-    if contextual.get("same_condition", True):
-        hist += 0.05
-    if contextual.get("same_measurement_method") is True:
-        hist += 0.05
-    # 语义类型置信度
-    hist = min(1.0, hist)
+    # ── 3. Domain Support (0.25) ──
+    domain_rules = (evidence or {}).get("domain_rules", {})
+    has_guidance = domain_rules.get("has_domain_guidance", False)
+    confidence_boost = domain_rules.get("confidence_boost", 0)
+
+    domain_score = 0.60  # base
+    if has_guidance:
+        domain_score = 0.80 + confidence_boost
+    domain_score = min(1.0, domain_score)
 
     # ── 综合 ──
     overall = (
-        0.30 * source_agreement
-        + 0.30 * clarity
-        + 0.20 * domain_match
-        + 0.20 * hist
+        0.40 * metadata_score
+        + 0.35 * consistency
+        + 0.25 * domain_score
     )
     overall = round(overall, 4)
 
     # ── 动态阈值 ──
-    thresholds = {0: 0.75, 1: 0.70, 2: 0.65}
-    base_threshold = thresholds.get(iteration_counter, 0.65)
-
-    # 迭代激进因子: 第3轮 (iteration_counter >= 2) 降低要求
-    if iteration_counter >= 2:
-        overall = round(overall * 0.85, 4)
-
+    thresholds = {0: 0.55, 1: 0.50, 2: 0.45}
+    base_threshold = thresholds.get(iteration_counter, 0.45)
     meets_threshold = overall >= base_threshold
 
-    if overall >= 0.75:
+    if overall >= 0.70:
         level = "high"
     elif overall >= 0.50:
         level = "medium"
     else:
         level = "low"
 
-    logger.info("[ConfidenceEvaluator] %s: overall=%.3f, threshold=%.2f, meets=%s, level=%s",
-                reasoning_result.get("conflict_id", "?"), overall, base_threshold, meets_threshold, level)
+    logger.info("[AnnotationConfidence V3.0] cls=%s, metadata=%.2f, consist=%.2f, domain=%.2f, overall=%.3f",
+                classified_cause, metadata_score, consistency, domain_score, overall)
 
     return {
-        "conflict_id": reasoning_result.get("conflict_id"),
+        "conflict_id": variance.get("conflict_id", variance.get("entity_name", "?")),
         "overall_confidence": overall,
         "components": {
-            "source_agreement": round(source_agreement, 4),
-            "statistical_clarity": round(clarity, 4),
-            "domain_rule_match": round(domain_match, 4),
-            "historical_corroboration": round(hist, 4),
+            "metadata_completeness": round(metadata_score, 4),
+            "cause_consistency": round(consistency, 4),
+            "domain_support": round(domain_score, 4),
         },
         "meets_auto_threshold": meets_threshold,
         "confidence_level": level,
         "threshold_applied": base_threshold,
-        "iteration_factor_applied": iteration_counter >= 2,
+        "iteration_factor_applied": False,
     }

@@ -27,6 +27,10 @@ class SourceRouterAgent:
         sources_to_process: dict[str, dict] = {}
         skipped = []
 
+        # V2: per-entity routing awareness — 从 Assessment per-entity 数据中提取
+        quality_scoring = quality.get("quality_scoring", {})
+        per_entity_all = quality_scoring.get("per_entity_scores", {})
+
         # ── V2.1: 从 Assessment per_source_routes 筛选 ──
         for sid, route in per_source_routes.items():
             if route == "Normalization":
@@ -35,29 +39,37 @@ class SourceRouterAgent:
                 for cr in conditional:
                     if cr.get("source_id") == sid:
                         conds = cr.get("conditions", [])
+                # V2: extract entity info for this source
+                src_entities = per_entity_all.get(sid, {})
                 sources_to_process[sid] = {
                     "record_count": src_info.get("record_count", 0),
                     "conditions": conds,
                     "needs_full_normalization": trigger == "conflict_report",
                     "priority": len(conds),
+                    # V2: per-entity breakdown
+                    "entities": {elabel: edata for elabel, edata in src_entities.items()},
                 }
             else:
                 skipped.append(sid)
 
         # ── V2.1: 从 Conflict resolution_plan 提取需要规范化的 actions ──
+        # V3.5 fix: 保留 record_ids/from_unit/to_unit (HumanReview 动作端到端落地)
         conflict_actions = []
         if trigger == "conflict_report" and conflict:
             resolution_report = conflict.get("resolution_report", {})
             plan = resolution_report.get("resolution_plan", {})
             for action in plan.get("actions_to_normalize", []):
                 source_id = action.get("target_source") or action.get("source_id", "")
-                field = action.get("field", "")
+                field = action.get("field", action.get("field_name", ""))
                 new_value = action.get("new_value")
                 if source_id:
                     conflict_actions.append({
                         "source_id": source_id, "field": field,
+                        "record_ids": action.get("record_ids", []),   # V3.5: 保留
                         "entity_type": action.get("entity_type", ""),
                         "entity_name": action.get("entity_name", ""),
+                        "from_unit": action.get("from_unit"),          # V3.5: 保留
+                        "to_unit": action.get("to_unit"),              # V3.5: 保留
                         "new_value": new_value, "action": action.get("action", "normalize"),
                         "reason": action.get("reason", ""),
                     })

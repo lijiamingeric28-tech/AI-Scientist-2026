@@ -1,85 +1,135 @@
 """
-confidence_evaluation_agent.py — Node 5: ConfidenceEvaluationAgent
+confidence_evaluation_agent.py → V3.0: AnnotationConfidenceAgent (Stage 4)
 
-职责: 4 维置信度评估 + 动态阈值调整 + 判定是否满足自动处理条件。
-LLM: 无 | Tools: 1 (ConfidenceEvaluator)
+职责: 评估差异原因分类的置信度和异常验证的置信度。
+      低于阈值 → Retry (重新分类/验证, 最多 2 次)。
+LLM: 否 | Tools: 0
 """
 from __future__ import annotations
 import datetime, time
 from typing import Any
 from quality_state import QualityGraphState
-from tools.conflict.confidence_evaluator import evaluate_confidence
 from utils.logger import get_logger
 logger = get_logger(__name__)
 
+# V3.0: 分类置信度阈值
+_CLASSIFICATION_CONFIDENCE_THRESHOLD = 0.55
+_ANOMALY_CONFIDENCE_THRESHOLD = 0.50
 
-class ConfidenceEvaluationAgent:
-    """Node 5: 置信度评估 — 4 维评分 + 动态阈值"""
+
+class AnnotationConfidenceAgent:
+    """V3.0 Stage 4: 标注置信度评估 — 判断分类/验证是否足够可靠。"""
 
     def run(self, state: QualityGraphState) -> dict[str, Any]:
         t0 = time.time()
         conflict_state = state.get("report_state", {}).get("conflict", {})
         wf = state.get("workflow_state", {})
-        reasoning = conflict_state.get("reasoning", {})
-        evidence = conflict_state.get("evidence", {})
-        resolutions = reasoning.get("per_conflict", [])
-        iteration = wf.get("iteration_counter", 0)
 
-        results = {}
-        any_below = False
+        classification = conflict_state.get("classification", {})
+        verification = conflict_state.get("verification", {})
+        classified_variances = verification.get("classified_variances",
+                                               classification.get("classified_variances", []))
+        verified_anomalies = verification.get("verified_anomalies", [])
 
-        for r in resolutions:
-            cid = r.get("conflict_id", "")
-            ev = evidence.get(cid, {})
-            conf = evaluate_confidence(r, ev, iteration)
-            results[cid] = conf
-            if not conf["meets_auto_threshold"]:
-                any_below = True
+        # ── 评估分类置信度 ──
+        low_confidence_variances = []
+        avg_classification_conf = 0.0
 
-        # 重试: 置信度不足时回退 Node 4 (最多 2 次)
-        retry_count = reasoning.get("confidence_retry_count", 0)
-        if any_below and retry_count < 2:
-            logger.info("[ConfidenceEvaluation] %d conflicts below threshold → retry %d/2",
-                        sum(1 for c in results.values() if not c["meets_auto_threshold"]), retry_count + 1)
-            elapsed = round(time.time() - t0, 3)
-            return {
-                "report_state": {"conflict": {
-                    "confidence": results,
-                    "reasoning": {"confidence_retry_count": retry_count + 1,
-                                 "per_conflict": resolutions, "aggregated": reasoning.get("aggregated", {})},
-                }},
-                "workflow_state": {
-                    "current_node": "confidence_evaluation",
-                    "execution_status": "Retry",
-                    "workflow_history": [{
-                        "agent": "ConfidenceEvaluationAgent", "stage": "Confidence",
-                        "status": "Retry", "timestamp": datetime.datetime.now().isoformat(),
-                        "duration": elapsed,
-                        "reason": f"Confidence below threshold, retry {retry_count+1}/2",
-                    }],
-                },
+        for v in classified_variances:
+            conf = v.get("cause_confidence_final", 0)
+            avg_classification_conf += conf
+            if conf < _CLASSIFICATION_CONFIDENCE_THRESHOLD:
+                low_confidence_variances.append({
+                    "entity_type": v.get("entity_type", ""),
+                    "entity_name": v.get("entity_name", ""),
+                    "field_name": v.get("field_name", ""),
+                    "classified_cause": v.get("classified_cause", "unknown"),
+                    "confidence": conf,
+                })
+
+        if classified_variances:
+            avg_classification_conf /= len(classified_variances)
+
+        # ── 评估异常验证置信度 ──
+        unverified_anomalies = []
+        avg_anomaly_conf = 0.0
+
+        for a in verified_anomalies:
+            verdict = a.get("verdict", "unverified")
+            severity = a.get("severity", "medium")
+
+            # 将 verdict 映射为置信度分数
+            verdict_scores = {
+                "confirmed": 0.95,
+                "likely": 0.75,
+                "borderline": 0.45,
+                "false_positive": 0.10,
+                "unverified": 0.30,
             }
+            score = verdict_scores.get(verdict, 0.30)
+            avg_anomaly_conf += score
+
+            if verdict in ("borderline", "unverified"):
+                unverified_anomalies.append({
+                    "anomaly_type": a.get("anomaly_type", "unknown"),
+                    "entity_type": a.get("entity_type", ""),
+                    "entity_name": a.get("entity_name", ""),
+                    "field_name": a.get("field_name", ""),
+                    "verdict": verdict,
+                    "score": score,
+                })
+
+        if verified_anomalies:
+            avg_anomaly_conf /= len(verified_anomalies)
+
+        # ── 决定是否需要重试 (V3.1 fix: retry_count 递增, 防止无限重入) ──
+        retry_count = conflict_state.get("annotation_confidence", {}).get("retry_count", 0)
+        needs_retry = (
+            (len(low_confidence_variances) > 0 or len(unverified_anomalies) > 0)
+            and retry_count < 2
+            and (len(classified_variances) > 0 or len(verified_anomalies) > 0)
+        )
+        if needs_retry:
+            retry_count += 1  # V3.1 fix: 递增重试计数
 
         elapsed = round(time.time() - t0, 3)
-        high = sum(1 for c in results.values() if c["confidence_level"] == "high")
-        med = sum(1 for c in results.values() if c["confidence_level"] == "medium")
-        low = sum(1 for c in results.values() if c["confidence_level"] == "low")
 
-        logger.info("[ConfidenceEvaluation] %d conflicts: %dH/%dM/%dL, %.2fs",
-                    len(results), high, med, low, elapsed)
+        confidence_results = {
+            "classification_confidence": {
+                "average": round(avg_classification_conf, 3),
+                "low_confidence_count": len(low_confidence_variances),
+                "low_confidence_items": low_confidence_variances,
+            },
+            "anomaly_confidence": {
+                "average": round(avg_anomaly_conf, 3),
+                "unverified_count": len(unverified_anomalies),
+                "unverified_items": unverified_anomalies,
+            },
+            "needs_retry": needs_retry,
+            "retry_count": retry_count,
+            "auto_annotation_threshold": _CLASSIFICATION_CONFIDENCE_THRESHOLD,
+        }
+
+        logger.info("[AnnotationConfidence] cls_conf=%.3f, anom_conf=%.3f, retry=%s",
+                    avg_classification_conf, avg_anomaly_conf, needs_retry)
 
         return {
             "report_state": {"conflict": {
-                "confidence": results,
+                "annotation_confidence": confidence_results,
             }},
             "workflow_state": {
-                "current_node": "confidence_evaluation",
-                "execution_status": "Success",
+                "current_node": "annotation_confidence",
+                "execution_status": "Retry" if needs_retry else "Success",
                 "workflow_history": [{
-                    "agent": "ConfidenceEvaluationAgent", "stage": "Confidence",
-                    "status": "Success", "timestamp": datetime.datetime.now().isoformat(),
+                    "agent": "AnnotationConfidenceAgent", "stage": "Confidence",
+                    "status": "Retry" if needs_retry else "Success",
+                    "timestamp": datetime.datetime.now().isoformat(),
                     "duration": elapsed,
-                    "reason": f"Confidence: {high}H/{med}M/{low}L, retries={retry_count}",
+                    "reason": (
+                        f"cls_conf={avg_classification_conf:.3f} ({len(low_confidence_variances)} low), "
+                        f"anom_conf={avg_anomaly_conf:.3f} ({len(unverified_anomalies)} unverified)"
+                        + (" → Retry" if needs_retry else "")
+                    ),
                 }],
             },
         }

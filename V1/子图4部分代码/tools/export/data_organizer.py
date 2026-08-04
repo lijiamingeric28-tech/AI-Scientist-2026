@@ -14,17 +14,26 @@ _TEMP_RECORD_FIELDS = {"_modified", "_conflict_cache", "_temp_score",
                         "_normalized", "_resolution_status", "_source_path",
                         "_prefer_a", "_missing_unit"}
 
-# V1.1: grounded_data 输出字段白名单 (增加 entity 字段 + _uncertainty)
+# V2.0: grounded_data 输出字段白名单 (含 V2 新增字段)
+# V4 fix: _raw_field — schema_mapping 保留的 catalog 原始列名 (V4),
+# 随导出带出, 解决 database_catalog_properties 坍缩为裸数值丢失原始身份
 _GROUNDED_DATA_RECORD_FIELDS = {
     "record_id", "source_id",
     "entity_type", "entity_name",
     "field_name", "field_value", "field_unit",
     "trace_id", "provenance", "extraction_method",
+    "extraction_confidence", "context_snippet",
+    "measurement_method", "condition_tags",
     "_uncertainty",
+    "_raw_field",
 }
 
 _PUBLIC_SOURCE_FIELDS = {"source_id", "doi", "title", "authors", "year",
-                          "journal", "source_type", "access_path", "retrieval_priority"}
+                          "journal", "source_type", "access_path", "retrieval_priority",
+                          "abstract", "keywords", "search_query", "search_rank",
+                          # V3.1: Database 类型字段
+                          "vizier_table_id", "description", "reference_paper", "bibcode",
+                          "research_methodology", "observation_facility", "waveband", "research_content"}
 
 
 def organize_data(
@@ -38,12 +47,13 @@ def organize_data(
     sources = current_data.get("sources", [])
     records = current_data.get("records", [])
 
-    # Step 1 (V2.3): 白名单过滤 — 只保留 grounded_data schema 字段
+    # Step 1 (V3.5 fix): 正向白名单过滤 — 只保留 grounded_data schema 字段
+    # (替代旧的"仅排除临时字段", 防止内部字段泄露到最终导出)
     clean_records = []
     filtered_count = 0
     for r in records:
         clean = {k: v for k, v in r.items()
-                 if k not in _TEMP_RECORD_FIELDS}
+                 if k in _GROUNDED_DATA_RECORD_FIELDS}
         filtered_count += 1 if len(clean) < len(r) else 0
         clean_records.append(clean)
 
@@ -72,7 +82,11 @@ def organize_data(
             extra_fields.add(fn)
 
     # Step 4: 排序
-    clean_sources.sort(key=lambda s: (-(s.get("year") or 0), s.get("title", "")))
+    def _safe_year(s):
+        y = s.get("year")
+        try: return int(y) if y is not None else 0
+        except (ValueError, TypeError): return 0
+    clean_sources.sort(key=lambda s: (-_safe_year(s), s.get("title", "")))
     clean_records.sort(key=lambda r: (r.get("source_id", ""), r.get("field_name", ""), r.get("record_id", "")))
 
     # Step 5: 构建 field_index

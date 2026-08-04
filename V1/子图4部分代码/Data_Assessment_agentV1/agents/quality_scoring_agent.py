@@ -50,6 +50,9 @@ class QualityScoringAgent:
         worst_score = 1.0
         level_order = {"poor": 0, "fair": 1, "good": 2, "excellent": 3}
 
+        # V2: per-entity score tracking
+        per_entity_all: dict[str, dict] = {}
+
         for sid, sr in source_reports.items():
             # ── V2.1: LLM completeness 调整 ──
             raw_completeness = dict(sr.get("completeness", {}))
@@ -79,6 +82,37 @@ class QualityScoringAgent:
             scoring = compute_quality_score(metrics, weights=weights)
             sr["quality_scoring"] = scoring
             source_scores.append(scoring["overall_score"])
+
+            # ── V2: per-entity scoring from tool outputs ──
+            src_per_entity: dict[str, dict] = {}
+            # 从 extraction_quality 获取 per-entity 数据
+            extr_per_entity = extraction_q.get("per_entity_scores", {})
+            for elabel, escore in extr_per_entity.items():
+                src_per_entity.setdefault(elabel, {})["extraction_quality"] = escore
+            # 从 completeness 获取 per-entity 数据
+            comp_per_entity_present = raw_completeness.get("per_entity_present", {})
+            comp_per_entity_missing = raw_completeness.get("per_entity_missing", {})
+            all_entities_in_src = set(comp_per_entity_present.keys()) | set(comp_per_entity_missing.keys())
+            for elabel in all_entities_in_src:
+                entity_completeness = 1.0
+                present = comp_per_entity_present.get(elabel, [])
+                missing = comp_per_entity_missing.get(elabel, [])
+                if present or missing:
+                    entity_completeness = round(len(present) / max(len(present) + len(missing), 1), 4)
+                src_per_entity.setdefault(elabel, {})["completeness"] = entity_completeness
+            # 从 consistency 获取 per-entity 数据
+            per_entity_type = sr.get("consistency", {}).get("per_entity_type_consistency", {})
+            per_entity_unit = sr.get("consistency", {}).get("per_entity_unit_consistency", {})
+            for elabel in set(per_entity_type.keys()) | set(per_entity_unit.keys()):
+                tc = per_entity_type.get(elabel, 1.0)
+                uc = per_entity_unit.get(elabel, 1.0)
+                src_per_entity.setdefault(elabel, {})["type_consistency"] = tc
+                src_per_entity.setdefault(elabel, {})["unit_consistency"] = uc
+            # 从 format 获取 per-entity issues
+            per_entity_fmt = sr.get("format", {}).get("per_entity_issues", {})
+            for elabel, ecount in per_entity_fmt.items():
+                src_per_entity.setdefault(elabel, {})["format_issues"] = ecount
+            per_entity_all[sid] = src_per_entity
 
             # 追踪最差等级
             lvl = scoring.get("quality_level", "excellent")
@@ -150,6 +184,8 @@ class QualityScoringAgent:
                 "agreement": agreement_factor,
                 "sparsity": confidence_mult,
             },
+            # V2: per-entity score breakdown
+            "per_entity_scores": per_entity_all,
         }
 
         elapsed = round(time.time() - t0, 3)

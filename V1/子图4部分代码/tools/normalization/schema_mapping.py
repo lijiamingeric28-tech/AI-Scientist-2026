@@ -29,11 +29,18 @@ def map_to_target_schema(records: list[dict], field_mappings: dict[str, str],
         aliases[k.lower()] = v
 
     log, unmapped = [], set()
+    # V4 fix: catalog 原始列名保留 — database_catalog_properties 是 catch-all 字段,
+    # ~150 个原始列名 (Hb/a, Hconc...) 坍缩为同一字段名后原始身份只残留在
+    # provenance.raw_column, CSV 导出不携带 → 导出为裸数值。映射时保留 _raw_field。
+    catalog_fields = {f.get("name") for f in schema_fields
+                      if f.get("semantic_type") == "catalog_metadata"}
     for rec in records:
         fn = rec.get("field_name", "")
         std = aliases.get(fn.lower())
         if std and std != fn:
             log.append({"record_id": rec.get("record_id"), "original": fn, "mapped": std})
+            if std in catalog_fields:
+                rec["_raw_field"] = fn  # 原始列名随记录保留
             rec["field_name"] = std
         elif not std and fn:
             unmapped.add(fn)

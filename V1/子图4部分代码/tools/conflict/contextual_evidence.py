@@ -1,8 +1,8 @@
 """
-contextual_evidence.py — Tool 7: ContextualEvidenceCollector
+contextual_evidence.py → V3.0: VarianceCauseEvidence (原 ContextualEvidenceCollector)
 
-收集上下文证据：材料一致性、实验条件一致性、测量方法推断、时间因素。
-(大部分工作在 ContextBuilder 已完成，此工具做专项汇总)
+V3.0 修改: 上下文证据从"冲突裁决辅助"改为"差异原因证据汇总"。
+  输出差异原因标签 + 置信度, 而非 conflict resolution evidence。
 """
 from __future__ import annotations
 from typing import Any
@@ -15,94 +15,98 @@ def collect_contextual_evidence(
     current_data: dict[str, Any],
 ) -> dict[str, Any]:
     """
-    收集和汇总上下文证据。
+    V3.0: 收集差异原因证据 (替代旧冲突上下文证据)。
 
     Args:
-        conflict: 带上下文的冲突
+        conflict: 带上下文的差异条目
         current_data: data_state.current_data
 
     Returns:
-        汇总的上下文证据
+        {variance_cause_evidence, source_consistency, temporal_evidence, annotation_suggestions}
     """
     ctx = conflict.get("context", {})
 
-    same_material = ctx.get("same_material", True)
-    materials_a = ctx.get("materials_a", [])
-    materials_b = ctx.get("materials_b", [])
-    same_condition = ctx.get("same_condition", True)
-    conds_a = ctx.get("conditions_a", {})
-    conds_b = ctx.get("conditions_b", {})
-    same_method = ctx.get("same_measurement_method")
-    methods_a = ctx.get("methods_a", [])
-    methods_b = ctx.get("methods_b", [])
+    # V3.0: 直接读取 V2 字段差异
+    methods_differ = ctx.get("methods_differ", False)
+    tags_differ = ctx.get("tags_differ", False)
+    all_methods = ctx.get("all_measurement_methods", [])
+    all_tags = ctx.get("all_condition_tags", [])
     temporal_gap = ctx.get("temporal_gap_years")
+    value_range = ctx.get("value_range")
+    source_meta = ctx.get("source_meta", {})
 
-    # 材料详情
-    materials_note = ""
-    if materials_a and materials_b:
-        common = set(materials_a) & set(materials_b)
-        if common:
-            materials_note = f"Same material(s): {sorted(common)}"
-        else:
-            materials_note = f"Different materials: A={sorted(materials_a)}, B={sorted(materials_b)}"
-    elif materials_a or materials_b:
-        materials_note = "Insufficient material identification for comparison"
+    # ── 差异原因证据 ──
+    cause_hints = []
+    if methods_differ and all_methods:
+        cause_hints.append({
+            "cause": "methodological_variance",
+            "confidence": 0.80,
+            "evidence": f"Different measurement methods: {all_methods}",
+        })
+    if tags_differ and all_tags:
+        cause_hints.append({
+            "cause": "condition_variance",
+            "confidence": 0.80,
+            "evidence": f"Different observation conditions: {all_tags}",
+        })
+    if temporal_gap is not None and temporal_gap > 5:
+        cause_hints.append({
+            "cause": "temporal_variation",
+            "confidence": 0.70,
+            "evidence": f"Time span: {temporal_gap} years",
+        })
 
-    # 条件详情
-    conditions_note = ""
-    if conds_a and conds_b:
-        diffs = []
-        for key in set(list(conds_a.keys()) + list(conds_b.keys())):
-            va = conds_a.get(key)
-            vb = conds_b.get(key)
-            if va is not None and vb is not None and va != vb:
-                diffs.append(f"{key}: {va} vs {vb}")
-        if diffs:
-            conditions_note = f"Different conditions: {', '.join(diffs)}"
-        else:
-            conditions_note = "Same experimental conditions"
-    elif conds_a or conds_b:
-        conditions_note = "Condition data only available for one source"
+    # ── 来源一致性 ──
+    years = [
+        m.get("year") for m in source_meta.values()
+        if m.get("year") is not None
+    ]
+    journals = [
+        m.get("journal", "") for m in source_meta.values()
+        if m.get("journal")
+    ]
 
-    # 方法详情
-    methods_note = ""
-    if same_method is True:
-        common_m = set(methods_a) & set(methods_b)
-        methods_note = f"Same measurement method: {sorted(common_m)}"
-    elif same_method is False:
-        methods_note = f"Different methods: A={methods_a}, B={methods_b}"
-    elif same_method is None:
-        methods_note = "Unable to determine measurement methods from metadata"
+    source_consistency = {
+        "source_count": len(source_meta),
+        "year_span": f"{min(years)}–{max(years)}" if len(years) >= 2 else "single year",
+        "journals": list(set(journals)),
+    }
 
-    # 时间因素
-    temporal_note = ""
-    if temporal_gap is not None:
-        if temporal_gap <= 2:
-            temporal_note = f"Contemporary ({temporal_gap}yr gap — no significant temporal factor)"
-        elif temporal_gap <= 10:
-            temporal_note = f"Some temporal gap ({temporal_gap}yr — minor technique evolution possible)"
-        else:
-            temporal_note = f"Large temporal gap ({temporal_gap}yr — measurement techniques may have evolved significantly)"
+    # ── 时间证据 ──
+    temporal_evidence = {
+        "temporal_gap_years": temporal_gap,
+        "is_significant_temporal_gap": temporal_gap is not None and temporal_gap > 5,
+        "note": (
+            f"{temporal_gap}yr gap — likely temporal variation" if (temporal_gap and temporal_gap > 5)
+            else "Same period — temporal factor unlikely"
+        ),
+    }
 
-    # 额外备注
-    additional_notes = []
-    if ctx.get("value_gap_pct") is not None:
-        additional_notes.append(f"Value gap: {ctx['value_gap_pct']}%")
-    fn = conflict.get("field_name", "")
-    if ctx.get("field_criticality") == "critical":
-        additional_notes.append(f"Field '{fn}' is critical — higher scrutiny required")
+    # ── V3.0: 标注建议 ──
+    annotation_suggestions = []
+    if methods_differ:
+        annotation_suggestions.append(
+            f"Mark as methodological_variance: {', '.join(sorted(all_methods))}"
+        )
+    if tags_differ:
+        annotation_suggestions.append(
+            f"Mark as condition_variance: {', '.join(sorted(all_tags))}"
+        )
+    if value_range:
+        annotation_suggestions.append(
+            f"Value range: [{value_range[0]}, {value_range[1]}] — preserve all as range"
+        )
+    if not annotation_suggestions:
+        annotation_suggestions.append(
+            "Preserve all values with measurement_uncertainty annotation"
+        )
 
-    logger.info("[ContextualEvidence] %s: same_material=%s, same_condition=%s, same_method=%s",
-                conflict.get("conflict_id", "?"), same_material, same_condition, same_method)
+    logger.info("[VarianceCauseEvidence V3.0] %s: methods_differ=%s, tags_differ=%s, gap=%s",
+                conflict.get("conflict_id", "?"), methods_differ, tags_differ, temporal_gap)
 
     return {
-        "same_material": same_material,
-        "materials_detail": materials_note,
-        "same_condition": same_condition,
-        "conditions_detail": conditions_note,
-        "same_measurement_method": same_method,
-        "method_detail": methods_note,
-        "temporal_gap_years": temporal_gap,
-        "temporal_note": temporal_note,
-        "additional_notes": additional_notes,
+        "variance_cause_evidence": cause_hints,
+        "source_consistency": source_consistency,
+        "temporal_evidence": temporal_evidence,
+        "annotation_suggestions": annotation_suggestions,
     }

@@ -27,7 +27,8 @@ class StructuredExportGenerationAgent:
         metadata = export_state.get("metadata", {})
         traceability = export_state.get("traceability", {})
         validation = export_state.get("validation", {})
-        completeness = export_state.get("trace_completeness", {})
+        # V3.1 fix: 统一从 traceability dict 读取 (已内嵌 trace_completeness)
+        completeness = traceability.get("trace_completeness", {})
 
         # ── 构建 Quality Summary ──
         quality_summary = _build_quality_summary(rs, wf, validation, completeness)
@@ -35,14 +36,18 @@ class StructuredExportGenerationAgent:
         is_valid = validation.get("is_valid", True)
         status = "Success" if is_valid else "Failed"
 
+        # V3.2 fix: 校验闸门 — 校验失败时标记 quarantine (consumable=false), 不静默产出
+        quarantine = not is_valid
+
         # ── 导出 CSV/JSON 文件 ──
         output_dir = _resolve_output_dir(state)
         exported_files = _write_export_files(output_dir, structured_data,
                                               metadata, traceability, quality_summary, is_valid)
 
         elapsed = round(time.time() - t0, 3)
-        logger.info("[ExportGeneration] %s, %d files exported to %s, %.2fs",
-                    status, len(exported_files), output_dir, elapsed)
+        logger.info("[ExportGeneration] %s%s, %d files exported to %s, %.2fs",
+                    status, " (QUARANTINE)" if quarantine else "",
+                    len(exported_files), output_dir, elapsed)
 
         return {
             "output_state": {
@@ -50,10 +55,12 @@ class StructuredExportGenerationAgent:
                 "metadata": metadata,
                 "traceability": traceability,
                 "quality_summary": quality_summary,
-                "schema_version": "grounded_data_v1",
+                "schema_version": "2.0.0",
                 "export_format": "json",
                 "exported_files": exported_files,
                 "output_dir": output_dir,
+                "consumable": not quarantine,
+                "quarantine": quarantine,
             },
             "workflow_state": {
                 "route_decision": "",
@@ -106,10 +113,14 @@ def _build_quality_summary(
     }
 
     # 4. Risk Indicators
+    # V4 fix: has_unconverted_units 只统计单位转换失败 (kind=unconverted_unit),
+    # 此前误把 Layer-3 生成工具的运行时报错当作单位转换失败
+    unconv_errors = [e for e in mods.get("errors", []) if e.get("kind") == "unconverted_unit"]
     risk = {
         "has_human_review_items": resolution_report.get("metadata", {}).get("human_required", 0) > 0,
         "has_unresolved_conflicts": resolution_report.get("status") not in ("All_Resolved", "No_Conflicts", None),
-        "has_unconverted_units": len(mods.get("errors", [])) > 0,
+        "has_unconverted_units": len(unconv_errors) > 0,
+        "unconverted_unit_count": len(unconv_errors),
         "data_completeness_warning": overall_score < 0.7,
         "validation_passed": validation.get("is_valid", True),
     }
@@ -186,6 +197,10 @@ def _write_export_files(
     files = []
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
+    # V4 fix: CSV 编码可配置 — 默认 utf-8-sig (含 BOM, Excel 直接打开中文不乱码);
+    # 需要无 BOM 输出时设 EXPORT_CSV_ENCODING=utf-8 (pandas 默认读取)
+    csv_encoding = os.environ.get("EXPORT_CSV_ENCODING", "utf-8-sig")
+
     # 1. JSON (完整 grounded_data)
     json_data = structured_data.get("json", {})
     if json_data:
@@ -200,7 +215,7 @@ def _write_export_files(
     csv_str = structured_data.get("csv", "")
     if csv_str:
         path = os.path.join(output_dir, f"data_long_{timestamp}.csv")
-        with open(path, "w", encoding="utf-8-sig") as f:
+        with open(path, "w", encoding=csv_encoding) as f:
             f.write(csv_str)
         files.append(path)
         logger.info("[Export] CSV (long) written: %s", path)
@@ -209,7 +224,7 @@ def _write_export_files(
     csv_wide = structured_data.get("csv_wide", "")
     if csv_wide:
         path = os.path.join(output_dir, f"data_wide_{timestamp}.csv")
-        with open(path, "w", encoding="utf-8-sig") as f:
+        with open(path, "w", encoding=csv_encoding) as f:
             f.write(csv_wide)
         files.append(path)
         logger.info("[Export] CSV (wide) written: %s", path)
@@ -246,6 +261,11 @@ def _write_export_files(
         "validation_passed": is_valid,
         "row_count": structured_data.get("row_count", 0),
         "quality_level": quality_summary.get("quality_level", "unknown"),
+        # V4 fix: 宽表折叠统计 + CSV 编码说明 (此前折叠静默无痕)
+        "wide_collapse": structured_data.get("wide_collapse", {}),
+        "csv_encoding": csv_encoding,
+        "csv_encoding_note": ("utf-8-sig 含 BOM (Excel 兼容); "
+                              "需要无 BOM 输出请设 EXPORT_CSV_ENCODING=utf-8"),
     }
     path = os.path.join(output_dir, f"manifest_{timestamp}.json")
     with open(path, "w", encoding="utf-8") as f:

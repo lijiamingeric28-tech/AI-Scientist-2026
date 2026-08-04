@@ -82,9 +82,11 @@ quality_scoring:
     fair: 0.60
     poor: 0.40
 
-# ── 循环控制规则 ──
+# ── 循环控制规则 (V3.5: routers.py 从这里加载, 单一配置入口) ──
 loop_control:
   max_iterations: 3
+  max_retries: 3
+  max_loop: 3
   no_new_conflict_rounds: 1
 
 # ── V2.0 自适应阈值 ──
@@ -304,7 +306,7 @@ semantic_types_astrophysics:
 
   luminosity:
     keywords: ["luminosity", "L", "bolometric_luminosity", "L_bol", "L_star", "L_x", "xray_luminosity", "L_sun"]
-    units: ["erg/s", "Lsun", "L☉", "W", "erg s^-1", "10^33 erg/s"]
+    units: ["erg/s", "Lsun", "L☉", "W", "erg s^-1", "10^33 erg/s", "solLum", "1e+37W"]
     feasible_ranges:
       "erg/s": [1e25, 1e45]
       "Lsun": [1e-5, 1e7]
@@ -331,7 +333,7 @@ semantic_types_astrophysics:
 
   surface_gravity:
     keywords: ["log_g", "logg", "surface_gravity", "log g", "gravity"]
-    units: ["dex", "cm/s^2", "cm/s²"]
+    units: ["dex", "cm/s^2", "cm/s²", "log(cm.s**-2)", "log(cm s**-2)"]
     feasible_ranges:
       "dex": [-1.0, 8.0]
       "cm/s^2": [0.1, 1e8]
@@ -340,7 +342,7 @@ semantic_types_astrophysics:
 
   metallicity:
     keywords: ["metallicity", "fe_h", "fe/h", "[Fe/H]", "[M/H]", "iron_abundance", "metal", "Z"]
-    units: ["dex", ""]
+    units: ["dex", "", "Sun", "log(Sun)"]
     feasible_ranges:
       "dex": [-5.0, 1.0]
     unit_category: "metallicity"
@@ -356,7 +358,7 @@ semantic_types_astrophysics:
 
   stellar_mass:
     keywords: ["mass", "M", "stellar_mass", "M_star", "M_sun", "M☉", "Msun"]
-    units: ["Msun", "M☉", "M_sun", "kg", "g"]
+    units: ["Msun", "M☉", "M_sun", "kg", "g", "solMass", "1e+14solMass"]
     feasible_ranges:
       "Msun": [0.01, 350]
       "kg": [2e28, 7e32]
@@ -365,7 +367,7 @@ semantic_types_astrophysics:
 
   stellar_radius:
     keywords: ["radius", "R", "stellar_radius", "R_star", "R_sun", "R☉", "Rsun"]
-    units: ["Rsun", "R☉", "R_sun", "cm", "m", "km"]
+    units: ["Rsun", "R☉", "R_sun", "cm", "m", "km", "solRad"]
     feasible_ranges:
       "Rsun": [0.01, 2000]
       "cm": [7e8, 1.4e14]
@@ -463,7 +465,9 @@ semantic_types_astrophysics:
     feasible_ranges:
       "R_earth": [0.1, 30]
       "R_jup": [0.01, 3]
-    unit_category: "radius"
+    # V4.2 fix: 独立 category — 原 "radius" 与恒星 radius 组撞车,
+    # km/m 会命中恒星组因子 (1.4374e-6) 而非行星组 (1.5698e-4), 差 ~109x
+    unit_category: "planet_radius"
     expected_in_study: "conditional"
 
   planet_mass:
@@ -472,7 +476,109 @@ semantic_types_astrophysics:
     feasible_ranges:
       "M_earth": [0.001, 10000]
       "M_jup": [0.0001, 30]
-    unit_category: "mass"
+    # V4.2 fix: 独立 category — 原 "mass" 与恒星 mass 组撞车,
+    # kg/g 会命中恒星组因子 (5.0292e-31) 而非行星组 (1.6744e-25), 差 ~3.3e5x
+    unit_category: "planet_mass"
+    expected_in_study: "conditional"
+
+  # V4 fix: catalog 原始列 catch-all (schema_mapping 的 database_catalog_properties)。
+  # 此前无该类规则, 单字母关键词 ('L'/'M') 子串误命中 → 误判为 luminosity/mass,
+  # out_of_range 误报。此规则以 3 个关键词命中压过 score=1 的误判。
+  catalog_metadata:
+    keywords: ["database_catalog_properties", "catalog", "properties", "raw_column", "raw_metadata"]
+    units: []
+    feasible_ranges: {}
+    unit_category: "catalog"
+    expected_in_study: "conditional"
+
+  # ── V4.2 扩展: 单位体系丰富 (IAU 2015 B3 / CDS catstd / CODATA 2018 锚点) ──
+  # 键序在 catalog_metadata 之后, 保持 catalog catch-all 优先; 单字母关键词整串相等。
+  flux_density:
+    keywords: ["flux_density", "flux", "peak_flux", "integrated_flux", "S_60", "S60", "S_25", "S25", "S_100", "S100", "S_Jy", "F_nu", "f_nu", "flux_jy"]
+    units: ["Jy", "mJy", "uJy", "μJy", "nJy"]
+    feasible_ranges:
+      "Jy": [0.0, 100000.0]
+      "mJy": [0.0, 1e8]
+      "uJy": [0.0, 1e11]
+    unit_category: "flux_density"
+    expected_in_study: "conditional"
+
+  dispersion_measure:
+    keywords: ["dispersion_measure", "dispersion", "dm", "DispersionMeasure"]
+    units: ["cm^-3 pc", "pc cm^-3"]
+    feasible_ranges:
+      "cm^-3 pc": [0.0, 5000.0]
+    unit_category: "dispersion_measure"
+    expected_in_study: "conditional"
+
+  rotation_measure:
+    keywords: ["rotation_measure", "rm", "faraday_rotation", "faraday"]
+    units: ["rad/m^2", "rad m^-2"]
+    feasible_ranges:
+      "rad/m^2": [-10000.0, 10000.0]
+    unit_category: "rotation_measure"
+    expected_in_study: "conditional"
+
+  frequency:
+    keywords: ["frequency", "freq", "observing_frequency", "center_frequency", "band_center", "rest_frequency", "frequency_mhz"]
+    units: ["Hz", "kHz", "MHz", "GHz", "THz"]
+    feasible_ranges:
+      "GHz": [0.0, 1e12]
+      "MHz": [0.0, 1e15]
+    unit_category: "frequency"
+    expected_in_study: "conditional"
+
+  energy:
+    keywords: ["energy", "photon_energy", "E_photon", "band_energy", "energy_kev", "photon_energy_kev"]
+    units: ["erg", "J", "eV", "keV", "MeV", "GeV", "TeV"]
+    feasible_ranges:
+      "keV": [0.0, 1e9]
+      "erg": [0.0, 1e50]
+    unit_category: "energy"
+    expected_in_study: "conditional"
+
+  magnetic_field:
+    keywords: ["magnetic_field", "B_field", "B_field_gauss", "magnetic_strength", "field_strength", "Bmag"]
+    units: ["G", "mG", "uG", "μG", "nG", "kG", "T", "nT"]
+    feasible_ranges:
+      "G": [0.0, 1e15]
+      "T": [0.0, 1e11]
+    unit_category: "magnetic_field"
+    expected_in_study: "conditional"
+
+  pressure:
+    keywords: ["pressure", "gas_pressure", "thermal_pressure", "ram_pressure", "p_thermal"]
+    units: ["Pa", "hPa", "kPa", "bar", "mbar", "atm", "dyn/cm^2", "dyn cm^-2"]
+    feasible_ranges:
+      "Pa": [0.0, 1e16]
+      "bar": [0.0, 1e11]
+    unit_category: "pressure"
+    expected_in_study: "conditional"
+
+  density:
+    keywords: ["density", "rho", "mass_density", "electron_density", "n_e", "n_H", "number_density", "surface_density"]
+    units: ["g/cm^3", "g cm^-3", "kg/m^3", "amu/cm^3", "pc**-2", "mas**-2"]
+    feasible_ranges:
+      "g/cm^3": [1e-30, 1e15]
+      "kg/m^3": [1e-27, 1e18]
+    unit_category: "density"
+    expected_in_study: "conditional"
+
+  angle:
+    keywords: ["angular_size", "angular_separation", "separation", "beam", "beam_size", "fwhm", "psf", "position_angle", "theta", "major_axis", "minor_axis", "angular_diameter", "diameter", "size"]
+    units: ["deg", "degree", "degrees", "arcmin", "arcsec", "mas", "rad"]
+    feasible_ranges:
+      "deg": [0.0, 360.0]
+      "arcsec": [0.0, 1296000.0]
+    unit_category: "angle"
+    expected_in_study: "conditional"
+
+  wavelength:
+    keywords: ["wavelength", "lambda", "rest_wavelength", "observed_wavelength", "waveband", "lambda_max"]
+    units: ["nm", "Å", "angstrom", "um", "μm", "mm", "um**-1"]
+    feasible_ranges:
+      "nm": [0.0, 1e9]
+    unit_category: "wavelength"
     expected_in_study: "conditional"
 
 # ── 天体物理领域权重 ──
@@ -548,3 +654,279 @@ measurement_methods_astrophysics:
   radial_velocity: ["radial velocity", "RV", "HARPS", "ESPRESSO", "CARMENES"]
   transit: ["transit", "TESS", "Kepler", "light curve", "eclipse"]
   imaging: ["imaging", "HST", "JWST", "VLT", "direct imaging"]
+
+# ── 天体物理实体类型: Simbad otypes.list 全量 (V4) ──
+# 理论依据: otypes.list (2026-07-30, Strasbourg); 名称/层级对齐官方分类
+# 消费方: tools/insight/entity_types.py (normalize/infer/ancestors/typical_range)
+entity_types_astrophysics:
+  version: "1.0"
+  source: "Simbad otypes.list, generated 2026-07-30"
+  categories:
+    stars: stars
+    star_sets: star_sets
+    ism: ism
+    galaxies: galaxies
+    galaxy_sets: galaxy_sets
+    gravitation: gravitation
+    spectral: spectral
+    misc: misc
+  default_entity_type: galaxy
+  # ── 推断映射 (context_builder 消费): DB 目录 → 实体类型 (vizier_table_id 前缀) ──
+  catalog_inference:
+    "III/135A": star      # HD 恒星目录
+    "II/125": galaxy      # IRAS PSC
+    "VII/237": galaxy     # HYPERLEDA
+    "VII/26D": galaxy     # UGC
+    "VII/233": galaxy     # 2MASS XSC
+  # ── 字段名精确匹配 → 实体类型 (优先级 2) ──
+  field_inference:
+    distance: galaxy
+    metallicity: galaxy
+    stellar_mass: galaxy
+    mass: galaxy
+    extinction: galaxy
+    radial_velocity: galaxy
+    redshift: galaxy
+    sp_t: star
+    spectral_type: star
+  # ── 语义类型 → 实体类型 (优先级 3) ──
+  field_class_inference:
+    parallax: star
+    proper_motion_ra: star
+    proper_motion_dec: star
+    effective_temperature: star
+    surface_gravity: star
+    stellar_radius: star
+    rotational_velocity: star
+  # ── 类型表 (154): key = Simbad code (引号包裹, * ? 为 YAML 保留字符) ──
+  types:
+    # stars:
+    "*": {name: star, desc: "Star", cat: stars, parent: null, candi: false, bad: false, kws: [star], sem: [effective_temperature, stellar_mass, stellar_radius, luminosity, age, surface_gravity, metallicity, radial_velocity, proper_motion_ra, proper_motion_dec, apparent_magnitude, spectral_type]}
+    "Ma*": {name: massive_star, desc: "Massive Star", cat: stars, parent: "*", candi: true, bad: false, kws: [massive_star], sem: [effective_temperature, stellar_mass, luminosity, age]}
+    "bC*": {name: beta_cephei_variable, desc: "beta Cep Variable", cat: stars, parent: "Ma*", candi: true, bad: false, kws: [beta_cephei_variable], sem: []}
+    "sg*": {name: supergiant, desc: "Evolved Supergiant", cat: stars, parent: "Ma*", candi: true, bad: false, kws: [supergiant], sem: [effective_temperature, stellar_mass, stellar_radius, luminosity, surface_gravity]}
+    "s*r": {name: red_supergiant, desc: "Red Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [red_supergiant], sem: [effective_temperature, stellar_radius, luminosity]}
+    "s*y": {name: yellow_supergiant, desc: "Yellow Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [yellow_supergiant], sem: []}
+    "s*b": {name: blue_supergiant, desc: "Blue Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [blue_supergiant], sem: [effective_temperature, luminosity]}
+    "WR*": {name: wolf_rayet_star, desc: "Wolf-Rayet", cat: stars, parent: "s*b", candi: true, bad: false, kws: [wolf_rayet_star], sem: [effective_temperature, stellar_mass, luminosity]}
+    "N*": {name: neutron_star, desc: "Neutron Star", cat: stars, parent: "Ma*", candi: true, bad: false, kws: [neutron_star], sem: [stellar_mass, stellar_radius, luminosity]}
+    "Psr": {name: pulsar, desc: "Pulsar", cat: stars, parent: "N*", candi: false, bad: false, kws: [pulsar], sem: [stellar_mass, age, dispersion_measure]}
+    "Y*O": {name: young_stellar_object, desc: "Young Stellar Object", cat: stars, parent: "*", candi: true, bad: false, kws: [young_stellar_object], sem: [effective_temperature, luminosity, age]}
+    "Or*": {name: orion_variable, desc: "Orion Variable", cat: stars, parent: "Y*O", candi: false, bad: false, kws: [orion_variable], sem: []}
+    "TT*": {name: t_tauri_star, desc: "T Tauri Star", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [t_tauri_star], sem: [effective_temperature, surface_gravity, luminosity, age]}
+    "Ae*": {name: herbig_ae_be_star, desc: "Herbig Ae/Be Star", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [herbig_ae_be_star], sem: [effective_temperature, luminosity, age]}
+    "out": {name: outflow, desc: "Outflow", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [outflow], sem: []}
+    "HH": {name: herbig_haro_object, desc: "Herbig-Haro Object", cat: stars, parent: "out", candi: false, bad: false, kws: [herbig_haro_object], sem: []}
+    "MS*": {name: main_sequence_star, desc: "Main Sequence Star", cat: stars, parent: "*", candi: true, bad: false, kws: [main_sequence_star], sem: [effective_temperature, stellar_mass, stellar_radius, luminosity, surface_gravity]}
+    "Be*": {name: be_star, desc: "Be Star", cat: stars, parent: "MS*", candi: true, bad: false, kws: [be_star], sem: [effective_temperature, stellar_mass, luminosity, rotational_velocity]}
+    "BS*": {name: blue_straggler, desc: "Blue Straggler", cat: stars, parent: "MS*", candi: true, bad: false, kws: [blue_straggler], sem: []}
+    "SX*": {name: sx_phe_variable, desc: "SX Phe Variable", cat: stars, parent: "BS*", candi: false, bad: false, kws: [sx_phe_variable], sem: []}
+    "gD*": {name: gamma_dor_variable, desc: "gamma Dor Variable", cat: stars, parent: "MS*", candi: false, bad: false, kws: [gamma_dor_variable], sem: []}
+    "dS*": {name: delta_scuti_variable, desc: "delta Sct Variable", cat: stars, parent: "MS*", candi: false, bad: false, kws: [delta_scuti_variable], sem: []}
+    "Ev*": {name: evolved_star, desc: "Evolved Star", cat: stars, parent: "*", candi: true, bad: false, kws: [evolved_star], sem: [effective_temperature, stellar_radius, luminosity, age, surface_gravity]}
+    "RG*": {name: red_giant_star, desc: "Red Giant Branch star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [red_giant_star], sem: [effective_temperature, stellar_radius, luminosity]}
+    "HS*": {name: hot_subdwarf, desc: "Hot Subdwarf", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [hot_subdwarf], sem: []}
+    "HB*": {name: horizontal_branch_star, desc: "Horizontal Branch Star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [horizontal_branch_star], sem: [effective_temperature, luminosity, metallicity, age]}
+    "RR*": {name: rr_lyrae_variable, desc: "RR Lyrae Variable", cat: stars, parent: "HB*", candi: true, bad: false, kws: [rr_lyrae_variable], sem: [effective_temperature, luminosity, metallicity]}
+    "WV*": {name: type_ii_cepheid, desc: "Type II Cepheid Variable", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [type_ii_cepheid], sem: []}
+    "Ce*": {name: cepheid, desc: "Cepheid Variable", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [cepheid], sem: [effective_temperature, luminosity, age, distance]}
+    "cC*": {name: classical_cepheid, desc: "Classical Cepheid Variable", cat: stars, parent: "Ce*", candi: false, bad: false, kws: [classical_cepheid], sem: [luminosity, distance, age]}
+    "C*": {name: carbon_star, desc: "Carbon Star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [carbon_star], sem: [effective_temperature, luminosity]}
+    "S*": {name: s_star, desc: "S Star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [s_star], sem: []}
+    "LP*": {name: long_period_variable, desc: "Long-Period Variable", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [long_period_variable], sem: []}
+    "AB*": {name: agb_star, desc: "Asymptotic Giant Branch Star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [agb_star], sem: [effective_temperature, luminosity, stellar_radius]}
+    "Mi*": {name: mira_variable, desc: "Mira Variable", cat: stars, parent: "AB*", candi: true, bad: false, kws: [mira_variable], sem: [effective_temperature, luminosity]}
+    "OH*": {name: oh_ir_star, desc: "OH/IR Star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [oh_ir_star], sem: []}
+    "pA*": {name: post_agb_star, desc: "Post-AGB Star", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [post_agb_star], sem: []}
+    "RV*": {name: rv_tauri_variable, desc: "RV Tauri Variable", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [rv_tauri_variable], sem: []}
+    "PN": {name: planetary_nebula, desc: "Planetary Nebula", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [planetary_nebula], sem: [effective_temperature, luminosity, age]}
+    "WD*": {name: white_dwarf, desc: "White Dwarf", cat: stars, parent: "Ev*", candi: true, bad: false, kws: [white_dwarf], sem: [effective_temperature, stellar_mass, stellar_radius, surface_gravity, age]}
+    "Pe*": {name: chemically_peculiar_star, desc: "Chemically Peculiar Star", cat: stars, parent: "*", candi: true, bad: false, kws: [chemically_peculiar_star], sem: []}
+    "a2*": {name: alpha2_cvn_variable, desc: "alpha2 CVn Variable", cat: stars, parent: "Pe*", candi: true, bad: false, kws: [alpha2_cvn_variable], sem: []}
+    "RC*": {name: r_crb_variable, desc: "R CrB Variable", cat: stars, parent: "Pe*", candi: true, bad: false, kws: [r_crb_variable], sem: []}
+    "**": {name: double_star, desc: "Double or Multiple Star", cat: stars, parent: "*", candi: true, bad: false, kws: [double_star], sem: [stellar_mass, luminosity, orbital_period]}
+    "EB*": {name: eclipsing_binary, desc: "Eclipsing Binary", cat: stars, parent: "**", candi: true, bad: false, kws: [eclipsing_binary], sem: [stellar_mass, luminosity, orbital_period]}
+    "El*": {name: ellipsoidal_variable, desc: "Ellipsoidal Variable", cat: stars, parent: "**", candi: true, bad: false, kws: [ellipsoidal_variable], sem: []}
+    "SB*": {name: spectroscopic_binary, desc: "Spectroscopic Binary", cat: stars, parent: "**", candi: true, bad: false, kws: [spectroscopic_binary], sem: [stellar_mass, radial_velocity, orbital_period]}
+    "RS*": {name: rs_cvn_variable, desc: "RS CVn Variable", cat: stars, parent: "**", candi: true, bad: false, kws: [rs_cvn_variable], sem: []}
+    "BY*": {name: by_dra_variable, desc: "BY Dra Variable", cat: stars, parent: "**", candi: true, bad: false, kws: [by_dra_variable], sem: []}
+    "Sy*": {name: symbiotic_star, desc: "Symbiotic Star", cat: stars, parent: "**", candi: true, bad: false, kws: [symbiotic_star], sem: []}
+    "XB*": {name: xray_binary, desc: "X-ray Binary", cat: stars, parent: "**", candi: true, bad: false, kws: [xray_binary], sem: [luminosity, orbital_period]}
+    "LXB": {name: low_mass_xray_binary, desc: "Low Mass X-ray Binary", cat: stars, parent: "XB*", candi: true, bad: false, kws: [low_mass_xray_binary], sem: [luminosity, orbital_period]}
+    "HXB": {name: high_mass_xray_binary, desc: "High Mass X-ray Binary", cat: stars, parent: "XB*", candi: true, bad: false, kws: [high_mass_xray_binary], sem: [luminosity, orbital_period]}
+    "CV*": {name: cataclysmic_binary, desc: "Cataclysmic Binary", cat: stars, parent: "**", candi: true, bad: false, kws: [cataclysmic_binary], sem: [luminosity, orbital_period]}
+    "No*": {name: classical_nova, desc: "Classical Nova", cat: stars, parent: "CV*", candi: true, bad: false, kws: [classical_nova], sem: [luminosity, age]}
+    "SN*": {name: supernova, desc: "SuperNova", cat: stars, parent: "*", candi: true, bad: false, kws: [supernova], sem: [luminosity, age, distance]}
+    "LM*": {name: low_mass_star, desc: "Low-mass Star", cat: stars, parent: "*", candi: true, bad: false, kws: [low_mass_star], sem: [effective_temperature, stellar_mass, stellar_radius]}
+    "BD*": {name: brown_dwarf, desc: "Brown Dwarf", cat: stars, parent: "LM*", candi: true, bad: false, kws: [brown_dwarf], sem: [effective_temperature, stellar_mass, stellar_radius]}
+    "Pl": {name: exoplanet, desc: "Extra-solar Planet", cat: stars, parent: "*", candi: true, bad: false, kws: [exoplanet], sem: [planet_radius, planet_mass, orbital_period]}
+    "V*": {name: variable_star, desc: "Variable Star", cat: stars, parent: "*", candi: true, bad: false, kws: [variable_star], sem: [luminosity]}
+    "Ir*": {name: irregular_variable, desc: "Irregular Variable", cat: stars, parent: "V*", candi: false, bad: false, kws: [irregular_variable], sem: []}
+    "Er*": {name: eruptive_variable, desc: "Eruptive Variable", cat: stars, parent: "V*", candi: true, bad: false, kws: [eruptive_variable], sem: []}
+    "Ro*": {name: rotating_variable, desc: "Rotating Variable", cat: stars, parent: "V*", candi: true, bad: false, kws: [rotating_variable], sem: []}
+    "Pu*": {name: pulsating_variable, desc: "Pulsating Variable", cat: stars, parent: "V*", candi: true, bad: false, kws: [pulsating_variable], sem: [luminosity, effective_temperature]}
+    "Em*": {name: emission_line_star, desc: "Emission-line Star", cat: stars, parent: "*", candi: false, bad: false, kws: [emission_line_star], sem: [effective_temperature, luminosity]}
+    "PM*": {name: high_proper_motion_star, desc: "High Proper Motion Star", cat: stars, parent: "*", candi: false, bad: false, kws: [high_proper_motion_star], sem: []}
+    "HV*": {name: high_velocity_star, desc: "High Velocity Star", cat: stars, parent: "*", candi: false, bad: false, kws: [high_velocity_star], sem: []}
+    # star_sets:
+    "Cl*": {name: cluster_of_stars, desc: "Cluster of Stars", cat: star_sets, parent: null, candi: true, bad: false, kws: [cluster_of_stars], sem: [age, distance, metallicity]}
+    "GlC": {name: globular_cluster, desc: "Globular Cluster", cat: star_sets, parent: "Cl*", candi: true, bad: false, kws: [globular_cluster], sem: [age, metallicity, distance]}
+    "OpC": {name: open_cluster, desc: "Open Cluster", cat: star_sets, parent: "Cl*", candi: false, bad: false, kws: [open_cluster], sem: [age, distance, metallicity]}
+    "As*": {name: stellar_association, desc: "Association of Stars", cat: star_sets, parent: null, candi: true, bad: false, kws: [stellar_association], sem: [age, distance]}
+    "St*": {name: stellar_stream, desc: "Stellar Stream", cat: star_sets, parent: "As*", candi: false, bad: false, kws: [stellar_stream], sem: []}
+    "MGr": {name: moving_group, desc: "Moving Group", cat: star_sets, parent: "As*", candi: false, bad: false, kws: [moving_group], sem: []}
+    # ism:
+    "ISM": {name: ism_object, desc: "Interstellar Medium Object", cat: ism, parent: null, candi: false, bad: false, kws: [ism_object], sem: [extinction, distance]}
+    "SFR": {name: star_forming_region, desc: "Star Forming Region", cat: ism, parent: "ISM", candi: false, bad: false, kws: [star_forming_region], sem: [age, luminosity, distance]}
+    "HII": {name: hii_region, desc: "HII Region", cat: ism, parent: "ISM", candi: false, bad: false, kws: [hii_region], sem: [luminosity, flux_density, distance]}
+    "Cld": {name: cloud, desc: "Cloud", cat: ism, parent: "ISM", candi: false, bad: false, kws: [cloud], sem: [extinction]}
+    "GNe": {name: nebula, desc: "Nebula", cat: ism, parent: "Cld", candi: false, bad: false, kws: [nebula], sem: [extinction, luminosity]}
+    "RNe": {name: reflection_nebula, desc: "Reflection Nebula", cat: ism, parent: "GNe", candi: false, bad: false, kws: [reflection_nebula], sem: []}
+    "MoC": {name: molecular_cloud, desc: "Molecular Cloud", cat: ism, parent: "Cld", candi: false, bad: false, kws: [molecular_cloud], sem: [extinction, distance]}
+    "DNe": {name: dark_cloud, desc: "Dark Cloud (nebula)", cat: ism, parent: "Cld", candi: false, bad: false, kws: [dark_cloud], sem: []}
+    "glb": {name: globule, desc: "Globule (low-mass dark cloud)", cat: ism, parent: "Cld", candi: false, bad: false, kws: [globule], sem: []}
+    "CGb": {name: cometary_globule, desc: "Cometary Globule / Pillar", cat: ism, parent: "Cld", candi: false, bad: false, kws: [cometary_globule], sem: []}
+    "HVC": {name: high_velocity_cloud, desc: "High-velocity Cloud", cat: ism, parent: "Cld", candi: false, bad: false, kws: [high_velocity_cloud], sem: []}
+    "cor": {name: dense_core, desc: "Dense Core", cat: ism, parent: "ISM", candi: false, bad: false, kws: [dense_core], sem: []}
+    "bub": {name: bubble, desc: "Bubble", cat: ism, parent: "ISM", candi: false, bad: false, kws: [bubble], sem: []}
+    "SNR": {name: supernova_remnant, desc: "SuperNova Remnant", cat: ism, parent: "ISM", candi: true, bad: false, kws: [supernova_remnant], sem: [age, flux_density, distance, luminosity]}
+    "sh": {name: interstellar_shell, desc: "Interstellar Shell", cat: ism, parent: "ISM", candi: false, bad: false, kws: [interstellar_shell], sem: []}
+    "flt": {name: interstellar_filament, desc: "Interstellar Filament", cat: ism, parent: "ISM", candi: false, bad: false, kws: [interstellar_filament], sem: []}
+    # galaxies:
+    "G": {name: galaxy, desc: "Galaxy", cat: galaxies, parent: null, candi: true, bad: false, kws: [galaxy], sem: [redshift, stellar_mass, distance, metallicity, extinction, luminosity, apparent_magnitude, radial_velocity, flux_density]}
+    "LSB": {name: low_surface_brightness_galaxy, desc: "Low Surface Brightness Galaxy", cat: galaxies, parent: "G", candi: false, bad: false, kws: [low_surface_brightness_galaxy], sem: [stellar_mass, luminosity, redshift]}
+    "bCG": {name: blue_compact_galaxy, desc: "Blue Compact Galaxy", cat: galaxies, parent: "G", candi: false, bad: false, kws: [blue_compact_galaxy], sem: [luminosity, metallicity, redshift]}
+    "SBG": {name: starburst_galaxy, desc: "Starburst Galaxy", cat: galaxies, parent: "G", candi: false, bad: false, kws: [starburst_galaxy], sem: [luminosity, redshift, stellar_mass, flux_density]}
+    "H2G": {name: hii_galaxy, desc: "HII Galaxy", cat: galaxies, parent: "G", candi: false, bad: false, kws: [hii_galaxy], sem: []}
+    "EmG": {name: emission_line_galaxy, desc: "Emission-line galaxy", cat: galaxies, parent: "G", candi: false, bad: false, kws: [emission_line_galaxy], sem: [luminosity, redshift, flux_density]}
+    "AGN": {name: agn, desc: "Active Galaxy Nucleus", cat: galaxies, parent: "G", candi: true, bad: false, kws: [agn], sem: [luminosity, redshift, stellar_mass, flux_density]}
+    "SyG": {name: seyfert_galaxy, desc: "Seyfert Galaxy", cat: galaxies, parent: "AGN", candi: false, bad: false, kws: [seyfert_galaxy], sem: [luminosity, redshift, flux_density]}
+    "Sy1": {name: seyfert_1_galaxy, desc: "Seyfert 1 Galaxy", cat: galaxies, parent: "SyG", candi: false, bad: false, kws: [seyfert_1_galaxy], sem: [luminosity, redshift, flux_density]}
+    "Sy2": {name: seyfert_2_galaxy, desc: "Seyfert 2 Galaxy", cat: galaxies, parent: "SyG", candi: false, bad: false, kws: [seyfert_2_galaxy], sem: [luminosity, redshift, flux_density]}
+    "rG": {name: radio_galaxy, desc: "Radio Galaxy", cat: galaxies, parent: "AGN", candi: false, bad: false, kws: [radio_galaxy], sem: [flux_density, redshift, luminosity]}
+    "LIN": {name: liner, desc: "LINER-type Active Galaxy Nucleus", cat: galaxies, parent: "AGN", candi: false, bad: false, kws: [liner], sem: [luminosity, redshift, flux_density]}
+    "QSO": {name: quasar, desc: "Quasar", cat: galaxies, parent: "AGN", candi: true, bad: false, kws: [quasar], sem: [luminosity, redshift, stellar_mass, flux_density]}
+    "Bla": {name: blazar, desc: "Blazar", cat: galaxies, parent: "QSO", candi: true, bad: false, kws: [blazar], sem: [luminosity, flux_density, redshift]}
+    "BLL": {name: bl_lac, desc: "BL Lac", cat: galaxies, parent: "Bla", candi: true, bad: false, kws: [bl_lac], sem: [luminosity, flux_density, redshift]}
+    "GiP": {name: galaxy_in_pair, desc: "Galaxy in Pair of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_pair], sem: []}
+    "GiG": {name: galaxy_in_group, desc: "Galaxy towards a Group of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_group], sem: []}
+    "GiC": {name: galaxy_in_cluster, desc: "Galaxy towards a Cluster of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_cluster], sem: [redshift, distance]}
+    "BiC": {name: brightest_cluster_galaxy, desc: "Brightest Galaxy in a Cluster (BCG)", cat: galaxies, parent: "GiC", candi: false, bad: false, kws: [brightest_cluster_galaxy], sem: [redshift, luminosity, stellar_mass]}
+    # galaxy_sets:
+    "IG": {name: interacting_galaxies, desc: "Interacting Galaxies", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [interacting_galaxies], sem: [luminosity, redshift, stellar_mass]}
+    "PaG": {name: galaxy_pair, desc: "Pair of Galaxies", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [galaxy_pair], sem: []}
+    "GrG": {name: galaxy_group, desc: "Group of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [galaxy_group], sem: [redshift, distance]}
+    "CGG": {name: compact_group_of_galaxies, desc: "Compact Group of Galaxies", cat: galaxy_sets, parent: "GrG", candi: false, bad: false, kws: [compact_group_of_galaxies], sem: []}
+    "ClG": {name: galaxy_cluster, desc: "Cluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [galaxy_cluster], sem: [redshift, distance, luminosity]}
+    "PCG": {name: protocluster, desc: "Proto Cluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [protocluster], sem: []}
+    "SCG": {name: supercluster, desc: "Supercluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [supercluster], sem: [redshift]}
+    "vid": {name: underdense_region, desc: "Underdense Region of the Universe", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [underdense_region], sem: []}
+    # gravitation:
+    "grv": {name: gravitational_source, desc: "Gravitational Source", cat: gravitation, parent: null, candi: false, bad: false, kws: [gravitational_source], sem: []}
+    "Lev": {name: microlensing_event, desc: "(Micro)Lensing Event", cat: gravitation, parent: "grv", candi: false, bad: false, kws: [microlensing_event], sem: []}
+    "gLS": {name: gravitational_lens_system, desc: "Gravitational Lens System (lens+images)", cat: gravitation, parent: "grv", candi: true, bad: false, kws: [gravitational_lens_system], sem: [redshift, distance]}
+    "gLe": {name: gravitational_lens, desc: "Gravitational Lens", cat: gravitation, parent: "gLS", candi: true, bad: false, kws: [gravitational_lens], sem: []}
+    "LeI": {name: lensed_image, desc: "Gravitationally Lensed Image", cat: gravitation, parent: "gLS", candi: true, bad: false, kws: [lensed_image], sem: []}
+    "LeG": {name: lensed_galaxy_image, desc: "Gravitationally Lensed Image of a Galaxy", cat: gravitation, parent: "LeI", candi: false, bad: false, kws: [lensed_galaxy_image], sem: []}
+    "LeQ": {name: lensed_quasar_image, desc: "Gravitationally Lensed Image of a Quasar", cat: gravitation, parent: "LeI", candi: false, bad: false, kws: [lensed_quasar_image], sem: []}
+    "BH": {name: black_hole, desc: "Black Hole", cat: gravitation, parent: "grv", candi: true, bad: false, kws: [black_hole], sem: [stellar_mass, luminosity]}
+    "GWE": {name: gravitational_wave_event, desc: "Gravitational Wave Event", cat: gravitation, parent: "grv", candi: false, bad: false, kws: [gravitational_wave_event], sem: [distance, luminosity]}
+    # spectral:
+    "ev": {name: transient_event, desc: "Transient Event", cat: spectral, parent: null, candi: false, bad: false, kws: [transient_event], sem: [flux_density, luminosity]}
+    "var": {name: variable_source, desc: "Variable source", cat: spectral, parent: null, candi: false, bad: false, kws: [variable_source], sem: [luminosity, apparent_magnitude]}
+    "Rad": {name: radio_source, desc: "Radio Source", cat: spectral, parent: null, candi: false, bad: false, kws: [radio_source], sem: [flux_density]}
+    "mR": {name: metric_radio_source, desc: "Metric Radio Source", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [metric_radio_source], sem: []}
+    "cm": {name: centimetric_radio_source, desc: "Centimetric Radio Source", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [centimetric_radio_source], sem: []}
+    "mm": {name: millimetric_radio_source, desc: "Millimetric Radio Source", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [millimetric_radio_source], sem: []}
+    "smm": {name: submillimetric_source, desc: "Sub-Millimetric Source", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [submillimetric_source], sem: []}
+    "HI": {name: hi_source, desc: "HI (21cm) Source", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [hi_source], sem: []}
+    "rB": {name: radio_burst, desc: "Radio Burst", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [radio_burst], sem: [flux_density, dispersion_measure]}
+    "Mas": {name: maser, desc: "Maser", cat: spectral, parent: "Rad", candi: false, bad: false, kws: [maser], sem: [flux_density, luminosity]}
+    "IR": {name: infrared_source, desc: "Infra-Red Source", cat: spectral, parent: null, candi: false, bad: false, kws: [infrared_source], sem: [flux_density, luminosity]}
+    "FIR": {name: far_infrared_source, desc: "Far-IR source", cat: spectral, parent: "IR", candi: false, bad: false, kws: [far_infrared_source], sem: [flux_density, luminosity]}
+    "MIR": {name: mid_infrared_source, desc: "Mid-IR Source", cat: spectral, parent: "IR", candi: false, bad: false, kws: [mid_infrared_source], sem: [flux_density]}
+    "NIR": {name: near_infrared_source, desc: "Near-IR Source", cat: spectral, parent: "IR", candi: false, bad: false, kws: [near_infrared_source], sem: [flux_density, apparent_magnitude]}
+    "Opt": {name: optical_source, desc: "Optical Source", cat: spectral, parent: null, candi: false, bad: false, kws: [optical_source], sem: [apparent_magnitude, flux_density]}
+    "EmO": {name: emission_object, desc: "Emission Object", cat: spectral, parent: "Opt", candi: false, bad: false, kws: [emission_object], sem: []}
+    "blu": {name: blue_object, desc: "Blue Object", cat: spectral, parent: "Opt", candi: false, bad: false, kws: [blue_object], sem: []}
+    "UV": {name: uv_source, desc: "UV-emission Source", cat: spectral, parent: null, candi: false, bad: false, kws: [uv_source], sem: [flux_density, luminosity]}
+    "X": {name: xray_source, desc: "X-ray Source", cat: spectral, parent: null, candi: false, bad: false, kws: [xray_source], sem: [flux_density, luminosity]}
+    "ULX": {name: ultraluminous_xray_source, desc: "Ultra-luminous X-ray Source", cat: spectral, parent: "X", candi: true, bad: false, kws: [ultraluminous_xray_source], sem: [luminosity, flux_density]}
+    "gam": {name: gamma_ray_source, desc: "Gamma-ray Source", cat: spectral, parent: null, candi: false, bad: false, kws: [gamma_ray_source], sem: [flux_density, luminosity]}
+    "gB": {name: gamma_ray_burst, desc: "Gamma-ray Burst", cat: spectral, parent: "gam", candi: false, bad: false, kws: [gamma_ray_burst], sem: [flux_density, luminosity, distance]}
+    # misc:
+    "mul": {name: blend, desc: "Composite Object, Blend", cat: misc, parent: null, candi: false, bad: true, kws: [blend], sem: []}
+    "err": {name: not_an_object, desc: "Not an Object (Error, Artefact)", cat: misc, parent: null, candi: false, bad: true, kws: [not_an_object], sem: []}
+    "PoC": {name: part_of_cloud, desc: "Part of Cloud", cat: misc, parent: null, candi: false, bad: false, kws: [part_of_cloud], sem: []}
+    "PoG": {name: part_of_galaxy, desc: "Part of a Galaxy", cat: misc, parent: null, candi: false, bad: false, kws: [part_of_galaxy], sem: []}
+    "?": {name: unknown_object, desc: "Object of Unknown Nature", cat: misc, parent: null, candi: false, bad: true, kws: [unknown_object], sem: []}
+    "reg": {name: sky_region, desc: "Region defined in the Sky", cat: misc, parent: null, candi: false, bad: false, kws: [sky_region], sem: []}
+  # ── 典型范围 (实体级 sanity check, 单位 = semantic_types 键 units[0]) ──
+  typical_ranges:
+    star:
+      effective_temperature: [2000, 100000]
+      stellar_mass: [0.1, 100]
+      stellar_radius: [0.1, 1000]
+      luminosity: [299999999999999991891638616064.0, 3999999999999999758836665486412714344448.0]
+      surface_gravity: [-0.5, 9]
+    main_sequence_star:
+      effective_temperature: [2400, 50000]
+      stellar_mass: [0.08, 150]
+      surface_gravity: [4.0, 5.0]
+    supergiant:
+      stellar_radius: [100, 1500]
+      surface_gravity: [0.0, 1.5]
+      effective_temperature: [3000, 50000]
+    red_supergiant:
+      effective_temperature: [3000, 4500]
+      stellar_radius: [200, 1500]
+    white_dwarf:
+      effective_temperature: [5000, 100000]
+      stellar_mass: [0.2, 1.4]
+      stellar_radius: [0.005, 0.05]
+      surface_gravity: [7.0, 9.0]
+    neutron_star:
+      stellar_mass: [1.0, 2.5]
+      stellar_radius: [0.0000100000, 0.0000500000]
+    brown_dwarf:
+      effective_temperature: [300, 2200]
+      stellar_mass: [0.005, 0.08]
+    t_tauri_star:
+      effective_temperature: [2590, 5110]
+      surface_gravity: [3.5, 4.5]
+    red_giant_star:
+      stellar_radius: [10, 100]
+      effective_temperature: [3000, 5000]
+    galaxy:
+      redshift: [-0.01, 10]
+      stellar_mass: [1000000.0, 10000000000000.0]
+      distance: [0.1, 1000000000.0]
+      metallicity: [-3.0, 1.0]
+      extinction: [0, 5]
+      luminosity: [99999999999999997748809823456034029568.0, 1000000000000000043845843045076197354634047651840.0]
+    agn:
+      luminosity: [10000000000000000303786028427003666890752.0, 1000000000000000043845843045076197354634047651840.0]
+      stellar_mass: [10000000.0, 1000000000000.0]
+      redshift: [0, 10]
+    quasar:
+      luminosity: [999999999999999929757289024535551219930759168.0, 1000000000000000043845843045076197354634047651840.0]
+      stellar_mass: [100000000.0, 100000000000.0]
+      redshift: [0.1, 8]
+    supernova_remnant:
+      age: [0.0000004000, 0.0001000000]
+    cluster_of_stars:
+      age: [0.01, 13]
+      distance: [100, 100000.0]
+    exoplanet:
+      planet_radius: [1, 22]
+      planet_mass: [1, 4000]
+    hii_region:
+      luminosity: [99999999999999996863366107917975552.0, 100000000000000000620008645040778319495168.0]
+      distance: [10, 100000.0]
+    starburst_galaxy:
+      luminosity: [100000000000000000620008645040778319495168.0, 100000000000000004384584304507619735463404765184.0]
+      redshift: [0, 4]
+    pulsar:
+      dispersion_measure: [1, 3000]
+      age: [0.0000100000, 0.01]
+# 共 153 个类型 (8 大类)

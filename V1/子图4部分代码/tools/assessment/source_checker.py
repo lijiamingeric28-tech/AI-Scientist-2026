@@ -81,7 +81,14 @@ def check_source_reliability(data: dict[str, Any]) -> dict[str, Any]:
 
 
 def _evaluate_single_source(source: dict[str, Any]) -> float:
-    """评估单个来源的可信度，返回 0-1 分数。"""
+    """评估单个来源的可信度，返回 0-1 分数。根据 source_type 分支。"""
+    if source.get("source_type") == "database":
+        return _evaluate_database_source(source)
+    return _evaluate_paper_source(source)
+
+
+def _evaluate_paper_source(source: dict[str, Any]) -> float:
+    """评估 paper 来源可信度 (原有逻辑不变)。"""
     score = 0.0
     checks = 0
 
@@ -121,5 +128,44 @@ def _evaluate_single_source(source: dict[str, Any]) -> float:
     checks += 1
     priority = source.get("retrieval_priority", 0.0)
     score += priority / 100.0 if priority > 1 else priority
+
+    return score / checks if checks > 0 else 0.0
+
+
+def _evaluate_database_source(source: dict[str, Any]) -> float:
+    """评估 database 来源可信度 (V3.1 新增)。
+
+    使用 8 维评分替代 paper 的 doi/authors/year/journal 维度。
+    """
+    score = 0.0
+    checks = 0
+    # 每个维度: 有值(非空字符串, 长度>3) → 满分
+
+    # 核心字段 (权重 1.0)
+    for key in ("description", "research_methodology", "waveband", "research_content"):
+        checks += 1
+        val = source.get(key, "")
+        if val and isinstance(val, str) and len(val.strip()) > 20:
+            score += 1.0
+        elif val and isinstance(val, str) and len(val.strip()) > 0:
+            score += 0.5  # 太短也算半对
+
+    # 标识字段 (权重 1.0)
+    checks += 1
+    if source.get("title") and len(source.get("title", "")) > 3:
+        score += 1.0
+
+    checks += 1
+    if source.get("vizier_table_id") and len(source.get("vizier_table_id", "")) > 0:
+        score += 1.0
+
+    # 参考字段 (权重 0.5)
+    checks += 1
+    if source.get("reference_paper") and len(source.get("reference_paper", "")) > 0:
+        score += 0.5
+
+    checks += 1
+    if source.get("bibcode") and len(source.get("bibcode", "")) > 0:
+        score += 0.5
 
     return score / checks if checks > 0 else 0.0

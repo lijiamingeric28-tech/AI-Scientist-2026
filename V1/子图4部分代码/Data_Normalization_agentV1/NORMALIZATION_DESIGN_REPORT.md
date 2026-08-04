@@ -1,9 +1,47 @@
-# Normalization SubGraph 设计报告 V2.0
+# Normalization SubGraph 设计报告 V2.3
 
-> **版本**: V2.0 — LLM 动态 Tool 生成 + 自适应规范化  
-> **设计原则**: 一个 Stage = 一个 Node = 一个 Agent  
-> **核心创新**: LLM 根据数据问题自动编写/适配规范化工具函数，不再依赖固定 Tool 集  
-> **对应文件**: `Data_Normalization_agentV1/normalization_graph.py` + `agents/*.py`
+> **版本**: V2.3 — 并行执行 + LLM 动态 Tool 生成 + 安全沙箱
+> **设计原则**: 一个 Stage = 一个 Node = 一个 Agent
+> **核心创新**: LLM 根据数据问题自动编写/适配规范化工具函数 (3层架构), ThreadPoolExecutor 并行处理
+> **对应文件**: `Data_Normalization_agentV1/normalization_graph.py` + `agents/*.py` + `tools/normalization/*.py`
+> **更新 (2026-08-03, V4.2)**: 单位体系完整化 — unit_conversions_astrophysics 17 组 62 条 → 27 组 231 条（+flux_density/dispersion_measure/rotation_measure/frequency/energy/magnetic_field/pressure/density/angle/wavelength 10 组）、温度 °C/°F 偏移、3 处既有 bug 修复、target 非基准因子修正
+> **更新 (2026-08-04, V4.3)**: VizieR 目录 schema 扩展 — 字段别名 349 → 1178（database_catalog_properties 919 + 标准字段 259，覆盖 23 个 VizieR 目录 1072 列，源自 vizier_catalogs_schema.json + query_results_progress_final.json）、单位组 27 → 34（+surface_brightness/abundance/wavenumber/surface_density/percentage/area/composite 7 组 + 4 组 VizieR 记法别名 solMass/solRad/solLum/log(cm.s**-2) 等）、semantic_types 7 键 units 同步 VizieR 记法、生成脚本 gen_catalog_schema.py（行级合并/幂等/备份回滚）
+
+---
+
+## 0. 变更记录 (V4.2 → V4.3)
+
+### V4.3 (2026-08-04) — VizieR 目录 schema 扩展
+
+| 变更 | 内容 |
+|------|------|
+| 字段别名扩展 | `target_schema_astrophysics` aliases 349 → **1178**: database_catalog_properties +919（23 个 VizieR 目录全量 1072 列中未覆盖部分, 无损保留防 Export 白名单丢弃）、标准字段 +259（BPmag/RPmag/W1mag→apparent_magnitude、Fnu_12/25/60/100/FG/FBP/FRP→flux_density、Teff→effective_temperature、logg→surface_gravity、[Fe/H]→metallicity、Mass/M500/MSZ→stellar_mass、Plx→parallax、pmRA/DE_pm→proper_motion、RV/Vbroad→radial_velocity、E(B-V)/A0→extinction 等） |
+| 单位记法别名 | 4 组补 VizieR 标准记法键: mass.solMass / radius.solRad / luminosity.solLum+1e+37W / surface_gravity."log(cm.s**-2)"（含 1e+14solMass 系数前缀） |
+| 新组 ×7 | surface_brightness（mag.arcsec**-2/MJy/sr）、abundance（Sun/log(Sun)）、wavenumber（um**-1）、surface_density（pc**-2/mas**-2）、percentage、area、composite（kpc/arcsec 等自转换） → 34 组 257 条 |
+| semantic_types 同步 | stellar_mass/surface_gravity/metallicity/luminosity/density/wavelength 7 键 units 加入 VizieR 记法（solMass 单位字段可直接推断为 stellar_mass） |
+| 生成脚本 | `scripts/gen_catalog_schema.py`: 读两份 JSON（vizier_catalogs_schema/query_results_progress_final）→ UCD+显式清单分类 → 行级合并（原别名+新别名, 不覆盖）、写前备份、写后 YAML 验证、失败自动回滚、幂等 |
+
+### V4.2 (2026-08-03) — 单位体系完整化
+
+| 变更 | 内容 |
+|------|------|
+| 转换规则扩展 | `unit_conversions_astrophysics` 17 组 62 条 → 27 组 231 条；新增 10 组: flux_density / dispersion_measure / rotation_measure / frequency / energy / magnetic_field / pressure / density / angle / wavelength（IAU 2015 B3 / CDS catstd / CODATA 2018 锚点, 乘法约定） |
+| 温度偏移条目 | 温度组新增 `°C`/`℃`/`C` = "offset_-273.15"（°C→K）与 `°F`/`F` = "offset_32_5_9_273_15"（°F→K）；offset 因子走 `_apply_factor` 原路径 |
+| 修复 1 | proper_motion 因子倒置: arcsec/yr 系列 0.001 → 1000（1 arcsec/yr = 1000 mas/yr, 基准 mas/yr=1.0） |
+| 修复 2 | planet_radius / planet_mass 独立 unit_category — 原与恒星 radius/mass 组撞车: km 因子差 ~109×, kg 因子差 ~3.3e5× |
+| 修复 3 | target 非基准因子修正（unit_converter.py）: `val × factor(unit) / factor(target)` — 先到组基准再换算到目标单位；此前只做 "→组基准" 单向换算却把 field_unit 替换为任意 target（如 5 G → "5.0 T" 静默错误） |
+
+### V4 修复（随测随修, 已并入本报告）
+
+| 修复 | 说明 |
+|------|------|
+| 乘法约定统一 | 全部转换因子统一为 `value_std = value × factor`（与 `_apply_factor` 及材料表 strength.GPa: 1000 一致）；原 distance/mass/radius/luminosity/planet 表的除法约定已换算修正 |
+| 维度守卫 | target 单位必须属于 matched_cat 的规则集, 否则 `no_conversion_rule` — 防跨类误转（如 distance 字段的 'mag' 经 magnitude 规则转成 pc, 或无语义类型时 mag→pc fallback 误转） |
+| 领域感知加载 | configs/__init__.py 增加 `_global_domain` 全局兜底（并行工作线程继承主线程领域, 否则天体物理域误载材料规则 → 单位转换全 0）; `load_domain_config` / `load_domain_schema_config` 按 `{section}_{domain}` → 通用段 → 默认段回退; unit_converter 按领域缓存 semantic→category 映射 |
+| unconverted kinds | 拆分静默跳过 → 显式 unconverted: `missing_unit` / `no_target_unit` / `no_conversion_rule`; normalization_agent 汇入 errors, `has_unconverted_units` 真实化 |
+| entity-aware 键 | semantic_types 键兼容 `"{et}:{en}/{field}"` 后缀匹配; 转换目标 entity_key 优先查找（V2 延续） |
+| 空串单位 | 空串单位不再被忽略 — 视为缺失: missing_unit kind / Validation 缺失统计 / fill_default 填充（V4 fix: 空串也算缺失） |
+| standard_units 回填 | quality_state.make_initial_state 从领域 target_schema 回填 `context_state.standard_units`（此前恒空 → 单位转换全部静默跳过） |
 
 ---
 
@@ -16,9 +54,9 @@
 | **Agent 名称** | Data Normalization Agent |
 | **SubGraph 名称** | Data_Normalization_agentV1 |
 | **所属子图** | SubGraph 4 (数据清洗与质检) |
-| **版本** | V2.0 |
+| **版本** | V2.3（2026-08-03 更新 V4.2: 单位体系完整化） |
 | **核心职责** | 根据 Quality Report 或 Conflict Report，对科学数据执行规范化处理，使数据符合目标 Schema |
-| **关键约束** | **负责修改数据**，不负责判断数据质量或解决复杂冲突 |
+| **关键约束** | **负责修改数据**，不负责判断数据质量或解决复杂冲突。Schema 完整性由 Assessment 负责。 |
 | **修改数据** | ✅ 是 (唯一有权修改数据的 Agent) |
 
 ### 1.2 前后置条件
@@ -28,733 +66,441 @@
 | **前置条件** | `report_state.quality` 已被 Assessment 填充 |
 |  | `report_state.quality.per_source_routes` 包含标记为 "Normalization" 的 sources |
 |  | `data_state.current_data` 包含待处理数据 |
-|  | 或 `report_state.conflict` 已被 Conflict Resolution 填充 (双源路径) |
+|  | 或 `report_state.conflict` 已被 Conflict/Variance 填充 (C→B 路径) |
 | **后置条件** | `data_state.current_data` 已更新为规范化后的数据 |
 |  | `report_state.normalization` 包含完整 Normalization Report |
 |  | `workflow_state.route_decision` 已设置为 "Conflict" 或 "Export" |
 
-### 1.3 上下游关系
+### 1.3 在总图中的位置
 
 ```
-上游:
-  Assessment SubGraph (Data_Assessment_agentV1)
-    → 产出 per_source_routes + Quality Report + conditional_routes
-  Conflict Resolution SubGraph (待实现)
-    → 产出 Conflict Resolution Report (全量规范化触发)
-
-下游:
-  Conflict Resolution SubGraph (B⇄C 循环)
-    → 接收 needs_conflict_analysis=True 的数据
-  Export SubGraph
-    → 接收 route_decision="Export" 的数据
-```
-
-### 1.4 在总图中的位置
-
-```
-AssessmentGraph → Router → NormalizationGraph → LoopController → Router
-                              ↑                        ↓
-                              └── ConflictGraph ←───────┘ (B⇄C 循环, 最多3次)
+AssessmentGraph → Dispatch → NormalizationGraph → LoopController → Export/Conflict
+                                ↑                        ↓
+                                └── ConflictGraph ←───────┘ (C→B 循环, 最多3次)
 ```
 
 ---
 
-## 2. 输入输出规范
+## 2. 架构概览 — 5 Stage 流水线
 
-### 2.1 读取的 State
+```
+START → SourceRouterAgent → PlanningAgent → NormalizationAgent
+      → ValidationAgent → ReportAgent → finalize → END
 
-| State 路径 | 类型 | 必读 | 用途 |
-|-----------|------|------|------|
-| `report_state.quality.sources[sid]` | `dict` | ✅ | per-source 评估结果 (completeness/consistency/format/conflict_risk) |
-| `report_state.quality.per_source_routes` | `dict[str,str]` | ✅ | 筛选标记为 "Normalization" 的 sources |
-| `report_state.quality.conditional_routes` | `list[dict]` | ✅ | per-source 条件修复指令 `[{condition, route, reason}]` |
-| `report_state.quality.profile` | `dict` | ✅ | semantic_types (指导 unit_conversion), schema_summary (指导 schema_mapping) |
-| `report_state.quality.quality_scoring` | `dict` | ❌ | 聚合评分 (参考) |
-| `report_state.conflict` | `dict` | ❌ | Conflict Report (触发全量规范化) |
-| `data_state.current_data` | `dict` | ✅ | 待规范化数据 (sources + records) |
-| `context_state.target_schema` | `dict` | ✅ | 目标 Schema (字段定义/标准单位) |
-| `context_state.quality_rules` | `dict` | ✅ | 质量规则 (阈值/策略) |
-| `context_state.research_domain` | `str` | ❌ | 领域名 (材料科学/天体物理...) |
-
-### 2.2 写入的 State
-
-| State 路径 | 类型 | 写入者 | 内容 |
-|-----------|------|--------|------|
-| `data_state.current_data` | `dict` | Stage 3: ToolExecutorAgent | 规范化后的数据 |
-| `report_state.normalization.source_plan` | `dict` | Stage 1 | 来源分流结果 |
-| `report_state.normalization.tool_registry` | `dict` | Stage 2 | LLM 生成/选择的工具注册表 |
-| `report_state.normalization.modifications` | `dict` | Stage 3 | 修改日志 (per-source + by_type) |
-| `report_state.normalization.validation` | `dict` | Stage 4 | 校验结果 |
-| `report_state.normalization.*` | `dict` | Stage 5 | 完整 Normalization Report |
-| `workflow_state.route_decision` | `str` | Stage 4 | "Conflict" 或 "Export" |
-| `workflow_state.execution_status` | `str` | 各 Stage | Success / Retry / Failed |
-| `workflow_state.tool_call_count` | `int` | Stage 3 | 工具调用累加 |
-| `workflow_state.llm_call_count` | `int` | Stage 1,2,4 | LLM 调用累加 |
-
-### 2.3 输入数据示例 (来自 Assessment)
-
-```json
-{
-  "report_state": {
-    "quality": {
-      "per_source_routes": {
-        "10.1016/j.msea.2024.001": "Normalization",
-        "10.1007/s11661-2023.002": "Normalization",
-        "10.1007/s11661-2024.005": "Export"
-      },
-      "conditional_routes": [
-        {
-          "source_id": "10.1016/j.msea.2024.001",
-          "primary_route": "Normalization",
-          "conditions": [
-            {"condition": "alias_fields", "route": "Normalization",
-             "reason": "YS/UTS/EL need mapping to standard names"},
-            {"condition": "format_issues", "route": "Normalization",
-             "reason": "~520 needs numeric cleaning"}
-          ]
-        }
-      ],
-      "sources": {
-        "10.1016/j.msea.2024.001": {
-          "completeness": {"score": 0.97, "records_missing_unit": 0},
-          "consistency": {"unit_consistency": {}},
-          "format": {"total_issues": 1},
-          "conflict_risk": {"has_conflicts": false, "conflict_count": 0}
-        }
-      }
-    }
-  }
-}
+条件边:
+  - SourceRouter: total_to_normalize==0 → finalize (V3.3 统一出口, 透传 execution_status 供主图 Gate)
+  - Validation: Retry → 回退 PlanningAgent (Validation 内 MAX_NORM_RETRIES=1, V3.0; Graph 层守卫 retry_count<2)
 ```
 
-### 2.4 输出数据示例 (Normalization Report)
+---
 
-```json
-{
-  "report_state": {
-    "normalization": {
-      "normalization_status": "Completed_With_Issues",
-      "route_decision": "Export",
-      "tool_registry": {
-        "generated_tools": ["custom_unit_fixer_paper2", "custom_alias_mapper_paper1"],
-        "adapted_tools": ["schema_mapping", "field_standardizer"],
-        "base_tools": ["missing_value_handler", "duplicate_handler"]
-      },
-      "modifications": {
-        "total": 12,
-        "by_type": {"schema_mappings": 4, "field_std": 3, "unit_conv": 2, "custom": 3},
-        "per_source": {"paper1": {"total": 7, "tools": ["custom_alias_mapper_paper1", "field_standardizer"]}}
-      },
-      "validation": {"is_valid": false, "remaining_issues": ["material field still missing"]}
-    }
-  }
+## 3. Stage 1: SourceRouterAgent
+
+**LLM**: 否 | **文件**: `agents/source_router_agent.py`
+
+### 3.1 职责
+
+读取 Assessment per-source 路由，筛选出需要规范化的 sources，区分触发来源。
+
+### 3.2 处理流程
+
+```
+1. 读取 quality.per_source_routes → 筛选 route="Normalization" 的 sources
+2. 读取 quality.conditional_routes → 获取每个 source 的 conditions 列表
+3. 确定触发源:
+   - report_state.conflict 存在 → trigger="conflict_report" (C→B 路径)
+   - 否则 → trigger="quality_report" (A→B 路径)
+4. 构建 sources_to_normalize:
+   - record_count, conditions, needs_full_normalization, priority
+   - V2: entities (per-entity breakdown, 来源 quality_scoring.per_entity_scores)
+5. conflict_actions: 从 resolution_plan.actions_to_normalize 提取
+   - V3.5 fix: 保留 record_ids / from_unit / to_unit (HumanReview 动作端到端落地)
+   - 同时处理 annotations_to_add (retain_range/retain_both → conflict_annotations)
+6. 无 source 需处理 → 直接 Export (route_decision="Export", execution_status="Success")
+```
+
+### 3.3 输出
+
+```
+report_state.normalization.source_plan = {
+  trigger_source: "quality_report" | "conflict_report",
+  sources_to_normalize: {sid: {record_count, conditions, entities, ...}},
+  sources_skipped: [...],
+  total_to_normalize, total_skipped
 }
 ```
 
 ---
 
-## 3. 工具清单 — LLM 动态 Tool 体系 (V2.0 核心创新)
+## 4. Stage 2: ToolPlanningAgent (LLM 驱动)
 
-### 3.1 工具分层架构
+**LLM**: 是 (Layer 3 Custom Tool 生成) | **文件**: `agents/planning_agent.py`
+
+### 4.1 3 层工具体系
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  Layer 3: LLM-Generated Tools (V2.0 新增)           │
-│  LLM 根据数据问题动态编写 Python 函数                │
-│  例: custom_unit_fixer_paper2.py                    │
-│       custom_outlier_remover_paper3.py               │
-│       custom_field_merger_paper4.py                  │
+│  Layer 3: LLM-Generated Tools                       │
+│  LLM 动态编写 Python 函数, sandbox 执行              │
+│  安全约束: AST 白名单 + 禁危险函数 + Dry-run         │
+│  触发条件: score >= 2 (V3.0: 减少不必要 LLM 调用)    │
 ├─────────────────────────────────────────────────────┤
-│  Layer 2: LLM-Adapted Tools (V2.0 新增)             │
-│  LLM 修改现有 Tool 的参数/阈值/逻辑                  │
-│  例: schema_mapping + 额外别名规则                   │
-│       unit_converter + 自动推断目标单位               │
-│       field_standardizer + per-field 清洗规则         │
+│  Layer 2: Rule-Adapted Tools (V2.1)                 │
+│  确定性规则为 Base Tool 注入自定义参数 (非 LLM)      │
+│  例: schema_mapping + 别名规则                       │
+│      unit_converter + 自动推断目标单位               │
+│      missing_value_handler + 动态策略选择             │
 ├─────────────────────────────────────────────────────┤
-│  Layer 1: Base Tools (V1.1, 固定)                   │
-│  确定性工具, 处理最通用的情况                         │
+│  Layer 1: Base Tools (6 个固定)                      │
 │  schema_mapping / field_standardizer / unit_converter│
 │  missing_value_handler / duplicate_handler           │
 │  format_standardizer                                 │
 └─────────────────────────────────────────────────────┘
 ```
 
-### 3.2 Layer 1: Base Tools (6 个固定工具)
+### 4.2 Condition → Tool 映射
 
-#### T1: schema_mapping
-```
-函数: map_to_target_schema(records, field_mappings, target_schema)
-输入: records, field_mappings (from LLM Planning), target_schema
-处理:
-  1. 加载 target_schema.fields[*].aliases → 别名映射表
-  2. for rec in records:
-       if rec.field_name in aliases:
-         rec.field_name = aliases[rec.field_name]
-  3. 记录映射: {record_id, original, mapped}
-输出: 更新后的 records + mapping_log
-```
+| Condition | Base Tool |
+|-----------|----------|
+| `alias_fields` | schema_mapping |
+| `extra_fields` | schema_mapping |
+| `format_issues` | field_standardizer |
+| `unit_inconsistency` | unit_converter |
+| `missing_units` | missing_value_handler |
+| `missing_provenance` | missing_value_handler |
+| `completeness_low` | missing_value_handler |
+| `duplicate_records` | duplicate_handler |
+| `general` | format_standardizer |
 
-#### T2: field_standardizer
-```
-函数: standardize_field_values(records, custom_rules=None)
-输入: records, 可选的 per-field 自定义规则
-处理:
-  1. 数值前缀清理: re.sub(r'^[~≈<>≤≥]+\s*', '', str_value)
-  2. 数值后缀清理: re.sub(r'\s*\((typical|approx|max|min)\)\s*$', '', str_value)
-  3. 字符串值: trim + lowercase + 下划线替换
-  4. 类型转换: str→float/int (如果可以)
-  custom_rules 可覆盖默认逻辑 (Layer 2 注入)
-输出: 更新后的 records + modification_log
-```
-
-#### T3: unit_converter
-```
-函数: convert_units(records, unit_conversions, semantic_types)
-输入: records, unit_conversions (from config + LLM), semantic_types
-处理:
-  1. 从 configs/schema_mapping.yaml 加载 unit_conversions
-  2. 从 semantic_types 推断目标单位
-  3. for rec in records:
-       factor = conversion_map[current_unit]
-       if offset conversion:  value = apply_offset(value, factor)
-       else:                  value = value * factor
-  4. 无法转换 → unconverted (标记, 不报错)
-输出: 更新后的 records + conversion_log + unconverted
-```
-
-#### T4: missing_value_handler
-```
-函数: handle_missing_values(records, strategy="mark", fill_value=None)
-策略: mark (仅标记) / drop (删除) / fill_default (填充)
-输出: 更新后的 records + handled_count
-```
-
-#### T5: duplicate_handler
-```
-函数: handle_duplicates(records)
-处理:
-  1. 精确去重 (record_id)
-  2. 语义去重 (source_id + field_name + field_value)
-  3. 过滤 resolution_status=="rejected" 的记录
-输出: 更新后的 records + removed_count
-```
-
-#### T6: format_standardizer
-```
-函数: standardize_format(records)
-处理: 数值去尾随零、字符串 trim、日期 ISO 化
-输出: 更新后的 records + format_log
-```
-
-### 3.3 Layer 2: LLM-Adapted Tools (V2.0 新增)
-
-**核心机制**: LLM 不是从头生成代码，而是**给 Base Tool 注入自定义参数/规则**。
+### 4.3 并行规划 (V2.3)
 
 ```
-LLM 输入:
-  - Assessment Report (specific issues per source)
-  - Base Tool 的 source code (供参考)
-  - Schema mapping config (现有别名规则)
-  - Semantic types (物理量类型 + feasible ranges)
+Step 1: 并行 Layer 1+2 (ThreadPoolExecutor, max 8 workers)
+  - 每个 source 独立: 条件→Tool 映射 → Rule-Based Adaptations
+  - V4 fix: _build_schema_std_unit_map 预构建标准单位映射 (context 优先, 领域配置兜底,
+    含别名, 兼容 entity-aware key) — 此前依赖 infer_semantic_type 返回的 dict
+    (无 standard_unit 键, 恒空) → adapted 单位参数恒空
+  - 无 LLM, 纯确定性, 快速
 
-LLM 输出 (JSON):
-  {
-    "tool_name": "schema_mapping",
-    "adaptation": "add_custom_aliases",
-    "custom_params": {
-      "extra_aliases": {"TS": "tensile_strength", "YS": "yield_strength",
-                         "σ_y": "yield_strength", "σ_uts": "tensile_strength",
-                         "EL": "elongation", "test_temperature": "temperature"}
-    },
-    "reasoning": "These aliases are not in the static config but appear in the current dataset"
-  }
+Step 2: 并行 Layer 3 LLM (仅 needs_custom 的 source)
+  - score >= 2 → 触发 LLM 生成 (V3.0: 减少不必要调用)
+  - 每 source 最多 1 次 Layer 3 生成; 重试时回传上次失败错误信息给 LLM (V3.0)
+  - V3.1: LLM 只写 business logic (预编译安全模板 _TOOL_CODE_TEMPLATE), 字段级统计
+    profile 替代 5 条 sample; 3 条分层样本 (首/中/尾) dry-run 验证
+  - V3.3 fix: dry-run 校验记录数一致 (工具只允许修改, 禁止增删记录)
+
+Step 3: 汇总到 tool_registry.by_source
+  - planning_method: "full_normalization" | "llm_enhanced" | "rule_engine"
 ```
 
-**适应类型**:
-
-| 适应类型 | 目标 Tool | 示例 |
-|---------|----------|------|
-| `add_custom_aliases` | schema_mapping | 数据集特有的别名不在 config 中 |
-| `add_custom_units` | unit_converter | 数据中的单位不在规则库中 |
-| `override_strategy` | missing_value_handler | mark → drop (当完整度太差) |
-| `add_field_rules` | field_standardizer | per-field 特殊清洗规则 |
-| `skip_tool` | 任意 | 某 source 无需此操作 |
-
-### 3.4 Layer 3: LLM-Generated Tools (V2.0 核心创新)
-
-**核心机制**: 当 Base + Adapted Tools 仍无法处理特定问题时，LLM **动态生成新的 Python 函数**。
+### 4.4 Layer 3 触发条件 (V2.1 评分制)
 
 ```
-LLM 输入:
-  1. 数据问题的自然语言描述
-     例: "Paper 2 的 tensile_strength 是 0.505 GPa, 需要转为 MPa(×1000),
-          但 hardness 也是 185 GPa—而硬度 GPa 需要查表转换, 不能简单 ×1000"
-  2. 相关 records 的前 5 条 (作为 sample)
-  3. 可用的 Base Tools 列表 (供 LLM 调用, 不重复造轮子)
-  4. 约束: 生成的函数签名必须是 def tool(records: list[dict]) -> dict
+_find_unresolved() 7 维度评分:
+  维度1: 单位问题 (不一致/缺失) → +1
+  维度2: 格式问题 → +1
+  维度3: Schema 缺口 (extra/missing) → +1
+  维度4: 溯源缺失 → +1
+  维度5: 完整性不足 (score<0.85) → +1
+  维度6: 跨来源冲突 → +1
+  维度7: 复合问题 (>=2 维度同时存在) → +1
 
-LLM 输出 (JSON):
-  {
-    "tool_name": "custom_hardness_gpa_to_hv",
-    "tool_code": "def custom_hardness_gpa_to_hv(records):\n    ...",
-    "test_input": [...],
-    "expected_output": [...],
-    "confidence": 0.85,
-    "reasoning": "GPa hardness → HV requires ~×100 factor (approximate), not ×1000 like strength"
-  }
+needs_custom = score >= 2  # V3.0: 至少 2 维度有问题才触发
 ```
 
-**安全约束**:
-1. 生成的代码在 **sandbox 环境**中执行 (restricted globals, no os/sys/network)
-2. 先对 5 条 sample 数据 **dry-run 测试** → 通过后才全量执行
-3. 生成的 tool 有 **TTL** (本次 Workflow 结束后销毁)
-4. 每个 tool 有 **confidence score** → <0.7 时标记为 "需人工审核"
-5. 生成失败 → 回退到 Base Tool 或标记 unconverted
+### 4.5 Conflict Report 路径
 
-**生成流程**:
-
-```mermaid
-flowchart TD
-    A["数据问题: 现有工具无法处理"] --> B["LLM 分析问题 + 数据样本"]
-    B --> C["LLM 生成 tool_code (Python)"]
-    C --> D{"代码安全检查"}
-    D -->|"通过"| E["Dry-run: 5条样本测试"]
-    D -->|"失败"| F["回退: Base Tool + 标记 unconverted"]
-    E -->|"通过"| G["注册 tool 到 tool_registry"]
-    E -->|"失败"| H["重试: LLM 修正代码 (最多2次)"]
-    H -->|"仍失败"| F
-    G --> I["全量执行"]
+```
+trigger == "conflict_report" → 全量 Base Tools
+  → 跳过 LLM 规划, 直接对所有 tools 执行
+  → planning_method = "full_normalization"
 ```
 
 ---
 
-## 4. 执行流程
+## 5. Stage 3: NormalizationAgent (ToolExecutor)
 
-### 4.1 Mermaid 流程图
+**LLM**: 否 | **文件**: `agents/normalization_agent.py`
 
-```mermaid
-flowchart TD
-    START((START)) --> S1["Stage 1: SourceRouterAgent<br/>读取 per_source_routes<br/>筛选 Normalization sources<br/>分流 clean sources → Export"]
+### 5.1 职责
 
-    S1 --> CHECK{"sources_to_normalize > 0?"}
-    CHECK -->|"No"| EXPORT["route_decision=Export<br/>跳过 Stage 2-5"]
-    CHECK -->|"Yes"| S2
+按 tool_registry 分层执行: Layer 1 → Layer 2 → Layer 3。并行处理多个 source。
 
-    S2["Stage 2: ToolPlanningAgent (LLM)<br/>分析 per-source issues<br/>选择 Layer1 Base Tools<br/>生成 Layer2 Adapted Tools<br/>必要时生成 Layer3 Custom Tools<br/>输出 tool_registry"]
+### 5.2 并行执行 (V2.3)
 
-    S2 --> S3["Stage 3: ToolExecutorAgent<br/>按 tool_registry 执行<br/>Layer1 → Layer2 → Layer3<br/>dry-run custom tools first<br/>记录 modifications"]
-
-    S3 --> S4["Stage 4: ValidationAgent<br/>Schema 完整性校验<br/>Format 完整性校验<br/>Cohen's d 冲突检测<br/>Semantic 可行性校验<br/>内部 Retry (最多2次)"]
-
-    S4 --> S4_CHECK{"Validation Passed?"}
-    S4_CHECK -->|"Yes"| S5
-    S4_CHECK -->|"No, 1st retry"| S2
-    S4_CHECK -->|"No, 2nd retry"| S5
-
-    S5["Stage 5: ReportAgent<br/>汇总 modifications<br/>生成 Normalization Report<br/>设置 route_decision"]
-
-    S5 --> END_N((END))
-
-    EXPORT --> END_N
-
-    classDef llm fill:#FFF8E1,stroke:#F57F17,stroke-width:2px
-    classDef tool fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
-    classDef decision fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px
-
-    class S2 llm
-    class S1,S4 decision
-    class S3,S5 tool
+```
+ThreadPoolExecutor (max 8 workers)
+  每个 source 独立线程 (V3.1: 每 source 独立 sandbox, 防并发函数名覆盖):
+    0. V3.5: 先执行 conflict_actions (human_replace / annotate / normalize_unit)
+    1. Layer 1: 执行 base tools (V3.2: 传入 ctx — target_schema/standard_units/semantic_types)
+    2. Layer 2: 执行 adapted tools (base + custom_params)
+    3. Layer 3: 执行 generated tools (sandbox)
+  汇总: modifications.base/adapted/generated + errors
+  V4 fix: unit_converter 的 unconverted (missing_unit/no_target_unit/no_conversion_rule)
+          汇入 errors — 此前被丢弃, quality_summary 的 has_unconverted_units 失真
+  V3.2 fix: 工具 log → 逐记录 TraceEvent (record_id/field/before/after/tool/reason) 写入 data_trace
 ```
 
-### 4.2 Stage 1: SourceRouterAgent — 伪代码
+### 5.3 安全沙箱 (V2.1)
 
-```python
-class SourceRouterAgent:
-    def run(self, state):
-        # 1. 读取上游数据
-        quality = state["report_state"]["quality"]
-        per_source_routes = quality["per_source_routes"]
-        conditional_routes = quality.get("conditional_routes", [])
-        conflict = state["report_state"].get("conflict")
-
-        # 2. 确定触发源
-        trigger = "conflict_report" if conflict else "quality_report"
-
-        # 3. 筛选 Normalization sources
-        sources_to_process = {}
-        for sid, route in per_source_routes.items():
-            if route == "Normalization":
-                # 提取 per-source conditions
-                conditions = [
-                    cr["conditions"] for cr in conditional_routes
-                    if cr["source_id"] == sid
-                ]
-                sources_to_process[sid] = {
-                    "record_count": get_record_count(sid),
-                    "conditions": conditions,
-                    "needs_full_normalization": (trigger == "conflict_report"),
-                }
-
-        # 4. 无条件 → 直接 Export
-        if not sources_to_process:
-            return {"workflow_state": {"route_decision": "Export", ...}}
-
-        # 5. 写入 source_plan
-        return {"report_state": {"normalization": {"source_plan": {
-            "trigger_source": trigger,
-            "sources_to_normalize": sources_to_process,
-            "total_to_normalize": len(sources_to_process),
-        }}}}
+```
+沙箱机制:
+  1. AST 白名单: 50+ 允许的节点类型 (含 SetComp, GeneratorExp, USub)
+  2. 模块白名单: math, re, json, copy, datetime, collections, itertools, ...
+  3. 禁止函数: eval, exec, compile, open, getattr, __import__, __subclasses__, ...
+  4. safe_builtins: 受限的 builtins (含 __import__ 允许 import 语句, AST 检查模块安全)
+  5. 执行: compile(code, "<sandbox>", "exec") + exec(compiled, sandbox_globals)
+  6. V3.1 fix: 每 source 独立 sandbox (_make_sandbox), 避免并发执行时函数名互相覆盖
 ```
 
-### 4.3 Stage 2: ToolPlanningAgent — 伪代码 (V2.0 LLM 动态生成)
+### 5.4 Base Tools (6 个)
 
-```python
-class ToolPlanningAgent:
-    def run(self, state):
-        source_plan = state["report_state"]["normalization"]["source_plan"]
-        quality = state["report_state"]["quality"]
-        profile = quality.get("profile", {})
+| # | Tool | 函数 | 功能 |
+|---|------|------|------|
+| T1 | schema_mapping | `map_to_target_schema()` | 别名→标准名映射 + V3.0 自动领域切换; V4 fix: catalog 原始列名保留 (`_raw_field`) |
+| T2 | field_standardizer | `standardize_field_values()` | ~≈<>前缀清理 + ±不确定度处理 |
+| T3 | unit_converter | `convert_units()` | 单位转换: (category, unit)→factor 乘法约定; offset 因子 (offset_273.15 K→°C / offset_-273.15 °C→K / offset_32_5_9 °F→°C / offset_32_5_9_273_15 °F→K); 维度守卫 (target 不在 matched_cat 组 → no_conversion_rule, 防 mag→pc); V4.2 target 非基准因子修正 (val × factor(unit) / factor(target)); 3 种显式 unconverted kind (missing_unit / no_target_unit / no_conversion_rule, 异常路径另计); 变体别名策略 (键精确匹配无归一化, 变体在配置中显式列全); 配置体系详见 5.6 |
+| T4 | missing_value_handler | `handle_missing_values()` | 3策略: mark/drop/fill_default; V2.3 grounded_data 感知; V4 fix: 空串也算缺失 |
+| T5 | duplicate_handler | `handle_duplicates()` | 精确去重 + 语义去重 (V1.1 entity 感知) + rejected过滤 |
+| T6 | format_standardizer | `standardize_format()` | 数值去尾随零/字符串trim |
 
-        tool_registry = {"base_tools": [], "adapted_tools": [], "generated_tools": []}
+### 5.5 V2 Per-entity Tracking
 
-        for sid, src_info in source_plan["sources_to_normalize"].items():
-            # ── Step 1: 选择 Layer 1 Base Tools ──
-            base_tasks = self._select_base_tools(src_info["conditions"])
-            tool_registry["base_tools"].extend(base_tasks)
-
-            # ── Step 2: LLM 生成 Layer 2 Adaptations ──
-            src_quality = quality["sources"].get(sid, {})
-            adaptations = self._llm_plan_adaptations(
-                sid, src_quality, profile, base_tasks
-            )
-            tool_registry["adapted_tools"].extend(adaptations)
-
-            # ── Step 3: LLM 生成 Layer 3 Custom Tools (如需要) ──
-            unresolved = self._find_unresolved_issues(sid, src_quality, base_tasks, adaptations)
-            if unresolved:
-                custom_tools = self._llm_generate_custom_tools(
-                    sid, unresolved, state["data_state"]["current_data"]
-                )
-                tool_registry["generated_tools"].extend(custom_tools)
-
-        return {"report_state": {"normalization": {"tool_registry": tool_registry}}}
-
-    def _llm_generate_custom_tools(self, sid, unresolved, data):
-        """LLM 生成自定义 Python 工具函数"""
-        # 1. 构建 Prompt: 问题描述 + 数据样本 + Base Tool 参考
-        prompt = f"""
-        Data issue: {unresolved}
-        Sample records (first 5): {get_sample_records(sid, data)[:5]}
-        Available tools: {list_available_tools()}
-
-        Generate a Python function to fix this specific issue.
-        Function signature: def custom_tool(records: list[dict]) -> dict
-        The function must:
-        - Return {{"data": updated_records, "log": [...]}}
-        - Handle edge cases (empty input, unexpected values)
-        - Not import os/sys/subprocess/network modules
-        - Fit in <100 lines
-        """
-
-        # 2. LLM → structured output
-        llm_response = llm.invoke(prompt)
-
-        # 3. Parse & validate
-        tool_code = llm_response["tool_code"]
-        tool_name = llm_response["tool_name"]
-
-        # 4. Safety check
-        if not is_safe_code(tool_code):
-            return None  # fallback to base tools
-
-        # 5. Dry-run on 5 samples
-        test_records = get_sample_records(sid, data)[:5]
-        try:
-            exec(tool_code, sandbox_globals)
-            result = sandbox_globals[tool_name](test_records)
-            if not validate_result(result):
-                return None  # retry or fallback
-        except Exception:
-            return None
-
-        # 6. Register
-        return [{"tool_name": tool_name, "tool_code": tool_code,
-                 "confidence": llm_response["confidence"],
-                 "source_id": sid, "layer": "generated"}]
+```
+每个 source 跟踪:
+  - entities_in_source: 该 source 涉及的实体列表
+  - per_entity_mods: {elabel: modification_count} 每个实体的修改次数
 ```
 
-### 4.4 Stage 3: ToolExecutorAgent — 伪代码
+### 5.6 单位转换配置体系 (V4.2)
 
-```python
-class ToolExecutorAgent:
-    def run(self, state):
-        data = state["data_state"]["current_data"]
-        registry = state["report_state"]["normalization"]["tool_registry"]
-        modifications = {"base": [], "adapted": [], "generated": [], "errors": []}
+转换规则全部配置化, 代码零硬编码（除 offset_* 因子的运算语义）。
 
-        for sid in registry["sources"]:
-            records = get_source_records(data, sid)
+**1. `configs/schema_mapping.yaml` → `unit_conversions_astrophysics` (34 组 257 条)**
 
-            # 1. Execute Layer 1: Base Tools
-            for tool_name in registry["base_tools"]:
-                try:
-                    result = BASE_TOOLS[tool_name](records)
-                    modifications["base"].extend(result.get("mapping_log", result.get("log", [])))
-                except Exception as e:
-                    modifications["errors"].append({sid, tool_name, str(e)})
+| 组 | 基准单位 | 要点 |
+|----|---------|------|
+| distance | pc | kpc/Mpc/Gpc/AU/ly/m/cm |
+| mass | Msun | kg/g/M_jup/M_earth, M☉/M⊙ 变体 |
+| radius | Rsun | cm/m/km/R_jup/R_earth |
+| luminosity | erg/s | Lsun/W/"10^33 erg/s" |
+| velocity | km/s | m/s/cm/s + "km s^-1" 变体 |
+| proper_motion | mas/yr | V4.2 fix: arcsec/yr=1000（原 0.001 倒置） |
+| period | d | hr/min/s/ms/yr (365.25 d) |
+| age | Gyr | Myr/kyr/yr/Ga |
+| magnitude | mag | 无量纲 |
+| temperature | K | V4.2: °C/℃/C="offset_-273.15", °F/F="offset_32_5_9_273_15" |
+| extinction | mag | 无量纲 |
+| parallax | mas | arcsec=1000, μas=0.001 |
+| metallicity | dex | 无量纲 |
+| surface_gravity | dex | cm/s^2/m/s^2/gal/mGal |
+| redshift | "" | 无量纲 |
+| planet_radius | R_earth | V4.2 独立组: R_jup=11.209, km=1.5698e-4（原撞恒星 radius 组, 差 ~109×） |
+| planet_mass | M_earth | V4.2 独立组: M_jup=317.8, kg=1.6744e-25（原撞恒星 mass 组, 差 ~3.3e5×） |
+| flux_density | Jy | mJy/uJy/μJy/nJy/pJy + erg/s/cm^2/Hz 系列（V4.2 新增） |
+| dispersion_measure | cm^-3 pc | V4.2 新增 |
+| rotation_measure | rad/m^2 | V4.2 新增 |
+| frequency | Hz | kHz/MHz/GHz/THz + s^-1 变体（V4.2 新增） |
+| energy | erg | J/eV/keV/MeV/GeV/TeV/PeV/EeV（V4.2 新增） |
+| magnetic_field | G | mG/uG/μG/nG/kG/T/mT/uT/nT（V4.2 新增） |
+| pressure | Pa | kPa/MPa/GPa/bar/atm/dyn/cm^2/mmHg/torr（V4.2 新增） |
+| density | g/cm^3 | kg/m^3/amu/cm^3（V4.2 新增） |
+| angle | deg | arcmin/arcsec/mas/rad（V4.2 新增） |
+| wavelength | nm | Å/um/μm/mm（V4.2 新增） |
+| surface_brightness | mag.arcsec**-2 | mag/arcsec^2、MJy/sr（V4.3 新增, VizieR 记法） |
+| abundance | Sun | log(Sun)（V4.3 新增, 丰度相对太阳） |
+| wavenumber | um**-1 | 1/um（V4.3 新增, 波数） |
+| surface_density | pc**-2 | mas**-2（V4.3 新增） |
+| percentage | % | percent（V4.3 新增, 天体段） |
+| area | arcmin**2 | 0.001arcmin**2（V4.3 新增） |
+| composite | kpc/arcsec | 1e-15W.m**-2、log(yr)、pix、ct 等自转换（V4.3 新增） |
 
-            # 2. Execute Layer 2: Adapted Tools (with custom params)
-            for adaptation in registry["adapted_tools"]:
-                try:
-                    base_fn = BASE_TOOLS[adaptation["base_tool"]]
-                    result = base_fn(records, **adaptation["custom_params"])
-                    modifications["adapted"].extend(result.get("log", []))
-                except Exception as e:
-                    modifications["errors"].append({sid, adaptation["tool_name"], str(e)})
+> V4.3 记法说明: VizieR 原始单位记法（solMass/solRad/solLum/Sun/** 指数/1e+X 前缀）作为**别名键**加入对应组,
+> 与简化记法（Msun/Rsun/Lsun/^）并存 — unit_converter 键精确匹配, 两种记法均可转换。
 
-            # 3. Execute Layer 3: Generated Tools (sandboxed)
-            for gen_tool in registry["generated_tools"]:
-                if gen_tool["source_id"] != sid:
-                    continue
-                try:
-                    exec(gen_tool["tool_code"], sandbox_globals)
-                    result = sandbox_globals[gen_tool["tool_name"]](records)
-                    modifications["generated"].extend(result.get("log", []))
-                except Exception as e:
-                    modifications["errors"].append({sid, gen_tool["tool_name"], str(e)})
+**2. `configs/schema_mapping.yaml` → `target_schema_astrophysics` (28 字段)**
 
-        # 4. Return
-        total = sum(len(v) for v in [modifications["base"], modifications["adapted"], modifications["generated"]])
-        return {
-            "data_state": {"current_data": data},
-            "report_state": {"normalization": {"modifications": {
-                "total": total, "by_layer": {"base": len(modifications["base"]),
-                    "adapted": len(modifications["adapted"]), "generated": len(modifications["generated"])},
-                "details": modifications, "errors": modifications["errors"]
-            }}}
-        }
+每字段定义 `standard_unit` + `aliases` + `semantic_type`, 是转换目标单位的唯一来源。
+V4 fix: `quality_state.make_initial_state` 从该段回填 `context_state.standard_units`
+（此前恒空 → 单位转换全部静默跳过）。
+
+**3. `configs/quality_rules.yaml` → `semantic_types_astrophysics`**
+
+`unit_category` 字段驱动 category 推断: `_load_semantic_category_map()` 按领域动态加载
+（`semantic_types_{domain}` 优先, 通用段兜底, 内置 fallback 表最后）。
+V4.2 fix: planet_radius / planet_mass 的 unit_category 独立（见上表）; 新增
+catalog_metadata 规则（单字母关键词 'L'/'M' 子串误命中 luminosity/mass 的防误判）。
+
+**4. `configs/__init__.py` — 领域感知加载**
+
+- `load_domain_schema_config(section)`: `{section}_{domain}` → 通用段（schema_mapping.yaml）
+- `load_domain_config(section, default)`: 三段回退（quality_rules.yaml）
+- V4 fix: `_global_domain` 全局兜底 — ThreadPoolExecutor 工作线程无线程本地 domain 缓存,
+  回退主线程领域; 否则天体物理域会误载材料规则（53 次 UnitConv 全 0 converted）
+
+**因子约定与 key 策略**:
+
+- 乘法约定: `value_std = value × factor`（V4 统一; offset_* 字符串例外, 走 `_apply_factor` 原路径）
+- 键精确匹配: (category, unit) 二元组, 无归一化 — 变体（km/s vs km s^-1 vs km s⁻¹）在配置中显式列全
+- V4.2: target 非基准因子修正 — `val × factor(unit) / factor(target)`（先到组基准, 再除 target 因子到目标单位）
+
+---
+
+## 6. Stage 4: ValidationAgent
+
+**LLM**: 否 | **文件**: `agents/validation_agent.py`
+
+### 6.1 职责
+
+4 维校验: Schema / Format / Conflict / Semantic。V3.0: Schema 完整性检查已移除 (由 Assessment 负责)。
+
+### 6.2 校验逻辑 (V3.0)
+
+```
+1. Schema: 只检查 critical 字段 (数据完整性由 Assessment 负责)
+   still_missing = []  # V3.0: 不做 schema 完整性检查
+
+2. Format: 统计缺失单位/溯源的记录数
+
+3. Conflict: detect_conflicts_statistical() — 向后兼容
+
+4. Semantic: infer_all_fields() → out_of_range 统计
+
+V3.0 Retry 控制:
+  - Layer 3 LLM 生成失败 → 非阻塞 warning, 不影响验证通过
+  - 仅 Base/Adapted 工具问题触发 Retry (MAX_NORM_RETRIES=1)
+  - Retry → 回退 PlanningAgent 重新规划
+
+V4 fixes:
+  - 空串单位也算缺失 (is_numeric 且 field_unit 为空/空串 → missing_units 统计)
+  - route_decision 复检: needs_conflict → "Conflict" (B→C), 否则 "Export" —
+    此前恒 Export, 冲突检测结果被主图 gate 覆写后完全丢失 (B→C 死代码)
+  - conflict_check 保存完整结果 (conflicts/method=cohens_d/risk_level, V2.1 P1-2 fix)
 ```
 
-### 4.5 Stage 4: ValidationAgent — 伪代码
+### 6.3 Per-entity Validation (V2)
 
-```python
-class ValidationAgent:
-    def run(self, state):
-        data = state["data_state"]["current_data"]
-        records = data.get("records", [])
-        norm = state["report_state"]["normalization"]
-
-        # 校验项
-        checks = {
-            "schema": self._check_schema(records, target_schema),
-            "format": self._check_format(records),
-            "conflict": self._detect_conflicts(data),      # Cohen's d
-            "semantic": self._check_semantic(records),     # feasible ranges
-        }
-
-        remaining = [f"{k}: {v['detail']}" for k, v in checks.items() if not v["passed"]]
-        needs_conflict = checks["conflict"]["conflict_count"] > 0
-
-        # Retry 逻辑
-        retry_count = norm.get("validation", {}).get("retry_count", 0)
-        if remaining and retry_count < 2:
-            # 修改策略: mark → fill_default
-            return {"retry": True, "new_strategy": "fill_default",
-                    "workflow_state": {"retry_counter": retry_count + 1}}
-
-        # 路由
-        route = "Conflict" if needs_conflict else "Export"
-        return {
-            "report_state": {"normalization": {"validation": {
-                "is_valid": len(remaining) == 0,
-                "remaining_issues": remaining,
-                "needs_conflict_analysis": needs_conflict,
-                "retry_count": retry_count,
-            }}},
-            "workflow_state": {"route_decision": route}
-        }
 ```
-
-### 4.6 Stage 5: ReportAgent — 伪代码
-
-```python
-class ReportAgent:
-    def run(self, state):
-        norm = state["report_state"]["normalization"]
-        mods = norm.get("modifications", {})
-        val = norm.get("validation", {})
-        sp = norm.get("source_plan", {})
-
-        # 状态判定
-        if not sp.get("sources_to_normalize"):
-            status = "Skipped_No_Sources"
-        elif val.get("remaining_issues"):
-            status = "Completed_With_Issues"
-        else:
-            status = "Completed"
-
-        # 路由决策 (V2.1: 同时写入 workflow_state)
-        route = "Conflict" if val.get("needs_conflict_analysis") else "Export"
-
-        # 汇总
-        report = {
-            "normalization_status": status,
-            "source_plan": sp,
-            "tool_registry": norm.get("tool_registry", {}),
-            "modifications": mods,
-            "validation": val,
-            "normalization_summary": (
-                f"Normalization {status}: {mods.get('total',0)} modifications "
-                f"({mods.get('by_layer',{}).get('base',0)} base + "
-                f"{mods.get('by_layer',{}).get('adapted',0)} adapted + "
-                f"{mods.get('by_layer',{}).get('generated',0)} generated), "
-                f"{len(val.get('remaining_issues',[]))} remaining issues"
-            ),
-            "route_decision": val.get("needs_conflict_analysis") and "Conflict" or "Export",
-        }
-        return {"report_state": {"normalization": report}}
+按 entity 分组:
+  - records per entity
+  - present_fields per entity
+  - missing_units per entity
+  - schema_ok (V3.0: always True)
+  - format_ok
 ```
 
 ---
 
-## 5. 决策逻辑
+## 7. Stage 5: ReportAgent
 
-### 5.1 Tool 选择决策表
+**LLM**: 否 | **文件**: `agents/report_agent.py`
 
-| 数据问题 | Assessment Condition | Base Tool | Adapted? | Custom? |
-|---------|---------------------|-----------|----------|---------|
-| 字段名是别名 (YS, UTS, EL...) | `alias_fields` | schema_mapping | ✅ 注入额外别名 | ❌ |
-| 数值有 ~≈ 前缀 | `format_issues` | field_standardizer | ✅ per-field 规则 | ❌ |
-| 字段缺失单位 | `missing_units` | missing_value_handler | ✅ 策略覆盖 | ❌ |
-| 溯源不完整 | `missing_provenance` | missing_value_handler | ❌ | ❌ (标记, 无法自动修复) |
-| 单位与标准不符 (GPa→MPa) | `unit_mismatch` | unit_converter | ✅ 自动推断目标单位 | ❌ |
-| 同一字段多单位混用 | `unit_inconsistency` | unit_converter | ✅ 统一转换 | ❌ |
-| 单位在规则库外 | `unit_mismatch` | unit_converter | ✅ LLM 查物理公式 | ✅ 生成自定义转换 |
-| 完整性低 | `completeness_low` | missing_value_handler | ✅ 策略 mark→fill | ❌ |
-| 重复记录 | `duplicate_records` | duplicate_handler | ❌ | ❌ |
-| 复合问题 (如 GPa 硬度) | 多个 conditions | 多个 base tools | ✅ LLM 分析上下文 | ✅ 生成专用函数 |
-| 数据需要跨字段计算 | N/A | N/A | ❌ | ✅ LLM 生成 |
+### 7.1 职责
 
-**条件→工具映射表 (V2.1 expanded)**:
+汇总 modifications, 生成 Report, 设置 route_decision。
 
-```python
-_CONDITION_TOOL_MAP = {
-    "alias_fields":       "schema_mapping",
-    "extra_fields":       "schema_mapping",
-    "format_issues":      "field_standardizer",
-    "unit_inconsistency": "unit_converter",
-    "unit_mismatch":      "unit_converter",       # V2.1 新增
-    "missing_units":      "missing_value_handler", # V2.1 新增
-    "missing_provenance": "missing_value_handler", # V2.1 新增
-    "completeness_low":   "missing_value_handler",
-    "duplicate_records":  "duplicate_handler",
-    "general":            "format_standardizer",
+### 7.2 输出
+
+```
+report_state.normalization = {
+  normalization_status: "Completed" | "Completed_With_Issues" | "Skipped_No_Sources",
+  normalization_summary: "N sources processed, M modifications...",
+  tool_registry_summary: {base_tools_used, adapted_tools_used, generated_tools_used},
+  route_decision: "Conflict" | "Export",
+  total_tool_calls,
+  per_entity_modifications: {...}
 }
+
+route_decision:
+  - validation.needs_conflict_analysis → "Conflict"
+  - 否则 → "Export"
 ```
 
-### 5.2 重试策略
+---
 
-| 层级 | 触发条件 | 动作 | 最大次数 |
-|------|---------|------|---------|
-| Tool 执行 | 单个 Tool 失败 | catch → 记录 error → 继续下一个 Tool | — |
-| Tool 生成 | LLM 生成代码失败 | 修正 Prompt → 重新生成 | 2 |
-| Tool 生成 | Dry-run 测试失败 | LLM 修正代码 → 重新测试 | 2 |
-| Validation | 校验不通过 | 调整策略 (mark→fill_default) → 重新进入 Stage 3 | 2 |
+## 8. 重试策略 (V3.0)
+
+| 层级 | 触发条件 | 动作 | 上限 |
+|------|---------|------|------|
+| Tool 执行 | 单个 Tool 失败 | catch → 记录 error → 继续 | — |
+| Tool 生成 | LLM 代码/dry-run 失败 | 修正 → 重试 (回传错误信息) | 1 (V3.0) |
+| Validation | Base/Adapted 工具问题 | 调整策略 → 重入 Planning | 1 (V3.0) |
+| Layer 3 失败 | LLM 生成工具运行错误 | 非阻塞 warning → 继续 | — |
 | Graph 层 | execution_status="Retry" | Router: 重入 NormalizationGraph | 3 |
 
-### 5.3 错误处理决策
+---
+
+## 9. State 读写
+
+### 读取
+
+| State 路径 | 用途 |
+|-----------|------|
+| `report_state.quality.sources[sid]` | per-source issues |
+| `report_state.quality.per_source_routes` | 筛选 Normalization sources |
+| `report_state.quality.conditional_routes` | per-source 条件修复指令 |
+| `report_state.quality.profile.semantic_types` | 指导 unit_conversion |
+| `report_state.quality.quality_scoring.per_entity_scores` | V2: per-entity breakdown (entities) |
+| `report_state.conflict` | Conflict Report (C→B 触发全量规范化) |
+| `data_state.current_data` | 待规范化数据 |
+| `context_state.target_schema` | 目标 Schema (standard_unit 查询, V4: 领域配置兜底) |
+| `context_state.standard_units` | V4: 从领域 target_schema 回填的目标单位 |
+
+### 写入
+
+| State 路径 | 写入者 | 内容 |
+|-----------|--------|------|
+| `data_state.current_data` | Stage 3 | 规范化后的数据 |
+| `data_state.data_trace` | Stage 3 | V3.2: 逐记录 TraceEvent (record_id/field/before/after/tool/reason) |
+| `report_state.normalization.source_plan` | Stage 1 | 来源分流结果 |
+| `report_state.normalization.tool_registry` | Stage 2 | 工具注册表 (base/adapted/generated/by_source) |
+| `report_state.normalization.planning_method` | Stage 2 | full_normalization / llm_enhanced / rule_engine |
+| `report_state.normalization.modifications` | Stage 3 | 修改日志 (total/by_layer/details/per_source/errors/per_entity_modifications) |
+| `report_state.normalization.validation` | Stage 4 | 校验结果 (conflict_check 完整数组) |
+| `report_state.normalization.*` | Stage 5 | 完整 Report (normalization_status/summary/route_decision/total_tool_calls) |
+| `workflow_state.route_decision` | Stage 4/5 | "Conflict" / "Export" |
+| `workflow_state.tool_call_count` / `llm_call_count` | Stage 3/2 | 累计调用统计 |
+| `workflow_state.workflow_history` | 各 Stage | 单条追加 (Reducer 按 dict 全等去重拼接) |
+
+---
+
+## 10. 异常处理
 
 | 场景 | 处理 |
 |------|------|
-| LLM 生成的代码有安全风险 | 拒绝执行 → fallback to Base Tool + 标记 unconverted |
-| LLM 生成的代码 dry-run 全部失败 | 回退: BT + AT 处理, 标记剩余问题为 remaining_issues |
-| 某个 Tool 执行失败 | 该 source 的该 Tool 跳过, 不影响其他 sources 或其他 Tools |
-| 3 个以上 Base Tools 失败 | execution_status = "Retry" |
-| Validation 2 次 retry 后仍不通过 | 标记 remaining_issues → route_decision="Export" (不阻塞) |
-| 所有 sources 都无 issues (clean) | SourceRouter → route_decision="Export" (跳过 Stage 2-5) |
+| 无 source 需规范化 | total_to_normalize=0 → finalize (V3.3 统一出口) → END (route=Export) |
+| Conflict Report 触发 | 全量 Base Tools, 跳过 LLM 规划 (planning_method=full_normalization) |
+| LLM 生成代码 AST 拒绝 | blocked → 返回 None → 跳过该 tool |
+| LLM 生成代码质量低 | confidence 仅记录在 generated tool 元数据 (无 <0.7 阈值分支); 生成/编译/dry-run 失败 → 返回 None → 跳过 |
+| 单位转换失败 | unconverted (missing_unit / no_target_unit / no_conversion_rule) 汇入 errors (V4 fix) — 供 quality_summary.has_unconverted_units 真实化 |
+| Sandbox 执行失败 | catch → 记录 error → 继续其他工具 |
+| Validation Retry 耗尽 | 强制进入 Report → route_decision = needs_conflict ? "Conflict" : "Export" (V4 fix) |
 
 ---
 
-## 6. 与下游 Agent 的接口
-
-### 6.1 Normalization → Conflict (B→C)
-
-```
-触发: ValidationAgent 检测到 conflicts > 0
-
-传递数据:
-  report_state.normalization.validation.needs_conflict_analysis = True
-  report_state.normalization.validation.conflict_check.conflict_count = N
-  report_state.normalization.validation.conflict_check.method = "cohens_d"
-  data_state.current_data  ← 规范化后的数据 (冲突仍在)
-
-Conflict Resolution Agent 读取:
-  report_state.normalization → 了解规范化做了哪些修改
-  report_state.normalization.modifications.per_source → 哪些 source 已被修改
-  data_state.current_data → 冲突数据
-```
-
-### 6.2 Normalization → Export (B→D)
-
-```
-触发: route_decision = "Export"
-
-传递数据:
-  report_state.normalization.normalization_status = "Completed" | "Completed_With_Issues"
-  report_state.normalization.modifications → 修改详情 (写入 metadata)
-  report_state.normalization.normalization_summary → 写入 quality_summary
-  report_state.normalization.tool_registry → 记录了哪些工具被使用
-  data_state.current_data → 规范化后的数据 (直接导出)
-
-Export Agent 读取:
-  report_state.normalization → 生成 metadata["processing"]["normalization"]
-  data_state.current_data → 生成最终 CSV/JSON
-```
-
-### 6.3 Normalization 产出供 HumanReview 使用
-
-```
-report_state.normalization.modifications.errors → 哪些 Tool 执行失败
-report_state.normalization.validation.remaining_issues → 无法自动修复的问题
-report_state.normalization.tool_registry.generated_tools → LLM 生成的工具 (需审核)
-  └── confidence < 0.7 → 标记为 "需人工审核"
-```
-
----
-
-## 7. 后续优化方向
-
-| 方向 | 说明 | 优先级 |
-|------|------|--------|
-| **Tool Cache** | 将 LLM 生成的工具缓存到磁盘, 跨 Workflow 复用 (相同问题的不同数据集) | 高 |
-| **Tool Versioning** | 对每个生成的 tool 分配版本号, 记录效果评分, 好的升级为 Base Tool | 高 |
-| **Multi-Source Batch** | 同一 tool 应用于多个 source 时并行执行 | 中 |
-| **LLM Self-Correction Loop** | Tool 执行失败后 LLM 自动分析原因 → 修正代码 → 重新执行 | 中 |
-| **Tool Effect Preview** | 执行前 LLM 生成 "此操作将修改 N 条记录" 的预览, 供人工确认 | 中 |
-| **Cross-Domain Tool Transfer** | 材料科学领域生成的 tool 迁移到天体物理领域 (仅改参数) | 低 |
-| **Tool Safety Sandbox** | 增强沙箱: 限制执行时间/内存/API 调用 | 低 |
-
----
-
-## 8. 文件清单
+## 11. 文件清单
 
 ```
 Data_Normalization_agentV1/
-├── NORMALIZATION_DESIGN_REPORT.md    # 本报告 (V2.0)
-├── normalization_graph.py            # SubGraph (5 Stage)
+├── normalization_graph.py              # 138 行, 纯编排 (V2.1, 5 Agents + finalize)
+├── NORMALIZATION_DESIGN_REPORT.md      # 本报告 (V2.3, 2026-08-03 更新 V4.2)
 └── agents/
-    ├── source_router_agent.py        # Stage 1: SourceRouter
-    ├── tool_planning_agent.py        # Stage 2: LLM Tool Planning (V2.0 核心)
-    ├── tool_executor_agent.py        # Stage 3: Tool Executor (V2.0 沙箱)
-    ├── validation_agent.py           # Stage 4: Validation + Retry
-    └── report_agent.py               # Stage 5: Report
+    ├── source_router_agent.py          # Stage 1: 筛选 + 分流
+    ├── planning_agent.py               # Stage 2: LLM Tool Planning (核心)
+    ├── normalization_agent.py          # Stage 3: Tool Executor + sandbox
+    ├── validation_agent.py             # Stage 4: 4 维校验 + Retry
+    └── report_agent.py                 # Stage 5: Report + 路由
 
 tools/normalization/
-├── schema_mapping.py                 # T1: Base Tool
-├── field_standardizer.py             # T2: Base Tool
-├── unit_converter.py                 # T3: Base Tool
-├── missing_value_handler.py          # T4: Base Tool
-├── duplicate_handler.py              # T5: Base Tool
-└── format_standardizer.py            # T6: Base Tool
+├── schema_mapping.py                   # T1: Schema 映射 (V3.0 自动领域切换, V4 catalog _raw_field)
+├── field_standardizer.py               # T2: 字段值标准化
+├── unit_converter.py                   # T3: 单位转换 (category-keyed, V4.2 target 因子修正)
+├── missing_value_handler.py            # T4: 缺失值处理
+├── duplicate_handler.py                # T5: 去重
+└── format_standardizer.py              # T6: 格式标准化
+
+configs/                                # 单位转换配置体系 (详见 5.6)
+├── schema_mapping.yaml                 # target_schema_astrophysics (28 字段, 1178 别名) + unit_conversions_astrophysics (34 组 257 条)
+├── quality_rules.yaml                  # semantic_types_astrophysics (unit_category 驱动推断)
+└── __init__.py                         # 领域感知加载 (V4: _global_domain 全局兜底)
 ```

@@ -112,9 +112,15 @@ def _source_profiler(data: dict[str, Any]) -> dict[str, Any]:
 
 def _metadata_profiler(data: dict[str, Any]) -> dict[str, Any]:
     sources = data.get("sources", [])
+    # V3.1: paper + database 字段联合检查
+    paper_fields = ("doi", "title", "authors", "year", "journal", "access_path")
+    db_fields = ("description", "research_methodology", "waveband", "research_content",
+                 "bibcode", "vizier_table_id", "reference_paper", "observation_facility")
+    all_meta_fields = paper_fields + db_fields
+
     fields_present: dict[str, int] = {}
     for s in sources:
-        for key in ("doi", "title", "authors", "year", "journal", "access_path"):
+        for key in all_meta_fields:
             if s.get(key):
                 fields_present[key] = fields_present.get(key, 0) + 1
 

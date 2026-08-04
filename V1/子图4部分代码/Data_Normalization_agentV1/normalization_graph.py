@@ -67,13 +67,13 @@ def _report_node(state: QualityGraphState) -> dict[str, Any]:
 # ==========================================================
 
 def _after_source_router(state: QualityGraphState) -> str:
-    """total_to_normalize==0 → 跳过后续 Stage, 直接 END"""
+    """total_to_normalize==0 → 跳过后续 Stage, 走 finalize 统一出口"""
     norm = state.get("report_state", {}).get("normalization", {})
     sp = norm.get("source_plan", {})
     total = sp.get("total_to_normalize", 0)
     if total == 0:
-        logger.info("[NormalizationGraph] No sources to normalize → skip Stage 2-5 → END")
-        return END
+        logger.info("[NormalizationGraph] No sources to normalize → skip Stage 2-5")
+        return "finalize"
     return "planning"
 
 
@@ -91,6 +91,16 @@ def _after_validation(state: QualityGraphState) -> str:
 
 
 # ==========================================================
+# 子图出口状态透传 (V3.3: 供主图 Stage Gate 消费)
+# ==========================================================
+
+def _finalize(state: QualityGraphState) -> dict[str, Any]:
+    """透传子图最终 execution_status (Retry/Failed 冒泡到主图 Gate)。"""
+    status = state.get("workflow_state", {}).get("execution_status", "Success")
+    return {"workflow_state": {"execution_status": status}}
+
+
+# ==========================================================
 # 构建 SubGraph
 # ==========================================================
 
@@ -102,13 +112,14 @@ def build_normalization_graph() -> StateGraph[QualityGraphState]:
     graph.add_node("normalization", _normalization_node)
     graph.add_node("validation", _validation_node)
     graph.add_node("report", _report_node)
+    graph.add_node("finalize", _finalize)
 
     graph.set_entry_point("source_router")
 
-    # V2.1: SourceRouter → Planning (或 END)
+    # V2.1: SourceRouter → Planning (或 finalize → END, V3.3 统一出口)
     graph.add_conditional_edges(
         "source_router", _after_source_router,
-        {"planning": "planning", END: END},
+        {"planning": "planning", "finalize": "finalize"},
     )
 
     graph.add_edge("planning", "normalization")
@@ -120,7 +131,8 @@ def build_normalization_graph() -> StateGraph[QualityGraphState]:
         {"planning": "planning", "report": "report"},
     )
 
-    graph.add_edge("report", END)
+    graph.add_edge("report", "finalize")
+    graph.add_edge("finalize", END)
 
-    logger.info("[Workflow] Normalization SubGraph built (5 Agents, V2.1).")
+    logger.info("[Workflow] Normalization SubGraph built (5 Agents + finalize, V2.1).")
     return graph

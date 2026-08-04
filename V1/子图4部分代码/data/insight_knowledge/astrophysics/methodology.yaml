@@ -1,0 +1,310 @@
+entries:
+- id: cross_instrument_dm_comparison
+  title: 跨仪器 DM 比较方法论
+  category: methodology
+  tags:
+  - DM
+  - comparison
+  - instrument
+  - systematic
+  - methodology
+  applies_to:
+    fields:
+    - dispersion_measure
+  content: "跨仪器 DM 比较的判断标准:\n\n1. 系统性差异 (<2%):\n   - 同频段不同望远镜: FAST vs Parkes L-band DM 差异通常 < 2%\n   - 正常范围, 来自仪器校准和 S/N\
+    \ 差异\n\n2. 频率依赖性差异 (2-10%):\n   - 不同频段: L-band vs C-band DM 差异可达 5%\n   - 原因: 脉冲轮廓频率演化 + cold plasma dispersion 近似不完美\n\
+    \   - 此时不是数据冲突, 而是多频段信息的体现\n\n3. 异常差异 (>10%):\n   - 需进一步排查: 方向/时间不同 (银河系 DM 时变)?\n   - 仪器故障? 数据分析 pipeline 差异?\n\n建议:\
+    \ 报告 DM 时注明观测频率和仪器, 以便正确比较\n"
+  source: Cordes & Shannon 2010, astro-ph; Petroff et al. 2016, PASA
+  confidence: consensus
+- id: frb_statistical_guidelines
+  title: FRB 数据统计分析指南
+  category: best_practice
+  tags:
+  - FRB
+  - statistics
+  - sample
+  - analysis
+  - limitation
+  applies_to:
+    entities:
+    - FRB
+  content: "FRB 数据统计分析的注意事项:\n\n1. 样本量:\n   - n<10: 仅适合描述性统计, 不适合推断性统计\n   - n=10-50: 可做基本假设检验, 但需要非参数方法\n   - n>50: 可做参数估计和模型拟合\n\
+    \n2. 选择效应:\n   - 亮端偏倚: 检测到的都是亮的, fluence 分布不完整\n   - 色散选择: 高 DM FRB 在低频 (CHIME) 中更容易被检测\n\n3. 仪器异质性:\n   - 不同仪器的 fluence\
+    \ 阈值不同 → 不能直接合并 fluence 分布\n   - DM 测量的精度差异 → 加权分析 (按 DM 误差逆方差)\n\n4. 重复暴 vs 非重复暴:\n   - 不能假设同一 FRB 的多次爆发独立同分布\n"
+  source: Petroff et al. 2019, A&ARv; CHIME/FRB Collaboration 2021, ApJS
+  confidence: consensus
+- id: data_quality_interpretation
+  title: 天体物理数据质量评分解读指南
+  category: best_practice
+  tags:
+  - quality
+  - score
+  - interpretation
+  - caveat
+  - limitation
+  content: "质量评分解读:\n\n1. excellent (≥0.90):\n   - 数据可直接用于高精度科学分析\n   - 但仍需注意: 未知系统误差可能仍然存在\n\n2. good (≥0.75):\n   - 适合多数统计分析\n\
+    \   - 建议对权重敏感的分析使用加权方法 (高评分来源赋更高权重)\n\n3. fair (≥0.60):\n   - 适合探索性分析, 不适合精确模型拟合\n   - 建议标注特定字段的不确定度\n\n4. poor (<0.60):\n\
+    \   - 仅适合数据完整性评估和元分析 (识别数据缺口)\n   - 强烈建议在使用前进行人工复核\n\n通用注意事项:\n- 质量评分衡量的是元数据完整性和格式规范性, 不是科学正确性\n- 一个 poor 评分的数据集可能包含科学上正确的值\
+    \ (只是文档不全)\n- 始终结合领域知识判断, 不要仅凭评分做决策\n"
+  source: Internal methodology
+  confidence: established
+- id: catalog_cross_match_guidelines
+  title: 星表交叉证认方法论
+  category: best_practice
+  tags:
+  - catalog
+  - cross_match
+  - database
+  - astrometry
+  - positional
+  - methodology
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - parallax
+  content: "星表交叉证认 (cross-match) 注意事项:\n\n1. 位置匹配半径:\n   - 高精度 (Gaia/Hipparcos): 1-5 arcsec\n   - 中精度 (2MASS/SDSS): 3-10 arcsec\n\
+    \   - 低精度 (IRAS): 30-120 arcsec (IRAS 位置误差可达 30\")\n   - 匹配半径过小 → 漏匹配; 过大 → 误匹配 (邻近源污染)\n\n2. 证认唯一性:\n   - 多源候选时用贝叶斯/似然比方法\
+    \ (如 NWAY, 匹配概率)\n   - 亮度信息辅助: 波段差异可排除部分候选\n\n3. 参考系一致性:\n   - 确认坐标历元 (J2000 vs B1950) 和参考系 (ICRS vs FK5)\n   - 自行 (proper\
+    \ motion) 大的天体需外推到相同历元\n\n4. 常见陷阱:\n   - 同一物理天体被多个星表 ID 收录 (如 Gaia 源 vs 2MASS 源)\n   - 双星/复合源导致位置偏移\n   - 数据库 key_column/key_value\
+    \ 不一致造成错误关联\n"
+  source: Pineau et al. 2017, A&A; Gaia Collaboration 2023, A&A
+  confidence: consensus
+- id: database_source_reliability
+  title: 数据库来源可信度评估
+  category: best_practice
+  tags:
+  - database
+  - catalog
+  - reliability
+  - VizieR
+  - Gaia
+  - reference
+  applies_to:
+    entities:
+    - Star
+    - galaxy
+    - quasar
+    - FRB
+  content: "天文数据库来源可信度评估:\n\n1. 数据发布级别 (DR):\n   - DR3 > DR2 > DR1 (后期发布通常修正前期系统误差)\n   - 同一任务的最终数据发布 (如 Gaia DR3) 是最权威版本\n\
+    \n2. 官方文档与基准论文:\n   - 有官方 benchmark 论文 (reference_paper) + 文档的数据库更可信\n   - 有独立验证 (cross-validation) 的目录优于未验证的\n\n3. 已知系统误差:\n\
+    \   - Gaia: 视差 zonal errors ~0.02-0.03 mas\n   - 2MASS: 测光零点稳定, 但饱和源 (J<8) 不可靠\n   - IRAS: 位置误差大, 远红外通量受 Cirrus 污染\n\n\
+    4. 使用建议:\n   - 关键科学结论需用独立数据库交叉验证\n   - 注意 catalog 版本差异 (同一来源不同发布)\n   - VizieR 镜像可能与官方源有微小差异\n"
+  source: Gaia Collaboration 2023, A&A; IRAS Explanatory Supplement 1988
+  confidence: consensus
+- id: simbad_otype_classification_rule
+  title: Simbad 对象类型分类规则
+  category: methodology
+  tags:
+  - simbad
+  - otype
+  - taxonomy
+  applies_to:
+    entities:
+    - star
+    - galaxy
+    - agn
+    - radio_source
+    - xray_source
+  content: 'Simbad 对象类型分类 (otypes.list) 的规则:
+
+    - 层级分类 (最多 4 级, 如 Star→Variable→Pulsating→Cepheid)
+
+    - 物理本质优先于波长: 只有本质未知时才用波长类 (Radio/IR/UV/X/gamma)
+
+    - 一个天体可携带多个 otype (主类型 + 附加波长类)
+
+    - CANDI 列 = 候选类型 (需确认)
+
+    判定意义: 波长类标签 (Rad/IR/X 等) 是''未知本质''的占位符而非物理类型 —
+
+    记录里只有 ''IR source'' 而无物理类型时, 应视为待证认对象;
+
+    ''err''/''mul''/''?'' 分别表示伪影/混合/未知。'
+  source: Simbad guide chF; Oberto 2018; IVOA Object Types Vocabulary
+  confidence: consensus
+- id: extragalactic_catalog_crossmatch
+  title: 河外多目录交叉证认
+  category: methodology
+  tags:
+  - crossmatch
+  - catalog
+  applies_to:
+    entities:
+    - galaxy
+  content: '河外目录交叉证认需按位置精度分级:
+
+    - IRAS (60/100 μm): 位置误差 30-120″ (远红外 PSF 大)
+
+    - PGC/HYPERLEDA: 光学位置 ~1-3″
+
+    - 2MASS XSC: 近红外位置 3-10″
+
+    - NED/ANames/IDType: 别名与目录身份解析
+
+    物理原理: 不同波段的源可能对应不同物理成分 (IRAS 尘埃、2MASS 恒星质量、
+
+    光学星族), 位置重合 ≠ 同一对象 (投影污染)。
+
+    判定线索: 高精度 (2MASS) 与低精度 (IRAS) 匹配半径必须按较差分级,
+
+    盲目用单一半径会造成误匹配 (IRAS 源错配到相邻 2MASS 源)。'
+  source: VizieR 目录文档; 交叉证认方法文献; Contini 1998
+  confidence: consensus
+- id: sample_selection_bias
+  title: 样本选择效应
+  category: methodology
+  tags:
+  - selection
+  - bias
+  applies_to:
+    entities:
+    - galaxy
+    - agn
+    - quasar
+  content: '巡天选择效应决定样本物理构成:
+
+    - IRAS 60 μm 选择 → 尘埃恒星形成星系偏置 (冷色星暴优先)
+
+    - 2MASS K 波段 → 红/质量星系偏置
+
+    - 可见光 → 星族主导
+
+    - WISE W1-W2 ≥ 0.8 → AGN (但要求 MIR 中 AGN 占优, 宿主 >50% 时失效)
+
+    - 蓝/UV 超 (Markarian) → 主要命中星暴核 (82% 星暴 vs 9% Seyfert)
+
+    物理原理: 各波段示踪不同物理成分 (尘埃/恒星质量/电离);
+
+    判定线索: 跨目录比较统计性质时必须说明选择函数;
+
+    表面亮度受限巡天 (LSB 星系) 与星等受限巡天的完备性完全不同。'
+  source: Helou; Stern 2012; Markarian 星系光谱分类
+  confidence: consensus
+- id: photometric_system_conversion
+  title: 测光系统转换
+  category: method_comparison
+  tags:
+  - photometry
+  - vega
+  - ab
+  applies_to:
+    fields:
+    - apparent_magnitude
+    entities:
+    - star
+    - galaxy
+  content: '测光零点系统: Vega (2MASS/BVRI, 恒星为 0) vs AB (SDSS/JWST, 常数通量);
+
+    同一源两系统差值随颜色变化 (Vega-AB: u~0.9, g~0.1, z~-0.5 mag 量级)。
+
+    物理原理: 零点定义不同 (Vega 星 = 0 mag vs 1e-23 erg/s/Hz 常数)。
+
+    换算: mag ↔ Jy 需波段有效频率。
+
+    判定线索: 跨系统比较星等必须先转换 — G (Gaia) 与 V 差 0.1-0.5 mag 随
+
+    颜色变化, 直接相减会误判变光; 2MASS JHK 同为 Vega 可直接比较;
+
+    光变曲线跨系统拼接是变星研究的常见错误源。'
+  source: Jordi 2010; 2MASS Explanatory Supplement; SDSS 文档
+  confidence: consensus
+- id: multi_source_redshift_compare
+  title: 多来源红移比较
+  category: method_comparison
+  tags:
+  - redshift
+  - compare
+  applies_to:
+    fields:
+    - redshift
+    entities:
+    - galaxy
+  content: '同一星系多个红移来源的比较规则:
+
+    - spec-z 精度 1e-3-1e-4 (基准); photo-z 3-6%
+
+    - 目录间 spec-z 差异 <0.001 属测量系统差
+
+    - photo-z vs spec-z 差异 >0.1 (1+z) = 灾难性失败 (颜色简并)
+
+    物理原理: 不同测量方法误差机制独立 (谱线位移 vs SED 模板);
+
+    判定线索: 汇总多来源红移时用中位数/加权平均并报告离散度;
+
+    单一 photo-z 高红移结论必须标注不确定性;
+
+    z > 4 时 photo-z 与 spec-z 系统性偏差是常态而非数据错误。'
+  source: COSMOS/EDisCS photo-z 研究; PAU 窄带
+  confidence: consensus
+- id: m31_distance_comparison
+  title: M31 距离多方法比较
+  category: methodology
+  tags:
+  - m31
+  - distance
+  applies_to:
+    fields:
+    - distance
+    entities:
+    - galaxy
+  content: "M31 距离 ~780 kpc 是河外距离阶梯的校准锚点:\n- Cepheid PL 关系 (Leavitt 律): 周期-光度关系的物理基础是 P ∝ ρ^(-1/2)\n  脉动周期-密度关系 + 质光关系\n-\
+    \ TRGB: 红巨星分支拐点的 I 带绝对星等近似恒定\n- SN Ia: Phillips 关系 (峰值光度-下降速率)\n方法间差异 <10% 属正常 (系统误差层级不同);\n判定线索: 单方法孤立异常 (如 700 vs 900\
+    \ kpc) 需复核而非取平均 —\n通常指向 Cepheid 金属丰度修正或 TRGB 污染 (AGB 星混入);\n距离 7.8 kpc 或 78 Mpc 的记录 = 单位/数量级错误。"
+  source: McConnachie 2012; Ferrarese 1996; Benedict 2002
+  confidence: consensus
+- id: agn_host_galaxy_interpretation
+  title: AGN 宿主星系解读
+  category: methodology
+  tags:
+  - agn
+  - host
+  applies_to:
+    entities:
+    - agn
+    - quasar
+  content: 'AGN 宿主星系性质解读:
+
+    - 典型 X 选 AGN (z~0.5-1.4) 宿主恒星质量 7.8e10-1.2e11 Msun (大质量星系)
+
+    - 高红移类星体宿主 (3-5)e11 Msun — 高红移宿主偏亮是选择效应
+
+    - M_BH 与宿主恒星质量比 ~0.5% (经典核球/椭圆适用)
+
+    物理原理: AGN 与宿主共同演化 (M_BH-σ 反馈); 光度选择偏向亮宿主;
+
+    判定线索: 宿主质量与 M_BH 明显不匹配 (差 >2 dex) = 伪核球
+
+    (pseudobulge) 或并合中星系 (M_BH-σ 不适用);
+
+    M_BH/M_bulge 0.1% 是旧值 (样本污染), 现代值 0.5%。'
+  source: Alonso-Herrero 2008; Kormendy & Ho 2013
+  confidence: consensus
+- id: catalog_documentation_check
+  title: 目录文档核对
+  category: best_practice
+  tags:
+  - catalog
+  - documentation
+  applies_to:
+    entities:
+    - galaxy
+    - star
+  content: '使用 VizieR/目录数据前的核对清单:
+
+    - 核对列描述/readme: 单位、口径 (等照度 vs PSF)、质量标志列 (q_*)
+
+    - waveband 与 research_methodology 字段: 确认波段与测量方法
+
+    - 版本口径: 同一目录不同发布 (IRAS v2.1 vs PSC) 数值可能不同
+
+    - 质量标志: q_* = 2 可靠, 低质量标志需标注或排除
+
+    物理原理: 目录列语义 (尤其口径与质量标志) 决定数值可比性;
+
+    判定线索: 跨目录比较前必须确认口径一致 (K20e vs K_psf 不可混用);
+
+    红外源 (IRAS) 位置误差大, 与高精度目录匹配需分级半径。'
+  source: VizieR 文档; IRAS Explanatory Supplement; 2MASS XSC
+  confidence: consensus

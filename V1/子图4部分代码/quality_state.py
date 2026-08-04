@@ -32,13 +32,23 @@ from typing import Annotated, Any, Literal, TypedDict
 # 嵌套字典合并 Reducer
 # ==========================================================
 
+# ── 拼接模式列表 (如 workflow_history, data_trace) ──
+_LIST_APPEND_KEYS = {"workflow_history", "data_trace", "issues", "base_logs",
+                       "adapted_logs", "generated_logs", "errors", "variances",
+                       "anomalies", "annotations", "anomaly_flags",
+                       "variance_cause_evidence", "annotation_suggestions",
+                       # V3.5 fix: 各阶段导出文件累积 (Export + Insights), 不互相覆盖
+                       "exported_files"}
+
+
 def _merge_dict(left: dict | None, right: dict | None) -> dict:
     """
     LangGraph reducer：将 right 合并到 left 中。
 
     对于每个 key:
     - 若两侧值均为 dict → 递归合并
-    - 若两侧值均为 list → 拼接 (如 workflow_history, data_trace)
+    - 若两侧值均为 list 且 key 在拼接白名单 → 拼接 (如 workflow_history)
+    - 若两侧值均为 list 且 key 不在白名单 → right 覆盖 left (如 records, sources)
     - 否则 → right 覆盖 left
     """
     if left is None:
@@ -50,7 +60,14 @@ def _merge_dict(left: dict | None, right: dict | None) -> dict:
         if k in result and isinstance(result[k], dict) and isinstance(v, dict):
             result[k] = _merge_dict(result[k], v)
         elif k in result and isinstance(result[k], list) and isinstance(v, list):
-            result[k] = list(result[k]) + list(v)
+            if k in _LIST_APPEND_KEYS:
+                # V4 fix: 编译子图作为主图节点时, 子图 final-state 携带
+                # "父历史前缀 + 本子图新条目" 的完整列表, 整段追加会重复。
+                # 按 dict 全等去重 — 重复条目是同一批 dict 透传 (时间戳一致),
+                # 真正的新条目不会被误删。
+                result[k] = list(result[k]) + [e for e in v if e not in result[k]]
+            else:
+                result[k] = v  # V3.0: 非拼接列表直接覆盖 (如 records, sources)
         else:
             result[k] = v
     return result
@@ -61,7 +78,8 @@ def _merge_dict(left: dict | None, right: dict | None) -> dict:
 # ==========================================================
 
 ExecutionStatus = Literal["Success", "Retry", "Failed", "HumanReview"]
-RouteDecision = Literal["Normalization", "Conflict", "Export", "HumanReview", ""]
+# V3.5 fix: 补全 "Assessment" (HumanReview E→A 实际返回)
+RouteDecision = Literal["Assessment", "Normalization", "Conflict", "Export", "HumanReview", ""]
 
 
 # ==========================================================
@@ -87,6 +105,10 @@ class DataState(TypedDict, total=False):
     """人工修改后的数据快照，V1 可为 None。"""
     data_trace: list[TraceRecord]
     """数据处理轨迹。"""
+    # V2: entity-aware indexing
+    entity_index: dict[str, list[str]] | None
+    """实体→记录映射: {(entity_type, entity_name): [record_id, ...]}。
+    在 Agent 初始化时从 records 构建，后续 tool 可直接使用，避免反复分组。"""
 
 
 class ReportState(TypedDict, total=False):
@@ -97,6 +119,10 @@ class ReportState(TypedDict, total=False):
     """Conflict Resolution Report"""
     normalization: dict[str, Any] | None
     """Normalization Report"""
+    export: dict[str, Any] | None
+    """Export Report (V3.1: 各 Export Agent 写入 organized_data/formatted_data/metadata/traceability/validation)"""
+    insights: dict[str, Any] | None
+    """Insights Report (V3.4: 各洞察节点累积 field_insights/relationships/recommendations)"""
 
 
 class WorkflowState(TypedDict, total=False):
@@ -113,6 +139,28 @@ class WorkflowState(TypedDict, total=False):
     """下一节点路由决策。"""
     workflow_history: list[WorkflowRecord]
     """Agent 调用顺序、关键决策及状态变化。"""
+
+    # ── V3.3: 显式阶段状态机 ──
+    phase: str
+    """当前阶段: assessment / normalization / conflict / human_review / export / done"""
+    loop_round: int
+    """C→B→C 循环轮次 (替代 _loop_count)"""
+    from_conflict: bool
+    """最近一次 Normalization 是否由 Conflict 触发 (C→B 标记, 替代 _from_conflict)"""
+    force_export: bool
+    """循环超限强制导出 (替代 _force_export)"""
+    next_route: str
+    """loop_controller 决策的下一路由 (替代 _next_route)"""
+
+    # ── V3.3: 每节点重试计数 ──
+    retry_by_node: dict[str, int]
+    """{node: count} — 每个子图节点的重试次数 (替代全局 retry_counter)"""
+
+    # ── V3.3: 来源处理队列 ──
+    pending_sources: dict[str, list[str]]
+    """{route: [source_ids]} — 待处理来源队列: Normalization/Conflict/Export/HumanReview"""
+    completed_sources: list[str]
+    """已处理完成的来源列表"""
 
     # ── V1.1 新增: 运行信息 ──
     run_id: str
@@ -144,6 +192,14 @@ class OutputState(TypedDict, total=False):
     """数据溯源信息。"""
     quality_summary: dict[str, Any] | None
     """质量摘要。"""
+    insights: dict[str, Any] | None
+    """V3.4: 完整 DataInsightsReport (LLM 主观洞察)。"""
+
+    # ── V3.1: 实际写入的文件导出信息 ──
+    exported_files: list[str] | None
+    """导出到磁盘的文件路径列表。"""
+    output_dir: str | None
+    """输出目录。"""
 
     # ── V1.1 新增: 版本信息 ──
     schema_version: str
@@ -196,6 +252,11 @@ class TraceRecord(TypedDict, total=False):
     """修改原因，如 'Standard Unit Conversion'。"""
     confidence: float
     """修改的可信度 (0-1)。"""
+    # V2: entity-aware traceability
+    entity_type: str
+    """被修改记录所属的实体类型，如 'FRB'。"""
+    entity_name: str
+    """被修改记录所属的实体名称，如 'FRB 20180916B'。"""
 
 
 # ==========================================================
@@ -227,6 +288,25 @@ class QualityGraphState(TypedDict, total=False):
 
 
 # ==========================================================
+# V2: 实体索引构建
+# ==========================================================
+
+def _build_entity_index(records: list[dict]) -> dict[str, list[str]]:
+    """从 records 构建实体→记录映射。
+
+    Returns: {label: [record_id, ...]}
+        label = f"{entity_type}:{entity_name}" 或 "__global__"
+    """
+    index: dict[str, list[str]] = {}
+    for rec in records:
+        et = rec.get("entity_type", "") or ""
+        en = rec.get("entity_name", "") or ""
+        elabel = f"{et}:{en}" if (et and en) else (en if en else "__global__")
+        index.setdefault(elabel, []).append(rec.get("record_id", ""))
+    return index
+
+
+# ==========================================================
 # 初始状态工厂函数
 # ==========================================================
 
@@ -248,11 +328,25 @@ def make_initial_state(input_grounded_data: dict[str, Any]) -> QualityGraphState
         from configs import set_research_domain
         set_research_domain(domain)
 
+    # V4 fix: standard_units 从领域 target_schema 回填 —
+    # 此前恒为空, unit_converter 无目标单位 → 单位转换全部静默跳过
+    try:
+        from configs import load_domain_schema_config
+        _schema_cfg = load_domain_schema_config("target_schema")
+        standard_units = {
+            f.get("name"): f.get("standard_unit")
+            for f in (_schema_cfg or {}).get("fields", [])
+            if f.get("name") and f.get("standard_unit")
+        }
+    except Exception:
+        standard_units = {}
+
     return QualityGraphState(
         context_state={
-            "research_domain": "",
+            # V3.1 fix: 领域显式写入 State, 不再依赖线程全局
+            "research_domain": domain,
             "target_schema": {},
-            "standard_units": {},
+            "standard_units": standard_units,
             "quality_rules": {},
             "clarified_intent": {},
         },
@@ -261,11 +355,15 @@ def make_initial_state(input_grounded_data: dict[str, Any]) -> QualityGraphState
             "current_data": copy.deepcopy(input_grounded_data),
             "human_modified_data": None,
             "data_trace": [],
+            # V2: entity_index — 从 records 构建实体→记录映射
+            "entity_index": _build_entity_index(input_grounded_data.get("records", [])),
         },
         report_state={
             "quality": None,
             "conflict": None,
             "normalization": None,
+            "export": None,  # V3.1 fix: Export Agent 写入 organized_data/formatted_data/...
+            "insights": None,  # V3.4: 洞察节点累积
         },
         workflow_state={
             "current_node": "assessment",
@@ -274,6 +372,20 @@ def make_initial_state(input_grounded_data: dict[str, Any]) -> QualityGraphState
             "retry_counter": 0,
             "route_decision": "",
             "workflow_history": [],
+            # V3.3: 显式阶段状态机
+            "phase": "assessment",
+            "loop_round": 0,
+            "from_conflict": False,
+            "force_export": False,
+            "next_route": "",
+            # V3.3: 每节点重试计数
+            "retry_by_node": {},
+            # V3.3: 来源处理队列
+            "pending_sources": {
+                "Normalization": [], "Conflict": [],
+                "Export": [], "HumanReview": [],
+            },
+            "completed_sources": [],
             # V1.1 运行信息
             "run_id": str(uuid.uuid4()),
             "graph_version": "V1.0",
@@ -291,8 +403,12 @@ def make_initial_state(input_grounded_data: dict[str, Any]) -> QualityGraphState
             "metadata": None,
             "traceability": None,
             "quality_summary": None,
+            "insights": None,  # V3.4: DataInsightsReport
+            # V3.1: 文件导出信息
+            "exported_files": [],
+            "output_dir": None,
             # V1.1 版本信息
-            "schema_version": "grounded_data_v1",
+            "schema_version": "2.0.0",
             "export_format": "json",
         },
     )

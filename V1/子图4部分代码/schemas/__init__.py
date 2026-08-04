@@ -1,4 +1,6 @@
 """schemas/ — JSON Schema"""
+from __future__ import annotations  # V3.1 fix: future import 必须在文件顶部
+
 import json, os
 
 def load_schema(filename="grounded_data_v1.json") -> dict:
@@ -6,8 +8,6 @@ def load_schema(filename="grounded_data_v1.json") -> dict:
     with open(os.path.join(schema_dir, filename), "r", encoding="utf-8") as f:
         return json.load(f)
 
-
-from __future__ import annotations
 
 from typing import Literal, Optional
 

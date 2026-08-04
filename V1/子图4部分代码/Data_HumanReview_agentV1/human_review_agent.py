@@ -47,6 +47,7 @@ class HumanReviewAgent:
                     "__human_review_needed__": False,
                     "__human_review_decision__": None,
                     "__human_review_data__": None,
+                    "_from_conflict": False,  # V3.1 fix: 人工决策后是新流程, 清除循环标记
                     "workflow_history": [{
                         "agent": "HumanReview", "stage": "Resolved",
                         "status": "Success",
@@ -61,7 +62,7 @@ class HumanReviewAgent:
         conflicts = self._extract_pending(state)
         if not conflicts:
             logger.warning("[HumanReview] No pending conflicts → Export")
-            return self._no_conflicts_result()
+            return self._no_conflicts_result(state)
 
         # ── Step 3: 命令行交互 ──
         print(f"\n{_SEP}")
@@ -69,7 +70,9 @@ class HumanReviewAgent:
         print(f"{_SEP}")
 
         quality = rs.get("quality", {}) or {}
-        resolution_report = rs.get("conflict", {}).get("resolution_report", {})
+        # V3.5 fix: conflict 可能为 None (dispatch 清理后) — 空值保护
+        conflict_state = rs.get("conflict") or {}
+        resolution_report = conflict_state.get("resolution_report") or {}
         auto_resolved = resolution_report.get("metadata", {}).get("auto_resolved", 0)
         total = resolution_report.get("metadata", {}).get("total_conflicts", 0)
         print(f"\n  摘要: {auto_resolved}/{total} 冲突已自动解决, {len(conflicts)} 个需要人工判断")
@@ -86,7 +89,17 @@ class HumanReviewAgent:
 
             choice = self._get_user_choice(c)
             reason = self._get_user_reason()
-            decisions[cid] = {**choice, "reason": reason, "conflict_id": cid}
+            # V3.2: 携带冲突详情, 供 _decisions_to_actions 生成可执行动作
+            decisions[cid] = {
+                **choice, "reason": reason, "conflict_id": cid,
+                "source_id": (c.get("source_a") or {}).get("source_id", ""),
+                "field_name": c.get("field_name", ""),
+                "entity_name": c.get("entity_name", ""),
+                "record_ids": [r.get("record_id") for r in
+                               (c.get("source_a") or {}).get("records", [])]
+                               if isinstance((c.get("source_a") or {}).get("records"), list)
+                               else [],
+            }
 
         # ── Step 4: 确认汇总 ──
         print(f"\n{_SEP}")
@@ -114,7 +127,7 @@ class HumanReviewAgent:
         next_step = input("  请输入选项 [1-3]: ").strip()
 
         if next_step == "3":
-            print("  ✗ 已取消。保留当前状态，下次可恢复。")
+            print("  X 已取消。保留当前状态，下次可恢复。")  # V3.5: ASCII 安全
             return {
                 "workflow_state": {
                     "execution_status": "HumanReview",
@@ -137,13 +150,25 @@ class HumanReviewAgent:
             "reviewed_at": datetime.datetime.now().isoformat(),
         }
 
-        logger.info("[HumanReview] %d conflicts reviewed → Normalization", len(decisions))
+        # V3.2 fix: 人工决策转换为可执行的 normalization_actions
+        # (E→B 时 SourceRouterAgent 消费 resolution_plan.actions_to_normalize)
+        actions = self._decisions_to_actions(decisions)
 
-        return {
+        # V3.1 fix: 使用用户选择的 target_route (E→A 或 E→B), 不再硬编码 Normalization
+        logger.info("[HumanReview] %d conflicts reviewed → %s", len(decisions), target_route)
+
+        # V3.3: 人工审核完成 — 清除 pending_sources["HumanReview"] + 写 phase
+        pending = dict(wf.get("pending_sources") or {})
+        pending["HumanReview"] = []
+
+        ret = {
             "workflow_state": {
-                "route_decision": "Normalization",
+                "route_decision": target_route,
                 "execution_status": "Success",
                 "current_node": "human_review",
+                "phase": "human_review",
+                "pending_sources": pending,
+                "from_conflict": False,  # V3.1 fix: 人工决策后是新流程, 清除循环标记
                 "__human_review_needed__": False,
                 "__human_review_decision__": decision_record,
                 "__human_review_data__": None,
@@ -152,20 +177,59 @@ class HumanReviewAgent:
                     "status": "Success",
                     "timestamp": datetime.datetime.now().isoformat(),
                     "duration": 0.0,
-                    "reason": f"Human resolved {len(decisions)} conflicts → Normalization",
+                    "reason": f"Human resolved {len(decisions)} conflicts → {target_route}",
                 }],
             },
         }
+        if actions:
+            ret["report_state"] = {"conflict": {
+                "resolution_report": {
+                    "resolution_plan": {"actions_to_normalize": actions},
+                }
+            }}
+        return ret
+
+    def _decisions_to_actions(self, decisions: dict) -> list[dict]:
+        """将人工决策转换为 NormalizationAction 列表 (V3.2)。"""
+        actions = []
+        for cid, d in decisions.items():
+            action = d.get("action", "skip")
+            if action in ("adopt_source_a", "adopt_source_b", "custom_value"):
+                # 需要写回目标值 → Normalization 执行替换
+                actions.append({
+                    "source_id": d.get("source_id", ""),
+                    "target_source": d.get("source_id", ""),
+                    "record_ids": d.get("record_ids", []),
+                    "field": d.get("field_name", ""),
+                    "field_name": d.get("field_name", ""),
+                    "entity_type": d.get("entity_type", ""),
+                    "entity_name": d.get("entity_name", ""),
+                    "new_value": d.get("selected_value"),
+                    "action": "human_replace",
+                    "reason": f"Human decision [{cid}]: {action}",
+                })
+            elif action == "retain_both":
+                actions.append({
+                    "source_id": d.get("source_id", ""),
+                    "field": d.get("field_name", ""),
+                    "field_name": d.get("field_name", ""),
+                    "entity_name": d.get("entity_name", ""),
+                    "action": "annotate",
+                    "reason": f"Human decision [{cid}]: retain both values",
+                })
+            # skip → 无动作
+        return actions
 
     # ── Helpers ──
 
     def _extract_pending(self, state) -> list[dict]:
-        """提取所有待人工审核的冲突。"""
-        conflict = state.get("report_state", {}).get("conflict", {})
-        resolution_report = conflict.get("resolution_report", {})
+        """提取所有待人工审核的冲突/异常 (V3.1: 兼容 resolution_plan.human_review_items)。"""
+        # V3.3 fix: conflict 可能为 None (dispatch 清理后) — 空值保护
+        conflict = state.get("report_state", {}).get("conflict") or {}
+        resolution_report = conflict.get("resolution_report") or {}
         pending = []
 
-        # 从 resolution_plan.human_review_items
+        # 从 resolution_plan.human_review_items (V3.1 fix: 由 resolution_report_agent 生成)
         plan = resolution_report.get("resolution_plan", {})
         for item in plan.get("human_review_items", []):
             # 补全 per_conflict 中的详细信息
@@ -174,6 +238,7 @@ class HumanReviewAgent:
             pending.append({
                 "conflict_id": item.get("conflict_id", "?"),
                 "field_name": full.get("field_name", item.get("field_name", "?")),
+                "entity_name": item.get("entity_name", ""),
                 "reason": item.get("reason", full.get("reasoning_chain", [""])[0] if full.get("reasoning_chain") else ""),
                 "evidence_summary": item.get("evidence_summary", {}),
                 "source_a": full.get("source_a", {}),
@@ -186,7 +251,23 @@ class HumanReviewAgent:
                 "strategy": full.get("strategy", "escalate_to_human"),
             })
 
-        # 备选: 从 reasoning.per_conflict 中筛选 escalated_to_human
+        # V3.1 fix: 从 anomaly_flags 中筛选 action=human_review (cross_id_error)
+        if not pending:
+            for flag in resolution_report.get("anomaly_flags", []):
+                if flag.get("action") == "human_review":
+                    pending.append({
+                        "conflict_id": f"ANOM-{flag.get('anomaly_type', '?')}-{flag.get('entity_name', '?')}",
+                        "field_name": flag.get("field_name", ""),
+                        "entity_name": flag.get("entity_name", ""),
+                        "reason": f"{flag.get('anomaly_type')} requires human review: {flag.get('detail', {})}",
+                        "evidence_summary": flag.get("detail", {}),
+                        "source_a": {}, "source_b": {},
+                        "cohens_d": 0, "effect_size": "",
+                        "reasoning_chain": [], "risk_assessment": "",
+                        "confidence": 0, "strategy": "escalate_to_human",
+                    })
+
+        # 备选: 从 reasoning.per_conflict 中筛选 escalated_to_human (旧报告兼容)
         if not pending:
             reasoning = conflict.get("reasoning", {})
             for r in reasoning.get("per_conflict", []):
@@ -204,6 +285,47 @@ class HumanReviewAgent:
                         "risk_assessment": r.get("risk_assessment", ""),
                         "strategy": r.get("strategy", "escalate_to_human"),
                     })
+
+        # V3.5 fix: review_items 抽象 — Assessment 触发 HR (提取质量过低/严重质量问题)
+        # 但无 conflict 报告时, 从 quality 构造质量类审核项, 不能直接跳过人工审核
+        if not pending:
+            quality = state.get("report_state", {}).get("quality") or {}
+            per_source_routes = quality.get("per_source_routes", {})
+            sources = quality.get("sources", {})
+            for sid, route in per_source_routes.items():
+                if route != "HumanReview":
+                    continue
+                sr = sources.get(sid, {})
+                reasons = []
+                extr = (sr.get("extraction_quality") or {}).get("score")
+                if extr is not None and extr < 0.3:
+                    reasons.append(f"提取质量极低 (score={extr:.2f})")
+                comp = (sr.get("completeness") or {}).get("score")
+                if comp is not None and comp < 0.5:
+                    reasons.append(f"数据完整性严重不足 (score={comp:.2f})")
+                ql = (sr.get("quality_scoring") or {}).get("quality_level")
+                if ql == "poor":
+                    reasons.append("质量等级 poor")
+                if not reasons:
+                    reasons.append("Assessment 判定需人工审核")
+                pending.append({
+                    "conflict_id": f"QHR-{sid[:20]}",
+                    "field_name": "",
+                    "entity_name": "",
+                    "reason": "; ".join(reasons),
+                    "evidence_summary": {
+                        "extraction_quality": extr,
+                        "completeness": comp,
+                        "quality_level": ql,
+                    },
+                    "source_a": {"source_id": sid},
+                    "source_b": {},
+                    "cohens_d": 0, "effect_size": "",
+                    "reasoning_chain": reasons,
+                    "risk_assessment": "quality_issue",
+                    "confidence": 0,
+                    "strategy": "escalate_to_human",
+                })
 
         return pending
 
@@ -237,7 +359,7 @@ class HumanReviewAgent:
         if chain:
             print(f"\n  Agent 推理链:")
             for step in chain[:5]:
-                print(f"    • {step[:100]}")
+                print(f"    - {step[:100]}")  # V3.5: ASCII 安全 (GBK 终端不支持 •)
 
     def _get_user_choice(self, c: dict) -> dict:
         """获取用户选择。"""
@@ -286,13 +408,17 @@ class HumanReviewAgent:
         reason = input("  请输入理由 (可选, 直接回车跳过): ").strip()
         return reason[:500] if reason else ""
 
-    def _no_conflicts_result(self) -> dict:
-        """无冲突时的跳过结果。"""
+    def _no_conflicts_result(self, state: dict) -> dict:
+        """无冲突时的跳过结果 (V3.3: 清除 pending_sources['HumanReview'] 防死循环)。"""
+        pending = dict((state.get("workflow_state") or {}).get("pending_sources") or {})
+        pending["HumanReview"] = []
         return {
             "workflow_state": {
                 "route_decision": "Export",
                 "execution_status": "Success",
                 "current_node": "human_review",
+                "phase": "human_review",
+                "pending_sources": pending,
                 "__human_review_needed__": False,
                 "__human_review_decision__": None,
                 "__human_review_data__": None,

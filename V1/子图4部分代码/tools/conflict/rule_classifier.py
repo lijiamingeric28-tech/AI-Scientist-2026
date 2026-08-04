@@ -1,140 +1,163 @@
 """
-rule_classifier.py — Tool 3: RuleBasedClassifier
+rule_classifier.py → V3.0: VarianceCauseClassifier (原 RuleBasedClassifier)
 
-确定性冲突分类：Type / Subtype / Severity。
-LLM 仅对 subtype=="undetermined" 的分类进行补充。
+V3.0 重写: 分类多源差异原因, 替代旧的冲突类型分类。
+  - 旧: cross_source_value_conflict / type_inconsistency / unit_inconsistency / ...
+  - 新: methodological_variance / condition_variance / temporal_variation
+       / measurement_uncertainty / duplicate_observation
+
+利用 V2 Record 字段: measurement_method, condition_tags, year, extraction_confidence
 """
 from __future__ import annotations
 from typing import Any
 from utils.logger import get_logger
 logger = get_logger(__name__)
 
-# 条件类语义类型 (不同实验/观测条件下可有不同值)
-# V2.2: 从语义类型推断，不再硬编码字段名
+# ── V3.0: 差异原因常量 ──
+CAUSE_METHODOLOGICAL = "methodological_variance"
+CAUSE_CONDITION = "condition_variance"
+CAUSE_TEMPORAL = "temporal_variation"
+CAUSE_UNCERTAINTY = "measurement_uncertainty"
+CAUSE_DUPLICATE = "duplicate_observation"
+CAUSE_UNKNOWN = "unknown"
+
+# 时间差异阈值 (年)
+_TEMPORAL_GAP_THRESHOLD = 5
+
+# 条件类语义类型 (不同条件下自然有不同值)
 _CONDITION_SEMANTIC_TYPES = {
     "temperature", "strain_rate", "pressure", "humidity",
-    "exposure_time", "wavelength", "resolution",
-    "magnetic_field", "electric_field", "ph",
+    "exposure_time", "wavelength", "frequency", "resolution",
+    "magnetic_field", "electric_field", "ph", "flux",
 }
 
 
-def _is_condition_field(field_name: str, semantic_types: dict[str, Any] | None) -> bool:
-    """从 semantic_type 推断是否为条件字段 (V2.2: 泛化)。"""
-    fn_lower = field_name.lower()
-    # 通过字段名关键词
-    generic_keywords = ("temperature", "temp", "strain_rate", "strain rate",
-                        "pressure", "humidity", "exposure", "wavelength",
-                        "resolution", "magnetic", "electric", "ph")
-    if any(k in fn_lower for k in generic_keywords):
-        return True
-    # 通过语义类型
-    if semantic_types:
-        st_info = semantic_types.get(field_name, {})
-        st = st_info.get("semantic_type", "") if isinstance(st_info, dict) else str(st_info)
-        if st in _CONDITION_SEMANTIC_TYPES:
-            return True
-    return False
+def classify_variance_cause(
+    variance: dict[str, Any],
+    semantic_types: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    V3.0: 分类多源差异原因 (规则确定性)。
+
+    优先级:
+      1. 值完全相同 + 不同source → duplicate_observation
+      2. measurement_method 不同 → methodological_variance
+      3. condition_tags 不同 → condition_variance
+      4. year 差距 > 5 年 → temporal_variation
+      5. 以上相同 + Cohen's d < 0.5 → measurement_uncertainty
+      6. 以上相同 + Cohen's d >= 2.0 → statistical_outlier (潜在异常)
+      7. 其他 → unknown
+
+    Args:
+        variance: 方差条目, 含 source_stats (per-source 详情)
+        semantic_types: profile.semantic_types (可选)
+
+    Returns:
+        {cause, confidence, reason, method}
+    """
+    source_stats = variance.get("source_stats", {})
+    source_ids = list(source_stats.keys())
+
+    if len(source_ids) < 2:
+        return {"cause": CAUSE_UNKNOWN, "confidence": 0.3,
+                "reason": "Only one source", "method": "rule"}
+
+    # 收集 per-source 特征
+    methods_by_source: dict[str, set] = {}
+    tags_by_source: dict[str, set] = {}
+    years_by_source: dict[str, int | None] = {}
+    means_by_source: dict[str, float] = {}
+
+    for sid, ss in source_stats.items():
+        methods_by_source[sid] = set(ss.get("measurement_methods", []))
+        tags_by_source[sid] = set(ss.get("condition_tags", []))
+        years_by_source[sid] = ss.get("year")
+        means_by_source[sid] = ss.get("mean", 0)
+
+    # ── Rule 1: Duplicate observation (值完全相同) ──
+    unique_means = set(round(m, 6) for m in means_by_source.values())
+    if len(unique_means) == 1 and len(source_ids) > 1:
+        return {"cause": CAUSE_DUPLICATE, "confidence": 0.95,
+                "reason": f"Identical value ({list(unique_means)[0]}) from {len(source_ids)} sources",
+                "method": "rule"}
+
+    # ── Rule 2: Methodological variance (方法不同) ──
+    all_methods = set().union(*methods_by_source.values())
+    if len(all_methods) > 0:
+        methods_differ = any(
+            methods_by_source[sia] != methods_by_source[sib]
+            for i, sia in enumerate(source_ids)
+            for sib in source_ids[i + 1:]
+        )
+        if methods_differ:
+            conf = 0.85 if all(len(m) > 0 for m in methods_by_source.values()) else 0.70
+            return {"cause": CAUSE_METHODOLOGICAL, "confidence": conf,
+                    "reason": f"Different methods: {', '.join(sorted(all_methods))}",
+                    "method": "rule"}
+
+    # ── Rule 3: Condition variance (条件不同) ──
+    all_tags = set().union(*tags_by_source.values())
+    if len(all_tags) > 0:
+        tags_differ = any(
+            tags_by_source[sia] != tags_by_source[sib]
+            for i, sia in enumerate(source_ids)
+            for sib in source_ids[i + 1:]
+        )
+        if tags_differ:
+            conf = 0.85 if all(len(t) > 0 for t in tags_by_source.values()) else 0.70
+            return {"cause": CAUSE_CONDITION, "confidence": conf,
+                    "reason": f"Different conditions: {', '.join(sorted(all_tags))}",
+                    "method": "rule"}
+
+    # ── Rule 4: Temporal variation (时间差异 > 5 年) ──
+    valid_years = [y for y in years_by_source.values() if y is not None]
+    if len(valid_years) >= 2:
+        year_span = max(valid_years) - min(valid_years)
+        if year_span > _TEMPORAL_GAP_THRESHOLD:
+            return {"cause": CAUSE_TEMPORAL, "confidence": 0.75,
+                    "reason": f"Time span: {year_span} years ({min(valid_years)}–{max(valid_years)})",
+                    "method": "rule"}
+
+    # ── Rule 5: Measurement uncertainty (小差异) ──
+    cohens_d = variance.get("max_cohens_d", 0)
+    if cohens_d < 0.5:
+        return {"cause": CAUSE_UNCERTAINTY, "confidence": 0.80,
+                "reason": f"Small effect (d={cohens_d:.2f}), within measurement uncertainty",
+                "method": "rule"}
+
+    # ── Rule 6: 无法确定 → LLM 补充 ──
+    return {"cause": CAUSE_UNKNOWN, "confidence": 0.40,
+            "reason": "Could not determine cause from available metadata",
+            "method": "rule"}
 
 
+# ── 向后兼容: 旧 API ──
 def classify_conflict_rule(
     conflict: dict[str, Any],
     semantic_types: dict[str, Any] | None = None,
     field_criticality: str = "important",
 ) -> dict[str, Any]:
     """
-    确定性规则分类 (V2.2: 条件字段判断泛化)。
+    向后兼容的旧 API — 内部转调 V3.0 classify_variance_cause()。
 
-    Args:
-        conflict: 含上下文信息的单个冲突
-        semantic_types: profile.semantic_types
-        field_criticality: 字段关键性 (critical/important/auxiliary)
-
-    Returns:
-        {conflict_id, type, subtype, severity, rule_confidence}
+    旧返回格式: {conflict_id, type, subtype, severity, rule_confidence}
     """
-    ctype = conflict.get("type", "unknown")
-    ctx = conflict.get("context", {})
-    cohens_d = conflict.get("cohens_d", 0)
-    same_material = ctx.get("same_material", True)
-    same_condition = ctx.get("same_condition", True)
-    temporal_gap = ctx.get("temporal_gap_years")
-    fn = conflict.get("field_name", "")
-    is_condition_field = _is_condition_field(fn, semantic_types)
+    result = classify_variance_cause(conflict, semantic_types)
 
-    # ── Step 1: Type 分类 ──
-    if ctype in ("cross_source_value_conflict", "statistical_conflict"):
-        resolved_type = "cross_source_value_conflict"
-    elif ctype in ("type_conflict", "type_inconsistency"):
-        resolved_type = "type_inconsistency"
-    elif ctype in ("unit_conflict", "unit_inconsistency"):
-        resolved_type = "unit_inconsistency"
-    else:
-        resolved_type = ctype
-
-    # ── Step 2: Subtype 分类 ──
-    subtype = "undetermined"
-    rule_confidence = 0.5
-
-    if resolved_type == "cross_source_value_conflict":
-        if not same_material:
-            subtype = "material_difference"
-            rule_confidence = 0.85
-        elif not same_condition and is_condition_field:
-            subtype = "condition_difference"
-            rule_confidence = 0.80
-        elif cohens_d >= 0.8 and same_material and same_condition:
-            subtype = "systematic_bias"
-            rule_confidence = 0.80
-        elif cohens_d >= 0.5 and same_material:
-            subtype = "measurement_discrepancy"
-            rule_confidence = 0.70
-        elif temporal_gap is not None and temporal_gap > 10:
-            subtype = "temporal_drift"
-            rule_confidence = 0.65
-        else:
-            subtype = "undetermined"
-
-    elif resolved_type == "type_inconsistency":
-        values_a = str(conflict.get("value_a", ""))
-        values_b = str(conflict.get("value_b", ""))
-        try:
-            float(values_a.replace("~", "").replace("≈", "").strip())
-            subtype = "numeric_vs_string"
-            rule_confidence = 0.90
-        except ValueError:
-            subtype = resolved_type
-            rule_confidence = 0.60
-
-    elif resolved_type == "unit_inconsistency":
-        subtype = "same_dimension"
-        rule_confidence = 0.70
-
-    elif resolved_type == "semantic_conflict":
-        subtype = "undetermined"
-        rule_confidence = 0.30
-
-    elif resolved_type == "completeness_conflict":
-        subtype = "undetermined"
-        rule_confidence = 0.40
-
-    # ── Step 3: Severity 分类 ──
-    severity = "medium"
-    if field_criticality == "critical" and cohens_d >= 0.8:
-        severity = "critical"
-    elif field_criticality == "critical" and cohens_d >= 0.5:
-        severity = "high"
-    elif field_criticality == "important":
-        severity = "medium"
-    elif field_criticality == "auxiliary":
-        severity = "low"
-
-    logger.debug("[RuleClassifier] %s → %s/%s/%s (confidence=%.2f)",
-                 conflict.get("conflict_id", "?"), resolved_type, subtype, severity, rule_confidence)
+    # 映射 V3.0 cause → 旧 subtype
+    cause_subtype_map = {
+        CAUSE_METHODOLOGICAL: "methodological_variance",
+        CAUSE_CONDITION: "condition_variance",
+        CAUSE_TEMPORAL: "temporal_variation",
+        CAUSE_UNCERTAINTY: "measurement_uncertainty",
+        CAUSE_DUPLICATE: "duplicate_observation",
+        CAUSE_UNKNOWN: "undetermined",
+    }
 
     return {
         "conflict_id": conflict.get("conflict_id"),
-        "type": resolved_type,
-        "subtype": subtype,
-        "severity": severity,
-        "rule_confidence": rule_confidence,
+        "type": "multi_source_variance",
+        "subtype": cause_subtype_map.get(result["cause"], "undetermined"),
+        "severity": "info",  # V3.0: 方差不是错误, 是信息
+        "rule_confidence": result["confidence"],
     }

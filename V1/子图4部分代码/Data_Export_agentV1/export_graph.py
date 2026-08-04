@@ -66,6 +66,16 @@ def _export_generation_node(state: QualityGraphState) -> dict[str, Any]:
 
 
 # ==========================================================
+# 子图出口状态透传 (V3.3: 供主图 Stage Gate 消费)
+# ==========================================================
+
+def _finalize(state: QualityGraphState) -> dict[str, Any]:
+    """透传子图最终 execution_status (Retry/Failed 冒泡到主图 Gate)。"""
+    status = state.get("workflow_state", {}).get("execution_status", "Success")
+    return {"workflow_state": {"execution_status": status}}
+
+
+# ==========================================================
 # 构建 SubGraph
 # ==========================================================
 
@@ -78,16 +88,22 @@ def build_export_graph() -> StateGraph[QualityGraphState]:
     graph.add_node("traceability_construction", _traceability_node)
     graph.add_node("output_validation", _output_validation_node)
     graph.add_node("export_generation", _export_generation_node)
+    graph.add_node("finalize", _finalize)
 
     graph.set_entry_point("data_organization")
 
-    # 线性流水线: 6 Stage → END
+    # 线性流水线: 6 Stage → finalize → END
     graph.add_edge("data_organization", "schema_formatting")
     graph.add_edge("schema_formatting", "metadata_generation")
     graph.add_edge("metadata_generation", "traceability_construction")
     graph.add_edge("traceability_construction", "output_validation")
+
+    # V3.2: 校验失败时仍进入 export_generation (构建 output_state),
+    # 但由 export_generation 标记 quarantine (consumable=false)
     graph.add_edge("output_validation", "export_generation")
-    graph.add_edge("export_generation", END)
+    # V3.5 fix: 单一终点边 — export_generation → finalize → END (删除重复边)
+    graph.add_edge("export_generation", "finalize")
+    graph.add_edge("finalize", END)
 
     logger.info("[Workflow] Export SubGraph built (6 Agents).")
     return graph

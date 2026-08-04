@@ -28,35 +28,54 @@ def generate_metadata(
     conflict = report_state.get("conflict") or {}
     resolution_report = conflict.get("resolution_report", {})
 
-    # ── 1. Field Definitions ──
+    # ── 1. Field Definitions (V4 fix: 以实际数据字段为基础, union schema 字段) ──
+    # 此前只遍历静态 target_schema: 数据中实际字段 (如 distance_modulus /
+    # database_catalog_properties) 未定义, schema-only 字段 (redshift 等) 却
+    # 全部"被定义" — 定义集与数据脱节。
+    # 另一死代码点: semantic_types 键是 "{entity}:{name}/{field}" (entity-aware),
+    # 此前按纯 field_name 查找恒 miss → 补丁从未生效。
     field_definitions: dict[str, dict] = {}
     profile = quality.get("profile", {})
     semantic_types = profile.get("semantic_types", {})
 
-    if target_schema:
-        for f in target_schema.get("fields", []):
-            name = f.get("name", "")
-            if not name:
-                continue
-            st = semantic_types.get(name, {})
-            st_type = st.get("semantic_type", "") if isinstance(st, dict) else str(st)
+    schema_map = {f.get("name", ""): f for f in (target_schema or {}).get("fields", []) if f.get("name")}
+    actual_fields = sorted({r.get("field_name", "") for r in records if r.get("field_name")})
+
+    def _lookup_semantic_type(fn: str) -> dict:
+        """兼容 entity-aware 键 "{et}:{en}/{field}", 取末段匹配。"""
+        if fn in semantic_types:
+            st = semantic_types[fn]
+            return st if isinstance(st, dict) else {"semantic_type": str(st)}
+        for key, st in semantic_types.items():
+            if str(key).endswith("/" + fn):
+                return st if isinstance(st, dict) else {"semantic_type": str(st)}
+        return {}
+
+    for fn in actual_fields:
+        f = schema_map.get(fn, {})
+        st = _lookup_semantic_type(fn)
+        st_type = st.get("semantic_type", "") or f.get("semantic_type", "")
+        field_definitions[fn] = {
+            "standard_unit": f.get("standard_unit") or st.get("standard_unit"),
+            "semantic_type": st_type,
+            "criticality": f.get("criticality", "important" if f else "auxiliary"),
+            "aliases": f.get("aliases", []),
+            "in_schema": fn in schema_map,
+            "is_extra_field": fn not in schema_map,
+            "description": "",  # LLM 填充
+        }
+
+    # schema-only 字段 (数据中未出现) — 标注 in_data: False, 而非凭空"被定义"
+    for name, f in schema_map.items():
+        if name not in field_definitions:
             field_definitions[name] = {
                 "standard_unit": f.get("standard_unit"),
-                "semantic_type": st_type,
+                "semantic_type": f.get("semantic_type", ""),
                 "criticality": f.get("criticality", "important"),
                 "aliases": f.get("aliases", []),
+                "in_schema": True,
+                "in_data": False,
                 "description": "",  # LLM 填充
-            }
-
-    # 为不在 schema 中的字段也从 semantic_types 推断
-    for fn, st in semantic_types.items():
-        if fn not in field_definitions:
-            st_type = st.get("semantic_type", "") if isinstance(st, dict) else str(st)
-            field_definitions[fn] = {
-                "standard_unit": st.get("standard_unit") if isinstance(st, dict) else None,
-                "semantic_type": st_type,
-                "criticality": "auxiliary",
-                "is_extra_field": True,
             }
 
     # ── 2. Source Summary ──

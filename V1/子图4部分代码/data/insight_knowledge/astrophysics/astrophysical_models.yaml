@@ -1,0 +1,450 @@
+entries:
+- id: NE2001_model
+  title: NE2001 银河系自由电子密度模型
+  category: galactic_model
+  tags:
+  - NE2001
+  - Milky_Way
+  - electron
+  - density
+  - DM
+  - Cordes
+  - Lazio
+  applies_to:
+    fields:
+    - dispersion_measure
+  content: 'NE2001 (Cordes & Lazio 2002): 银河系自由电子密度分布模型。
+
+
+    模型组成:
+
+    - 薄盘 (thin disk): 指数标高 ~1 kpc, 螺旋臂结构
+
+    - 厚盘 (thick disk): 指数标高 ~1-3 kpc
+
+    - 局域泡 (Local Bubble): ~100 pc 内的低密度区域
+
+    - 团块 (clumps): 离散 HII 区, 超新星遗迹
+
+
+    局限:
+
+    - 基于 ~1000 颗脉冲星数据, 银盘外约束较弱
+
+    - 不确定度 ~30% for |b|>30°, 低银纬更差
+
+    - 未包含 halo 成分 (近年发现可能有 ~10-30 pc cm⁻³ 的 halo 贡献)
+
+
+    与 YMW16 对比: NE2001 平均预测偏低 ~10-20%
+
+    '
+  source: Cordes & Lazio 2002, astro-ph/0207156
+  confidence: consensus
+- id: YMW16_model
+  title: YMW16 银河系电子密度模型
+  category: galactic_model
+  tags:
+  - YMW16
+  - Milky_Way
+  - electron
+  - density
+  - DM
+  - Yao
+  - Manchester
+  - Wang
+  applies_to:
+    fields:
+    - dispersion_measure
+  content: 'YMW16 (Yao, Manchester & Wang 2017): 更新的银河系电子密度模型。
+
+
+    相比 NE2001:
+
+    - 使用了更多脉冲星 (~2000)
+
+    - 对银盘外区域约束更好
+
+    - 但在某些方向可能 overfit (过于复杂的结构)
+
+
+    实践建议: 对同一个天体, 同时用 NE2001 和 YMW16 扣除银河系 DM,
+
+    取两者差异范围的中间值, 差异本身作为银河系 DM 扣除的不确定度
+
+    '
+  source: Yao, Manchester & Wang 2017, ApJ
+  confidence: consensus
+- id: Macquart_relation
+  title: Macquart DM-z 关系
+  category: cosmological_relation
+  tags:
+  - Macquart
+  - DM
+  - redshift
+  - cosmology
+  - IGM
+  - baryon
+  applies_to:
+    fields:
+    - dispersion_measure
+    - redshift
+    entities:
+    - FRB
+  content: 'Macquart 关系 (Macquart et al. 2020):
+
+    FRB 的 DM 可作为宇宙学的探针。
+
+
+    <DM_IGM> 随红移的变化:
+
+    - z=0.1: <DM_IGM> ≈ 100 pc cm⁻³
+
+    - z=0.5: <DM_IGM> ≈ 400 pc cm⁻³
+
+    - z=1.0: <DM_IGM> ≈ 850 pc cm⁻³
+
+    - z=2.0: <DM_IGM> ≈ 1400 pc cm⁻³
+
+
+    散点: σ(DM_IGM) / <DM_IGM> ≈ 20-40% (取决于 baryon feedback 模型)
+
+
+    用于 FRB 宇宙学:
+
+    已知 z (from host galaxy) + 扣除 DM_MW + DM_halo → DM_IGM
+
+    → 验证与 <DM_IGM(z)> 的一致性 → 检验宇宙学模型
+
+    '
+  source: Macquart et al. 2020, Nature
+  confidence: established
+- id: LambdaCDM_cosmology
+  title: ΛCDM 标准宇宙学模型参数
+  category: cosmological_model
+  tags:
+  - LambdaCDM
+  - cosmology
+  - Hubble
+  - dark_energy
+  - dark_matter
+  - Planck
+  applies_to:
+    fields:
+    - redshift
+    - luminosity_distance
+    - angular_diameter_distance
+    - distance
+  content: 'Planck 2018 ΛCDM 参数 (Planck Collaboration 2020):
+
+    - H₀ = 67.4 ± 0.5 km/s/Mpc
+
+    - Ω_m = 0.315 ± 0.007
+
+    - Ω_Λ = 0.685 ± 0.007
+
+    - Ω_b = 0.0493 ± 0.0006
+
+
+    光度距离公式 (flat ΛCDM):
+
+    D_L(z) = (c/H₀) × (1+z) × ∫₀ᶻ dz''/E(z'')
+
+    其中 E(z) = √(Ω_m(1+z)³ + Ω_Λ)
+
+
+    用于将红移转换为物理距离和尺度
+
+    '
+  source: Planck Collaboration 2020, A&A
+  confidence: established
+- id: stellar_evolution_pathway
+  title: 恒星结构与演化路径
+  category: physical_law
+  tags:
+  - evolution
+  - stellar
+  applies_to:
+    entities:
+    - star
+    - evolved_star
+  content: '恒星演化由质量决定终点: 主序 (核心氢燃烧) → 红巨星 (壳层氢) → 氦燃烧 →
+
+    AGB (热脉冲) → 行星状星云+白矮星 (<8 Msun) 或 超新星+中子星/黑洞 (>8 Msun)。
+
+    物理原理: 各阶段由核燃烧产能与引力收缩的平衡驱动; 简并压中断收缩后
+
+    触发热核爆发 (氦闪、热脉冲、超新星)。
+
+    判定线索: 记录的年龄与演化阶段矛盾 (如 1 Gyr 的红超巨星) 提示字段错位。'
+  source: 恒星结构教科书; 演化路径综述
+  confidence: consensus
+- id: ms_lifetime_mass_relation
+  title: 主序寿命-质量关系
+  category: empirical_relation
+  tags:
+  - lifetime
+  - mass
+  applies_to:
+    entities:
+    - main_sequence_star
+    - star
+  content: '主序寿命 τ ∝ M/L ∝ M^-2.5 (核燃料 ∝ 质量, 光度 ∝ M^3.5): 太阳 ~10 Gyr,
+
+    O 型星仅数百万年, M 矮星超宇宙年龄。
+
+    物理原理: 大质量星辐射压主导 → 光度陡增 → 燃料更快耗尽;
+
+    判定线索: 大质量星 (O/B) 记录 >1 Gyr 年龄 = 矛盾 (应已超新星);
+
+    年老星族中检测到大质量主序星 = 双星质量转移或并合产物 (蓝离散星)。'
+  source: 质光关系教科书推论; UNLV 主序表
+  confidence: established
+- id: chandrasekhar_limit
+  title: Chandrasekhar 极限
+  category: physical_law
+  tags:
+  - chandrasekhar
+  - degeneracy
+  applies_to:
+    entities:
+    - white_dwarf
+    - supernova
+  content: '电子简并压支撑白矮星的极限质量 ~1.44 Msun (Chandrasekhar 1931)。
+
+    超过极限: 简并压不足以抵抗引力 → 塌缩 (中子星/黑洞) 或碳点燃热核爆炸 (SN Ia)。
+
+    物理原理: 简并压 ∝ ρ^(5/3) (非相对论) → ρ^(4/3) (相对论), 相对论简并压
+
+    无法稳定超过临界质量。
+
+    判定线索: 白矮星质量 >1.4 Msun 的记录必错 (除非是中子星误标);
+
+    SN Ia 峰值光度由 56Ni 产量定 — 超亮/超暗 Ia 偏离标准烛光需解释。'
+  source: Chandrasekhar 1931; SN Ia 物理综述
+  confidence: established
+- id: neutron_star_structure
+  title: 中子星结构
+  category: physical_law
+  tags:
+  - neutron_star
+  - tov
+  applies_to:
+    entities:
+    - neutron_star
+    - pulsar
+  content: '中子星由中子简并压+强核力支撑: 半径 10-13 km, 密度 1e14-1e15 g/cm^3,
+
+    质量 1.1-2.5 Msun (实测最高 2.35, GW170817 约束 M_TOV ≤ 3.06)。
+
+    质量必须靠双星轨道测量 (Kepler 定律), 单独的光度无法定质量。
+
+    磁星表面磁场 1e14-1e15 G (超量子临界场 4.4e13 G), 能量来自磁场衰减。
+
+    判定线索: 质量 >3 Msun 的 ''中子星'' = 应为黑洞; 半径标成 10 km 的 ''恒星''
+
+    记录几乎必为单位混淆 (km vs Rsun)。'
+  source: GW170817 约束; PSR J0348+0432 等; 中子星综述
+  confidence: consensus
+- id: agn_unified_model
+  title: AGN 统一模型
+  category: galactic_model
+  tags:
+  - agn
+  - unified
+  - torus
+  applies_to:
+    entities:
+    - agn
+    - seyfert_galaxy
+    - quasar
+    - blazar
+  content: '统一模型 (Antonucci & Miller 1985): 所有 AGN 由 SMBH + 吸积盘 + 尘埃 torus
+
+    构成, 观测类型 = 视线取向效应:
+
+    - 面向轴: Sy1/类星体 (宽线区可见)
+
+    - 侧视: Sy2 (torus 遮挡宽线区)
+
+    - 喷流正对: Blazar (相对论聚束)
+
+    基石证据: NGC 1068 偏振谱中隐藏的宽线; X 射线吸收柱 1e22-1e24 cm^-2。
+
+    判定线索: Sy1 与 Sy2 的 X 光度差异常被吸收修正掩盖 — 比较前必须做吸收修正;
+
+    射电响亮与否不是取向效应 (由喷流功率/黑洞自旋决定)。'
+  source: Antonucci 1993; Urry & Padovani 1995; Netzer
+  confidence: consensus
+- id: eddington_accretion
+  title: 爱丁顿吸积与光度上限
+  category: physical_law
+  tags:
+  - eddington
+  - accretion
+  applies_to:
+    entities:
+    - agn
+    - quasar
+    - black_hole
+    - xray_binary
+  content: '爱丁顿光度 L_Edd = 4πGMm_p c/σ_T = 1.26e38 (M/Msun) erg/s 是辐射压平衡
+
+    引力的上限, 与距离无关 — 是第一性 sanity check 锚点:
+
+    - 由光度得黑洞质量下限 M ≥ 8e5 (L/1e44 erg/s) Msun
+
+    - 低光度 AGN Eddington 比 0.01-0.001 (ADAF 型吸积)
+
+    - 亮类星体接近 Eddington (λ ~ 0.45 实测上限)
+
+    判定线索: 持续光度 > L_Edd 数倍的记录需要非球对称吸积 (超 Eddington) 解释
+
+    或复核光度/质量; X 射线双星光度上限即 1.3e38 (M/Msun) erg/s。'
+  source: JILA Eddington 讲义; Trinity 模型; Alonso-Herrero 2008
+  confidence: established
+- id: galactic_chemical_evolution
+  title: 星系化学演化
+  category: galactic_model
+  tags:
+  - chemical
+  - metallicity
+  applies_to:
+    fields:
+    - metallicity
+    entities:
+    - galaxy
+  content: '星系金属丰度随恒星形成历史累积: 恒星核合成产出金属, 超新星/星风回注 ISM。
+
+    两个丰度标尺不可混用: 星云氧标尺 12+log(O/H) (太阳 8.69) 与恒星铁标尺 [Fe/H];
+
+    [O/Fe] 在 [Fe/H]≈-1 处随 SN Ia 贡献而下降, 两标尺间不是常数偏移。
+
+    物理原理: 大质量星 (核塌缩 SN) 产 O/Mg, 白矮星 (SN Ia) 产 Fe — 丰度比是
+
+    恒星形成时标的探针。
+
+    判定线索: [Fe/H] 与 12+log(O/H) 混用 (数值差 ~8.7) 是常见单位错误;
+
+    [Fe/H] > +0.5 的星系记录需高置信证据。'
+  source: Asplund 2009; 化学演化综述; 氧丰度转换讨论
+  confidence: consensus
+- id: stromgren_sphere_model
+  title: Strömgren 球与 HII 区
+  category: galactic_model
+  tags:
+  - stromgren
+  - hii
+  applies_to:
+    entities:
+    - hii_region
+  content: 'Strömgren 球模型: 电离源 (O/B 星) 周围电离-复合平衡形成电离区,
+
+    半径 R_s = (3Q/4πα n^2)^(1/3); 光子率固定时 n^2 R^3 = 常数。
+
+    α_B ≈ 2.4e-11 T^(-1/2) cm^3/s (Case B 复合, 弱温度依赖)。
+
+    物理原理: 电离区边界 = 复合率追上电离率之处 (Strömgren 1939)。
+
+    判定线索: ''大而暗'' 的 HII 区 (R 大但光度低) 说明密度极低 (n^2R^3 守恒),
+
+    ''小而亮'' 说明高密度 (UCHII) — 尺寸-密度反比是物理必然而非矛盾。'
+  source: Strömgren 1939; Kiel 讲义; Kennicutt 2002
+  confidence: established
+- id: snr_sedov_expansion
+  title: SNR Sedov 膨胀演化
+  category: physical_law
+  tags:
+  - sedov
+  - snr
+  applies_to:
+    entities:
+    - supernova_remnant
+  content: '超新星遗迹演化四阶段: 自由膨胀 (抛射物惯性) → Sedov 绝热 (R ∝ t^2/5,
+
+    激波扫入 ISM 质量主导) → 辐射冷却 (壳层形成) → 消散 (~1e5 yr)。
+
+    物理原理: Sedov 解 = 点爆炸在均匀介质中的自相似解, 激波压缩比 4:1,
+
+    激波后温度 ~1e7 K (X 射线热辐射)。
+
+    判定线索: 年轻 SNR (年龄 <1e3 yr) 应仍有高膨胀速度 (数千 km/s);
+
+    老年 SNR 壳层明显、中心无填充 — plerion (脉冲星驱动) 例外。'
+  source: Sedov 1959; SNR 演化讲义 (Oregon); Katsuda 2012
+  confidence: established
+- id: hierarchical_galaxy_formation
+  title: 星系等级形成 (ΛCDM)
+  category: cosmological_model
+  tags:
+  - lcdm
+  - hierarchy
+  applies_to:
+    entities:
+    - galaxy
+    - galaxy_cluster
+  content: 'ΛCDM 冷暗物质等级并合模型: 小结构先形成, 大结构 (星系团/超团) 由并合
+
+    组装; 大质量星系形成较晚 (downsizing 相反面是高质量 SMBH 先完成增长)。
+
+    物理原理: 暗物质晕引力坍缩 → 重子气体冷却落入 → 恒星形成;
+
+    并合触发恒星形成 (潮汐压缩汇聚气体)。
+
+    判定线索: 高红移 (z>3) 记录为 ''成熟星系团'' (富 X 射线 ICM) 与等级形成
+
+    预期矛盾, 需复核红移; 团质量与速度弥散应满足维里关系。'
+  source: ΛCDM 综述; Trinity; Boettner 2025
+  confidence: consensus
+- id: imf_initial_mass_function
+  title: 初始质量函数 IMF
+  category: empirical_relation
+  tags:
+  - imf
+  - salpeter
+  applies_to:
+    entities:
+    - star
+  content: '恒星形成时的初始质量分布: Salpeter 幂律 ξ(M) ∝ M^-2.35 (0.1-100 Msun),
+
+    小质量星数量主导 → 星族平均质量 ~0.3 Msun。
+
+    物理原理: 恒星质量谱由湍流分子云的碎裂+吸积竞争决定 (尚无完整理论,
+
+    IMF 是经验律)。
+
+    应用含义: 由光度推恒星/星系质量必须假设 IMF — Salpeter vs Kroupa/Chabrier
+
+    相差 ~1.55 倍, 这是质量估计最大的系统不确定源。
+
+    判定线索: 跨文献比较恒星/星系质量必须核对 IMF 假设, 否则 1.5 倍差异
+
+    是正常系统差而非数据错误。'
+  source: Salpeter 1955; Kroupa 2001; Conroy 2013
+  confidence: consensus
+- id: ism_three_phase_model
+  title: ISM 三相模型
+  category: galactic_model
+  tags:
+  - ism
+  - phase
+  applies_to:
+    entities:
+    - ism_object
+  content: 'McKee-Ostriker 三相模型: 超新星注入能量动态调节 ISM 压力平衡 (nT≈常数):
+
+    - 冷中性相 CNM: ~100 K, 10-50 cm^-3, 体积 1-4% (但持一半质量)
+
+    - 暖相 WNM/WIM: ~8000 K, 0.1-1 cm^-3 (约一半质量)
+
+    - 热电离相 HIM: ~5e5 K, 3e-3 cm^-3 (占大部分体积)
+
+    物理原理: 各相由加热 (UV/激波) 与冷却 (线辐射) 平衡决定;
+
+    相间通过蒸发/凝结交换物质。
+
+    判定线索: 温度+密度配对可唯一归属相态 — ''冷而稀薄'' 或 ''热而稠密'' 的
+
+    ISM 记录违反压力平衡, 需复核单位。'
+  source: McKee & Ostriker 1977; Begelman & McKee; ISM 讲义
+  confidence: consensus

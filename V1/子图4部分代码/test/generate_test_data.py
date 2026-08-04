@@ -17,8 +17,9 @@ generate_test_data.py
     python generate_test_data.py --count 500  # 生成 500 条
 """
 
+from __future__ import annotations  # V3.1 fix: future import 必须在文件顶部
+
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from __future__ import annotations
 
 import argparse
 import json

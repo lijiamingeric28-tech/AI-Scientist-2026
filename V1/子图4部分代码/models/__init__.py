@@ -7,10 +7,22 @@ models/ — Pydantic v2 数据模型
 from models.source import Source
 from models.record import Record, Provenance
 from models.grounded_data import GroundedData
+from models.insights import (
+    EvidenceSource,
+    FieldInsight,
+    CrossFieldRelationship,
+    DataUsageRecommendation,
+    DataInsightsReport,
+)
 
 __all__ = [
     "Source",
     "Record",
     "Provenance",
     "GroundedData",
+    "EvidenceSource",
+    "FieldInsight",
+    "CrossFieldRelationship",
+    "DataUsageRecommendation",
+    "DataInsightsReport",
 ]

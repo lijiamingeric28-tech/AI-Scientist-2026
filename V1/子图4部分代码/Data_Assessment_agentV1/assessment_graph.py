@@ -54,6 +54,16 @@ def _decision_node(state: QualityGraphState) -> dict[str, Any]:
 
 
 # ==========================================================
+# 子图出口状态透传 (V3.3: 供主图 Stage Gate 消费)
+# ==========================================================
+
+def _finalize(state: QualityGraphState) -> dict[str, Any]:
+    """透传子图最终 execution_status (Retry/Failed 冒泡到主图 Gate)。"""
+    status = state.get("workflow_state", {}).get("execution_status", "Success")
+    return {"workflow_state": {"execution_status": status}}
+
+
+# ==========================================================
 # 构建 SubGraph
 # ==========================================================
 
@@ -64,12 +74,14 @@ def build_assessment_graph() -> StateGraph[QualityGraphState]:
     graph.add_node("quality_assessment", _assessment_node)
     graph.add_node("scoring", _scoring_node)
     graph.add_node("decision", _decision_node)
+    graph.add_node("finalize", _finalize)
 
     graph.set_entry_point("profiling")
     graph.add_edge("profiling", "quality_assessment")
     graph.add_edge("quality_assessment", "scoring")
     graph.add_edge("scoring", "decision")
-    graph.add_edge("decision", END)
+    graph.add_edge("decision", "finalize")
+    graph.add_edge("finalize", END)
 
-    logger.info("[Workflow] Assessment SubGraph built (4 Agents).")
+    logger.info("[Workflow] Assessment SubGraph built (4 Agents + finalize).")
     return graph

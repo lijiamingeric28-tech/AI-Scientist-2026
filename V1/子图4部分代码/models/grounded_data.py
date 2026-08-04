@@ -23,9 +23,9 @@ class GroundedData(BaseModel):
     提取子图的最终产物，供下游清洗子图消费。
     """
 
-    schema_version: Literal["1.0.0"] = Field(
-        default="1.0.0",
-        description="接口版本号，用于前后端兼容校验。V1 固定 '1.0.0'。",
+    schema_version: Literal["1.0.0", "2.0.0"] = Field(
+        default="2.0.0",
+        description="接口版本号，用于前后端兼容校验。V2.0 支持 paper/database/supplement 三类 source。",
     )
 
     sources: list[Source] = Field(

@@ -1,7 +1,8 @@
 """
-quality_assessment_agent.py — Stage 2: QualityAssessmentAgent (V2.3)
+quality_assessment_agent.py — Stage 2: QualityAssessmentAgent (V3.0)
 
 职责: 对每篇论文独立调用质量检测工具, 生成 per-source Quality Report。
+V3.0: 冲突检测 → 多源方差分析 (不再淘汰数据, 只标注差异 + 检测异常)。
 V2.3: 并行处理 — sources 使用 ThreadPoolExecutor 并发评估,
       LLM 完整性分析也并行执行, 大幅缩短总耗时。
 """
@@ -19,16 +20,47 @@ logger = get_logger(__name__)
 # 并行线程数 (I/O 密集型 LLM 调用, 可设较多)
 _MAX_WORKERS = 8
 
+# 异常类型常量
+_ANOMALY_STATISTICAL = "statistical_outlier"
+_ANOMALY_EXTRACTION = "extraction_error"
+_ANOMALY_UNIT = "unit_error"
+_ANOMALY_CROSS_ID = "cross_id_error"
+
+
+def _filter_source_anomalies(anomalies: list[dict], sid: str) -> list[dict]:
+    """从全局异常列表中筛选涉及指定 source 的异常。"""
+    result = []
+    for a in anomalies:
+        atype = a.get("anomaly_type", "")
+        if atype == _ANOMALY_STATISTICAL:
+            if a.get("source_a") == sid or a.get("source_b") == sid:
+                result.append(a)
+        elif atype == _ANOMALY_EXTRACTION:
+            if a.get("source_id") == sid:
+                result.append(a)
+        elif atype == _ANOMALY_UNIT:
+            units_found = a.get("units_found", {})
+            if isinstance(units_found, dict) and sid in units_found:
+                result.append(a)
+        elif atype == _ANOMALY_CROSS_ID:
+            # V3.0 fix: 只对涉及同名 entity 的 source 可见 (不广播到全部 source)
+            pass  # cross_id 异常不属于任何特定 source, 由 downstream Conflict 处理
+        else:
+            # 通用fallback: 检查 source_a/source_b 或 source_id
+            if a.get("source_a") == sid or a.get("source_b") == sid or a.get("source_id") == sid:
+                result.append(a)
+    return result
+
 
 def _assess_single_source(
     sid: str,
     recs: list[dict],
     all_sources: list[dict],
     target_schema: dict | None,
-    global_conflict_risk: dict,
+    global_variance_result: dict,
     adaptive_engine,
 ) -> dict:
-    """评估单个 source (在独立线程中运行)。"""
+    """评估单个 source (在独立线程中运行) — V3.0 方差分析版。"""
     sub_data = {
         "sources": [s for s in all_sources if s.get("source_id") == sid],
         "records": recs,
@@ -49,18 +81,31 @@ def _assess_single_source(
     fmt = check_format(sub_data)
     source_rel = check_source_reliability(sub_data)
 
-    # per-source 冲突筛选
-    source_conflicts = [
-        c for c in global_conflict_risk.get("conflicts", [])
-        if c.get("source_a") == sid or c.get("source_b") == sid
+    # ── V3.0: per-source 异常筛选 (替代旧 per-source 冲突筛选) ──
+    source_anomalies = _filter_source_anomalies(
+        global_variance_result.get("anomalies", []), sid
+    )
+    # per-source 方差 (该 source 参与的多源差异组)
+    source_variances = [
+        v for v in global_variance_result.get("variances", [])
+        if sid in v.get("source_ids", [])
     ]
+
     conflict_risk = {
-        "has_conflicts": len(source_conflicts) > 0,
-        "conflict_count": len(source_conflicts),
-        "conflicts": source_conflicts,
-        "risk_level": global_conflict_risk.get("risk_level", "none"),
-        "method": global_conflict_risk.get("method", "cohens_d"),
-        "summary": f"{len(source_conflicts)} conflict(s) involving this source",
+        # V3.0: has_conflicts → 仅当此 source 存在 anomaly
+        "has_conflicts": len(source_anomalies) > 0,
+        "conflict_count": len(source_anomalies),
+        "conflicts": source_anomalies,  # 兼容下游 (实际是 anomalies)
+        "risk_level": global_variance_result.get("risk_level", "none"),
+        "method": global_variance_result.get("method", "multi_source_variance"),
+        # V3.0 新增
+        "has_variance": len(source_variances) > 0,
+        "variance_count": len(source_variances),
+        "variances": source_variances,
+        "summary": (
+            f"{len(source_anomalies)} anomaly(ies), "
+            f"{len(source_variances)} multi-source variance group(s)"
+        ),
     }
 
     # 自适应阈值
@@ -68,7 +113,7 @@ def _assess_single_source(
     adaptive_comp_threshold = adaptive_engine.get_completeness_threshold(comp_field, n_recs)
     below_threshold = completeness["score"] < adaptive_comp_threshold
 
-    # Issue list (V2.3: 加入 extraction_quality)
+    # ── V3.0: Issue list (anomalies 作为 error, variances 作为 info) ──
     src_issues: list[dict] = []
     for dim_name, dim_result in [
         ("extraction_quality", extraction_quality),
@@ -81,11 +126,33 @@ def _assess_single_source(
                 "field": iss if isinstance(iss, str) else iss.get("field_name", ""),
                 "detail": str(iss),
             })
-    for c in conflict_risk.get("conflicts", []):
+
+    # 异常 → error
+    for a in source_anomalies:
+        atype = a.get("anomaly_type", "unknown")
+        field = a.get("field_name", "")
+        detail = (
+            f"[{atype}] {a.get('entity_name','?')}: "
+            f"{a.get('evidence', {})}"
+        )
         src_issues.append({
-            "dimension": "conflict_risk", "severity": "error",
-            "field": c.get("field_name", ""),
-            "detail": f"{c.get('type','?')}: {c.get('value_a','?')} vs {c.get('value_b','?')}",
+            "dimension": "anomaly", "severity": "error",
+            "field": field, "detail": detail,
+        })
+
+    # 多源方差 → info (不阻塞 export, 仅标注)
+    for v in source_variances:
+        cause = v.get("inferred_cause", "unknown")
+        field = v.get("field_name", "")
+        detail = (
+            f"multi_source_variance[{cause}]: "
+            f"{v.get('entity_name','?')} "
+            f"range={v.get('value_range',[])} "
+            f"({v.get('source_count',0)} sources)"
+        )
+        src_issues.append({
+            "dimension": "multi_source_variance", "severity": "info",
+            "field": field, "detail": detail,
         })
 
     src_meta = next((s for s in all_sources if s.get("source_id") == sid), {})
@@ -145,9 +212,9 @@ class QualityAssessmentAgent:
             if sid not in source_groups:
                 source_groups[sid] = []
 
-        # ── 全局冲突检测 (必须先做, 不能并行) ──
-        from tools.assessment.statistical_conflict import detect_conflicts_statistical
-        global_conflict_risk = detect_conflicts_statistical(input_data, use_advanced=True)
+        # ── V3.0: 全局多源方差分析 (必须先做, 不能并行) ──
+        from tools.assessment.statistical_conflict import analyze_multi_source_variance
+        global_variance_result = analyze_multi_source_variance(input_data)
         tool_count = 1
 
         # ══════════════════════════════════════════════════
@@ -155,7 +222,8 @@ class QualityAssessmentAgent:
         # ══════════════════════════════════════════════════
         source_reports: dict[str, dict] = {}
         total_issues = 0
-        total_conflicts = 0
+        total_anomalies = 0
+        total_variances = 0
 
         n_workers = min(_MAX_WORKERS, max(1, len(source_groups)))
         logger.info("[QualityAssessment] Processing %d sources with %d workers",
@@ -167,7 +235,7 @@ class QualityAssessmentAgent:
                 future = executor.submit(
                     _assess_single_source,
                     sid, recs, all_sources, target_schema,
-                    global_conflict_risk, adaptive_engine,
+                    global_variance_result, adaptive_engine,
                 )
                 futures[future] = sid
 
@@ -177,7 +245,8 @@ class QualityAssessmentAgent:
                     sid = result.pop("source_id")
                     source_reports[sid] = result
                     total_issues += result["issue_count"]
-                    total_conflicts += result["conflict_risk"]["conflict_count"]
+                    total_anomalies += result["conflict_risk"]["conflict_count"]
+                    total_variances += result["conflict_risk"].get("variance_count", 0)
                     tool_count += 5  # V2.3: +extraction_quality
                 except Exception as e:
                     sid = futures[future]
@@ -187,7 +256,8 @@ class QualityAssessmentAgent:
                         "completeness": {"score": 0.0}, "consistency": {"score": 0.0},
                         "format": {"score": 0.0, "total_issues": 0},
                         "source_reliability": {"score": 0.0},
-                        "conflict_risk": {"has_conflicts": False, "conflict_count": 0, "conflicts": []},
+                        "conflict_risk": {"has_conflicts": False, "conflict_count": 0, "conflicts": [],
+                                         "has_variance": False, "variance_count": 0, "variances": []},
                         "issues": [], "issue_count": 0,
                         "llm_completeness": None, "below_adaptive_threshold": False,
                         "error": str(e),
@@ -230,13 +300,25 @@ class QualityAssessmentAgent:
         quality["sources"] = source_reports
         quality["source_count"] = len(source_reports)
         quality["total_issues"] = total_issues
-        quality["total_conflicts"] = total_conflicts
+        quality["total_anomalies"] = total_anomalies
+        quality["total_variances"] = total_variances
+        # V3.0: 保存全局方差分析结果供下游 Conflict Agent 使用
+        quality["multi_source_variance"] = {
+            "has_variance": global_variance_result.get("has_variance", False),
+            "variance_count": global_variance_result.get("variance_count", 0),
+            "variances": global_variance_result.get("variances", []),
+            "has_anomalies": global_variance_result.get("has_anomalies", False),
+            "anomaly_count": global_variance_result.get("anomaly_count", 0),
+            "anomalies": global_variance_result.get("anomalies", []),
+            "risk_level": global_variance_result.get("risk_level", "none"),
+            "summary": global_variance_result.get("summary", ""),
+        }
 
         tc = wf.get("tool_call_count", 0) + tool_count
         elapsed = round(time.time() - t0, 3)
 
-        logger.info("[QualityAssessmentAgent] %d sources, %d issues, %d conflicts, %.2fs (PARALLEL)",
-                    len(source_reports), total_issues, total_conflicts, elapsed)
+        logger.info("[QualityAssessmentAgent] %d sources, %d issues, %d anomalies, %d variance groups, %.2fs (PARALLEL)",
+                    len(source_reports), total_issues, total_anomalies, total_variances, elapsed)
 
         return {
             "report_state": {"quality": quality},
@@ -249,7 +331,7 @@ class QualityAssessmentAgent:
                     "status": "Success",
                     "timestamp": datetime.datetime.now().isoformat(),
                     "duration": elapsed,
-                    "reason": f"{len(source_reports)} sources (parallel), {total_issues} issues, {total_conflicts} conflicts",
+                    "reason": f"{len(source_reports)} sources (parallel), {total_issues} issues, {total_anomalies} anomalies, {total_variances} variance groups",
                 }],
             },
         }

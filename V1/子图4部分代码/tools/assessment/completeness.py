@@ -76,12 +76,12 @@ def check_completeness(
         # 单位检查（仅数值字段 — V1.1: property_value 永远是 string）
         value = rec.get("field_value")
         from tools._parse_utils import is_numeric
-        if is_numeric(value) and rec.get("field_unit") is None:
+        if is_numeric(value) and not rec.get("field_unit"):  # V4 fix: 空串也算缺失
             records_missing_unit += 1
 
-        # 溯源检查
-        prov = rec.get("provenance", {})
-        if prov is None or prov.get("page") is None or prov.get("bbox") is None:
+        # 溯源检查 (V3.1: paper 和 database 分支)
+        from tools.assessment.source_utils import provenance_is_complete
+        if not provenance_is_complete(rec):
             records_missing_provenance += 1
 
         # V1.1: 收集字段值按 (entity, field_name) 分组
@@ -98,15 +98,38 @@ def check_completeness(
         non_null = sum(1 for v in values if v is not None)
         field_completeness[fname] = non_null / len(values) if values else 0.0
 
-    # 目标 Schema 覆盖检查 (使用纯 field_name, 不包含 entity 前缀)
+    # ── V2: per-entity Schema 覆盖检查 ──
+    # 按 (entity_type, entity_name) 分组，避免 Entity-A 的字段掩盖 Entity-B 的缺失
     expected_fields: list[str] = []
     missing_expected_fields: list[str] = []
-    pure_field_names = sorted(set(rec.get("field_name", "unknown") for rec in records))
+    per_entity_present: dict[tuple, set[str]] = {}
+    per_entity_missing: dict[tuple, set[str]] = {}
+
+    for rec in records:
+        et = rec.get("entity_type", "") or ""
+        en = rec.get("entity_name", "") or ""
+        ekey = (et, en) if (et or en) else ("__global__", "")
+        per_entity_present.setdefault(ekey, set()).add(rec.get("field_name", "unknown"))
+
     if target_schema:
         schema_fields = target_schema.get("fields", [])
         expected_fields = [f.get("name", "") for f in schema_fields if f.get("name")]
-        missing_expected_fields = [f for f in expected_fields if f not in pure_field_names]
-    present_fields = pure_field_names
+        expected_set = set(expected_fields)
+        for ekey, present in per_entity_present.items():
+            missing = expected_set - present
+            if missing:
+                per_entity_missing[ekey] = missing
+
+    # 向后兼容: present_fields 是所有实体的并集, missing_expected_fields 是任一实体缺失的字段
+    present_fields = sorted(set().union(*per_entity_present.values())) if per_entity_present else []
+    if per_entity_missing:
+        missing_expected_fields = sorted(set().union(*per_entity_missing.values()))
+    else:
+        # 如果没有 entity 数据或有 target_schema 但无 entity 分组, 退化为全局检查
+        pure_field_names = sorted(set(rec.get("field_name", "unknown") for rec in records))
+        present_fields = pure_field_names
+        if target_schema:
+            missing_expected_fields = [f for f in expected_fields if f not in pure_field_names]
 
     # 评分
     penalty_source = records_missing_source / total_records if total_records else 0
@@ -126,22 +149,41 @@ def check_completeness(
     if missing_expected_fields:
         issues.append(f"目标 Schema 字段缺失: {missing_expected_fields}")
 
-    # V1.1: per-entity 统计
+    # ── V2: per-entity 统计 (enhanced with entity_type) ──
     entity_stats: dict[str, dict] = {}
     for rec in records:
+        et = rec.get("entity_type", "") or ""
         en = rec.get("entity_name", "unknown")
-        if en not in entity_stats:
-            entity_stats[en] = {"records": 0, "properties": set(), "missing_unit": 0, "missing_prov": 0}
-        entity_stats[en]["records"] += 1
-        entity_stats[en]["properties"].add(rec.get("field_name", ""))
+        ekey = f"{et}:{en}" if et else en
+        if ekey not in entity_stats:
+            entity_stats[ekey] = {
+                "entity_type": et,
+                "entity_name": en,
+                "records": 0,
+                "properties": set(),
+                "missing_unit": 0,
+                "missing_prov": 0,
+            }
+        entity_stats[ekey]["records"] += 1
+        entity_stats[ekey]["properties"].add(rec.get("field_name", ""))
         from tools._parse_utils import is_numeric
-        if is_numeric(rec.get("field_value")) and rec.get("field_unit") is None:
-            entity_stats[en]["missing_unit"] += 1
-        prov = rec.get("provenance", {})
-        if not prov or prov.get("page") is None:
-            entity_stats[en]["missing_prov"] += 1
-    for en in entity_stats:
-        entity_stats[en]["properties"] = sorted(entity_stats[en]["properties"])
+        if is_numeric(rec.get("field_value")) and not rec.get("field_unit"):  # V4 fix: 空串也算缺失
+            entity_stats[ekey]["missing_unit"] += 1
+        from tools.assessment.source_utils import provenance_is_complete
+        if not provenance_is_complete(rec):
+            entity_stats[ekey]["missing_prov"] += 1
+    for ekey in entity_stats:
+        entity_stats[ekey]["properties"] = sorted(entity_stats[ekey]["properties"])
+
+    # V2: 构建 per_entity 可读输出
+    per_entity_present_readable: dict[str, list[str]] = {}
+    per_entity_missing_readable: dict[str, list[str]] = {}
+    for ekey, pfields in per_entity_present.items():
+        label = f"{ekey[0]}:{ekey[1]}" if ekey[0] and ekey[0] != "__global__" else ekey[1]
+        per_entity_present_readable[label] = sorted(pfields)
+    for ekey, mfields in per_entity_missing.items():
+        label = f"{ekey[0]}:{ekey[1]}" if ekey[0] and ekey[0] != "__global__" else ekey[1]
+        per_entity_missing_readable[label] = sorted(mfields)
 
     result = {
         "score": round(score, 4),
@@ -155,8 +197,11 @@ def check_completeness(
         "field_completeness": field_completeness,
         "by_entity": entity_stats,
         "entity_count": len(entity_stats),
+        # V2: per-entity schema 覆盖
+        "per_entity_present": per_entity_present_readable,
+        "per_entity_missing": per_entity_missing_readable,
         "summary": "; ".join(issues) if issues else "数据完整性良好。",
     }
 
-    logger.info("完整性评估完成: score=%.2f, %d 条问题。", score, len(issues))
+    logger.info("完整性评估完成: score=%.2f, %d entities, %d 条问题。", score, len(entity_stats), len(issues))
     return result

@@ -1,4 +1,4 @@
-# Data Normalization Agent (V2.0)
+# Data Normalization Agent (V2.3)
 
 > SubGraph 4-B: 数据规范化处理模块  
 > AI-Scientist 2026 挑战杯 | 负责修改数据，不负责判断质量或解决冲突
@@ -12,6 +12,8 @@
 本模块是整个 LangGraph 多智能体科学数据处理管道的 **Normalization 子图**，负责对 Assessment 标记为 "Normalization" 的数据执行规范化处理。
 
 **核心创新 (V2.0)**: LLM 动态 Tool 生成 — 不再依赖固定的 6 个工具函数。LLM 可以根据数据的具体问题自动生成/适配规范化工具。
+
+> 文档版本: V2.3（2026-08-03 更新 V4.2: 单位转换配置体系完整化 — 27 组 231 条转换规则, 详见 [NORMALIZATION_DESIGN_REPORT.md](NORMALIZATION_DESIGN_REPORT.md)）
 
 ### 管道位置
 
@@ -45,19 +47,19 @@ NormalizationGraph (5 Stage Nodes)
 ### 三层工具架构
 
 ```
-Layer 3: LLM-Generated      (V2.0 新增)   — LLM 动态编写 Python 函数
-Layer 2: LLM-Adapted        (V2.0 新增)   — LLM 注入自定义参数
-Layer 1: Base Tools         (6 个固定)     — 确定性工具函数
+Layer 3: LLM-Generated      (V2.0)   — LLM 动态编写 Python 函数 (sandbox + dry-run)
+Layer 2: Rule-Adapted       (V2.1)   — 确定性规则注入自定义参数 (非 LLM)
+Layer 1: Base Tools         (6 个固定) — 确定性工具函数
 ```
 
 ### 条件→工具映射
 
 | 问题类型 | 工具 |
 |---------|------|
-| `alias_fields` | schema_mapping |
+| `alias_fields` / `extra_fields` | schema_mapping |
 | `format_issues` | field_standardizer |
+| `unit_inconsistency` | unit_converter |
 | `missing_units` / `missing_provenance` / `completeness_low` | missing_value_handler |
-| `unit_mismatch` / `unit_inconsistency` | unit_converter |
 | `duplicate_records` | duplicate_handler |
 | `general` | format_standardizer |
 
@@ -66,8 +68,8 @@ Layer 1: Base Tools         (6 个固定)     — 确定性工具函数
 ```
 Data_Normalization_agentV1/
 ├── README.md                          # 本文件
-├── NORMALIZATION_DESIGN_REPORT.md     # V2.0 详细设计报告
-├── normalization_graph.py             # SubGraph (5 Stage, 65 行)
+├── NORMALIZATION_DESIGN_REPORT.md     # V2.3 详细设计报告 (2026-08-03 更新 V4.2)
+├── normalization_graph.py             # SubGraph (5 Stage + finalize, 138 行)
 └── agents/
     ├── source_router_agent.py         # Stage 1: 来源分流
     ├── planning_agent.py              # Stage 2: LLM 工具规划
@@ -97,25 +99,33 @@ report_state.quality.per_source_routes   # {"doi_A": "Normalization", ...}
 report_state.quality.conditional_routes  # [{source_id, conditions: [...]}]
 report_state.quality.sources[sid]        # per-source completeness/consistency/...
 report_state.quality.profile             # semantic_types, schema_summary
+report_state.quality.quality_scoring.per_entity_scores  # V2: per-entity breakdown
+report_state.conflict.resolution_report  # C→B 路径: actions_to_normalize (V3.5: 保留 record_ids/from_unit/to_unit)
 data_state.current_data                   # 待处理数据
+context_state.target_schema              # 目标 Schema (standard_unit 查询, V4: 领域配置兜底)
+context_state.standard_units             # V4: 从领域 target_schema 回填的目标单位
 ```
 
 ### 输出 (Normalization Report)
 
 ```python
 report_state.normalization = {
-    "source_plan": {...},           # 来源分流
-    "tool_registry": {...},         # 工具注册表 (base+adapted+generated)
+    "source_plan": {...},           # 来源分流 (V3.5: 含 conflict_actions)
+    "tool_registry": {...},         # 工具注册表 (base+adapted+generated+by_source)
+    "planning_method": "llm_enhanced" | "full_normalization" | "rule_engine",
     "modifications": {              # 修改详情
         "total": 10,
         "by_layer": {"base": 8, "adapted": 0, "generated": 2},
         "per_source": {...},
+        "per_entity_modifications": {...},  # V2: per-entity 修改次数
+        "errors": [...],            # V4: 含 unconverted 单位 (missing_unit/no_target_unit/no_conversion_rule)
     },
-    "validation": {...},            # 校验结果
-    "normalization_status": "Completed",
-    "route_decision": "Export",
+    "validation": {...},            # 校验结果 (conflict_check 完整数组; V4: needs_conflict → "Conflict")
+    "normalization_status": "Completed" | "Completed_With_Issues" | "Skipped_No_Sources",
+    "route_decision": "Conflict" | "Export",
 }
-workflow_state.route_decision      # "Conflict" or "Export"
+workflow_state.route_decision      # "Conflict" or "Export" (V4 fix: 复检冲突, 不再恒 Export)
+data_state.data_trace              # V3.2: 逐记录 TraceEvent (record_id/field/before/after/tool/reason)
 ```
 
 ## 运行
@@ -132,6 +142,6 @@ python test/test_normalization_flow.py
 
 ## 相关文档
 
-- [NORMALIZATION_DESIGN_REPORT.md](NORMALIZATION_DESIGN_REPORT.md) — V2.0 完整设计报告
+- [NORMALIZATION_DESIGN_REPORT.md](NORMALIZATION_DESIGN_REPORT.md) — V2.3 完整设计报告（2026-08-03 更新 V4.2: 单位转换配置体系）
 - [../Data_Assessment_agentV1/ASSESSMENT_DESIGN_REPORT.md](../Data_Assessment_agentV1/ASSESSMENT_DESIGN_REPORT.md) — Assessment 模块 (上游)
 - [../README.md](../README.md) — 项目总览
