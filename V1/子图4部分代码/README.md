@@ -172,45 +172,65 @@ python test/test_normalization_flow.py
   "schema_version": "2.0.0",
   "sources": [
     {
+      "source_id": "1995ApJ...448L..97W",
+      "source_type": "paper",
+      "doi": "10.1086/309615",
+      "title": "The Metallicity Dependence of the CO-to-H2 Conversion Factor...",
+      "authors": ["Wilson, Christine D."],
+      "year": "1995",
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:/V2/FINAL_DESIGN/.../1995ApJ...448L..97W.pdf",
+      "retrieval_priority": 0.33,
+      "abstract": "Six additional molecular clouds have been mapped in the nearby metal-poor dwarf irregular galaxy IC 10..."
+    },
+    {
       "source_id": "SRC_DB_IRAS",
       "source_type": "database",
       "title": "IRAS Point Sources",
       "vizier_table_id": "II/125/iraspsc",
-      "research_content": "IRAS 12/25/60/100um photometry",
+      "description": "IRAS Point Source Catalog (v2.1)",
+      "reference_paper": "Beichman et al. 1988",
+      "bibcode": "1988IRASP.C......0B",
       "research_methodology": "Space-based infrared survey",
-      "waveband": "IR 12-100um"
-    },
-    {
-      "source_id": "2001AJ....121.2557D",
-      "source_type": "paper",
-      "doi": "10.1086/319976",
-      "title": "M31 distances from Cepheids",
-      "year": 2001
+      "observation_facility": "IRAS",
+      "waveband": "IR 12-100um",
+      "research_content": "IRAS 12/25/60/100um photometry for 250k sources"
     }
   ],
   "records": [
     {
-      "record_id": "r1",
+      "record_id": "1995ApJ...448L..97W_M31_distance_0",
+      "source_id": "1995ApJ...448L..97W",
+      "entity_type": "Unknown",
+      "entity_name": "M31",
+      "field_name": "distance",
+      "field_value": "0.77",
+      "field_unit": "Mpc",
+      "trace_id": "doc0_p10",
+      "provenance": {"page": 10, "bbox": [233, 278, 319, 293]},
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: The CO-to-H2 Conversion Factor in Local Group Galaxies...",
+      "measurement_method": "Cepheid variables (near-infrared data)",
+      "condition_tags": ["scope: global", "metric: distance"]
+    },
+    {
+      "record_id": "SRC_DB_IRAS_3181",
       "source_id": "SRC_DB_IRAS",
+      "entity_type": "Unknown",
+      "entity_name": "M31",
       "field_name": "Fnu_60",
       "field_value": 7.65,
       "field_unit": "Jy",
       "extraction_method": "database_query",
-      "provenance": {"db_table": "II/125/iraspsc", "key_column": "IRAS", "key_value": "00398+4039", "raw_column": "Fnu_60"}
-    },
-    {
-      "record_id": "r2",
-      "source_id": "2001AJ....121.2557D",
-      "field_name": "distance",
-      "field_value": "24.47 ± 0.12 (= 783 ± 43 kpc)",
-      "field_unit": "mag / kpc",
-      "extraction_method": "vlm_text",
-      "trace_id": "doc1_p3_tb2_r1",
-      "provenance": {"page": 3, "bbox": [120, 340, 280, 355]}
+      "provenance": {"db_table": "II/125/iraspsc", "key_column": "IRAS",
+                     "key_value": "00398+4039", "raw_column": "Fnu_60"}
     }
   ]
 }
 ```
+
+> **两类来源**: `paper`（文献提取: trace_id + provenance.page/bbox + extraction_method vlm_table/vlm_text + extraction_confidence + context_snippet + measurement_method + condition_tags）与 `database`（目录查询: extraction_method=database_query + provenance 四要素 db_table/key_column/key_value/raw_column, 无 trace_id）——两者混合输入是典型场景（如 M31 研究: 20 篇文献 + 5 个 VizieR 目录）。
 
 ## 输出
 
