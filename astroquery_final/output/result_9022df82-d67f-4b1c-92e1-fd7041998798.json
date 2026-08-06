@@ -1,0 +1,36 @@
+{
+  "schema_version": "2.0.0",
+  "research_domain": "astrophysics",
+  "query_metadata": {
+    "query_id": "9022df82-d67f-4b1c-92e1-fd7041998798",
+    "user_query": "Betelgeuse 的 JHK 红外星等和视向速度",
+    "target_entity": "Betelgeuse",
+    "requested_properties": [
+      "JHK 红外星等",
+      "视向速度"
+    ],
+    "retrieval_timestamp": "2026-08-06T11:25:41.747546"
+  },
+  "simbad_info": {
+    "status": "failed",
+    "main_id": null,
+    "aliases": [],
+    "object_type": null,
+    "coordinates": null,
+    "resolved_at": "2026-08-06T11:25:02.330008"
+  },
+  "sources": [],
+  "records": [],
+  "error_log": [
+    {
+      "node": "P1_property_standardization",
+      "error": "SIMBAD TAP 请求失败: HTTPSConnectionPool(host='simbad.cds.unistra.fr', port=443): Read timed out. (read timeout=30)",
+      "timestamp": "2026-08-06T11:25:02.327064"
+    },
+    {
+      "node": "ads_search",
+      "error": "ADS query failed after 3 attempts: '{\\n  \"responseHeader\":{\\n    \"status\":400,\\n    \"QTime\":2,\\n    \"params\":{\\n      \"q\":\"\\\\\"Betelgeuse\\\\\" AND (\\\\\"distance\\\\\" OR parallax OR \\\\\"distance modulus\\\\\" OR \\\\\"stellar mass\\\\\" OR mass OR \\\\\"stellar radius\\\\\" OR radius OR \\\\\"linear radius\\\\\" OR \\\\\"angular diameter\\\\\" OR luminosity OR \\\\\"bolometric luminosity\\\\\" OR \\\\\"absolute magnitude\\\\\" OR temperature OR \\\\\"effective temperature\\\\\" OR \\\\\"surface temperature\\\\\" OR metallicity OR \\\\\"chemical composition\\\\\" OR abundance OR \\\\\"CNO ratio\\\\\" OR age OR \\\\\"stellar age\\\\\" OR rotation OR \\\\\"rotational velocity\\\\\" OR \\\\\"v sin i\\\\\" OR \\\\\"radial velocity\\\\\" OR \\\\\"proper motion\\\\\" OR kinematics OR \\\\\"spectral type\\\\\" OR classification OR variability OR pulsation OR period OR amplitude OR \\\\\"light curve\\\\\" OR wind OR \\\\\"mass loss rate\\\\\" OR \\\\\"stellar wind\\\\\" OR outflow OR \\\\\"magnetic field\\\\\" OR binarity OR companion OR orbit OR extinction OR reddening OR dust OR \\\\\"circumstellar envelope\\\\\" OR \\\\\"surface gravity\\\\\" OR \\\\\"log g\\\\\" OR evolution OR \\\\\"red superg\",\\n      \"fl\":\"id,bibcode,doi,title,author,year,pub,abstract,keyword,citation_count,identifier,esources\",\\n      \"cursorMark\":\"*\",\\n      \"start\":\"0\",\\n      \"memAllowed\":\"800\",\\n      \"internal_logging_params\":\"X-Amzn-Trace-Id=Root=1-6a73feb5-51a90d1f0b3d8d9b5baaeb85\",\\n      \"sort\":\"score desc,id desc\",\\n      \"timeAllowed\":\"20000\",\\n      \"rows\":\"50\",\\n      \"wt\":\"json\"}},\\n  \"error\":{\\n    \"metadata\":[\\n      \"error-class\",\"org.apache.solr.common.SolrException\",\\n      \"root-error-class\",\"java.lang.Exception\"],\\n    \"msg\":\"org.apache.solr.search.SyntaxError: INVALID_SYNTAX_CANNOT_PARSE: Syntax Error, cannot parse \\\\\"Betelgeuse\\\\\" AND (\\\\\"distance\\\\\" OR parallax OR \\\\\"distance modulus\\\\\" OR \\\\\"stellar mass\\\\\" OR mass OR \\\\\"stellar radius\\\\\" OR radius OR \\\\\"linear radius\\\\\" OR \\\\\"angular diameter\\\\\" OR luminosity OR \\\\\"bolometric luminosity\\\\\" OR \\\\\"absolute magnitude\\\\\" OR temperature OR \\\\\"effective temperature\\\\\" OR \\\\\"surface temperature\\\\\" OR metallicity OR \\\\\"chemical composition\\\\\" OR abundance OR \\\\\"CNO ratio\\\\\" OR age OR \\\\\"stellar age\\\\\" OR rotation OR \\\\\"rotational velocity\\\\\" OR \\\\\"v sin i\\\\\" OR \\\\\"radial velocity\\\\\" OR \\\\\"proper motion\\\\\" OR kinematics OR \\\\\"spectral type\\\\\" OR classification OR variability OR pulsation OR period OR amplitude OR \\\\\"light curve\\\\\" OR wind OR \\\\\"mass loss rate\\\\\" OR \\\\\"stellar wind\\\\\" OR outflow OR \\\\\"magnetic field\\\\\" OR binarity OR companion OR orbit OR extinction OR reddening OR dust OR \\\\\"circumstellar envelope\\\\\" OR \\\\\"surface gravity\\\\\" OR \\\\\"log g\\\\\" OR evolution OR \\\\\"red superg: The parser reported a syntax error, antlrqueryparser hates errors! \",\\n    \"code\":400}}\\n'",
+      "timestamp": "2026-08-06T11:25:41.733722"
+    }
+  ]
+}

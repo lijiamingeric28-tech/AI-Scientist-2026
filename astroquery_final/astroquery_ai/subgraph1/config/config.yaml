@@ -1,0 +1,65 @@
+# 意图澄清子图配置文件
+# 版本: 1.0.0
+#
+# 敏感字段（api_key / base_url / model）优先从环境变量读取，此处仅作兜底：
+#   DASHSCOPE_API_KEY  → llm.api_key
+#   DASHSCOPE_BASE_URL → llm.base_url
+#   DASHSCOPE_MODEL    → llm.model
+
+# LLM 配置 → 实际值请在 .env 中设置，yaml 中留空
+llm:
+  base_url: ""
+  api_key: ""
+  model: "qwen3.7-flash"
+  temperature: 0.1
+  max_tokens: 500
+
+# 追问配置
+clarification:
+  max_turns: 3  # 最大追问轮次
+  default_entity_type: "unknown"  # 默认天体类型
+
+# 退出关键词
+exit_keywords:
+  - "算了"
+  - "不查了"
+  - "退出"
+  - "取消"
+  - "放弃"
+  - "quit"
+  - "exit"
+  - "bye"
+  - "goodbye"
+
+# 寒暄关键词
+greeting_keywords:
+  - "你好"
+  - "您好"
+  - "hi"
+  - "hello"
+  - "hey"
+  - "在吗"
+
+# 常见物理性质列表
+common_properties:
+  - "distance"      # 距离
+  - "redshift"      # 红移
+  - "metallicity"   # 金属丰度
+  - "luminosity"    # 光度
+  - "mass"          # 质量
+  - "temperature"   # 温度
+  - "magnitude"     # 星等
+  - "parallax"      # 视差
+  - "velocity"      # 速度
+  - "age"           # 年龄
+
+# UI 显示配置
+ui:
+  separator: "============================================================"
+  user_input_prompt: "请输入："
+  confirm_prompt: "请输入 (y/m/n)："
+
+# 日志配置
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

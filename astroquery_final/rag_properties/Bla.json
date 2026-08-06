@@ -1,0 +1,260 @@
+{
+  "otype": "Bla",
+  "name_cn": "耀变体",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经",
+      "description": "J2000赤经(精度0.01-0.1秒时),主要来自VLBI(Titov等)、WISE与SDSS光学位置,用于多波段交叉认证",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(精度0.01-0.1角秒),来源同上,供坐标定位与锥形检索",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lat",
+      "name_cn": "银纬",
+      "description": "银道纬度:Fermi AGN源表按|b|>10°选择高银纬样本,银道面附近另列低银纬表",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "星系/发射线红移;BZCAT含不确定标志(?),2WHSP/3HSP另附文献引用码;BL Lac红移常受无特征光谱限制而缺失或为下限",
+      "category": "physical",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rmag_r_band",
+      "name_cn": "R波段星等",
+      "description": "R波段视星等(USNO-B1、SDSS r波段,缺省时以其他波段替代),反映光学光度与宿主星系成分",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_radio_1p4ghz",
+      "name_cn": "1.4GHz射电流量密度",
+      "description": "NVSS/FIRST 1.4GHz流量密度(缺省时用SUMSS 0.843GHz),单位mJy;耀变体全部为射电检测源的基本判据",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.750-1500MHz",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_mm_143ghz",
+      "name_cn": "143GHz微波流量密度",
+      "description": "主要取自Planck紧凑源表PCSC的143GHz流量(mJy),毫米波段对γ射线耀变体检测效率最高",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.mm.100-200GHz",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_radio_15ghz",
+      "name_cn": "15GHz射电流量密度",
+      "description": "MOJAVE VLBA 15GHz总流量密度及多历元光变序列,可用于结构函数与特征时标分析",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.12-30GHz",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_xray_soft",
+      "name_cn": "软X射线流量(0.1-2.4keV)",
+      "description": "ROSAT档案或Swift-XRT巡天测得的0.1-2.4keV流量(erg/cm2/s),同步辐射峰在X射线的HSP更亮",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray.soft",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_gamma_fermi",
+      "name_cn": "γ射线光子流量(1-100GeV)",
+      "description": "Fermi-LAT 1-100GeV光子流量(photons/cm2/s);4LAC另给0.1-300GeV能量通量与能谱,FSRQ平均光度高于BL Lac",
+      "category": "photometry",
+      "ucd": "phot.flux;em.gamma",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "om_optuv_phot",
+      "name_cn": "XMM-OM光学/紫外星等与流量",
+      "description": "XMM-Newton OM六滤光片光学/紫外星等与流量(UVW1/2、U、B、V等),填补BL Lac的紫外同步辐射包",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_ir_color",
+      "name_cn": "WISE红外颜色",
+      "description": "WISE W1-W2等红外色,2WHSP/1WHSP的HSP选源核心判据,亦用于红移上限估计",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_photon_index",
+      "name_cn": "γ射线光子谱指数",
+      "description": "Fermi 1-100GeV幂律光子谱指数Γ;FSRQ平均较BL Lac更软,BL Lac更接近2,是区分亚型与辐射模型参数",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.gamma",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_photon_index",
+      "name_cn": "X射线光子谱指数",
+      "description": "XMM-EPIC 0.2-12keV幂律/对数抛物线拟合光子谱指数、谱曲率与吸收柱密度,判定同步峰延伸与IC分量",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_spectral_index",
+      "name_cn": "射电谱指数",
+      "description": "15GHz VLBA平坦谱指数(α≈0)及其图谱;平坦射电谱是耀变体/FSRQ的基本识别特征,并获自旋与RM图",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.radio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ro_spectral_index",
+      "name_cn": "射电-光学谱指数",
+      "description": "射电-光学有效谱指数α_RO与射电噪度logR,logR≈1.26为射电噪/射电静分界(Bayesian双峰分析)",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_nu_syn_peak",
+      "name_cn": "同步辐射峰值频率(对数)",
+      "description": "同步辐射峰频logνpeak(Hz),HSP/ISP/LSP分类与同步峰-康普顿峰双峰SED的核心参数;X射线数据受限时给出下限",
+      "category": "physical",
+      "ucd": "phys.spectral.peak",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_syn_peak_flux",
+      "name_cn": "同步峰流量log(νFν)",
+      "description": "同步峰处νFν(erg/cm2/s)对数,与FOM(与最暗TeV源之比)联用评估HSP的TeV/CTA可探测性",
+      "category": "physical",
+      "ucd": "phot.flux;phys.spectral.peak",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_speed",
+      "name_cn": "表观喷流速度(视超光速)",
+      "description": "VLBI喷流分量的表观横向速度βapp(以光速为单位),耀变体普遍>1c(视超光速运动),证明相对论性射流对准视线方向",
+      "category": "physical",
+      "ucd": "phys.veloc.transverse",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "doppler_factor",
+      "name_cn": "多普勒因子",
+      "description": "喷流多普勒因子δ,由变率亮度温度、视速度与光变时标联合解出,用于喷流能量与母体群体研究",
+      "category": "physical",
+      "ucd": "phys.doppler",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "brightness_temperature",
+      "name_cn": "亮度温度",
+      "description": "核心变率亮度温度Tb,耀变体普遍达10^12-10^14K,远超逆康普顿灾变极限,佐证相对论性聚束",
+      "category": "physical",
+      "ucd": "phys.temperature",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pol_degree",
+      "name_cn": "偏振度与偏振角",
+      "description": "光学(RoboPol)与射电(VLBA)线偏振度及电矢量位置角EVPA(pos.posAng);高偏振与EVPA旋转与γ射线耀发联动",
+      "category": "physical",
+      "ucd": "phys.polarization.linear",
+      "unit": "%",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_index_gamma",
+      "name_cn": "γ射线变率指数",
+      "description": "4LAC的γ射线变率指数;FSRQ平均变率强于BL Lac,变率-光度关系用于辐射区约束",
+      "category": "variability",
+      "ucd": "src.var.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amp_xray",
+      "name_cn": "X射线变率统计量",
+      "description": "XMM光变曲线按标准统计方法得到的变率指标(过量方差等),量化BL Lac的X射线小时级耀变",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "blazar_subtype",
+      "name_cn": "耀变体亚型",
+      "description": "5BZB(BL Lac)/5BZQ(FSRQ)/5BZG(星系主导SED)/5BZU(不确定型);4LAC另含BCU(未确认候选)与转变型(changing-look)标记",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "syn_peak_class",
+      "name_cn": "同步峰类别(HSP/ISP/LSP)",
+      "description": "按logνpeak划分的高/中/低同步峰类别(2WHSP/3HSP体系),与FOM联用服务于VHE与多信使目标选择",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_dominance",
+      "name_cn": "宿主星系主导度",
+      "description": "BZG类:光学谱为星系吸收线、SED以宿主星系为主(所谓的radio-quiet BL Lac);红移由星系吸收线测得,宿主星系为椭圆星系",
+      "category": "environment",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_galaxy_density",
+      "name_cn": "大尺度环境星系密度",
+      "description": "BL Lac与射电星系/FR0源样本的大尺度环境星系密度对比(方向无关性质),检验BL Lac的射电星系母体统一模型",
+      "category": "environment",
+      "ucd": "src.density",
+      "unit": "pc^-2",
+      "_unit_filled": true
+    }
+  ]
+}

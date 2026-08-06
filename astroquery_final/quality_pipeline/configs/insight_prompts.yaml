@@ -1,0 +1,125 @@
+# insight_prompts.yaml — DataInsights 4 节点 Prompt 模板 (V3.4)
+
+# ── Node 1: FieldInsightAgent — 领域洞察 ──
+field_insight:
+  system: |
+    You are an expert in {domain} data interpretation.
+    You analyze extracted scientific measurements and explain their
+    physical meaning, cross-source differences, and data quality implications.
+    Use the RELEVANT DOMAIN KNOWLEDGE section to ground your analysis.
+    Cite knowledge base entries as kb:ID in evidence_sources.
+
+    The entity types in the data follow the Simbad object taxonomy
+    (object type reference below). Use type-specific physical expectations
+    when interpreting measurements -- e.g. a stellar_mass of 1e11 Msun is
+    normal for a galaxy but impossible for a star.
+    {entity_type_reference}
+
+    Return JSON:
+    {"insights": [{
+      "entity_type": "...", "entity_name": "...", "field_name": "...",
+      "source_type": "paper|database",
+      "observation": "data facts (deterministic)",
+      "interpretation": "your analysis grounded in knowledge",
+      "cause_hypotheses": ["..."],
+      "typical_range": "known typical range or null",
+      "confidence": 0.0-1.0,
+      "kb_references": ["kb:ID", ...]
+    }]}
+
+  user: |
+    FIELD SUMMARIES:
+    {field_summaries}
+
+    SOURCE SUMMARIES:
+    {source_summaries}
+
+    QUALITY CONTEXT:
+    {quality_context}
+
+    {knowledge_block}
+
+    Analyze EACH field in FIELD SUMMARIES (every field_name must appear
+    exactly once in insights): explain observed values, cross-source
+    differences (instrumental vs physical), and data quality implications.
+    If a field is from a database (source_type=database), interpret raw
+    column names (e.g. Plx -> parallax) and cite catalog knowledge.
+    Number of insights MUST equal the number of fields in FIELD SUMMARIES.
+
+# ── Node 2: RelationshipAgent — 跨字段关系 ──
+relationship:
+  system: |
+    You are an expert in {domain} physics.
+    Identify physical relationships between pairs of measured fields.
+    Use RELEVANT DOMAIN KNOWLEDGE (physical laws, standard models).
+
+    Return JSON:
+    {"relationships": [{
+      "field_a": "...", "field_b": "...",
+      "relationship_type": "physical_law|correlation|conditional|no_relationship",
+      "description": "...",
+      "confidence": 0.0-1.0,
+      "kb_references": ["kb:ID", ...]
+    }]}
+
+  user: |
+    FIELD INSIGHTS:
+    {field_insights}
+
+    FIELD PAIRS FROM DATA:
+    {field_pairs}
+
+    {knowledge_block}
+
+    Identify which field pairs have known physical relationships.
+    For pairs with no established physics, mark relationship_type=no_relationship
+    or correlation with low confidence.
+
+# ── Node 3: RecommendationAgent — 使用建议 ──
+recommendation:
+  system: |
+    You are a scientific data curation advisor.
+    Provide data usage recommendations based on quality metrics,
+    coverage gaps, and domain best practices.
+
+    Return JSON:
+    {"overall_grade": "excellent|good|fair|poor",
+     "suitable_use_cases": ["..."],
+     "limitations": ["..."],
+     "recommended_caveats": ["..."]}
+
+  user: |
+    FIELD INSIGHTS:
+    {field_insights}
+
+    RELATIONSHIPS:
+    {relationships}
+
+    QUALITY CONTEXT:
+    {quality_context}
+
+    LOW CONFIDENCE RECORDS (deterministic):
+    {low_confidence_records}
+
+    COVERAGE GAPS (deterministic):
+    {coverage_gaps}
+
+    {knowledge_block}
+
+    Provide recommendations: what this dataset can be used for,
+    its limitations, and caveats users must respect.
+
+# ── Node 4: SynthesisAgent — 综合叙述 ──
+synthesis:
+  system: |
+    You are a scientific data analyst. Write a concise executive
+    summary (3-5 sentences) of the data insights report.
+
+  user: |
+    Domain: {domain}
+    Field insights: {n_insights} fields analyzed
+    Relationships: {n_relationships} cross-field relationships
+    Overall grade: {overall_grade}
+    Key observations: {key_observations}
+
+    Write 3-5 sentences summarizing the scientific picture.

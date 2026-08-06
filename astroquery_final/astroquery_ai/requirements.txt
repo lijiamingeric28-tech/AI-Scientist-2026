@@ -1,0 +1,29 @@
+# AstroQuery AI —— 三子图合并后的统一依赖（去重取最高要求）
+
+# ── 核心编排 ──
+langgraph>=0.1.0
+langchain>=0.1.0
+
+# ── 子图 1：意图澄清（LLM）──
+langchain-openai>=0.1.0
+openai>=1.0.0
+pydantic>=2.0.0
+
+# ── 子图 2：并行检索（天文库 + 论文）──
+astroquery>=0.4.6
+ads>=0.12.7
+requests>=2.31.0
+httpx>=0.25.0
+tenacity>=8.2.3
+numpy>=1.24.0
+
+# ── 子图 3：多模态提取（PDF + VLM）──
+PyMuPDF>=1.23.0
+Pillow>=10.0.0
+dashscope>=1.14.0
+json-repair>=0.7.0
+tqdm>=4.66.0
+
+# ── 通用 ──
+python-dotenv>=1.0.0
+PyYAML>=6.0.1

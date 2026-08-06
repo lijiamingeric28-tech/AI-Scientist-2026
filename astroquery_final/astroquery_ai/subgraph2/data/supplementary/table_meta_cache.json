@@ -1,0 +1,307 @@
+{
+  "J/MNRAS/451/724": {
+    "table_class": "whole_entity",
+    "entity_column": "Name",
+    "property_columns": [
+      {
+        "column": "DM",
+        "standard_name": "distance_modulus"
+      },
+      {
+        "column": "vhel",
+        "standard_name": "heliocentric_velocity"
+      }
+    ],
+    "reasoning": "whole galaxy properties"
+  },
+  "J/ApJ/826/56": {
+    "table_class": "other_entity",
+    "entity_column": "Gal",
+    "property_columns": [
+      {
+        "column": "Nc",
+        "standard_name": "num_cepheids"
+      }
+    ],
+    "reasoning": "表描述的是HST/WFC3观测到的造父变星宿主星系列表，主体为其他星系目录，并非针对M31的整体物理参数或内部结构成员。"
+  },
+  "J/AJ/156/130": {
+    "table_class": "sub_structure",
+    "entity_column": "ID",
+    "property_columns": [
+      {
+        "column": "rP1mag",
+        "standard_name": "r_band_magnitude"
+      },
+      {
+        "column": "iP1mag",
+        "standard_name": "i_band_magnitude"
+      },
+      {
+        "column": "gP1mag",
+        "standard_name": "g_band_magnitude"
+      },
+      {
+        "column": "Wmag",
+        "standard_name": "w1_magnitude"
+      },
+      {
+        "column": "A21",
+        "standard_name": "amplitude"
+      },
+      {
+        "column": "varphi21",
+        "standard_name": "position_angle"
+      }
+    ],
+    "reasoning": "表为多行目录结构，包含大量天体的坐标、多波段测光数据（Pan-STARRS1的g/r/i波段及WISE的W波段）及形态拟合参数（振幅A21、位置角varphi21），结合Type和Catalog字段，表明其记录的是M31内部的独立源（如球状星团、恒星或行星状星云等），属于目标天体的子结构数据。"
+  },
+  "J/AJ/126/175": {
+    "table_class": "sub_structure",
+    "entity_column": null,
+    "property_columns": [
+      {
+        "column": "Per",
+        "standard_name": "period"
+      },
+      {
+        "column": "Bmag",
+        "standard_name": "b_magnitude"
+      },
+      {
+        "column": "Vmag",
+        "standard_name": "v_magnitude"
+      },
+      {
+        "column": "Imag",
+        "standard_name": "i_magnitude"
+      },
+      {
+        "column": "Rad1",
+        "standard_name": "radius_1"
+      },
+      {
+        "column": "Rad2",
+        "standard_name": "radius_2"
+      },
+      {
+        "column": "Inc",
+        "standard_name": "inclination"
+      },
+      {
+        "column": "Ecc",
+        "standard_name": "eccentricity"
+      }
+    ],
+    "reasoning": "表描述的是位于M31内部的直接食双星系统，属于目标天体的成员恒星（内部结构/子结构），而非M31整体宏观物理性质，符合sub_structure分类标准。已排除坐标、标识及非物理属性列。"
+  },
+  "J/AJ/145/106": {
+    "table_class": "sub_structure",
+    "entity_column": "Simbad",
+    "property_columns": [
+      {
+        "column": "Perr",
+        "standard_name": "period_observed"
+      },
+      {
+        "column": "Peri",
+        "standard_name": "period_intrinsic"
+      },
+      {
+        "column": "E(B-V)",
+        "standard_name": "color_excess"
+      },
+      {
+        "column": "rP1",
+        "standard_name": "amplitude_R"
+      },
+      {
+        "column": "iP1",
+        "standard_name": "amplitude_I"
+      },
+      {
+        "column": "r0P1",
+        "standard_name": "magnitude_R"
+      },
+      {
+        "column": "i0P1",
+        "standard_name": "magnitude_I"
+      },
+      {
+        "column": "WI",
+        "standard_name": "wesenheit_index"
+      },
+      {
+        "column": "Type",
+        "standard_name": "variable_type"
+      }
+    ],
+    "reasoning": "该表描述的是造父变星（Cepheid）的物理参数。造父变星属于星系内部的单颗成员恒星，用于研究星系内部恒星种群或作为距离指示器，而非描述M31的整体宏观性质（如总质量、速度弥散等）。表中包含周期、测光振幅、颜色超量、Wesenheit指数及变星类型等恒星级物理量，符合sub_structure（成员恒星）分类。"
+  },
+  "J/ApJ/864/59": {
+    "table_class": "sub_structure",
+    "entity_column": "ID",
+    "property_columns": [
+      {
+        "column": "P",
+        "standard_name": "period"
+      },
+      {
+        "column": "gmag",
+        "standard_name": "f475w_magnitude"
+      },
+      {
+        "column": "Imag",
+        "standard_name": "f814w_magnitude"
+      },
+      {
+        "column": "E(B-V)",
+        "standard_name": "color_excess"
+      },
+      {
+        "column": "gmagc",
+        "standard_name": "f475w_magnitude_corrected"
+      },
+      {
+        "column": "Imagc",
+        "standard_name": "f814w_magnitude_corrected"
+      }
+    ],
+    "reasoning": "表包含单颗解析天体的周期、双波段测光值、消光及修正星等，结合F475W/F814W滤光片特征，典型为M31内部成员恒星（如变星或场星）目录，属于目标天体内部结构/成员星数据。"
+  },
+  "J/ApJ/920/84": {
+    "table_class": "sub_structure",
+    "entity_column": "SimbadName",
+    "property_columns": [
+      {
+        "column": "Per",
+        "standard_name": "period"
+      },
+      {
+        "column": "F160W",
+        "standard_name": "flux_f160w"
+      },
+      {
+        "column": "F814W",
+        "standard_name": "flux_f814w"
+      },
+      {
+        "column": "F555W",
+        "standard_name": "flux_f555w"
+      },
+      {
+        "column": "mWH",
+        "standard_name": "mag_wh"
+      },
+      {
+        "column": "mWI",
+        "standard_name": "mag_wi"
+      }
+    ],
+    "reasoning": "表描述的是M31星系内部的造父变星（Cepheids）光变周期与多波段测光结果，属于目标天体的成员恒星数据，符合sub_structure分类规则。"
+  },
+  "J/ApJ/799/144": {
+    "table_class": "sub_structure",
+    "entity_column": "PSO",
+    "property_columns": [
+      {
+        "column": "Per",
+        "standard_name": "period"
+      },
+      {
+        "column": "F110W",
+        "standard_name": "magnitude_110w"
+      },
+      {
+        "column": "F160W",
+        "standard_name": "magnitude_160w"
+      }
+    ],
+    "reasoning": "表描述的是造父变星（Cepheid）的坐标与测光数据。造父变星属于星系内部的成员恒星，该表记录的是M31内部单个恒星的物理参数，符合sub_structure分类中“成员恒星”的定义。"
+  },
+  "J/ApJ/761/57": {
+    "table_class": "whole_entity",
+    "entity_column": null,
+    "property_columns": [
+      {
+        "column": "V2",
+        "standard_name": "squared_visibility"
+      },
+      {
+        "column": "SFreq",
+        "standard_name": "spatial_frequency"
+      }
+    ],
+    "reasoning": "该表提供校准后的干涉可见度（V2）及空间频率（SFreq），是光学/红外干涉仪直接获取的核心观测量，主要用于反演恒星的整体角直径、自转扁率等全局物理参数。元数据中未包含天体标识列，结合‘Calibrated visibilities’描述及Vega在干涉观测中作为基准星的典型用途，推断此表为针对Vega整体结构的干涉数据表，符合whole_entity分类标准。"
+  },
+  "J/MNRAS/373/13": {
+    "table_class": "other_entity",
+    "entity_column": "Name",
+    "property_columns": [
+      {
+        "column": "Plx",
+        "standard_name": "parallax"
+      },
+      {
+        "column": "Teff",
+        "standard_name": "effective_temperature"
+      },
+      {
+        "column": "mbol",
+        "standard_name": "bolometric_magnitude"
+      },
+      {
+        "column": "Vmag",
+        "standard_name": "V_magnitude"
+      },
+      {
+        "column": "B-V",
+        "standard_name": "B_V_color_index"
+      },
+      {
+        "column": "V-Rc",
+        "standard_name": "V_Rc_color_index"
+      },
+      {
+        "column": "R-Ic",
+        "standard_name": "R_Ic_color_index"
+      },
+      {
+        "column": "Jmag",
+        "standard_name": "J_magnitude"
+      },
+      {
+        "column": "Hmag",
+        "standard_name": "H_magnitude"
+      },
+      {
+        "column": "Ksmag",
+        "standard_name": "K_s_magnitude"
+      },
+      {
+        "column": "[Fe/H]",
+        "standard_name": "metallicity"
+      },
+      {
+        "column": "[alpha/Fe]",
+        "standard_name": "alpha_enrichment"
+      }
+    ],
+    "reasoning": "表描述明确指出为‘our sample stars’（样本恒星），属于多星参数目录而非专门针对Vega的单星研究表。此类表格通常用于对比、校准或统计研究，主体为其他恒星集合，符合other_entity分类标准。若Vega位于该样本中，可提取其对应行的物理参数。"
+  },
+  "J/ApJ/905/34": {
+    "table_class": "whole_entity",
+    "entity_column": null,
+    "property_columns": [
+      {
+        "column": "Teff",
+        "standard_name": "effective_temperature"
+      },
+      {
+        "column": "Cmag",
+        "standard_name": "magnitude"
+      }
+    ],
+    "reasoning": "该表提供了目标恒星长达五年的光变监测数据（有效温度与星等），属于对天体整体物理性质随时间变化的描述，符合whole_entity分类。表中无显式天体名称列，且已按要求排除时间列(HJD)与误差列(e_*)。"
+  }
+}

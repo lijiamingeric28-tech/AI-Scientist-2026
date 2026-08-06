@@ -1,0 +1,269 @@
+{
+  "otype": "As*",
+  "name_cn": "星协",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "assoc_name",
+      "name_cn": "星协名称",
+      "description": "星协的规范名称(如 Ori OB1、Sco OB2、Taurus-Auriga T 星协)",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "assoc_alt_names",
+      "name_cn": "别名/子群名称",
+      "description": "星协的替代名称及其子群/亚结构名称(如 Ori OB1a/b/c、Upper Sco/UCL/LCC),用于层级结构归并",
+      "category": "classification",
+      "ucd": "meta.id.alt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_deg",
+      "name_cn": "赤经(ICRS)",
+      "description": "星协中心(成员中位)赤经,历元ICRS(如Ep=2016.0或J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_deg",
+      "name_cn": "赤纬(ICRS)",
+      "description": "星协中心(成员中位)赤纬,历元ICRS",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon",
+      "name_cn": "银经",
+      "description": "星协中心银河经度,用于银盘/旋臂定位",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glat",
+      "name_cn": "银纬",
+      "description": "星协中心银河纬度,反映与银道面的距离及环境",
+      "category": "environment",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "平均三角视差",
+      "description": "成员星平均三角视差(Hipparcos/Gaia),星协距离基准",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_pc",
+      "name_cn": "距离",
+      "description": "星协距离:成员视差中位值或SED拟合视向距离(pc)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_ra",
+      "name_cn": "自行(赤经分量)",
+      "description": "星协/成员星自行赤经分量(mas/yr),成员判定与运动学研究基础",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_dec",
+      "name_cn": "自行(赤纬分量)",
+      "description": "星协/成员星自行赤纬分量(mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv",
+      "name_cn": "视向速度",
+      "description": "星协(成员)视向速度(km/s),用于三维空间运动与移动群确认",
+      "category": "astrometry",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uvw_vel",
+      "name_cn": "空间速度分量(U,V,W)",
+      "description": "星协日心银道空间速度分量(km/s),贝叶斯成员分类与动力学研究输入",
+      "category": "astrometry",
+      "ucd": "phys.veloc.space",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xyz_pos",
+      "name_cn": "银道直角坐标(X,Y,Z)",
+      "description": "星协在日心银道直角坐标系中的位置及固有空间弥散(pc)",
+      "category": "environment",
+      "ucd": "pos.cartesian.x",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_disp",
+      "name_cn": "内部速度弥散",
+      "description": "星协内部一维/三维速度弥散(km/s),表征引力非束缚性与动力学状态",
+      "category": "physical",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kinematic_age",
+      "name_cn": "运动学(膨胀)年龄",
+      "description": "由线性速度梯度/各向异性膨胀运动导出的动力学年龄(Myr),反映星协自形成以来的膨胀时标",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isochronal_age",
+      "name_cn": "等时线年龄",
+      "description": "由最热成员星/恒星演化模型或成员等时线拟合得到的年龄(Myr)",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ang_radius",
+      "name_cn": "角半径/角尺度",
+      "description": "星协在天球上的角半径或角直径(度/角分),描述空间延展",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lin_radius",
+      "name_cn": "线性半径",
+      "description": "星协的线性尺度半径(pc),由角尺度与距离导出",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_members",
+      "name_cn": "成员星数量",
+      "description": "已确认或估计的星协成员星总数(含低质量成员,Gaia时代可完整计数)",
+      "category": "physical",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_ob_stars",
+      "name_cn": "O/B型星数量",
+      "description": "星协中估计的O型星与B型星数目(由有效温度阈值/SED拟合统计),反映大质量恒星含量",
+      "category": "physical",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "total_mass",
+      "name_cn": "总初始恒星质量",
+      "description": "星协总(初始)恒星质量(Msun),由IMF采样与双星修正蒙特卡洛估计",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_av",
+      "name_cn": "V波段消光 A_V",
+      "description": "星协中位V波段星际消光(mag),指示与气体尘埃环境关联程度",
+      "category": "photometry",
+      "ucd": "phot.mag.extinction",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_bv",
+      "name_cn": "B-V 色指数",
+      "description": "成员星B-V色指数,用于H-R图定位与成员校验",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag",
+      "name_cn": "多波段星等",
+      "description": "成员星多波段星等(V/Hp/G/BP/RP及近红外JHK等),由星协成员表携带",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectype",
+      "name_cn": "光谱型",
+      "description": "成员星光谱型/光度级(如O9-B5),OB星协核心成员判据之一",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_prob",
+      "name_cn": "成员概率",
+      "description": "运动学(收敛点法/Spaghetti)或贝叶斯(BANYAN)成员概率,成员星判定的核心量",
+      "category": "classification",
+      "ucd": "stat.prob",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "yso_class",
+      "name_cn": "年轻恒星天体类别",
+      "description": "成员星YSO类别:经典/弱线T Tauri(CTTS/WTTS)、Class II/III、Herbig Ae/Be等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parent_structure",
+      "name_cn": "所属母体结构",
+      "description": "星协所属更大尺度结构:子群所属母星协、交叉匹配的开放星团/恒星群、相关超云(如Radcliffe波、Kormann超云)",
+      "category": "environment",
+      "ucd": "meta.id.parent",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_flag",
+      "name_cn": "变星标志",
+      "description": "成员星变星标识/变星类别(T Tauri型变、UX Ori型变等),源自Hipparcos及成员星普查数据;星协级目录本身多不含变星表,需引用成员星变星目录",
+      "category": "variability",
+      "ucd": "meta.code.var",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

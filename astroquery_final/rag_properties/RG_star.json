@@ -1,0 +1,323 @@
+{
+  "otype": "RG*",
+  "name_cn": "红巨星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "ICRS J2000 赤经，源定位坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "ICRS J2000 赤纬，源定位坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia 三角视差，红巨星距离的直接测定",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经方向自行",
+      "description": "Gaia 自行 μ_α*，用于运动学与星族判别",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬方向自行",
+      "description": "Gaia 自行 μ_δ，用于运动学与星族判别",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "星震学或 Gaia 视差导出的距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_g",
+      "name_cn": "G波段星等",
+      "description": "Gaia 宽带 G 星等，全天下发红巨星测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.G",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_bp",
+      "name_cn": "BP波段星等",
+      "description": "Gaia 蓝端 BP 星等，用于有效温度与色指数",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.BP",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_rp",
+      "name_cn": "RP波段星等",
+      "description": "Gaia 红端 RP 星等，用于有效温度与色指数",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.RP",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V波段星等",
+      "description": "Johnson V 星等，亮红巨星经典测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_j",
+      "name_cn": "J波段星等",
+      "description": "2MASS J 近红外星等，红巨星星际消光敏感度低",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_h",
+      "name_cn": "H波段星等",
+      "description": "2MASS H 近红外星等（APOGEE 工作波段）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_k",
+      "name_cn": "K波段星等",
+      "description": "2MASS K 近红外星等，巨星能量分布的关键约束",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_kp",
+      "name_cn": "Kepler星等",
+      "description": "Kepler 宽带 Kp 星等，Kepler 场红巨星选择与星震学输入",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_ebv",
+      "name_cn": "色余 E(B-V)",
+      "description": "星际消光色余，用于改正巨星测光与大气参数",
+      "category": "photometry",
+      "ucd": "phys.absorption.gal",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "APOGEE H 波段谱线测定的视向速度，银河系动力学研究",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "光谱展宽测定的投影自转速度，巨星低速自转诊断",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "microturbulence",
+      "name_cn": "微湍流速度",
+      "description": "谱线展宽拟合的微湍流速度，巨星大气建模参数",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.microTurb",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "APOKASC-2 星震学+光谱联合的有效温度，RG 主序后壳层氢燃烧阶段的温度诊断",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_g",
+      "name_cn": "表面重力 log g",
+      "description": "星震学导出的高精度 log g，判别巨星（log g<3.5）与矮星",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "金属丰度 [Fe/H]",
+      "description": "APOGEE 光谱铁丰度，红巨星化学演化与银河考古核心参数",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alpha_fe",
+      "name_cn": "α元素丰度 [α/M]",
+      "description": "APOGEE α 元素（O、Mg、Si、Ca、Ti）平均丰度比，区分厚/薄盘星族",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_fe",
+      "name_cn": "碳丰度 [C/M]",
+      "description": "APOGEE 碳丰度，巨星内部 CNO 循环与第一上翻的示踪",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_fe",
+      "name_cn": "氮丰度 [N/M]",
+      "description": "APOGEE 氮丰度，与 [C/M] 联合诊断巨星质量与演化阶段",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "星震学标度关系导出的红巨星质量，RG 最重要的物理参数之一",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "星震学导出的红巨星半径（数倍至数十倍太阳半径）",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "由星震学距离与测光导出的光度，RG 与距离指示剂",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "星震学+等时线拟合的红巨星年龄，银河系年代考古的基础",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "numax",
+      "name_cn": "最大振荡功率频率 νmax",
+      "description": "太阳型振荡功率谱峰值频率，与 log g 及质量成标度关系",
+      "category": "physical",
+      "ucd": "phys.freq",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "delta_nu",
+      "name_cn": "平均大频率间隔 Δν",
+      "description": "径向模大频率间隔，与平均密度和半径成标度关系",
+      "category": "physical",
+      "ucd": "phys.freq",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oscillation_amplitude",
+      "name_cn": "振荡幅度",
+      "description": "太阳型振荡振幅（ppm），随金属度与演化状态变化",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "红巨星中长期光变（SR/LPV 型）的脉动周期，由测光巡天（如 Gaia/OGLE）提供",
+      "category": "variability",
+      "ucd": "src.var.pulse.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK 光谱型（如 K0III、M2III），罗马数字 III 标识巨星",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "evolutionary_state",
+      "name_cn": "演化状态",
+      "description": "星震学判别的演化分支：红巨星支(RGB) 与氦核燃烧/红团簇(HeB/RC)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团成员属性",
+      "description": "APOGEE 星团观测中的成员判定标志，用于疏散/球状星团红巨星研究",
+      "category": "environment",
+      "ucd": "meta.code;src.member",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

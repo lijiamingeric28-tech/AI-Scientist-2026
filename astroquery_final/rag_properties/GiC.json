@@ -1,0 +1,296 @@
+{
+  "otype": "GiC",
+  "name_cn": "星系团中的星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经(J2000)",
+      "description": "星系赤经(十进制度,J2000历元)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬(J2000)",
+      "description": "星系赤纬(十进制度,J2000历元)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_dec_b1950",
+      "name_cn": "赤经/赤纬(B1950)",
+      "description": "B1950历元赤经/赤纬(VCC与Dressler表为旧历元坐标,使用时需岁差转换)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "x_y_plate",
+      "name_cn": "底片X/Y位置",
+      "description": "底片毫米坐标位置(每团独立底片坐标系)",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.x;pos.cartesian.y",
+      "unit": "mm",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "position_angle",
+      "name_cn": "位置角",
+      "description": "星系长轴位置角(北为0度,向东为正)",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "total_blue_mag_bt",
+      "name_cn": "总蓝星等BT",
+      "description": "总视蓝星等B(室女星表)或SExtractor MAG_AUTO B星等(WINGS)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_auto_v",
+      "name_cn": "V波段总星等",
+      "description": "SExtractor MAG_AUTO V波段总星等(未消银河消光)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "est_total_mag_mvis",
+      "name_cn": "估计总视星等mvis",
+      "description": "Dressler表估计总视星等(由底片测定,与MV~-19-mb/2关联)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bulge_mag_mb",
+      "name_cn": "核球星等mb",
+      "description": "星系核球估计星等(mb=-1无核球,-2不确定)",
+      "category": "photometry",
+      "ucd": "phot.mag.bulge;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "aperture_mag",
+      "name_cn": "孔径星等(2/5/10kpc/光纤)",
+      "description": "固定物理孔径(2/5/10kpc)及光纤口径(1.6/2.0/2.16角秒)内的B、V星等,孔径半径按目标团距离换算",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_brightness_peak",
+      "name_cn": "峰值表面亮度",
+      "description": "发射峰表面亮度(星等/平方角秒)",
+      "category": "photometry",
+      "ucd": "phot.sb;em.opt",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_bv",
+      "name_cn": "B-V色指数",
+      "description": "由B、V星等衍生的颜色,用于红序/蓝云分类与颜色-密度关系",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ellipticity_eps",
+      "name_cn": "椭圆度",
+      "description": "Dressler目视估计椭圆度(1-b/a;e=-2为不确定)",
+      "category": "physical",
+      "ucd": "src.ellipticity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "axis_ratio_ba",
+      "name_cn": "长短轴比b/a",
+      "description": "SExtractor测量的短轴/长轴比",
+      "category": "physical",
+      "ucd": "phys.size.axisRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kron_radius",
+      "name_cn": "Kron半径",
+      "description": "Kron有效半径(角秒)",
+      "category": "physical",
+      "ucd": "phys.angSize.radius",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fwhm",
+      "name_cn": "半高全宽FWHM",
+      "description": "图像半高全宽(角秒),指示源延展程度",
+      "category": "physical",
+      "ucd": "phys.angSize.FWHM",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isophotal_area",
+      "name_cn": "等光面积",
+      "description": "等光轮廓包围面积(平方角秒)",
+      "category": "physical",
+      "ucd": "phys.angArea",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "concentration",
+      "name_cn": "浓度参数",
+      "description": "中心9%像素流量占总流量之比(另有30%亮像素对比参数),与形态相关",
+      "category": "physical",
+      "ucd": "phot.param;phys.morphology",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_dispersion",
+      "name_cn": "星系团速度弥散",
+      "description": "宿主星系团速度弥散sigma(km/s)及其上下误差,用于团质量与动力学环境表征",
+      "category": "physical",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "heliocentric_velocity",
+      "name_cn": "日心视向速度",
+      "description": "日心视向速度HRV(km/s),用于成员判定与团动力学分析",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移z",
+      "description": "星系红移(光谱测量,含来源标记:WINGS/OMEGAWINGS/NED/SDSS)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type_hubble",
+      "name_cn": "形态类型(哈勃分类)",
+      "description": "哈勃体系形态类型(E/S0/Sa-Sc/Irr等),形态-密度关系的基础量",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type_extended",
+      "name_cn": "扩展哈勃形态类型",
+      "description": "扩展哈勃体系形态类型(含矮椭圆dE、矮透镜dS0、矮不规则dI等)",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellarity_index",
+      "name_cn": "恒星/星系指示量",
+      "description": "SExtractor Stellarity Index(0=星系,1=恒星)及星/星系/未知对象分类表",
+      "category": "classification",
+      "ucd": "src.class.starGalaxy",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sextractor_flags",
+      "name_cn": "SExtractor提取标志",
+      "description": "SExtractor提取质量标志(混叠、饱和、截断、去混叠等,十进制编码)",
+      "category": "classification",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stripping_class_j",
+      "name_cn": "剥离证据等级JClass",
+      "description": "目视气体剥离(ram pressure stripping)形态证据等级:5最强至1最弱,水母星系候选者判别量",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_flag",
+      "name_cn": "团内成员标志",
+      "description": "星系团成员判定标志(VCC:M成员/B背景/-可能成员;Jellyfish:1成员/0非成员/-1未知)",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_name",
+      "name_cn": "所属星系团名称",
+      "description": "星系所属星系团标识(如Abell/室女/WINGS团名),环境研究的分组键",
+      "category": "environment",
+      "ucd": "meta.id.cluster",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_redshift",
+      "name_cn": "星系团红移",
+      "description": "星系团整体红移(由成员星系光谱确定)",
+      "category": "environment",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ngal_sigma",
+      "name_cn": "测速弥散星系数",
+      "description": "用于测定团红移与速度弥散的成员星系数Ngal,反映团富度",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_lum_cluster",
+      "name_cn": "星系团X射线光度logLX",
+      "description": "宿主团0.1-2.4keV波段X射线光度对数(log LX,CGS),团质量/热环境表征量",
+      "category": "environment",
+      "ucd": "phys.luminosity.X;em.Xray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bcg_coordinates",
+      "name_cn": "最亮团星系(BCG)坐标",
+      "description": "各团最亮星系(BCG)的发射峰坐标与Simab团名,BCG定位与研究用",
+      "category": "environment",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    }
+  ]
+}

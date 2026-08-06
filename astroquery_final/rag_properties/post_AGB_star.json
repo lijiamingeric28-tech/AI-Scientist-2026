@@ -1,0 +1,251 @@
+{
+  "otype": "pA*",
+  "name_cn": "后 AGB 星",
+  "description": "低/中质量恒星离开 AGB 后的短暂演化阶段。有效温度升高（~5000-25000K），周围有 AGB 阶段抛出的尘埃壳层。光谱型和物理性质差异极大",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱型（如 G5I、B8、K0）。pA* 光谱型从 K 到 B，跨越巨大温度范围。A 型附近有统计缺口（演化时标极短）",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "光度级。pA* 通常为 I-III。高银纬超巨星（|b|>15°+I/II类）是 pA* 的强判据",
+      "category": "classification",
+      "ucd": "src.class.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "post_AGB_subclass",
+      "name_cn": "pA* 亚类",
+      "description": "Torun 目录定义的亚类：IRASsel（IRAS 颜色选择）、hglsg（高银纬超巨星，|b|>15°）、hglB（高银纬 B 型）、hotpAGB（热 pA*）、IRexc（红外超）、UU Her（UU Her 型变星）、RV Tau、R CrB（富碳贫氢）、eHe（极端氦星）、LTP（晚热脉冲）、21 micron（21μm 发射特征）、refneb（反射星云）",
+      "category": "classification",
+      "ucd": "src.class;meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_flag",
+      "name_cn": "双星标识",
+      "description": "确认的双星系统标识。Torun 目录中有 47 颗确认双星。pA* 中双星比例极高（特别是 RV Tau 和富尘埃 pA*），双星演化可能对尘埃盘形成至关重要",
+      "category": "classification",
+      "ucd": "meta.code;src.orbital",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_12um_flux",
+      "name_cn": "IRAS 12μm 流量",
+      "description": "IRAS 12μm 波段流量。pA* 的尘埃壳层在中红外辐射峰值区域",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.8-15um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_25um_flux",
+      "name_cn": "IRAS 25μm 流量",
+      "description": "IRAS 25μm 波段流量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.15-30um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_60um_flux",
+      "name_cn": "IRAS 60μm 流量",
+      "description": "IRAS 60μm 波段流量。探测冷尘埃（~50-100K）",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.30-60um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_100um_flux",
+      "name_cn": "IRAS 100μm 流量",
+      "description": "IRAS 100μm 波段流量。探测最冷尘埃组分",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.60-100um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_12_25_color",
+      "name_cn": "IRAS [12]-[25] 颜色",
+      "description": "[12]-[25] = 2.5*log(F25/F12)。pA* 候选体经典选择判据：>0.75 且 [25]-[60]<1.15 为 PN 区",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.8-15um;em.IR.15-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_25_60_color",
+      "name_cn": "IRAS [25]-[60] 颜色",
+      "description": "[25]-[60] = 2.5*log(F60/F25)。与 [12]-[25] 组合用于 pA* 候选体选择",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.15-30um;em.IR.30-60um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "J_mag_2MASS_pAGB",
+      "name_cn": "2MASS J 星等",
+      "description": "2MASS J 波段（1.25μm）。探测中心星和热尘埃",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "H_mag_2MASS_pAGB",
+      "name_cn": "2MASS H 星等",
+      "description": "2MASS H 波段（1.65μm）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "K_mag_2MASS_pAGB",
+      "name_cn": "2MASS K 星等",
+      "description": "2MASS K_s 波段（2.16μm）。pA* 近红外色指数（J-H, H-K, J-K）用于区分 DUPLEX（光学厚包层）/SOLE（光学薄包层）/stellar（无包层可见）三类",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "JH_color_2MASS",
+      "name_cn": "2MASS J-H 颜色",
+      "description": "J-H。DUPLEX 源（光学厚）通常 J-H 偏红。结合 H-K 区分尘埃壳层光学厚度",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.J;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "HK_color_2MASS",
+      "name_cn": "2MASS H-K 颜色",
+      "description": "H-K。H-K>0.75 通常指示显著尘埃壳层",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.H;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "K_IRAS25_color",
+      "name_cn": "K-[25] 颜色",
+      "description": "K-[25]。SOLE 源（光学薄壳层）通常 K-[25]>8；stellar 源 K-[25]<8",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.K;em.IR.15-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "IRAS_LRS_class",
+      "name_cn": "IRAS 低分辨光谱分类",
+      "description": "IRAS LRS（8-23μm）光谱分类。指示尘埃种类（硅酸盐 vs 碳质）和 9.7μm 硅酸盐特征类型（发射/吸收/自吸收）",
+      "category": "spectroscopy",
+      "ucd": "src.spType;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ISO_SWS_spectrum",
+      "name_cn": "ISO SWS 光谱",
+      "description": "ISO SWS 中红外光谱（2.4-45μm）。比 IRAS LRS 高得多的分辨率和灵敏度。探测 PAH、硅酸盐、冰、晶体硅酸盐等尘埃特征",
+      "category": "spectroscopy",
+      "ucd": "meta.ref;spect",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_chemistry_type",
+      "name_cn": "尘埃化学类型",
+      "description": "O-rich（富氧：硅酸盐特征）vs C-rich（富碳：SiC 或无定形碳）。由 IRAS LRS/ISO 光谱判定。AGB 阶段核合成 + 第三次 dredge-up 决定",
+      "category": "classification",
+      "ucd": "meta.code;phys.composition",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "circumstellar_envelope_type",
+      "name_cn": "拱星星周包层类型",
+      "description": "DUPLEX（光学厚包层，中心星不可见）/ SOLE（光学薄，中心星可见）/ stellar（无环物质，纯中心星）。基于 2MASS+IRAS 颜色判定",
+      "category": "classification",
+      "ucd": "meta.code;src.morph",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude_pAGB",
+      "name_cn": "银经",
+      "description": "银道坐标 l。|b|>15°的高银纬超巨星是 pA* 强判据（大质量超巨星不在高银纬）",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude_pAGB",
+      "name_cn": "银纬",
+      "description": "银道坐标 b。|b| 值用于区分 Population I（盘面）和 Population II（晕）",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chemical_abundance_pattern",
+      "name_cn": "化学丰度模式",
+      "description": "光球化学丰度。特征包括：Fe 族元素耗尽（灰尘凝聚后气相-尘埃分离）、s-process 元素增强、C/O 比。数据分散在个案研究文献中，未在 Torun 目录中系统编目",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period_pAGB",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期。pA* 双星周期通常数百至数千天。数据分散在个案文献中",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "脉动变星周期。RV Tau 星典型周期 30-150 天。UU Her 星为小振幅（~0.1mag）脉动",
+      "category": "variability",
+      "ucd": "time.period.pulsation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type",
+      "name_cn": "光变类型",
+      "description": "RV Tau（交替深浅极小）/ R CrB（不规则骤降 up to 8 mag）/ 不规则或半规则脉动",
+      "category": "classification",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates",
+      "name_cn": "赤道坐标",
+      "description": "J2000.0 赤经赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    }
+  ]
+}

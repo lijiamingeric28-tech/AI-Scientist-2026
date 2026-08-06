@@ -1,0 +1,188 @@
+{
+  "otype": "WD*",
+  "name_cn": "白矮星",
+  "description": "中低质量恒星的最终演化产物。电子简并压支撑，核反应停止，缓慢冷却。光谱型 DA/DB/DC/DO/DZ/DQ，质量 ~0.6 Msun，半径 ~地球大小",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "spectral_class",
+      "name_cn": "白矮星光民类型",
+      "description": "DA（氢大气，H 线）、DB（氦大气，He I 线）、DC（无特征连续谱）、DO（热 He-rich，He II）、DZ（金属线）、DQ（碳分子带）。DA 占 ~80%",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "T_eff (K)。5000-150000 K，覆盖从最冷到最热白矮星。是冷却序列的核心物理参数",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力",
+      "description": "log g (cgs)。典型 7.5-9.0。与质量通过质量-半径关系关联",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "白矮星质量",
+      "description": "推导质量。从 log g 和质量-半径关系（需冷却模型和演化序列）计算。平均 ~0.6 Msun。DA 型质量分布峰值更窄",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cooling_age",
+      "name_cn": "冷却年龄",
+      "description": "白矮星阶段的冷却时间。从初始温度开始冷却至今。对极冷白矮星可给出银河系年龄下限",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_G_mag",
+      "name_cn": "绝对 G 星等",
+      "description": "Gaia G 波段绝对星等。WD 冷却序列在 CMD 上形成清晰的轨迹。用于选择候选体和视差验证",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "G_BP_RP_color",
+      "name_cn": "Gaia BP-RP 颜色",
+      "description": "Gaia BP-RP 色指数。WD 颜色范围为 -0.5 到 +2.0，对温度和大气成分敏感",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3 视差。Gaia 时代之前 WD 视差极稀缺，现在有~36万个 WDs 的精确视差",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "μ_α cosδ, μ_δ。WD 通常有相对大的自行（近距+年老）",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "基于 Gaia 视差的几何/测光距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "white_dwarf_probability",
+      "name_cn": "白矮星概率",
+      "description": "Gaia WD 星表的 Pwd 值。基于 CMD 位置+天体测量质量的机器学习分类概率。Pwd>0.75 为高置信度",
+      "category": "classification",
+      "ucd": "stat.probability;src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "atmospheric_composition",
+      "name_cn": "大气成分标识",
+      "description": "H-rich (DA) vs He-rich (DB, DO)。可用光谱或颜色+测光方法推断。DA 型有无 H 层的厚度影响冷却速率",
+      "category": "classification",
+      "ucd": "phys.abund;meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnetic_field",
+      "name_cn": "磁场强度",
+      "description": "B (MG)。部分 WD（~10-20%）有强磁场（Zeeman 分裂或偏振检测）。磁性 WD 可能来自并合",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "可用于探测双星 WD 和引力红移（~几十 km/s）",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_composition",
+      "name_cn": "表面化学污染",
+      "description": "金属污染白矮星（DAZ, DBZ）。谱线显示 Ca, Mg, Fe 等金属吸收——是行星物质吸积的证据。约25-50% 的白矮星有金属污染",
+      "category": "physical",
+      "ucd": "phys.abund;meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "debris_disk_flag",
+      "name_cn": "碎片盘标识",
+      "description": "是否有红外超（尘埃碎片盘）。WISE W1-W2 颜色诊断。是行星系统存在的间接证据",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_type",
+      "name_cn": "脉动类型",
+      "description": "DOV（热 DO/He-rich, T>80000K, 爱丁顿不稳定）, DBV（He-rich, ~25000K）, DAV/ZZ Cet（H-rich, ~12000K）。不同脉动模式对应不同温度窗口",
+      "category": "classification",
+      "ucd": "meta.code;src.var.pulse",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_periods",
+      "name_cn": "脉动周期",
+      "description": "脉动白矮星的周期（100-1500秒）。非径向 g 模式脉动。用于星震学研究内部结构",
+      "category": "variability",
+      "ucd": "time.period.pulsation",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_status",
+      "name_cn": "双星状态",
+      "description": "双星 WD（WD+MS, WD+WD, WD+BD）。通过视向速度变化或食光变检测",
+      "category": "classification",
+      "ucd": "meta.code;src.orbital",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates",
+      "name_cn": "赤道坐标",
+      "description": "J2000.0 赤经赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    }
+  ]
+}

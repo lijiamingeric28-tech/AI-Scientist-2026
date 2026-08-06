@@ -1,0 +1,422 @@
+{
+  "otype": "Y*O",
+  "name_cn": "年轻星天体",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "赤经(J2000),各目录统一ICRS坐标,可与Gaia DR3交叉证认",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "赤纬(J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon_lat",
+      "name_cn": "银经/银纬",
+      "description": "银道坐标,用于银河系分布与恒星形成区归属分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3三角视差及误差,含Gaia DR3源号可直接接取自行等",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "Bailer-Jones(2021)几何距离与测光几何距离后验中位数及16%/84%分位,单位pc",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ruwe",
+      "name_cn": "RUWE",
+      "description": "Gaia DR3归一化单位权重误差,衡量单点源拟合质量与多重性/非单星",
+      "category": "astrometry",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jhk_mag",
+      "name_cn": "2MASS J/H/Ks星等",
+      "description": "2MASS近红外三波段星等及误差,近红外过剩的测光基础",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_w1",
+      "name_cn": "WISE W1(3.4μm)星等",
+      "description": "AllWISE profile-fit测光星等及误差/S/N,含rchi2拟合质量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3.4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_w2_w3_w4",
+      "name_cn": "WISE W2/W3/W4星等",
+      "description": "W2(4.6μm)、W3(12μm)、W4(22μm)星等及误差,中红外过剩(YSO盘标志)的核心波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.4.6um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "irac_flux",
+      "name_cn": "Spitzer IRAC通量密度",
+      "description": "IRAC 3.6/4.5/5.8/8.0μm通量密度(mJy),观测值与消光改正值两套,含误差",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mips_flux",
+      "name_cn": "Spitzer MIPS通量密度",
+      "description": "MIPS 24/70/160μm通量密度(mJy),24μm是Class I/II判别的关键波段",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "submm_flux",
+      "name_cn": "亚毫米通量密度",
+      "description": "SHARC-II 350μm、SCUBA 450/850μm及文献1100-1300μm通量,包层/核质量的直接示踪",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.mm",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_flux",
+      "name_cn": "光学波段通量密度",
+      "description": "UBVRI、Hα窄带、z等0.36-0.96μm通量密度(mJy),观测值与消光改正值",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.opt",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "Gaia G星等",
+      "description": "Gaia DR3平均G波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_rp",
+      "name_cn": "Gaia BP-RP颜色",
+      "description": "Gaia DR3平均BP-RP颜色,恒星参数估计输入量",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "planck_tau",
+      "name_cn": "Planck 353GHz尘埃光深",
+      "description": "Planck热尘埃模型R1.20在源位置处的光学深tau,表征云环境柱密度(星前核心指示)",
+      "category": "photometry",
+      "ucd": "phys.columnDensity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_quality_flags",
+      "name_cn": "WISE测光质量标志",
+      "description": "各波段测光质量等级(A最高,U上限)、延伸源形态标志extflag与测量次数,用于样本筛选",
+      "category": "photometry",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(含二元组分与不确定范围),NEMESIS多文献汇编;Herczeg+2014给均匀再定标光谱型",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "Teff(K),含SED拟合/光谱模板/测光拟合等多方法来源与上下误差",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "由光谱拟合得到的log g(cm/s2),判别前主序性质与巨星污染",
+      "category": "spectroscopy",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "视向速度(km/s)及误差,运动学成员判定与二元探测",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "vsini(km/s)及变光周期,自转与磁活动关联研究",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ew",
+      "name_cn": "发射线等值宽度",
+      "description": "吸积/星盘相互作用示踪线EW:Hα(含W10Hα)、HeI 5876/6678/10830、CaII三重线与H&K、[OI]、[SII]、Brγ、Paβ/Paγ、H2、CO(2-0)等",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "li_abundance",
+      "name_cn": "锂线等值宽度与丰度",
+      "description": "Li I 6708Å等值宽度及锂丰度(含误差),前主序/年轻性判据",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "veiling",
+      "name_cn": "连续谱veiling",
+      "description": "光学(6390-6710Å)与近红外(K、H)连续谱veiling r,吸积热辐射强度示踪",
+      "category": "spectroscopy",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "l_bol",
+      "name_cn": "热光度",
+      "description": "玻尔兹曼热光度L_bol(太阳光度),由SED积分得到,观测值与消光改正值两套;前主序演化相位与吸积光度估计基础",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t_bol",
+      "name_cn": "热温度",
+      "description": "玻尔兹曼温度T_bol(K),表征SED峰值波长与包层/盘几何,Class 0/I判别量(注意:对Class II/III区分度差)",
+      "category": "physical",
+      "ucd": "phys.temperature.bolometric",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alpha_sed",
+      "name_cn": "SED谱指数",
+      "description": "红外谱指数alpha(及消光改正alpha0),NEMESIS另给2-24μm均匀化alpha2-24;Lada分类体系的直接输入",
+      "category": "physical",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction",
+      "name_cn": "消光A_V",
+      "description": "V波段消光A_V(0-42 mag),由SED拟合得到;Herczeg+2014用光学谱给出系统偏低的A_V",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "由HR图位置估计的恒星质量(Msun)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "年龄",
+      "description": "log年龄(yr),由HR图与等时线对比得到;Dunham+2015另给出各演化类别的时标(Class 0+I约0.40-0.78 Myr)",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "由光度与温度推得的恒星半径(Rsun)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_rate",
+      "name_cn": "吸积率",
+      "description": "质量吸积率Mdot(派生量):由NEMESIS的Hα/Brγ等值宽度、veiling等吸积示踪量经经验标定(如Alcala+2017)推导;直接列则见Herczeg & Hillenbrand 2008(J/ApJ/681/594)",
+      "category": "physical",
+      "ucd": "phys.accretion.rate",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "envelope_mass",
+      "name_cn": "包层/核质量",
+      "description": "星周包层或密核质量(派生量):由亚毫米通量(SCUBA 450/850μm等)与尘埃温度假设推导,对应Class 0/I最早期演化",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cloud_mass",
+      "name_cn": "分子云质量",
+      "description": "18个c2d/GB分子云的云质量(Msun)、面积与假设距离(表1),提供环境尺度背景",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_class",
+      "name_cn": "SED演化分类",
+      "description": "Class 0+I / Flat-spectrum / Class II / Class III(Lada-Andre体系),由alpha与Tbol判定;Class III样本受AGB污染25-90%",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "yso_type",
+      "name_cn": "YSO类型",
+      "description": "文献中的YSO演化类型标签(如Class I/II/III、HAeBe、FUor等)及识别方法",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "disk_class",
+      "name_cn": "盘分类",
+      "description": "基于alpha2-24的盘分类(0/I、flat、II、III thin disk、III diskless)及文献盘分类方法来源",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "simbad_type",
+      "name_cn": "SIMBAD源类型",
+      "description": "5角秒内SIMBAD对应体的主型与角距,训练/验证分类器用",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "contamination_prob",
+      "name_cn": "污染概率",
+      "description": "机器学习给出的河外星系概率与巨星概率(随机森林),以及AGB/主序污染标志",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type",
+      "name_cn": "变光类型",
+      "description": "文献变光类型(如EXor/FUor型、T Tauri型变光等)与Gaia变光YSO分类",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "变光周期",
+      "description": "光变周期(天)及多周期/误差,周期源(测光带)说明;另含Mowlavi+2021变幅代理量",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度与硬度比",
+      "description": "X射线通量与总光度(0.1-10keV等带)、硬度比HR1-3及误差,来自COUP/Chandra/XMM等;年轻星X射线活动示踪",
+      "category": "variability",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_nh",
+      "name_cn": "氢柱密度",
+      "description": "由X射线谱拟合得到的氢柱密度log NH(cm-2),星际/星周消光指示",
+      "category": "variability",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr_name",
+      "name_cn": "所在恒星形成区",
+      "description": "YSO所属恒星形成区名称(基于恒星形成区手册),用于环境分层统计",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity",
+      "name_cn": "多重性标志",
+      "description": "多重性类型标志(光谱/目视/食双星/天测/未分辨/RUWE候选等)及文献来源,前主序双星统计",
+      "category": "environment",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

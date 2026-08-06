@@ -1,0 +1,323 @@
+{
+  "otype": "CV*",
+  "name_cn": "激变变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "J2000赤经(历元坐标), 用于CV定位与交叉认证",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬, 与赤经共同构成CV天球位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行(arcsec/yr), 用于识别高自行CV与星团成员判定",
+      "category": "astrometry",
+      "ucd": "pos.eq.pm;pos.eq.ra",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行(arcsec/yr), 与赤经自行成对给出",
+      "category": "astrometry",
+      "ucd": "pos.eq.pm;pos.eq.dec",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude",
+      "name_cn": "银经",
+      "description": "银道坐标经度, 用于银面分布与空间密度统计",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度, 反映CV与银面的聚集关系",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia三角视差(mas), 现代CV距离与光度计算基础",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "几何距离(pc, 常取自Bailer-Jones等), 由Gaia视差推导",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude",
+      "name_cn": "极大星等",
+      "description": "光变极大时的星等, 新星即爆发峰值亮度, 由Ritter-Kolb/GCVS汇编",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "min_magnitude",
+      "name_cn": "极小星等",
+      "description": "光变极小时的静息态星等, 与极大星等共同给出爆发幅度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sdss_g_magnitude",
+      "name_cn": "SDSS g波段星等",
+      "description": "SDSS g波段星等, 蓝色波段对吸积盘辐射敏感",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_g_magnitude",
+      "name_cn": "Gaia G波段星等",
+      "description": "Gaia G宽带星等及误差, 用于光度与HR图分析",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "near_infrared_magnitude",
+      "name_cn": "近红外星等",
+      "description": "WISE/2MASS/UKIDSS/VHS近红外星等, 主要贡献来自施主星",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ultraviolet_magnitude",
+      "name_cn": "紫外星等",
+      "description": "GALEX FUV/NUV紫外星等, 示踪热白矮星与吸积盘内区",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type_primary",
+      "name_cn": "主星光谱型",
+      "description": "白矮星主星光谱型(通常为DA/DB型氢氦白矮星)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type_secondary",
+      "name_cn": "伴星光谱型",
+      "description": "洛希瓣充满的低温主序伴星光谱型(K/M型为主, AM CVn为He星)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "donor_spectral_type",
+      "name_cn": "施主星光谱型",
+      "description": "施主星光谱型(含方法标记), 用于判断演化状态与周期跳跃者候选",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面与视线夹角(deg), 食系统倾角~90度",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "white_dwarf_mass",
+      "name_cn": "白矮星质量",
+      "description": "白矮星主星质量M1(Msun), CV演化与爆发率关键参数",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "secondary_mass",
+      "name_cn": "伴星质量",
+      "description": "伴星质量M2(Msun), 结合轨道周期约束双星演化状态",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比",
+      "description": "双星质量比M1/M2或q=M2/M1, 决定吸积盘稳定性与超级驼峰激发",
+      "category": "physical",
+      "ucd": "phys.mass;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "white_dwarf_temperature",
+      "name_cn": "白矮星有效温度",
+      "description": "白矮星有效温度Teff(K), 反映吸积加热与长时标冷却",
+      "category": "physical",
+      "ucd": "phys.temperature",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_rate",
+      "name_cn": "吸积率",
+      "description": "质量吸积率Md-dot(Msun/yr), 由白矮星温度/光度与轨道演化约束, 决定矮新星爆发行为",
+      "category": "physical",
+      "ucd": "phys.accretion",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnetic_field_strength",
+      "name_cn": "磁场强度",
+      "description": "白矮星表面磁场(MG), 区分极化星/中间极化星与无磁CV",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期(天), CV分类与演化研究的第一参数, 五张表中均有",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "superhump_period",
+      "name_cn": "超级驼峰周期",
+      "description": "SU UMa型矮新星超级爆发中的超级驼峰周期, 与轨道周期周期超量约束质量比",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period",
+      "name_cn": "白矮星自转周期",
+      "description": "磁性系统白矮星自转周期(秒级, 表中第三周期项), 中间极化星的重要观测量",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "supercycle_length",
+      "name_cn": "超级循环长度",
+      "description": "SU UMa矮新星相邻超级爆发间隔(天), 与吸积率相关",
+      "category": "variability",
+      "ucd": "time.interval",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_cycle_length",
+      "name_cn": "爆发循环长度",
+      "description": "矮新星相邻正常爆发间隔(天), 反映吸积盘热不稳定性状态",
+      "category": "variability",
+      "ucd": "time.interval",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_duration",
+      "name_cn": "爆发持续时间",
+      "description": "正常爆发/超级爆发时长及上升-平台-下降各阶段(天)",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_year",
+      "name_cn": "爆发年份",
+      "description": "新星爆发年份(OutDate), 经典新星与再发新星的历史记录",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cv_subtype",
+      "name_cn": "激变变星亚型",
+      "description": "GCVS变型分类(UG/UGSU/N/NA/NL/AM/DQ等), CV子类归属核心标签",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_classification",
+      "name_cn": "双星系统分类",
+      "description": "Ritter-Kolb系统类型(Type1-4), 按吸积几何与磁性细分(极化星/矮新星/新星状等)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipsing_flag",
+      "name_cn": "食系统标志",
+      "description": "食标志(EB), 食CV可精确测定轨道参数与恒星半径",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团成员标志",
+      "description": "开星团(O)或球状星团(G)成员标志, 球状星团CV可用于年龄约束",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

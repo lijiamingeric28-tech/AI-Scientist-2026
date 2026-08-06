@@ -1,0 +1,350 @@
+{
+  "otype": "s*r",
+  "name_cn": "红超巨星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "source_identifier",
+      "name_cn": "源标识/星名",
+      "description": "交叉标识：Gaia DR2编号、2MASS名(HHMMSSss+DDMMSSs)、[M2002]云内编号、LGGS名及别名(Alias)，用于跨星表匹配",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_dec",
+      "name_cn": "赤经/赤纬(J2000)",
+      "description": "源位置(J2000)，Gaia或2MASS等历元归算，角度制与时角制两种给出",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR2视差(毫角秒)，样本筛选要求omega/sigma_omega>4且RUWE<2.7",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia赤经(pmRA*cosDE)与赤纬方向自行(毫角秒/年)及其误差",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "光学光谱视向速度：Massey 2003为<1km/s精度日心速度并用于成员判定；Stephenson 2表给出Vlsr(局部标准静止系)速度",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "距离：由视差直接反演(D-Inv)或银河系模型先验(Bailer-Jones, D-MW)估计，含上下误差",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_modulus",
+      "name_cn": "距离模数",
+      "description": "距离模数DM(星等)，由Bailer-Jones距离导出，含高低误差，用于光度定标",
+      "category": "astrometry",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V波段星等",
+      "description": "光学V波段视星等：麦哲伦云UBVR CCD测光(Massey 2002, II/236)、NOMAD BVR或LGGS V星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "Gaia G波段星等",
+      "description": "Gaia DR2 G波段视星等(2.4-16星等)，用于前景星剔除与光变交叉检验",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_minus_v",
+      "name_cn": "B-V色指数",
+      "description": "光学B-V颜色，红超巨星温标与红化判据",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_minus_r",
+      "name_cn": "V-R色指数",
+      "description": "光学V-R颜色，无光谱源的温度估计依据",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_mag",
+      "name_cn": "J波段星等",
+      "description": "2MASS近红外J波段星等，含读/质量标记；M31/M33与Stephenson 2源亦给出",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_mag",
+      "name_cn": "H波段星等",
+      "description": "2MASS近红外H波段星等，含上限标记",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ks_mag",
+      "name_cn": "Ks波段星等",
+      "description": "2MASS Ks波段星等，红超巨星最稳健的亮度基准(对消光相对不敏感)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_minus_ks",
+      "name_cn": "J-Ks色指数",
+      "description": "近红外J-Ks颜色(观测值)，用于RSG候选筛选、AGB分离与红化估计",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.J;em.IR.K",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "intrinsic_j_minus_ks",
+      "name_cn": "内禀J-Ks颜色",
+      "description": "消光改正后的本征(J-Ks)_0色，与H-Ks本征色，用于温标与红化分解",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.J;em.IR.K",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_minus_ks_excess",
+      "name_cn": "J-Ks色余",
+      "description": "观测色与内禀色之差E(J-Ks)(按Levesque 2005内禀色表)，反映尘埃红化，兼作星周尘埃/质量损失指示",
+      "category": "physical",
+      "ucd": "phot.color.excess;em.IR.J;em.IR.K",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_3_4um_mag",
+      "name_cn": "3.4/3.6μm星等",
+      "description": "WISE W1(3.4um)或Spitzer/IRAC 3.6um星等，冷尘埃与星周包层辐射的开始区",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_4_6um_mag",
+      "name_cn": "4.6μm星等",
+      "description": "WISE W2(4.6um)或IRAC 4.5um星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.4-8um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_8_12um_mag",
+      "name_cn": "8-12μm星等",
+      "description": "IRAC 8.0um、MSX C(12.1um)、WISE W3(11.6um)等中红外星等，硅酸盐尘埃辐射特征区，质量损失/尘埃主要示踪",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.8-15um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_21_24um_mag",
+      "name_cn": "21-24μm星等",
+      "description": "WISE W4(22um)、MIPS 24um、MSX E(21.3um)远中红外星等，冷尘埃与高质量损失源指示",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.15-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "MK光谱型",
+      "description": "K/M型超巨星MK光谱分类(约M0-M5+，含Ib/Iab/I):Massey 2003给出新光谱型与文献型对照；Messineo 2019汇整Skiff历史记录并给出采用型；Stephenson 2表为AF2实测型",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "光谱光度级(I、Ib等)与Mbol-Teff图占区(Area A-F，区分RSG/AGB/巨星)，红超巨星身份判定核心",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度：Messineo 2019按光谱型温标(2940-4185K)；Massey 2021用MARCS模型由NIR测光拟合(3450-6950K,典型误差150K)；Massey 2003以logTeff给出；RSG典型约3500-4100K",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_lum",
+      "name_cn": "光度(对数,太阳单位)",
+      "description": "热光度对数log(L/Lsun)，由Ks测光+热改正或NIR SED经MARCS模型导出(典型误差0.05dex)，RSG典型logL约4.0-5.5",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bol_mag",
+      "name_cn": "热星等",
+      "description": "热绝对星等Mbol：两种估计(BC_Ks法与SED积分法)，RSG判据Mbol<-7.1",
+      "category": "physical",
+      "ucd": "phot.mag.bol",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_correction",
+      "name_cn": "Ks波段热改正",
+      "description": "Ks波段热改正BC_Ks(约2.4-3.34，按Levesque 2005公式)，由K光度求热光度",
+      "category": "physical",
+      "ucd": "phot.mag.bol",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "由Teff与光度推出的恒星半径(太阳半径单位，样本最大达约1100Rsun)，红超巨星为最大恒星",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "由光度与演化轨迹推出的初始质量(RSG典型8-25Msun；Messineo样本43%质量>7Msun)，低质量端与AGB区分困难",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "a_v",
+      "name_cn": "V波段消光",
+      "description": "星际尘埃消光Av(M31/M33源给出0.75-11.3)，兼作前景/尘埃指示",
+      "category": "physical",
+      "ucd": "phys.absorption;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "a_ks",
+      "name_cn": "Ks波段消光",
+      "description": "由本征J-Ks或H-Ks颜色导出的K_s波段消光A_Ks，用于去红化",
+      "category": "physical",
+      "ucd": "phys.absorption;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_period",
+      "name_cn": "光变周期",
+      "description": "由ASAS/MACHO 8-10年时域测光经相位弥散最小化与Period04导出的光变主周期(天)",
+      "category": "variability",
+      "ucd": "phot.variability;time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_amplitude",
+      "name_cn": "光变振幅",
+      "description": "光变振幅(星等)，红超巨星典型不规则/半规则脉动，SRc/LC型",
+      "category": "variability",
+      "ucd": "phot.variability;src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lsp_period",
+      "name_cn": "长次周期",
+      "description": "长次周期(LSP)及其振幅，红超巨星特有的慢变机制(周期约数百至数千天，51颗LSP源单独列表)，可能关联星周尘埃/对流",
+      "category": "variability",
+      "ucd": "phot.variability;time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_obs_epochs",
+      "name_cn": "观测历元数",
+      "description": "测光观测次数/历元数(nObs)，用于光变可靠性评估与变星筛选",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership",
+      "name_cn": "成员资格",
+      "description": "星系/星团成员判定：Massey 2003由高精度视向速度判定SMC/LMC/前景星；Massey 2021给出Gaia成员旗标(0=可能成员/1=不确定/2=无Gaia数据)；Messineo给出银河系内星团归属",
+      "category": "environment",
+      "ucd": "src.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_cluster",
+      "name_cn": "所在星团/星协",
+      "description": "归属星团或星协：如Stephenson 2(RSGC2)、RSGC1(DFK编号)、Scutum-Crux旋臂红超巨星星团群，以及Messineo星表中的银河系星团标识",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "宿主星系(银河系/SMC/LMC/M31/M33)与星系心投影距离Rho(按Holmberg半径归一)，用于旋臂分布与大样本统计",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

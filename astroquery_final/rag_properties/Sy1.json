@@ -1,0 +1,341 @@
+{
+  "otype": "Sy1",
+  "name_cn": "赛弗特1型星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "apparent_magnitude",
+      "name_cn": "视星等",
+      "description": "目视/照相/蓝/红等波段的视星等，附波段标志(V/P/B/R/I/J/K/O)",
+      "category": "photometry",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_bv_color",
+      "name_cn": "(U-B)与(B-V)颜色指数",
+      "description": "活动星系核核区(U-B)、(B-V)颜色指数",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_magnitude",
+      "name_cn": "绝对星等",
+      "description": "H0=71假设下的绝对星等，AGN与类星体分类的界标(M_V=-22.25)",
+      "category": "photometry",
+      "ucd": "phys.magAbs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density_6cm",
+      "name_cn": "6cm(5GHz)射电流量密度",
+      "description": "6cm(5GHz)射电流量密度(mJy)，判断射电噪/静双峰",
+      "category": "photometry",
+      "ucd": "phot.flux.density.radio",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density_20cm",
+      "name_cn": "20cm(1.4GHz)射电流量密度",
+      "description": "20cm(1.4GHz)射电流量密度(mJy)",
+      "category": "photometry",
+      "ucd": "phot.flux.density.radio",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_continuum_flux_2_10kev",
+      "name_cn": "2-10keV X射线连续谱流量",
+      "description": "XMM-Newton EPIC 2-10keV连续谱流量(10^-14 W/m^2)",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "soft_excess_flux_0_5_2kev",
+      "name_cn": "0.5-2keV软X射线超流量",
+      "description": "软X射线超成分(0.5-2keV)流量，约80% Sy1探测到软超",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "光谱红移，附估计方式标志(E=无缝光谱、>=下限)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fwhm_broad_hbeta",
+      "name_cn": "宽Hβ线FWHM",
+      "description": "宽线区Hβ(4861A)宽成分半高全宽(km/s)，Sy1/Sy2与NLSy1(FWHM<2000km/s)分类核心量，Eigenvector 1主参数",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fwhm_broad_halpha",
+      "name_cn": "宽Hα线FWHM",
+      "description": "宽线区Hα(6563A)宽成分半高全宽(km/s)，亦可用于virial质量估算",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fwhm_mgii_2798",
+      "name_cn": "MgII λ2798线FWHM",
+      "description": "MgII(2798A)宽线FWHM(km/s)，中红移区BLR速度场探针与质量定标线",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fwhm_civ_1549",
+      "name_cn": "CIV λ1549线FWHM",
+      "description": "CIV(1549A)宽线FWHM(km/s)，高红移BLR探针，CIV蓝移/不对称性与Eigenvector 1关联",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_luminosity_flux",
+      "name_cn": "发射线光度/流量",
+      "description": "Hα/Hβ/MgII/CIV宽窄成分及[OIII]4959,5007、[NII]6585、[SII]6718,6732等线的光度与流量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.luminosity",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_equiv_width",
+      "name_cn": "发射线等值宽度",
+      "description": "各发射线(宽/窄Hα、Hβ、MgII、CIV、[OIII]、[NII]、[SII])静止系等值宽度",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feii_uv_luminosity",
+      "name_cn": "UV FeII复合体光度",
+      "description": "UV FeII复合体(2200-3090A)光度，FeII强度是Eigenvector 1第二关键量",
+      "category": "spectroscopy",
+      "ucd": "phys.luminosity;em.UV",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feii_optical_luminosity",
+      "name_cn": "光学FeII复合体光度",
+      "description": "光学FeII复合体(4435-4685A)光度，与R_FeII=FeII/Hβ直接相关",
+      "category": "spectroscopy",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feii_equiv_width",
+      "name_cn": "FeII复合体等值宽度",
+      "description": "UV与光学FeII复合体等值宽度及Hα邻近Fe EW(6000-6500A)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_hb_flux_ratio",
+      "name_cn": "[OIII]λ5007/Hβ流量比",
+      "description": "[OIII]5007与Hβ流量比，NLSy1判别标准之一([OIII]/Hβ<3)，Eigenvector 1反相关轴",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_peak_velocity_shift",
+      "name_cn": "发射线峰值速度位移",
+      "description": "Hα/Hβ/MgII/CIV线峰值相对静止系的速度位移(km/s)，CIV蓝移与Hβ峰位移为Eigenvector 1参数",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "continuum_powerlaw_slope",
+      "name_cn": "连续谱幂律指数",
+      "description": "各线区连续谱拟合幂律斜率alpha(opt/UV)，反映SED与爱丁顿比率相关",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_photon_index",
+      "name_cn": "X射线光子谱指数Γ",
+      "description": "2-10keV主连续谱光子指数Gamma，NLSy1通常更陡(强软超)，与爱丁顿比率正相关",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "soft_excess_strength",
+      "name_cn": "软X射线超强度参数q",
+      "description": "软超强度参数q(L_soft/L_bol)，其与爱丁顿比率正相关支持暖康普顿化起源",
+      "category": "spectroscopy",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reflection_fraction",
+      "name_cn": "高能反射因子R",
+      "description": "Swift/BAT 14-195keV谱拟合的模糊电离反射因子R，用于区分软超模型",
+      "category": "spectroscopy",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "black_hole_mass",
+      "name_cn": "中心黑洞质量",
+      "description": "基于Hβ/MgII/CIV的单历元virial黑洞质量(VO09/A11/S11等标定)，log范围7.1-9.9 M_sun",
+      "category": "physical",
+      "ucd": "phys.mass.blackHole",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eddington_ratio",
+      "name_cn": "爱丁顿比率L/L_Edd",
+      "description": "热光度与爱丁顿光度之比，Eigenvector 1的物理驱动量，NLSy1近/超爱丁顿吸积",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_luminosity",
+      "name_cn": "热光度",
+      "description": "由单色光度+热改正得到的辐射热光度logLbol",
+      "category": "physical",
+      "ucd": "phys.luminosity.bol",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "monochromatic_luminosity_5100",
+      "name_cn": "5100Å单色光度",
+      "description": "静止系5100Å连续谱单色光度，Hβ质量定标与爱丁顿比率计算基础量",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "monochromatic_luminosity_3000",
+      "name_cn": "3000Å单色光度",
+      "description": "静止系3000Å连续谱单色光度，MgII质量定标基础量",
+      "category": "physical",
+      "ucd": "phys.luminosity;spect.continuum",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "monochromatic_luminosity_1350",
+      "name_cn": "1350Å单色光度",
+      "description": "静止系1350Å连续谱单色光度，CIV质量定标基础量",
+      "category": "physical",
+      "ucd": "phys.luminosity;spect.continuum",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_neutral_h_column",
+      "name_cn": "银道中性氢柱密度",
+      "description": "视线方向银河系中性氢柱密度NH(10^20 cm^-2)，X射线吸收改正与前景环境量",
+      "category": "environment",
+      "ucd": "phys.columnDensity;pos.galactic",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_dec_j2000",
+      "name_cn": "赤经/赤纬(J2000)",
+      "description": "J2000赤道坐标，附位置精度与来源标志(O光学/R射电/A近似)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_long_lat",
+      "name_cn": "银经/银纬",
+      "description": "银道坐标(l,b)，用于银盘遮挡/前景消光评估",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_distance",
+      "name_cn": "光度距离",
+      "description": "由红移与宇宙学得到的亮度距离，用于光度转换",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "agn_spectral_class",
+      "name_cn": "AGN光谱分类",
+      "description": "Seyfert精细光谱类型：S1(含S1n窄线/S1h偏振/S1i红外帕申线)、S1.0/1.2/1.5/1.8/1.9、S2、S3(LINER)等，Sy1=存在宽允许线",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_loudness",
+      "name_cn": "射电噪度R",
+      "description": "射电(6cm)与光学(2500A)流量密度比R，射电噪/静分类(RL>10)，与Eigenvector 1关联",
+      "category": "classification",
+      "ucd": "phot.flux;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bal_flag",
+      "name_cn": "BAL宽吸收线标志",
+      "description": "宽吸收线(BAL)类星体标志(0-3)，与NLSy1/EV1演化关联",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_detection_flag",
+      "name_cn": "射电探测标志",
+      "description": "是否在射电波段探测到的Y/N标志",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

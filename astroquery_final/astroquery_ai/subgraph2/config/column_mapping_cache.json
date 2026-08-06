@@ -1,0 +1,57 @@
+{
+  "VII/233/xsc#dd44320eb687": {
+    "J.K20e": "j_magnitude",
+    "H.K20e": "h_magnitude",
+    "K.K20e": "ks_magnitude",
+    "J.fe": "j_magnitude",
+    "H.fe": "h_magnitude",
+    "K.fe": "ks_magnitude",
+    "J.ext": "j_magnitude",
+    "H.ext": "h_magnitude",
+    "K.ext": "ks_magnitude",
+    "J.e": "j_magnitude",
+    "H.e": "h_magnitude",
+    "K.e": "ks_magnitude",
+    "J.i20e": "j_magnitude",
+    "H.i20e": "h_magnitude",
+    "K.i20e": "ks_magnitude"
+  },
+  "IV/38/tic#2394ecb62609": {
+    "Plx": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  },
+  "I/239/hip_main#2394ecb62609": {
+    "Plx": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  },
+  "V/50/catalog#2394ecb62609": {
+    "Parallax": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  },
+  "IV/38/tic#47ba7f9891ce": {
+    "Plx": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  },
+  "I/239/hip_main#47ba7f9891ce": {
+    "Plx": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  },
+  "I/355/gaiadr3#47ba7f9891ce": {
+    "Plx": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  },
+  "II/125/main#47ba7f9891ce": {
+    "PosAng": "pm_direction"
+  },
+  "I/345/gaia2#47ba7f9891ce": {
+    "Plx": "parallax",
+    "pmRA": "pmra",
+    "pmDE": "pmdec"
+  }
+}

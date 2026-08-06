@@ -1,0 +1,341 @@
+{
+  "otype": "WR*",
+  "name_cn": "Wolf-Rayet 星",
+  "description": "大质量恒星演化晚期，具有强星风和发射线光谱。分为 WN、WC、WO 三个亚型",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "spectral_type_WN_WC",
+      "name_cn": "WR 光谱亚型",
+      "description": "WN/WC/WO 分类及数字亚型（如 WN6、WC9）。WR 星的核心分类指标",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_subtype_modifier",
+      "name_cn": "光谱亚型修饰符",
+      "description": "h=富氢, o=无氢, b=宽线, d/ed/pd/vd=尘埃形成状态（持续/偶发/周期/变化）",
+      "category": "classification",
+      "ucd": "meta.note;src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "terminal_wind_velocity",
+      "name_cn": "星风终端速度",
+      "description": "V_inf, 星风终端速度（km/s）。WR 星的核心物理参数，表征辐射驱动的星风强度",
+      "category": "physical",
+      "ucd": "phys.veloc;phys.veloc.escape",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "M_dot, 星风质量损失率（Msun/yr）。决定 WR 星演化路径和最终命运",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_status",
+      "name_cn": "双星状态",
+      "description": "SB1/SB2=单/双线分光双星, VB=目视双星, CWB=碰撞风双星, d.e.l.=稀释发射线, a=吸收线。>40% WR 星是双星",
+      "category": "classification",
+      "ucd": "meta.code;src.orbital",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期（天）。用于确定双星参数和星风碰撞区几何",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "narrowband_u_mag",
+      "name_cn": "窄带 u 星等",
+      "description": "Massey 1984 窄带 ubv 系统 u 波段。避开最强发射线，更准确反映连续谱",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "narrowband_b_mag",
+      "name_cn": "窄带 b 星等",
+      "description": "Massey 1984 窄带 ubv 系统 b 波段（4270A）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "narrowband_v_mag",
+      "name_cn": "窄带 v 星等",
+      "description": "Massey 1984 窄带 ubv 系统 v 波段（5160A）。WR 星标准视觉测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "narrowband_r_mag",
+      "name_cn": "窄带 r 星等",
+      "description": "Massey 1984 窄带 ubv 系统 r 波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "narrowband_bv_color",
+      "name_cn": "窄带 b-v 色指数",
+      "description": "窄带 b-v 颜色。WR 星标准消光和 SED 参数。观测值，非内禀值",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "intrinsic_bv_color",
+      "name_cn": "内禀 b-v 色指数",
+      "description": "去红化后的窄带 (b-v)_0。WR 亚型有标准内禀值（-0.18 到 -0.37 mag）",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_E_bv",
+      "name_cn": "色余 E(b-v)",
+      "description": "窄带 b-v 色余。用于计算消光和距离",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_Av",
+      "name_cn": "v 波段消光",
+      "description": "A(v), 窄带 v 波段总消光。A(v) = 4.1 * E(b-v)",
+      "category": "physical",
+      "ucd": "phys.absorption;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_v_mag",
+      "name_cn": "视 v 星等",
+      "description": "窄带 v 波段视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_v_mag_WR",
+      "name_cn": "WR 星绝对 v 星等",
+      "description": "M_v(WR), WR 星分量（非双星系统）的绝对窄带 v 星等",
+      "category": "physical",
+      "ucd": "phys.magAbs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_v_mag_system",
+      "name_cn": "系统绝对 v 星等",
+      "description": "M_v(sys), 双星或多星系统的总绝对窄带 v 星等",
+      "category": "physical",
+      "ucd": "phys.magAbs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_delta_mag",
+      "name_cn": "伴星星等差",
+      "description": "delta_m, 伴星与 WR 星的窄带 v 星等差。正值：WR 星更亮",
+      "category": "physical",
+      "ucd": "arith.diff;phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Johnson_U_mag",
+      "name_cn": "Johnson U 星等",
+      "description": "标准 Johnson U 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Johnson_B_mag",
+      "name_cn": "Johnson B 星等",
+      "description": "标准 Johnson B 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Johnson_V_mag",
+      "name_cn": "Johnson V 星等",
+      "description": "标准 Johnson V 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Gaia_G_mag",
+      "name_cn": "Gaia G 星等",
+      "description": "Gaia DR2/DR3 G 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "J_mag_2MASS",
+      "name_cn": "2MASS J 星等",
+      "description": "2MASS J 波段（1.25μm）近红外星等。对尘埃消光不敏感",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "H_mag_2MASS",
+      "name_cn": "2MASS H 星等",
+      "description": "2MASS H 波段（1.65μm）近红外星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "K_mag_2MASS",
+      "name_cn": "2MASS K 星等",
+      "description": "2MASS K_s 波段（2.16μm）近红外星等。银心方向 WR 星的主要测光波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_heliocentric",
+      "name_cn": "日心距离",
+      "description": "WR 星的日心距离。多种方法测定（星团成员、视差、消光距离）",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_modulus",
+      "name_cn": "距离模数",
+      "description": "DM_0, 真距离模数",
+      "category": "astrometry",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactocentric_distance",
+      "name_cn": "银心距离",
+      "description": "距银心的距离。用于银河系结构和 WR 星分布研究",
+      "category": "astrometry",
+      "ucd": "pos.distance;pos.galactocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_distance_galactic",
+      "name_cn": "银盘面高度",
+      "description": "距银道面的垂直距离 z。用于区分 Population I 大质量 WR 星和 Population II 低质量 [WR] 星",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.z;pos.galactic",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude",
+      "name_cn": "银经",
+      "description": "银道坐标系经度 l",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude",
+      "name_cn": "银纬",
+      "description": "银道坐标系纬度 b",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团归属",
+      "description": "WR 星与疏散星团或 OB 星协的成协关系。用于距离测定和演化研究",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "OB_association_membership",
+      "name_cn": "OB 星协归属",
+      "description": "WR 星与 OB 星协的成协关系",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ring_nebula",
+      "name_cn": "环状星云",
+      "description": "WR 星周围由星风吹出的环状电离氢区（ring nebula / HII bubble）",
+      "category": "environment",
+      "ucd": "meta.note",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates",
+      "name_cn": "赤道坐标",
+      "description": "J2000.0 赤经和赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Gaia_DR3_source_id",
+      "name_cn": "Gaia DR3 源 ID",
+      "description": "Gaia DR3 交叉匹配标识符",
+      "category": "identification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "WR_catalog_number",
+      "name_cn": "WR 目录编号",
+      "description": "WR 星标准编号（如 WR 1, WR 102k）。基于 van der Hucht 编号体系",
+      "category": "identification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

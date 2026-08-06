@@ -1,0 +1,233 @@
+{
+  "otype": "BY*",
+  "name_cn": "天龙BY型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "variable_type",
+      "name_cn": "变星类型",
+      "description": "GCVS/VSX变星分类代码,天龙BY型条目为BY/BY:等(自转调制型);GCVS另有新分类方案VarTypeII",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱分类,典型为K0-M5主序矮星(如K5V、M1V);Boro Saikia表给出精细MK型",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期(光变周期)",
+      "description": "BY型准周期光变的周期,等于恒星自转周期,通常0.1-140天(K/M矮星);GCVS/VSX的Period、McQuillan的Prot、Reinhold的P1均为该量",
+      "category": "variability",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period_error",
+      "name_cn": "自转周期误差",
+      "description": "周期测量的1-sigma不确定度(天),McQuillan表e_Prot",
+      "category": "variability",
+      "ucd": "stat.error;time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "secondary_period_differential_rotation",
+      "name_cn": "次周期(微分自转)",
+      "description": "与主自转周期相邻检测到的第二周期P2,归因于表面微分自转(纬度差)或星斑演化;P2/P1之比量化微分自转强度",
+      "category": "variability",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_amplitude",
+      "name_cn": "光变振幅(亮度范围)",
+      "description": "最大-最小亮度差或振幅,通常0.01-0.5 mag;GCVS的Min1/Min2(可为振幅)与VSX的Amplitude/最大最小星等",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spot_modulation_amplitude",
+      "name_cn": "星斑自转调制幅度",
+      "description": "由高精度测光测得的周期调制幅度:McQuillan的Rper(周期内平均振幅,ppm,中位约5600ppm)与Reinhold的Rvar(5-95百分位变幅范围,%),是星斑覆盖面积的活动性代理量",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "acf_coherence_index",
+      "name_cn": "光变相干指数(LPH)",
+      "description": "自相关函数局部峰高LPH,反映光变周期性/星斑演化快慢与周期稳定性",
+      "category": "variability",
+      "ucd": "src.var.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_maximum",
+      "name_cn": "极亮历元",
+      "description": "亮度极大时刻(儒略日),GCVS/VSX的Epoch字段,用于相位折叠",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_curve_shape",
+      "name_cn": "光变曲线形状(M-m/D)",
+      "description": "上升时间占周期百分比(M-m)或食持续时间(D),刻画BY型光变曲线形状",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "%",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude",
+      "name_cn": "最大亮度星等",
+      "description": "最大亮度处视星等(magMax),注明测光系统(通常V或Ic)",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.max",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "min_magnitude",
+      "name_cn": "最小亮度星等",
+      "description": "最小亮度处视星等或振幅(Min1/Min2),与magMax共同给出光变范围",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.min",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index_bv",
+      "name_cn": "色指数B-V",
+      "description": "B-V色指数,指示晚型(K/M)光球温度与星斑所致色变化",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_magnitude",
+      "name_cn": "绝对星等",
+      "description": "绝对V星等VMAG(由视星等与视差计算),用于主序定位与距离交叉验证",
+      "category": "photometry",
+      "ucd": "phys.magAbs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "有效温度Teff,McQuillan表3197-6499K、Reinhold表3232-17018K(含K/M矮星)并附来源标志",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力logg",
+      "description": "对数表面重力(logg,cm/s2),McQuillan表3.5-5.4,Reinhold表3.5-6.11,区分矮星与亚巨星",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(0.2-1.3Msun),由Teff经Baraffe等时线导出",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "activity_cycle_period",
+      "name_cn": "色球活动周期",
+      "description": "由CaII H&K S指数长时间序列经广义Lomb-Scargle周期图搜寻得到的活动周期(年量级);Boro Saikia 2018在论文中给出,表中提供S指数可供自行计算",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "s_index",
+      "name_cn": "CaII H&K S指数",
+      "description": "色球活动S指数(平均Smean与中位Smed),由HARPS与Mount Wilson等档案光谱测量,是天龙BY型星色球活动强度的核心量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logr_hk",
+      "name_cn": "logR'HK活动指数",
+      "description": "经光球连续谱归一化的CaII H&K色球发射通量比logR'HK,消除光度依赖,可比较不同温度恒星的活动水平(Vaughan-Preston双峰)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "J2000.0赤经(GCVS精度0.01s,VSX与Boro Saikia表ICRS坐标)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "J2000.0赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "赤经/赤纬方向自行(pmRA,pmDE,arcsec/yr),GCVS 5.1自2018版起提供,反映银盘晚型矮星的运动学背景",
+      "category": "environment",
+      "ucd": "pos.pm",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "三角视差(mas),用于距离与光度定标",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity_component",
+      "name_cn": "双星/多星组件标识",
+      "description": "GCVS组件标识(A,B等)与存在性说明(Exists字段),许多BY型星位于双星/多星系统(如BY Dra本身为三合星),对解释光变与潮汐锁定重要",
+      "category": "environment",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

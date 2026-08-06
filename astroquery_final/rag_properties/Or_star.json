@@ -1,0 +1,422 @@
+{
+  "otype": "Or*",
+  "name_cn": "猎户座变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000历元赤经,十进制度,猎户座星云变星巡天位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000历元赤纬,十进制度,猎户座星云变星巡天位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_id_2mass",
+      "name_cn": "2MASS证认号",
+      "description": "与2MASS点源表的交叉证认编号",
+      "category": "astrometry",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经方向自行",
+      "description": "GCVS 5.1提供的赤经方向自行(arcsec/yr),坐标归算至J2000",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬方向自行",
+      "description": "GCVS 5.1提供的赤纬方向自行(arcsec/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B波段星等",
+      "description": "B波段星等(含rms误差),来自Asiago底片1959-1993年BVRI多色测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V波段星等",
+      "description": "V波段星等,光学对应体测光(COUP表9),另有平均V星等与误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_r",
+      "name_cn": "R波段星等",
+      "description": "Johnson-Cousins R波段星等(含误差),RoBoTT望远镜2012-2015巡天",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_i",
+      "name_cn": "I波段星等",
+      "description": "Johnson-Cousins I波段星等(含误差),猎户座星云变星巡天主测光带",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_j",
+      "name_cn": "J波段星等",
+      "description": "VISTA(VISION)J波段星等,另有2MASS J(COUP对应体)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_h",
+      "name_cn": "H波段星等",
+      "description": "VISTA(VISION)H波段星等,另有2MASS H(COUP对应体)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_ks",
+      "name_cn": "Ks波段星等",
+      "description": "VISTA(VISION)Ks波段星等,另有2MASS Ks(COUP对应体)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_irac",
+      "name_cn": "Spitzer IRAC 3.6-8.0um星等",
+      "description": "Spitzer/IRAC四波段(3.6/4.5/5.8/8.0um)星等及误差,红外超判据核心波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_mips",
+      "name_cn": "Spitzer MIPS 24um星等",
+      "description": "Spitzer/MIPS 24um星等,用于长波SED斜率计算",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.30-60um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_wise",
+      "name_cn": "WISE W1-W4星等",
+      "description": "WISE四波段(3.4/4.6/12/22um)星等及误差,扩展SED覆盖",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_max",
+      "name_cn": "最大亮度星等",
+      "description": "变星极大亮度星等,注明光度系统与上下限标志,EXor/FUor爆发态关键量",
+      "category": "photometry",
+      "ucd": "phot.mag;src.var",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_min",
+      "name_cn": "最小亮度星等",
+      "description": "变星极小亮度星等(或括号内为幅度),注明光度系统",
+      "category": "photometry",
+      "ucd": "phot.mag;src.var",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_error",
+      "name_cn": "星等测量误差",
+      "description": "R/I波段星等的1sigma测量误差",
+      "category": "photometry",
+      "ucd": "stat.error;phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amplitude",
+      "name_cn": "光变幅度",
+      "description": "R与I波段光变幅度(星等),猎户座星云变星巡天核心输出;GCVS以括号形式给出整体幅度",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_range_v",
+      "name_cn": "V波段光变范围",
+      "description": "基于约92次测量的V星等波动范围(COUP表9),表征Or*长期幅度",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "光变周期",
+      "description": "变星周期:Noroozi巡天周期范围0.2天至数周(147颗);GCVS给出周期与上下限/倍数标志",
+      "category": "variability",
+      "ucd": "period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rot_period",
+      "name_cn": "自转周期",
+      "description": "测光自转周期(天),由Herbst 2002(约92次测量)给出,弱线T Tauri短周期(<1天)群体在此",
+      "category": "variability",
+      "ucd": "phys.rotation.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_max",
+      "name_cn": "极大亮度历元",
+      "description": "极大亮度历元(儒略日,省略前24),含不确定度标志",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rise_time",
+      "name_cn": "上升时间占比",
+      "description": "上升时间(M-m)或食深(D),以周期百分比表示,刻画爆发/变化形状",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "%",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hjd",
+      "name_cn": "观测时刻(HJD)",
+      "description": "日心儒略日及观测日期、底片乳胶、滤光片与望远镜,EXor历史光变的时间轴",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_variability",
+      "name_cn": "X射线变率标志",
+      "description": "X射线变源标志、KS检验的恒定概率logP(KS)与贝叶斯块最小/最大计数率,分钟-日尺度的吸积/耀发变率",
+      "category": "variability",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "光谱型",
+      "description": "光谱型:GCVS给出全表光谱型;COUP给出光学对应体MK光谱型(F-G至M,T Tauri特征)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_caii",
+      "name_cn": "CaII红外三重线等值宽度",
+      "description": "Ca II红外三重线等效宽度(埃),吸积活动与激变活动性指标",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_kt",
+      "name_cn": "X射线等离子体温度kT",
+      "description": "双温APEC等离子体拟合温度kT1/kT2(keV)及发射度量EM",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature;em.X-ray",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_logNH",
+      "name_cn": "X射线吸收氢柱密度",
+      "description": "X射线谱拟合得到的吸收氢柱密度logNH(cm^-2)",
+      "category": "spectroscopy",
+      "ucd": "phys.columnDensity;em.X-ray",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "恒星有效温度log(Teff)(K),取自H97光谱分类换算",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_bol",
+      "name_cn": "热光度",
+      "description": "恒星热光度log(LBol)(太阳光度),前主序演化阶段核心量",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "由Siess et al.前主序模型插值给出的恒星质量(太阳质量)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(太阳半径)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "由前主序模型给出的log(年龄)(年)",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "av",
+      "name_cn": "视觉消光AV",
+      "description": "沿视线视觉消光AV(星等)",
+      "category": "physical",
+      "ucd": "phys.absorption.gal",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ak",
+      "name_cn": "K波段消光AK",
+      "description": "Herschel尘埃图上抽取的AK及NICER/VISTA视线消光,区分云内源与前景源",
+      "category": "physical",
+      "ucd": "phys.absorption.gal",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_slope_lada",
+      "name_cn": "Lada SED斜率alpha",
+      "description": "Lada定义的2-24um红外SED斜率,判别Class I/II/III演化阶段",
+      "category": "physical",
+      "ucd": "phot.spectralIndex",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_slope_ir",
+      "name_cn": "红外谱指数alpha",
+      "description": "十余种波段组合的观测与去红化红外谱指数(alphaKM、alphaIRAC、alphaWISE等)及拟合误差,红外超定量刻画",
+      "category": "physical",
+      "ucd": "phot.spectralIndex",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess_deltaik",
+      "name_cn": "近红外超Delta(I-K)",
+      "description": "Delta(I-K)近红外超,原行星盘存在的直接证据",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型代码",
+      "description": "GCVS变星类型代码(如FU、IN、INSA、INSB等),含Or*相关亚型及新实验分类系统VarTypeII",
+      "category": "classification",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "yso_class",
+      "name_cn": "YSO演化阶段分类",
+      "description": "VISION综合分类:0/I原恒星、F平谱源、D带盘前主序星、AD贫血盘、TD过渡盘,及拒绝源(G星系、fuzz星云污染、III类无盘候选)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tts_flag",
+      "name_cn": "T Tauri源认证标志",
+      "description": "与已知T Tauri星表的交叉认证标志(VISION给出引用编号, Noroozi给出真假T Tauri标志)",
+      "category": "classification",
+      "ucd": "meta.id.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "simbad_otype",
+      "name_cn": "SIMBAD天体类型",
+      "description": "SIMBAD给出的主天体类型(如Or*,T Tauri星、原恒星),交叉验证分类一致性",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_lum",
+      "name_cn": "X射线光度",
+      "description": "软带(0.5-2keV)、硬带(2-8keV)、总带(0.5-8keV)观测及吸收改正后X射线光度(erg/s),恒星活动与环境辐射场指标",
+      "category": "environment",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_hardness",
+      "name_cn": "X射线硬度比",
+      "description": "三个X射线硬度比HR1/HR2/HR3及误差,反映色温与吸收",
+      "category": "environment",
+      "ucd": "phot.color;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

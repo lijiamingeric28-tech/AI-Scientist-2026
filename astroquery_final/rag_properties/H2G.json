@@ -1,0 +1,296 @@
+{
+  "otype": "H2G",
+  "name_cn": "HII星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000历元赤经坐标(所有入选表均提供)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000历元赤纬坐标(所有入选表均提供)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移/视向速度",
+      "description": "光谱红移z(或由发射线测量的视向速度)，用于距离与光度计算；KISS为物端棱镜估计值",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_intensity_hb",
+      "name_cn": "Hβ发射线强度",
+      "description": "以Hβ=100归一化(或实测流量)的发射线强度，含红化改正版本及误差(Kniazev表3/4)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity;em.line.Hbeta",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_intensity_ha",
+      "name_cn": "Hα发射线强度",
+      "description": "Hα相对Hβ的强度与流量，KISS提供物端棱镜Hα流量估计",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity;em.line.Halpha",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ratio_oiii_hb",
+      "name_cn": "[OIII]5007/Hβ线比",
+      "description": "禁线[O III]5007与Hβ强度比，HII星系激发条件与丰度经验标定(R23/O3N2)核心量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity.ratio;em.line.OIII",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ratio_oii_hb",
+      "name_cn": "[OII]3727/Hβ线比",
+      "description": "禁线[O II]3727与Hβ强度比，R23强线丰度方法组成部分",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity.ratio;em.line.OII",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ratio_nii_ha",
+      "name_cn": "[NII]6584/Hα线比",
+      "description": "禁线[N II]6584与Hα强度比，N2强线丰度与BPT分类判据之一",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity.ratio;em.line.NII",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ratio_sii_ha",
+      "name_cn": "[SII]/Hα线比",
+      "description": "禁线[S II]6717/6731与Hα强度比，BPT诊断图中区分星暴与AGN",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity.ratio;em.line.SII",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eqw_hb",
+      "name_cn": "Hβ等值宽度",
+      "description": "静止系Hβ等值宽度，指示年轻星暴年龄与恒星形成强度(Izotov 2014)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Hbeta",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eqw_ha",
+      "name_cn": "Hα等值宽度",
+      "description": "Hα等值宽度，KISS巡天以物端棱镜光谱估计，用于HII星系选源与SFR",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "色余E(B-V)/红化",
+      "description": "Balmer减缩法推导的消光色余E(B-V)(或c(Hβ))，用于发射线流量改正",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hb_flux",
+      "name_cn": "Hβ流量(消光改正)",
+      "description": "孔径及消光改正后的Hβ流量，SFR与Hβ光度之基础量",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;em.line.Hbeta",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hb_luminosity",
+      "name_cn": "Hβ光度",
+      "description": "由红移与改正流量得到的Hβ光度log L(Hβ)，直接追踪电离光子数与SFR",
+      "category": "physical",
+      "ucd": "phot.luminosity;em.line.Hbeta",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oxygen_abundance",
+      "name_cn": "氧丰度12+log(O/H)",
+      "description": "氧丰度：直接Te方法(需[O III]4363)或强线经验标定；HII星系金属度测量的核心量，用于ΔY/ΔZ与丰度-光度关系",
+      "category": "physical",
+      "ucd": "phys.abund.O",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "helium_abundance",
+      "name_cn": "氦丰度He/H或Y",
+      "description": "He I/H I丰度比(He+/H+及总He/H或质量分数Y)，结合光致电离建模，原初氦丰度Yp与BBN约束的直接观测量",
+      "category": "physical",
+      "ucd": "phys.abund.He",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "helium_ionic_fraction",
+      "name_cn": "氦离子丰度比He+/H+",
+      "description": "各He I发射线(如10830A、5876、6678、4471A)推得的离子氦丰度He+/H+，用于温度-密度简并与系统误差诊断",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "electron_temperature",
+      "name_cn": "电子温度Te",
+      "description": "由[O III]4363/5007等禁线比(或光致电离模型)确定的电子温度，直接Te丰度法及He丰度改正的关键量",
+      "category": "physical",
+      "ucd": "phys.electron.temperature",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "electron_density",
+      "name_cn": "电子密度ne",
+      "description": "由[S II]6717/6731等线比(或He I 10830A敏感性)确定的电子密度，用于碰撞改正与电离模型约束",
+      "category": "physical",
+      "ucd": "phys.electron.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "多波段SED拟合的恒星质量log M*(含年轻星族质量log My)，质量-金属度关系基础量",
+      "category": "physical",
+      "ucd": "phys.mass;stat.stellar",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "young_stellar_mass",
+      "name_cn": "年轻星族质量",
+      "description": "由Hβ光度与EW推算的年轻(约<10Myr)恒星质量，表征当前星暴强度",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率SFR",
+      "description": "由Hβ(消光改正后)及GALEX UV+WISE IR光度联合推导的恒星形成率，HII/星暴星系能源量",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B波段星等",
+      "description": "B波段测光星等(含孔径与极限标记)，KISS与经典目录提供",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V波段星等",
+      "description": "V波段测光星等，用于颜色与蓝性(HII星系偏蓝)诊断",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_r",
+      "name_cn": "R波段星等",
+      "description": "R波段测光星等(含观测历元与误差)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_g_sdss",
+      "name_cn": "SDSS g波段星等",
+      "description": "SDSS g波段星等(UCD中无g专用码，以em.opt.B近似)，Hβ光度孔径改正输入量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_fuv",
+      "name_cn": "GALEX FUV星等",
+      "description": "GALEX远紫外(1350-1780A)星等，追踪最新恒星形成星族",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV.100-200nm",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_nuv",
+      "name_cn": "GALEX NUV星等",
+      "description": "GALEX近紫外(1770-2730A)星等，与FUV联合构成UV SFR估计",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV.200-300nm",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_wise_w1",
+      "name_cn": "WISE 3.4/4.6μm星等",
+      "description": "WISE W1(3.4μm)/W2(4.6μm)近红外星等，恒星质量与尘埃辐射指示",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.NIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_wise_w4",
+      "name_cn": "WISE 12/22μm星等",
+      "description": "WISE W3(12μm)/W4(22μm)中红外星等(含极限标志)，尘埃加热SFR估计",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.MIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_mag_g",
+      "name_cn": "绝对星等(g波段)",
+      "description": "消光改正后的绝对g星等(及FUV/NUV/IR光度)，光度函数与质量-光度关系输入量",
+      "category": "photometry",
+      "ucd": "phot.mag.abs;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "elg_class",
+      "name_cn": "发射线星系分类",
+      "description": "BPT诊断等给出的活动类型(HII/星暴型 vs AGN/LINER)，KISS光谱证认亦给出星暴/AGN归类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

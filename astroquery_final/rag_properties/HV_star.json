@@ -1,0 +1,386 @@
+{
+  "otype": "HV*",
+  "name_cn": "高速星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "ast_ra",
+      "name_cn": "赤经",
+      "description": "源坐标赤经(ICRS,Gaia DR2历元2015.5/DR3历元2016.0),含误差",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_dec",
+      "name_cn": "赤纬",
+      "description": "源坐标赤纬(ICRS),含误差",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_plx",
+      "name_cn": "视差",
+      "description": "Gaia DR2/DR3三角视差(含误差),高速星距离与速度推导的基础",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_pmra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行pmRA*cosDE(含误差),高速星切向运动的关键可测量量",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_pmdec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行(含误差)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_ruwe",
+      "name_cn": "RUWE天体测量质量因子",
+      "description": "Gaia DR3归一化单位权重误差,用于筛选单源可靠天体测量",
+      "category": "astrometry",
+      "ucd": "stat.fit.chi2",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_plx_zp",
+      "name_cn": "视差零点改正",
+      "description": "Gaia视差零点改正(Lindegren+2021),显著影响高速星速度判定",
+      "category": "astrometry",
+      "ucd": "pos.parallax;stat.correction",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_xyz",
+      "name_cn": "银心直角坐标",
+      "description": "银心笛卡尔坐标X/Y/Z(kpc)及不确定度,轨道积分输入量",
+      "category": "astrometry",
+      "ucd": "pos.cartesian",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ast_source_id",
+      "name_cn": "Gaia源编号",
+      "description": "Gaia DR2/DR3唯一源标识,用于跨巡天交叉匹配",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_rv",
+      "name_cn": "视向速度",
+      "description": "LAMOST LASP管线/文献/Gaia DR3 RVS测得的视向速度(含误差),高速星三维速度的关键分量",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_sp_type",
+      "name_cn": "光谱型",
+      "description": "LAMOST或MK光谱型(含光度级),区分OB型年轻高速星与晚型晕族高速星",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_teff",
+      "name_cn": "有效温度",
+      "description": "交叉匹配光谱巡天给出的有效温度(含误差)",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_logg",
+      "name_cn": "表面重力",
+      "description": "对数表面重力logg(含误差)",
+      "category": "spectroscopy",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_fe_h",
+      "name_cn": "金属丰度",
+      "description": "[Fe/H](含误差),多数高速星呈贫金属特征,用于区分内晕/外晕与吸积起源",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_alpha_fe",
+      "name_cn": "alpha元素丰度",
+      "description": "[alpha/Fe](含误差),用于[alpha/Fe]-[Fe/H]图诊断星族与起源(如人马座矮星系)",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_mass",
+      "name_cn": "恒星质量",
+      "description": "多种演化模型质量中位数(及偏差),用于估算逃逸速度需求与射电源起源",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_age",
+      "name_cn": "恒星年龄",
+      "description": "多种演化模型年龄中位数(及偏差),逃逸星定义为年轻(至50Myr)恒星",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_distance",
+      "name_cn": "日心距离",
+      "description": "由视差/几何方法(Bailer-Jones等)推导的日心距离(含上下不确定度)",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_rgc",
+      "name_cn": "银心距",
+      "description": "银心距离(含不确定度),用于估计局域逃逸速度",
+      "category": "physical",
+      "ucd": "pos.distance;pos.galactocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_vgc",
+      "name_cn": "银心静止系总速度",
+      "description": "银心静止系(GSR)总速度(含误差),高速星判定的核心物理量(HiVelSC判据>445km/s)",
+      "category": "physical",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_vpec",
+      "name_cn": "本动空间速度",
+      "description": "peculiar空间速度(相对局域静止标准的速度偏差,含误差),逃逸星判据",
+      "category": "physical",
+      "ucd": "phys.veloc.space",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_vtpec",
+      "name_cn": "本动切向速度",
+      "description": "peculiar切向速度(含误差),与一维径向/二维切向判据配合使用",
+      "category": "physical",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_vesc",
+      "name_cn": "局域逃逸速度",
+      "description": "7种银河系引力势模型(W19/G05/K14/K10/P90/B15/X08)给出的局域逃逸速度,用于未束缚判定",
+      "category": "physical",
+      "ucd": "phys.veloc.escape",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_vxyz",
+      "name_cn": "银心直角坐标速度",
+      "description": "银心笛卡尔速度分量Vx/Vy/Vz(含误差),由自行+RV+距离转化",
+      "category": "physical",
+      "ucd": "phys.veloc;pos.cartesian",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_vphi",
+      "name_cn": "方位角旋转速度",
+      "description": "银河系旋转(方位角)速度Vphi,区分顺行/逆行轨道",
+      "category": "physical",
+      "ucd": "phys.veloc.rotat",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_ecc",
+      "name_cn": "轨道偏心率",
+      "description": "银心势中轨道偏心率(含误差),晕族高速星多为极端偏心轨道",
+      "category": "physical",
+      "ucd": "phys.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_zmax",
+      "name_cn": "轨道最大银盘高度",
+      "description": "轨道最大盘面高度Zmax(含误差),体现晕轨道垂向伸展",
+      "category": "physical",
+      "ucd": "phys.orbit.rmax",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_rmin",
+      "name_cn": "轨道最小过心半径",
+      "description": "最小过心半径Rmin(含误差),接近银心(<1kpc)提示银心起源",
+      "category": "physical",
+      "ucd": "phys.orbit.rmin",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_energy",
+      "name_cn": "轨道能量",
+      "description": "轨道能量与无穷远势能之差E-phi(含误差),E-phi>0对应未束缚",
+      "category": "physical",
+      "ucd": "phys.energy",
+      "unit": "erg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_tgc",
+      "name_cn": "银心飞离时间",
+      "description": "从银心弹射后的飞行时间tGC(Myr),检验与银心超新星/大质量黑洞弹射情景一致性",
+      "category": "physical",
+      "ucd": "time.duration",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_g_mag",
+      "name_cn": "G波段星等",
+      "description": "Gaia G波段平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_bp_rp",
+      "name_cn": "BP-RP颜色",
+      "description": "Gaia BP-RP色指数,用于恒星类型与消光诊断",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_gp_mag",
+      "name_cn": "SDSS g'星等",
+      "description": "SDSS g'星等,早期HVS巡天目标选择量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_flag",
+      "name_cn": "光变标志",
+      "description": "测光数据中是否识别出光变(变星/双星污染排除标志)",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cls_esc_prob",
+      "name_cn": "逃逸(未束缚)概率",
+      "description": "蒙特卡洛模拟得到的总速度超过局域逃逸速度的概率P_ub(多势模型/含视差零点改正版本)",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cls_hvs_type",
+      "name_cn": "高速星类别",
+      "description": "按轨道积分起源分为四类:超高速星(银心弹射)/超逃逸星(银盘弹射)/逃逸星/快晕星",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cls_runaway_prob",
+      "name_cn": "逃逸星概率",
+      "description": "由本动三维/一维/径向/切向速度分布分别计算的逃逸概率(PVpec/PU/PV/PW/PRVpec/PVtpec等)",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cls_origin_prob",
+      "name_cn": "起源概率",
+      "description": "向后积分判定来自银心Pgc/银盘Pmw/人马座矮星系P-sgr的概率(LMC势影响下),Pstar为单星概率",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cls_member_assoc",
+      "name_cn": "所属OB星协/星团",
+      "description": "星所在或可能来自的OB星协/星团名称,用于逃逸星弹射源识别",
+      "category": "classification",
+      "ucd": "meta.id;src.cluster",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_glon",
+      "name_cn": "银经",
+      "description": "银经,高速星在银晕/银盘中的位置诊断",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_glat",
+      "name_cn": "银纬",
+      "description": "银纬,离银道面距离与银盘弹射判据(|b|高者为晕星)",
+      "category": "environment",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_unbound_flag",
+      "name_cn": "河外候选标志",
+      "description": "e=河外高速星候选(不可追踪回银盘),g=银河系内高速星候选",
+      "category": "environment",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

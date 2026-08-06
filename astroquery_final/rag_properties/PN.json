@@ -1,0 +1,458 @@
+{
+  "otype": "PN",
+  "name_cn": "行星状星云",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经 (J2000)",
+      "description": "星云中心赤经;HASH为J2000, V/84中确认/可能PN为B1950",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬 (J2000)",
+      "description": "星云中心赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon",
+      "name_cn": "银经",
+      "description": "银道经度 l,PN命名体系(PN Glll.l+bb.b)的基础",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glat",
+      "name_cn": "银纬",
+      "description": "银道纬度 b",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离 (kpc)",
+      "description": "星云距离,按多种方法给出(星团成员、尘埃、消光、运动学、光谱视差、风速、切向/径向膨胀比较等;V/84给出最多4种方法)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stat_distance",
+      "name_cn": "统计距离 (kpc)",
+      "description": "基于Hα表面亮度-半径(SHα-r)关系的统计距离(Frew et al. 2016; V/84亦汇编历史统计距离)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_angle",
+      "name_cn": "形态位置角",
+      "description": "星云长轴/形态位置角(度)",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_hbeta",
+      "name_cn": "Hβ 流量 (log)",
+      "description": "去红化前Hβ线流量(对数, mW/m2), 用于Balmer减幅消光定标",
+      "category": "photometry",
+      "ucd": "phot.flux.density;spect.line.Hbeta",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_halpha",
+      "name_cn": "总 Hα 流量",
+      "description": "积分Hα流量(Frew et al. 2013/2016统一重新测定,~1100-1258个源; HASH汇编), 用于SHα-r距离与恒星形成率类研究",
+      "category": "photometry",
+      "ucd": "phot.flux.density;spect.line.Halpha",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_oiii5007",
+      "name_cn": "[O III] λ5007 流量",
+      "description": "[O III] 5007Å发射线流量,PN最亮禁线,常用于PNL测光与巡天证认",
+      "category": "photometry",
+      "ucd": "phot.flux.density;spect.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_radio_6cm",
+      "name_cn": "6 cm 射电连续谱流量",
+      "description": "6cm(5GHz)射电热辐射流量(Jy), 自由-自由辐射直接反映电离气体含量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_radio_2cm",
+      "name_cn": "2 cm 射电连续谱流量",
+      "description": "2cm(14.7GHz)射电流量(Jy)",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_iras",
+      "name_cn": "IRAS 12/25/60/100 μm 流量",
+      "description": "关联IRAS源的4波段平均流量密度(Jy)及质量标志, 反映尘埃再发射",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_jhkl",
+      "name_cn": "JHKL 近红外星等",
+      "description": "J(1.25)/H(1.65)/K(2.22)/L(3.5-3.8μm)近红外星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_cspn",
+      "name_cn": "中心星 UBV 星等",
+      "description": "中心星Johnson U/B/V星等及质量标志(A-D级精度)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sb_ha",
+      "name_cn": "Hα 表面亮度",
+      "description": "Hα表面亮度(Frew et al. 2016, ~1100源), 统计距离指标的关键量",
+      "category": "photometry",
+      "ucd": "phot.sb;spect.line.Halpha",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度 (km/s)",
+      "description": "日心/银心视向速度,Durand 1998汇编867个PN的~900条新测量",
+      "category": "spectroscopy",
+      "ucd": "phys.radialVelocity",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "te_oiii",
+      "name_cn": "电子温度 Te([O III])",
+      "description": "由[O III] λ4363/5007等禁线比推导的电子温度(K)",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.electron",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "electron_density",
+      "name_cn": "电子密度 ne",
+      "description": "由[S II] λ6717/6731(及[Ar IV]等)禁线比推导的电子密度(cm-3)",
+      "category": "spectroscopy",
+      "ucd": "phys.electron.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "he_abund",
+      "name_cn": "He/H 丰度",
+      "description": "氦元素丰度(统一方法推导), 与N/O联合判定Type I PN",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.He",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_abund",
+      "name_cn": "N/H 丰度",
+      "description": "氮元素丰度, AGB热底燃烧(HBB)产物指示",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.N",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "o_abund",
+      "name_cn": "O/H 丰度",
+      "description": "氧元素丰度, 丰度梯度与星系化学演化探针",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.O",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ne_abund",
+      "name_cn": "Ne/H 丰度",
+      "description": "氖元素丰度",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ne",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "s_abund",
+      "name_cn": "S/H 丰度",
+      "description": "硫元素丰度(α元素)",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.S",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ar_abund",
+      "name_cn": "Ar/H 丰度",
+      "description": "氩元素丰度",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ar",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_abund",
+      "name_cn": "C/H 丰度",
+      "description": "碳元素丰度(光学复合线方法, 部分源)",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.C",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "no_ratio",
+      "name_cn": "N/O 丰度比",
+      "description": "氮氧比, Type I(PN富含N)判定标准: log(N/O)≥-0.1~-0.3",
+      "category": "spectroscopy",
+      "ucd": "phys.abund;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cspn_teff",
+      "name_cn": "中心星有效温度",
+      "description": "中心星T_eff, 由星族谱/He II λ4686等推导(HB、[WR]、O型、wels等)",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cspn_logg",
+      "name_cn": "中心星表面重力 log g",
+      "description": "中心星表面重力, 恒星演化模型比较参数",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cspn_luminosity",
+      "name_cn": "中心星光度",
+      "description": "中心星(恒星)光度, 需距离确定",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cspn_mass",
+      "name_cn": "中心星质量",
+      "description": "中心星质量(演化轨迹拟合或双星动力学)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nebular_mass",
+      "name_cn": "电离气体质量",
+      "description": "电离壳层质量(由Hβ/射电流量与ne、距离推导)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "expansion_velocity_oiii",
+      "name_cn": "[O III] 膨胀速度 (km/s)",
+      "description": "由[O III]线宽推导的星云膨胀速度(主参考值)",
+      "category": "physical",
+      "ucd": "phys.veloc.expansion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "expansion_velocity_nii",
+      "name_cn": "[N II] 膨胀速度 (km/s)",
+      "description": "由[N II]线推导的膨胀速度(低电离区, 与[O III]值联合约束动力学年龄)",
+      "category": "physical",
+      "ucd": "phys.veloc.expansion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ang_size_opt",
+      "name_cn": "光学角径 (arcsec)",
+      "description": "光学主轴/次轴角径, 含上限标志",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ang_size_radio",
+      "name_cn": "射电角径 (arcsec)",
+      "description": "射电连续谱角径",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_beta",
+      "name_cn": "对数消光 c(Hβ)",
+      "description": "Balmer减幅推导的对数消光参量, 星云红化定标",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "色余 E(B-V)",
+      "description": "星云/中心星红化色余",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age_dyn",
+      "name_cn": "动力学年龄",
+      "description": "由膨胀速度、角径与距离推导的星云动力学年龄",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pn_status",
+      "name_cn": "认证状态",
+      "description": "真/可能/候选/非PN认证状态(HASH: confirmed/possible/candidate/not PN; V/84: U/H/H2/FC/UC/PN/PPN/LE等)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology",
+      "name_cn": "形态分类",
+      "description": "形态类型: 椭圆/双极/环/不规则/多极(点对称)等, 与中心星质量、双星环境相关",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "excitation_class",
+      "name_cn": "激发类",
+      "description": "星云激发类(1-10, 由He II λ4686/Hβ等线比), 反映中心星温度",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type_cspn",
+      "name_cn": "中心星光谱型",
+      "description": "中心星光谱分类(HB、[WC]/[WO]、wels、O型、DA白矮星等)",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_flag",
+      "name_cn": "双星/伴星标志",
+      "description": "中心星双星或伴星状态(含前身星双星线索), 与形态/动力学形态关联",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_class",
+      "name_cn": "近红外辐射来源分类",
+      "description": "近红外发射来源: N(星云气体)/D(尘埃)/S(恒星)/P(可能PPN)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_assoc",
+      "name_cn": "IRAS 源关联",
+      "description": "关联IRAS点源(位置基础命名), 含探测次数与流量质量标志",
+      "category": "classification",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cspn_variability",
+      "name_cn": "中心星变星类型",
+      "description": "中心星变星分类(如[WC]脉动、共生星、食双星等), 部分源有TESS/Kepler等测光变率研究",
+      "category": "variability",
+      "ucd": "src.var.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cspn_period",
+      "name_cn": "中心星周期",
+      "description": "脉动或双星轨道周期(天), 双星CSPN的轨道周期决定PN形态演化",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_gal",
+      "name_cn": "距银道面高度 z",
+      "description": "由距离与银纬导出的银道面垂直距离(kpc), 用于银盘/银晕PN分类",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r_gal",
+      "name_cn": "银心距",
+      "description": "银心距(kpc), 用于银盘丰度梯度研究(银盘/核球/银晕PN区分)",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    }
+  ]
+}

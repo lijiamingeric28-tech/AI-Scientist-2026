@@ -1,0 +1,341 @@
+{
+  "otype": "Ma*",
+  "name_cn": "大质量星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000赤经, 历元与精度见各表坐标类型标志(如GOSSS的ty标志: Gaia/Tycho-2/2MASS等)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000赤纬, 与RA配对; Alma表同时提供Gaia DR2历元2015.5坐标与原ALS坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon",
+      "name_cn": "银经",
+      "description": "银道坐标经度l, 用于银河系大质量星空间分布与旋臂结构分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度b, 可用于银盘内大质量星垂直分布分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "三角视差(Gaia)",
+      "description": "Gaia DR2三角视差(plx)及其误差, 伴RUWE等质量标志, 大质量星距离测定基础",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "自行(赤经方向)",
+      "description": "Gaia DR2赤经方向自行pmRA及其误差, 用于逃逸星/星协运动学研究",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "自行(赤纬方向)",
+      "description": "Gaia DR2赤纬方向自行pmDE及其误差",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "多种距离估计: Bailer-Jones贝叶斯距离、StarHorse距离、ALS2后验分布众数/中位数/16/84百分位距离, 供光度与质量推算",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V星等",
+      "description": "光学V波段视星等及其类型标志(原ALS的N/P/V标志), 用于HR图与消光改正",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_mag",
+      "name_cn": "B星等",
+      "description": "Johnson B星等, SAGE-LMC用B-V等颜色确定光谱型辅助",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "u_mag",
+      "name_cn": "U星等",
+      "description": "Johnson U星等, 热星短波段测光, 配合U-B检验紫外超",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "i_mag",
+      "name_cn": "I星等",
+      "description": "Cousins I波段(含OGLE I星等)视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_v_color",
+      "name_cn": "B-V色指数",
+      "description": "B-V色指数及误差, 早期型星温度/红化诊断量",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jhk_2mass",
+      "name_cn": "2MASS JHKs星等",
+      "description": "2MASS近红外J/H/Ks视星等及误差, 用于SED拟合与红外超诊断",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jhk_irsf",
+      "name_cn": "IRSF JHKs星等",
+      "description": "IRSF南天红外相机J/H/Ks测光(30 Dor区域), 质量标志Qual与参考来源",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_g_mag",
+      "name_cn": "Gaia G星等",
+      "description": "Gaia DR2 G星等及校正后G'值, 与BP-RP色构建色-星等图定位大质量星",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_bp_rp_mag",
+      "name_cn": "Gaia BP/RP星等",
+      "description": "Gaia DR2蓝/红端BP与RP星等, BP-RP色用于主序/巨星区分与颜色-颜色主序列距离检验",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spitzer_midir_mag",
+      "name_cn": "Spitzer中红外星等",
+      "description": "Spitzer IRAC 3.6/4.5/5.8/8.0um与MIPS 24um测光及误差, 探测尘埃壳/星周盘、区分冷尘埃超",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_magnitude",
+      "name_cn": "绝对星等",
+      "description": "G绝对星等(Gabs后验众数/中位数及误差), 由距离后验与G星等推导, 用于光度与质量估计",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(如O7V、B0Iab、WN/WC、Oe等), GOSSS为R=2500蓝紫光谱统一分类, Alma沿用ALS原始分类, Bonanos为SED+MK联合型",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "V/III/I等光度级分类(LC), 与光谱型联合确定主序/超巨星状态",
+      "category": "spectroscopy",
+      "ucd": "src.class.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_qualifier",
+      "name_cn": "光谱定性符",
+      "description": "GOSSS定性符(Qual, 如n/f/z、pec、p等及Of/WN、Onfp、Of?p稀有序列), 描述谱线特征与peculiarity",
+      "category": "spectroscopy",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini_rotational_velocity",
+      "name_cn": "投影自转速度",
+      "description": "投影自转速度v sin i, 大质量星自转-质量损失-演化耦合研究的关键量",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rotat",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hd_id",
+      "name_cn": "HD/HDE编号",
+      "description": "Henry Draper目录(含扩展HDE)编号及多分量标志m_HD",
+      "category": "spectroscopy",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gos_id",
+      "name_cn": "GOS目录编号",
+      "description": "Galactic O Star命名(LLL.ll+BB.bb_ii, IAU规则), 按银经银纬编码, 跨星表交叉引用键",
+      "category": "spectroscopy",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "Teff(K), PoWR非LTE模型拟合的恒星有效温度",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "log(L/Lsun)恒星总光度, HR图纵轴, 大质量星演化状态核心量",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(Msun), 由经离心力改正的log g推导, 直接对应Ma*定义(M>8Msun)的检验量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力",
+      "description": "log g(cm/s2)表面重力, 部分表已做自转离心力改正(loggc)",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "log(dM/dt)(Msun/yr)星风质量损失率, 含团块因子D=10修正注记(Note=1), 大质量星星风研究核心参数",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eddington_factor",
+      "name_cn": "爱丁顿因子",
+      "description": "logΓe电子散射爱丁顿因子(光度与爱丁顿光度之比), 接近1指示辐射压驱动星风/爆发",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_h_fraction",
+      "name_cn": "表面氢丰度",
+      "description": "表面氢质量分数XH, 指示核燃烧演化阶段与混合程度(主序~0.7, WR级He丰化后显著降低)",
+      "category": "physical",
+      "ucd": "phys.mass;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_binary_status",
+      "name_cn": "光谱双星状态",
+      "description": "SB标志: 谱线单/双线(SB1/SB2)、多历元监测状态, 评估双星对大质量星样本的污染与并合前身星",
+      "category": "variability",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "visual_binary_status",
+      "name_cn": "目视双星状态",
+      "description": "VB标志: 5\"与10\"范围内伴星计数, 说明星等混合对光谱/测光的影响",
+      "category": "variability",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sample_category",
+      "name_cn": "样本类别",
+      "description": "Alma OB II的样本类别标志(M/I/L/H/E), 指示恒星在颜色-颜色图上的位置与可疑质量, 用于构建干净样本",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "宿主环境标志(GAL银河系/LMC/SMC), 对应不同金属丰度(约1.0/0.5/0.2Zsun), 用于星风-金属丰度关系研究",
+      "category": "environment",
+      "ucd": "src.class.starGalaxy",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r136_distance",
+      "name_cn": "到R136距离",
+      "description": "30 Dor中心星团R136的径向距离(角分与pc), 刻画恒星在星暴区内的空间分布与高密度环境",
+      "category": "environment",
+      "ucd": "phys.angSize",
+      "unit": "arcmin",
+      "_unit_filled": true
+    }
+  ]
+}

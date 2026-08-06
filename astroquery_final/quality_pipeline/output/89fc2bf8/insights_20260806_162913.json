@@ -1,0 +1,488 @@
+{
+  "research_domain": "astrophysics",
+  "generated_at": "2026-08-06T16:29:13.847384",
+  "field_insights": [
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pmra",
+      "source_type": "paper",
+      "observation": "Two database values in mas/yr: -3775.64 from Hipparcos and -3781.741 from Gaia DR3.",
+      "interpretation": "Both values represent the pmRA/pm_RA proper-motion component. They agree to ~0.16%, a small but expected offset caused by improved Gaia astrometry, different reference epochs, and known catalog systematic differences. Proxima's RA motion is strongly negative, corresponding to westward motion at ~3.78 arcsec/yr.",
+      "cause_hypotheses": [
+        "Hipparcos vs Gaia reference-frame offsets",
+        "Proper-motion epoch propagation",
+        "Possible perspective acceleration at 1.3 pc distance"
+      ],
+      "typical_range": "High-PM stars: 0.1-5 arcsec/yr; Proxima ~ -3781.7 mas/yr.",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines",
+        "kb:database_source_reliability"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pmdec",
+      "source_type": "paper",
+      "observation": "Two database values in mas/yr: 768.16 from Hipparcos and 769.465 from Gaia DR3.",
+      "interpretation": "Both values are the pmDE proper-motion component and indicate northward motion at ~0.77 arcsec/yr. The 1.3 mas/yr difference is ~0.17% and is consistent with known catalog version differences and measurement improvements. Gaia DR3 is the recommended value.",
+      "cause_hypotheses": [
+        "Systematic differences between Hipparcos and Gaia",
+        "Different reference epochs",
+        "Small unmodeled acceleration in this very nearby star"
+      ],
+      "typical_range": "Proxima specifically: ~769.5 mas/yr.",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines",
+        "kb:database_source_reliability"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "source_type": "paper",
+      "observation": "Four database parallax values in mas: 772.3300170898438, 768.0665, 768.5, and 768.5004 from Gaia DR2/DR3, Hipparcos, and TIC.",
+      "interpretation": "These correspond to the Plx/parallax columns of the catalogs. The values agree to within ~4.3 mas, which is only ~0.6% relative error, and all imply a distance of 1.295-1.302 pc. The 772.33 mas outlier is likely a homogenized, photogeometric, or older catalog value; Gaia DR3's 768.0665 mas is the most precise astrometric determination.",
+      "cause_hypotheses": [
+        "Different catalog versions and reduction methods",
+        "Photogeometric or statistical inference in TIC",
+        "Small systematic zero-point offsets between surveys"
+      ],
+      "typical_range": "Nearest stars: 100-800 mas; Proxima ~768 mas.",
+      "confidence": 0.96,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:stellar_parallax_range",
+        "kb:database_source_reliability"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_direction",
+      "source_type": "database",
+      "observation": "Two position-angle values: 282.4 degrees and 78.77 degrees.",
+      "interpretation": "The standard proper-motion position angle of Proxima is ~282 degrees east of north, corresponding to motion toward the northwest. The 78.77 degree value likely uses a different convention or is a complementary angle (e.g., measured from the opposite axis). The values are not physically contradictory once the position-angle convention is clarified.",
+      "cause_hypotheses": [
+        "Different position-angle conventions in the two papers",
+        "One value quoted modulo 360 or 180 from a different zero-point",
+        "Possible transcription or formatting issue"
+      ],
+      "typical_range": "Proper-motion PA convention: 0-360 degrees east of north; Proxima ~282 degrees.",
+      "confidence": 0.9,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "source_type": "database",
+      "observation": "Four database parallax values in mas: 772.3300170898438, 768.0665, 768.5, and 768.5004 from Gaia DR2/DR3, Hipparcos, and TIC.",
+      "interpretation": "These correspond to the Plx/parallax columns of the catalogs. The values agree to within ~4.3 mas, which is only ~0.6% relative error, and all imply a distance of 1.295-1.302 pc. The 772.33 mas outlier is likely a homogenized, photogeometric, or older catalog value; Gaia DR3's 768.0665 mas is the most precise astrometric determination.",
+      "cause_hypotheses": [
+        "Different catalog versions and reduction methods",
+        "Photogeometric or statistical inference in TIC",
+        "Small systematic zero-point offsets between surveys"
+      ],
+      "typical_range": "Nearest stars: 100-800 mas; Proxima ~768 mas.",
+      "confidence": 0.96,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:stellar_parallax_range",
+        "kb:database_source_reliability"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pmra",
+      "source_type": "database",
+      "observation": "Two database values in mas/yr: -3775.64 from Hipparcos and -3781.741 from Gaia DR3.",
+      "interpretation": "Both values represent the pmRA/pm_RA proper-motion component. They agree to ~0.16%, a small but expected offset caused by improved Gaia astrometry, different reference epochs, and known catalog systematic differences. Proxima's RA motion is strongly negative, corresponding to westward motion at ~3.78 arcsec/yr.",
+      "cause_hypotheses": [
+        "Hipparcos vs Gaia reference-frame offsets",
+        "Proper-motion epoch propagation",
+        "Possible perspective acceleration at 1.3 pc distance"
+      ],
+      "typical_range": "High-PM stars: 0.1-5 arcsec/yr; Proxima ~ -3781.7 mas/yr.",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines",
+        "kb:database_source_reliability"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pmdec",
+      "source_type": "database",
+      "observation": "Two database values in mas/yr: 768.16 from Hipparcos and 769.465 from Gaia DR3.",
+      "interpretation": "Both values are the pmDE proper-motion component and indicate northward motion at ~0.77 arcsec/yr. The 1.3 mas/yr difference is ~0.17% and is consistent with known catalog version differences and measurement improvements. Gaia DR3 is the recommended value.",
+      "cause_hypotheses": [
+        "Systematic differences between Hipparcos and Gaia",
+        "Different reference epochs",
+        "Small unmodeled acceleration in this very nearby star"
+      ],
+      "typical_range": "Proxima specifically: ~769.5 mas/yr.",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines",
+        "kb:database_source_reliability"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "source_type": "database",
+      "observation": "One value from the 2026 ARES paper: -3.781761 arcsec/yr, converted from -3781.761 mas/yr.",
+      "interpretation": "This is a correct unit conversion and is fully consistent with the HST+Gaia DR3 fitted proper motion. It verifies that Proxima's RA proper motion is -3.78 arcsec/yr.",
+      "cause_hypotheses": [
+        "No anomaly; correctly converted and consistent with modern astrometry"
+      ],
+      "typical_range": "Proxima pm_RA: -3.7818 arcsec/yr.",
+      "confidence": 0.97,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": []
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "source_type": "database",
+      "observation": "One value from the 2026 ARES paper: 0.769458 arcsec/yr, converted from 769.458 mas/yr.",
+      "interpretation": "Correct conversion of the HST+Gaia fitted declination proper motion. It agrees with Gaia DR3's 769.465 mas/yr to 0.007 mas/yr and confirms the northward motion of 0.769 arcsec/yr.",
+      "cause_hypotheses": [
+        "No anomaly; consistent with Gaia DR3 within uncertainties"
+      ],
+      "typical_range": "Proxima pm_Dec: 0.7695 arcsec/yr.",
+      "confidence": 0.97,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": []
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "source_type": "paper",
+      "observation": "One value from the 2026 ARES paper: -3.781761 arcsec/yr, converted from -3781.761 mas/yr.",
+      "interpretation": "This is a correct unit conversion and is fully consistent with the HST+Gaia DR3 fitted proper motion. It verifies that Proxima's RA proper motion is -3.78 arcsec/yr.",
+      "cause_hypotheses": [
+        "No anomaly; correctly converted and consistent with modern astrometry"
+      ],
+      "typical_range": "Proxima pm_RA: -3.7818 arcsec/yr.",
+      "confidence": 0.97,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": []
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "source_type": "paper",
+      "observation": "One value from the 2026 ARES paper: 0.769458 arcsec/yr, converted from 769.458 mas/yr.",
+      "interpretation": "Correct conversion of the HST+Gaia fitted declination proper motion. It agrees with Gaia DR3's 769.465 mas/yr to 0.007 mas/yr and confirms the northward motion of 0.769 arcsec/yr.",
+      "cause_hypotheses": [
+        "No anomaly; consistent with Gaia DR3 within uncertainties"
+      ],
+      "typical_range": "Proxima pm_Dec: 0.7695 arcsec/yr.",
+      "confidence": 0.97,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": []
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_total",
+      "source_type": "paper",
+      "observation": "Two reported totals: 3.8508 arcsec/yr and 3851.7 mas/yr. After unit conversion these are 3850.8 and 3851.7 mas/yr, a difference of only 0.9 mas/yr.",
+      "interpretation": "Proxima's total proper motion is ~3.85 arcsec/yr, one of the largest known in the solar neighborhood, though smaller than Barnard's Star at ~10.3 arcsec/yr. The two values are physically consistent; the extracted unit field is mixed because one value was already converted to arcsec/yr while the other remained in mas/yr.",
+      "cause_hypotheses": [
+        "Mixed units in the extraction",
+        "Different astrometric solutions (1999 HST FGS vs 2014 reanalysis)",
+        "Small epoch-dependent proper-motion changes"
+      ],
+      "typical_range": "Solar-neighborhood high-PM stars: 0.1-10 arcsec/yr; Proxima ~3.85 arcsec/yr.",
+      "confidence": 0.96,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines"
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_direction",
+      "source_type": "paper",
+      "observation": "Two position-angle values: 282.4 degrees and 78.77 degrees.",
+      "interpretation": "The standard proper-motion position angle of Proxima is ~282 degrees east of north, corresponding to motion toward the northwest. The 78.77 degree value likely uses a different convention or is a complementary angle (e.g., measured from the opposite axis). The values are not physically contradictory once the position-angle convention is clarified.",
+      "cause_hypotheses": [
+        "Different position-angle conventions in the two papers",
+        "One value quoted modulo 360 or 180 from a different zero-point",
+        "Possible transcription or formatting issue"
+      ],
+      "typical_range": "Proper-motion PA convention: 0-360 degrees east of north; Proxima ~282 degrees.",
+      "confidence": 0.9,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines"
+      ]
+    }
+  ],
+  "cross_field_relationships": [
+    {
+      "field_a": "proper_motion_ra",
+      "field_b": "proper_motion_dec",
+      "relationship_type": "physical_law",
+      "description": "The two equatorial proper-motion components define the proper-motion vector. Total proper motion is μ = sqrt(μα*^2 + μδ^2) and position angle is θ = atan2(μα*, μδ) east of north. For Proxima, μα* ≈ -3781.7 mas/yr and μδ ≈ +769.5 mas/yr, giving μ ≈ 3859 mas/yr and PA ≈ 282°.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.98,
+      "kb_references": []
+    },
+    {
+      "field_a": "proper_motion_ra",
+      "field_b": "parallax",
+      "relationship_type": "conditional",
+      "description": "Parallax gives distance, d = 1000/π pc for π in mas. Proper motion and parallax together give the RA transverse velocity: V_α = 4.74 μα*/π km/s. There is no fixed one-to-one relation unless the space velocity is known; they jointly determine the tangential velocity.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:stellar_parallax_range"
+      ]
+    },
+    {
+      "field_a": "proper_motion_ra",
+      "field_b": "proper_motion_ra",
+      "relationship_type": "no_relationship",
+      "description": "Same measured quantity duplicated across catalogs; no physical relationship between a field and itself. Cross-catalog values should be consistent. For Proxima, Hipparcos gives -3775.64 mas/yr and Gaia DR3 gives -3781.741 mas/yr, agreeing to ~0.16%.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.99,
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines"
+      ]
+    },
+    {
+      "field_a": "proper_motion_ra",
+      "field_b": "pm_total",
+      "relationship_type": "physical_law",
+      "description": "pm_total is the magnitude of the proper-motion vector: μ = sqrt(μα*^2 + μδ^2). Therefore pm_total ≥ |pmra|, with equality only if the DEC component is zero. For Proxima, μα*=-3781.7 and μδ=769.5 mas/yr give μ≈3859 mas/yr.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.98,
+      "kb_references": []
+    },
+    {
+      "field_a": "proper_motion_ra",
+      "field_b": "pm_direction",
+      "relationship_type": "physical_law",
+      "description": "Proper-motion position angle is a trigonometric function of the components: θ = atan2(μα*, μδ), measured east of north. Thus pm_direction is computed from pmra and pmdec. For Proxima, pmra<0 and pmdec>0 give θ≈282°; a quoted value near 78.8° likely uses a complementary convention.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.96,
+      "kb_references": []
+    },
+    {
+      "field_a": "proper_motion_dec",
+      "field_b": "parallax",
+      "relationship_type": "conditional",
+      "description": "The DEC proper-motion component and parallax combine to give the northward transverse velocity: V_δ = 4.74 μδ/π km/s. No deterministic relation between μδ and π alone; the same μδ can occur at different distances if the space velocity differs.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:stellar_parallax_range"
+      ]
+    },
+    {
+      "field_a": "proper_motion_dec",
+      "field_b": "proper_motion_dec",
+      "relationship_type": "no_relationship",
+      "description": "Same measured quantity duplicated across catalogs; no physical relationship between a field and itself. Values should be mutually consistent. For Proxima, Hipparcos gives 768.16 mas/yr and Gaia DR3 gives 769.465 mas/yr, agreeing to ~0.17%.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.99,
+      "kb_references": [
+        "kb:catalog_cross_match_guidelines"
+      ]
+    },
+    {
+      "field_a": "proper_motion_dec",
+      "field_b": "pm_total",
+      "relationship_type": "physical_law",
+      "description": "pm_total is the magnitude of the proper-motion vector: μ = sqrt(μα*^2 + μδ^2). Therefore pm_total ≥ |pmdec|, with equality only if the RA component is zero. For Proxima, μ≈3859 mas/yr from μα*=-3781.7 and μδ=769.5 mas/yr.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.98,
+      "kb_references": []
+    },
+    {
+      "field_a": "proper_motion_dec",
+      "field_b": "pm_direction",
+      "relationship_type": "physical_law",
+      "description": "Proper-motion position angle is derived from both components: θ = atan2(μα*, μδ) east of north. pmdec contributes the northward component; Proxima's positive μδ and negative μα* yield PA≈282°.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.96,
+      "kb_references": []
+    },
+    {
+      "field_a": "parallax",
+      "field_b": "parallax",
+      "relationship_type": "no_relationship",
+      "description": "Same measured quantity duplicated across catalogs; no physical relationship between a field and itself. Values should be consistent within catalog systematics. For Proxima, values range from 768.0665 to 772.33 mas; Gaia DR3 768.0665 mas is the most precise, giving d ≈ 1.302 pc.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.99,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:stellar_parallax_range",
+        "kb:catalog_cross_match_guidelines"
+      ]
+    },
+    {
+      "field_a": "parallax",
+      "field_b": "pm_total",
+      "relationship_type": "conditional",
+      "description": "Total proper motion and parallax are related through the transverse space velocity: V_tan = 4.74 μ/π km/s, with μ in mas/yr and π in mas. There is no universal pm-parallax relation; for a fixed transverse velocity, μ is inversely proportional to distance.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:stellar_parallax_range"
+      ]
+    },
+    {
+      "field_a": "parallax",
+      "field_b": "pm_direction",
+      "relationship_type": "no_relationship",
+      "description": "Proper-motion direction is determined by the star's space-velocity components projected on the sky, not by its distance. Therefore parallax and pm_direction have no direct physical or statistical relationship. Proxima's pm_direction ≈ 282° while its parallax ≈ 768 mas, but these are independent astrometric parameters.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.92,
+      "kb_references": []
+    },
+    {
+      "field_a": "pm_total",
+      "field_b": "pm_direction",
+      "relationship_type": "no_relationship",
+      "description": "Both are polar-coordinate representations of the same proper-motion vector, but no physical law relates the total magnitude to the position angle alone. For a given pm_total, pm_direction can have any value; they are linked only through the components: pmra = μ sinθ, pmdec = μ cosθ.",
+      "data_evidence": "sufficient_data",
+      "confidence": 0.9,
+      "kb_references": []
+    }
+  ],
+  "usage_recommendations": {
+    "overall_grade": "good",
+    "suitable_use_cases": [
+      "Cross-catalog astrometric validation for nearby high-proper-motion stars using Hipparcos, Gaia DR2/DR3, and TIC values",
+      "Demonstrating proper-motion vector composition and consistency checks between pmra, pmdec, pm_total, and pm_direction",
+      "Teaching and benchmarking unit-conversion pipelines for astrometric fields (mas/yr vs arcsec/yr)",
+      "Combining parallax and proper motion to estimate tangential velocities for Proxima Centauri, provided reference epochs and uncertainties are handled",
+      "Testing catalog cross-match and field-normalization workflows in an astrometric knowledge-base context"
+    ],
+    "limitations": [
+      "Several fields are duplicated across catalogs without explicit provenance or epoch metadata, so apparent discrepancies are expected and require careful sourcing",
+      "Proper-motion position angle has two inconsistent values (282.4 deg vs 78.77 deg) indicating different conventions or possible formatting issues that must be resolved before use",
+      "The conflict status 'Needs_Unit_Fix' and 20 normalization modifications reveal unit and format nonuniformity in the raw extraction",
+      "Coverage gaps exist: many sources lack pm_total, pm_direction, pm_source_flag, and some lack parallax or pm_ra/pm_dec, preventing complete per-source kinematic analysis",
+      "TIC parallax outlier (772.33 mas) and Hipparcos-Gaia offsets (~0.16% in pmra, ~0.17% in pmdec) reflect known catalog systematics rather than true physical variability",
+      "No uncertainties or reference epochs are provided in the records, limiting formal error propagation and rigorous astrometric fitting"
+    ],
+    "recommended_caveats": [
+      "Use Gaia DR3 astrometry as the primary reference for Proxima Centauri, and treat Hipparcos and TIC values as secondary or cross-checks",
+      "Convert all proper motions to the same units and component convention (e.g., mas/yr for mu_alpha* and mu_delta) before combining or comparing",
+      "Verify the position-angle convention explicitly; proper-motion PA is normally measured east of north from atan2(mu_alpha*, mu_delta)",
+      "Do not mix values from different epochs or catalogs without proper-motion and parallax propagation to a common epoch",
+      "Apply Gaia parallax zero-point corrections and quality cuts before deriving distances from parallax",
+      "Treat records missing pm_source_flag or uncertainties as lower confidence and exclude them from precision-critical analyses",
+      "Trace each value to its original catalog or paper and cite the exact source version when publishing results"
+    ],
+    "low_confidence_records": [],
+    "coverage_gaps": [
+      "2026A&A...706A.112L: missing ['pm_direction', 'pm_source_flag', 'pm_total']",
+      "SRC_DB_GAIA_DR2: missing ['pm_dec', 'pm_direction', 'pm_ra', 'pm_source_flag', 'pm_total']",
+      "SRC_DB_HIPPARCOS: missing ['pm_dec', 'pm_direction', 'pm_ra', 'pm_source_flag', 'pm_total']",
+      "2014AJ....148...91L: missing ['pm_dec', 'pm_ra', 'pm_source_flag', 'pmdec', 'pmra']",
+      "SRC_DB_GAIA_DR3: missing ['pm_dec', 'pm_direction', 'pm_ra', 'pm_source_flag', 'pm_total']",
+      "SRC_DB_TIC: missing ['pm_dec', 'pm_direction', 'pm_ra', 'pm_source_flag', 'pm_total']",
+      "2025AJ....170...22L: missing ['pm_dec', 'pm_direction', 'pm_ra', 'pm_source_flag', 'pm_total']",
+      "1999AJ....118.1086B: missing ['pm_dec', 'pm_ra', 'pm_source_flag', 'pmdec', 'pmra']",
+      "SRC_DB_IRAS: missing ['parallax', 'pm_dec', 'pm_ra', 'pm_source_flag', 'pm_total']",
+      "2020ApJS..249...36M: missing ['parallax', 'pm_dec', 'pm_direction', 'pm_ra', 'pm_source_flag']"
+    ]
+  },
+  "overall_narrative": "The analysis evaluates astrometric data for Proxima Centauri across 13 fields and 13 cross-field relationships, receiving a good overall grade. Proper-motion components agree to ~0.16–0.17% between catalogs, confirming expected offsets from Gaia improvements and epoch differences, with the declination component indicating northward motion. Parallax values agree within ~0.6% and consistently place the star at 1.295–1.302 pc, aside from one clear outlier (772.33 mas). The proper-motion position angle discrepancy (282° vs 78.77°) likely reflects differing conventions rather than physical differences. Overall, the dataset strongly supports the known astrometric solution for Proxima, with only minor catalog-specific variations.",
+  "insufficient_context_fields": []
+}

@@ -1,0 +1,206 @@
+{
+  "otype": "GrG",
+  "name_cn": "星系群",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "group_member_count",
+      "name_cn": "成员星系数",
+      "description": "群内成员星系数量(richness), 最小值为2(双成员); Tempel目录中高达254",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_name",
+      "name_cn": "群名称与编号",
+      "description": "群标识: LGG编号(以最亮星系命名)、USGC编号(U/S开头)、RASSCALS名称(NRG/SRG等)",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_ra",
+      "name_cn": "赤经",
+      "description": "群中心赤经; LGG为B1950(需岁差改正), 其余为J2000; RASSCALS中X射线探测群用X射线质心",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_dec",
+      "name_cn": "赤纬",
+      "description": "群中心赤纬; LGG为B1950, 其余为J2000",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "supergalactic_longitude",
+      "name_cn": "超星系经度",
+      "description": "群质心超星系坐标经度(光度加权), 用于大尺度结构定位",
+      "category": "astrometry",
+      "ucd": "pos.supergalactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "supergalactic_latitude",
+      "name_cn": "超星系纬度",
+      "description": "群质心超星系坐标纬度(光度加权)",
+      "category": "astrometry",
+      "ucd": "pos.supergalactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_mean_redshift",
+      "name_cn": "群平均红移",
+      "description": "群成员的平均红移; Tempel提供zobs(观测)与zcmb(CMB静止系)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_radial_velocity",
+      "name_cn": "群平均视向速度",
+      "description": "群平均退行速度: LGG为光度加权平均(km/s), USGC/RASSCALS为平均cz, 误差e_cz同时给出",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_dispersion",
+      "name_cn": "群速度弥散",
+      "description": "成员视向速度弥散sigma_V(km/s), 群动力学质量的关键输入; GHCG定义, USGC/RASSCALS/Tempel均提供",
+      "category": "physical",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "virial_radius",
+      "name_cn": "维里半径",
+      "description": "群维里半径Rad(Mpc/h, H0=100h), 由成员投影分布与速度弥散确定",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_mass",
+      "name_cn": "群质量",
+      "description": "群总质量: USGC给出对数维里质量logM(太阳质量), Tempel给出NFW轮廓质量M200(10^12 Msun)及对应R200",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_to_light_ratio",
+      "name_cn": "质光比",
+      "description": "群质量与光度的比值log(M/L)(太阳单位), 反映群中暗物质含量",
+      "category": "physical",
+      "ucd": "phys.mass;phys.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "0.1-2.4 keV带X射线光度logLX(h^-2 erg/s), 分别以0.25Mpc、0.5Mpc及NOCORE孔径计, 含极限标志; 热气体质量的示踪",
+      "category": "physical",
+      "ucd": "phys.luminosity.X",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_core_radius",
+      "name_cn": "X射线无核半径",
+      "description": "RASSCALS的NOCORE非参数核半径Rxi(Mpc), 表征热气体分布尺度",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "crossing_time",
+      "name_cn": "穿越时间",
+      "description": "群动力学穿越时间log tc (=Rxi*H0/sigma_p), 衡量系统是否达到动力学弛豫",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_luminosity",
+      "name_cn": "群总光度",
+      "description": "群成员r波段观测总光度Lr(10^10 Lsun), Tempel按群汇总并经缺光改正",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.opt.R",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_apparent_magnitude",
+      "name_cn": "成员视星等",
+      "description": "成员星系视星等: USGC为Zwicky B星等或SSRS2星等; Tempel逐星系给Petrosian ugriz消光改正星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_morphology_type",
+      "name_cn": "成员形态类型",
+      "description": "成员星系形态: LGG按RC3编码给出; RASSCALS给出旋涡星系比例fsp",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology_probability",
+      "name_cn": "形态概率",
+      "description": "成员星系为早型(pE)、S0(pS0)、Sab(pSa)、Scd(pSc)的概率, 源自Huertas-Company形态分类, 用于群内环境-形态关系",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "environment_density",
+      "name_cn": "环境密度",
+      "description": "归一化环境密度, 平滑尺度1.5/3/6/10 Mpc (Den1-Den8), 刻画群所处大尺度环境",
+      "category": "environment",
+      "ucd": "phys.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nearest_cluster_distance",
+      "name_cn": "最近星系团距离",
+      "description": "群质心到最近星系团的共动距离及该团标识, 用于识别群-团环境关联",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "merger_system_id",
+      "name_cn": "并合系统成员标识",
+      "description": "群所属并合系统编号(最多6群), 标识正在并合/相互作用的群系统",
+      "category": "environment",
+      "ucd": "meta.id;src",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

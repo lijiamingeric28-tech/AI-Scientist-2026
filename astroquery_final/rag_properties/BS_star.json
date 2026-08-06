@@ -1,0 +1,359 @@
+{
+  "otype": "BS*",
+  "name_cn": "蓝离散星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经",
+      "description": "历元 J2000/ICRS 赤经(度),Gaia DR3 历元 2016.0 或 HST 测光坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬",
+      "description": "历元 J2000/ICRS 赤纬(度)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia 三角视差(毫角秒),用于星团成员判定与距离确认",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_ra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行 pmRA*cosDE(毫角秒/年),Gaia DR2/DR3",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_dec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行(毫角秒/年),Gaia DR2/DR3",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_source_id",
+      "name_cn": "Gaia 源编号",
+      "description": "Gaia DR2/DR3 source_id,星源唯一标识用于跨表交叉证认",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_from_center",
+      "name_cn": "距星团中心距离",
+      "description": "星到星团中心的角距(角分)或相对半径 r/R,用于 BSS 径向分布与动力学研究",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_g",
+      "name_cn": "Gaia G 星等",
+      "description": "Gaia G 波段平均星等,含差红化改正后的 Gmagcor",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_bp_rp",
+      "name_cn": "BP/RP 星等与颜色",
+      "description": "Gaia BP、RP 星等及 BP-RP 色指数(含去红化 (BP-RP)0)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_uv",
+      "name_cn": "紫外 m255 星等",
+      "description": "HST WFPC2 F255W 紫外测光,紫外是搜寻球状星团 BSS 的最有效波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_u",
+      "name_cn": "U 星等",
+      "description": "HST/Johnson U 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B 星等",
+      "description": "B 波段星等(HST 或地面 CCD 测光系统)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V 星等",
+      "description": "V 波段星等,各星表通用",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_i",
+      "name_cn": "I 星等",
+      "description": "I 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_bv",
+      "name_cn": "B-V 色指数",
+      "description": "B-V 颜色,蓝离散星相对主序转折点更蓝的特征量",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_ub",
+      "name_cn": "U-B 色指数",
+      "description": "U-B 颜色,用于蓝离散星与水平分支/蓝掉队星区分",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening",
+      "name_cn": "红化与消光",
+      "description": "E(B-V) 色余与 Av 消光,含差红化改正信息",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度(开尔文),来源包括 IRFM 红外通量法、等时线拟合(Teff-iso)与 XPP 光谱拟合,以及高分辨率光谱分析",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "对数表面重力 log g(cm/s^2),等时线或光谱拟合值",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "蓝离散星质量(太阳质量):等时线拟合 Mass-iso,或光谱中性/电离线电离平衡称重法测定;BS* 质量显著大于主序转折点质量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_excess",
+      "name_cn": "质量超出量",
+      "description": "相对主序转折点的分数质量超出量 Me,刻画 BS* 的增重程度,是质量转移/并合形成渠道的诊断量",
+      "category": "physical",
+      "ucd": "phys.mass;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "等时线拟合对数光度 log L(L太阳)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age_iso",
+      "name_cn": "等时线年龄",
+      "description": "等时线拟合的恒星年龄 logAge(年)及星团年龄,约束 BS* 形成时间",
+      "category": "physical",
+      "ucd": "phys.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "光谱测定的投影自转速度 v sin i(km/s);快转 BSS 集中于低密度星团,与并合/质量转移渠道相关",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rotat",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "高分辨率光谱视向速度(km/s),用于成员证认与双星性筛查",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_microturb",
+      "name_cn": "微湍流速度",
+      "description": "光谱分析微湍流速度 Vt(km/s)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.microturb",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "铁丰度 [Fe/H]",
+      "description": "恒星铁丰度 [Fe/H](太阳对数),FeI/FeII 电离平衡兼作恒星称重工具",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mg_h",
+      "name_cn": "镁丰度 [Mg/H]",
+      "description": "镁丰度 [Mg/H],检验 BSS 是否继承星团轻元素丰度异常",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Mg",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "o_h",
+      "name_cn": "氧丰度 [O/H]",
+      "description": "氧丰度 [O/H],BSS 化学诊断关键轻元素之一",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.O",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ti_h",
+      "name_cn": "钛丰度 [Ti/H]",
+      "description": "钛丰度 [Ti/H],TiI/TiII 电离平衡用于质量测定",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ti",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eq_width",
+      "name_cn": "谱线等值宽度",
+      "description": "FeI/FeII/TiI/TiII 吸收线等值宽度(埃)、激发电位与振子强度 log gf,光谱分析原始数据",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "src_class",
+      "name_cn": "蓝离散星类型分类",
+      "description": "BSS/RSS/YSS 类型区分(蓝色/红色/黄色离散星)、Ahumada Class 1/2 分类及可能大质量 BSS 标志,对应不同形成渠道",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "memb_prob",
+      "name_cn": "成员概率",
+      "description": "星团成员概率 Pmemb(基于 Gaia 自行/视差),与 MeSeq 质量超出序列标志",
+      "category": "classification",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_name",
+      "name_cn": "所属星团",
+      "description": "所属星团名称及类型(疏散/球状),BS* 按星团编号索引",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_feh",
+      "name_cn": "星团金属丰度",
+      "description": "所属星团整体金属丰度 [Fe/H](等时线标定),球状星团 BSS 多生于金属丰度背景",
+      "category": "environment",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_distance",
+      "name_cn": "星团距离与距离模数",
+      "description": "星团距离(秒差距)或距离模数 DM、Gaia 视差标定值",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_fraction",
+      "name_cn": "双星比例",
+      "description": "星团双星比例(含质量比下限 qlim 的 fbin),BSS 质量转移形成渠道的环境前提",
+      "category": "environment",
+      "ucd": "stat.fraction",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mf_slope",
+      "name_cn": "质量函数斜率",
+      "description": "星团质量函数斜率(全质量、低质量、高质量段)与总质量、半质量半径、弛豫时间,刻画 BSS 形成环境",
+      "category": "environment",
+      "ucd": "phys.mass;stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability",
+      "name_cn": "变星性质",
+      "description": "蓝离散星中的变星性质:部分 BSS 为 SX Phe 型脉动变星,含时序测光(NGC 5053);K2/TESS 亦发现 BSS 脉动与食双星",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

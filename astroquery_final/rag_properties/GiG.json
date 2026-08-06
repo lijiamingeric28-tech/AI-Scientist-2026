@@ -1,0 +1,233 @@
+{
+  "otype": "GiG",
+  "name_cn": "星系群中的星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "星系在群中的赤道坐标赤经(J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "星系在群中的赤道坐标赤纬(J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_centroid_pos",
+      "name_cn": "群中心位置",
+      "description": "所属星系群的质心/中心坐标(光度加权或X射线中心),用于计算成员到中心的投影距离",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_to_group_center",
+      "name_cn": "到群中心的距离",
+      "description": "成员星系到群中心的共动距离(或投影距离),用于归一化群内位置(如r/R200)与pre-processing程度评估",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "星系观测红移(CMB参考系),群成员判定与群速度弥散计算的基础",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "由红移换算的星系视向速度,群内星系速度散度与群动力学质量估计的输入量",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_velocity_dispersion",
+      "name_cn": "群速度弥散",
+      "description": "星系群成员视向速度的rms弥散sigma_V,衡量群动力学状态(是否松弛/并合)与群暗物质晕质量",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "petrosian_mag_ugriz",
+      "name_cn": "Petrosian ugriz星等",
+      "description": "消光校正的SDSS Petrosian u/g/r/i/z测光星等,群内星系光度与颜色研究基础数据",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_mag_ugriz",
+      "name_cn": "ugriz绝对星等",
+      "description": "k+e改正后的各波段绝对星等,用于群内光度函数、群内光度排名与L*对比",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r_band_luminosity",
+      "name_cn": "r波段光度",
+      "description": "星系r波段观测光度(太阳光度单位),用于群特征光度与暗晕质量标定",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.opt.R",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_r_color",
+      "name_cn": "(g-r)色指数",
+      "description": "星系(g-r)颜色,红/蓝星系分类与形态-密度关系(红星系比例随环境密度升高)的关键量",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_total_rmag",
+      "name_cn": "群总r波段绝对星等",
+      "description": "星系群整体r波段总绝对星等与群总(g-r)颜色,表征群光度规模",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "星系恒星质量(基于光度与颜色),用于群特征恒星质量与群暗晕质量估计,及群内M*-环境关系",
+      "category": "physical",
+      "ucd": "phys.mass;phys.mass.stellar",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_halo_mass_m200",
+      "name_cn": "群暗物质晕质量M200",
+      "description": "星系群NFW暗物质晕质量M200(由速度弥散或特征光度/恒星质量标定),星系群内环境的根本物理量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_r200",
+      "name_cn": "群R200半径",
+      "description": "群暗晕平均密度为宇宙平均200倍的半径R200,用于归一化成员星系群内位置(r/R200)定义内/外群",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity_l500",
+      "name_cn": "X射线光度L500",
+      "description": "群/团0.1-2.4keV波段X射线光度L500(至R500内),表征群热气体含量,气体剥离后该值偏低",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_mass_m500",
+      "name_cn": "X射线质量M500",
+      "description": "由X射线测量(通常经LX-M标定)得到的群/团总质量M500,与动力学质量对比可诊断群动力学状态",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_radius_r500",
+      "name_cn": "X射线R500半径",
+      "description": "群/团R500特征半径(平均过密度500倍临界密度),定义X射线气体测量范围",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_member_id",
+      "name_cn": "群成员编号",
+      "description": "星系所属群的唯一标识(GroupID),0表示孤立星系;群成员归属是GiG类型的定义性属性",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_richness",
+      "name_cn": "群富度(成员数)",
+      "description": "群所含成员星系数Ngal,区分群(低富度)与星系团(高富度),富度差异对应环境强度差异",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_rank",
+      "name_cn": "群内光度排名",
+      "description": "成员星系在群内的光度排名(1为最亮,通常为主星系BCG),区分主星系与卫星星系(卫星更易受气体剥离)",
+      "category": "classification",
+      "ucd": "meta.rank",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology_probability",
+      "name_cn": "形态类型概率",
+      "description": "Huertas-Company形态分类概率(pE/pS0/pSa/pSc),用于形态-密度关系与群内形态转变(淬灭/剥离导致早型比例升高)研究",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_merger_id",
+      "name_cn": "并合群系统编号",
+      "description": "群参与群-群并合系统(merging system)的编号,标识pre-processing(群前处理/预加工)环境",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_density",
+      "name_cn": "环境密度",
+      "description": "1.5/3/6/10Mpc平滑尺度上的归一化环境密度(Den1-Den8),形态-密度关系与淬灭梯度的直接度量",
+      "category": "environment",
+      "ucd": "phys.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_to_nearest_cluster",
+      "name_cn": "到最近星系团的距离",
+      "description": "群到最近星系团的共动距离,评估大尺度环境(群预处理与最终落入团的关联)",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    }
+  ]
+}

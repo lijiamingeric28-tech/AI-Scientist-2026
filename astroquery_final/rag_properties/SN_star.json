@@ -1,0 +1,305 @@
+{
+  "otype": "SN*",
+  "name_cn": "超新星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "超新星J2000赤经",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "超新星J2000赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_offset",
+      "name_cn": "宿主星系核偏移",
+      "description": "超新星相对宿主星系核在E/W与N/S方向的角秒偏移",
+      "category": "astrometry",
+      "ucd": "pos.offset",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_inclination",
+      "name_cn": "宿主星系倾角",
+      "description": "盘状宿主星系极轴相对视线的倾角（面朝系统为0）",
+      "category": "astrometry",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude",
+      "name_cn": "极大星等",
+      "description": "超新星在指定波段的最大（或发现）星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude_band",
+      "name_cn": "极大星等波段",
+      "description": "极大星等所在测光波段（UBVRIJHK或SDSS griz等）",
+      "category": "photometry",
+      "ucd": "phot.band",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "discovery_magnitude",
+      "name_cn": "发现星等",
+      "description": "超新星发现时的视星等（可能非极大）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_bmag",
+      "name_cn": "宿主星系B星等",
+      "description": "宿主星系积分B波段视星等（主要取自RC3/LEDA）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_diameter",
+      "name_cn": "宿主星系等光直径",
+      "description": "宿主星系视等光直径的对数值（0.1角分单位）",
+      "category": "photometry",
+      "ucd": "phys.angSize;src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_at_maximum",
+      "name_cn": "极大声色",
+      "description": "极大光时(B-V)颜色，SNe Ia光度计量的标准参数",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "peak_absolute_magnitude",
+      "name_cn": "峰值绝对星等",
+      "description": "峰值波段绝对星等，文献聚合/光度距离推导",
+      "category": "photometry",
+      "ucd": "phys.absMag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multi_band_light_curves",
+      "name_cn": "多波段光变曲线",
+      "description": "ugriz等多波段时间序列光变数据（含测光历元与误差）",
+      "category": "photometry",
+      "ucd": "phot.lc;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_modulus",
+      "name_cn": "距离模数",
+      "description": "由SN光度距离（如Ia标准化）给出的距离模数",
+      "category": "photometry",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "siii_velocity",
+      "name_cn": "SiII抛射速度",
+      "description": "近极大光谱中SiII 6355埃吸收的抛射速度（区分HV/NV亚型）",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc;abs.line",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nai_equivalent_width",
+      "name_cn": "NaI吸收线等值宽度",
+      "description": "峰值前30天内NaI吸收线加权等值宽度，指示宿主星系/周介质消光",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;abs.line",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_phase",
+      "name_cn": "光谱相位",
+      "description": "光谱相对B极大光的天数相位，光谱比较的基准",
+      "category": "spectroscopy",
+      "ucd": "time.phase",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ejecta_velocity",
+      "name_cn": "抛射物速度",
+      "description": "抛射壳层膨胀速度（文献，多由吸收线蓝移测量）",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "超新星或宿主星系的红移（光谱或测光）",
+      "category": "physical",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_redshift",
+      "name_cn": "宿主星系红移",
+      "description": "宿主星系红移（z<0.1时以HRV表示）",
+      "category": "physical",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_radial_velocity",
+      "name_cn": "宿主星系视向速度",
+      "description": "宿主星系日心视向速度（km/s）",
+      "category": "physical",
+      "ucd": "phys.veloc;pos.heliocentric",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ejected_mass",
+      "name_cn": "抛射质量",
+      "description": "爆炸抛射物质量（由光变曲线/晚期光谱建模，文献）",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "explosion_energy",
+      "name_cn": "爆炸能量",
+      "description": "爆炸动能（~10^51 erg量级，文献估计）",
+      "category": "physical",
+      "ucd": "phys.energy",
+      "unit": "erg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_of_maximum",
+      "name_cn": "极大时刻",
+      "description": "光变极大（或发现）的日期",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "discovery_date",
+      "name_cn": "发现日期",
+      "description": "超新星发现日期",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "decline_rate_dm15",
+      "name_cn": "B波段15天下落量",
+      "description": "B极大后15天星等下降量Delta-m15，Ia光度标准化的核心参数",
+      "category": "variability",
+      "ucd": "phot.lc;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "decline_60d_b_magnitude",
+      "name_cn": "峰值后60天B星等",
+      "description": "B极大后60天星等，反映光变曲线下降形态",
+      "category": "variability",
+      "ucd": "phot.lc;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rise_time",
+      "name_cn": "上升时标",
+      "description": "从爆炸到峰值的时间（文献/巡天光变拟合）",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stretch",
+      "name_cn": "stretch光变展宽",
+      "description": "光变曲线时间展宽参数（MLCS/SALT2拟合），宇宙学红移-亮度关系参数",
+      "category": "variability",
+      "ucd": "phot.lc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "supernova_type",
+      "name_cn": "超新星类型",
+      "description": "光谱分类（Ia/Ib/Ic/II/IIn等标准分类体系）",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sn_subclass",
+      "name_cn": "超新星亚型",
+      "description": "亚型细分：91T-like、91bg-like、高速HV与常速NV等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "supernova_designation",
+      "name_cn": "超新星编号",
+      "description": "标准命名如SN 1987A（年+字母），未确认者带问号标记",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_name",
+      "name_cn": "宿主星系名称",
+      "description": "宿主星系标识（按NGC/IC/MCG/UGC/ESO/PGC等优先次序）",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_morphological_type",
+      "name_cn": "宿主星系形态类型",
+      "description": "宿主星系形态分类（含RC3的T型编码）",
+      "category": "environment",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

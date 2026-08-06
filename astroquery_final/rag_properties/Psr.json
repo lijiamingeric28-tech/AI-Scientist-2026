@@ -1,0 +1,341 @@
+{
+  "otype": "Psr",
+  "name_cn": "脉冲星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "J2000赤经（度），脉冲星命名与位置的基础",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬（度）",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude",
+      "name_cn": "银经",
+      "description": "银道坐标经度，银盘内脉冲星分布研究的关键",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度，用于脉冲星尺度高度与年龄研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行（mas/yr），由长期计时获得",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行（mas/yr）",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "annual_parallax",
+      "name_cn": "周年视差",
+      "description": "计时/射电干涉测量视差（mas），直接距离估计",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "基于色散量与电子密度模型或视差/关联的日心距离（kpc）",
+      "category": "astrometry",
+      "ucd": "pos.distance;pos.heliocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulse_period",
+      "name_cn": "自转周期",
+      "description": "脉冲星自转（脉冲）周期P（秒），从毫秒到秒级，脉冲星核心观测量",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_derivative",
+      "name_cn": "周期导数",
+      "description": "周期一阶时间导数dP/dt（s/s），推导年龄、磁场与能损率的基础",
+      "category": "variability",
+      "ucd": "arith.rate;time.period",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulse_width_w50",
+      "name_cn": "脉冲宽度(50%峰值)",
+      "description": "积分脉冲轮廓50%峰值处宽度（ms），表征辐射束几何",
+      "category": "variability",
+      "ucd": "src.var.pulse",
+      "unit": "ms",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glitch_count",
+      "name_cn": "跃变次数",
+      "description": "观测到的自转跃变(glitch)次数，反映中子星内部超流特性",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_period",
+      "name_cn": "轨道周期",
+      "description": "双星脉冲星轨道周期（天），双星轨道性质的核心量",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "双星系统轨道偏心率",
+      "category": "variability",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "projected_semi_major_axis",
+      "name_cn": "投影半长轴",
+      "description": "轨道投影半长轴a1·sin(i)（光秒），结合开普勒第三定律求伴星质量",
+      "category": "variability",
+      "ucd": "phys.angSize.smajAxis;src.orbital",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_down_age",
+      "name_cn": "特征年龄",
+      "description": "自转减慢特征年龄τ=P/(2dP/dt)（年）",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dispersion_measure",
+      "name_cn": "色散量",
+      "description": "色散量DM（pc/cm^3），视线方向自由电子柱密度，脉冲星独有的距离与ISM探针",
+      "category": "physical",
+      "ucd": "phys.dispMeasure",
+      "unit": "cm^-3 pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_measure",
+      "name_cn": "旋转量",
+      "description": "旋转量RM（rad/m^2），由偏振角随波长变化测得，反映视线方向磁场",
+      "category": "physical",
+      "ucd": "phys.polarization.rotMeasure",
+      "unit": "rad/m^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_magnetic_field",
+      "name_cn": "表面偶极磁场",
+      "description": "表面偶极磁场强度B=3.2e19·sqrt(P·dP/dt)（G），区分磁星与普通脉冲星",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_down_luminosity",
+      "name_cn": "自转能损率",
+      "description": "自转能损率dE/dt（erg/s），驱动脉冲星辐射的能量来源",
+      "category": "physical",
+      "ucd": "phys.energy",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_mass",
+      "name_cn": "伴星质量",
+      "description": "双星伴星最小/中位质量（太阳质量），区分毫秒脉冲星再循环起源",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "transverse_velocity",
+      "name_cn": "横向速度",
+      "description": "基于自行与距离的横向速度（km/s），脉冲星速度分布研究",
+      "category": "physical",
+      "ucd": "phys.veloc;pos",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "blackbody_temperature",
+      "name_cn": "黑体温度",
+      "description": "X射线谱黑体分量温度kT（keV），表征中子星表面热辐射",
+      "category": "physical",
+      "ucd": "phys.temperature;em.X-ray",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnetar_xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "2-10keV消光校正X射线光度（erg/s），磁星活动度指标",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density_400",
+      "name_cn": "400MHz流量密度",
+      "description": "400MHz平均流量密度（mJy），低频射电谱指数参考点",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.200-400MHz",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density_1400",
+      "name_cn": "1400MHz流量密度",
+      "description": "1400MHz平均流量密度（mJy），射电巡天标准频段",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.750-1500MHz",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_ray_photon_flux",
+      "name_cn": "γ射线光子通量",
+      "description": "0.1-100GeV积分光子通量（ph/cm^2/s），Fermi LAT统一分析",
+      "category": "photometry",
+      "ucd": "phot.flux;em.gamma",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_energy_flux",
+      "name_cn": "X射线能流",
+      "description": "0.3-10keV非热X射线能流（erg/cm^2/s），含脉冲星风云贡献",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_magnitude",
+      "name_cn": "光学星等",
+      "description": "脉冲星或系统光学对应体多波段星等（B/I/J/K/R/U/V/g等）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_ray_photon_index",
+      "name_cn": "γ射线谱指数",
+      "description": "γ射线谱幂律光子指数（PLSuperExpCutoff模型），约束辐射机制",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.gamma",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_ray_cutoff_energy",
+      "name_cn": "γ射线截断能量",
+      "description": "谱指数截断能量Ec（MeV），脉冲星γ射线谱特征",
+      "category": "spectroscopy",
+      "ucd": "em.energy;em.gamma",
+      "unit": "MeV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_photon_index",
+      "name_cn": "X射线谱指数",
+      "description": "静止X射线幂律光子指数Gamma，磁星X射线谱表征",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsar_type",
+      "name_cn": "脉冲星类型",
+      "description": "类型码：RADIO/HE/NRAD/MSP/XINS/RRAT/BINARY/AXP等，划分辐射带与演化状态",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_ray_pulsar_class",
+      "name_cn": "γ射线脉冲星类",
+      "description": "YRL（年轻射电响）/YRQ（年轻射电静）/MSP（毫秒）三分法分类",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_type",
+      "name_cn": "伴星类型",
+      "description": "双星伴星类别（MS主序/NS中子星/WD白矮/UL超轻伴星），指示双星演化路径",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "associated_object",
+      "name_cn": "关联天体",
+      "description": "关联天体（超新星遗迹、球状星团、大麦哲伦云、脉冲星风云等）名称",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hydrogen_column_density",
+      "name_cn": "氢柱密度",
+      "description": "视线方向中性氢柱密度NH（cm^-2），ISM吸收与消光换算参数",
+      "category": "environment",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,566 @@
+entries:
+- id: FRB_DM_range
+  title: FRB 色散量参考范围
+  category: reference_range
+  tags:
+  - FRB
+  - DM
+  - range
+  - typical
+  - extreme
+  applies_to:
+    fields:
+    - dispersion_measure
+    entities:
+    - FRB
+  content: '已知 FRB DM 范围 (截至 2024 年, >800 FRBs):
+
+    - 典型范围: 100-1500 pc cm⁻³
+
+    - 中位数: ~500 pc cm⁻³
+
+    - 低端: ~100 pc cm⁻³ (近邻 FRB, 如 FRB 200430)
+
+    - 高端: ~3000 pc cm⁻³ (FRB 20190520B, 可能极端 host)
+
+    - 极端 >3000 pc cm⁻³: 非常罕见, 需怀疑 host 贡献异常大 或 银河系 DM 扣除错误
+
+
+    DM 远超出典型范围 (>2000) 的情况:
+
+    1. 高红移 (z>1) → 大 DM_IGM
+
+    2. 极端 host 环境 (如 AGN 附近的致密等离子体)
+
+    3. 银河系 DM 扣除错误 (方向低银纬)
+
+    '
+  source: CHIME/FRB Catalog 2024; FRBSTATS.org
+  confidence: established
+- id: FRB_fluence_range
+  title: FRB fluence 参考范围
+  category: reference_range
+  tags:
+  - FRB
+  - fluence
+  - range
+  - detection
+  - sensitivity
+  applies_to:
+    fields:
+    - fluence
+    - flux_density
+    entities:
+    - FRB
+  content: '已知 FRB fluence 范围:
+
+    - 典型: 0.1-100 Jy ms
+
+    - 检测下限: ~0.05 Jy ms (CHIME/FAST sensitivity)
+
+    - 超亮: >100 Jy ms (rare, e.g. FRB 150807: 120 Jy ms)
+
+    - 重复暴 fluence 变化: 可差 10-1000 倍
+
+
+    重要: fluence 是仪器依赖的量 (取决于带宽和中心频率)。
+
+    跨仪器比较时需注意带宽归一化。
+
+    '
+  source: Petroff et al. 2019, A&ARv
+  confidence: established
+- id: high_z_quasar_range
+  title: 高红移类星体参考范围
+  category: reference_range
+  tags:
+  - quasar
+  - high_redshift
+  - z
+  - luminosity
+  - SMBH
+  applies_to:
+    fields:
+    - redshift
+    - luminosity
+    entities:
+    - quasar
+    - high_redshift_quasar
+  content: '高红移 (z>5.5) 类星体已知范围:
+
+    - 红移: z ~5.5-7.6 (最高已知 z=7.64, ULAS J1342+0928)
+
+    - 黑洞质量: 10⁸-10¹⁰ M⊙
+
+    - 光度: 10⁴⁶-10⁴⁸ erg/s
+
+
+    高红移类星体的特殊性:
+
+    - 极其罕见 (全天空预期 ~100-200 at z>6)
+
+    - SMBH 形成时间问题: 在 <1 Gyr 内增长到 10⁹ M⊙ 对标准吸积模型构成挑战
+
+    - Lyα 森林在 z>6 处变得几乎完全不透明 (Gunn-Peterson trough)
+
+    '
+  source: Bañados et al. 2018, Nature; Fan et al. 2023, ARA&A
+  confidence: established
+- id: stellar_parallax_range
+  title: 恒星视差参考范围
+  category: reference_range
+  tags:
+  - parallax
+  - stellar
+  - mas
+  - distance
+  - Gaia
+  applies_to:
+    fields:
+    - parallax
+    - distance
+    entities:
+    - Star
+    - star
+  content: '恒星视差已知范围:
+
+    - 近邻恒星: 10-800 mas (距离 1-100 pc)
+
+    - 典型视差: 1-100 mas (距离 10 pc - 1 kpc)
+
+    - 银河系尺度: 0.1-1 mas (距离 1-10 kpc)
+
+    - 河外: <0.05 mas (仅亮天体, Gaia 精度极限)
+
+
+    参考:
+
+    - 太阳最近邻 (Proxima Cen): π ~ 768 mas
+
+    - 天狼星: π ~ 379 mas
+
+    - 盖亚 DR3 全天空: 中位视差 ~1-5 mas (受样本选择影响)
+
+
+    负视差或 σ(π)/π > 0.2 的记录应谨慎使用
+
+    '
+  source: Gaia Collaboration 2023, A&A 674, A1
+  confidence: established
+- id: stellar_temperature_gravity_range
+  title: 恒星有效温度与表面重力参考范围
+  category: reference_range
+  tags:
+  - Teff
+  - temperature
+  - logg
+  - surface_gravity
+  - stellar
+  applies_to:
+    fields:
+    - effective_temperature
+    - surface_gravity
+    entities:
+    - Star
+    - star
+  content: "恒星物理参数已知范围:\n- 有效温度 Teff: 2000 K (M 型矮星) - 40000 K (O 型)\n  - M 矮星: 2400-3800 K\n  - G 型 (太阳): 5770 K\n  - B 型:\
+    \ 10000-30000 K\n  - O 型: 30000-50000 K\n- 表面重力 log g: 0.0 (超巨星) - 5.5 (白矮星) [cgs 单位]\n  - 主序: log g ~ 4.0-4.5\n  - 巨星:\
+    \ log g ~ 2.0-3.0\n  - 白矮星: log g ~ 7.0-9.0\n\n物理可行性: Teff 超出 2000-50000 K 或 log g 超出 0-9 的记录需复查\n"
+  source: Gray 2005, The Observation and Analysis of Stellar Photospheres
+  confidence: established
+- id: star_teff_luminosity_span
+  title: 恒星 Teff/光度全域锚点
+  category: reference_range
+  tags:
+  - star
+  - teff
+  - luminosity
+  - range
+  applies_to:
+    fields:
+    - effective_temperature
+    - luminosity
+    entities:
+    - star
+  content: '正常恒星的有效温度与光度由核燃烧产能与表面辐射平衡共同决定, 跨度极大:
+
+    - Teff 约 2000-100000 K (M 矮星低温端 → O 型/白矮星高温端)
+
+    - 光度 1e-4 ~ 1e6 Lsun (褐矮星端 → 超巨星端)
+
+    超出此全域的 ''恒星'' 值几乎必为: 单位混淆、光度/星等混用, 或对象类型误判
+
+    (如星系/AGN 的光度被标成恒星字段)。
+
+    判定线索: 恒星光度与 Teff 满足 L ∝ R^2 T^4, 两者联合越界才可信。'
+  source: UNLV 主序表; OSU 恒星物理讲义
+  confidence: established
+- id: main_sequence_spectral_sequence
+  title: 主序光谱型-温度序列
+  category: reference_range
+  tags:
+  - main_sequence
+  - spectral
+  - teff
+  applies_to:
+    fields:
+    - effective_temperature
+    - stellar_mass
+    entities:
+    - main_sequence_star
+  content: 'OBAFGKM 是纯温度序: 表面温度决定电离态与分子平衡 (H Balmer 线 A0 最强,
+
+    TiO 分子带只出现在 M 型)。主序锚点: O 型 ~40000 K / 40 Msun, G 型 (太阳) ~5770 K,
+
+    M 型 ~3200 K / 0.3 Msun。
+
+    判定原理: 分型看吸收线相对强度; 金属丰度低会使金属线变弱、误判为更热型;
+
+    双星光谱叠加 (SB2) 会模糊线型。'
+  source: UNLV/UTK 主序数据表; LCO Types of Stars
+  confidence: established
+- id: ttaauri_star_parameters
+  title: T Tauri 星与前主序参数
+  category: reference_range
+  tags:
+  - ttaauri
+  - pms
+  - yso
+  applies_to:
+    fields:
+    - effective_temperature
+    - surface_gravity
+    entities:
+    - t_tauri_star
+    - young_stellar_object
+  content: 'T Tauri 星是前主序 (PMS) 恒星, 仍在引力收缩、尚未点燃氢燃烧;
+
+    中心温度低于主序同型星, Teff 约 2590-5110 K (K0-M8.5), log g ~4。
+
+    经典 T Tauri (CTTS) 与弱线 T Tauri (WTTS) 的观测分界是 Hα 等值宽度 ~10 Å,
+
+    物理本质是吸积率是否高于 ~1e-8 Msun/yr — 吸积磁层把盘物质导向恒星表面。
+
+    判定线索: PMS 星 Teff 正常但年龄异常年轻 (<10 Myr), 或与分子云成协。'
+  source: Lada 1987; Hernández 2005; T Tauri 参数综述
+  confidence: established
+- id: white_dwarf_parameters
+  title: 白矮星参数与简并本质
+  category: reference_range
+  tags:
+  - white_dwarf
+  - degenerate
+  applies_to:
+    fields:
+    - stellar_mass
+    - surface_gravity
+    - stellar_radius
+    - effective_temperature
+    entities:
+    - white_dwarf
+  content: '白矮星由电子简并压支撑, 无核聚变、只冷却, 是可靠的宇宙时钟。
+
+    质量分布主峰 ~0.6 Msun (单星演化产物), Chandrasekhar 极限 ~1.4 Msun (超限塌缩);
+
+    半径仅 ~0.01 Rsun (类地尺度), 表面重力 log g 7.0-8.5 (远高于主序的 ~4.4)。
+
+    光谱型由大气成分定: DA=H 大气 (Balmer 线), DB=He 大气。
+
+    判定线索: 高温 + 极低光度 + 高 log g 的组合即白矮星; 质量 >1.4 Msun 的
+
+    ''白矮星'' 记录必为错误 (应为中子星/黑洞或测量混淆)。'
+  source: Liebert 2005 ApJS; SDSS DR12 白矮星研究
+  confidence: established
+- id: giant_supergiant_radius
+  title: 巨星/超巨星半径
+  category: reference_range
+  tags:
+  - giant
+  - supergiant
+  - radius
+  applies_to:
+    fields:
+    - stellar_radius
+    entities:
+    - red_giant_star
+    - supergiant
+    - red_supergiant
+  content: '巨星/超巨星是壳层氢/氦燃烧的膨胀态: 核心致密, 外包层因低表面重力而
+
+    剧烈膨胀。巨星半径 10-100 Rsun, 超巨星 >1000 Rsun (红超巨星可达 1500)。
+
+    物理原理: 同光谱型下巨星与矮星的判别是表面重力 (线展宽), 不是温度。
+
+    判定线索: 半径 ~1 Rsun 却标注超巨星 = 单位混淆 (Rsun/km); 半径 >2000 Rsun
+
+    的 ''恒星'' 需怀疑是大质量恒星+星风包层或双星混合。'
+  source: OSU HR 图讲义; PHY213 恒星性质讲义
+  confidence: established
+- id: galaxy_redshift_span
+  title: 星系红移全域与演化
+  category: reference_range
+  tags:
+  - galaxy
+  - redshift
+  - span
+  applies_to:
+    fields:
+    - redshift
+    entities:
+    - galaxy
+  content: '星系红移覆盖 z 0-10: 近邻宇宙 z<0.1, 典型巡天 z~0.5-1.5, 宇宙正午 z~2-3,
+
+    亮类星体 z~6, 目前最深 z>10。
+
+    物理原理: z 由宇宙膨胀 (Hubble 流) + 光度演化共同决定; 红移本身不是距离,
+
+    距离需要宇宙学模型换算。
+
+    判定线索: 单一星系 z>10 需极高置信证据 (否则多为 photo-z 灾难性失败 —
+
+    尘埃中间红移星系可伪装成高 z 洁净星系); 负 z = 蓝移, 只可能出现在本星系群成员。'
+  source: Steed & Weinberg; SDSS downsizing; COSMOS
+  confidence: established
+- id: galaxy_stellar_mass_span
+  title: 星系恒星质量跨数量级
+  category: reference_range
+  tags:
+  - galaxy
+  - stellar_mass
+  applies_to:
+    fields:
+    - stellar_mass
+    entities:
+    - galaxy
+  content: '星系恒星质量跨 7 个数量级: 矮星系 1e5-1e8 Msun, 银河系级 1e10-1e12 Msun,
+
+    团内巨椭圆 1e12-1e13 Msun。
+
+    物理原理: 恒星质量由 SED 拟合 × 质量光度比 (IMF 假设) 估计 — Salpeter vs
+
+    Kroupa IMF 相差 ~1.55 倍, 跨文献比较必须核对 IMF。
+
+    判定线索: 记录为 ''恒星'' 却给 1e11 Msun = 对象类型错误 (星系质量);
+
+    >1e13 Msun 的 ''星系'' 需怀疑团内暗物质质量混入或测量错误。'
+  source: Conroy 2013; Alonso-Herrero 2008
+  confidence: established
+- id: agn_luminosity_ladder
+  title: AGN 光度阶梯
+  category: reference_range
+  tags:
+  - agn
+  - luminosity
+  - ladder
+  applies_to:
+    fields:
+    - luminosity
+    entities:
+    - agn
+    - seyfert_galaxy
+  content: 'AGN 光度跨越 5 个数量级, 由吸积率 (Eddington 比) 决定:
+
+    - 邻近低光度 Seyfert: X 波段 (2-10 keV) 1e40-1e43 erg/s
+
+    - 典型 Seyfert: 1e42-1e44 erg/s
+
+    - 类星体: L_bol 1e45-1e47 erg/s (接近 Eddington 吸积)
+
+    物理原理: L_Edd = 1.26e38 (M/Msun) erg/s 是辐射压平衡引力的上限 —
+
+    超过 Eddington 光度数倍的持续辐射需要非球对称吸积几何。
+
+    判定线索: 光度 >1e47 erg/s 的源若红移未知, 应先怀疑距离/光度单位混淆。'
+  source: Panessa XMM; Eddington 光度讲义 (JILA)
+  confidence: established
+- id: quasar_bolometric_anchor
+  title: 类星体热光度锚点
+  category: reference_range
+  tags:
+  - quasar
+  - bolometric
+  applies_to:
+    fields:
+    - luminosity
+    entities:
+    - quasar
+    - blazar
+  content: '类星体是快速增长期的最亮 AGN, 热光度 log L_bol ~ 47 (1e47 erg/s) 量级,
+
+    约 1e5 倍银河系光度 — 其能量来自 SMBH 吸积盘引力势能释放。
+
+    物理原理: 峰值期吸积接近 Eddington (指数增长相), 光度函数 = Eddington 比分布
+
+    × 黑洞质量函数卷积; 高红移 (z>6) 的 1e47 erg/s 类星体要求 >1e9 Msun 黑洞
+
+    在宇宙第一十亿年内形成 (吸积物理的强约束)。
+
+    判定线索: L_bol 低于 1e43 erg/s 的 ''类星体'' 实为 Seyfert; 光度远超 1e47
+
+    需复核红移 (通常为 photo-z 低估)。'
+  source: Steed & Weinberg 2003; Shen 2009
+  confidence: established
+- id: agn_blackhole_mass_relation
+  title: AGN 黑洞质量锚点
+  category: reference_range
+  tags:
+  - blackhole
+  - mbh
+  - sigma
+  applies_to:
+    fields:
+    - stellar_mass
+    entities:
+    - agn
+    - quasar
+  content: '活动星系核的黑洞质量由 M_BH-σ 关系锚定: M_BH ≈ 1e8 (σ/200 km/s)^4 Msun,
+
+    散射 ~0.3-0.44 dex。物理机制: 动量驱动外流反馈 — 黑洞质量在反馈吹走核球气体
+
+    时被固定 (M ∝ σ^4); 或旋转坍缩模型。
+
+    典型值: 邻近 Seyfert 1e6-1e9 Msun, 亮类星体 ~1e9 Msun, 极端 >1e10。
+
+    判定线索: 记录的黑洞质量与宿主速度弥散明显不匹配 (差 >2 dex) 需复核;
+
+    >1e10 Msun 的 SMBH 极罕见 (仅 BCG/团内巨椭圆)。'
+  source: Tremaine 2002; Kormendy & Ho 2013
+  confidence: consensus
+- id: hii_region_physics
+  title: HII 区物理与电离平衡
+  category: reference_range
+  tags:
+  - hii
+  - stromgren
+  - ionization
+  applies_to:
+    fields:
+    - luminosity
+    - flux_density
+    entities:
+    - hii_region
+    - star_forming_region
+  content: 'HII 区是被 O/B 星电离的氢区: 电离-复合平衡决定尺寸 —
+
+    Strömgren 半径 R_s = (3Q/4πα n^2)^(1/3), Q 为 Lyman 极限光子率, α 为 Case B
+
+    复合系数。电子温度 ~1e4 K, 典型密度 10-100 cm^-3 (致密丝可达 300+),
+
+    超致密 HII (UCHII) >1e4 cm^-3。
+
+    物理原理: 光子率固定时 n^2 R^3 = 常数 — ''小又亮'' 的 HII 区即高密度。
+
+    判定线索: HII 区尺寸与电离光度不匹配 (如 100 pc 级 HII 却只有毫级光度) 需复核。'
+  source: Kennicutt 2002; Kiel Strömgren 球讲义
+  confidence: established
+- id: snr_properties_range
+  title: 超新星遗迹演化与谱指数
+  category: reference_range
+  tags:
+  - snr
+  - remnant
+  - spectral_index
+  applies_to:
+    fields:
+    - age
+    - flux_density
+    entities:
+    - supernova_remnant
+  content: '超新星遗迹经历自由膨胀 → Sedov 绝热 (R ∝ t^2/5) → 辐射冷却 → 消散,
+
+    寿命上限 ~1e5 yr。形态上分两类, 射电谱指数是核心判据 (S ∝ ν^-α):
+
+    - 壳层型 (SNR): 陡谱 α ~ -0.8 (Cas A), 激波同步加速
+
+    - 填充型 (plerion, 蟹状星云式): 平谱 α ~ +0.3, 脉冲星驱动
+
+    判定线索: 标注 SNR 却给 >1 Myr 年龄 = 与 HII 区混淆; 谱指数 +0.3 的
+
+    ''壳层 SNR'' 实为 plerion。'
+  source: Green 850μm 谱指数; NRAO 讲义; Katsuda 2012
+  confidence: established
+- id: brown_dwarf_boundaries
+  title: 褐矮星质量边界
+  category: reference_range
+  tags:
+  - brown_dwarf
+  - boundary
+  - fusion
+  applies_to:
+    fields:
+    - effective_temperature
+    - stellar_mass
+    entities:
+    - brown_dwarf
+    - low_mass_star
+  content: '褐矮星是''失败的恒星'': 核心点燃氘 (p+d→He3, 持续 4-50 Myr) 但无法稳定
+
+    氢燃烧。两个物理边界 (IAU 定义):
+
+    - 下限 13 M_jup: 氘燃烧所需质量
+
+    - 上限 73-80 M_jup (0.07-0.08 Msun): 氢燃烧最小质量
+
+    因持续冷却, 光谱型是温度与年龄的函数: L 型 (1300-2500 K) → T 型 (600-1300 K,
+
+    CH4 带) → Y 型 (<600 K, NH3 带)。
+
+    判定线索: 质量在 13-80 M_jup 之外却标褐矮星 = 与行星/极低质量恒星混淆;
+
+    锂测试 (60-65 M_jup 以上可烧锂) 用于证认。'
+  source: Wikipedia Brown dwarf; IAU 定义; 褐矮星综述
+  confidence: established
+- id: exoplanet_radius_gap
+  title: 系外行星半径间隙
+  category: reference_range
+  tags:
+  - exoplanet
+  - radius_gap
+  applies_to:
+    fields:
+    - planet_radius
+    - planet_mass
+    entities:
+    - exoplanet
+  content: 'Kepler 统计发现行星半径分布存在 ~2 R_earth 间隙: 超地球 (≤1.9 R⊕, 岩石)
+
+    与亚海王星 (≥2 R⊕, 挥发物包层) 被光致蒸发/核供能大气损失分开, 间隙位置
+
+    R ∝ P^-0.11 — 半径是行星大气保持历史的探针。
+
+    质量锚点: 1 M_jup = 317.8 M_earth, 1 R_jup = 11.2 R_earth。
+
+    判定线索: 半径 2-3 R⊕ 恰好落在间隙内的行星记录本身合理 (过渡态), 但质量
+
+    缺失时应标注不确定性; 热木星 P<10 天 (形成于数 AU 外后迁移而来)。'
+  source: CKS 样本; 2016A&A 589A 75M; TOI-1075b 研究
+  confidence: consensus
+- id: m31_galaxy_reference
+  title: M31 (仙女座) 参考参数
+  category: reference_range
+  tags:
+  - m31
+  - andromeda
+  - local_group
+  applies_to:
+    fields:
+    - distance
+    - metallicity
+    - stellar_mass
+    entities:
+    - galaxy
+  content: 'M31 是本星系群最大旋涡星系, 常用作河外参考锚点:
+
+    - 距离 ~780 kpc (Cepheid/TRGB/SN Ia 多方法一致, 方法间差异 <10%)
+
+    - 恒星质量 ~1e11 Msun, 动力学质量 ~1.5e12 Msun (含暗物质晕)
+
+    - 金属丰度 [Fe/H] ~ -0.3 (盘), 旋臂富金属区近太阳值
+
+    - 与银河系相距 ~800 kpc, 接近速度 ~123 km/s (未来并合)
+
+    物理原理: 距离阶梯 (Cepheid PL → TRGB → SN Ia) 在此校准;
+
+    判定线索: 记录 M31 距离 7.8 kpc 或 78 Mpc = 单位/数量级混淆。'
+  source: McConnachie 2012; Local Group 综述; 距离阶梯文献
+  confidence: consensus

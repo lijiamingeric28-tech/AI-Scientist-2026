@@ -1,0 +1,149 @@
+"""接缝适配器：上游 final_output → 子图4 quality_pipeline 的输入
+
+职责：
+1. 从 PropertySpec 生成 target_schema（字段名 = property_id，标准单位 = unit）
+2. 生成 standard_units 映射（field_name → standard_unit）
+3. 调用 quality_pipeline.make_initial_state 构建初始状态
+4. 注入 context_state（research_domain / target_schema / standard_units）
+5. 运行 build_quality_graph 并返回结果
+
+设计原则：
+- 子图4 源码零改动：只用其公开入口 make_initial_state + build_quality_graph
+- 上游 final_output 直接作为 grounded_data 传入（含 sources / records / research_domain）
+"""
+
+import logging
+import traceback
+from datetime import datetime
+from typing import Dict, List, Optional
+
+from .state import MainGraphState
+
+logger = logging.getLogger(__name__)
+
+
+# ══════════════════════════════════════════════════════════════
+# context_state 生成
+# ══════════════════════════════════════════════════════════════
+
+def generate_target_schema(property_spec: List[Dict]) -> Dict:
+    """
+    从 PropertySpec 生成 target_schema
+
+    字段名 = property_id，标准单位 = unit。
+    每个字段附带 semantic_type（用 RAG 的 category 作为粗粒度语义类，
+    子图4 的 unit_converter 靠它做同名单位消歧）。
+    """
+    fields = []
+    for p in property_spec or []:
+        fields.append({
+            "name": p["property_id"],
+            "standard_unit": p.get("unit", ""),
+            "semantic_type": p.get("category", ""),
+            "ucd": p.get("ucd", ""),
+            "description": p.get("description", ""),
+            "criticality": "important",
+        })
+    return {"fields": fields}
+
+
+def generate_standard_units(property_spec: List[Dict]) -> Dict[str, str]:
+    """生成 field_name → standard_unit 映射"""
+    return {p["property_id"]: p.get("unit", "") for p in (property_spec or [])}
+
+
+# ══════════════════════════════════════════════════════════════
+# quality 节点
+# ══════════════════════════════════════════════════════════════
+
+def quality_node(state: MainGraphState) -> Dict:
+    """
+    调用子图4 质量管线。
+
+    输入：state.final_output（grounded_data）+ state.property_spec
+    输出：state.quality_report（子图4 的完整输出状态）
+    """
+    logger.info("[Quality Adapter] 开始质量管线")
+
+    final_output = state.get("final_output") or {}
+    property_spec = state.get("property_spec") or []
+
+    if not final_output.get("records") and not final_output.get("sources"):
+        logger.warning("[Quality Adapter] 无数据（final_output 为空），跳过质量管线")
+        return {"quality_report": {"skipped": True, "reason": "empty_final_output"}}
+
+    try:
+        # 延迟导入子图4（避免循环依赖 + 让包迁移独立可测）
+        from quality_pipeline.quality_state import make_initial_state
+        from quality_pipeline.graph import build_quality_graph
+    except Exception as exc:
+        logger.error(f"[Quality Adapter] 导入 quality_pipeline 失败: {exc}")
+        return {
+            "error_log": [{
+                "node": "quality_adapter",
+                "error": f"导入 quality_pipeline 失败: {exc}",
+                "timestamp": datetime.now().isoformat(),
+            }],
+            "quality_report": {"skipped": True, "reason": "import_failed"},
+        }
+
+    # 1. 构建初始状态（grounded_data）
+    try:
+        initial_state = make_initial_state(final_output)
+    except Exception as exc:
+        logger.error(f"[Quality Adapter] make_initial_state 失败: {exc}")
+        logger.debug(traceback.format_exc())
+        return {
+            "error_log": [{
+                "node": "quality_adapter",
+                "error": f"make_initial_state 失败: {exc}",
+                "timestamp": datetime.now().isoformat(),
+            }],
+            "quality_report": {"skipped": True, "reason": "initial_state_failed"},
+        }
+
+    # 2. 注入 context_state（RAG 标准性质 → target_schema / standard_units）
+    try:
+        target_schema = generate_target_schema(property_spec)
+        standard_units = generate_standard_units(property_spec)
+
+        initial_state["context_state"]["target_schema"] = target_schema
+        initial_state["context_state"]["standard_units"] = standard_units
+        initial_state["context_state"]["research_domain"] = "astrophysics"
+
+        # 同步设置 configs 的全局领域（子图4 内部靠 get_research_domain 决定加载哪个配置段）
+        from quality_pipeline.configs import set_research_domain
+        set_research_domain("astrophysics")
+    except Exception as exc:
+        logger.error(f"[Quality Adapter] context 注入失败: {exc}")
+        return {
+            "error_log": [{
+                "node": "quality_adapter",
+                "error": f"context 注入失败: {exc}",
+                "timestamp": datetime.now().isoformat(),
+            }],
+            "quality_report": {"skipped": True, "reason": "context_inject_failed"},
+        }
+
+    logger.info(
+        "[Quality Adapter] context 注入完成: target_schema %d 字段, standard_units %d 条",
+        len(target_schema.get("fields", [])), len(standard_units)
+    )
+
+    # 3. 运行质量管线
+    try:
+        quality_graph = build_quality_graph().compile()
+        result = quality_graph.invoke(initial_state)
+        logger.info("[Quality Adapter] 质量管线完成")
+        return {"quality_report": result}
+    except Exception as exc:
+        logger.error(f"[Quality Adapter] 质量管线执行失败: {exc}")
+        logger.debug(traceback.format_exc())
+        return {
+            "error_log": [{
+                "node": "quality_adapter",
+                "error": f"质量管线执行失败: {exc}",
+                "timestamp": datetime.now().isoformat(),
+            }],
+            "quality_report": {"skipped": True, "reason": "pipeline_failed"},
+        }

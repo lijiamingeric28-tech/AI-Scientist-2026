@@ -1,0 +1,332 @@
+{
+  "otype": "PaG",
+  "name_cn": "星系对",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pair_id",
+      "name_cn": "星系对编号",
+      "description": "星系对/系统的目录编号(KPG、VV、GOALS、GZM1或SDSS对编号)",
+      "category": "astrometry",
+      "ucd": "meta.id.catalog",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "comp1_ra",
+      "name_cn": "成员1(主)星系赤经",
+      "description": "主成员星系的赤经(J2000或原始历元)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "comp1_dec",
+      "name_cn": "成员1(主)星系赤纬",
+      "description": "主成员星系的赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "comp2_ra",
+      "name_cn": "成员2(伴)星系赤经",
+      "description": "伴成员星系的赤经",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "comp2_dec",
+      "name_cn": "成员2(伴)星系赤纬",
+      "description": "伴成员星系的赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ang_separation",
+      "name_cn": "角距",
+      "description": "两成员星系之间的天球角距离(arcmin或arcsec),星系对筛选的核心几何量",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "position_angle",
+      "name_cn": "位置角",
+      "description": "成员星系连线(从主星系指向伴星系)的位置角,北偏东计",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proj_separation",
+      "name_cn": "投影物理距离",
+      "description": "由角距与距离导出的两成员间投影物理间距rp(kpc),相互作用强度与SFR触发效应的核心物理量",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "system_distance",
+      "name_cn": "系统距离",
+      "description": "星系对由红移(或本动流模型)导出的距离(Mpc),用于换算投影间距与光度",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "comp_mag",
+      "name_cn": "成员星系视星等",
+      "description": "各成员星系的视星等(KPG的B/V目视星等、SDSS u/g/r/i/z、GOALS多波段),用于亮度比与质量估计",
+      "category": "photometry",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "total_mag",
+      "name_cn": "系统总视星等",
+      "description": "星系对合成总视星等,表征系统整体亮度",
+      "category": "photometry",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "颜色指数",
+      "description": "成员星系颜色指数(B-V、g-r、NUV-r等),诊断星族年龄与相互作用触发的恒星形成",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_flux",
+      "name_cn": "红外流量",
+      "description": "中远红外流量密度(IRAS 12/25/60/100um、Spitzer IRAC/MIPS、Herschel PACS/SPIRE),尘埃遮蔽的恒星形成与核活动探针",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_flux",
+      "name_cn": "紫外流量",
+      "description": "GALEX FUV/NUV流量密度,年轻恒星与近期星暴的直接示踪",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.UV",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_redshift",
+      "name_cn": "光测红移",
+      "description": "由多波段测光估计的光测红移,用于无光谱时判定物理对",
+      "category": "photometry",
+      "ucd": "src.redshift.phot",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "光谱红移",
+      "description": "各成员星系的光谱红移,物理对判定的第一判据之一",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "各成员星系的日心视向速度(km/s)",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_diff",
+      "name_cn": "速度差",
+      "description": "两成员星系视向速度差ΔV(km/s),与投影间距共同构成物理对判据(如ΔV<300km/s),也反映轨道相对运动",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.disp",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_dispersion",
+      "name_cn": "恒星速度弥散",
+      "description": "核区恒星速度弥散σ,用于黑洞质量与核活动诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.disp",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_flux",
+      "name_cn": "发射线流量",
+      "description": "Hα、Hβ、[OIII]、[NII]等发射线流量,合并触发恒星形成与核活动的定量诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ratio",
+      "name_cn": "发射线比",
+      "description": "BPT诊断线比[NII]/Hα与[OIII]/Hβ,区分恒星形成与AGN电离机制",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "气体金属丰度",
+      "description": "气体相位金属丰度12+log(O/H),相互作用/并合过程导致稀释或增丰的直接测量",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Z",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "各成员星系的恒星质量M*(太阳质量单位),合并动力学与质量比的基础量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比",
+      "description": "两成员星系恒星质量比M1/M2,决定主合并(近相等质量)与次要合并",
+      "category": "physical",
+      "ucd": "phys.mass.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "成员星系恒星形成率SFR(M_sun/yr),相互作用触发增强的核心测量量",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ssfr",
+      "name_cn": "比恒星形成率",
+      "description": "比恒星形成率sSFR(yr^-1),衡量相对恒星形成主序的偏移与触发程度",
+      "category": "physical",
+      "ucd": "phys.SFR.specific",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_luminosity",
+      "name_cn": "总红外光度",
+      "description": "8-1000um总红外光度L_IR,定义LIRG(>10^11 Lsun)与ULIRG(>10^12 Lsun),并合星系极端恒星形成/核活动的标志",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.IR",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type",
+      "name_cn": "哈勃形态类型",
+      "description": "各成员星系的哈勃形态型(E/S0/Sp/Irr及T值),形态-合并关联研究的基础",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vv_morph_class",
+      "name_cn": "潮汐相互作用形态类型",
+      "description": "VV相互作用形态分类:桥、尾、壳、环、双核、撕裂等潮汐结构类型,交互证据(潮汐尾/桥)的定性分类标准",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "interaction_stage",
+      "name_cn": "相互作用/合并阶段",
+      "description": "合并进程阶段(GOALS按核间距/形态分1-5级;Darg区分二值合并与并合后)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nuclear_class",
+      "name_cn": "核光谱类型",
+      "description": "星系核光谱分类(HII区/星暴、复合、LINER、Seyfert),并合触发AGN活动的诊断",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pair_type",
+      "name_cn": "物理/光学对判别",
+      "description": "物理对(满足投影间距与速度差判据的真实引力束缚/相互作用对)与光学投影对的判别(KPG概率判据或Shi红移判据)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "merger_vote_fraction",
+      "name_cn": "合并投票分数",
+      "description": "Galaxy Zoo众包分类中标记为合并的投票比例fm,量化形态扰动/合并证据强度",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "postmerger_flag",
+      "name_cn": "并合后标记",
+      "description": "是否并合后(post-merger)星系(已合并且具有潮汐扰动形态的单一星系)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isolation_flag",
+      "name_cn": "孤立性判据",
+      "description": "KPG孤立对判据:成员星系规定半径/星等差范围内无其他星系,保证对系统不受外部环境影响",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_membership",
+      "name_cn": "群/团归属",
+      "description": "成员星系所属星系群/团及附近星系信息(目录自NED汇总),环境类型(field/group/cluster)对相互作用效应的调控",
+      "category": "environment",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

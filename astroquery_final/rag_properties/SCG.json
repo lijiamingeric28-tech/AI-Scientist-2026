@@ -1,0 +1,296 @@
+{
+  "otype": "SCG",
+  "name_cn": "超星系团",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "scg_ra",
+      "name_cn": "超星系团赤经",
+      "description": "超星系团中心(或最高密度峰/质量中心)赤经J2000,度",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "scg_dec",
+      "name_cn": "超星系团赤纬",
+      "description": "超星系团中心(或最高密度峰/质量中心)赤纬J2000,度",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "scg_distance",
+      "name_cn": "超星系团距离",
+      "description": "超星系团最高密度峰(Dist1)或质量中心(Dist2)的距离,Mpc/h",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_dist",
+      "name_cn": "成员平均距离",
+      "description": "成员团到超星系团中心的平均距离Dmem,Mpc",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "position_angle",
+      "name_cn": "位置角",
+      "description": "成员星系SSS图像主轴位置角PA,度",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ang_size",
+      "name_cn": "角大小",
+      "description": "成员星系SSS角面积(像素)与焦平面主轴/次轴直径Al/Bl",
+      "category": "astrometry",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_opt",
+      "name_cn": "光学光度",
+      "description": "超星系团光学光度:密度场光度dlum、星系光度总和slum、加权星系光度wlum,10^10 Lsun",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_xray",
+      "name_cn": "X射线光度",
+      "description": "成员团X射线光度L500(0.2-2.3 keV带),10^43 erg/s,附误差",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_opt",
+      "name_cn": "光学星等",
+      "description": "成员星系SSS测光:Bj、R1、R2、I星等(星等100表示缺测)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "超星系团平均红移(成员团平均,MSCC/eRASS/Santiago-Bautista)或标志星系红移mgz(SDSS)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radvel",
+      "name_cn": "视向速度",
+      "description": "成员星系日心(零点修正)视向速度HVc及各文献原始测量HRV,km/s",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radvel_err",
+      "name_cn": "视向速度误差",
+      "description": "视向速度测量误差e_HVc/e_HRV,km/s,及Tonry-Davis相关数R、谱线数Nl",
+      "category": "spectroscopy",
+      "ucd": "stat.error",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_disp",
+      "name_cn": "速度弥散",
+      "description": "超星系团内系统/团的速度弥散sigma,km/s(动力学质量估计基础)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_velmeas",
+      "name_cn": "速度测量次数",
+      "description": "单个星系视向速度的独立测量次数N(测量多重性,可用作证认可靠度)",
+      "category": "spectroscopy",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_fraction",
+      "name_cn": "光谱成员比例",
+      "description": "超星系团中光谱证认成员百分比fSp,0-99%",
+      "category": "spectroscopy",
+      "ucd": "meta.number",
+      "unit": "%",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_total",
+      "name_cn": "总质量",
+      "description": "超星系团总质量Mtot,10^14 Msun,附1σ误差(由成员团质量求和)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_m500",
+      "name_cn": "成员团质量",
+      "description": "成员星系团X射线质量M500,10^14 Msun,附误差",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "diameter",
+      "name_cn": "直径/投影尺度",
+      "description": "超星系团直径Diam(Mpc/h)、投影长度Lproj(最大成员间距,Mpc)、成员团最大间距dmax(Mpc)",
+      "category": "physical",
+      "ucd": "phys.size.diameter",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius_harmonic",
+      "name_cn": "谐波半径",
+      "description": "系统谐波半径Rh,Mpc(h70^-1)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius_virial",
+      "name_cn": "维里半径",
+      "description": "系统维里半径Rvir,Mpc(h70^-1)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "volume",
+      "name_cn": "体积",
+      "description": "超星系团体积Vol,(Mpc/h)^3",
+      "category": "physical",
+      "ucd": "phys.volume",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "peak_density",
+      "name_cn": "峰值密度",
+      "description": "超星系团内最高密度峰密度Peak及自适应阈值D(mdens单位)",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "richness_gal",
+      "name_cn": "星系富度",
+      "description": "超星系团成员星系数Ngal与星系群数Ngr(SDSS);系统成员数Nmem(Santiago-Bautista)",
+      "category": "classification",
+      "ucd": "phys.structure.arity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "richness_cl",
+      "name_cn": "成员团数",
+      "description": "超星系团成员星系团数:Nm(MSCC/SSCC,2-42)、Mult(eRASS)、NCl(Santiago-Bautista,≥5)",
+      "category": "classification",
+      "ucd": "phys.structure.arity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "npeaks",
+      "name_cn": "密度峰数",
+      "description": "超星系团内密度峰数量Nsps(子结构指标)",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nfilament",
+      "name_cn": "纤维结构数",
+      "description": "超星系团内已发现的纤维状结构候选数Nfil(纤维/丝状结构丰度)",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "confidence",
+      "name_cn": "置信度/可靠性",
+      "description": "超星系团置信度Conf(SDSS)与可靠性Rel(eRASS,0-1)",
+      "category": "classification",
+      "ucd": "stat.confidence",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmemb",
+      "name_cn": "成员概率",
+      "description": "星系团属于超星系团的成员概率Pmemb",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_class",
+      "name_cn": "形态分类",
+      "description": "SSS巡天分类:1=星系,2=恒星,3=不可分类,4=噪声",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "edge_flag",
+      "name_cn": "掩蔽边界标志",
+      "description": "Edge=1表示超星系团与巡天掩蔽边界接触(完整性警告);Comp为分裂对象数",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_list",
+      "name_cn": "成员团列表",
+      "description": "成员团名称列表:ACO编号(MSCC)、1eRASS名称(eRASS)、Abell/ACO成员名(Santiago-Bautista)",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "match_other_sc",
+      "name_cn": "其他超星系团表交叉证认",
+      "description": "与Einasto等2001超星系团表(J/AJ/122/2222)的SCL编号对应及Simbad命名",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

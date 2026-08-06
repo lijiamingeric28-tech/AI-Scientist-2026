@@ -1,0 +1,377 @@
+{
+  "otype": "LXB",
+  "name_cn": "低质量X射线双星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000赤经,来自X射线(Chandra/XMM/Swift)或Gaia精确定位",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000赤纬,与赤经同源",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lon",
+      "name_cn": "银经",
+      "description": "银道坐标经度,用于研究银盘/银核分布(银核方向集中)",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度,LMXB为老年星族,分布集中于银盘与银核",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_err",
+      "name_cn": "位置误差",
+      "description": "X射线/光学定位的90%位置误差(角秒级),用于对应体认证可靠性评估",
+      "category": "astrometry",
+      "ucd": "pos.errorEllipse",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "视V星等",
+      "description": "光学V波段星等(不同星表对应爆发/宁静/高态/低态等不同状态,需注意标志)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gmag_gaia",
+      "name_cn": "Gaia G星等",
+      "description": "Gaia DR3/eDR3 G波段星等及BP-RP颜色(140颗有Gaia对应体)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv",
+      "name_cn": "B-V色指数",
+      "description": "B-V色指数,反映吸积盘与伴星辐射贡献",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jhk_mag",
+      "name_cn": "JHK近红外星等",
+      "description": "2MASS或VVV巡天的J/H/K近红外星等(消光较低,有利于银核区对应体)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "w1w2_mag",
+      "name_cn": "WISE W1/W2中红外星等",
+      "description": "CatWISE2020/AllWISE的W1、W2波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux",
+      "name_cn": "X射线流量(2.5-25keV)",
+      "description": "X射线流量(μJy),可带上限标志或观测范围,反映长期平均活动水平",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "uJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_soft_flux",
+      "name_cn": "软X射线流量范围",
+      "description": "软X射线波段(0.2-12keV XMM/0.3-10keV Swift/0.5-7keV Chandra)最小-最大流量范围,主导源内长期变异性",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray;stat.min",
+      "unit": "uJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_hard_flux",
+      "name_cn": "硬X射线流量范围",
+      "description": "硬X射线波段(17-60keV INTEGRAL/14-145keV BAT)最小-最大流量范围",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray;stat.max",
+      "unit": "uJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nh",
+      "name_cn": "氢柱密度NH",
+      "description": "X射线吸收等效中性氢柱密度(Swift/XRT或文献值),用于估计未吸收光度与消光换算",
+      "category": "photometry",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ebv",
+      "name_cn": "色余E(B-V)",
+      "description": "星际消光色余,文献测量或尘埃图估计",
+      "category": "photometry",
+      "ucd": "phot.color.reddening",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "伴星光谱型",
+      "description": "供体星光谱型(通常K-M晚型主序,亦含子巨星、共生星、A-F型IMXB等特例)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "k2_rv_semiamp",
+      "name_cn": "伴星径向速度半振幅K2",
+      "description": "供体星轨道径向速度半振幅(km/s),轨道解关键参数",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_sys",
+      "name_cn": "系统径向速度",
+      "description": "双星质心系统径向速度,用于银河系运动学研究",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.doppler",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "距离(kpc):Gaia EDR3/DR3视差(Bailer-Jones)、球状星团距离、或X射线谱拟合等文献估计,部分为上下限",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_compact",
+      "name_cn": "致密天体质量",
+      "description": "中子星或黑洞质量(太阳质量),动力学测量或下限,>3M_sun判据区分NS与BH",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_donor",
+      "name_cn": "伴星(供体)质量",
+      "description": "低质量供体星质量(通常<=1M_sun)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比q",
+      "description": "致密天体与伴星质量比(或M1/M2),决定质量转移与轨道演化",
+      "category": "physical",
+      "ucd": "phys.mass.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function",
+      "name_cn": "质量函数f(M)",
+      "description": "黑洞质量函数f(M1),由轨道解直接测量,是BH认证基础",
+      "category": "physical",
+      "ucd": "phys.mass;stat.fit",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inclination",
+      "name_cn": "轨道倾角",
+      "description": "双星轨道倾角(度),决定是否可见食/吸收倾斜及质量测量精度",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period",
+      "name_cn": "自转(脉冲)周期",
+      "description": "中子星自转/脉冲周期,LMXB中多为毫秒级(ms),毫秒脉冲星演化关键量",
+      "category": "physical",
+      "ucd": "time.period.rotation",
+      "unit": "ms",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period_deriv",
+      "name_cn": "自转周期变率",
+      "description": "自转周期一阶导数(加速/减速),约束吸积力矩与磁场",
+      "category": "physical",
+      "ucd": "time.period.derivative",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "轨道周期(小时-天),超致密UCXB可短至~1小时以下;周期缺口(双峰分布)反映演化路径",
+      "category": "variability",
+      "ucd": "period.orbital",
+      "unit": "hr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率(多为上限值,LMXB轨道通常已圆化)",
+      "category": "variability",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_count",
+      "name_cn": "爆发次数",
+      "description": "发现以来X射线爆发次数(1996-2015按硬/软/中间谱态分类统计SOut/IOut/HOut/TOut)",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_state",
+      "name_cn": "X射线谱态及态转变",
+      "description": "硬态/软态/中间态光谱分类及各态转变起止时刻,吸积盘-喷流耦合关键观测量",
+      "category": "variability",
+      "ucd": "src.class;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "recurrence_time",
+      "name_cn": "爆发复发间隔",
+      "description": "平均爆发复发时间<tRec>,瞬变LMXB典型的年-百年量级",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_window",
+      "name_cn": "爆发起止时间",
+      "description": "每次爆发开始与结束MJD历元,构成完整爆发光变史",
+      "category": "variability",
+      "ucd": "time.start;obs",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "峰值/平均X射线光度及其爱丁顿光度比例,含硬态(LHCS)、软态(LSDS)、中间态分段光度与时间占比",
+      "category": "variability",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mdot_transfer",
+      "name_cn": "质量转移率",
+      "description": "瞬变期平均质量转移率<Mdot>与平均热光度<Lbol>,约束吸积盘不稳定性",
+      "category": "variability",
+      "ucd": "phys.mass.rate",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "compact_nature",
+      "name_cn": "致密天体性质",
+      "description": "NS/BH/候选分类及可靠性标志(0=直接证据/1=间接/2=模型假定);银河系中NS约占70%",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_subtype",
+      "name_cn": "X射线行为子型",
+      "description": "行为子型标志:Z源(ZS)/atoll(AS)/瞬变(XT)/持久/爆发源(XB)/X射线脉冲星(XP)/微类星体(MQ)/超软(US)/吸积盘冕(DC)/倾斜源(DS)/负正超驼峰(NSH/PSH)等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_burst",
+      "name_cn": "I型X射线暴标志",
+      "description": "热核I型X射线暴观测标志(NS确证证据;176颗NS中112颗为暴源)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_flag",
+      "name_cn": "掩食标志",
+      "description": "食/吸收倾斜系统标志(EB=食,DS=周期性吸收倾斜),用于高倾角系统筛选",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tmsp_flag",
+      "name_cn": "过渡毫秒脉冲星标志",
+      "description": "过渡毫秒脉冲星(tMSP)及候选标志,NS在射电脉冲星与吸积态间切换",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gc_member",
+      "name_cn": "球状星团归属",
+      "description": "所在球状星团名称及对应星团距离(NGC 6440等星团可含约10颗密集LMXB),恒星捕获形成通道",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "counterpart_ids",
+      "name_cn": "多波段对应体标识",
+      "description": "HEAO/Uhuru/Ariel/IGR/2E/ROSAT/Fermi/SAX/Swift/XMM/Chandra/2MASS/Gaia各波段对应体名称、坐标与精度,构成硬X射线-红外认证链",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

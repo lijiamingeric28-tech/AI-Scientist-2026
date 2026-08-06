@@ -1,0 +1,332 @@
+{
+  "otype": "AB*",
+  "name_cn": "渐近巨星支星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "flux_ubvri",
+      "name_cn": "光学 UBV I 波段通量",
+      "description": "MCPS 巡天 U、B、V、I 四波段流量(Jy),用于构建光学到中红外 12 波段 SED",
+      "category": "photometry",
+      "ucd": "phot.flux.density",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_2mass_jhk",
+      "name_cn": "2MASS J/H/Ks 波段通量",
+      "description": "2MASS 近红外 J、H、Ks 波段流量(Jy)",
+      "category": "photometry",
+      "ucd": "phot.flux.density",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_sage_ir",
+      "name_cn": "Spitzer SAGE 中红外通量",
+      "description": "Spitzer SAGE 巡天 3.6、4.5、5.8、8.0、24um 波段流量(Jy),覆盖硅酸盐/碳化硅尘埃发射区",
+      "category": "photometry",
+      "ucd": "phot.flux.density",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B 星等",
+      "description": "照相 B 星等(底片测光,精度约 0.1-1 mag;另含 Bergeat 表 Bmag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V 星等",
+      "description": "照相 V 星等(底片测光,部分取自 Paupers+1993)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_ir_kron",
+      "name_cn": "近红外 Kron 星等",
+      "description": "Kron & Smith 系统的红外(红光灵敏)星等,数千颗碳星有此测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_wise_w1w2",
+      "name_cn": "WISE W1/W2 平均星等",
+      "description": "由 WISE/NEOWISE 光变曲线正弦拟合得到的 W1(3.4um)、W2(4.6um) 平均星等及误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_bol",
+      "name_cn": "视热星等",
+      "description": "由 0.36-100um 积分热通量得到的视热星等 mbol",
+      "category": "photometry",
+      "ucd": "phot.mag.bol",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_species",
+      "name_cn": "尘埃种类",
+      "description": "尘埃成分标识:实验室/天文硅酸盐(氧丰度星)或无定形碳 AMC+SiC(百分比,碳星);对应硅酸盐 vs 碳质尘埃二分",
+      "category": "spectroscopy",
+      "ucd": "phys.dust",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK 光谱型及碳星 R/N 记法光谱型(含 J、CH、SC 等谱变体与候选碳星标志),来源含 Skiff 汇编",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_lrs_class",
+      "name_cn": "IRAS LRS 谱分类",
+      "description": "IRAS 低分辨率光谱分类(Kwok+1997),判别硅酸盐发射、碳化硅 11.3um 等尘埃特征类型",
+      "category": "spectroscopy",
+      "ucd": "spect.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oh_maser_velocity",
+      "name_cn": "OH 脉泽速度",
+      "description": "OH 1612MHz 脉泽蓝峰/红峰速度(km/s),OH/IR 星质量损失与运动学诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度:GRAMS 模型最佳拟合(2100-4700K)、SED 色指数/热流量双估计或辐射转移拟合值",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "热光度 L(Lsun),来自模型/辐射转移拟合,是 AGB 双壳层燃烧驱动光度脉动-质量损失关系的基础量",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "气体(及尘埃)质量损失率(Msun/yr),AGB 星核心议题;Riebel 表为尘埃质量损失率",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_optical_depth",
+      "name_cn": "尘埃壳光学深度",
+      "description": "尘埃壳光学深度(0.55um 处,或 O 富集星 10um / C 富集星 11.3um 处)",
+      "category": "physical",
+      "ucd": "phys.dust",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_inner_temp",
+      "name_cn": "尘埃内边界/凝结温度",
+      "description": "尘埃壳内半径温度 Tc 或凝结温度,指示尘埃形成区条件",
+      "category": "physical",
+      "ucd": "phys.temperature",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "shell_outer_radius",
+      "name_cn": "尘埃壳外半径",
+      "description": "尘埃壳外半径(相对内半径之比),表征外壳延伸",
+      "category": "physical",
+      "ucd": "phys.size.radius;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "density_slope",
+      "name_cn": "密度律斜率",
+      "description": "尘埃壳密度幂律分布斜率 p(拟合参数)",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "极端 AGB/ERO 源距离(kpc),由 SED 拟合得出",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction",
+      "name_cn": "星际消光",
+      "description": "星际消光 A(V)(WISE 表)或 J 波段消光 A(J) 且标注星周消光贡献(Bergeat 表)",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fit_chi2",
+      "name_cn": "模型拟合卡方",
+      "description": "最佳拟合模型的每数据点卡方,衡量模型匹配度",
+      "category": "physical",
+      "ucd": "stat.fit.chi2",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000 赤经(度或时角分秒),各表均给出",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000 赤纬(度或角分秒),各表均给出",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_longitude",
+      "name_cn": "银经",
+      "description": "银经 GLON(度),用于银河系碳星分布研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_latitude",
+      "name_cn": "银纬",
+      "description": "银纬 GLAT(度),用于银河系碳星分布研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "coord_precision",
+      "name_cn": "坐标精度等级",
+      "description": "坐标精度等级:0=±0.1\"(Hipparcos 等),2=±1\",3=±0.1'",
+      "category": "astrometry",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "脉动周期",
+      "description": "长周期变星脉动周期(天),来源:MACHO 光变、WISE W1/W2 拟合、OGLE-III 及文献汇编;周期-光度-质量损失关系的基础",
+      "category": "variability",
+      "ucd": "src.var.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude",
+      "name_cn": "变幅",
+      "description": "光变曲线变幅(星等,含波段标识)",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_class",
+      "name_cn": "变星类别",
+      "description": "光变分类:LPV(长周期变星)、PER(可能周期)、NVOH/nvoh(已知/候选不变量 OH/IR)、ERO 及 C/O 富集 SED 分类",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phase_remark",
+      "name_cn": "变光相位备注",
+      "description": "观测时刻的变光相位信息、星周消光/辐射检测及相应 mbol2 备注",
+      "category": "variability",
+      "ucd": "meta.note",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chem_class",
+      "name_cn": "C/O 化学分类",
+      "description": "C 富集(C-rich)/O 富集(O-rich)/极端 AGB(x)光度分类及 GRAMS 模型 C/O 化学分类,对应 C/O 比与尘埃类型(碳质/硅酸盐)",
+      "category": "classification",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_group",
+      "name_cn": "光度量群",
+      "description": "碳星光度量群(HC0-5 热碳星、CV1-7 碳变星、SCV 光谱 SC 星)及氧丰度 F/G/K/M 各光度级",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_class",
+      "name_cn": "源类别",
+      "description": "SIMBAD 源类型及本表分类(AGB/RSG/碳星/OHIR/QSO 候选等)与最近邻源距离",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "所在星系/环境:银河系(碳星巡天)、LMC(SAGE+MCPS+2MASS+MACHO)或 SMC(OGLE-III+IRS)",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_remark",
+      "name_cn": "环境备注",
+      "description": "备注:星团成员资格、星周硅酸盐包层、分离气体/尘埃壳层、脉泽发射、双星、双极分子流等环境与结构特征",
+      "category": "environment",
+      "ucd": "meta.note",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

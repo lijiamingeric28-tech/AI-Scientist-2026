@@ -1,0 +1,197 @@
+{
+  "otype": "rG",
+  "name_cn": "射电星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pos_ra_dec",
+      "name_cn": "天体赤道坐标",
+      "description": "射电与光学位置(J2000 为主, 3CRR 为 B1950), 含坐标误差; 用于证认与交叉匹配",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "core_position_offset",
+      "name_cn": "射电核-光学中心角距",
+      "description": "FIRST 射电分量相对光学星系中心的偏移(arcsec), 用于判定致密射电核与宿主归属",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density_multi",
+      "name_cn": "多频射电积分流量",
+      "description": "各频点积分流量密度: GLEAM 72-231MHz 20 子带及 151/843/1400MHz, 3CRR 178MHz(KPW 标度), CoNFIG 178/365/408/1400/2700/5000MHz, Best&Heckman NVSS/FIRST 1.4GHz",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_core_flux",
+      "name_cn": "射电核流量",
+      "description": "致密射电核的 1.4GHz 流量 Fcore(0.3-3710 mJy)及 3CRR 中是否探测到致密核的标志, 衡量核活动强度",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_peak_flux",
+      "name_cn": "射电峰值流量",
+      "description": "GLEAM 各子带(72-231MHz)峰值流量密度及拟合流量误差, 支撑频谱形态分析",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_magnitude",
+      "name_cn": "光学星等",
+      "description": "宿主星系光学测光: 3CRR B/V/R/r 星等, ROGUE I SDSS r 波段(AB), CoNFIG SuperCosmos Bj/R1/R2/I",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "midir_magnitude",
+      "name_cn": "中红外星等",
+      "description": "AllWISE W1-W4 星等, 用于射电源宿主星系证认(3.4um 6arcsec 分辨率内)与 AGN 中红外特征判别",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "光谱红移为主(3CRR/ROGUE/Best&Heckman/CoNFIG), 部分测光红移(CoNFIG R-z 关系); 所有表均含",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_spectral_index",
+      "name_cn": "射电谱指数",
+      "description": "幂律谱指数 alpha(S~nu^alpha): 3CRR 178-750MHz, G4Jy 151-1400/151-843MHz 及 GLEAM 内拟合值, CoNFIG 多频拟合; 区分陡谱瓣与平谱核/类星体",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.radio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_spectral_class",
+      "name_cn": "光学谱分类",
+      "description": "3CRR 光谱类型: SE(强发射线, 含[OII]/[OIII], 相当于 Hine & Longair A 类)/E(弱发射线)/A(仅吸收线), 与 HERG/LERG 谱能量机制对应",
+      "category": "spectroscopy",
+      "ucd": "src.class.spectral",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_power",
+      "name_cn": "射电功率(瓣功率)",
+      "description": "由流量与距离导出的频点射电功率(如 log P178, P1.4GHz), 核心在于 FR I/II 功率分界(Owen & Ledlow 双变量平面)与射电瓣能量注入; ROGUE I 的光度距离列使其可直接导出",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.radio",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_distance",
+      "name_cn": "光度距离",
+      "description": "由红移计算的光度距离 DL(9-3837 Mpc), 用于功率、线尺度等物理量换算",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "angular_size",
+      "name_cn": "射电角尺度",
+      "description": "NVSS/SUMSS 分量的总角尺度(arcsec, 含上限标志), 表征射电瓣/喷流延展程度",
+      "category": "physical",
+      "ucd": "phys.angSize;src.extent",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_linear_size",
+      "name_cn": "射电瓣线性尺度",
+      "description": "由角尺度与红移导出的源线性尺度(kpc), 巨型射电星系(GRG, >0.7Mpc)判定依据; G4Jy 角尺度+红移可导出, LoTSS 翅状星系目录(J/ApJS/278/34)直接给出中值 498kpc",
+      "category": "physical",
+      "ucd": "phys.size",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fr_class",
+      "name_cn": "Fanaroff-Riley 形态分类",
+      "description": "FR I(中心亮)/FR II(边缘热斑亮)/C(致密)/混合(I/II)形态分类, 3CRR/CoNFIG/ROGUE 均逐源给出, 是 rG 最基本分类量",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_morphology_type",
+      "name_cn": "射电延展形态类型",
+      "description": "细致形态代码: C 致密/E 拉长/单侧(OI/OII)/WAT/NAT/HT/X 形/Z 形/双-双/巨型等, 反映喷流形态与弯曲、再取向",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_morphology",
+      "name_cn": "宿主星系光学形态",
+      "description": "宿主光学形态: 椭圆(约 62%)/旋涡/透镜/畸变/并合/棒状等, 验证 rG 以椭圆星系为主及其形态演化关联",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_ident_type",
+      "name_cn": "光学证认类型",
+      "description": "证认类型: G 星系/Q 类星体/U 未证认(3CRR), 恒星状/延展(CoNFIG), AllWISE 宿主证认标志(G4Jy host_flag)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_mode_class",
+      "name_cn": "吸积模式分类(LERG/HERG)",
+      "description": "高激发射电星系(HERG, quasar-mode, 有效吸积)与低激发射电星系(LERG, radio-mode, 辐射低效吸积)二分法标志, 现代 rG 研究的核心分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_source_class",
+      "name_cn": "射电源复合结构类别",
+      "description": "NVSS/FIRST 匹配结构类别: 单分量单匹配/被 FIRST 解析为多分量/无 FIRST 对应/多 NVSS 分量, 区分延展源与致密源",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "icm_interaction_morph",
+      "name_cn": "团内介质相互作用形态",
+      "description": "WAT/NAT/HT 尾状与 X/Z 形形态: 宿主星系相对团内介质运动受冲压(strip)作用使喷流/瓣弯曲的示踪, 直接关联富环境星系团成员身份",
+      "category": "environment",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

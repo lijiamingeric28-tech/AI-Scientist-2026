@@ -1,0 +1,341 @@
+{
+  "otype": "Ev*",
+  "name_cn": "演化后星通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "position",
+      "name_cn": "天体位置(赤经/赤纬)",
+      "description": "J2000坐标及误差,全部星表标配",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coord",
+      "name_cn": "银经/银纬",
+      "description": "银道坐标,用于银盘/银心星族判别",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia DR3自行及误差,运动学成员判别",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3视差(筛选相对误差<20%)",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由Gaia视差导出的距离(部分星表由星震学尺度关系给出),光度计算基础",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_phot",
+      "name_cn": "Gaia G/BP/RP光学测光",
+      "description": "Gaia DR3光学三色星等及流量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kic_phot",
+      "name_cn": "Kepler/KIC光学测光",
+      "description": "开普勒场目标KIC星等与长曝光时序光度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_flux",
+      "name_cn": "IRAS 12/25/60/100um通量",
+      "description": "IRAS远红外四波段流量及质量,AGB尘埃包层核心探针",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_mag",
+      "name_cn": "WISE W1-W4中红外星等",
+      "description": "AllWISE四波段星等与质量标志,富氧/富碳判别基础",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "twomass_jhk",
+      "name_cn": "2MASS JHK近红外星等",
+      "description": "近红外J/H/K星等,交叉证认与消光估计",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "akari_msx_phot",
+      "name_cn": "AKARI/MSX红外测光",
+      "description": "AKARI IRC/FIS与MSX中远红外补充测光",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bol_flux",
+      "name_cn": "热通量/热星等",
+      "description": "由SED拟合得到的热通量及热改正后星等,光度直接基础",
+      "category": "photometry",
+      "ucd": "phot.flux;phys.bolometric",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_color",
+      "name_cn": "红外颜色指数",
+      "description": "如K-[12]、[12]-[25]等红外双色组合,AGB分类与尘埃光学厚度诊断",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "光谱型",
+      "description": "M/S/C/SC型等光谱分类及文献光谱型",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "APOGEE光谱或SED拟合导出的Teff",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力log g",
+      "description": "光谱学与星震学log g,演化状态粗略判别",
+      "category": "spectroscopy",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feh",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "APOGEE铁丰度,银河系化学星族探针",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abundances",
+      "name_cn": "元素丰度(多元素)",
+      "description": "APOGEE高分辨率H波段多元素(CNO、s过程元素等)丰度",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "APOGEE测量RV及文献RV",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lrs_class",
+      "name_cn": "IRAS-LRS光谱特征类型",
+      "description": "IRAS低分辨率光谱硅酸盐/碳化物9.7um与11.3um特征分类",
+      "category": "spectroscopy",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nu_max",
+      "name_cn": "脉动最大功率频率νmax",
+      "description": "太阳型振荡最大功率频率,星震尺度关系主输入",
+      "category": "physical",
+      "ucd": "phys.oscillation",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "delta_nu",
+      "name_cn": "大频率间隔Δν",
+      "description": "相邻径向模平均频率间隔,平均密度探针",
+      "category": "physical",
+      "ucd": "phys.oscillation",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "星震尺度关系或模型拟合质量,红巨星~4%精度",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "星震学半径(3-30Rsun量级)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "等时线/贝叶斯拟合年龄,银河系考古核心量",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "由热通量+距离或星震学导出的光度",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_density",
+      "name_cn": "平均密度",
+      "description": "由Δν直接给出的平均密度,尺度关系校准基础",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "g/cm^3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_id",
+      "name_cn": "目标标识符",
+      "description": "KIC/IRAS PSC/OW-N/CW-N等各星表系统编号",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chem_class",
+      "name_cn": "化学类型(O-rich/C-rich/S/硅酸盐碳星)",
+      "description": "基于红外双色图与光谱的富氧/富碳/S型判别,AGB星族基本分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ev_state",
+      "name_cn": "演化状态(RGB/RC/HB/AGB)",
+      "description": "由混合模/周期间隔等星震特征区分红巨星支与红团簇/水平支/AGB",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_class",
+      "name_cn": "对象类别(post-AGB/PPN/PN等)",
+      "description": "Torun星表对post-AGB、前行星状星云、年轻行星状星云候选及确认状态分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "puls_period",
+      "name_cn": "脉动周期",
+      "description": "Mira/SR变星周期(AAVSO文献周期与WISE W1/W2光变导出的Lomb-Scargle周期)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型",
+      "description": "AAVSO变星类型(Mira/SRV/半规则/不规则等)",
+      "category": "variability",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amplitude",
+      "name_cn": "变光幅度",
+      "description": "WISE W1/W2光变拟合幅度及拟合优度R2",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oh_maser",
+      "name_cn": "OH脉泽发射特征",
+      "description": "OH 1612/1665/1667MHz脉泽检测与类型,富氧AGB星周包层标志",
+      "category": "environment",
+      "ucd": "em.radio.line",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_temp",
+      "name_cn": "星周尘埃颜色温度",
+      "description": "由IRAS/WISE颜色导出的尘埃包层温度,物质抛射强度探针",
+      "category": "environment",
+      "ucd": "phys.temperature;em.IR",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_type",
+      "name_cn": "能谱分布形态",
+      "description": "NUV到远红外SED拟合形态与残差,区分裸光球源与尘埃包层源",
+      "category": "environment",
+      "ucd": "phot.flux;em.all",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

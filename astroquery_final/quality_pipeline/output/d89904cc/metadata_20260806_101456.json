@@ -1,0 +1,273 @@
+{
+  "field_definitions": {
+    "parallax": {
+      "standard_unit": "mas",
+      "semantic_type": "parallax",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Annual parallax in milliarcseconds (mas), measuring the apparent angular shift of a star's position due to Earth's orbital motion, used to derive distance."
+    },
+    "pmdec": {
+      "standard_unit": "mas/yr",
+      "semantic_type": "proper_motion_dec",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Proper motion in declination in milliarcseconds per year (mas/yr), measuring the angular motion of a source along the declination axis."
+    },
+    "pmra": {
+      "standard_unit": "mas/yr",
+      "semantic_type": "proper_motion_ra",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Proper motion in right ascension in milliarcseconds per year (mas/yr), measuring the angular motion of a source along the right ascension axis, typically including the cos(declination) scaling."
+    }
+  },
+  "source_summary": {
+    "total_sources": 23,
+    "sources_exported": 23,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_TIC",
+        "title": "TESS Input Catalog (TIC)",
+        "year": null,
+        "journal": "",
+        "record_count": 5,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HIPPARCOS",
+        "title": "The Hipparcos and Tycho Catalogues",
+        "year": null,
+        "journal": "",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HD",
+        "title": "Henry Draper Catalogue (HD)",
+        "year": null,
+        "journal": "",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "SRC_DB_HR",
+        "title": "Bright Star Catalogue (HR)",
+        "year": null,
+        "journal": "",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_IRAS",
+        "title": "IRAS Point Source Catalog (PSC)",
+        "year": null,
+        "journal": "",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2017ApJ...839...48V",
+        "title": "Evidence for Binarity and Possible Disk Obscuration in Kepler  Observations of the Pulsating RV Tau Variable DF Cygni",
+        "year": "2017",
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2006ApJ...645..664A",
+        "title": "First Results from the CHARA Array. VII. Long-Baseline Interferometric Measurements of Vega Consistent with a Pole-On, Rapidly Rotating Star",
+        "year": "2006",
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020AN....341..860R",
+        "title": "The first stellar parallaxes revisited",
+        "year": "2020",
+        "journal": "Astronomische Nachrichten",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2001MNRAS.327..133S",
+        "title": "SCUBA photometry of candidate Vega-like sources",
+        "year": "2001",
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2018MNRAS.479L.102C",
+        "title": "On the use of Gaia magnitudes and new tables of bolometric corrections",
+        "year": "2018",
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2023ApJ...950..135S",
+        "title": "The GeMS/GSAOI Galactic Globular Cluster Survey (G4CS). II. Characterization of 47 Tuc with Bayesian Statistics",
+        "year": "2023",
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2018A&A...616L...7M",
+        "title": "A reevaluation of the 2MASS zero points using CALSPEC spectrophotometry complemented with Gaia Data Release 2 parallaxes",
+        "year": "2018",
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2012ApJ...761...57B",
+        "title": "The CHARA Array Angular Diameter of HR 8799 Favors Planetary Masses for its Imaged Companions",
+        "year": "2012",
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2006MNRAS.366.1295B",
+        "title": "Investigation of the ELAIS field by Vega photometry: absolute magnitude-dependent Galactic model parameters",
+        "year": "2006",
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2006MNRAS.373...13C",
+        "title": "Accurate fundamental parameters for lower main-sequence stars",
+        "year": "2006",
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2015JKAS...48...93G",
+        "title": "WFIRST Ultra-Precise Astrometry II: Asteroseismology",
+        "year": "2015",
+        "journal": "Journal of Korean Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "1999ApJ...520L.123B",
+        "title": "The Age of β Pictoris",
+        "year": "1999",
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2011A&A...526A..89P",
+        "title": "The fundamental parameters of the roAp star γ Equulei",
+        "year": "2011",
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2013A&A...559A..21P",
+        "title": "The fundamental parameters of the roAp star 10 Aquilae",
+        "year": "2013",
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2011A&A...534L...3B",
+        "title": "The diameter of the CoRoT target HD 49933. Combining the 3D limb darkening, asteroseismology, and interferometry",
+        "year": "2011",
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2019A&A...627A..44B",
+        "title": "Constraints on HD 113337 fundamental parameters and planetary system. Combining long-base visible interferometry, disc imaging, and high-contrast imaging",
+        "year": "2019",
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2018A&A...618A..63B",
+        "title": "The GJ 504 system revisited. Combining interferometric, radial velocity, and high contrast imaging data",
+        "year": "2018",
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "SRC_SUPPL_J_ApJ_761_57",
+        "title": "The CHARA Array Angular Diameter of HR 8799 Favors Planetary Masses for its Imaged Companions",
+        "year": null,
+        "journal": "",
+        "record_count": 0,
+        "quality_grade": "fair",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 23,
+      "overall_quality": "fair",
+      "total_issues": 24
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 3,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 3
+      },
+      "errors": 0
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-08-06T10:14:53.920185",
+    "run_id": "d89904cc-7f9e-492d-a8ab-63c9afa7cc70",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

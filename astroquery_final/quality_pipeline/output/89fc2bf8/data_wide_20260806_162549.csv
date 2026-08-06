@@ -1,0 +1,11 @@
+﻿source_id,parallax,parallax_unit,pm_dec,pm_dec_unit,pm_direction,pm_direction_unit,pm_ra,pm_ra_unit,pm_total,pm_total_unit,pmdec,pmdec_unit,pmra,pmra_unit
+2026A&A...706A.112L,768.373_+0.194_-0.162,mas,0.769458,arcsec/yr,,,-3.781761,arcsec/yr,,,769.458_+0.048_-0.047,mas/yr,-3781.761_+0.045_-0.050,mas/yr
+2025AJ....170...22L,768.066(50),mas,,,,,,,,,769.465(51),mas/yr,-3781.741(31),mas/yr
+2020ApJS..249...36M,,,,,,,,,,,368,mas/yr,-3775,mas/yr
+2014AJ....148...91L,768.13,mas,,,282.4,deg,,,3.8508,arcsec/yr,,,,
+1999AJ....118.1086B,768.7,mas,,,78.77,deg,,,3851.7,arcsec/yr,,,,
+SRC_DB_GAIA_DR2,768.5004,mas,769.766,arcsec/yr,,,-3781.306,arcsec/yr,,,,,,
+SRC_DB_GAIA_DR3,768.0665,mas,,,,,,,,,769.465,mas/yr,-3781.741,mas/yr
+SRC_DB_IRAS,,,,,118,deg,,,,,,,,
+SRC_DB_TIC,768.5,mas,769.766,arcsec/yr,,,-3781.31,arcsec/yr,,,,,,
+SRC_DB_HIPPARCOS,772.3300170898438,mas,,,,,,,,,768.16,mas/yr,-3775.64,mas/yr

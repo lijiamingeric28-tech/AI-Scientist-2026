@@ -1,0 +1,296 @@
+{
+  "otype": "Mi*",
+  "name_cn": "米拉变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "主脉动周期(天),Mira通常80-1000天,是该类星的核心物理参数",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_maximum",
+      "name_cn": "极大光历元",
+      "description": "亮度极大时刻(HJD),由光变周期折合确定光变要素",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_visual",
+      "name_cn": "V波段光变振幅",
+      "description": "V波段峰峰振幅(>2.5mag为GCVS定义Mira型的基本判据,最大可达8-9mag)",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_i_band",
+      "name_cn": "I波段光变振幅",
+      "description": "I波段主周期振幅(OGLE采用0.8mag作为Mira与SR分界)",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rise_time_fraction",
+      "name_cn": "上升时间占比",
+      "description": "从极小到极大的上升时间占周期的比例(M-m),刻画光变曲线形态",
+      "category": "variability",
+      "ucd": "time.duration;time.period",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude_v",
+      "name_cn": "V波段极大星等",
+      "description": "V波段亮度极大时的视星等(多带上限/不确定标志)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "min_magnitude_v",
+      "name_cn": "V波段极小星等",
+      "description": "V波段亮度极小时的视星等,与极大星等之差给出振幅",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_magnitude_i",
+      "name_cn": "I波段平均星等",
+      "description": "OGLE Cousins I波段强度平均星等,用于周期-光度关系",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_magnitude_v",
+      "name_cn": "V波段平均星等",
+      "description": "OGLE Johnson V波段强度平均星等(约2万颗有V时域测光)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nir_magnitudes_jhk",
+      "name_cn": "近红外JHK星等",
+      "description": "近红外J/H/K星等(2MASS等),近红外振幅远小于光学,适合确定平均光度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.NIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mir_magnitudes_wise",
+      "name_cn": "中红外WISE星等",
+      "description": "WISE W1-W4中红外星等,示踪星周尘埃辐射与质量损失(Iwanek+2023对OGLE样本补全)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.MIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index_ir",
+      "name_cn": "红外色指数",
+      "description": "红外色指数(如J-K、W1-W2),用于区分O-rich/C-rich Mira与红化程度",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_magnitude",
+      "name_cn": "热星等",
+      "description": "由多波段流量积分得到的热星等,用于构建Mira周期-光度关系",
+      "category": "photometry",
+      "ucd": "phot.mag.bol",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(通常为M型,极大与极小时光谱型变化,晚期M可接近M10)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chemical_class_rich",
+      "name_cn": "富氧/富碳分类",
+      "description": "按C/O比值划分为O-rich或C-rich Mira(麦哲伦云中C-rich占多数,银河系中罕见)",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_detection",
+      "name_cn": "脉泽发射探测",
+      "description": "OH(1612MHz)/H2O/SiO脉泽发射检测标志,示踪恒星风与星周包层动力学",
+      "category": "spectroscopy",
+      "ucd": "spect.line.em;em.radio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "系统视向速度(恒星风外流速度亦可由线廓测得),用于运动学与银河系结构研究",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "有效温度(典型2000-3500K,随脉动相位变化)",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(AGB星典型1-8太阳质量,多为约1.5-2太阳质量)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "恒星光度(约10^3-10^4太阳光度),由周期-光度关系或拟合获得",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "尘埃驱动星风的质量损失率(约10^-7至10^-4太阳质量/年),Mira演化的关键物理量",
+      "category": "physical",
+      "ucd": "phys.massLoss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000赤经坐标,用于交叉证认与定位",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000赤纬坐标,用于交叉证认与定位",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia等提供的自行(毫角秒/年),用于运动学与银河系结构研究",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia视差(毫角秒),用于确定Mira距离与周期-光度关系零点校准",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由视差或周期-光度关系推得的距离,支持银河系三维结构研究",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type_code",
+      "name_cn": "变星类型代码",
+      "description": "GCVS/VSX变星分类代码('M'=Mira),定义与亚型归属",
+      "category": "classification",
+      "ucd": "src.var.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_location",
+      "name_cn": "银河系位置归属",
+      "description": "OGLE样本中位于银河系核球(BLG)或银盘(GD)的位置标签",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "所属星系(银河系/LMC/SMC等),外星系Mira用于星系距离测量",
+      "category": "classification",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "interstellar_extinction",
+      "name_cn": "星际消光",
+      "description": "视线方向星际消光/红化(如E(B-V)),修正光度的必要条件",
+      "category": "environment",
+      "ucd": "phys.absorption;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "circumstellar_dust_shell",
+      "name_cn": "星周尘埃包层",
+      "description": "由质量损失形成的星周尘埃包层(红外超与消光特征),C-rich Mira光变尤受影响",
+      "category": "environment",
+      "ucd": "phys.absorption;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_star",
+      "name_cn": "伴星",
+      "description": "双星系统中的伴星(如Mira AB的紫外伴星),影响脉动与形态",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}
