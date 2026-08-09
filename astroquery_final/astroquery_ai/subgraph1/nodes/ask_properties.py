@@ -3,6 +3,8 @@
 import logging
 from datetime import datetime
 
+from langgraph.types import interrupt
+
 from ..state import IntentClarificationState
 from ..config import config
 
@@ -34,13 +36,16 @@ def ask_properties(state: IntentClarificationState) -> IntentClarificationState:
 请输入：
 """
 
-    print("\n" + config.ui['separator'])
-    print(question)
-    print(config.ui['separator'])
-    print("\n您的选择：", end=" ")
-
-    # 等待用户输入
-    user_input = input().strip()
+    # Phase 4c: input() → interrupt()（LangGraph HITL）
+    user_input = interrupt({
+        "type": "ask_properties",
+        "text": f"\n{config.ui['separator']}\n{question}\n{config.ui['separator']}\n\n您的选择：",
+        "question": question,
+        "target_entity": target_entity,
+    })
+    if user_input is None:
+        user_input = ""
+    user_input = str(user_input).strip()
     logger.debug(f"[ask_properties] 用户输入: {user_input}")
 
     # 更新对话历史

@@ -52,7 +52,7 @@ def simbad_resolver(state: RetrievalState) -> RetrievalState:
             simbad_res = simbad_engine.query_object(target_entity)
 
             if simbad_res is not None:
-                logger.info(f"[SIMBAD Resolver] Query successful")
+                logger.info("[SIMBAD Resolver] Query successful")
                 break
 
         except Exception as e:
@@ -126,7 +126,7 @@ def simbad_resolver(state: RetrievalState) -> RetrievalState:
     state["simbad_coordinates"] = coordinates
     state["simbad_resolved_at"] = datetime.now().isoformat()
 
-    logger.info(f"[SIMBAD Resolver] Success!")
+    logger.info("[SIMBAD Resolver] Success!")
     logger.info(f"[SIMBAD Resolver]   Main ID: {main_id}")
     logger.info(f"[SIMBAD Resolver]   Type: {object_type}")
     logger.info(f"[SIMBAD Resolver]   Aliases: {len(aliases)} found")

@@ -5,7 +5,7 @@
 ## 系统架构
 
 ```
-run.py ──► 意图澄清 (Node1)
+astroquery-ai ──► 意图澄清 (Node1)
     │         └─ 保留用户原文，不翻译性质
     ▼
 P1 性质标准化 ◄── SIMBAD 解析 + RAG 性质库（rag_properties/）
@@ -30,8 +30,11 @@ P1 性质标准化 ◄── SIMBAD 解析 + RAG 性质库（rag_properties/）
 
 ```
 astroquery_final/
-├── run.py                    # 主入口（CLI）
 ├── astroquery_ai/            # 上游：澄清 + 检索 + 提取
+│   ├── config.py             #   唯一配置模块（pydantic-settings，env 优先）
+│   ├── logger.py             #   统一日志工厂
+│   ├── schemas/              #   State 契约层（子图 IO Pydantic schema）
+│   ├── cli.py                #   命令行入口
 │   ├── property_standardization.py  # P1 性质标准化（系统中枢）
 │   ├── quality_adapter.py           # 接缝适配器
 │   ├── main_graph.py                # 主图装配
@@ -40,9 +43,9 @@ astroquery_final/
 ├── rag_properties/           # RAG 性质库（100 个 otype，3293 个性质，含标准单位）
 ├── scripts/                  # 工具脚本
 │   ├── add_units.py          #   批量补单位（DeepSeek 异步并发）
-│   └── query_properties.py   #   性质映射参考实现
-├── tests/                    # 测试
-│   └── test_p1_integration.py
+│   ├── query_properties.py   #   性质映射参考实现
+│   └── run_betelgeuse.py     #   参宿四专用调试入口
+├── tests/                    # pytest 测试（全 mock 离线，24 个）
 ├── docs/                     # 合并方案与完成报告
 └── .env                      # API Keys（ADS/Unpaywall/DashScope/DeepSeek）
 ```
@@ -50,10 +53,22 @@ astroquery_final/
 ## 运行
 
 ```bash
-cd E:\work\astroquery_final
-python run.py "M31 的距离和金属丰度"
+# 安装后（推荐）：终端命令
+pip install -e .
+astroquery-ai "M31 的距离和金属丰度"
+
+# 未安装时：模块方式
+python -m astroquery_ai "M31 的距离和金属丰度"
+
 # 或交互模式
-python run.py
+python -m astroquery_ai
+```
+
+## 测试与门禁
+
+```bash
+python -m pytest tests/        # 24 个测试，全 mock 离线
+python -m ruff check .         # 全库 lint 零报错
 ```
 
 依赖：`pip install -r astroquery_ai/requirements.txt`（另需 astroquery、ads、dotenv 等）

@@ -11,7 +11,7 @@ from ...utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-def build_conflict_context(
+def build_conflict_ontext(
     conflicts: list[dict],
     current_data: dict[str, Any],
     target_schema: dict[str, Any] | None,

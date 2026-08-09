@@ -110,7 +110,7 @@ def generate_metadata(
     if normalization:
         mods = normalization.get("modifications", {})
         processing["normalization"] = {
-            "status": normalization.get("normalization_status", "Completed"),
+            "status": normalization.get("normalization_tatus", "Completed"),
             "modifications": mods.get("total", 0),
             "by_layer": mods.get("by_layer", {}),
             "errors": len(mods.get("errors", [])),

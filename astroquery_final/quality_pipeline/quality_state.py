@@ -330,9 +330,10 @@ def make_initial_state(input_grounded_data: dict[str, Any]) -> QualityGraphState
 
     # V4 fix: standard_units 从领域 target_schema 回填 —
     # 此前恒为空, unit_converter 无目标单位 → 单位转换全部静默跳过
+    # Phase 3: 显式 research_domain 传入, 不再依赖 set_research_domain 全局
     try:
         from .configs import load_domain_schema_config
-        _schema_cfg = load_domain_schema_config("target_schema")
+        _schema_cfg = load_domain_schema_config("target_schema", research_domain=domain)
         standard_units = {
             f.get("name"): f.get("standard_unit")
             for f in (_schema_cfg or {}).get("fields", [])

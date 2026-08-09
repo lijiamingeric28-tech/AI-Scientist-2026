@@ -22,6 +22,9 @@ class ImageCache:
         """
         Initialize image cache.
 
+        Phase 3: 惰性创建目录 — import 期零 I/O 副作用,
+        首次实际使用 (save/load/size) 时才 mkdir。
+
         Args:
             cache_dir: Directory for temporary images (default: system temp dir)
         """
@@ -30,6 +33,8 @@ class ImageCache:
         else:
             self.cache_dir = Path(cache_dir)
 
+    def _ensure_dir(self) -> None:
+        """确保缓存目录存在 (惰性, 首次使用时调用)。"""
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         logger.debug(f"Image cache directory: {self.cache_dir}")
 
@@ -44,6 +49,7 @@ class ImageCache:
         Returns:
             List of file paths
         """
+        self._ensure_dir()
         # Create subdirectory for this paper
         paper_dir = self.cache_dir / bibcode.replace("/", "_").replace(":", "_")
         paper_dir.mkdir(parents=True, exist_ok=True)
@@ -110,6 +116,8 @@ class ImageCache:
         Returns:
             Size in megabytes
         """
+        if not self.cache_dir.exists():
+            return 0.0
         total_size = 0
         for root, dirs, files in os.walk(self.cache_dir):
             for file in files:

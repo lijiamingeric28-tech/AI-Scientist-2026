@@ -143,7 +143,7 @@ def unpaywall_query(state: RetrievalState) -> RetrievalState:
     query_id = state["query_id"]
 
     if not papers_metadata:
-        logger.info(f"[Unpaywall Query] No papers to query, skipping")
+        logger.info("[Unpaywall Query] No papers to query, skipping")
         state["unpaywall_query_status"] = "skipped"
         state["unpaywall_results"] = {}
         # 只返回更新的字段
@@ -166,7 +166,7 @@ def unpaywall_query(state: RetrievalState) -> RetrievalState:
     logger.info(f"[Unpaywall Query] DOIs found: {len(dois)}")
 
     if not dois:
-        logger.warning(f"[Unpaywall Query] No DOIs to query")
+        logger.warning("[Unpaywall Query] No DOIs to query")
         state["unpaywall_query_status"] = "skipped"
         state["unpaywall_results"] = {}
         # 只返回更新的字段
@@ -201,7 +201,7 @@ def unpaywall_query(state: RetrievalState) -> RetrievalState:
     state["unpaywall_results"] = unpaywall_results
 
     success_count = sum(1 for urls in unpaywall_results.values() if urls)
-    logger.info(f"[Unpaywall Query] Completed!")
+    logger.info("[Unpaywall Query] Completed!")
     logger.info(f"[Unpaywall Query]   Success: {success_count}/{len(dois)} DOIs")
 
     # 只返回更新的字段

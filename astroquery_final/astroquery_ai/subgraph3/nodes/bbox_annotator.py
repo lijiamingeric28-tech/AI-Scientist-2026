@@ -1,4 +1,4 @@
-"""BBox annotation node (data-point level concurrency)."""
+"""BBox 标注节点（数据点级并发）。"""
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -41,7 +41,7 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
 
     state["bbox_annotation_status"] = "running"
 
-    # Build task list (data-point level)
+    # 构建任务列表（数据点级）
     tasks = []
     for bibcode, paper_data in raw_extractions.items():
         extractions = paper_data.get("extractions", [])
@@ -51,7 +51,7 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
                 logger.warning(f"[BBox Annotator] Missing page for {bibcode} extraction {idx}")
                 continue
 
-            # Get image path for this page
+            # 获取该页的图片路径
             if bibcode not in paper_image_paths:
                 logger.warning(f"[BBox Annotator] No images found for {bibcode}")
                 continue
@@ -79,12 +79,12 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
         state["bbox_annotation_status"] = "completed"
         return state
 
-    # Result storage: key = f"{bibcode}_{index}"
+    # 结果存储：key = f"{bibcode}_{index}"
     bbox_results = {}
     failed_tasks = []
     completed = 0
 
-    # Get concurrency settings
+    # 获取并发配置
     max_workers = getattr(settings, 'bbox_concurrency', type('obj', (object,), {
         'max_workers': 100,
         'max_retries': 3
@@ -92,16 +92,16 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
 
     logger.info(f"[BBox Annotator] Using max_workers={max_workers}")
 
-    # Concurrent processing
+    # 并发处理
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # Submit all tasks
+        # 提交全部任务
         futures = {}
         for task in tasks:
             key = f"{task['bibcode']}_{task['index']}"
             future = executor.submit(annotate_single_bbox, task, target_entity)
             futures[future] = key
 
-        # Collect results
+        # 收集结果
         for future in as_completed(futures):
             key = futures[future]
             completed += 1
@@ -135,7 +135,7 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
                     "timestamp": datetime.now().isoformat()
                 })
 
-            # Update progress
+            # 更新进度
             state["bbox_annotation_progress"] = {
                 "completed": completed,
                 "total": total_tasks,
@@ -160,12 +160,12 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
                 else:
                     fill_failed += 1
             else:
-                # Should not happen
+                # 不应发生
                 logger.warning(f"[BBox Annotator] Missing result for {key}")
                 extraction["bbox_2d"] = None
                 fill_failed += 1
 
-    # Update state
+    # 更新状态
     state["raw_extractions"] = raw_extractions
     state["bbox_annotation_status"] = "completed"
     state["bbox_annotation_failed"] = failed_tasks
@@ -176,13 +176,13 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
         "current_key": "Completed"
     }
 
-    logger.info(f"[BBox Annotator] Completed!")
+    logger.info("[BBox Annotator] Completed!")
     logger.info(f"[BBox Annotator]   Total tasks: {total_tasks}")
     logger.info(f"[BBox Annotator]   Success: {fill_success}")
     logger.info(f"[BBox Annotator]   Failed: {fill_failed}")
 
     if failed_tasks:
-        logger.warning(f"[BBox Annotator]   Failed tasks sample (first 5):")
+        logger.warning("[BBox Annotator]   Failed tasks sample (first 5):")
         for failed in failed_tasks[:5]:
             logger.warning(f"[BBox Annotator]     - {failed['key']}: {failed['reason']}")
 
@@ -218,7 +218,7 @@ def annotate_single_bbox(task: dict, target_entity: str) -> dict:
 
     logger.debug(f"[BBox Worker] Processing {bibcode} extraction {index}")
 
-    # Load image
+    # 加载图片
     try:
         images = image_cache.load_images([image_path])
         if not images or len(images) == 0:
@@ -233,12 +233,12 @@ def annotate_single_bbox(task: dict, target_entity: str) -> dict:
             "error": f"Failed to load image: {e}"
         }
 
-    # Get max_retries from settings
+    # 从配置获取最大重试次数
     max_retries = getattr(settings, 'bbox_concurrency', type('obj', (object,), {
         'max_retries': 3
     })()).max_retries
 
-    # Call qwen3.7-flash
+    # 调用 qwen3.7-flash
     try:
         result = call_qwen_flash_bbox(
             image=image,

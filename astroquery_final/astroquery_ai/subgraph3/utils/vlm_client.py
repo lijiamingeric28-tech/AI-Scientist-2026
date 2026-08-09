@@ -1,4 +1,4 @@
-"""VLM API client for Qwen3.7-Plus (DashScope SDK)."""
+"""VLM API 客户端（Qwen3.7-Plus，DashScope SDK）。"""
 
 import dashscope
 from dashscope import MultiModalConversation
@@ -76,6 +76,9 @@ def build_extraction_prompt(
 从论文中提取关于目标天体 **{target_entity}** 的物理性质数据。
 提取指令：{property_instruction} (请自动识别论文中对应的具体物理指标名称)
 
+## 📌 数据来源
+只从正文文本与表格（table）中提取数据；页面中的图片、图表、照片等图形元素一律忽略，不得作为提取来源。
+
 ## 🛑 核心提取铁律（违反将导致严重错误）
 
 ### 1. 锁定"宏观整体"，坚决忽略"微观局部" (降维减负指令)
@@ -96,7 +99,7 @@ def build_extraction_prompt(
 ## 🧠 强制思维链与 JSON 输出格式
 
 提取前，请必须先在 `reasoning` 字段中简要核对：1) 是否明确归属目标天体？2) 是否为整体宏观属性？3) 是否为实际测量值？如果不符合，请果断放弃提取！
-并在 `reasoning` 中原样复述你在原文或图中看到的数字字符串，然后与 `field_value` 的值逐字符核对；若两者不一致，直接放弃这条提取，不要猜测或修正后照提。
+并在 `reasoning` 中原样复述你在原文中看到的数字字符串，然后与 `field_value` 的值逐字符核对；若两者不一致，直接放弃这条提取，不要猜测或修正后照提。
 
 **输出示例**（仅作格式参考，非实际要求物理量）：
 ```json
@@ -127,14 +130,14 @@ def build_extraction_prompt(
 - **context_snippet**: 提取值周围的原文（约200字符，用于溯源）
 - **measurement_method**: 观测、推导或统计方法
 - **condition_tags**: 必须包含 scope:global 和 metric:xxx 标签
-- **extraction_method**: "text" | "table" | "figure"
+- **extraction_method**: "text" | "table"
 - **confidence**: 提取置信度（0.0-1.0）
 
 ## 最后警告
 如果通篇论文全是内部子结构的枯燥表格，或者没有关于整体【{target_entity}】的合格数据，请极其果断地返回 {{"extractions": []}}！
 确保输出是合法的纯 JSON 格式。"""
 
-    # Add specific page range if num_images provided
+    # 提供 num_images 时补充具体页码范围
     if num_images > 0:
         prompt += f"""
 
@@ -172,7 +175,7 @@ def call_qwen_vlm(
     Raises:
         Exception: If API call fails after all retries
     """
-    # Use settings if not specified
+    # 未指定时使用配置值
     model = model or settings.vlm.model
     temperature = temperature if temperature is not None else settings.vlm.temperature
 
@@ -182,7 +185,7 @@ def call_qwen_vlm(
     # DashScope SDK（直接连阿里云 qwen-vl）
     dashscope.api_key = settings.vlm.api_key
 
-    # Convert images to base64 (do this once, reuse for retries)
+    # 图片转 base64（只做一次，重试复用）
     image_contents = []
     for idx, img in enumerate(images):
         logger.debug(f"  Encoding image {idx + 1}/{len(images)}")
@@ -201,7 +204,7 @@ def call_qwen_vlm(
 
     logger.debug(f"Sending API request (total content items: {len(image_contents) + 1})")
 
-    # Retry loop with exponential backoff for rate limiting
+    # 重试循环（指数退避应对限流）
     timeout_retry_count = 0
     max_timeout_retries = settings.quality.max_timeout_retries
 
@@ -218,23 +221,23 @@ def call_qwen_vlm(
             if response.status_code == 200:
                 result = response.output.choices[0].message.content
 
-                # Handle different return types from DashScope API
+                # 处理 DashScope API 的不同返回类型
                 if isinstance(result, str):
                     logger.debug(f"API call successful, response length: {len(result)} chars")
                     return result
                 elif isinstance(result, (list, dict)):
-                    # API returned structured data, convert to JSON string
+                    # API 返回结构化数据，转成 JSON 字符串
                     import json
                     result_str = json.dumps(result, ensure_ascii=False)
                     logger.debug(f"API returned structured data, converted to JSON string: {len(result_str)} chars")
                     return result_str
                 else:
-                    # Unexpected type, try to convert to string
+                    # 意外类型，尝试转字符串
                     result_str = str(result)
                     logger.warning(f"API returned unexpected type {type(result)}, converted to string")
                     return result_str
 
-            # Check for rate limiting errors
+            # 检查限流错误
             elif hasattr(response, 'code') and response.code in [
                 "Throttling.RateQuota",  # DashScope rate limit error
                 "FlowControl.User",       # User-level flow control
@@ -242,7 +245,7 @@ def call_qwen_vlm(
                 429                        # HTTP 429 Too Many Requests
             ]:
                 if attempt < max_retries:
-                    # Exponential backoff: 5s, 10s, 20s
+                    # 指数退避：5s、10s、20s
                     wait_time = (2 ** (attempt - 1)) * 5
                     logger.warning(
                         f"Rate limit hit (attempt {attempt}/{max_retries}), "
@@ -255,18 +258,18 @@ def call_qwen_vlm(
                     logger.error(error_msg)
                     raise Exception(error_msg)
 
-            # Other errors
+            # 其他错误
             else:
                 error_msg = f"API call failed: {response.code} - {response.message}"
                 logger.error(error_msg)
                 raise Exception(error_msg)
 
         except Exception as e:
-            # If it's our own raised exception, re-raise
+            # 若是我们主动抛出的异常，直接重抛
             if "Rate limit exceeded" in str(e) or "API call failed" in str(e):
                 raise
 
-            # Handle timeout separately with more retries
+            # 超时单独处理（更多重试）
             error_str = str(e)
             if "Read timed out" in error_str or "timeout" in error_str.lower():
                 timeout_retry_count += 1
@@ -280,7 +283,7 @@ def call_qwen_vlm(
                     logger.error(error_msg)
                     raise Exception(error_msg)
 
-            # For other exceptions (network errors, etc.)
+            # 其他异常（网络错误等）
             if attempt < max_retries:
                 wait_time = (2 ** (attempt - 1)) * 5
                 logger.warning(
@@ -293,5 +296,5 @@ def call_qwen_vlm(
                 logger.error(f"API call failed after {max_retries} attempts: {e}")
                 raise
 
-    # Should not reach here
+    # 不应到达此处
     raise Exception("API call failed: max retries exceeded")

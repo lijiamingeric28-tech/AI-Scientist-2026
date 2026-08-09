@@ -1,4 +1,4 @@
-"""BBox annotation VLM client for qwen3.7-flash (DashScope SDK)."""
+"""BBox 标注 VLM 客户端（qwen3.7-flash，DashScope SDK）。"""
 
 import dashscope
 from dashscope import MultiModalConversation
@@ -122,18 +122,18 @@ def call_qwen_flash_bbox(
     调用 qwen3.7-flash 标注单个数据点的 bbox（两阶段定位）。
     统一走 DASHSCOPE key + Maas URL（OpenAI 兼容端点）。
     """
-    # ⚠️ 严格指定模型：qwen3.7-flash（不允许修改）
-    model = "qwen3.7-flash"
+    # 模型名来自统一 Settings（默认 qwen3.7-flash，可用 DASHSCOPE_BBOX_MODEL 覆盖）
+    model = settings.bbox_vlm.model
     temperature = 0.0  # bbox 标注需要确定性
     max_tokens = 500  # 包含两阶段分析文本
 
     # DashScope SDK（直接连阿里云 qwen-vl）
     dashscope.api_key = settings.vlm.api_key
 
-    # Build prompt
+    # 构建 prompt
     prompt = build_bbox_prompt(extraction, target_entity)
 
-    # Convert image to base64
+    # 图片转 base64
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     img_base64 = base64.b64encode(buffered.getvalue()).decode()
@@ -149,13 +149,13 @@ def call_qwen_flash_bbox(
         }
     ]
 
-    # Retry loop
+    # 重试循环
     for attempt in range(1, max_retries + 1):
         try:
             logger.debug(f"[BBox VLM] Calling {model} (attempt {attempt}/{max_retries})")
 
             response = MultiModalConversation.call(
-                model=model,  # 🔒 锁定 qwen3.7-flash
+                model=model,
                 messages=messages,
                 temperature=temperature,
                 max_tokens=max_tokens,
@@ -174,7 +174,7 @@ def call_qwen_flash_bbox(
                         "error": f"无法解析为 dict: {str(result)[:100]!r}"
                     }
 
-                # Validate bbox format
+                # 校验 bbox 格式
                 bbox_2d = data.get("bbox_2d")
                 if bbox_2d and isinstance(bbox_2d, list) and len(bbox_2d) == 4:
                     if all(isinstance(coord, (int, float)) and 0 <= coord <= 1000 for coord in bbox_2d):
@@ -189,7 +189,7 @@ def call_qwen_flash_bbox(
                     else:
                         logger.warning(f"[BBox VLM] Invalid bbox range: {bbox_2d}")
 
-                # Not found or invalid
+                # 未找到或无效
                 return {
                     "bbox_2d": None,
                     "confidence": data.get("confidence", 0.0),
@@ -198,7 +198,7 @@ def call_qwen_flash_bbox(
                     "error": data.get("reason", "Invalid bbox format")
                 }
 
-            # Handle rate limiting
+            # 处理限流
             elif hasattr(response, 'code') and response.code in [
                 "Throttling.RateQuota",
                 "FlowControl.User",
@@ -216,7 +216,7 @@ def call_qwen_flash_bbox(
                         "error": f"Rate limit after {max_retries} retries"
                     }
 
-            # Other API errors
+            # 其他 API 错误
             else:
                 error_msg = f"API error: {response.code} - {response.message}"
                 logger.error(f"[BBox VLM] {error_msg}")
@@ -250,7 +250,7 @@ def call_qwen_flash_bbox(
                     "error": str(e)
                 }
 
-    # Should not reach here
+    # 不应到达此处
     return {
         "bbox_2d": None, "confidence": 0.0, "found": False,
         "error": "Max retries exceeded"

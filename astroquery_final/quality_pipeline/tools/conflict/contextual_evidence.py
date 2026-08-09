@@ -102,7 +102,7 @@ def collect_contextual_evidence(
         )
 
     logger.info("[VarianceCauseEvidence V3.0] %s: methods_differ=%s, tags_differ=%s, gap=%s",
-                conflict.get("conflict_id", "?"), methods_differ, tags_differ, temporal_gap)
+                conflict.get("conflict_d", "?"), methods_differ, tags_differ, temporal_gap)
 
     return {
         "variance_cause_evidence": cause_hints,

@@ -104,7 +104,7 @@ def evaluate_confidence(
                 classified_cause, metadata_score, consistency, domain_score, overall)
 
     return {
-        "conflict_id": variance.get("conflict_id", variance.get("entity_name", "?")),
+        "conflict_d": variance.get("conflict_d", variance.get("entity_name", "?")),
         "overall_confidence": overall,
         "components": {
             "metadata_completeness": round(metadata_score, 4),

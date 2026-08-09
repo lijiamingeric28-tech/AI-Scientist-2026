@@ -1,5 +1,7 @@
 """configs/ — 配置文件解析 (V3.0: 领域感知)"""
-import os, yaml, threading
+import os
+import yaml
+import threading
 
 _domain_cache: dict[int, str] = {}  # thread_id → domain
 # V4 fix: 全局领域兜底 — ThreadPoolExecutor 工作线程无 domain 缓存 (线程本地),
@@ -32,7 +34,8 @@ def load_yaml(filename: str) -> dict:
         return yaml.safe_load(f) or {}
 
 
-def load_domain_config(section: str, default_section: str = "") -> dict:
+def load_domain_config(section: str, default_section: str = "",
+                       research_domain: str | None = None) -> dict:
     """
     领域感知的配置加载。
 
@@ -41,11 +44,15 @@ def load_domain_config(section: str, default_section: str = "") -> dict:
       - 再尝试 "{section}" (通用配置)
       - 最后尝试 default_section
 
+    Phase 3 显式化: 优先用显式传入的 research_domain, None 时回退全局
+    (get_research_domain), 兼容历史调用方与 LLM 工具路径。
+
     Args:
         section: 配置段名 (如 'semantic_types', 'journal_tiers')
         default_section: 如果领域专属段不存在, 使用的备选段名
+        research_domain: 显式研究领域 (Phase 3 起调用方应传 state 值)
     """
-    domain = get_research_domain()
+    domain = research_domain or get_research_domain()
     config = load_yaml("quality_rules.yaml")
 
     # 1. 领域专属段
@@ -67,12 +74,14 @@ def load_domain_config(section: str, default_section: str = "") -> dict:
     return {}
 
 
-def load_domain_schema_config(section: str) -> dict:
+def load_domain_schema_config(section: str, research_domain: str | None = None) -> dict:
     """
     领域感知的 schema_mapping 配置加载。
     同 load_domain_config, 但读取 schema_mapping.yaml。
+
+    Phase 3 显式化: 优先显式 research_domain, None 时回退全局。
     """
-    domain = get_research_domain()
+    domain = research_domain or get_research_domain()
     config = load_yaml("schema_mapping.yaml")
 
     if domain:

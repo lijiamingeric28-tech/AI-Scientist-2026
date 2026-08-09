@@ -60,7 +60,7 @@ def analyze_statistical_evidence(conflict: dict[str, Any]) -> dict[str, Any]:
         recommendation = "weak_evidence"
 
     logger.info("[StatisticalEvidence] %s: d=%.3f, sig=%s, small_sample=%s, rec=%s",
-                conflict.get("conflict_id", "?"), cohens_d, stat_sig, small_sample, recommendation)
+                conflict.get("conflict_d", "?"), cohens_d, stat_sig, small_sample, recommendation)
 
     return {
         "statistically_significant": stat_sig,

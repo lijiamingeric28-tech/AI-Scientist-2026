@@ -153,13 +153,13 @@ def analyze_source_reliability(
     gap = round(abs(rel_a["reliability"] - rel_b["reliability"]), 4)
 
     if gap > 0.15:
-        verdict = f"source_a_more_reliable" if rel_a["reliability"] > rel_b["reliability"] else "source_b_more_reliable"
+        verdict = "source_a_more_reliable" if rel_a["reliability"] > rel_b["reliability"] else "source_b_more_reliable"
     elif gap > 0.05:
         verdict = "slight_preference_a" if rel_a["reliability"] > rel_b["reliability"] else "slight_preference_b"
     else:
         verdict = "equally_reliable"
 
-    logger.info("[SourceReliability] %s: gap=%.3f, verdict=%s", conflict.get("conflict_id", "?"), gap, verdict)
+    logger.info("[SourceReliability] %s: gap=%.3f, verdict=%s", conflict.get("conflict_d", "?"), gap, verdict)
 
     return {
         "source_a_id": sid_a,

@@ -1,4 +1,4 @@
-"""VLM batch extractor node (streaming version with JSON repair)."""
+"""VLM 批量提取节点（流式版本，带 JSON 修复）。"""
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -17,21 +17,21 @@ logger = get_logger(__name__)
 
 def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
     """
-    VLM batch extraction node (streaming version).
+    VLM 批量提取节点（流式版本）。
 
-    Steps:
-    1. Prepare extraction task list with image paths
-    2. Call Qwen3.7-Plus concurrently (max_workers=15)
-    3. Load images on-demand for each task (reduces memory usage)
-    4. Show progress
-    5. Record failed papers
-    6. Update state
+    步骤：
+    1. 构建带图片路径的提取任务列表
+    2. 并发调用 Qwen3.7-Plus（max_workers=15）
+    3. 每个任务按需加载图片（降低内存占用）
+    4. 展示进度
+    5. 记录失败论文
+    6. 更新状态
 
     Args:
-        state: Current extraction state
+        state: 当前提取状态
 
     Returns:
-        Updated state with raw_extractions and extraction_failed
+        更新后的状态（raw_extractions / extraction_failed）
     """
     paper_image_paths = state["paper_image_paths"]
     target_entity = state["target_entity"]
@@ -48,12 +48,12 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
 
     state["extraction_status"] = "running"
 
-    # Prepare task list with image paths (not loaded yet)
+    # 构建任务列表（只带路径，不加载图片）
     tasks = []
     for bibcode, image_paths in paper_image_paths.items():
         tasks.append({
             "bibcode": bibcode,
-            "image_paths": image_paths,  # Paths, not images
+            "image_paths": image_paths,  # 路径而非图片对象
             "target_entity": target_entity,
             "requested_properties": requested_properties,
             "property_spec": property_spec,  # 新增
@@ -65,7 +65,7 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
     total = len(tasks)
     completed = 0
 
-    # Concurrent processing (max_workers from settings, default 15)
+    # 并发处理（max_workers 来自配置，默认 15）
     with ThreadPoolExecutor(max_workers=settings.concurrency.max_workers) as executor:
         futures = {executor.submit(process_single_paper_vlm, task): task for task in tasks}
 
@@ -78,7 +78,7 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
 
                 completed += 1
 
-                # Update progress
+                # 更新进度
                 state["extraction_progress"] = {
                     "completed": completed,
                     "total": total,
@@ -105,7 +105,7 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
                 })
                 logger.error(f"[VLM Extractor] [{completed}/{total}] ✗ {bibcode}: {e}")
 
-    # Update state
+    # 更新状态
     state["extraction_status"] = "completed"
     state["raw_extractions"] = raw_extractions
     state["extraction_failed"] = extraction_failed
@@ -116,12 +116,12 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
         "current_paper": "Completed"
     }
 
-    logger.info(f"[VLM Extractor] Completed!")
+    logger.info("[VLM Extractor] Completed!")
     logger.info(f"[VLM Extractor]   Success: {len(raw_extractions)}")
     logger.info(f"[VLM Extractor]   Failed: {len(extraction_failed)}")
 
     if extraction_failed:
-        logger.warning(f"[VLM Extractor]   Failed papers:")
+        logger.warning("[VLM Extractor]   Failed papers:")
         for failed in extraction_failed:
             logger.warning(f"[VLM Extractor]     - {failed['bibcode']}: {failed['reason']}")
 
@@ -130,7 +130,7 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
 
 def process_single_paper_vlm(task: dict) -> dict:
     """
-    Process a single paper (VLM extraction, streaming version).
+    处理单篇论文（VLM 提取，流式版本）。
 
     Args:
         task: {
@@ -155,7 +155,7 @@ def process_single_paper_vlm(task: dict) -> dict:
 
     logger.debug(f"[VLM Worker] Processing {bibcode} ({len(image_paths)} pages)")
 
-    # Load images on-demand (only for this task)
+    # 按需加载图片（仅本任务）
     try:
         images = image_cache.load_images(image_paths)
         logger.debug(f"[VLM Worker] Loaded {len(images)} images from cache for {bibcode}")
@@ -178,7 +178,7 @@ def process_single_paper_vlm(task: dict) -> dict:
             print(f"   提取性质: {requested_properties}")
             print(f"{'='*60}")
 
-            # Build prompt with explicit page mapping
+            # 构建带显式页码映射的 prompt
             prompt = build_extraction_prompt(
                 target_entity,
                 requested_properties,
@@ -186,52 +186,52 @@ def process_single_paper_vlm(task: dict) -> dict:
                 property_spec=property_spec
             )
 
-            # Call Qwen3.7-Plus
-            print(f"🤖 正在调用VLM分析论文...")
+            # 调用 Qwen3.7-Plus
+            print("🤖 正在调用VLM分析论文...")
             raw_result = call_qwen_vlm(images, prompt)
 
-            # Debug: Check for truncation
+            # 调试：检查是否截断
             if len(raw_result) >= settings.vlm.max_tokens * 4:  # Rough estimate: 1 token ≈ 4 chars
                 logger.warning(
                     f"[VLM Worker] {bibcode} - Response length ({len(raw_result)} chars) "
                     f"approaches max_tokens limit ({settings.vlm.max_tokens}). Possible truncation!"
                 )
-                print(f"⚠️  响应长度接近限制，可能被截断！")
+                print("⚠️  响应长度接近限制，可能被截断！")
 
-            print(f"📊 解析JSON响应...")
+            print("📊 解析JSON响应...")
 
-            # Try to parse JSON directly
+            # 直接尝试解析 JSON
             try:
                 data = json.loads(raw_result)
                 logger.debug(f"[VLM Worker] {bibcode} - JSON parsed successfully (attempt {attempt})")
-                print(f"✓ JSON解析成功")
+                print("✓ JSON解析成功")
 
-                # Handle DashScope API's response format
-                # The API may return: [{"text": "actual_json_string"}]
+                # 处理 DashScope API 的响应格式
+                # API 可能返回：[{"text": "实际JSON字符串"}]
                 if isinstance(data, list) and len(data) > 0:
                     logger.debug(f"[VLM Worker] {bibcode} - JSON is a list with {len(data)} items")
-                    print(f"   检测到list格式，提取内层JSON...")
+                    print("   检测到list格式，提取内层JSON...")
 
                     # Check if first item has 'text' field
                     if isinstance(data[0], dict) and "text" in data[0]:
                         logger.debug(f"[VLM Worker] {bibcode} - Extracting JSON from 'text' field")
                         text_content = data[0]["text"]
-                        print(f"   从'text'字段提取JSON...")
+                        print("   从'text'字段提取JSON...")
 
                         # Parse the inner JSON string
                         try:
                             data = json.loads(text_content)
                             logger.debug(f"[VLM Worker] {bibcode} - Successfully parsed inner JSON from 'text' field")
-                            print(f"   ✓ 内层JSON解析成功")
+                            print("   ✓ 内层JSON解析成功")
                         except json.JSONDecodeError as inner_error:
                             logger.warning(f"[VLM Worker] {bibcode} - Failed to parse inner JSON: {inner_error}")
-                            print(f"   ❌ 内层JSON解析失败，尝试修复...")
+                            print("   ❌ 内层JSON解析失败，尝试修复...")
                             # Try json_repair on the text content
                             try:
                                 repaired_text = repair_json(text_content)
                                 data = json.loads(repaired_text)
                                 logger.info(f"[VLM Worker] {bibcode} - Inner JSON repaired successfully!")
-                                print(f"   ✓ JSON修复成功！")
+                                print("   ✓ JSON修复成功！")
                             except Exception as repair_error:
                                 logger.warning(f"[VLM Worker] {bibcode} - Inner JSON repair failed: {repair_error}")
                                 print(f"   ❌ JSON修复失败: {repair_error}")
@@ -250,13 +250,13 @@ def process_single_paper_vlm(task: dict) -> dict:
                     f"[VLM Worker] {bibcode} - JSON parse failed (attempt {attempt}/{max_retries}), "
                     f"trying json_repair: {json_error}"
                 )
-                print(f"❌ JSON解析失败，尝试自动修复...")
+                print("❌ JSON解析失败，尝试自动修复...")
 
                 try:
                     repaired_result = repair_json(raw_result)
                     data = json.loads(repaired_result)
                     logger.info(f"[VLM Worker] {bibcode} - JSON repaired successfully!")
-                    print(f"✓ JSON修复成功！")
+                    print("✓ JSON修复成功！")
 
                 except Exception as repair_error:
                     logger.warning(
@@ -266,7 +266,7 @@ def process_single_paper_vlm(task: dict) -> dict:
 
                     if attempt < max_retries:
                         logger.info(f"[VLM Worker] {bibcode} - Retrying VLM call (attempt {attempt + 1}/{max_retries})")
-                        print(f"🔄 将重新调用VLM...")
+                        print("🔄 将重新调用VLM...")
                         continue  # Retry by calling VLM again
                     else:
                         return {

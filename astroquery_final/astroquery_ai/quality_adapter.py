@@ -17,6 +17,7 @@ import traceback
 from datetime import datetime
 from typing import Dict, List, Optional
 
+from .config import get_settings
 from .state import MainGraphState
 
 logger = logging.getLogger(__name__)
@@ -109,11 +110,12 @@ def quality_node(state: MainGraphState) -> Dict:
 
         initial_state["context_state"]["target_schema"] = target_schema
         initial_state["context_state"]["standard_units"] = standard_units
-        initial_state["context_state"]["research_domain"] = "astrophysics"
+        research_domain = get_settings().default_research_domain
+        initial_state["context_state"]["research_domain"] = research_domain
 
         # 同步设置 configs 的全局领域（子图4 内部靠 get_research_domain 决定加载哪个配置段）
         from quality_pipeline.configs import set_research_domain
-        set_research_domain("astrophysics")
+        set_research_domain(research_domain)
     except Exception as exc:
         logger.error(f"[Quality Adapter] context 注入失败: {exc}")
         return {
@@ -147,3 +149,25 @@ def quality_node(state: MainGraphState) -> Dict:
             }],
             "quality_report": {"skipped": True, "reason": "pipeline_failed"},
         }
+
+
+# ══════════════════════════════════════════════════════════════
+# quality_finalize 节点（Phase 4: 集成断链修复）
+# ══════════════════════════════════════════════════════════════
+
+def quality_finalize_node(state: MainGraphState) -> Dict:
+    """
+    把 quality_pipeline 结果并入 final_output（主图最后一步）。
+
+    历史断链：aggregator 在 quality 之前就拼完 final_output，quality 结果
+    从不进入最终 JSON。此节点作为 quality 的后置节点，把 quality_report
+    写入 final_output.quality_report，保证下游 JSON 含质量报告。
+    """
+    final_output = dict(state.get("final_output") or {})
+    quality_report = state.get("quality_report")
+    if quality_report is not None:
+        final_output["quality_report"] = quality_report
+    else:
+        # 防御：quality 节点未运行/未产出时也写一个显式标记
+        final_output["quality_report"] = {"skipped": True, "reason": "no_quality_report"}
+    return {"final_output": final_output}

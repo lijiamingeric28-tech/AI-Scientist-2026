@@ -34,6 +34,7 @@ from typing import Dict, List, Optional
 import requests
 from openai import OpenAI
 
+from .config import get_settings
 from .state import MainGraphState
 from .subgraph1.config import config as subgraph1_config
 
@@ -184,7 +185,8 @@ def query_simbad(target_name: str) -> tuple[Optional[Dict], Optional[str]]:
     if len(lines) < 2:
         return None, f"未找到天体: {target_name}"
 
-    import csv, io
+    import csv
+    import io
     reader = csv.DictReader(io.StringIO(resp.text))
     rows = list(reader)
     if not rows:
@@ -360,11 +362,13 @@ def build_selection_prompt(rag: Dict, target_name: str, user_request: str) -> st
 
 ## 选择规则
 1. **只能从上述性质库中选择**，不得臆造 property_id
-2. **宽泛请求**（"radio properties"、"所有光度"）→ 包含该类别的所有相关性质
-3. **模糊请求**（"基本参数"、"全部"）→ 选 10-15 个最基础的性质
-4. **空请求**（用户未指定、直接回车、说"都行"）→ 选 10-15 个最基础的性质
-5. **包含不确定度**（如 fe_h_err）当用户关注精度时
-6. **输出必须严格 JSON，不要任何解释文字**
+2. **同一物理量只选一个**：若多个候选性质中文名相同（如 [stellar_mass] 与 [mass] 都是"恒星质量"），
+   只选其一，优先选择单位明确、描述完整的那一个；禁止同一物理量输出两个 property_id
+3. **宽泛请求**（"radio properties"、"所有光度"）→ 包含该类别的所有相关性质
+4. **模糊请求**（"基本参数"、"全部"）→ 选 10-15 个最基础的性质
+5. **空请求**（用户未指定、直接回车、说"都行"）→ 选 10-15 个最基础的性质
+6. **包含不确定度**（如 fe_h_err）当用户关注精度时
+7. **输出必须严格 JSON，不要任何解释文字**
 
 输出格式：
 {{
@@ -394,7 +398,7 @@ def select_properties_with_llm(
             api_key=subgraph1_config.llm['api_key']
         )
 
-        model = "qwen3.8-max"
+        model = get_settings().p1_model
         logger.info(f"[LLM] 调用模型筛选性质: {model}")
         response = client.chat.completions.create(
             model=model,

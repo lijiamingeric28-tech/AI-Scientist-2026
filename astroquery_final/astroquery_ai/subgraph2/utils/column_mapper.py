@@ -27,7 +27,7 @@ def _compute_property_spec_fingerprint(property_spec: List[Dict]) -> str:
     """计算 PropertySpec 的指纹（用于缓存键）"""
     # 只取 property_id，忽略描述等易变字段
     ids = sorted(p["property_id"] for p in property_spec)
-    return hashlib.md5(json.dumps(ids, sort_keys=True).encode()).hexdigest()[:12]
+    return hashlib.md5(json.dumps(ids, sort_keys=True).encode(), usedforsecurity=False).hexdigest()[:12]
 
 
 def _load_cache() -> Dict:

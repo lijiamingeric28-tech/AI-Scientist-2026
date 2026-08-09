@@ -14,16 +14,20 @@ logger = get_logger(__name__)
 _SEMANTIC_TO_CATEGORY: dict[str, str] = {}
 _CACHED_DOMAIN: str | None = None
 
-def _load_semantic_category_map():
-    """从 quality_rules.yaml 动态加载 semantic_type → unit_category 映射 (领域感知)。"""
+def _load_semantic_category_map(research_domain: str | None = None):
+    """从 quality_rules.yaml 动态加载 semantic_type → unit_category 映射 (领域感知)。
+
+    Phase 3 显式化: 优先显式 research_domain, None 时回退全局。
+    """
     global _SEMANTIC_TO_CATEGORY, _CACHED_DOMAIN
-    domain = get_research_domain()
+    domain = research_domain or get_research_domain()
     if _CACHED_DOMAIN == domain and _SEMANTIC_TO_CATEGORY:
         return
     _SEMANTIC_TO_CATEGORY.clear()
     try:
         # V4 fix: 领域专属段优先 (semantic_types_astrophysics), 通用段兜底
-        semantic_cfg = load_domain_config("semantic_types", "semantic_types")
+        semantic_cfg = load_domain_config("semantic_types", "semantic_types",
+                                          research_domain=research_domain)
         for st_name, st_info in semantic_cfg.items():
             if isinstance(st_info, dict):
                 cat = st_info.get("unit_category", "")
@@ -54,16 +58,20 @@ def _load_semantic_category_map():
 def convert_units(records: list[dict], unit_conversions: list[dict] | None = None,
                   standard_units: dict[str, str] | None = None,
                   semantic_types: dict[str, Any] | None = None,
-                  target_schema: dict[str, Any] | None = None) -> dict[str, Any]:
+                  target_schema: dict[str, Any] | None = None,
+                  research_domain: str | None = None) -> dict[str, Any]:
     """统一单位转换 (V2.2: category-keyed conversions + dynamic semantic map)。
 
     V4 fix: 领域感知加载 — 按 research_domain 读取 unit_conversions_{domain} /
     target_schema_{domain} 段 (如天体物理的 pc/kpc/Mpc/mag/dex/Msun 规则),
     空 domain 回退通用段, 材料域行为不变。
+
+    Phase 3 显式化: 增加 research_domain 参数 (None 时回退全局 get_research_domain,
+    兼容 LLM 工具路径——工具签名不要求 LLM 传 domain)。
     """
-    _load_semantic_category_map()
+    _load_semantic_category_map(research_domain)
     # V4 fix: 领域专属转换规则优先 (unit_conversions_astrophysics), 通用段兜底
-    rules = load_domain_schema_config("unit_conversions")
+    rules = load_domain_schema_config("unit_conversions", research_domain=research_domain)
 
     # 构建 (category, from_unit) → factor 映射表
     # 同时保留 unit→category 的反向查找
@@ -77,7 +85,8 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
 
     # 标准单位: 调用方显式 target_schema 优先, 其次领域配置, 最后参数
     std_units = dict(standard_units or {})
-    schema_cfg = target_schema or load_domain_schema_config("target_schema")
+    schema_cfg = target_schema or load_domain_schema_config("target_schema",
+                                                            research_domain=research_domain)
     for f in (schema_cfg or {}).get("fields", []):
         n, u = f.get("name"), f.get("standard_unit")
         if n and u:

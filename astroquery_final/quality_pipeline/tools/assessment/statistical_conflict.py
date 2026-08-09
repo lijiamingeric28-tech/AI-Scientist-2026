@@ -192,7 +192,7 @@ def analyze_multi_source_variance(
             # ── 向后兼容字段 ──
             "has_conflicts": bool,     # = has_anomalies
             "conflict_count": int,     # = anomaly_count
-            "conflicts": list,         # = anomalies (兼容下游 conflict_extractor)
+            "conflicts": list,         # = anomalies (兼容下游 conflict_xtractor)
             "risk_level": str,
             "method": "multi_source_variance",
             "summary": str,
@@ -566,7 +566,7 @@ def analyze_multi_source_variance(
         # 向后兼容字段
         "has_conflicts": anomaly_count > 0,       # 只有异常才算冲突
         "conflict_count": anomaly_count,
-        "conflicts": anomalies,                    # 兼容下游的 conflict_extractor
+        "conflicts": anomalies,                    # 兼容下游的 conflict_xtractor
         "risk_level": risk_level,
         "method": "multi_source_variance",
         "skipped_insufficient": skipped_insufficient,

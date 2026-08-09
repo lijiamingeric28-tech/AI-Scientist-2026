@@ -19,9 +19,12 @@ from .config import config
 logger = logging.getLogger(__name__)
 
 
-def create_intent_clarification_subgraph() -> StateGraph:
+def create_intent_clarification_subgraph(checkpointer=None) -> StateGraph:
     """
     创建意图澄清子图（极简版）
+
+    Phase 4c: checkpointer 可选 —— HITL（interrupt）需要 checkpointer，
+    主图经 config 传入共享实例（thread_id 隔离会话）。
 
     Returns:
         StateGraph: 编译后的图对象
@@ -85,7 +88,7 @@ def create_intent_clarification_subgraph() -> StateGraph:
     logger.debug("[create_intent_clarification_subgraph] 已添加固定边")
 
     # 6. 编译图
-    compiled_graph = graph.compile()
+    compiled_graph = graph.compile(checkpointer=checkpointer)
 
     logger.info("[create_intent_clarification_subgraph] 子图创建完成")
     return compiled_graph

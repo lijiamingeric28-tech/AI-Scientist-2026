@@ -518,7 +518,8 @@ def disambiguate_batch(
 
     try:
         from ..utils.llm import get_llm, set_agent_context
-        import json as _json, time as _time
+        import json as _json
+        import time as _time
 
         t0 = _time.time()
         set_agent_context("value_disambiguator")

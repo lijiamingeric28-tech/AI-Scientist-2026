@@ -138,9 +138,9 @@ class RetrievalState(TypedDict):
     格式：{"completed": 15, "total": 50, "current_paper": "2016Natur.531..202S"}
     """
 
-    downloaded_papers: NotRequired[List[Dict]]
+    download_paths: NotRequired[List[Dict]]
     """
-    成功下载的论文列表
+    成功下载的论文列表（Phase 2 统一：原 downloaded_papers，对齐主图/子图3 契约）
     每个元素：{"bibcode": "...", "local_path": "...", "file_size_mb": ..., "download_source": "..."}
     """
 

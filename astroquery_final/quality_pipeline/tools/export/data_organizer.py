@@ -10,7 +10,7 @@ from ...utils.logger import get_logger
 logger = get_logger(__name__)
 
 # 需过滤的临时字段
-_TEMP_RECORD_FIELDS = {"_modified", "_conflict_cache", "_temp_score",
+_TEMP_RECORD_FIELDS = {"_modified", "_conflict_ache", "_temp_score",
                         "_normalized", "_resolution_status", "_source_path",
                         "_prefer_a", "_missing_unit"}
 

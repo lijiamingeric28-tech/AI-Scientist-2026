@@ -1,0 +1,23 @@
+# Pre-commit hooks — 重构门禁
+# 安装：pre-commit install
+# 手动全量运行：pre-commit run --all-files
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+      - id: ruff
+        args: [check, --fix]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        args: ["--config-file=mypy.ini"]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.9
+    hooks:
+      - id: bandit
+        args: ["-r", "astroquery_ai", "quality_pipeline"]
+        pass_filenames: false

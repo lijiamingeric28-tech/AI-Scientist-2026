@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astroquery-ai"
+version = "2.0.0"
+description = "天文科学数据查找、解析与整合 AI 应用（赛题方向 1）"
+requires-python = ">=3.10"
+dependencies = [
+    # ── 核心编排 ──
+    "langgraph>=0.1.0",
+    "langchain>=0.1.0",
+    "langchain-core>=0.1.0",
+    "langchain-openai>=0.1.0",
+    "openai>=1.0.0",
+    "pydantic>=2.0.0",
+    # ── 子图 1：意图澄清（LLM）──
+    "python-dotenv>=1.0.0",
+    "PyYAML>=6.0.1",
+    # ── 子图 2：并行检索（天文库 + 论文）──
+    "astroquery>=0.4.6",
+    "ads>=0.12.7",
+    "requests>=2.31.0",
+    "httpx>=0.25.0",
+    "tenacity>=8.2.3",
+    "numpy>=1.24.0",
+    # ── 子图 3：多模态提取（PDF + VLM）──
+    "PyMuPDF>=1.23.0",
+    "Pillow>=10.0.0",
+    "dashscope>=1.14.0",
+    "json-repair>=0.7.0",
+    "tqdm>=4.66.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10",
+    "bandit>=1.7.0",
+    "pre-commit>=3.0",
+]
+
+# 终端命令：pip install 后可直接 `astroquery-ai "M31 的距离"`
+[project.scripts]
+astroquery-ai = "astroquery_ai.cli:main"
+
+[tool.setuptools]
+packages = ["astroquery_ai", "quality_pipeline"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+# 默认排除 network 标记（真实 API smoke 测试）；运行 `pytest -m network` 单独跑
+addopts = "-q -m 'not network'"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+markers = [
+    "network: 标记需要真实网络访问的测试（默认跳过）",
+]

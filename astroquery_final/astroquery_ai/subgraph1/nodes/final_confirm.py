@@ -3,6 +3,8 @@
 import logging
 from datetime import datetime
 
+from langgraph.types import interrupt
+
 from ..state import IntentClarificationState
 from ..config import config
 
@@ -47,13 +49,16 @@ def final_confirm(state: IntentClarificationState) -> IntentClarificationState:
 您的选择：
 """
 
-    print("\n" + config.ui['separator'])
-    print(confirmation_message)
-    print(config.ui['separator'])
-    print("\n请输入 (y/m/n)：", end=" ")
-
-    # 等待用户输入
-    user_choice = input().strip().lower()
+    # Phase 4c: input() → interrupt()（LangGraph HITL）
+    user_choice = interrupt({
+        "type": "final_confirm",
+        "text": f"\n{config.ui['separator']}\n{confirmation_message}\n{config.ui['separator']}\n\n请输入 (y/m/n)：",
+        "target_entity": target_entity,
+        "requested_properties": requested_properties,
+    })
+    if user_choice is None:
+        user_choice = ""
+    user_choice = str(user_choice).strip().lower()
     logger.debug(f"[final_confirm] 用户选择: {user_choice}")
 
     # 更新对话历史
@@ -86,11 +91,14 @@ def final_confirm(state: IntentClarificationState) -> IntentClarificationState:
         state["requested_properties"] = []
         state["clarification_turns"] = 0
         state["properties_asked"] = False
-        print("\n↻ 已清空信息，请重新输入查询...\n")
-        print("请输入新的查询：", end=" ")
-
-        # 获取用户新的输入
-        new_query = input().strip()
+        # 获取用户新的输入（modify 分支，HITL 交互）
+        new_query = interrupt({
+            "type": "final_confirm_modify",
+            "text": "\n↻ 已清空信息，请重新输入查询...\n\n请输入新的查询：",
+        })
+        if new_query is None:
+            new_query = ""
+        new_query = str(new_query).strip()
         logger.debug(f"[final_confirm] 用户输入新查询: {new_query}")
 
         # 将新查询添加到对话历史

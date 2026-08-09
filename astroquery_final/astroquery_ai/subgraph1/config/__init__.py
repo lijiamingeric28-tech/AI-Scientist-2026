@@ -1,63 +1,85 @@
-"""配置模块
+"""配置模块（Phase 1 收敛）
 
-YAML 加载后，下面三个 key 会优先从环境变量取值（yaml 值作为兜底）：
-  - DASHSCOPE_API_KEY → llm.api_key
-  - DASHSCOPE_BASE_URL  → llm.base_url
-  - DASHSCOPE_MODEL     → llm.model
+历史：从 config.yaml 加载，敏感字段 env 优先 yaml 兜底。
+现在：敏感字段（llm 三件套）来自统一 Settings（astroquery_ai/config.py），
+业务常量（关键词、性质列表、UI 文案）内联为 Python 常量。
+接口不变（config.llm / config.ui / config.clarification 等），节点代码零改动。
 """
 
-import os
-import yaml
-from pathlib import Path
-from dotenv import load_dotenv
+from astroquery_ai.config import get_settings
 
-# 包内锚点：SUBGRAPH_ROOT = astroquery_ai/subgraph1, PACKAGE_ROOT = astroquery_ai
-SUBGRAPH_ROOT = Path(__file__).resolve().parent.parent
-PACKAGE_ROOT = SUBGRAPH_ROOT.parent
+_settings = get_settings()
 
-# 显式加载 .env（不依赖 CWD）：优先包内，其次项目根，其次默认搜索
-for _env in (PACKAGE_ROOT / ".env", PACKAGE_ROOT.parent / ".env"):
-    if _env.exists():
-        load_dotenv(_env)
-load_dotenv()
+# ── 业务常量（原 config.yaml，非敏感，内联）──
+_CLARIFICATION = {
+    "max_turns": 3,  # 最大追问轮次
+    "default_entity_type": "unknown",  # 默认天体类型
+}
+
+_EXIT_KEYWORDS = [
+    "算了", "不查了", "退出", "取消", "放弃",
+    "quit", "exit", "bye", "goodbye",
+]
+
+_GREETING_KEYWORDS = [
+    "你好", "您好", "hi", "hello", "hey", "在吗",
+]
+
+_COMMON_PROPERTIES = [
+    "distance", "redshift", "metallicity", "luminosity", "mass",
+    "temperature", "magnitude", "parallax", "velocity", "age",
+]
+
+_UI = {
+    "separator": "=" * 60,
+    "user_input_prompt": "请输入：",
+    "confirm_prompt": "请输入 (y/m/n)：",
+}
+
+_LOGGING = {
+    "level": "DEBUG",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+}
 
 
 class Config:
-    """配置类，从 YAML 加载后，敏感字段优先读取环境变量"""
-
-    def __init__(self, config_path: str = None):
-        if config_path is None:
-            config_path = SUBGRAPH_ROOT / "config" / "config.yaml"
-
-        with open(config_path, 'r', encoding='utf-8') as f:
-            self._config = yaml.safe_load(f)
+    """配置类：敏感字段来自统一 Settings，业务常量内联"""
 
     @property
     def llm(self):
-        raw = dict(self._config.get('llm', {}))
-        raw['api_key'] = os.getenv('DASHSCOPE_API_KEY', raw.get('api_key', ''))
-        raw['base_url'] = os.getenv('DASHSCOPE_BASE_URL', raw.get('base_url', ''))
-        raw['model'] = os.getenv('DASHSCOPE_MODEL', raw.get('model', ''))
-        return raw
+        s = _settings
+        return {
+            "api_key": s.dashscope_api_key,
+            "base_url": s.dashscope_base_url,
+            "model": s.dashscope_model,
+            "temperature": s.llm_temperature,
+            "max_tokens": s.llm_max_tokens,
+        }
 
     @property
     def clarification(self):
-        return self._config['clarification']
+        return _CLARIFICATION
+
     @property
     def exit_keywords(self):
-        return self._config['exit_keywords']
+        return _EXIT_KEYWORDS
+
     @property
     def greeting_keywords(self):
-        return self._config['greeting_keywords']
+        return _GREETING_KEYWORDS
+
     @property
     def common_properties(self):
-        return self._config['common_properties']
+        return _COMMON_PROPERTIES
+
     @property
     def ui(self):
-        return self._config['ui']
+        return _UI
+
     @property
     def logging(self):
-        return self._config['logging']
+        return _LOGGING
 
-# 全局配置实例
+
+# 全局配置实例（接口兼容：节点代码引用 config.xxx）
 config = Config()
