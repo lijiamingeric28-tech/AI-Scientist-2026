@@ -19,6 +19,20 @@
 > 被推翻 5 条（详见 AUDIT_REPORT §5.1）：pdf 句柄滞留（CPython 引用计数）、_find_unresolved 键（基线契约过时）、typical_ranges（误数字面量）、from_conflict HR 分支（前置不可达）、compile_quality_graph（langgraph 1.2.7 行为不同）。
 > 详细报告：docs/AUDIT_REPORT.md（含每条失败场景/证据/修复建议/验证结论）。
 
+
+## 零-2、2026-08-10 真实 LLM 端到端验证（网络 smoke）
+
+> 配置 .env 4 项 key 后跑通：`python -m pytest tests/test_smoke_network.py -m network` → **2 passed（20 分钟）**。
+> M31 查询：sources=27, records=49（VizieR + VLM 提取 + 质量管线 Export 产物落盘）。
+
+**过程中修复的真实链路问题**：
+1. **循环导入**（真实入口暴露，离线 mock 未覆盖）：`property_standardization.py` 模块级导入 `subgraph1.config`、`adapters.py` 模块级导入三个子图工厂 → 均改延迟导入（与 quality_adapter 模式一致）
+2. **GBK 控制台编码崩溃**（Windows 默认 GBK，emoji/上标打印即崩）：替换 5 文件 emoji 为 ASCII；**根治**——conftest.py 与 astroquery_ai/__init__.py 入口 `sys.stdout/stderr.reconfigure(utf-8, errors=replace)`
+3. **HITL 循环**（真实数据被质量管线路由 HumanReview → interrupt 等待 stdin）：smoke 测试 mock 补上 `human_review_agent.interrupt → "3"`（取消）；测试运行加 `< /dev/null`
+4. 测试 patch 目标随延迟导入更新（`adapters.create_*` → `subgraphs.*.graph`）
+
+> 全量离线回归保持 **270 passed**。
+
 ## 一、已完成（✅ 代码实施 + 回归验证）
 
 ### 逻辑修复（C/H/M/L 全部完成）
