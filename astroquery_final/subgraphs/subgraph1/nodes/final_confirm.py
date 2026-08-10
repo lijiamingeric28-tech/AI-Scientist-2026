@@ -92,7 +92,7 @@ def final_confirm(state: IntentClarificationState) -> IntentClarificationState:
     if user_choice in ["y", "yes", "确认", "是"]:
         state["user_confirmed"] = True
         state["clarification_status"] = "confirmed"
-        print("\n✓ 查询信息已确认，正在启动检索流程...\n")
+        print("\n[OK] 查询信息已确认，正在启动检索流程...\n")
         logger.info("[final_confirm] 用户确认查询")
 
     elif user_choice in ["m", "modify", "修改"]:
@@ -125,7 +125,7 @@ def final_confirm(state: IntentClarificationState) -> IntentClarificationState:
     else:  # 仅剩显式取消 (n/取消) — M-09: 其他输入已在上面循环中重问
         state["user_confirmed"] = False
         state["clarification_status"] = "cancelled"
-        print("\n✗ 查询已取消。\n")
+        print("\n[CANCEL] 查询已取消。\n")
         logger.info("[final_confirm] 用户取消查询")
 
     # 复制对话历史到输出字段

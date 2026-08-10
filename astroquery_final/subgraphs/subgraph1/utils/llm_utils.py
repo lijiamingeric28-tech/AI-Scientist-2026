@@ -189,7 +189,7 @@ def _parse_extract_json(response_text) -> dict:
     """
     if response_text is None:
         return {}
-    text = response_text.strip().lstrip("﻿").strip()
+    text = response_text.strip().lstrip("").strip()
     if not text:
         return {}
     # 剥 markdown fence

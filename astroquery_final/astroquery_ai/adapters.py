@@ -33,9 +33,8 @@ from .property_standardization import property_standardization_node
 from .schemas import Sg1Input, Sg1Output, Sg2Input, Sg2Output, Sg3Input, Sg3Output
 from .state import MainGraphState
 # 子图代码已迁移到 subgraphs/ (见 docs/OPTIMIZATION_PLAN.md: "实际代码已迁移到 subgraphs/")
-from subgraphs.subgraph1.graph import create_intent_clarification_subgraph
-from subgraphs.subgraph2.graph import create_retrieval_subgraph
-from subgraphs.subgraph3.graph import create_extraction_subgraph
+# 子图工厂采用延迟导入: subgraphs.* 会反向 import astroquery_ai.*, 模块级导入
+# 在 astroquery_ai 包初始化期间触发循环依赖 (test_smoke_network 真实入口暴露)。
 
 logger = logging.getLogger(__name__)
 
@@ -113,6 +112,7 @@ def clarification_node(state: MainGraphState, config: RunnableConfig = None) -> 
     }, "clarification_node")
 
     try:
+        from subgraphs.subgraph1.graph import create_intent_clarification_subgraph  # 延迟导入解循环
         subgraph = create_intent_clarification_subgraph(
             checkpointer=_shared_checkpointer(config)
         )
@@ -248,6 +248,7 @@ def retrieval_node(state: MainGraphState, config: RunnableConfig = None) -> Dict
     }, "retrieval_node")
 
     try:
+        from subgraphs.subgraph2.graph import create_retrieval_subgraph  # 延迟导入解循环
         subgraph = create_retrieval_subgraph(
             checkpointer=_shared_checkpointer(config)
         )
@@ -378,6 +379,7 @@ def extraction_node(state: MainGraphState, config: RunnableConfig = None) -> Dic
     }, "extraction_node")
 
     try:
+        from subgraphs.subgraph3.graph import create_extraction_subgraph  # 延迟导入解循环
         subgraph = create_extraction_subgraph(
             checkpointer=_shared_checkpointer(config)
         )

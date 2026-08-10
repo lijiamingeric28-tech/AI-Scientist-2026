@@ -67,7 +67,7 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
 
                 tasks.append({
                     "bibcode": bibcode,
-                    "index": idx,  # 🔑 Array index for tracking
+                    "index": idx,  # [KEY] Array index for tracking
                     "page": page,
                     "image_path": image_path,
                     "extraction": extraction  # Full extraction data
@@ -123,9 +123,9 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
                 bbox_results[key] = result
 
                 if result.get("bbox_2d") is not None:
-                    logger.debug(f"[BBox Annotator] [{completed}/{total_tasks}] ✓ {key}")
+                    logger.debug(f"[BBox Annotator] [{completed}/{total_tasks}] [OK] {key}")
                 else:
-                    logger.warning(f"[BBox Annotator] [{completed}/{total_tasks}] ✗ {key}: {result.get('error', 'No bbox')}")
+                    logger.warning(f"[BBox Annotator] [{completed}/{total_tasks}] [FAIL] {key}: {result.get('error', 'No bbox')}")
                     failed_tasks.append({
                         "key": key,
                         "reason": result.get("error", "No bbox found"),
@@ -134,7 +134,7 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
 
             except Exception as e:
                 # L2 fix: 删除重复自增 — completed 已在循环开头 +1, 此处再 +1 双计数
-                logger.error(f"[BBox Annotator] [{completed}/{total_tasks}] ✗ {key}: {e}")
+                logger.error(f"[BBox Annotator] [{completed}/{total_tasks}] [FAIL] {key}: {e}")
                 bbox_results[key] = {
                     "bbox_2d": None,
                     "confidence": 0.0,
@@ -154,7 +154,7 @@ def bbox_batch_annotator(state: ExtractionState) -> ExtractionState:
                 "current_key": key
             }
 
-    # Fill bbox_2d back to original extractions (🔑 Key step: ensure 1-to-1 mapping)
+    # Fill bbox_2d back to original extractions ([KEY] Key step: ensure 1-to-1 mapping)
     logger.info("[BBox Annotator] Filling bbox_2d back to extractions...")
     fill_success = 0
     fill_failed = 0

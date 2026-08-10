@@ -32,6 +32,10 @@ def mock_hr_interrupt(monkeypatch):
     for mod_name in ("ask_entity", "ask_properties", "greeting_handler", "final_confirm"):
         mod = importlib.import_module(f"subgraphs.subgraph1.nodes.{mod_name}")
         monkeypatch.setattr(mod, "interrupt", lambda *a, **k: "y")
+    # 质量管线的 HumanReview 也走 interrupt() HITL —— 真实数据可能被路由 A→E/C→E,
+    # smoke 测试自动选 [3] 取消(保留状态), 快速通过人工环节验证链路
+    hr = importlib.import_module("subgraphs.data_human_review.human_review_agent")
+    monkeypatch.setattr(hr, "interrupt", lambda *a, **k: "3")
 
 
 def test_smoke_m31_full_pipeline(mock_hr_interrupt):

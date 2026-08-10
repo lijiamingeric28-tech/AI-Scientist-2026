@@ -395,7 +395,7 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
                         "download_source": result["source"],
                         "downloaded_at": datetime.now().isoformat()
                     })
-                    logger.info(f"[PDF Download] [{completed}/{total}] ✓ {paper['bibcode']}")
+                    logger.info(f"[PDF Download] [{completed}/{total}] [OK] {paper['bibcode']}")
                 else:
                     failed_downloads.append({
                         "bibcode": paper["bibcode"],
@@ -403,7 +403,7 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
                         "title": paper.get("title"),
                         "reason": result.get("error", "Unknown error")
                     })
-                    logger.warning(f"[PDF Download] [{completed}/{total}] ✗ {paper['bibcode']}: {result.get('error')}")
+                    logger.warning(f"[PDF Download] [{completed}/{total}] [FAIL] {paper['bibcode']}: {result.get('error')}")
 
             except Exception as e:
                 completed += 1
@@ -413,7 +413,7 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
                     "title": paper.get("title"),
                     "reason": str(e)
                 })
-                logger.error(f"[PDF Download] [{completed}/{total}] ✗ {paper['bibcode']}: {e}")
+                logger.error(f"[PDF Download] [{completed}/{total}] [FAIL] {paper['bibcode']}: {e}")
 
     # Step 4: 构建 paper_sources（仅包含成功下载的）
     paper_sources = []

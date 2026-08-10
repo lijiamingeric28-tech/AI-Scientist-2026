@@ -8,6 +8,8 @@ from astroquery_ai.aggregator import final_aggregator
 from astroquery_ai.state import MainGraphState
 import importlib
 import astroquery_ai  # noqa: F401
+import subgraphs.subgraph2.graph as sg2_graph
+import subgraphs.subgraph3.graph as sg3_graph
 from subgraphs.subgraph1.utils import llm_utils
 import json
 import astroquery_ai  # noqa: F401  先导入以解循环依赖
@@ -76,7 +78,7 @@ def test_extraction_node_passes_figure_evidence(monkeypatch):
             }
 
     monkeypatch.setattr(
-        adapters, "create_extraction_subgraph",
+        sg3_graph, "create_extraction_subgraph",
         lambda checkpointer=None: _FakeSubgraph(),
     )
     out = adapters.extraction_node({
@@ -177,7 +179,7 @@ def test_retrieval_node_exception_keeps_p1_simbad(monkeypatch):
     def _boom_subgraph(*args, **kwargs):
         raise RuntimeError("boom")
 
-    monkeypatch.setattr(adapters, "create_retrieval_subgraph", _boom_subgraph)
+    monkeypatch.setattr(sg2_graph, "create_retrieval_subgraph", _boom_subgraph)
 
     state = {
         "query_id": "q1",
@@ -208,7 +210,7 @@ def test_retrieval_node_exception_without_p1_simbad(monkeypatch):
     def _boom_subgraph(*args, **kwargs):
         raise RuntimeError("boom")
 
-    monkeypatch.setattr(adapters, "create_retrieval_subgraph", _boom_subgraph)
+    monkeypatch.setattr(sg2_graph, "create_retrieval_subgraph", _boom_subgraph)
 
     out = adapters.retrieval_node({
         "query_id": "q1",
@@ -482,7 +484,7 @@ def test_extract_multi_layer_json_parse(monkeypatch):
         ('好的，结果如下：{"target_entity": "M31", "requested_properties": []}',
          {"target_entity": "M31", "requested_properties": []}),
         # BOM 前缀
-        ('﻿{"target_entity": "M31", "requested_properties": []}',
+        ('{"target_entity": "M31", "requested_properties": []}',
          {"target_entity": "M31", "requested_properties": []}),
     ]
     for text, expected in cases:

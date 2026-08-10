@@ -80,7 +80,7 @@ def prompt_interactive(preset_pdfs):
 def _force_utf8_stdio() -> None:
     """Windows GBK 控制台修复：强制 stdout/stderr 用 UTF-8。
 
-    程序内大量 print 含非 GBK 字符（✓ ✗ ↻ 📄 等），
+    程序内大量 print 含非 GBK 字符（[OK] [FAIL] ↻ [PDF] 等），
     GBK 控制台直接 UnicodeEncodeError 崩溃（clarification 阶段实测炸过）。
     """
     for stream in (sys.stdout, sys.stderr):

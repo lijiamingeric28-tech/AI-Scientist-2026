@@ -36,7 +36,9 @@ from openai import OpenAI
 
 from .config import get_settings
 from .state import MainGraphState
-from subgraphs.subgraph1.config import config as subgraph1_config
+# 注: 不直接 import subgraph1.config —— 它会反向 import astroquery_ai.config,
+# 在本模块被 astroquery_ai 包初始化期间导入时触发循环依赖 (test_smoke_network 暴露)。
+# subgraph1.config.llm 即 Settings 的 DashScope 三件套, 此处直接用 get_settings()。
 
 logger = logging.getLogger(__name__)
 
@@ -393,9 +395,10 @@ def select_properties_with_llm(
     prompt = build_selection_prompt(rag, target_name, user_request)
 
     try:
+        _s = get_settings()
         client = OpenAI(
-            base_url=subgraph1_config.llm['base_url'],
-            api_key=subgraph1_config.llm['api_key']
+            base_url=_s.dashscope_base_url,
+            api_key=_s.dashscope_api_key
         )
 
         model = get_settings().p1_model

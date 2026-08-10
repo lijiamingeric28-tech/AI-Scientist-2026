@@ -57,12 +57,12 @@ def pdf_batch_converter(state: ExtractionState) -> ExtractionState:
             image_paths = image_cache.save_images(bibcode, images)
             paper_image_paths[bibcode] = image_paths
 
-            logger.info(f"[PDF Converter]   ✓ Success: {len(images)} pages converted and cached")
+            logger.info(f"[PDF Converter]   [OK] Success: {len(images)} pages converted and cached")
             logger.debug(f"[PDF Converter]   Cache paths: {len(image_paths)} files")
 
         except Exception as e:
             error_msg = str(e)
-            logger.error(f"[PDF Converter]   ✗ Failed: {error_msg}")
+            logger.error(f"[PDF Converter]   [FAIL] Failed: {error_msg}")
             conversion_failed.append({
                 "bibcode": bibcode,
                 "pdf_path": pdf_path,

@@ -185,13 +185,13 @@ def database_query(state: RetrievalState) -> RetrievalState:
                     )
                     database_records.extend(records)
 
-                    logger.info(f"[Database Query]   ✓ Success: {len(records)} records extracted")
+                    logger.info(f"[Database Query]   [OK] Success: {len(records)} records extracted")
                 else:
-                    logger.warning("[Database Query]   ✗ No data found")
+                    logger.warning("[Database Query]   [FAIL] No data found")
 
             except Exception as e:
                 error_msg = str(e)
-                logger.warning(f"[Database Query]   ✗ Failed: {error_msg}")
+                logger.warning(f"[Database Query]   [FAIL] Failed: {error_msg}")
                 if id_info['catalog_name'] not in failed_catalogs:
                     failed_catalogs.append(id_info['catalog_name'])
 

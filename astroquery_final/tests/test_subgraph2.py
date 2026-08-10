@@ -81,7 +81,7 @@ def test_retrieval_node_assembles_download_paths(monkeypatch):
         def invoke(self, state, config=None):
             return fake_state
 
-    monkeypatch.setattr("astroquery_ai.adapters.create_retrieval_subgraph",
+    monkeypatch.setattr("subgraphs.subgraph2.graph.create_retrieval_subgraph",
                         lambda *a, **k: _FakeGraph())
 
     out = retrieval_node({

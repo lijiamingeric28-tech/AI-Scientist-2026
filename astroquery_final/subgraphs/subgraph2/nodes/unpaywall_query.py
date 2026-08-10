@@ -115,9 +115,9 @@ def batch_query_unpaywall_all_urls(
                 completed += 1
 
                 if urls:
-                    logger.debug(f"[Unpaywall Batch] [{completed}/{len(dois)}] ✓ {doi}: {len(urls)} URLs")
+                    logger.debug(f"[Unpaywall Batch] [{completed}/{len(dois)}] [OK] {doi}: {len(urls)} URLs")
                 else:
-                    logger.debug(f"[Unpaywall Batch] [{completed}/{len(dois)}] ✗ {doi}: No URLs")
+                    logger.debug(f"[Unpaywall Batch] [{completed}/{len(dois)}] [FAIL] {doi}: No URLs")
 
             except Exception as e:
                 doi = futures[future]
