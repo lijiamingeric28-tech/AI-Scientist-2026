@@ -17,7 +17,11 @@
 """
 
 from operator import add
-from typing import Annotated, Dict, List, NotRequired, Optional, TypedDict
+from typing import Annotated, Dict, List, Optional, TypedDict
+try:
+    from typing import NotRequired  # Python 3.11+
+except ImportError:  # pragma: no cover — Python 3.10
+    from typing_extensions import NotRequired
 
 
 class MainGraphState(TypedDict):
@@ -107,11 +111,27 @@ class MainGraphState(TypedDict):
     processing_summary: NotRequired[Dict]
     """Node 3 处理统计"""
 
+    # ===== Figure 证据通道（H-01 fix）=====
+    figure_evidence: NotRequired[List[Dict]]
+    """
+    Figure 证据列表（独立通路：extraction_node 产出 → aggregator 写入
+    final_output.figure_evidence，直接展示用，不进质量管线）。
+    必须声明，否则 LangGraph 对未声明通道写日志丢弃，aggregator 恒读空列表。
+    """
+
     # ===== 最终输出 =====
     final_output: NotRequired[Dict]
     """
     下游消费的最终结构
     {"schema_version": "2.0.0", "sources": [...], "records": [...]}
+    """
+
+    # ===== quality 节点输出 =====
+    quality_report: NotRequired[Dict]
+    """
+    质量管线完整输出状态（quality_node 返回，quality_finalize 并入 final_output）。
+    必须声明，否则 LangGraph 会丢弃该键，quality_finalize 永远读到 None →
+    final_output.quality_report 恒为 no_quality_report（Phase 4 断链修复）。
     """
 
     # ===== 全局错误日志 =====

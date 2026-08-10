@@ -136,6 +136,28 @@ def normalize_entity_type(entity_type: str, field_name: str = "",
     return raw.lower()
 
 
+def resolve_otype_value(value: str, field_name: str = "",
+                        source: dict | None = None,
+                        domain: str = "astrophysics") -> str:
+    """P2-1: SIMBAD otype 覆盖值 → 规范实体类型名 (最高优先级覆盖路径专用)。
+
+    上游传入的 otype 是 SIMBAD 紧凑码 (如 G / QSO / *), 直接走
+    normalize_entity_type 只会得到小写码 (如 "g"), 无法被 typical_ranges /
+    entity_ancestors 消费。此处优先做码 → 规范名映射 (G → galaxy), 其余
+    (规范名/kws 别名/未知值) 回落 normalize_entity_type 原链。
+    """
+    raw = str(value or "").strip()
+    if not raw:
+        return normalize_entity_type("", field_name, source, domain)
+    try:
+        entry = _name_to_entry(_types_map(domain), raw)
+        if entry and entry.get("name"):
+            return str(entry["name"])
+    except Exception:
+        logger.debug("[EntityTypes] otype 解析失败 (%s), 回落 normalize", raw)
+    return normalize_entity_type(raw, field_name, source, domain)
+
+
 def entity_ancestors(entity_type: str, domain: str = "astrophysics") -> list[str]:
     """返回 [自身] + 所有祖先的规范名 (父链按 code 上溯)。
 

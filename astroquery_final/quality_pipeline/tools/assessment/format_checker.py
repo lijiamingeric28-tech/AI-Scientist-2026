@@ -84,8 +84,10 @@ def check_format(data: dict[str, Any]) -> dict[str, Any]:
         entity_type = rec.get("entity_type", "") or ""
         entity_name = rec.get("entity_name", "") or ""
 
-        # record_id 格式
-        if not _RECORD_ID_PATTERN.match(record_id):
+        # record_id 格式 (H-02 fix: DB 记录跳过 paper 格式校验 —
+        # database 记录的 record_id 无 paper 命名约定, 与 extraction_quality.py 对齐)
+        from ...tools.assessment.source_utils import is_database_record
+        if not is_database_record(rec) and not _RECORD_ID_PATTERN.match(record_id):
             record_id_issues.append(record_id)
 
         # 数值格式检查 (V1.1: property_value 永远是 string)

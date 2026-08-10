@@ -99,8 +99,10 @@ def data_profiling(data: dict[str, Any]) -> dict[str, Any]:
         elif isinstance(value, str):
             string_fields.add(field_name)
 
-        # 单位分析
-        if rec.get("field_unit") is not None:
+        # 单位分析 (L-10 fix: 空串单位计缺失 — 与 completeness V4 语义一致,
+        # result_builder 对无单位字段统一产出空串, 此前空串计"有单位"
+        # 导致 profiling 100% 覆盖而 completeness 报缺失, 两报告对撞)
+        if rec.get("field_unit"):
             records_with_units += 1
         else:
             records_without_units += 1

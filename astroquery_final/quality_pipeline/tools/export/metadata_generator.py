@@ -110,7 +110,9 @@ def generate_metadata(
     if normalization:
         mods = normalization.get("modifications", {})
         processing["normalization"] = {
-            "status": normalization.get("normalization_tatus", "Completed"),
+            # H-15 fix: M9 只修了 writer (report_agent.py) 未修 reader,
+            # 拼写不一致 → 恒命中默认值 "Completed"; 与 writer 键名对齐
+            "status": normalization.get("normalization_status", "Completed"),
             "modifications": mods.get("total", 0),
             "by_layer": mods.get("by_layer", {}),
             "errors": len(mods.get("errors", [])),

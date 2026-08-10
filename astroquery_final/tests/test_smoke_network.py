@@ -30,7 +30,7 @@ def mock_hr_interrupt(monkeypatch):
     smoke 测试自动确认，其余全部走真实服务。
     """
     for mod_name in ("ask_entity", "ask_properties", "greeting_handler", "final_confirm"):
-        mod = importlib.import_module(f"astroquery_ai.subgraph1.nodes.{mod_name}")
+        mod = importlib.import_module(f"subgraphs.subgraph1.nodes.{mod_name}")
         monkeypatch.setattr(mod, "interrupt", lambda *a, **k: "y")
 
 

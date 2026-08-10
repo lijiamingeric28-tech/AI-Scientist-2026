@@ -4,7 +4,7 @@
 1. SIMBAD 解析天体（main_id / otype / otypes / coords）
 2. 根据 otype 加载对应 RAG 性质库
 3. LLM 从 RAG 库中选出用户要的性质 → PropertySpec
-4. 生成 target_schema（供子图 4 消费）
+   （target_schema 由 quality_adapter 从 PropertySpec 统一生成，见 L-02）
 
 PropertySpec 格式：
 [
@@ -36,7 +36,7 @@ from openai import OpenAI
 
 from .config import get_settings
 from .state import MainGraphState
-from .subgraph1.config import config as subgraph1_config
+from subgraphs.subgraph1.config import config as subgraph1_config
 
 logger = logging.getLogger(__name__)
 
@@ -426,6 +426,27 @@ def select_properties_with_llm(
             result = json.loads(text)
 
         selected = result.get('requested_properties', [])
+
+        # H-05 fix: LLM 输出形状校验 —— 过滤非 dict / 缺 property_id 的条目，
+        # 避免 [item['property_id'] for item in selected] 直接 TypeError 使整阶段静默失败
+        valid_items = []
+        invalid_count = 0
+        for item in selected:
+            if isinstance(item, dict) and item.get('property_id'):
+                valid_items.append(item)
+            else:
+                invalid_count += 1
+        if invalid_count:
+            logger.warning(
+                f"[LLM] 过滤 {invalid_count} 个非法 requested_properties 条目"
+                f"（非 dict 或缺 property_id）"
+            )
+        if not valid_items:
+            err = "LLM 返回的 requested_properties 全部非法（非 dict 或缺 property_id）"
+            logger.error(f"[LLM] {err}")
+            return None, err
+
+        selected = valid_items
         logger.info(f"[LLM] 筛选出 {len(selected)} 个性质")
         return selected, None
 
@@ -474,34 +495,6 @@ def build_property_spec(
     return spec
 
 # ═══════════════════════════════════════════════════════════════
-# target_schema 生成
-# ═══════════════════════════════════════════════════════════════
-
-def generate_target_schema(property_spec: List[Dict]) -> Dict:
-    """
-    从 PropertySpec 生成 target_schema（供子图 4 消费）
-
-    Returns:
-        {
-          "fields": [
-            {"name": "fe_h", "standard_unit": "dex", "semantic_type": "metallicity", ...},
-            ...
-          ]
-        }
-    """
-    fields = []
-    for p in property_spec:
-        fields.append({
-            'name': p['property_id'],
-            'standard_unit': p['unit'],
-            'semantic_type': p.get('category', ''),  # 暂用 category 作 semantic_type
-            'ucd': p.get('ucd', ''),
-            'description': p.get('description', '')
-        })
-
-    return {'fields': fields}
-
-# ═══════════════════════════════════════════════════════════════
 # P1 主节点
 # ═══════════════════════════════════════════════════════════════
 
@@ -516,8 +509,8 @@ def property_standardization_node(state: MainGraphState) -> MainGraphState:
     输出：
       - simbad_info: {main_id, otype(紧凑码), otypes, sp_type, ra, dec, ...}
       - property_spec: PropertySpec（字段名白名单 + 标准单位表）
-      - target_schema: 子图 4 消费的结构
       - error_log: 若有错误
+      注：target_schema 由 quality_adapter 从 property_spec 统一生成（L-02）
     """
     logger.info("=" * 60)
     logger.info("[P1] 性质标准化节点启动")
@@ -600,8 +593,8 @@ def property_standardization_node(state: MainGraphState) -> MainGraphState:
             }]
         }
 
-    # Step 5: 生成 target_schema
-    target_schema = generate_target_schema(property_spec)
+    # Step 5: target_schema 由 quality_adapter 从 property_spec 统一生成
+    # （L-02 fix: 消除双实现漂移 —— P1 不再生成/写入 state.target_schema）
 
     logger.info(f"[P1] 完成: SIMBAD={simbad_result.get('main_id', '?')}, "
                f"otype={simbad_result.get('otype', '?')}, "
@@ -610,5 +603,4 @@ def property_standardization_node(state: MainGraphState) -> MainGraphState:
     return {
         "simbad_info": simbad_result,
         "property_spec": property_spec,
-        "target_schema": target_schema
     }

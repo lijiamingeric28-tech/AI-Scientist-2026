@@ -5,7 +5,7 @@
 
 import pytest
 
-from astroquery_ai.subgraph1.graph import create_intent_clarification_subgraph
+from subgraphs.subgraph1.graph import create_intent_clarification_subgraph
 
 
 def test_subgraph1_compiles():
@@ -46,7 +46,7 @@ def test_greeting_then_astronomical(monkeypatch):
     import importlib
 
     def _mod(name):
-        return importlib.import_module(f"astroquery_ai.subgraph1.nodes.{name}")
+        return importlib.import_module(f"subgraphs.subgraph1.nodes.{name}")
 
     init_mod = _mod("initial_parse")
     query_types = iter(["greeting", "astronomical"])
@@ -77,7 +77,7 @@ def test_greeting_then_astronomical(monkeypatch):
 def test_invalid_query_polite_reject(monkeypatch):
     """无效查询 → polite_reject → END，不进入交互节点"""
     import importlib
-    init_mod = importlib.import_module("astroquery_ai.subgraph1.nodes.initial_parse")
+    init_mod = importlib.import_module("subgraphs.subgraph1.nodes.initial_parse")
     monkeypatch.setattr(init_mod, "classify_query_type", lambda user_input: "invalid")
 
     graph = create_intent_clarification_subgraph()

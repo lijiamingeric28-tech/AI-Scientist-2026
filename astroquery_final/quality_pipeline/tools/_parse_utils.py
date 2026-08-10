@@ -188,8 +188,15 @@ class ValueParserRegistry:
 _PREFIX_RE = re.compile(r'^[~≈<>≤≥]\s*')
 _UNICODE_MINUS_RE = re.compile(r'[−－]')  # − and －
 _EXPLICIT_UNCERTAINTY_RE = re.compile(r'^(.*?)(?:±|\+/-|±\s+)(.*?)$')
-_PAREN_UNCERTAINTY_RE = re.compile(r'^(.+?)\((\d+\.?\d*)\)$')
+# L-12 fix: 括号后可带指数后缀 — "1200(5)e3" 的形式也支持
+_PAREN_UNCERTAINTY_RE = re.compile(r'^(.+?)\((\d+\.?\d*)\)([eE][+-]?\d+)?$')
 _RANGE_RE = re.compile(r'^([\d.]+)\s*(?:<=|≤|<)\s*\w+\s*(?:<=|≤|<)\s*([\d.]+)$')
+# M-32 fix: 不对称误差 "12.3+1.4-2.1" / "12.3 +1.4 -2.1" (段间允许空白)
+_ASYMMETRIC_ERROR_RE = re.compile(
+    r'^\s*([+-]?\d+\.?\d*)\s*([+-]\d+\.?\d*)\s*([+-]\d+\.?\d*)\s*$')
+# M-32 fix: sexagesimal "12:34:56.7" / "12:34" (2 段或 3 段)
+_SEXAGESIMAL_RE = re.compile(
+    r'^\s*([+-]?\d+(?:\.\d+)?)\s*:\s*(\d+(?:\.\d+)?)(?:\s*:\s*(\d+(?:\.\d+)?))?\s*$')
 
 
 def _to_str(value: Any) -> str | None:
@@ -231,6 +238,39 @@ class PrefixCleaner(ValueParser):
         if n is not None:
             return ParsedResult(numeric_value=n, matched_parser=self.name)
         return None  # 不是纯数值, 交给后续 parser
+
+
+class AsymmetricErrorParser(ValueParser):
+    """优先级 1: 处理不对称误差 (天文常见格式, M-32 fix)。
+
+    "12.3+1.4-2.1" → 值=12.3 (取首段), 不确定度=max(1.4, 2.1)=2.1
+    此前该格式 parse_numeric 返回 None → format_checker 把合法数值
+    标记为垃圾串并路由 Normalization, 方差分析也跳过这些记录。
+    必须插入 ExplicitUncertaintyParser 之前 (优先级 1)。
+    """
+    name = "asymmetric_error"
+    priority = 1
+
+    def try_parse(self, value: str) -> ParsedResult | None:
+        v = _normalize(value)
+        # 先去前缀
+        v = _PREFIX_RE.sub('', v).strip()
+        m = _ASYMMETRIC_ERROR_RE.match(v)
+        if not m:
+            return None
+
+        base = _parse_float(m.group(1))
+        err_hi = _parse_float(m.group(2))
+        err_lo = _parse_float(m.group(3))
+        if base is None or err_hi is None or err_lo is None:
+            return None
+
+        return ParsedResult(
+            numeric_value=base,
+            # 不对称误差取两侧偏差的较大值作保守不确定度
+            uncertainty=max(abs(err_hi), abs(err_lo)),
+            matched_parser=self.name,
+        )
 
 
 class ExplicitUncertaintyParser(ValueParser):
@@ -284,6 +324,8 @@ class ParenUncertaintyParser(ValueParser):
     "776.2(5)" → 值=776.2, 不确定度=0.5
     "0.0802(73)" → 值=0.0802, 不确定度=0.0073
     "790(3)" → 值=790, 不确定度=3
+    L-12 fix: 指数形式 — "1.2e-5(3)" → 值=1.2e-5, 不确定度=3e-6;
+    "1200(5)e3" → 值=1.2e6, 不确定度=5000
     """
     name = "paren_uncertainty"
     priority = 3
@@ -298,6 +340,7 @@ class ParenUncertaintyParser(ValueParser):
 
         base_str = m.group(1).strip()
         paren_str = m.group(2).strip()
+        exp_str = m.group(3)  # L-12: 括号后的指数后缀, 如 "1200(5)e3" 的 "e3"
 
         base = _parse_float(base_str)
         if base is None:
@@ -307,18 +350,33 @@ class ParenUncertaintyParser(ValueParser):
         if paren_val is None:
             return None
 
-        # 括号中的数字作用于末尾位数:
-        #   "776.2(5)" → 776.2, 括号值=5, 小数位=1 → 不确定度 = 5 × 10^(-1) = 0.5
-        #   "0.0802(73)" → 0.0802, 括号值=73, 小数位=4 → 不确定度 = 73 × 10^(-4) = 0.0073
-        #   "790(3)" → 790, 括号值=3, 无小数点 → 不确定度 = 3
-        if '.' in base_str:
-            decimal_places = len(base_str.split('.')[1])
-            uncertainty = paren_val * (10 ** (-decimal_places))
+        # L-12 fix: 小数位只由 mantissa (指数前部分) 决定, 再叠加指数偏移 —
+        # 旧实现把 "1.2e-5(3)" 的 '2e-5' 当小数位 → 不确定度 3e-4, 偏差 100 倍:
+        #   "776.2(5)" → mantissa=776.2, 小数位=1 → 5 × 10^(-1) = 0.5
+        #   "0.0802(73)" → mantissa=0.0802, 小数位=4 → 73 × 10^(-4) = 0.0073
+        #   "790(3)" → mantissa=790, 无小数点 → 不确定度 = 3
+        #   "1.2e-5(3)" → mantissa=1.2, 小数位=1, 指数=-5 → 3 × 10^(-1-5) = 3e-6
+        #   "1200(5)e3" → mantissa=1200, 指数=+3 → 5 × 10^3 = 5000
+        exp_offset = 0
+        mantissa = base_str
+        me = re.match(r'^(.+?)[eE]([+-]?\d+)$', base_str)
+        if me:
+            mantissa = me.group(1)
+            exp_offset += int(me.group(2))
+        if exp_str:
+            exp_offset += int(exp_str[1:])  # group 形如 "e3"/"E-2", 去掉 e/E 前缀
+
+        if '.' in mantissa:
+            decimal_places = len(mantissa.split('.')[1])
+            uncertainty = paren_val * (10 ** (-decimal_places + exp_offset))
         else:
-            uncertainty = paren_val
+            uncertainty = paren_val * (10 ** exp_offset)
+
+        # L-12: 括号后的指数后缀同时作用于数值本身 (1200(5)e3 → 1.2e6)
+        numeric_value = base * (10 ** exp_offset) if exp_str else base
 
         return ParsedResult(
-            numeric_value=base,
+            numeric_value=numeric_value,
             uncertainty=uncertainty,
             matched_parser=self.name,
         )
@@ -352,6 +410,39 @@ class RangeExpressionParser(ValueParser):
         )
 
 
+class SexagesimalParser(ValueParser):
+    """优先级 5: 处理 sexagesimal 时角/赤纬 (M-32 fix)。
+
+    "12:34:56.7" → 十进制度 = 12 + 34/60 + 56.7/3600 = 12.5824
+    "12:34" → 2 段也支持; 分/秒必须 < 60, 首段 |值| < 360
+    (排除 "2024:01:01" 类日期串误匹配)。
+    """
+    name = "sexagesimal"
+    priority = 5
+
+    def try_parse(self, value: str) -> ParsedResult | None:
+        v = _normalize(value)
+        # 去掉前缀
+        v = _PREFIX_RE.sub('', v).strip()
+        m = _SEXAGESIMAL_RE.match(v)
+        if not m:
+            return None
+
+        hours = _parse_float(m.group(1))
+        minutes = _parse_float(m.group(2))
+        seconds = _parse_float(m.group(3)) if m.group(3) else 0.0
+        if hours is None or minutes is None or seconds is None:
+            return None
+        # 合法性: 分/秒 < 60, 首段 |值| < 360 (排除日期等误匹配)
+        if minutes >= 60 or seconds >= 60 or abs(hours) >= 360:
+            return None
+
+        return ParsedResult(
+            numeric_value=hours + minutes / 60.0 + seconds / 3600.0,
+            matched_parser=self.name,
+        )
+
+
 class NumericFallbackParser(ValueParser):
     """优先级 99: 纯数值兜底。"""
     name = "numeric_fallback"
@@ -379,9 +470,13 @@ def _get_registry() -> ValueParserRegistry:
     if _registry is None:
         _registry = ValueParserRegistry()
         _registry.register(PrefixCleaner())
+        # M-32 fix: 不对称误差解析器必须在 ExplicitUncertaintyParser 之前
+        _registry.register(AsymmetricErrorParser())
         _registry.register(ExplicitUncertaintyParser())
         _registry.register(ParenUncertaintyParser())
         _registry.register(RangeExpressionParser())
+        # M-32 fix: sexagesimal "12:34:56.7" (转十进制度)
+        _registry.register(SexagesimalParser())
         _registry.register(NumericFallbackParser())
         _load_custom_parsers(_registry)
     return _registry

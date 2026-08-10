@@ -4,6 +4,9 @@ gen_catalog_schema.py — VizieR 目录 schema → 配置扩展生成器 (V4.2)
 数据源 (项目根):
   - vizier_catalogs_schema.json    (23 个 VizieR 目录的列定义: 列名/unit/ucd/datatype)
   - query_results_progress_final.json (25 个天体的多目录查询结果)
+  - subgraphs/subgraph2/catalog/catalog_units.json (M-37: 列键集并入兜底源,
+    否则 3c 的 S159MHz/e_S159MHz、ucac 的 f.mag、fermi 的 AV(HK)/AV(JH)
+    逃逸 database_catalog_properties 兜底 → 运行时 map_to_target_schema 返回 None)
 
 输出 (幂等合并到 configs/schema_mapping.yaml):
   1. 字段别名扩展:
@@ -78,7 +81,14 @@ UNIT_PATCH: dict[str, dict[str, float]] = {
 
 # 仅 query_results 实际使用的列 (精确性优先), catalog 兜底覆盖 schema 全量
 def _load_used_columns() -> tuple[set[str], dict[str, dict]]:
-    """返回 (实际使用列名集合, 全部列名→元信息)。"""
+    """返回 (实际使用列名集合, 全部列名→元信息)。
+
+    M-37 fix: 列源并入 subgraphs/subgraph2/catalog/catalog_units.json 键集
+    (与 vizier_catalogs_schema.json 并集)。此前 3c 的 S159MHz/e_S159MHz、
+    ucac 的 f.mag、fermi 的 AV(HK)/AV(JH) 不在 schema 列集内, 逃逸
+    database_catalog_properties 兜底 → 运行时 map_to_target_schema 返回 None,
+    记录保留原始列名与单位绕过兜底。
+    """
     schema = json.load(open(_SCHEMA_JSON, encoding='utf-8'))
     col_info: dict[str, dict] = {}
     for cat, c in schema.items():
@@ -87,6 +97,21 @@ def _load_used_columns() -> tuple[set[str], dict[str, dict]]:
                 col_info[colname] = meta
             elif not col_info[colname].get('ucd') and meta.get('ucd'):
                 col_info[colname] = meta
+    # M-37: catalog_units.json (catalog → {列名: 单位}) 键集并入兜底列源
+    # 注意: _PROJ_ROOT 指向仓库根 (JSON 数据源所在), catalog_units.json
+    # 在 astroquery_final 内, 需从脚本位置 (scripts/../..) 定位
+    cu_path = os.path.join(os.path.dirname(__file__), '..', '..', 'subgraphs', 'subgraph2', 'catalog', 'catalog_units.json')
+    if os.path.exists(cu_path):
+        cu = json.load(open(cu_path, encoding='utf-8'))
+        for _cat, cols in cu.items():
+            if not isinstance(cols, dict):
+                continue
+            for colname, unit in cols.items():
+                meta = {"unit": unit}
+                if colname not in col_info:
+                    col_info[colname] = meta
+                elif not col_info[colname].get('unit') and unit:
+                    col_info[colname] = dict(col_info[colname], unit=unit)
     results = json.load(open(_RESULTS_JSON, encoding='utf-8'))
     used: set[str] = set()
     for cat, objs in results.items():

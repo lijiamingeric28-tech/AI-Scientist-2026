@@ -32,9 +32,10 @@ from pydantic import BaseModel, ValidationError
 from .property_standardization import property_standardization_node
 from .schemas import Sg1Input, Sg1Output, Sg2Input, Sg2Output, Sg3Input, Sg3Output
 from .state import MainGraphState
-from .subgraph1.graph import create_intent_clarification_subgraph
-from .subgraph2.graph import create_retrieval_subgraph
-from .subgraph3.graph import create_extraction_subgraph
+# 子图代码已迁移到 subgraphs/ (见 docs/OPTIMIZATION_PLAN.md: "实际代码已迁移到 subgraphs/")
+from subgraphs.subgraph1.graph import create_intent_clarification_subgraph
+from subgraphs.subgraph2.graph import create_retrieval_subgraph
+from subgraphs.subgraph3.graph import create_extraction_subgraph
 
 logger = logging.getLogger(__name__)
 
@@ -68,14 +69,6 @@ def _shared_checkpointer(config: RunnableConfig = None):
         return None
     return (config.get("configurable") or {}).get("checkpointer")
 
-
-_stage_times: Dict[str, float] = {}
-
-def _timed(stage: str, start: float) -> None:
-    """记录阶段耗时到全局字典中。"""
-    elapsed = time.time() - start
-    _stage_times[stage] = elapsed
-    logger.info(f"[TIMER] {stage}: {elapsed:.1f}s")
 
 def _err(node: str, exc: Exception) -> Dict:
     """构造一条标准错误日志"""
@@ -165,7 +158,7 @@ def property_standardization_adapter(state: MainGraphState) -> Dict:
     P1 适配器：调用性质标准化节点
 
     输入：target_entity, user_query, requested_properties
-    输出：simbad_info, property_spec, target_schema
+    输出：simbad_info, property_spec（target_schema 由 quality_adapter 统一生成，L-02）
     """
     logger.info("[P1 Adapter] 性质标准化开始")
 
@@ -265,6 +258,10 @@ def retrieval_node(state: MainGraphState, config: RunnableConfig = None) -> Dict
     except Exception as exc:
         logger.exception("[Node 2] 子图执行失败")
         fallback = _empty_retrieval()
+        # M-01 fix: 异常路径保留 P1 的 simbad_info（与成功路径 B3 fix 语义一致），
+        # 仅标注检索失败 —— 在空壳键（main_id=None/aliases=[]）之上叠加 P1 已解析字段，
+        # 不覆盖掉 main_id/otype 等供下游使用
+        fallback["simbad_info"] = {**fallback["simbad_info"], **p1_simbad, "status": "failed"}
         fallback["error_log"] = [_err("retrieval_node", exc)]
         return fallback
 

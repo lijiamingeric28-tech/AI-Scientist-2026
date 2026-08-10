@@ -18,7 +18,15 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 from .config import get_settings
+from .adapters import _shared_checkpointer
 from .state import MainGraphState
+
+try:
+    from langgraph.errors import GraphInterrupt
+except ImportError:  # pragma: no cover — 旧版 langgraph 兼容
+    GraphInterrupt = Exception
+
+from langchain_core.runnables import RunnableConfig
 
 logger = logging.getLogger(__name__)
 
@@ -57,9 +65,13 @@ def generate_standard_units(property_spec: List[Dict]) -> Dict[str, str]:
 # quality 节点
 # ══════════════════════════════════════════════════════════════
 
-def quality_node(state: MainGraphState) -> Dict:
+def quality_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
     """
     调用子图4 质量管线。
+
+    H1 fix: config 注入 — quality_pipeline 内 HumanReview 用 interrupt() HITL,
+    必须与子图1/2/3 一样从主图 config 取共享 checkpointer, 否则嵌套图的
+    GraphInterrupt 被 except 吞掉, 整条质量管线静默跳过。
 
     输入：state.final_output（grounded_data）+ state.property_spec
     输出：state.quality_report（子图4 的完整输出状态）
@@ -113,6 +125,28 @@ def quality_node(state: MainGraphState) -> Dict:
         research_domain = get_settings().default_research_domain
         initial_state["context_state"]["research_domain"] = research_domain
 
+        # P2-1: SIMBAD otype 覆盖注入 — 上游 P1 已解析出 otype 时, 写入
+        # entity_type_overrides 供 insights 实体类型推断优先采用 SIMBAD 结果。
+        # 未传 (无 simbad_info / 无 otype) 时零影响: 不写该键, 推断链不变。
+        simbad_info = state.get("simbad_info")
+        otype = ""
+        if isinstance(simbad_info, dict):
+            otype = simbad_info.get("otype") or simbad_info.get("object_type") or ""
+        if otype:
+            overrides: Dict[str, str] = {}
+            # source_id 级映射: database 类型 source 全部用该 otype
+            for src in (final_output.get("sources") or []):
+                if src.get("source_type") == "database" and src.get("source_id"):
+                    overrides[str(src["source_id"])] = str(otype)
+            # 无 source 级信息时用 default 键
+            if not overrides:
+                overrides["default"] = str(otype)
+            initial_state["context_state"]["entity_type_overrides"] = overrides
+            logger.info(
+                "[Quality Adapter] SIMBAD otype 覆盖注入: otype=%s, %d 个 source",
+                otype, len(overrides)
+            )
+
         # 同步设置 configs 的全局领域（子图4 内部靠 get_research_domain 决定加载哪个配置段）
         from quality_pipeline.configs import set_research_domain
         set_research_domain(research_domain)
@@ -132,12 +166,27 @@ def quality_node(state: MainGraphState) -> Dict:
         len(target_schema.get("fields", [])), len(standard_units)
     )
 
-    # 3. 运行质量管线
+    # 3. 运行质量管线 (H1 fix: 共享 checkpointer 注入, 支持 quality 层 HITL)
     try:
-        quality_graph = build_quality_graph().compile()
-        result = quality_graph.invoke(initial_state)
+        quality_graph = build_quality_graph().compile(
+            checkpointer=_shared_checkpointer(config)
+        )
+        result = quality_graph.invoke(initial_state, config)
         logger.info("[Quality Adapter] 质量管线完成")
         return {"quality_report": result}
+    except GraphInterrupt:
+        # H1 fix: HumanReview 的 interrupt 不是失败 — 上浮主图 HITL 循环。
+        if _shared_checkpointer(config) is None:
+            logger.warning("[Quality Adapter] HITL 需要 checkpointer, 降级跳过质量管线")
+            return {
+                "error_log": [{
+                    "node": "quality_adapter",
+                    "error": "HumanReview HITL 需要 checkpointer (config 未注入)",
+                    "timestamp": datetime.datetime.now().isoformat(),
+                }],
+                "quality_report": {"skipped": True, "reason": "hitl_needs_checkpointer"},
+            }
+        raise
     except Exception as exc:
         logger.error(f"[Quality Adapter] 质量管线执行失败: {exc}")
         logger.debug(traceback.format_exc())

@@ -19,6 +19,22 @@ def _safe(val, default=""):
     return val if val is not None else default
 
 
+# P1-1: RAG 性质库匹配器 (进程级懒加载单例; rag_properties 缺失 → None, 绝不崩溃)
+_rag_matcher = None
+
+
+def _get_rag_matcher():
+    global _rag_matcher
+    if _rag_matcher is None:
+        try:
+            from ...tools.insight.rag_property_matcher import RagPropertyMatcher
+            _rag_matcher = RagPropertyMatcher()
+        except Exception as e:
+            logger.warning("[ContextBuilder] RAG 性质库匹配器不可用: %s", e)
+            _rag_matcher = None
+    return _rag_matcher
+
+
 def build_field_summaries(state: dict[str, Any]) -> list[dict]:
     """按 (entity_type, entity_name, field_name, source_type) 聚合字段摘要。
 
@@ -29,6 +45,8 @@ def build_field_summaries(state: dict[str, Any]) -> list[dict]:
             value_range, values_sample,
             units, methods, conditions,
             extraction_confidences, context_snippets,
+            (P1-1, database only) rag_description, rag_unit,
+            (P1-2, target_schema 命中) standard_unit, semantic_type,
         }]
     """
     data = state.get("data_state", {}).get("current_data", {}) or {}
@@ -36,16 +54,32 @@ def build_field_summaries(state: dict[str, Any]) -> list[dict]:
     sources = {s.get("source_id", ""): s for s in (data.get("sources", []) or [])}
     # V4 fix: 实体类型规范化 — "Unknown"/空 → 按目录/字段/语义类型推断 (Simbad otypes)
     domain = (state.get("context_state") or {}).get("research_domain", "astrophysics")
-    from ...tools.insight.entity_types import normalize_entity_type
+    # P2-1: SIMBAD otype 覆盖 — 最高优先级 (source_id 级, 无则 default 键)
+    overrides = (state.get("context_state") or {}).get("entity_type_overrides") or {}
+    # P1-2: PropertySpec 权威单轨 — target_schema (RAG P1 生成, quality_adapter 注入)
+    # 字段名 = property_id; 命中时向字段摘要注入 standard_unit + semantic_type
+    ctx = state.get("context_state") or {}
+    ts_fields = (ctx.get("target_schema") or {}).get("fields") or []
+    ts_by_name = {str(f.get("name", "") or "").lower(): f
+                  for f in ts_fields if f.get("name")}
+    from ...tools.insight.entity_types import normalize_entity_type, resolve_otype_value
 
     groups: dict[tuple, dict] = {}
     # V3.4 fix: database_catalog_properties → 语义聚合细分 (raw_column 前缀归类)
     for r in records:
         sid = r.get("source_id", "")
         src = sources.get(sid, {})
-        # V4 fix: 实体类型规范化 — "Unknown"/空 → 按目录/字段/语义类型推断
-        et = normalize_entity_type(r.get("entity_type", "") or "",
-                                   r.get("field_name", ""), src, domain)
+        # P2-1: 覆盖命中 → 用 SIMBAD otype 规范化并标注来源; 未命中 → 原推断链
+        ov = (overrides.get(sid) if sid in overrides
+              else (overrides.get("default") if "default" in overrides else None))
+        if ov:
+            et = resolve_otype_value(ov, r.get("field_name", ""), src, domain)
+            et_source = "simbad_override"
+        else:
+            # V4 fix: 实体类型规范化 — "Unknown"/空 → 按目录/字段/语义类型推断
+            et = normalize_entity_type(r.get("entity_type", "") or "",
+                                       r.get("field_name", ""), src, domain)
+            et_source = None
         en = r.get("entity_name", "") or ""
         fn = r.get("field_name", "")
         stype = src.get("source_type", "paper")
@@ -66,6 +100,8 @@ def build_field_summaries(state: dict[str, Any]) -> list[dict]:
             "methods": set(), "conditions": set(),
             "confidences": [], "snippets": [],
             "source_meta": set(),
+            # P2-1: SIMBAD otype 覆盖时标注实体类型来源
+            "entity_type_source": et_source,
         })
         g["source_ids"].add(sid)
         g["values"].append(r.get("field_value"))
@@ -105,7 +141,7 @@ def build_field_summaries(state: dict[str, Any]) -> list[dict]:
         elif len(numeric) == 1:
             value_range = [numeric[0], numeric[0]]
 
-        result.append({
+        summary = {
             "entity_type": g["entity_type"],
             "entity_name": g["entity_name"],
             "field_name": g["field_name"],
@@ -122,7 +158,29 @@ def build_field_summaries(state: dict[str, Any]) -> list[dict]:
                 if g["confidences"] else None
             ),
             "context_snippets": g["snippets"][:3],
-        })
+        }
+        # P2-1: 仅覆盖命中时标注来源 (未命中不新增键, 保持原输出形状)
+        if g.get("entity_type_source"):
+            summary["entity_type_source"] = g["entity_type_source"]
+        # P1-1: RAG 性质库 — database 字段目录口径解读 (0 LLM 纯查找, 无匹配省略)
+        if g["source_type"] == "database":
+            matcher = _get_rag_matcher()
+            entry = matcher.lookup(g["entity_type"], g["field_name"]) if matcher else None
+            if entry:
+                rag_desc = str(entry.get("description", "") or "")[:150]
+                if rag_desc:
+                    summary["rag_description"] = rag_desc
+                # rag_unit 仅在记录无 unit 时作为候选 (不覆盖实测单位)
+                if not g["units"] and entry.get("unit"):
+                    summary["rag_unit"] = str(entry["unit"])
+        # P1-2: PropertySpec 权威单轨 — target_schema 命中注入 standard_unit + semantic_type
+        ts = ts_by_name.get(g["field_name"].lower())
+        if ts:
+            if ts.get("standard_unit"):
+                summary["standard_unit"] = ts["standard_unit"]
+            if ts.get("semantic_type"):
+                summary["semantic_type"] = ts["semantic_type"]
+        result.append(summary)
     return result
 
 
@@ -252,8 +310,9 @@ def build_quality_context(state: dict[str, Any]) -> dict:
         "route_counts": quality.get("route_counts", {}),
         "anomalies": (quality.get("multi_source_variance") or {}).get("anomaly_count", 0),
         "variance_groups": (quality.get("multi_source_variance") or {}).get("variance_count", 0),
-        "conflict_tatus": resolution.get("status"),
-        "conflict_oute": resolution.get("route_decision"),
+        # M-33 fix: 键名拼写修正 (recommendation_agent 读取 conflict_status 做主题词映射)
+        "conflict_status": resolution.get("status"),
+        "conflict_outcome": resolution.get("route_decision"),
         "normalization_ods": mods.get("total", 0),
         "llm_calls": wf.get("llm_call_count", 0),
         "tool_calls": wf.get("tool_call_count", 0),

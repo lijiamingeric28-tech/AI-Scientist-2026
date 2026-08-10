@@ -129,6 +129,10 @@ def main() -> int:
     except KeyboardInterrupt:
         log.warning("用户中断")
         return 130
+    except EOFError:
+        # L-03 fix: stdin 关闭（如管道输入提前结束）按取消处理，退出码 0
+        log.warning("输入流关闭（EOF），按取消处理")
+        return 0
 
     final_output = state.get("final_output") or {}
 

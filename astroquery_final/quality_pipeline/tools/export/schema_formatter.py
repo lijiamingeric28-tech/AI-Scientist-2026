@@ -77,9 +77,12 @@ def format_to_schema(
                 ordered_wide[fn] = json_wide[fn]
                 ordered_wide[f"{fn}_unit"] = json_wide.get(f"{fn}_unit", [])
         # 追加不在 schema 中的字段
+        # M12 fix: extra 字段同步保留 _unit 单位列 (此前 json_wide 丢单位列,
+        # 与 csv_wide 不一致 — csv_wide 保留单位列而 json_wide 丢失)
         for fn in json_wide:
             if fn not in ordered_wide and fn != "source_id" and not fn.endswith("_unit"):
                 ordered_wide[fn] = json_wide[fn]
+                ordered_wide[f"{fn}_unit"] = json_wide.get(f"{fn}_unit", [])
         structured["json_wide"] = ordered_wide
 
     logger.info("[SchemaFormatter] %d fields ordered, %d format issues",

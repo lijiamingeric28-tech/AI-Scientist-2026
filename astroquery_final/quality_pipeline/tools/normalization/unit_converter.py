@@ -221,9 +221,14 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
             # val × factor(unit) 先到组基准, 再 ÷ factor(target) 到目标单位。
             # (此前只做 "→组基准" 单向换算却把 field_unit 替换为任意 target,
             #  如 5 G→"5.0 T" 静默错误; offset 因子走 _apply_factor 原路径)
+            # M-20 fix: 两段式同时处理两侧 offset —
+            # 先应用源因子到组基准, 目标侧为 offset 因子时对其做逆运算
+            # (此前目标侧 offset 被丢弃: 材料段基准 °C + target_schema 标准 K
+            #  时 25°C 静默转成 25 K; 现在 25°C → 298.15 K)
             tf = cat_map.get((matched_cat, target), {}).get("factor", 1.0)
-            if isinstance(factor, str) or isinstance(tf, str) or float(tf) == 1.0:
+            if isinstance(tf, str):
                 new_val = _apply_factor(nv, factor)
+                new_val = _apply_factor_inverse(new_val, tf)
             else:
                 new_val = _apply_factor(nv, factor) / float(tf)
             log.append({
@@ -258,3 +263,24 @@ def _apply_factor(val: float, factor) -> float:
     elif isinstance(factor, str) and factor.startswith("offset_-"):
         return val - float(factor.replace("offset_-", ""))
     return val * float(factor)
+
+
+def _apply_factor_inverse(val: float, factor) -> float:
+    """M-20 fix: offset 因子的逆运算 (组基准 → 目标单位)。
+
+    _apply_factor 把 单位→组基准, 逆运算把 组基准→目标单位:
+    乘法因子取倒数, offset 因子对偏移量取反。
+    """
+    if isinstance(factor, str) and factor == "offset_273.15":
+        return val + 273.15  # °C → K (逆: K → °C 为 -273.15)
+    elif isinstance(factor, str) and factor == "offset_-273.15":
+        return val - 273.15  # K → °C (逆: °C → K 为 +273.15)
+    elif isinstance(factor, str) and factor == "offset_32_5_9":
+        return val * 9.0 / 5.0 + 32.0  # °C → °F (逆: °F → °C)
+    elif isinstance(factor, str) and factor == "offset_32_5_9_273_15":
+        return (val - 273.15) * 9.0 / 5.0 + 32.0  # K → °F (逆: °F → K)
+    elif isinstance(factor, str) and factor.startswith("offset_-"):
+        return val + float(factor.replace("offset_-", ""))
+    elif isinstance(factor, str) and factor.startswith("offset_"):
+        return val - float(factor.replace("offset_", ""))
+    return val / float(factor)

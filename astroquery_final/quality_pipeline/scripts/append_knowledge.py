@@ -142,16 +142,6 @@ R ∝ P^-0.11 — 半径是行星大气保持历史的探针。
 判定线索: 半径 2-3 R⊕ 恰好落在间隙内的行星记录本身合理 (过渡态), 但质量
 缺失时应标注不确定性; 热木星 P<10 天 (形成于数 AU 外后迁移而来)。""",
   source="CKS 样本; 2016A&A 589A 75M; TOI-1075b 研究", confidence="consensus"),
- dict(id="m31_galaxy_reference", title="M31 (仙女座) 参考参数", category="reference_range",
-  tags=["m31", "andromeda", "local_group"], applies_to={"fields": ["distance", "metallicity", "stellar_mass"], "entities": ["galaxy"]},
-  content="""M31 是本星系群最大旋涡星系, 常用作河外参考锚点:
-- 距离 ~780 kpc (Cepheid/TRGB/SN Ia 多方法一致, 方法间差异 <10%)
-- 恒星质量 ~1e11 Msun, 动力学质量 ~1.5e12 Msun (含暗物质晕)
-- 金属丰度 [Fe/H] ~ -0.3 (盘), 旋臂富金属区近太阳值
-- 与银河系相距 ~800 kpc, 接近速度 ~123 km/s (未来并合)
-物理原理: 距离阶梯 (Cepheid PL → TRGB → SN Ia) 在此校准;
-判定线索: 记录 M31 距离 7.8 kpc 或 78 Mpc = 单位/数量级混淆。""",
-  source="McConnachie 2012; Local Group 综述; 距离阶梯文献", confidence="consensus"),
 ]
 
 # ══════════════════════════════════════════════════════════
@@ -517,18 +507,6 @@ METHODOLOGY = [
 单一 photo-z 高红移结论必须标注不确定性;
 z > 4 时 photo-z 与 spec-z 系统性偏差是常态而非数据错误。""",
   source="COSMOS/EDisCS photo-z 研究; PAU 窄带", confidence="consensus"),
- dict(id="m31_distance_comparison", title="M31 距离多方法比较", category="methodology",
-  tags=["m31", "distance"], applies_to={"fields": ["distance"], "entities": ["galaxy"]},
-  content="""M31 距离 ~780 kpc 是河外距离阶梯的校准锚点:
-- Cepheid PL 关系 (Leavitt 律): 周期-光度关系的物理基础是 P ∝ ρ^(-1/2)
-  脉动周期-密度关系 + 质光关系
-- TRGB: 红巨星分支拐点的 I 带绝对星等近似恒定
-- SN Ia: Phillips 关系 (峰值光度-下降速率)
-方法间差异 <10% 属正常 (系统误差层级不同);
-判定线索: 单方法孤立异常 (如 700 vs 900 kpc) 需复核而非取平均 —
-通常指向 Cepheid 金属丰度修正或 TRGB 污染 (AGB 星混入);
-距离 7.8 kpc 或 78 Mpc 的记录 = 单位/数量级错误。""",
-  source="McConnachie 2012; Ferrarese 1996; Benedict 2002", confidence="consensus"),
  dict(id="agn_host_galaxy_interpretation", title="AGN 宿主星系解读", category="methodology",
   tags=["agn", "host"], applies_to={"entities": ["agn", "quasar"]},
   content="""AGN 宿主星系性质解读:

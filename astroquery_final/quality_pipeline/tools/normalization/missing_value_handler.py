@@ -25,8 +25,14 @@ def handle_missing_values(records: list[dict], strategy: str = "mark",
         for rec in records:
             v = rec.get("field_value")
             if v is None or (isinstance(v, str) and v.strip() == ""):
-                rec["field_value"] = fill_value
-                marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "filled_value"})
+                # M-18 fix: 只有实际写入非 None 填充值才计 filled_value —
+                # 此前 fill_value=None 时原样保留缺失值却虚报修复量
+                if fill_value is not None:
+                    rec["field_value"] = fill_value
+                    marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"), "action": "filled_value"})
+                else:
+                    marked.append({"record_id": rec.get("record_id"), "field": rec.get("field_name"),
+                                   "action": "marked", "issue": "empty_value_no_default"})
             from ...tools._parse_utils import is_numeric
             if not rec.get("field_unit") and is_numeric(rec.get("field_value")):  # V4 fix: 空串也算缺失
                 tu = std.get(rec.get("field_name", ""))

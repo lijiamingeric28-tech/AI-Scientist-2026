@@ -173,7 +173,6 @@
 | `trace_id`              | string | ✅   | 追踪ID                                                            |
 | `provenance`            | object | ✅   | 溯源信息                                                            |
 | `extraction_method`     | string | ✅   | 提取方法                                                            |
-| `constraints`           | array  | ✅   | 限制条件验证结果                                                        |
 | `extraction_confidence` | number | ⚠️  | 提取模型对该条记录的置信度（0.0-1.0）                                          |
 | `context_snippet`       | string | ⚠️  | 提取该值时的原文上下文（~200字符），包含观测设备、波段、数据处理方法等                           |
 | `measurement_method`    | string | ⚠️  | 从上下文中识别出的观测方法/仪器（spectroscopy/photometry/radio interferometry等） |
@@ -223,53 +222,6 @@
 | `csv_parsing` | CSV文件解析  |
 |               |          |
 |               | ---      |
-
-### 3.6 Constraints字段
-
-#### 3.6.1 概述
-
-**目的**: 记录每条数据是否符合用户的限制条件  
-**位置**: 在每条record中  
-**用途**: 供后续的精简/排序子图使用
-
-#### 3.6.2 结构
-
-```json
-"constraints": [
-  {
-    "name": "time_range",
-    "status": "verified"
-  },
-  {
-    "name": "redshift_range",
-    "status": "unverified"
-  }
-]
-```
-
-#### 3.6.3 字段说明
-
-| 字段       | 类型     | 必填  | 说明                             |
-| -------- | ------ | --- | ------------------------------ |
-| `name`   | string | ✅   | 限制条件的名称（与用户输入的constraints对应）   |
-| `status` | string | ✅   | 验证状态："verified" 或 "unverified" |
-
-#### 3.6.4 Status值
-
-| 值            | 说明          | 示例                              |
-| ------------ | ----------- | ------------------------------- |
-| `verified`   | 已验证符合限制条件   | 用户要求"year >= 2020"，数据来自2021年的论文 |
-| `unverified` | 未验证或不符合限制条件 | 用户要求"year >= 2020"，数据来自2016年的论文 |
-
-#### 3.6.5 常见Constraint类型
-
-| name                 | 说明      | 示例              |
-| -------------------- | ------- | --------------- |
-| `time_range`         | 时间范围    | "year >= 2020"  |
-| `redshift_range`     | 红移范围    | "z > 2"         |
-| `dm_range`           | DM色散量范围 | "DM > 500"      |
-| `luminosity_range`   | 光度范围    | "L > 10^42"     |
-| `observation_method` | 观测方法    | "spectroscopic" |
 
 ---
 

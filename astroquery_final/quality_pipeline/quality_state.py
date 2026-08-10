@@ -93,6 +93,8 @@ class ContextState(TypedDict, total=False):
     standard_units: dict[str, str]
     quality_rules: dict[str, Any]
     clarified_intent: dict[str, Any]
+    # P2-1: SIMBAD otype 实体类型覆盖 (source_id → otype; 无 source 级时 "default" 键)
+    entity_type_overrides: dict[str, Any]
 
 
 class DataState(TypedDict, total=False):
@@ -153,8 +155,10 @@ class WorkflowState(TypedDict, total=False):
     """loop_controller 决策的下一路由 (替代 _next_route)"""
 
     # ── V3.3: 每节点重试计数 ──
-    retry_by_node: dict[str, int]
-    """{node: count} — 每个子图节点的重试次数 (替代全局 retry_counter)"""
+    # M-02 fix: 允许 None — dispatch 边界用 None 重置 (走 _merge_dict 覆盖分支,
+    # {} 会被递归合并残留旧计数), 读取点统一用 (wf.get("retry_by_node") or {})
+    retry_by_node: dict[str, int] | None
+    """{node: count} — 每个子图节点的重试次数 (替代全局 retry_counter); None 表示已重置"""
 
     # ── V3.3: 来源处理队列 ──
     pending_sources: dict[str, list[str]]

@@ -6,7 +6,7 @@ AdaptiveThresholdEngine — 自适应阈值引擎 (V2.0 A1)
 根据三个维度动态调整质量阈值:
   1. Field Criticality: 关键字段 vs 辅助字段
   2. Sample Size: 小样本更宽松, 大样本更严格
-  3. Domain Tightness: 精确定量科学 vs 探索性科学
+  3. Domain Tightness: 探索性科学更宽松 (阈值更低), 精确定量科学更严格
 """
 
 from __future__ import annotations
@@ -81,6 +81,8 @@ class AdaptiveThresholdEngine:
             sample_factor = small_mult + (large_mult - small_mult) * (sample_size - small_n) / (large_n - small_n)
 
         # ── domain_factor: 领域调节 ──
+        # M-31 fix: 乘子方向 — 探索性 (exploratory_multiplier=0.80) 更宽松,
+        # 精确 (precise_multiplier=1.30) 更严格; 配置注释同步修正
         tightness = self._cfg.get("domain_tightness", {}).get(self._domain, "normal")
         multipliers = self._cfg.get("domain_tightness", {})
         domain_factor = multipliers.get(f"{tightness}_multiplier", 1.0)

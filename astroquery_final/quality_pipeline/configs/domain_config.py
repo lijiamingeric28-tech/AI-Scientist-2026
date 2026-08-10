@@ -18,7 +18,9 @@ KNOWLEDGE_DOMAIN = "astrophysics"               # 知识库子目录
 
 # ── Insights 检索限制 ──
 KB_TOP_K = 8               # 知识库检索 top_k
+KB_SEMANTIC_WEIGHT = 0.5   # P1-4: TF-IDF 语义分权重 (final = rule_score + w * tfidf_cosine)
 INSIGHT_BATCH_SIZE = 6     # V3.5: FieldInsight 字段分批大小 (prompt 过大时 LLM 覆盖骤降)
+MAX_INSIGHT_BATCHES = 3    # P0-4: FieldInsight 最大批次数 — 超出部分不再调 LLM (诚实降级)
 MAX_FIELD_SUMMARIES_CHARS = 12000   # field_summaries prompt 截断
 MAX_SOURCE_SUMMARIES_CHARS = 6000   # source_summaries prompt 截断
 MAX_INSIGHTS_CHARS = 10000          # field_insights prompt 截断

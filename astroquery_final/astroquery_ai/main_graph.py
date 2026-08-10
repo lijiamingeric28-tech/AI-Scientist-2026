@@ -242,7 +242,14 @@ def run_pipeline(
     result = app.invoke(initial, config)
     while isinstance(result, dict) and result.get("__interrupt__"):
         payloads = result["__interrupt__"]
-        answer = _prompt_for_interrupt(payloads)
+        try:
+            answer = _prompt_for_interrupt(payloads)
+        except EOFError:
+            # L-03 fix: stdin 关闭（如 `astroquery-ai ... < /dev/null`）时
+            # input() 抛 EOFError —— 视为用户取消，返回当前 state，
+            # 遵守"永远出 JSON"约定，不向调用方抛栈
+            logger.warning("[Pipeline] 输入流关闭（EOF），按取消处理")
+            return result
         result = app.invoke(Command(resume=answer), config)
 
     logger.info("[Pipeline] 结束 query_id=%s", qid)

@@ -5,7 +5,7 @@
 
 import pytest
 
-from astroquery_ai.subgraph3.graph import create_extraction_subgraph
+from subgraphs.subgraph3.graph import create_extraction_subgraph
 
 SG3_INPUT = {
     "query_id": "test-3",
@@ -45,7 +45,7 @@ def test_empty_pdfs_zero_external():
 
 def test_figure_extractor_empty_input():
     """figure_extractor 空页面 → figure_evidence 空列表（不写盘）"""
-    from astroquery_ai.subgraph3.nodes.figure_extractor import figure_extractor
+    from subgraphs.subgraph3.nodes.figure_extractor import figure_extractor
 
     out = figure_extractor({
         "paper_image_paths": {},
@@ -62,7 +62,7 @@ def test_figure_extractor_saves_relevant_only(tmp_path, monkeypatch):
     from PIL import Image
 
     # nodes/__init__.py 把 figure_extractor 导出为函数，必须 importlib 取模块
-    fe_mod = importlib.import_module("astroquery_ai.subgraph3.nodes.figure_extractor")
+    fe_mod = importlib.import_module("subgraphs.subgraph3.nodes.figure_extractor")
 
     # 测试页面图（100x200 白图）
     page_img = Image.new("RGB", (100, 200), "white")

@@ -57,7 +57,7 @@ def export_formats(
             _csv_escape(str(r.get("entity_type", ""))),
             _csv_escape(str(r.get("entity_name", ""))),
             _csv_escape(str(r.get("field_name", ""))),
-            _csv_escape(str(r.get("field_value", ""))),
+            _csv_escape(str(r.get("field_value") or "")),  # M14 fix: None → 空单元格 (原输出 "None")
             _csv_escape(str(r.get("field_unit") or "")),
             _csv_escape(str(prov.get("page", ""))),
             _csv_escape(str(prov.get("bbox", ""))),
@@ -95,10 +95,12 @@ def export_formats(
         if fn in sd:
             collapsed_groups += 1
             existing = sd[fn]
-            if existing.get("value") != fv:
-                collapsed_records += 1
-                existing.setdefault("all_values", [existing["value"]])
-                existing["all_values"].append(fv)
+            # M13 fix: 真 LWW — 折叠时同步更新 existing["value"]=fv (最后值胜出),
+            # 此前首值固定且按首值去重追加 ([5,5,6] 第二个 5 静默丢失)
+            existing.setdefault("all_values", [existing["value"]])
+            existing["all_values"].append(fv)  # M13: 无条件追加, json_wide 零丢失
+            existing["value"] = fv
+            collapsed_records += 1  # M13: 每次折叠覆盖一条记录
         else:
             sd[fn] = {"value": fv, "unit": fu}
 
@@ -155,7 +157,12 @@ def export_formats(
 
 
 def _csv_escape(val: str) -> str:
-    """CSV 转义: 含逗号/引号/换行时加双引号包裹。"""
-    if any(c in val for c in (',', '"', '\n', '\r')):
+    """CSV 转义: 含逗号/引号/换行时, 或去除前导空白后以 = + - @ / tab 开头时加双引号包裹。
+
+    M10 fix: field_value/context_snippet 来自论文正文提取 (外部不可信),
+    以公式前缀开头时 Excel 打开会按公式执行 (OWASP CSV Injection), 强制整体加引号中和。
+    """
+    if any(c in val for c in (',', '"', '\n', '\r')) or \
+            val.lstrip().startswith(("=", "+", "-", "@", "\t")):
         return '"' + val.replace('"', '""') + '"'
     return val

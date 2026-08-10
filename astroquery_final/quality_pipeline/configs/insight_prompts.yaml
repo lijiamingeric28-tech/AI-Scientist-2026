@@ -15,6 +15,12 @@ field_insight:
     normal for a galaxy but impossible for a star.
     {entity_type_reference}
 
+    P1-6 rules:
+    - If an observation value exceeds the entity type's typical range,
+      set "value_outside_typical_range": true and give a possible cause.
+    - Only cite kb:ID values that appear in the RELEVANT DOMAIN KNOWLEDGE
+      section. Never invent or guess kb references.
+
     Return JSON:
     {"insights": [{
       "entity_type": "...", "entity_name": "...", "field_name": "...",
@@ -36,6 +42,10 @@ field_insight:
 
     QUALITY CONTEXT:
     {quality_context}
+
+    STANDARD UNITS (authoritative target units per field; interpret
+    unit-less records against these and flag unit anomalies):
+    {standard_units}
 
     {knowledge_block}
 

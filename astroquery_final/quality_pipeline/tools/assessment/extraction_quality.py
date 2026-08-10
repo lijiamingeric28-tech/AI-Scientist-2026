@@ -181,7 +181,11 @@ def check_extraction_quality(records: list[dict]) -> dict[str, Any]:
         e_total = len(erecs)
         e_mt = sum(1 for r in erecs if not r.get("trace_id"))
         e_mp = sum(1 for r in erecs if not (r.get("provenance") or {}).get("page"))
-        e_mb = sum(1 for r in erecs if not ((r.get("provenance") or {}).get("bbox") or [None]*4)[0:4])
+        # L-11 fix: 与主循环 :86 判定对齐 — 旧写法 not (...)[0:4] 无论缺失/非4元
+        # /合法恒为 False, per-entity 分数从不因缺 bbox 扣分
+        e_mb = sum(1 for r in erecs
+                   if not (isinstance((r.get("provenance") or {}).get("bbox"), list)
+                           and len((r.get("provenance") or {}).get("bbox", [])) == 4))
         # Simplified per-entity score
         e_score = 1.0 - (0.4 * e_mt + 0.3 * e_mp + 0.3 * e_mb) / max(e_total, 1)
         per_entity_scores[elabel] = round(max(0.0, min(1.0, e_score)), 4)

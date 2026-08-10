@@ -29,11 +29,11 @@ from .utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-from .data_assessment.assessment_graph import build_assessment_graph
-from .data_normalization.normalization_graph import build_normalization_graph
-from .data_conflict.conflict_graph import build_conflict_graph
-from .data_export.export_graph import build_export_graph
-from .data_insights.insights_graph import build_insights_graph  # V3.4
+from subgraphs.data_assessment.assessment_graph import build_assessment_graph
+from subgraphs.data_normalization.normalization_graph import build_normalization_graph
+from subgraphs.data_conflict.conflict_graph import build_conflict_graph
+from subgraphs.data_export.export_graph import build_export_graph
+from subgraphs.data_insights.insights_graph import build_insights_graph  # V3.4
 
 from .routers import (
     # 节点 (控制层)
@@ -66,7 +66,7 @@ NODE_INSIGHTS = "insights_graph"
 
 def human_review_node(state: QualityGraphState) -> dict[str, Any]:
     """Human Review — 命令行交互。"""
-    from .data_human_review.human_review_agent import HumanReviewAgent
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
     return HumanReviewAgent().run(state)
 
 

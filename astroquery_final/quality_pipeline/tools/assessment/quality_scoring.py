@@ -13,22 +13,32 @@ from ...utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-# 默认权重
+# 默认权重 (A2 fix: 补 extraction_quality, 与 quality_rules.yaml domain_weights.default 一致)
 _DEFAULT_WEIGHTS = {
-    "completeness": 0.25,
-    "consistency": 0.30,
+    "completeness": 0.20,
+    "consistency": 0.24,
     "format": 0.10,
     "source_reliability": 0.15,
-    "conflict_risk": 0.20,
+    "conflict_risk": 0.19,
+    "extraction_quality": 0.12,
 }
 
-# 质量等级阈值
-_LEVELS = {
-    "excellent": 0.90,
-    "good": 0.75,
-    "fair": 0.60,
-    "poor": 0.40,
-}
+# 质量等级阈值 (A11 fix: 从 quality_rules.yaml quality_scoring_runtime.level_thresholds 读,
+# fallback 保持旧行为; 删除了 poor: 0.40 死分支 — 等级判定只用 excellent/good/fair 三档,
+# 低于 fair 一律为默认 "poor", 不参与 >= 比较)
+def _load_level_thresholds() -> dict:
+    """等级阈值: yaml 优先 (带完整性校验), fallback 内建三档。"""
+    try:
+        from ...configs import load_quality_scoring_runtime
+        lt = load_quality_scoring_runtime().get("level_thresholds") or {}
+        if all(k in lt for k in ("excellent", "good", "fair")):
+            return {k: float(lt[k]) for k in ("excellent", "good", "fair")}
+    except Exception:
+        pass
+    return {"excellent": 0.90, "good": 0.75, "fair": 0.60}
+
+
+_LEVELS = _load_level_thresholds()
 
 
 def compute_quality_score(

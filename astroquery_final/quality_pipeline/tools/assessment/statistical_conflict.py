@@ -17,6 +17,8 @@ MultiSourceVarianceAnalyzer — 天文数据多源方差分析 (V3.0)
   - 以上相同 + 差异小       → measurement_uncertainty (测量误差)
   - 以上相同 + 差异极大     → statistical_outlier (潜在异常)
   - 值完全相同 + 不同source  → duplicate_observation (重复收录)
+  - 均值相近但分布显著不同  → distributional_variance (A12: bootstrap KS 检出,
+    仅标注, 不生成 anomaly, 不阻塞 Export)
 
 异常检测 (仅以下情况标记为 anomaly):
   - extraction_confidence < 0.5 + 统计离群 → extraction_error
@@ -34,7 +36,10 @@ MultiSourceVarianceAnalyzer — 天文数据多源方差分析 (V3.0)
 from __future__ import annotations
 
 import math
+import re  # H4 fix: _get_unit_dimension token 化
 from typing import Any
+
+import numpy as np  # A12: bootstrap KS 分布检验 (纯 numpy, 不引入 scipy)
 
 from ...utils.logger import get_logger
 
@@ -47,6 +52,14 @@ CAUSE_TEMPORAL = "temporal_variation"
 CAUSE_UNCERTAINTY = "measurement_uncertainty"
 CAUSE_DUPLICATE = "duplicate_observation"
 CAUSE_UNKNOWN = "unknown"
+# A12: bootstrap KS 检出的分布差异 — 均值相近但经验分布显著不同的来源差异
+# (如 {100,100,100,100,900} vs {180,180,180,180,180} 均值接近但分布天差地别)
+CAUSE_DISTRIBUTIONAL = "distributional_variance"
+
+# ── Bootstrap KS 分布检验参数 (A12) ──
+# KS p < KS_P_THRESHOLD → 两源经验分布显著不同 (且该 pair 的 Cohen's d < D_SMALL
+# 时判定为 distributional_variance; d 大时仍归统计差异/异常路径)
+KS_P_THRESHOLD = 0.01
 
 # ── 异常类型常量 ──
 ANOMALY_STATISTICAL = "statistical_outlier"
@@ -62,6 +75,50 @@ D_LARGE = 2.0   # V3.0: > 2.0 才考虑 anomaly
 
 # ── 时间差异阈值 ──
 TEMPORAL_GAP_YEARS = 5
+
+# A1 fix: t_{0.975} 双尾临界值表 (df=1..29, df≥30 用 1.96) —
+# 原 CI 恒用 1.96, 小样本 CI 过窄 (假阳性); 纯 math 实现, 不引入 scipy
+_T_CRIT_975 = {
+    1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+    6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+    11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131,
+    16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086,
+    21: 2.080, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.060,
+    26: 2.056, 27: 2.052, 28: 2.048, 29: 2.045,
+}
+
+
+def _t_crit_975(df: float) -> float:
+    """t_{0.975, df} 临界值 (df≥30 → 1.96; 中间值向上取整查表)。"""
+    df_i = int(df)
+    return _T_CRIT_975.get(df_i, 1.96)
+
+
+def _robust_scale(values: list[float]) -> float:
+    """字段级稳健尺度 σ_robust — Cohen's d 的单记录/零方差分母。
+
+    用于单记录 (n<2) 与双零方差组的 Cohen's d 分母:
+      相对差异 ∈[0,1) 永远达不到 D_LARGE=2.0 → 单记录极端离群 100% 漏报;
+      双零方差 pooled_std=0 → d 恒 0 同样漏报。
+
+    尺度策略:
+      - n ≥ 6: IQR/1.349 (样本充足时稳健)
+      - n < 6: 量级 × 10% 作保守尺度 (极小样本/双峰分布下 IQR 会高估波动,
+        e.g. [5, 500] 的 IQR/1.349=367 → d=1.35 仍漏报; 500×0.1=50 → d≈10 检出)
+    """
+    if not values:
+        return 1.0
+    vs = sorted(values)
+    n = len(vs)
+    max_abs = max(abs(x) for x in vs)
+    if n >= 6:
+        q25 = vs[max(0, min(n - 1, int(n * 0.25)))]
+        q75 = vs[max(0, min(n - 1, int(n * 0.75)))]
+        iqr = q75 - q25
+        if iqr > 0:
+            return max(iqr / 1.349, max_abs * 1e-6)
+    # 小样本: 量级 10% 保守尺度 (假设正常波动约为量级的 10%)
+    return max(max_abs * 0.1, 1e-12)
 
 # ── 单位维度映射 (用于检测维度不匹配) ──
 _UNIT_DIMENSIONS: dict[str, str] = {
@@ -93,17 +150,31 @@ _UNIT_DIMENSIONS: dict[str, str] = {
 
 
 def _get_unit_dimension(unit: str | None) -> str:
-    """获取单位的物理维度。"""
+    """获取单位的物理维度 (H4 fix: 整 token 精确匹配, 杜绝短单位子串误判)。
+
+    旧实现子串匹配把 'mag'(含 m 米) 判为 length、'dex'(含 d 天) 判为 time,
+    制造假 critical unit_error; 现按分隔符拆 token 后仅整词精确匹配,
+    未知单位返回 unknown:<unit> (不参与维度冲突判定)。
+    """
     if not unit:
         return "dimensionless"
     u = unit.strip().replace("°", "").replace("℃", "C")
-    # 尝试精确匹配
+    # 1) 完整精确匹配优先 (复合单位已在字典: m/s, cm^-3, erg/s/cm^2 ...)
     if u in _UNIT_DIMENSIONS:
         return _UNIT_DIMENSIONS[u]
-    # 尝试拆分匹配 (如 "cm^-3 pc" → check each part)
-    for known, dim in _UNIT_DIMENSIONS.items():
-        if known and known in u:
-            return dim
+    # 2) token 化整词匹配 (如 "cm^-3 pc" → ["cm^-3", "pc"]; "m/s" → ["m", "s"])
+    tokens = re.split(r"[\s/·*^]+", u)
+    dims = set()
+    for tok in tokens:
+        tok = tok.strip().strip(".-")
+        if not tok or tok.isdigit() or (tok.startswith("-") and tok[1:].isdigit()):
+            continue  # 幂指数/纯数字 token 跳过
+        if tok in _UNIT_DIMENSIONS:
+            dims.add(_UNIT_DIMENSIONS[tok])
+    if len(dims) == 1:
+        return dims.pop()
+    if len(dims) > 1:
+        return "mixed:" + ",".join(sorted(dims))
     return f"unknown:{u}"
 
 
@@ -161,6 +232,59 @@ def _infer_variance_cause(
 
 
 # ==========================================================
+# A12: 跨来源 bootstrap KS 分布检验 (纯 numpy, 不引入 scipy)
+# ==========================================================
+
+def _ks_d(x: np.ndarray, y: np.ndarray) -> float:
+    """两样本经验 CDF 最大差 D (KS 统计量)。
+
+    在全部跳变点 (两组合并后的去重值) 处评估两个右连续 ECDF 的差。
+    CDF 在各开区间上为常量 (等于该区间左端点的右极限), 跳变点右极限
+    由 side="right" 覆盖 → 上确界精确, 并列值 (ties) 不重复计数。
+    """
+    xs = np.sort(x)
+    ys = np.sort(y)
+    t = np.unique(np.concatenate([x, y]))
+    d = np.max(np.abs(
+        np.searchsorted(xs, t, side="right") / xs.size
+        - np.searchsorted(ys, t, side="right") / ys.size,
+    ))
+    return float(d)
+
+
+def _bootstrap_ks_p(
+    values_a: list[float],
+    values_b: list[float],
+    n_boot: int = 1000,
+    seed: int = 42,
+) -> float:
+    """两样本 bootstrap KS 检验 p 值 — 均值相同但分布不同的差异在此可见。
+
+    Cohen's d 只看均值差: {100,100,100,100,900} vs {180,180,180,180,180}
+    均值接近 → d≈0 不报; 但经验 CDF 差极大。步骤 (纯 numpy):
+      1. D_obs = 两源原始 values 的经验 CDF 最大差
+      2. B=1000 次: pool 合并 → 不放回重抽样分为两组 (保持原组大小) → 重算 D_boot
+      3. p = P(D_boot >= D_obs)
+
+    Returns:
+        p ∈ [1/B, 1.0] (置换检验分辨率 1/n_boot; 固定 seed 可复现)
+    """
+    a = np.asarray(values_a, dtype=float)
+    b = np.asarray(values_b, dtype=float)
+    na = a.size
+    nb = b.size
+    pooled = np.concatenate([a, b])
+    d_obs = _ks_d(a, b)
+    rng = np.random.default_rng(seed)
+    n_boot = max(1, int(n_boot))
+    d_boot = np.empty(n_boot, dtype=float)
+    for i in range(n_boot):
+        perm = rng.permutation(pooled)
+        d_boot[i] = _ks_d(perm[:na], perm[na:])
+    return float(np.mean(d_boot >= d_obs))
+
+
+# ==========================================================
 # V3.0: 多源方差分析 (新主函数)
 # ==========================================================
 
@@ -184,7 +308,8 @@ def analyze_multi_source_variance(
             "has_variance": bool,
             "variance_count": int,
             "variances": [{entity_type, entity_name, field_name, sources, value_range,
-                          inferred_cause, cause_confidence, cohens_d_max, ...}],
+                          inferred_cause, cause_confidence, cohens_d_max,
+                          distributional_ks_p, ...}],
             # ── V3.0 异常字段 ──
             "has_anomalies": bool,
             "anomaly_count": int,
@@ -213,7 +338,10 @@ def analyze_multi_source_variance(
     for rec in records:
         val = rec.get("field_value")
         nv = parse_numeric(val)
-        if nv is None:
+        # M-29 fix: 'NaN'/'inf' 字符串经 float() 解析后为非有限值 —
+        # nan 组均值污染 cohens_d (→CAUSE_UNKNOWN + 报告写 nan),
+        # inf 恒满足 d>=2.0 制造假 statistical_outlier; 一律跳过
+        if nv is None or not math.isfinite(nv):
             continue
         et = rec.get("entity_type", "") or ""
         en = rec.get("entity_name", "") or ""
@@ -291,6 +419,12 @@ def analyze_multi_source_variance(
         )
         value_range = [all_values_sorted[0], all_values_sorted[-1]]
 
+        # A1 fix: 字段级稳健尺度 (组内全部原始数值) — 单记录/零方差组的 d 分母
+        _group_all_values: list[float] = []
+        for _sid, _grp in source_groups.items():
+            _group_all_values.extend(_grp["values"])
+        robust_scale = _robust_scale(_group_all_values)
+
         # 两两比较: Cohen's d + 差异原因推断
         max_cohens_d = 0.0
         pairwise_causes: list[dict] = []
@@ -306,10 +440,13 @@ def analyze_multi_source_variance(
                 mean_a, mean_b = sa["mean"], sb["mean"]
                 std_a, std_b = sa["std"], sb["std"]
 
-                # Cohen's d (小样本时使用保守估计)
+                # Cohen's d (A1 fix: 稳健尺度分母)
+                #   n<2 分支: 原相对差异 (a-b)/max(a,b) ∈ [0,1) 永远达不到
+                #   D_LARGE=2.0 → 单记录极端离群 100% 漏报; 改用 σ_robust
+                #   双零方差组: pooled_std=0 → d 恒 0 (均值差 1e6 也判无事);
+                #   改用 σ_robust 兜底
                 if na < 2 or nb < 2:
-                    # 单记录: 无法计算组内方差, 使用 mean 的绝对差异
-                    cohens_d = abs(mean_a - mean_b) / max(abs(mean_a), abs(mean_b), 0.001)
+                    cohens_d = abs(mean_a - mean_b) / robust_scale
                 else:
                     var_a = std_a ** 2
                     var_b = std_b ** 2
@@ -319,6 +456,8 @@ def analyze_multi_source_variance(
                     cohens_d = 0.0
                     if pooled_std > 0:
                         cohens_d = abs(mean_a - mean_b) / pooled_std
+                    else:
+                        cohens_d = abs(mean_a - mean_b) / robust_scale
 
                 if cohens_d > max_cohens_d:
                     max_cohens_d = cohens_d
@@ -330,8 +469,10 @@ def analyze_multi_source_variance(
                     )
                 except (ValueError, ZeroDivisionError):
                     se = 0.0
-                ci_low = round(cohens_d - 1.96 * se, 4)
-                ci_high = round(cohens_d + 1.96 * se, 4)
+                # A1 fix: CI 用 t_{0.975, na+nb-2} — 小样本 CI 过窄 (假阳性)
+                _tcrit = _t_crit_975(max(na + nb - 2, 1))
+                ci_low = round(cohens_d - _tcrit * se, 4)
+                ci_high = round(cohens_d + _tcrit * se, 4)
 
                 # 推断差异原因
                 cause, cause_conf = _infer_variance_cause(
@@ -364,12 +505,39 @@ def analyze_multi_source_variance(
         primary_cause = max(all_causes, key=all_causes.get) if all_causes else CAUSE_UNKNOWN
         cause_conf = all_causes.get(primary_cause, 0) / sum(all_causes.values()) if all_causes else 0.0
 
-        # ── 单位维度检查 ──
+        # ── A12: 跨来源 bootstrap KS 分布检验 ──
+        # Cohen's d 只看均值差; 均值相同但分布不同 (如 {100,100,100,100,900} vs
+        # {180,180,180,180,180}) 时 d≈0 完全不可见。对双方 n≥15 的 pair 做
+        # 经验 CDF 最大差 D_obs + 合并重抽样置换检验 (B=1000, 纯 numpy)。
+        # 检出 "d<0.5 但 KS p<0.01" → inferred_cause 置为 CAUSE_DISTRIBUTIONAL
+        # (优先级最高覆盖其他 cause; 仅标注, 不生成 anomaly, 不阻塞 Export)。
+        distributional_ks_p: float | None = None
+        if pairwise_causes:
+            ks_ps: list[float] = []
+            for pc in pairwise_causes:
+                if pc["n_a"] < 15 or pc["n_b"] < 15:
+                    continue  # 样本不足 15 的 pair 不做分布检验
+                pv = _bootstrap_ks_p(
+                    source_groups[pc["source_a"]]["values"],
+                    source_groups[pc["source_b"]]["values"],
+                )
+                ks_ps.append(pv)
+                if pc["cohens_d"] < D_SMALL and pv < KS_P_THRESHOLD:
+                    primary_cause = CAUSE_DISTRIBUTIONAL
+                    cause_conf = round(1.0 - pv, 3)  # 置信 = 分布差异的显著性
+            if ks_ps:
+                distributional_ks_p = round(min(ks_ps), 4)  # 组内最显著 pair 的 p
+
+        # ── 单位维度检查 (H4 fix: 空/未知/复合维度单位不参与冲突判定) ──
         unit_dims = set()
         for sid, ss in source_stats.items():
-            dim = _get_unit_dimension(ss.get("unit"))
+            if not ss.get("unit"):
+                continue  # 空单位不参与
+            dim = _get_unit_dimension(ss["unit"])
+            if dim.startswith("unknown") or dim.startswith("mixed"):
+                continue  # 未知/复合维度不参与
             unit_dims.add(dim)
-        unit_mismatch = len(unit_dims) > 1 and "unknown" not in unit_dims
+        unit_mismatch = len(unit_dims) > 1
 
         # ── Cross-ID 检查 (V3.2: 组内检查永远 False — 组 key 已含 entity_type) ──
         # 真实 cross_id 检测移至 Step 3 之后: 按 (entity_name, field_name) 独立分组
@@ -392,6 +560,8 @@ def analyze_multi_source_variance(
             "max_cohens_d": round(max_cohens_d, 4),
             "inferred_cause": primary_cause,
             "cause_confidence": round(cause_conf, 3),
+            # A12: bootstrap KS p (组内最显著 pair; n<15 或无 pairs 时为 None)
+            "distributional_ks_p": distributional_ks_p,
             "pairwise_comparisons": pairwise_causes,
             "unit_mismatch_detected": unit_mismatch,
             "cross_id_risk": cross_id_risk,
@@ -400,10 +570,13 @@ def analyze_multi_source_variance(
 
         # ── Step 3: 异常检测 ──
         # A. 统计异常 (Cohen's d > 2.0 + 同方法/同条件)
-        if primary_cause == ANOMALY_STATISTICAL:
-            for pc in pairwise_causes:
-                if pc["inferred_cause"] == ANOMALY_STATISTICAL:
-                    anomalies.append({
+        # M-30 fix: 去掉组级多数原因门控 — 旧逻辑 primary_cause==ANOMALY_STATISTICAL
+        # 才生成 anomaly, ≥3 源时少数派 d>2.0 的真实离群被组内多数原因掩盖;
+        # 现直接遍历 pairwise_causes 中判为统计异常的 pair, primary_cause 仅用于
+        # variance_entry 标注
+        for pc in pairwise_causes:
+            if pc["inferred_cause"] == ANOMALY_STATISTICAL:
+                anomalies.append({
                         "anomaly_type": ANOMALY_STATISTICAL,
                         "field_name": fn,
                         "entity_type": et,
@@ -461,23 +634,29 @@ def analyze_multi_source_variance(
                         "severity": "high",
                     })
 
-        # C. 单位错误 (维度不匹配)
+        # C. 单位错误 (维度不匹配) — H4 fix: 死循环重写,
+        #    仅当非 dimensionless 的不同维度数 > 1 才生成 critical 异常
         if unit_mismatch:
+            dims = {}
             for sid, ss in source_stats.items():
-                dim = _get_unit_dimension(ss.get("unit"))
-                if dim == "dimensionless" and ss["unit"]:
-                    continue  # 可能是空单位
-            anomalies.append({
-                "anomaly_type": ANOMALY_UNIT,
-                "field_name": fn,
-                "entity_type": et,
-                "entity_name": en,
-                "units_found": {sid: ss["unit"] for sid, ss in source_stats.items()},
-                "dimensions_found": {sid: _get_unit_dimension(ss["unit"])
-                                    for sid, ss in source_stats.items()},
-                "evidence": {"unit_dimension_mismatch": True},
-                "severity": "critical",
-            })
+                if ss.get("unit"):
+                    dims[sid] = _get_unit_dimension(ss["unit"])
+            distinct_dims = {d for d in dims.values()
+                             if d != "dimensionless"
+                             and not d.startswith("unknown")
+                             and not d.startswith("mixed")}
+            if len(distinct_dims) > 1:
+                anomalies.append({
+                    "anomaly_type": ANOMALY_UNIT,
+                    "field_name": fn,
+                    "entity_type": et,
+                    "entity_name": en,
+                    "units_found": {sid: ss["unit"] for sid, ss in source_stats.items()
+                                    if ss.get("unit")},
+                    "dimensions_found": dims,
+                    "evidence": {"unit_dimension_mismatch": True},
+                    "severity": "critical",
+                })
 
         # D. 交叉识别错误 (V3.2: 组内检测禁用, 由 Step 3.5 独立检测完成)
 

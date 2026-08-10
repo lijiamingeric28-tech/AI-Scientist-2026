@@ -530,6 +530,9 @@ unit_conversions_astrophysics:
     "um**-1": 1.0
     "1/um": 1.0
   abundance:
+    # M-35 fix: dex 并入 abundance 组 — metallicity 语义类型 unit_category 改为
+    # abundance, 其 units [dex, "", Sun, log(Sun)] 全量在本组内可命中
+    dex: 1.0
     Sun: 1.0
     "log(Sun)": 1.0
   surface_brightness:

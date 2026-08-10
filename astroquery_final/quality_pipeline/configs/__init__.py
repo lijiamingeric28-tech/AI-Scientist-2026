@@ -34,6 +34,38 @@ def load_yaml(filename: str) -> dict:
         return yaml.safe_load(f) or {}
 
 
+# ── A11 fix: 质量评分运行参数 (单点定义 + fallback) ──
+# 原 volume/agreement/repair_cost/extraction/conflict_severity/level 阈值
+# 全部硬编码散落在 quality_scoring_agent / decision_reasoning_agent /
+# quality_scoring 里, 改一处另一处失同步; 现统一从 yaml quality_scoring_runtime
+# 段读取, 此默认值仅作 fallback (行为保持与旧硬编码一致)。
+_QUALITY_SCORING_RUNTIME_DEFAULTS: dict = {
+    "volume_thresholds": {10: 0.3, 100: 0.7, "else": 0.9},
+    "agreement_std_coef": 2.0,
+    "repair_cost": {"anomaly": [1, 3], "issues": [3, 10]},
+    "extraction_human_threshold": 0.3,
+    "conflict_severity": {"critical": 1.0, "high": 0.7, "medium": 0.4, "low": 0.2},
+    "level_thresholds": {"excellent": 0.90, "good": 0.75, "fair": 0.60},
+}
+
+
+def load_quality_scoring_runtime() -> dict:
+    """质量评分运行参数 (yaml quality_scoring_runtime 优先, fallback 内建默认)。
+
+    dict 类型键按 key 级浅合并 (允许 yaml 只覆盖部分字段);
+    非 dict 键 (标量) 直接取 yaml 值。yaml 缺失/损坏时回退默认, 行为不变。
+    """
+    cfg = load_yaml("quality_rules.yaml") or {}
+    runtime = cfg.get("quality_scoring_runtime") or {}
+    merged = dict(_QUALITY_SCORING_RUNTIME_DEFAULTS)
+    for k, v in runtime.items():
+        if isinstance(v, dict) and isinstance(merged.get(k), dict):
+            merged[k] = {**merged[k], **v}
+        else:
+            merged[k] = v
+    return merged
+
+
 def load_domain_config(section: str, default_section: str = "",
                        research_domain: str | None = None) -> dict:
     """

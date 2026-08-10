@@ -48,7 +48,20 @@ dev = [
 astroquery-ai = "astroquery_ai.cli:main"
 
 [tool.setuptools]
-packages = ["astroquery_ai", "quality_pipeline"]
+packages = [
+    "astroquery_ai",
+    "quality_pipeline",
+    "subgraphs",
+    "subgraphs.subgraph1",
+    "subgraphs.subgraph2",
+    "subgraphs.subgraph3",
+    "subgraphs.data_assessment",
+    "subgraphs.data_normalization",
+    "subgraphs.data_conflict",
+    "subgraphs.data_export",
+    "subgraphs.data_insights",
+    "subgraphs.data_human_review",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

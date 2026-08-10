@@ -16,8 +16,9 @@ def _node_module(pkg: str, mod_name: str):
 
     不能用 `import a.b.c as x`：nodes/__init__.py 会把节点函数 re-export，
     那样 x 绑定的是函数而非模块。importlib 按完整路径取模块对象。
+    子图代码位于 subgraphs/（原 astroquery_ai.subgraph* 为遗留副本）。
     """
-    return importlib.import_module(f"astroquery_ai.{pkg}.nodes.{mod_name}")
+    return importlib.import_module(f"subgraphs.{pkg}.nodes.{mod_name}")
 
 
 @pytest.fixture
@@ -74,7 +75,7 @@ def _ads_search_module():
     那样拿到的 x 是函数而非模块。importlib 直接按路径取模块。
     """
     import importlib
-    return importlib.import_module("astroquery_ai.subgraph2.nodes.ads_search")
+    return importlib.import_module("subgraphs.subgraph2.nodes.ads_search")
 
 
 @pytest.fixture

@@ -82,6 +82,10 @@ def analyze_missing_fields(
         adjusted = 1.0 - (expected_count + optional_count * 0.3) / max(total, 1) * 0.5
         adjusted = round(max(0.0, adjusted), 4)
 
+        # A6 fix: 可加性 field_penalty — 供 quality_scoring_agent 做减法计分
+        # (原乘法 adjusted×raw_score 双重扣分: raw 已含 0.4×外键+0.3×单位+0.3×溯源)
+        field_penalty = round(0.5 * (expected_count + optional_count * 0.3) / max(total, 1), 4)
+
         summary = data.get("summary", "")
         logger.info("[LLMCompleteness] %d missing: expected=%d optional=%d irrelevant=%d → adjusted=%.2f",
                     total, expected_count, optional_count,
@@ -90,6 +94,7 @@ def analyze_missing_fields(
         return {
             "analysis": analysis,
             "adjusted_completeness": adjusted,
+            "field_penalty": field_penalty,  # A6: 可加性惩罚 (单次计分)
             "expected_count": expected_count,
             "optional_count": optional_count,
             "irrelevant_count": total - expected_count - optional_count,
@@ -98,7 +103,8 @@ def analyze_missing_fields(
 
     except Exception as e:
         logger.warning("[LLMCompleteness] LLM unavailable (%s), using raw completeness", e)
-        return {"analysis": {}, "adjusted_completeness": 1.0,
+        # A6 fix: 失败回退不扣分 (field_penalty=0) — 可加性语义下 0 惩罚是中性值
+        return {"analysis": {}, "adjusted_completeness": 1.0, "field_penalty": 0.0,
                 "summary": f"LLM不可用, {len(missing_fields)} fields missing (unclassified)"}
 
 

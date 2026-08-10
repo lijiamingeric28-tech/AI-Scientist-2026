@@ -2,73 +2,7 @@
 # quality_rules.yaml — 材料科学领域完整配置
 # ==========================================================
 
-# ── 缺失值规则 ──
-missing_value:
-  max_missing_rate: 0.30
-  default_strategy: "mark"   # mark / drop / fill_default
-
-# ── 重复数据规则 ──
-duplicate:
-  exact_match: true
-  fuzzy_match: true
-  fuzzy_threshold: 0.95
-
-# ── 一致性规则 ──
-consistency:
-  check_schema_alignment: true
-  check_data_types: true
-  check_unit_consistency: true
-
-# ── 格式规则 ──
-format:
-  check_numeric_format: true
-  check_date_format: false
-  allowed_numeric_prefixes: ["~", "≈", "<", ">", "≤", "≥"]
-  allowed_numeric_suffixes: ["(typical)", "(nominal)", "(approx)", "(maximum)", "(minimum)"]
-  max_string_length: 500
-
-# ── 来源可信度规则 ──
-source_reliability:
-  enabled: true
-  priority_threshold: 0.5
-  # 材料科学期刊分级 (影响 source_checker 评分)
-  journal_tiers:
-    tier1:  # IF > 7
-      - "Acta Materialia"
-      - "International Journal of Plasticity"
-      - "Journal of the Mechanics and Physics of Solids"
-    tier2:  # IF 3-7
-      - "Materials Science and Engineering: A"
-      - "Metallurgical and Materials Transactions A"
-      - "Scripta Materialia"
-      - "Materials & Design"
-      - "Journal of Materials Science"
-      - "International Journal of Fatigue"
-      - "Engineering Fracture Mechanics"
-    tier3:  # IF 1-3
-      - "Journal of Alloys and Compounds"
-      - "Materials Characterization"
-      - "Materials Science and Technology"
-    tier1_score: 1.0
-    tier2_score: 0.85
-    tier3_score: 0.70
-    unknown_score: 0.60
-  # recency 退化系数 (年)
-  recency_halflife_years: 8
-  recency_max_age_years: 30
-
-# ── 冲突检测规则 ──
-conflict_detection:
-  numeric_diff_threshold: 0.20
-  cross_source_check: true
-  # Cohen's d 统计方法
-  statistical_method:
-    enabled: true
-    cohens_d_threshold: 0.5        # |d| >= 0.5 → medium conflict
-    confidence_interval_alpha: 0.05  # 95% CI
-    min_samples_per_group: 2       # 每组最少样本量
-
-# ── 质量评分规则 ──
+# ── 质量评分规则 (M-36: 仅作兜底权重; 运行时阈值见 quality_scoring_runtime 段) ──
 quality_scoring:
   weights:
     completeness: 0.25
@@ -82,9 +16,25 @@ quality_scoring:
     fair: 0.60
     poor: 0.40
 
+# ── 质量评分运行参数 (A11 fix: 原硬编码在 agent 代码里的阈值全部下沉) ──
+# 消费方: quality_scoring_agent / decision_reasoning_agent / quality_scoring.py
+# 注意: 与上方 quality_scoring 段 (weights) 是不同键, 避免冲突;
+#       行内注释一律放在 flow sequence 闭合符之后 (否则 } 会被注释吞掉)
+quality_scoring_runtime:
+  volume_thresholds: {10: 0.3, 100: 0.7, else: 0.9}  # 记录数 n<10 → 0.3, n<100 → 0.7, 其余 → 0.9
+  agreement_std_coef: 2.0        # agreement = max(0.3, 1 - score_std × coef)
+  repair_cost:                   # per-source 修复成本计数阈值 [medium 下限, high 下限]
+    anomaly: [1, 3]              # anomaly_count >= 1 → medium, >= 3 → high
+    issues: [3, 10]              # issue_count >= 3 → medium, >= 10 → high
+  extraction_human_threshold: 0.3  # extraction score < 0.3 → HumanReview
+  conflict_severity: {critical: 1.0, high: 0.7, medium: 0.4, low: 0.2}  # A3 severity 权重
+  level_thresholds: {excellent: 0.90, good: 0.75, fair: 0.60}  # overall >= 阈值即该级, 否则 poor
+
 # ── 循环控制规则 (V3.5: routers.py 从这里加载, 单一配置入口) ──
 loop_control:
-  max_iterations: 3
+  # M2 fix: max_iterations 是纯兜底 (总访问上限), B⇄C 实际轮数由 max_loop 控制;
+  # 原 3 对每次 loop_controller 访问计数 (含首次 A→B), B⇄C 实际只能 1 轮
+  max_iterations: 8
   max_retries: 3
   max_loop: 3
   no_new_conflict_rounds: 1
@@ -124,47 +74,57 @@ adaptive_thresholds:
     small_n_multiplier: 0.85
     large_n_multiplier: 1.0
   domain_tightness:
+    # M-31 fix: 乘子方向修正 — 探索性科学更宽松 (阈值更低, 乘子<1),
+    # 精确定量科学更严格 (阈值更高, 乘子>1); 旧配置方向与语义相反
+    # (天体物理 exploratory 乘 1.30 反而被要求更高覆盖度)
     materials_science: "precise"
     astrophysics: "exploratory"
     biology: "normal"
     chemistry: "precise"
     default: "normal"
-    precise_multiplier: 0.80
+    precise_multiplier: 1.30
     normal_multiplier: 1.00
-    exploratory_multiplier: 1.30
+    exploratory_multiplier: 0.80
 
 # ── V2.0 领域自适应权重 ──
+# A2 fix: 每领域补 extraction_quality 维度并重归一化 (和=1) — 此前 metrics 传 6 维
+# 但权重只有 5 维, extraction_quality 被 compute_quality_score 静默丢弃
 domain_weights:
   materials_science:
-    completeness: 0.30
-    consistency: 0.30
+    completeness: 0.26
+    consistency: 0.26
     format: 0.05
-    source_reliability: 0.15
-    conflict_risk: 0.20
+    source_reliability: 0.13
+    conflict_risk: 0.18
+    extraction_quality: 0.12
   astrophysics:
-    completeness: 0.15
-    consistency: 0.20
+    completeness: 0.12
+    consistency: 0.15
     format: 0.10
-    source_reliability: 0.30
-    conflict_risk: 0.25
+    source_reliability: 0.25
+    conflict_risk: 0.23
+    extraction_quality: 0.15
   chemistry:
-    completeness: 0.25
-    consistency: 0.25
-    format: 0.15
-    source_reliability: 0.15
-    conflict_risk: 0.20
+    completeness: 0.22
+    consistency: 0.22
+    format: 0.13
+    source_reliability: 0.13
+    conflict_risk: 0.18
+    extraction_quality: 0.12
   biology:
-    completeness: 0.20
-    consistency: 0.25
-    format: 0.15
-    source_reliability: 0.20
-    conflict_risk: 0.20
+    completeness: 0.18
+    consistency: 0.22
+    format: 0.13
+    source_reliability: 0.18
+    conflict_risk: 0.17
+    extraction_quality: 0.12
   default:
-    completeness: 0.25
-    consistency: 0.30
+    completeness: 0.20
+    consistency: 0.24
     format: 0.10
     source_reliability: 0.15
-    conflict_risk: 0.20
+    conflict_risk: 0.19
+    extraction_quality: 0.12
 
 # ── V2.1 语义类型: 材料科学完整规则库 ──
 semantic_types:
@@ -265,30 +225,6 @@ semantic_types:
     feasible_ranges: {}
     expected_in_study: "always"
 
-# ── V2.1 异常值检测参数 ──
-outlier_detection:
-  iqr_multiplier: 1.5        # IQR 法: Q1 - k*IQR, Q3 + k*IQR
-  zscore_threshold: 3.5      # Modified Z-Score 阈值
-  min_samples: 4             # 最少样本量 (少于则不检测)
-  per_field_thresholds:      # per-field 特殊阈值
-    temperature:
-      iqr_multiplier: 2.0    # 温度变化大, 放宽
-    elongation:
-      iqr_multiplier: 1.5
-    strain_rate:
-      iqr_multiplier: 2.5    # 应变率跨数量级, 很宽
-
-# ── V2.1 非线性惩罚参数 ──
-nonlinear_penalties:
-  systematic_failure:
-    enabled: true
-    multiplier: 0.7           # 任何维度得分=0 → overall×0.7
-  concentration_penalty:
-    enabled: true
-    threshold: 0.5            # 单 source 集中 >50% issues → 减轻全局惩罚
-  sparsity_penalty:
-    enabled: true
-    small_n: 10               # n<10 → log(n)/log(10) 因子
 # ==========================================================
 # quality_rules.yaml — 天体物理领域扩展配置
 # 使用方法: 合并到 quality_rules.yaml 中, 或设置 research_domain=astrophysics
@@ -345,7 +281,10 @@ semantic_types_astrophysics:
     units: ["dex", "", "Sun", "log(Sun)"]
     feasible_ranges:
       "dex": [-5.0, 1.0]
-    unit_category: "metallicity"
+    # M-35 fix: 与转换组对齐 — [Fe/H] 以太阳丰度为单位属 abundance 组
+    # (unit_conversions_astrophysics.abundance 含 dex/Sun/log(Sun) 全量),
+    # 原 unit_category=metallicity 只含 dex, Sun/log(Sun) 永远无法转换
+    unit_category: "abundance"
     expected_in_study: "usually"
 
   alpha_abundance:
@@ -557,7 +496,10 @@ semantic_types_astrophysics:
 
   density:
     keywords: ["density", "rho", "mass_density", "electron_density", "n_e", "n_H", "number_density", "surface_density"]
-    units: ["g/cm^3", "g cm^-3", "kg/m^3", "amu/cm^3", "pc**-2", "mas**-2"]
+    # M-35 fix: 移除 pc**-2/mas**-2 — 面密度单位属 surface_density 转换组,
+    # 不在 density 组内 (unit_converter 按 (category, unit) 查表必 miss,
+    # 且 inference 误认 unit_recognized 后以非标准单位静默导出)
+    units: ["g/cm^3", "g cm^-3", "kg/m^3", "amu/cm^3"]
     feasible_ranges:
       "g/cm^3": [1e-30, 1e15]
       "kg/m^3": [1e-27, 1e18]
@@ -580,80 +522,6 @@ semantic_types_astrophysics:
       "nm": [0.0, 1e9]
     unit_category: "wavelength"
     expected_in_study: "conditional"
-
-# ── 天体物理领域权重 ──
-domain_weights_astrophysics:
-  astrophysics:
-    completeness: 0.15
-    consistency: 0.20
-    format: 0.10
-    source_reliability: 0.30
-    conflict_risk: 0.25
-
-# ── 天体物理期刊分级 ──
-journal_tiers_astrophysics:
-  tier1:
-    - "Astrophysical Journal Letters"
-    - "Astrophysical Journal Supplement Series"
-    - "Annual Review of Astronomy and Astrophysics"
-    - "Nature Astronomy"
-    - "Astronomy and Astrophysics Review"
-  tier2:
-    - "Astrophysical Journal"
-    - "Monthly Notices of the Royal Astronomical Society"
-    - "Astronomy & Astrophysics"
-    - "Astronomical Journal"
-    - "Journal of Cosmology and Astroparticle Physics"
-    - "Publications of the Astronomical Society of the Pacific"
-    - "Icarus"
-  tier3:
-    - "Research in Astronomy and Astrophysics"
-    - "New Astronomy"
-    - "Astroparticle Physics"
-    - "Experimental Astronomy"
-    - "Advances in Space Research"
-    - "Planetary and Space Science"
-    - "Astronomische Nachrichten"
-  tier1_score: 1.0
-  tier2_score: 0.85
-  tier3_score: 0.70
-  unknown_score: 0.60
-
-# ── 冲突裁决证据权重 (天体物理) ──
-resolution_weights_astrophysics:
-  astrophysics:
-    source_reliability: 0.20
-    domain_rules: 0.20
-    statistical: 0.30
-    contextual: 0.30
-
-# ── 天体物理自适应阈值 ──
-adaptive_thresholds_astrophysics:
-  domain_tightness:
-    astrophysics: "exploratory"
-    exploratory_multiplier: 1.30  # 探索性科学, 阈值更宽松
-
-# ── 天体物理实体提取正则 ──
-entity_extraction_astrophysics:
-  patterns:
-    - '[A-Z][a-z]?[-\d][\w-]{1,20}'         # 通用标识符
-    - 'SN\s*\d{4}[A-Za-z]*'                 # 超新星: SN 1987A
-    - 'NGC\s*\d+'                            # NGC天体
-    - 'IC\s*\d+'                             # IC天体
-    - 'M\d{1,3}'                             # Messier天体
-    - '(?:HD|HIP|TYC|Gaia\s*DR\d)\s*\d+'    # 星表编号
-    - '(?:WASP|Kepler|K2|TESS|TOI)\s*[-\d]+[A-Za-z]?'  # 系外行星
-    - '(?:SDSS|2MASS|WISE)\s*J\d+'           # 巡天编号
-
-# ── 天体物理测量方法关键词 ──
-measurement_methods_astrophysics:
-  spectroscopy: ["spectroscopy", "spectrograph", "spectral", "R~", "resolution"]
-  photometry: ["photometry", "photometric", "UBVRI", "ugriz", "magnitude"]
-  astrometry: ["astrometry", "astrometric", "Gaia", "Hipparcos", "parallax"]
-  interferometry: ["interferometry", "interferometer", "VLTI", "CHARA"]
-  radial_velocity: ["radial velocity", "RV", "HARPS", "ESPRESSO", "CARMENES"]
-  transit: ["transit", "TESS", "Kepler", "light curve", "eclipse"]
-  imaging: ["imaging", "HST", "JWST", "VLT", "direct imaging"]
 
 # ── 天体物理实体类型: Simbad otypes.list 全量 (V4) ──
 # 理论依据: otypes.list (2026-07-30, Strasbourg); 名称/层级对齐官方分类
@@ -706,7 +574,7 @@ entity_types_astrophysics:
     "bC*": {name: beta_cephei_variable, desc: "beta Cep Variable", cat: stars, parent: "Ma*", candi: true, bad: false, kws: [beta_cephei_variable], sem: []}
     "sg*": {name: supergiant, desc: "Evolved Supergiant", cat: stars, parent: "Ma*", candi: true, bad: false, kws: [supergiant], sem: [effective_temperature, stellar_mass, stellar_radius, luminosity, surface_gravity]}
     "s*r": {name: red_supergiant, desc: "Red Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [red_supergiant], sem: [effective_temperature, stellar_radius, luminosity]}
-    "s*y": {name: yellow_supergiant, desc: "Yellow Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [yellow_supergiant], sem: []}
+    "s*y": {name: yellow_supergiant, desc: "Yellow Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [yellow_supergiant], sem: [effective_temperature, luminosity, stellar_radius]}
     "s*b": {name: blue_supergiant, desc: "Blue Supergiant", cat: stars, parent: "sg*", candi: true, bad: false, kws: [blue_supergiant], sem: [effective_temperature, luminosity]}
     "WR*": {name: wolf_rayet_star, desc: "Wolf-Rayet", cat: stars, parent: "s*b", candi: true, bad: false, kws: [wolf_rayet_star], sem: [effective_temperature, stellar_mass, luminosity]}
     "N*": {name: neutron_star, desc: "Neutron Star", cat: stars, parent: "Ma*", candi: true, bad: false, kws: [neutron_star], sem: [stellar_mass, stellar_radius, luminosity]}
@@ -715,8 +583,8 @@ entity_types_astrophysics:
     "Or*": {name: orion_variable, desc: "Orion Variable", cat: stars, parent: "Y*O", candi: false, bad: false, kws: [orion_variable], sem: []}
     "TT*": {name: t_tauri_star, desc: "T Tauri Star", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [t_tauri_star], sem: [effective_temperature, surface_gravity, luminosity, age]}
     "Ae*": {name: herbig_ae_be_star, desc: "Herbig Ae/Be Star", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [herbig_ae_be_star], sem: [effective_temperature, luminosity, age]}
-    "out": {name: outflow, desc: "Outflow", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [outflow], sem: []}
-    "HH": {name: herbig_haro_object, desc: "Herbig-Haro Object", cat: stars, parent: "out", candi: false, bad: false, kws: [herbig_haro_object], sem: []}
+    "out": {name: outflow, desc: "Outflow", cat: stars, parent: "Y*O", candi: true, bad: false, kws: [outflow], sem: [radial_velocity, flux_density, age]}
+    "HH": {name: herbig_haro_object, desc: "Herbig-Haro Object", cat: stars, parent: "out", candi: false, bad: false, kws: [herbig_haro_object], sem: [radial_velocity, flux_density, density]}
     "MS*": {name: main_sequence_star, desc: "Main Sequence Star", cat: stars, parent: "*", candi: true, bad: false, kws: [main_sequence_star], sem: [effective_temperature, stellar_mass, stellar_radius, luminosity, surface_gravity]}
     "Be*": {name: be_star, desc: "Be Star", cat: stars, parent: "MS*", candi: true, bad: false, kws: [be_star], sem: [effective_temperature, stellar_mass, luminosity, rotational_velocity]}
     "BS*": {name: blue_straggler, desc: "Blue Straggler", cat: stars, parent: "MS*", candi: true, bad: false, kws: [blue_straggler], sem: []}
@@ -774,7 +642,7 @@ entity_types_astrophysics:
     "OpC": {name: open_cluster, desc: "Open Cluster", cat: star_sets, parent: "Cl*", candi: false, bad: false, kws: [open_cluster], sem: [age, distance, metallicity]}
     "As*": {name: stellar_association, desc: "Association of Stars", cat: star_sets, parent: null, candi: true, bad: false, kws: [stellar_association], sem: [age, distance]}
     "St*": {name: stellar_stream, desc: "Stellar Stream", cat: star_sets, parent: "As*", candi: false, bad: false, kws: [stellar_stream], sem: []}
-    "MGr": {name: moving_group, desc: "Moving Group", cat: star_sets, parent: "As*", candi: false, bad: false, kws: [moving_group], sem: []}
+    "MGr": {name: moving_group, desc: "Moving Group", cat: star_sets, parent: "As*", candi: false, bad: false, kws: [moving_group], sem: [age, distance, radial_velocity, proper_motion_ra, proper_motion_dec]}
     # ism:
     "ISM": {name: ism_object, desc: "Interstellar Medium Object", cat: ism, parent: null, candi: false, bad: false, kws: [ism_object], sem: [extinction, distance]}
     "SFR": {name: star_forming_region, desc: "Star Forming Region", cat: ism, parent: "ISM", candi: false, bad: false, kws: [star_forming_region], sem: [age, luminosity, distance]}
@@ -808,19 +676,19 @@ entity_types_astrophysics:
     "QSO": {name: quasar, desc: "Quasar", cat: galaxies, parent: "AGN", candi: true, bad: false, kws: [quasar], sem: [luminosity, redshift, stellar_mass, flux_density]}
     "Bla": {name: blazar, desc: "Blazar", cat: galaxies, parent: "QSO", candi: true, bad: false, kws: [blazar], sem: [luminosity, flux_density, redshift]}
     "BLL": {name: bl_lac, desc: "BL Lac", cat: galaxies, parent: "Bla", candi: true, bad: false, kws: [bl_lac], sem: [luminosity, flux_density, redshift]}
-    "GiP": {name: galaxy_in_pair, desc: "Galaxy in Pair of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_pair], sem: []}
-    "GiG": {name: galaxy_in_group, desc: "Galaxy towards a Group of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_group], sem: []}
+    "GiP": {name: galaxy_in_pair, desc: "Galaxy in Pair of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_pair], sem: [redshift, distance, radial_velocity]}
+    "GiG": {name: galaxy_in_group, desc: "Galaxy towards a Group of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_group], sem: [redshift, distance]}
     "GiC": {name: galaxy_in_cluster, desc: "Galaxy towards a Cluster of Galaxies", cat: galaxies, parent: "G", candi: false, bad: false, kws: [galaxy_in_cluster], sem: [redshift, distance]}
     "BiC": {name: brightest_cluster_galaxy, desc: "Brightest Galaxy in a Cluster (BCG)", cat: galaxies, parent: "GiC", candi: false, bad: false, kws: [brightest_cluster_galaxy], sem: [redshift, luminosity, stellar_mass]}
     # galaxy_sets:
     "IG": {name: interacting_galaxies, desc: "Interacting Galaxies", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [interacting_galaxies], sem: [luminosity, redshift, stellar_mass]}
-    "PaG": {name: galaxy_pair, desc: "Pair of Galaxies", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [galaxy_pair], sem: []}
+    "PaG": {name: galaxy_pair, desc: "Pair of Galaxies", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [galaxy_pair], sem: [redshift, distance, radial_velocity]}
     "GrG": {name: galaxy_group, desc: "Group of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [galaxy_group], sem: [redshift, distance]}
     "CGG": {name: compact_group_of_galaxies, desc: "Compact Group of Galaxies", cat: galaxy_sets, parent: "GrG", candi: false, bad: false, kws: [compact_group_of_galaxies], sem: []}
     "ClG": {name: galaxy_cluster, desc: "Cluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [galaxy_cluster], sem: [redshift, distance, luminosity]}
-    "PCG": {name: protocluster, desc: "Proto Cluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [protocluster], sem: []}
+    "PCG": {name: protocluster, desc: "Proto Cluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [protocluster], sem: [redshift, stellar_mass, distance]}
     "SCG": {name: supercluster, desc: "Supercluster of Galaxies", cat: galaxy_sets, parent: null, candi: true, bad: false, kws: [supercluster], sem: [redshift]}
-    "vid": {name: underdense_region, desc: "Underdense Region of the Universe", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [underdense_region], sem: []}
+    "vid": {name: underdense_region, desc: "Underdense Region of the Universe", cat: galaxy_sets, parent: null, candi: false, bad: false, kws: [underdense_region], sem: [redshift, distance]}
     # gravitation:
     "grv": {name: gravitational_source, desc: "Gravitational Source", cat: gravitation, parent: null, candi: false, bad: false, kws: [gravitational_source], sem: []}
     "Lev": {name: microlensing_event, desc: "(Micro)Lensing Event", cat: gravitation, parent: "grv", candi: false, bad: false, kws: [microlensing_event], sem: []}
@@ -867,7 +735,7 @@ entity_types_astrophysics:
       effective_temperature: [2000, 100000]
       stellar_mass: [0.1, 100]
       stellar_radius: [0.1, 1000]
-      luminosity: [299999999999999991891638616064.0, 3999999999999999758836665486412714344448.0]
+      luminosity: [299999999999999991891638616064.0, 39999999999999998155050632808484569088.0]  # P0-1 fix: 红色超巨星上限 ~1e4-1e5 Lsun (4e37 erg/s ≈ 1e4 Lsun)
       surface_gravity: [-0.5, 9]
     main_sequence_star:
       effective_temperature: [2400, 50000]

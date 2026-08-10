@@ -30,23 +30,20 @@ P1 性质标准化 ◄── SIMBAD 解析 + RAG 性质库（rag_properties/）
 
 ```
 astroquery_final/
-├── astroquery_ai/            # 上游：澄清 + 检索 + 提取
+├── astroquery_ai/            # 上游主图装配：澄清 + 检索 + 提取 + quality 接缝
 │   ├── config.py             #   唯一配置模块（pydantic-settings，env 优先）
 │   ├── logger.py             #   统一日志工厂
 │   ├── schemas/              #   State 契约层（子图 IO Pydantic schema）
 │   ├── cli.py                #   命令行入口
 │   ├── property_standardization.py  # P1 性质标准化（系统中枢）
 │   ├── quality_adapter.py           # 接缝适配器
-│   ├── main_graph.py                # 主图装配
-│   └── subgraph1/2/3/               # 三个子图
-├── quality_pipeline/         # 下游：数据质量管线（Assessment/Conflict/Normalization/Export/Insights）
-├── rag_properties/           # RAG 性质库（100 个 otype，3293 个性质，含标准单位）
-├── scripts/                  # 工具脚本
-│   ├── add_units.py          #   批量补单位（DeepSeek 异步并发）
-│   ├── query_properties.py   #   性质映射参考实现
-│   └── run_betelgeuse.py     #   参宿四专用调试入口
-├── tests/                    # pytest 测试（全 mock 离线，24 个）
-├── docs/                     # 合并方案与完成报告
+│   └── main_graph.py                # 主图装配
+├── quality_pipeline/         # 质量管线主图 + 共享设施（configs/models/tools/utils）
+├── subgraphs/                # 9 个子图（subgraph1/2/3 + data_assessment/normalization/conflict/export/insights/human_review）
+├── rag_properties/           # RAG 性质库（~100 个 otype，含标准单位）
+├── scripts/                  # 工具脚本（KB 覆盖率报告、catalog schema 生成等）
+├── tests/                    # pytest 测试（全 mock 离线，271 个）
+├── docs/                     # 设计文档 / OPTIMIZATION_STATUS / AUDIT_REPORT
 └── .env                      # API Keys（ADS/Unpaywall/DashScope/DeepSeek）
 ```
 
@@ -67,11 +64,18 @@ python -m astroquery_ai
 ## 测试与门禁
 
 ```bash
-python -m pytest tests/        # 24 个测试，全 mock 离线
-python -m ruff check .         # 全库 lint 零报错
+python -m pytest tests/ -m "not network"   # 271 个测试，全 mock 离线（EXIT=0）
+python -m pytest tests/                    # 含网络冒烟（需真实 API Keys）
+python -m ruff check .                     # 全库 lint
 ```
 
 依赖：`pip install -r astroquery_ai/requirements.txt`（另需 astroquery、ads、dotenv 等）
+
+## 审计与质量状态（2026-08-10）
+
+- **13 单元全库审计**（逻辑/接口/契约）：90 发现 → 85 确认（5 推翻），80 条问题去重合并后**全部修复**，详见 `docs/AUDIT_REPORT.md`
+- **修复记录**：`docs/OPTIMIZATION_STATUS.md`（C1/H1-H5/M1-M9/L1-L4 + A1-A14 + P0 系列 + 审计 80 条）
+- **知识库**：`quality_pipeline/data/insight_knowledge/astrophysics/` 294 条（7 文件，hypothetical_queries 100% 覆盖）
 
 ## 关键设计
 

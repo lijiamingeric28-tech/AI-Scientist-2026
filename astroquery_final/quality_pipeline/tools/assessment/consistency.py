@@ -84,10 +84,20 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
 
     field_type_consistency: dict[str, bool] = {}
     for key, shapes in field_shape_map.items():
-        normalized = shapes - {"uncertainty", "numeric"}
-        field_type_consistency[key] = len(normalized) <= 1
+        # M-28 fix: 显式两族判定 — 旧逻辑把 numeric 从集合中减掉,
+        # {'numeric','text'} 混合被误判 consistent (检测失效);
+        # 数值族 {numeric, uncertainty} 与文本族 {text, null} 族内任意混用一致,
+        # 跨族混用 (数值+文本) 才判不一致
+        consistent = (
+            shapes <= {"numeric", "uncertainty"}
+            or shapes <= {"text", "null"}
+            or len(shapes) <= 1
+        )
+        field_type_consistency[key] = consistent
 
     # ── 3. 单位一致性 (V1.1: entity 感知) ──
+    # A10 fix: canonical_unit 归一化后比较 — 'K' vs 'Kelvin'/'°K' 不再误报不一致
+    from ...tools.assessment.source_utils import canonical_unit
     unit_map: dict[str, set[str]] = {}
     for rec in records:
         fn = rec.get("field_name", "unknown")
@@ -95,7 +105,7 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
         key = f"{en}/{fn}" if en else fn
         unit = rec.get("field_unit")
         if unit is not None:
-            unit_map.setdefault(key, set()).add(str(unit))
+            unit_map.setdefault(key, set()).add(canonical_unit(str(unit)))
 
     unit_consistency: dict[str, str] = {}
     for key, units in unit_map.items():
@@ -152,16 +162,26 @@ def check_consistency(data: dict[str, Any]) -> dict[str, Any]:
         if status.startswith("inconsistent"):
             issues.append(f"字段 '{fname}' 单位不一致")
 
-    total_checks = 3
-    passed = 0
-    if schema_consistency["is_consistent"]:
-        passed += 1
-    if all(field_type_consistency.values()):
-        passed += 1
-    if all(not v.startswith("inconsistent") for v in unit_consistency.values()):
-        passed += 1
+    # A9 fix: 连续化评分 — 旧二分 score∈{0,1/3,2/3,1}, 1 个字段单位不一致即整维
+    # 失败; 改按字段记录数加权的连续公式: 0.4×schema + 0.3×type_ratio + 0.3×unit_ratio
+    field_rec_count: dict[str, int] = {}
+    for rec in records:
+        fn = rec.get("field_name", "unknown")
+        en = rec.get("entity_name", "")
+        key = f"{en}/{fn}" if en else fn
+        field_rec_count[key] = field_rec_count.get(key, 0) + 1
 
-    score = passed / total_checks if total_checks else 1.0
+    def _ratio(ok_pred) -> float:
+        total = sum(field_rec_count.values())
+        if total == 0:
+            return 1.0
+        ok = sum(c for k, c in field_rec_count.items() if ok_pred(k))
+        return ok / total
+
+    schema_ok = 1.0 if schema_consistency["is_consistent"] else 0.0
+    type_ok_ratio = _ratio(lambda k: field_type_consistency.get(k, True))
+    unit_ok_ratio = _ratio(lambda k: not unit_consistency.get(k, "").startswith("inconsistent"))
+    score = 0.4 * schema_ok + 0.3 * type_ok_ratio + 0.3 * unit_ok_ratio
 
     result = {
         "score": round(score, 4),
