@@ -44,9 +44,11 @@
 
 import logging
 import uuid
-from typing import Dict, Literal
+from typing import Dict, List, Literal, Optional
 
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
+from langgraph.types import Command
 
 from .adapters import (
     clarification_node,
@@ -56,7 +58,7 @@ from .adapters import (
     skip_extraction_node,
 )
 from .aggregator import final_aggregator
-from .quality_adapter import quality_node
+from .quality_adapter import quality_finalize_node, quality_node
 from .state import MainGraphState
 
 logger = logging.getLogger(__name__)
@@ -125,8 +127,20 @@ def route_after_retrieval(
 # 图装配
 # ══════════════════════════════════════════════════════════════
 
-def create_main_graph():
-    """构建并编译主图"""
+# Phase 3: 编译缓存 — 图结构是静态的, 每次调用重新编译纯属浪费
+_compiled_graph = None
+
+
+def create_main_graph(checkpointer=None):
+    """构建并编译主图（编译一次, 后续复用缓存实例）。
+
+    Phase 4c: 支持可选 checkpointer —— HITL（interrupt）需要 checkpointer，
+    带 checkpointer 的实例不缓存（每次独立，thread_id 隔离会话）。
+    """
+    global _compiled_graph
+    if checkpointer is None and _compiled_graph is not None:
+        return _compiled_graph
+
     graph = StateGraph(MainGraphState)
 
     graph.add_node("clarification", clarification_node)
@@ -136,6 +150,7 @@ def create_main_graph():
     graph.add_node("skip_extraction", skip_extraction_node)
     graph.add_node("aggregation", final_aggregator)
     graph.add_node("quality", quality_node)
+    graph.add_node("quality_finalize", quality_finalize_node)
 
     graph.add_edge(START, "clarification")
 
@@ -155,12 +170,30 @@ def create_main_graph():
 
     graph.add_edge("extraction", "aggregation")
     graph.add_edge("skip_extraction", "aggregation")
+    # Phase 4: quality → quality_finalize → END（修复质量结果不进 final_output 的断链）
     graph.add_edge("aggregation", "quality")
-    graph.add_edge("quality", END)
+    graph.add_edge("quality", "quality_finalize")
+    graph.add_edge("quality_finalize", END)
 
-    compiled = graph.compile()
+    compiled = graph.compile(checkpointer=checkpointer)
+    if checkpointer is None:
+        _compiled_graph = compiled
     logger.info("[Main Graph] 编译完成")
     return compiled
+
+
+def _prompt_for_interrupt(payloads: List[Dict]) -> str:
+    """CLI 端渲染 interrupt payload 并读取用户输入（HITL 交互）。
+
+    前端对接时可用同样的 payload 结构自行渲染 UI，
+    恢复时通过 Command(resume=answer) 传回答案。
+    """
+    for p in payloads:
+        if not isinstance(p, dict):
+            continue
+        text = p.get("text") or p.get("question") or ""
+        print(text)
+    return input().strip()
 
 
 def run_pipeline(
@@ -170,12 +203,18 @@ def run_pipeline(
     recursion_limit: int = 50,
 ) -> Dict:
     """
-    端到端执行一次完整查询。
+    端到端执行一次完整查询（支持 HITL interrupt 循环）。
+
+    Phase 4c: 节点内 input() 已改为 LangGraph interrupt()。
+    本函数用 MemorySaver + thread_id 执行图：
+      - 遇到 interrupt（state 出现 __interrupt__ 键）→ CLI 渲染 payload 读输入
+      - Command(resume=answer) 恢复图执行
+    前端可直接调用 create_main_graph(checkpointer=...) 自行处理 interrupt。
 
     Args:
         user_query: 用户自然语言问题
         extra_pdfs: 手动上传的 PDF 绝对路径列表（可选）
-        query_id: 查询 ID，不传则自动生成 UUID
+        query_id: 查询 ID，不传则自动生成 UUID（也是 HITL thread_id）
         recursion_limit: LangGraph 递归上限
 
     Returns:
@@ -192,8 +231,19 @@ def run_pipeline(
 
     logger.info("[Pipeline] 启动 query_id=%s query=%r", qid, user_query)
 
-    app = create_main_graph()
-    final_state = app.invoke(initial, config={"recursion_limit": recursion_limit})
+    checkpointer = MemorySaver()
+    app = create_main_graph(checkpointer=checkpointer)
+    config = {
+        # thread_id 隔离会话；checkpointer 供方式B 子图共享（HITL 持久化）
+        "configurable": {"thread_id": qid, "checkpointer": checkpointer},
+        "recursion_limit": recursion_limit,
+    }
+
+    result = app.invoke(initial, config)
+    while isinstance(result, dict) and result.get("__interrupt__"):
+        payloads = result["__interrupt__"]
+        answer = _prompt_for_interrupt(payloads)
+        result = app.invoke(Command(resume=answer), config)
 
     logger.info("[Pipeline] 结束 query_id=%s", qid)
-    return final_state
+    return result

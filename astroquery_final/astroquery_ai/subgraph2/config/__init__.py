@@ -1,88 +1,135 @@
-"""配置模块"""
+"""配置模块（Phase 1 收敛）
 
-import yaml
-import os
+历史：从 config.yaml 加载，ADS/Unpaywall 敏感字段 env 覆盖，相对路径按包根解析。
+现在：敏感字段（ADS token / Unpaywall email）来自统一 Settings
+（astroquery_ai/config.py），其余为业务常量内联；路径解析逻辑保留。
+接口不变（config.api / config.retrieval / get_catalog_* 等），节点代码零改动。
+"""
+
 from pathlib import Path
-from dotenv import load_dotenv
+
+from astroquery_ai.config import get_settings
+
+_settings = get_settings()
 
 # 包内锚点：
 #   SUBGRAPH_ROOT = astroquery_ai/subgraph2
 #   PACKAGE_ROOT  = astroquery_ai
-# 所有路径都基于这两个锚点解析，不依赖当前工作目录（CWD）。
 SUBGRAPH_ROOT = Path(__file__).resolve().parent.parent
 PACKAGE_ROOT = SUBGRAPH_ROOT.parent
 
-# 显式加载 .env（不依赖 CWD）：优先包内，其次项目根
-for _env in (PACKAGE_ROOT / ".env", PACKAGE_ROOT.parent / ".env"):
-    if _env.exists():
-        load_dotenv(_env)
-# 兜底：再按默认规则搜一次（不覆盖已加载的变量）
-load_dotenv()
+# ── 业务常量（原 config.yaml，非敏感，内联）──
+_RETRIEVAL = {
+    "simbad": {
+        "max_retries": 3,
+        "retry_backoff": 3,
+        "timeout": 30,
+    },
+    "database": {
+        "total_catalogs": 22,
+        "sequential_query": True,  # 顺序查询（避免触发VizieR限流）
+    },
+    "papers": {
+        "ads_max_papers": 50,
+        "ads_sort": "score desc",
+        "pdf_download": {
+            "max_workers": 5,
+            "timeout": 60,
+            "max_file_size_mb": 50,
+            "arxiv_max_workers": 3,
+            "arxiv_delay": 1.0,
+        },
+    },
+    "performance_targets": {
+        "simbad": 5,
+        "database_total": 30,
+        "ads_search": 10,
+        "unpaywall_batch": 15,
+        "pdf_download_total": 60,
+        "total": 90,
+    },
+}
+
+_LOGGING = {
+    "level": "DEBUG",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": {
+        "enabled": True,
+        "path": "data/logs/subgraph2.log",
+        "max_bytes": 10485760,
+        "backup_count": 5,
+    },
+}
+
+_OUTPUT = {
+    "data_dir": "data",
+    "papers_dir": "data/papers",
+    "output_format": "json",
+    "save_intermediate_states": False,
+}
+
+_CONFIG_FILES = {
+    "catalog_config": "catalog/catalog_config.json",
+    "catalog_metadata": "catalog/catalog_metadata.json",
+    "catalog_units": "catalog/catalog_units.json",
+}
 
 
 class Config:
-    """配置类，从YAML文件和环境变量加载配置"""
+    """配置类：敏感字段来自统一 Settings，业务常量内联"""
 
-    def __init__(self, config_path: str = None):
-        if config_path is None:
-            config_path = Path(__file__).parent / "config.yaml"
-
-        with open(config_path, 'r', encoding='utf-8') as f:
-            self._config = yaml.safe_load(f)
-
-        # 从环境变量覆盖API配置
-        self._load_env_overrides()
-        # 把 YAML 里的相对路径解析为绝对路径
+    def __init__(self):
+        # 输出目录/日志文件的相对路径按包根解析为绝对路径（保留历史逻辑）
         self._resolve_paths()
 
-    def _resolve_paths(self):
+    def _resolve_paths(self) -> None:
         """把配置中的相对路径统一解析为绝对路径（相对包根，而非 CWD）"""
         def to_abs(value: str) -> str:
             p = Path(value)
             return str(p if p.is_absolute() else (PACKAGE_ROOT / p).resolve())
 
-        # 输出目录
-        out = self._config.get('output', {})
-        for key in ('data_dir', 'papers_dir'):
-            if key in out:
-                out[key] = to_abs(out[key])
-
-        # 日志文件
-        log_file = self._config.get('logging', {}).get('file', {})
-        if 'path' in log_file:
-            log_file['path'] = to_abs(log_file['path'])
-
-    def _load_env_overrides(self):
-        """从环境变量加载敏感配置"""
-        # ADS API Token
-        ads_token = os.getenv('ADS_API_TOKEN')
-        if ads_token:
-            self._config['api']['ads']['token'] = ads_token
-
-        # Unpaywall Email
-        unpaywall_email = os.getenv('UNPAYWALL_EMAIL')
-        if unpaywall_email:
-            self._config['api']['unpaywall']['email'] = unpaywall_email
+        for key in ("data_dir", "papers_dir"):
+            if key in _OUTPUT:
+                _OUTPUT[key] = to_abs(_OUTPUT[key])
 
     @property
     def api(self):
-        return self._config['api']
+        s = _settings
+        return {
+            "ads": {
+                "token": s.ads_api_token,
+                "timeout": 30,
+                "max_retries": 3,
+                "retry_backoff": 3,
+            },
+            "unpaywall": {
+                "email": s.unpaywall_email,
+                "timeout": 30,
+                "max_workers": 10,
+            },
+            "vizier": {
+                "server": "vizier.cfa.harvard.edu",
+                "timeout": 30,
+                "row_limit": 10,
+                "rate_limit_delay": 0.15,
+            },
+        }
 
     @property
     def retrieval(self):
-        return self._config['retrieval']
+        return _RETRIEVAL
 
     @property
     def logging(self):
-        return self._config['logging']
+        return _LOGGING
 
     @property
     def output(self):
-        return self._config['output']
+        return _OUTPUT
 
     @property
     def config_files(self):
-        return self._config['config_files']
+        return _CONFIG_FILES
 
     def _catalog_path(self, key: str) -> Path:
         """
@@ -92,21 +139,21 @@ class Config:
         - 绝对路径：直接使用
         - 相对路径：相对 subgraph2/ 解析（catalog/*.json 随包分发）
         """
-        p = Path(self.config_files[key])
+        p = Path(_CONFIG_FILES[key])
         return p if p.is_absolute() else (SUBGRAPH_ROOT / p).resolve()
 
     def get_catalog_config_path(self) -> Path:
         """获取星表配置文件路径"""
-        return self._catalog_path('catalog_config')
+        return self._catalog_path("catalog_config")
 
     def get_catalog_metadata_path(self) -> Path:
         """获取星表元数据文件路径"""
-        return self._catalog_path('catalog_metadata')
+        return self._catalog_path("catalog_metadata")
 
     def get_catalog_units_path(self) -> Path:
         """获取星表单位配置文件路径"""
-        return self._catalog_path('catalog_units')
+        return self._catalog_path("catalog_units")
 
 
-# 全局配置实例
+# 全局配置实例（接口兼容：节点代码引用 config.xxx）
 config = Config()

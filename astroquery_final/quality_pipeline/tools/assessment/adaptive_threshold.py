@@ -89,7 +89,7 @@ class AdaptiveThresholdEngine:
         threshold = max(0.30, min(0.99, threshold))
         return round(threshold, 4)
 
-    def get_conflict_threshold(
+    def get_conflict_hreshold(
         self,
         field_name: str,
         sample_size: int,

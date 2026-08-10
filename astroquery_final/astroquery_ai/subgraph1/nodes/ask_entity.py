@@ -3,6 +3,8 @@
 import logging
 from datetime import datetime
 
+from langgraph.types import interrupt
+
 from ..state import IntentClarificationState
 from ..config import config
 
@@ -56,13 +58,17 @@ def ask_entity(state: IntentClarificationState) -> IntentClarificationState:
 （例如：M31 或 NGC 224）
 """
 
-    print("\n" + config.ui['separator'])
-    print(question)
-    print(config.ui['separator'])
-    print("\n您的输入：", end=" ")
-
-    # 等待用户输入
-    user_input = input().strip()
+    # Phase 4c: input() → interrupt()（LangGraph HITL，前端可对接）
+    # payload 携带完整渲染文本（text）与结构化字段，前端/CLI 自行渲染
+    user_input = interrupt({
+        "type": "ask_entity",
+        "text": f"\n{config.ui['separator']}\n{question}\n{config.ui['separator']}\n\n您的输入：",
+        "question": question,
+        "turns": turns + 1,
+    })
+    if user_input is None:
+        user_input = ""
+    user_input = str(user_input).strip()
     logger.debug(f"[ask_entity] 用户输入: {user_input}")
 
     # 更新对话历史

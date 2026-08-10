@@ -1,34 +1,35 @@
-"""State schema definition for the extraction subgraph."""
+"""提取子图状态定义。"""
 
-from typing import TypedDict, Optional, List, Dict, NotRequired
+from operator import add
+from typing import Annotated, TypedDict, Optional, List, Dict, NotRequired
 from PIL import Image
 
 
 class ExtractionState(TypedDict):
     """
-    Multimodal extraction subgraph state definition.
+    多模态提取子图状态定义。
 
-    This state flows through three nodes:
-    1. pdf_batch_converter: PDF → images
-    2. vlm_batch_extractor: images → raw extractions
-    3. result_builder: raw extractions → paper_records
+    状态流经三个节点：
+    1. pdf_batch_converter: PDF → 图片
+    2. vlm_batch_extractor: 图片 → 原始提取结果
+    3. result_builder: 原始提取结果 → paper_records
     """
 
-    # ===== Input fields (from Node 2) =====
+    # ===== 输入字段（来自子图2）=====
     query_id: str
-    """Query unique identifier (UUID)"""
+    """查询唯一标识符（UUID）"""
 
     target_entity: str
-    """Target celestial object name (e.g., "M31")"""
+    """目标天体名称（如 "M31"）"""
 
     entity_type: NotRequired[str]
-    """SIMBAD otype (e.g., "AGN", "GlC", "SB*") — 写入 paper records 的 entity_type"""
+    """SIMBAD otype（如 "AGN"、"GlC"、"SB*"）— 写入 paper records 的 entity_type"""
 
     requested_properties: NotRequired[List[str]]
     """
-    List of physical properties requested by user.
-    Used for VLM prompt construction.
-    Default: []
+    用户请求的物理性质列表。
+    用于 VLM prompt 构建。
+    默认：[]
     """
 
     property_spec: NotRequired[List[Dict]]
@@ -46,15 +47,15 @@ class ExtractionState(TypedDict):
 
     download_paths: List[Dict]
     """
-    Successfully downloaded PDF paths (from Node 2).
-    Each element: {"bibcode": "...", "local_path": "...", "file_size_mb": ...}
+    成功下载的 PDF 路径列表（来自子图2）。
+    每个元素：{"bibcode": "...", "local_path": "...", "file_size_mb": ...}
     """
 
-    # ===== PDF conversion results =====
+    # ===== PDF 转换结果 =====
     paper_image_paths: NotRequired[Dict[str, List[str]]]
     """
-    PDF to image conversion results (file paths for streaming).
-    Format: {bibcode: ["/path/to/page1.png", "/path/to/page2.png", ...]}
+    PDF 转图片结果（文件路径，流式处理）。
+    格式：{bibcode: ["/path/to/page1.png", "/path/to/page2.png", ...]}
     """
 
     conversion_status: NotRequired[str]
@@ -65,15 +66,15 @@ class ExtractionState(TypedDict):
 
     conversion_failed: NotRequired[List[Dict]]
     """
-    List of failed conversions.
-    Format: [{"bibcode": "...", "reason": "..."}]
+    转换失败的列表。
+    格式：[{"bibcode": "...", "reason": "..."}]
     """
 
-    # ===== VLM extraction progress =====
+    # ===== VLM 提取进度 =====
     extraction_status: NotRequired[str]
     """
-    Extraction status.
-    Values: "pending" | "running" | "completed" | "failed"
+    提取状态。
+    取值："pending" | "running" | "completed" | "failed"
     """
 
     extraction_progress: NotRequired[Dict]
@@ -90,15 +91,15 @@ class ExtractionState(TypedDict):
 
     extraction_failed: NotRequired[List[Dict]]
     """
-    List of failed extractions.
-    Format: [{"bibcode": "...", "reason": "..."}]
+    提取失败的列表。
+    格式：[{"bibcode": "...", "reason": "..."}]
     """
 
-    # ===== BBox annotation progress =====
+    # ===== BBox 标注进度 =====
     bbox_annotation_status: NotRequired[str]
     """
-    BBox annotation status.
-    Values: "pending" | "running" | "completed" | "failed"
+    BBox 标注状态。
+    取值："pending" | "running" | "completed" | "failed"
     """
 
     bbox_annotation_progress: NotRequired[Dict]
@@ -109,21 +110,21 @@ class ExtractionState(TypedDict):
 
     bbox_annotation_failed: NotRequired[List[Dict]]
     """
-    List of failed bbox annotations.
-    Format: [{"key": "bibcode_idx", "reason": "...", "timestamp": "..."}]
+    BBox 标注失败的列表。
+    格式：[{"key": "bibcode_idx", "reason": "...", "timestamp": "..."}]
     """
 
-    # ===== Output fields (passed to main graph) =====
+    # ===== 输出字段（传给主图）=====
     paper_records: NotRequired[List[Dict]]
     """
-    Paper extraction records (final format).
-    Each record conforms to GROUNDED_DATA_V2_FINAL_SPEC.
+    论文提取记录（最终格式）。
+    每条记录符合 GROUNDED_DATA_V2_FINAL_SPEC。
     """
 
     processing_summary: NotRequired[Dict]
     """
-    Processing statistics.
-    Format: {
+    处理统计。
+    格式：{
         "total_papers": 35,
         "processed_papers": 35,
         "failed_papers": 0,
@@ -131,9 +132,17 @@ class ExtractionState(TypedDict):
     }
     """
 
-    # ===== Error log =====
-    error_log: NotRequired[List[Dict]]
+    # ===== 错误日志 =====
+    error_log: NotRequired[Annotated[List[Dict], add]]
     """
-    Error log list.
-    Format: [{"node": "vlm_batch_extractor", "error": "...", "timestamp": "..."}, ...]
+    错误日志列表（Phase 2: 统一 Annotated[add] reducer，与主图/子图2 一致）。
+    格式：[{"node": "vlm_batch_extractor", "error": "...", "timestamp": "..."}, ...]
+    """
+
+    # ===== Figure 证据（独立通路，不进质量管线）=====
+    figure_evidence: NotRequired[List[Dict]]
+    """
+    与查询相关的论文图表证据（figure_extractor 产出，供前端直接展示）。
+    格式：[{"source_id", "page", "figure_index", "caption", "description",
+           "relevance", "relevance_reason", "image_path"}, ...]
     """

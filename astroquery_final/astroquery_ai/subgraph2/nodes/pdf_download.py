@@ -231,16 +231,16 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
     query_id = state["query_id"]
 
     if not papers_metadata:
-        logger.info(f"[PDF Download] No papers to download, skipping")
+        logger.info("[PDF Download] No papers to download, skipping")
         state["pdf_download_status"] = "skipped"
-        state["downloaded_papers"] = []
+        state["download_paths"] = []
         state["failed_downloads"] = []
         state["paper_sources"] = []
         # 只返回更新的字段
         return {
             "pdf_download_status": state.get("pdf_download_status"),
             "pdf_download_progress": state.get("pdf_download_progress", {}),
-            "downloaded_papers": state.get("downloaded_papers", []),
+            "download_paths": state.get("download_paths", []),
             "failed_downloads": state.get("failed_downloads", []),
             "paper_sources": state.get("paper_sources", [])
         }
@@ -382,7 +382,7 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
 
     # Step 5: 更新状态
     state["pdf_download_status"] = "completed"
-    state["downloaded_papers"] = downloaded_papers
+    state["download_paths"] = downloaded_papers
     state["failed_downloads"] = failed_downloads
     state["paper_sources"] = paper_sources
 
@@ -398,7 +398,7 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
     n_arxiv_papers = sum(1 for p in papers_metadata if p.get("arxiv_id"))
     n_no_url = sum(1 for f in failed_downloads if f.get("reason") == "no_url_available")
 
-    logger.info(f"[PDF Download] Completed!")
+    logger.info("[PDF Download] Completed!")
     logger.info(f"[PDF Download]   Success: {len(downloaded_papers)}")
     logger.info(f"[PDF Download]   Failed: {len(failed_downloads)}")
     logger.info(f"[PDF Download]   有 arXiv ID 的论文: {n_arxiv_papers}/{len(papers_metadata)}")
@@ -409,7 +409,7 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
     return {
         "pdf_download_status": state.get("pdf_download_status"),
         "pdf_download_progress": state.get("pdf_download_progress", {}),
-        "downloaded_papers": state.get("downloaded_papers", []),
+        "download_paths": state.get("download_paths", []),
         "failed_downloads": state.get("failed_downloads", []),
         "paper_sources": state.get("paper_sources", [])
     }

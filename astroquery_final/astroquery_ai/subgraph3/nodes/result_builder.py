@@ -1,4 +1,4 @@
-"""Result builder node."""
+"""结果构建节点。"""
 
 from typing import List, Dict, Optional
 from datetime import datetime
@@ -50,7 +50,7 @@ def result_builder(state: ExtractionState) -> ExtractionState:
 
         for idx, ext in enumerate(extractions):
             try:
-                # Filter low confidence results
+                # 过滤低置信度结果
                 confidence = float(ext.get("confidence", 0.0))
                 if confidence < settings.quality.min_confidence:
                     logger.debug(f"[Result Builder]     Skipping low confidence record: "
@@ -67,7 +67,7 @@ def result_builder(state: ExtractionState) -> ExtractionState:
                     dropped_bbox += 1
                     continue
 
-                # Build record
+                # 构建记录
                 record = build_paper_record(
                     bibcode=bibcode,
                     extraction=ext,
@@ -122,13 +122,13 @@ def result_builder(state: ExtractionState) -> ExtractionState:
             "timestamp": f.get("timestamp") or datetime.now().isoformat(),
         })
 
-    # Update state
+    # 更新状态
     state["paper_records"] = paper_records
     state["processing_summary"] = processing_summary
     if error_log:
         state["error_log"] = error_log
 
-    logger.info(f"[Result Builder] Completed!")
+    logger.info("[Result Builder] Completed!")
     logger.info(f"[Result Builder]   Papers processed: {processing_summary['processed_papers']}")
     logger.info(f"[Result Builder]   Records extracted: {processing_summary['total_records_extracted']}")
     logger.info(f"[Result Builder]   Filtered (low confidence): {processing_summary['filtered_low_confidence']}")
@@ -165,7 +165,7 @@ def build_paper_record(
     2. Data type conversion: ensure int/str types are correct
     3. Generate record_id and trace_id
     """
-    # Extract fields
+    # 提取字段
     page = extraction.get("page")
     field_name = extraction.get("field_name")
     field_value = extraction.get("field_value")
@@ -176,19 +176,19 @@ def build_paper_record(
     extraction_method = extraction.get("extraction_method", "text")
     confidence = extraction.get("confidence", 0.0)
 
-    # ===== Key: BBox =====
+    # ===== 键：BBox =====
     # 调用方已 pre-check（无效 bbox 的记录在循环中丢弃），此处使用传入的校验结果
     if bbox_validated is None:
         raise ValueError("bbox 校验失败（调用方应已丢弃该记录）")
 
-    # ===== Key: Data type conversion =====
+    # ===== 键：数据类型转换 =====
     page_int = int(page)  # Ensure integer
     field_name_str = str(field_name).strip()
     field_value_str = str(field_value).strip()
     field_unit_str = str(field_unit).strip() if field_unit else ""
 
-    # Generate record_id (format: bibcode_entity_fieldname_index)
-    # Replace special characters
+    # 生成 record_id（格式：bibcode_entity_fieldname_index）
+    # 替换特殊字符
     safe_bibcode = bibcode.replace("/", "_").replace(":", "_")
     safe_entity = target_entity.replace(" ", "_")
     safe_field = field_name_str.replace(" ", "_").replace("/", "_")
@@ -199,7 +199,7 @@ def build_paper_record(
     # 注意：用 doc_index（第几篇论文），不是 record_index（论文内记录序号）
     trace_id = f"doc{doc_index}_p{page_int}"
 
-    # Build record
+    # 构建记录
     record = {
         "record_id": record_id,                          # ✅ string
         "source_id": bibcode,                            # ✅ string

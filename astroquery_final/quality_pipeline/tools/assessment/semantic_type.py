@@ -21,18 +21,22 @@ _SEMANTIC_RULES: dict[str, dict] | None = None
 _SEMANTIC_RULES_DOMAIN: str = ""
 
 
-def _load_semantic_rules() -> dict[str, dict]:
-    """从 quality_rules.yaml 动态加载语义类型规则 (V3.1: 领域感知缓存)。"""
+def _load_semantic_rules(research_domain: str | None = None) -> dict[str, dict]:
+    """从 quality_rules.yaml 动态加载语义类型规则 (V3.1: 领域感知缓存)。
+
+    Phase 3 显式化: 优先显式 research_domain, None 时回退全局。
+    """
     global _SEMANTIC_RULES, _SEMANTIC_RULES_DOMAIN
     from ...configs import get_research_domain
-    current_domain = get_research_domain() or "default"
+    current_domain = research_domain or get_research_domain() or "default"
 
     # 缓存仅在相同领域下复用; 领域切换时重新加载, 防止污染
     if _SEMANTIC_RULES is not None and _SEMANTIC_RULES_DOMAIN == current_domain:
         return _SEMANTIC_RULES
     try:
         from ...configs import load_domain_config
-        raw = load_domain_config("semantic_types", "semantic_types")
+        raw = load_domain_config("semantic_types", "semantic_types",
+                                 research_domain=research_domain)
         if raw:
             _SEMANTIC_RULES = dict(raw)
             _SEMANTIC_RULES_DOMAIN = current_domain
@@ -51,14 +55,18 @@ def infer_semantic_type(
     field_name: str,
     field_unit: str | None = None,
     field_value: float | None = None,
+    research_domain: str | None = None,
 ) -> dict[str, Any]:
     """
     从 field_name + field_unit 推断语义类型，并验证物理可行性。
+
+    Phase 3 显式化: research_domain 显式传入 (None 回退全局)。
 
     Args:
         field_name: 字段名
         field_unit: 字段单位
         field_value: 字段值 (用于可行性校验)
+        research_domain: 研究领域 (优先显式, None 回退全局)
 
     Returns:
         {
@@ -85,7 +93,7 @@ def infer_semantic_type(
     unit_str = (field_unit or "").strip()
 
     # V2.2: 从 config 动态加载规则
-    rules_db = _load_semantic_rules()
+    rules_db = _load_semantic_rules(research_domain)
     if not rules_db:
         return result
 
@@ -165,11 +173,13 @@ def infer_semantic_type(
 
 def infer_all_fields(
     records: list[dict[str, Any]],
+    research_domain: str | None = None,
 ) -> dict[str, dict[str, Any]]:
     """
     对所有 records 的 (entity_type, entity_name, field_name) 做语义类型推断。
 
     V2: 不同实体共享同一 field_name 时各自独立推断。
+    Phase 3 显式化: research_domain 显式传入 (None 回退全局)。
     Returns:
         {key: semantic_info}   key = "{entity_type}:{entity_name}/{field_name}" 或纯 field_name
     """
@@ -196,6 +206,7 @@ def infer_all_fields(
             fn,
             rec.get("field_unit"),
             rec.get("field_value"),
+            research_domain,
         )
 
     return result

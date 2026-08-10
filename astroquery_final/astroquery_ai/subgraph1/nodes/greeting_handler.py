@@ -3,6 +3,8 @@
 import logging
 from datetime import datetime
 
+from langgraph.types import interrupt
+
 from ..state import IntentClarificationState
 from ..config import config
 
@@ -34,13 +36,15 @@ def greeting_handler(state: IntentClarificationState) -> IntentClarificationStat
 （例如：M31的距离和红移）
 """
 
-    print("\n" + config.ui['separator'])
-    print(greeting_response)
-    print(config.ui['separator'])
-    print("\n请输入您的查询：", end=" ")
-
-    # 等待用户输入
-    user_input = input().strip()
+    # Phase 4c: input() → interrupt()（LangGraph HITL）
+    user_input = interrupt({
+        "type": "greeting",
+        "text": f"\n{config.ui['separator']}\n{greeting_response}\n{config.ui['separator']}\n\n请输入您的查询：",
+        "question": greeting_response,
+    })
+    if user_input is None:
+        user_input = ""
+    user_input = str(user_input).strip()
     logger.debug(f"[greeting_handler] 用户输入: {user_input}")
 
     # 更新对话历史

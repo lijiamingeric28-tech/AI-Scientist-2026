@@ -1,5 +1,5 @@
 """
-conflict_extractor.py → V3.0: VarianceExtractor (原 ConflictExtractor)
+conflict_xtractor.py → V3.0: VarianceExtractor (原 ConflictExtractor)
 
 V3.0 重写: 从 Quality Report 提取多源方差和异常, 替代旧的冲突提取。
   - A→C: 读 quality.multi_source_variance (variances + anomalies)

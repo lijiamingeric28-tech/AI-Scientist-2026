@@ -213,7 +213,7 @@ def get_latest_user_input(state: IntentClarificationState) -> str:
     chat_history = state.get("chat_history", [])
 
     if not chat_history:
-        return state["original_query"]
+        return state["user_query"]
 
     # 从后往前找第一条用户消息
     for msg in reversed(chat_history):
@@ -221,7 +221,7 @@ def get_latest_user_input(state: IntentClarificationState) -> str:
             return msg.get("content", "")
 
     # 如果没有找到，返回原始查询
-    return state["original_query"]
+    return state["user_query"]
 
 
 def update_chat_history(

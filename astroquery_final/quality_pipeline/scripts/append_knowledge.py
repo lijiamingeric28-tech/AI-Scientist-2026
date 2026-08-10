@@ -4,7 +4,9 @@
 用法: python scripts/append_knowledge.py
 在 5 个知识库 yaml 的 entries 末尾追加新条目 (幂等: 按 id 去重)。
 """
-import sys, io, yaml
+import sys
+import io
+import yaml
 from pathlib import Path
 sys.stdout.reconfigure(encoding='utf-8')
 BASE = Path(__file__).parent.parent / "data" / "insight_knowledge" / "astrophysics"

@@ -57,7 +57,7 @@ def database_query(state: RetrievalState) -> RetrievalState:
         catalog_metadata_path = config.get_catalog_metadata_path()
         catalog_units_path = config.get_catalog_units_path()
 
-        logger.debug(f"[Database Query] Loading configs...")
+        logger.debug("[Database Query] Loading configs...")
         catalog_config = load_catalog_config(str(catalog_config_path))
         catalog_metadata = load_catalog_metadata(str(catalog_metadata_path))
         catalog_units_config = load_catalog_units(str(catalog_units_path))
@@ -80,7 +80,7 @@ def database_query(state: RetrievalState) -> RetrievalState:
         }
 
     # Step 2: 提取星表标识符
-    logger.info(f"[Database Query] Extracting catalog IDs from aliases...")
+    logger.info("[Database Query] Extracting catalog IDs from aliases...")
     catalog_ids = extract_catalog_ids(aliases, catalog_config)
 
     total_queries = sum(len(id_list) for id_list in catalog_ids.values())
@@ -187,7 +187,7 @@ def database_query(state: RetrievalState) -> RetrievalState:
 
                     logger.info(f"[Database Query]   ✓ Success: {len(records)} records extracted")
                 else:
-                    logger.warning(f"[Database Query]   ✗ No data found")
+                    logger.warning("[Database Query]   ✗ No data found")
 
             except Exception as e:
                 error_msg = str(e)
@@ -211,7 +211,7 @@ def database_query(state: RetrievalState) -> RetrievalState:
         "current_catalog": "Completed"
     }
 
-    logger.info(f"[Database Query] Completed!")
+    logger.info("[Database Query] Completed!")
     logger.info(f"[Database Query]   Sources: {len(database_sources)}")
     logger.info(f"[Database Query]   Records: {len(database_records)}")
     logger.info(f"[Database Query]   Successful catalogs: {len(successful_catalogs)}")

@@ -2,7 +2,13 @@
 End-to-end Property Mapping System
 Input: target name + property description -> SIMBAD -> otype -> RAG prompt -> Qwen API -> property list
 """
-import json, os, sys, re, requests, xml.etree.ElementTree as ET, io
+import json
+import os
+import sys
+import re
+import requests
+import xml.etree.ElementTree as ET
+import io
 from pathlib import Path
 from collections import defaultdict
 
@@ -70,7 +76,7 @@ def load_rag(simbad_result):
             fp = RAG_DIR / fname
             if fp.exists():
                 try: return json.loads(fp.read_text(encoding='utf-8'))
-                except: continue
+                except Exception: continue
 
     # Fallback: try OTYPE verbose
     otype = simbad_result.get('OTYPE', '') or simbad_result.get('otype', '')
@@ -79,13 +85,13 @@ def load_rag(simbad_result):
         fp = RAG_DIR / fname
         if fp.exists():
             try: return json.loads(fp.read_text(encoding='utf-8'))
-            except: pass
+            except Exception: pass
 
     # Last fallback: generic star
     fp = RAG_DIR / '_star.json'
     if fp.exists():
         try: return json.loads(fp.read_text(encoding='utf-8'))
-        except: pass
+        except Exception: pass
     return None
 
 # Prompt builder
@@ -189,11 +195,13 @@ def main():
     content = content.strip()
     content = re.sub(r'^```\w*\n','',content); content = re.sub(r'\n```$','',content)
     try: parsed = json.loads(content)
-    except:
+    except Exception:
         m = re.search(r'\{[\s\S]*\}', content)
         if m:
             try: parsed = json.loads(m.group())
-            except: print("JSON parse error. Raw:\n"+content); return
+            except Exception:
+                print("JSON parse error. Raw:\n" + content)
+                return
         else: print("No JSON found. Raw:\n"+content); return
 
     # Output

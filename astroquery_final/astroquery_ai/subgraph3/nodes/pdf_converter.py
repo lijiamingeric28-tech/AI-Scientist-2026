@@ -75,13 +75,13 @@ def pdf_batch_converter(state: ExtractionState) -> ExtractionState:
 
     # Log cache statistics
     cache_size_mb = image_cache.get_cache_size()
-    logger.info(f"[PDF Converter] Completed!")
+    logger.info("[PDF Converter] Completed!")
     logger.info(f"[PDF Converter]   Success: {len(paper_image_paths)}")
     logger.info(f"[PDF Converter]   Failed: {len(conversion_failed)}")
     logger.info(f"[PDF Converter]   Cache size: {cache_size_mb:.2f} MB")
 
     if conversion_failed:
-        logger.warning(f"[PDF Converter]   Failed papers:")
+        logger.warning("[PDF Converter]   Failed papers:")
         for failed in conversion_failed:
             logger.warning(f"[PDF Converter]     - {failed['bibcode']}: {failed['reason']}")
 

@@ -1,49 +1,10 @@
-"""Logger configuration for the extraction subgraph."""
+"""Logger — 统一日志工厂（Phase 4d 收敛）
 
-import logging
-import os
-from pathlib import Path
-from ..config.settings import settings
+原实现按 logger 名添加 console + file handler，与 root basicConfig 并存
+导致重复/缺失输出。现 re-export 统一工厂（astroquery_ai/logger.py），
+保持 `from ..utils.logger import get_logger` 调用方式不变。
+"""
 
+from astroquery_ai.logger import get_logger
 
-def get_logger(name: str) -> logging.Logger:
-    """
-    Get a configured logger instance.
-
-    Args:
-        name: Logger name (typically __name__)
-
-    Returns:
-        Configured logger instance with DEBUG level and dual output
-    """
-    logger = logging.getLogger(name)
-
-    # Avoid duplicate handlers
-    if logger.handlers:
-        return logger
-
-    logger.setLevel(getattr(logging, settings.log.level))
-
-    # Create formatter
-    formatter = logging.Formatter(settings.log.format)
-
-    # Console handler
-    if settings.log.console_output:
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-
-    # File handler
-    if settings.log.file_output:
-        # Ensure log directory exists
-        log_dir = Path(settings.log.log_dir)
-        log_dir.mkdir(parents=True, exist_ok=True)
-
-        log_path = log_dir / settings.log.log_file
-        file_handler = logging.FileHandler(log_path, encoding='utf-8')
-        file_handler.setLevel(logging.DEBUG)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
-
-    return logger
+__all__ = ["get_logger"]

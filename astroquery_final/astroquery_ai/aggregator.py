@@ -24,6 +24,7 @@ import logging
 from datetime import datetime
 from typing import Dict
 
+from .config import get_settings
 from .state import MainGraphState
 
 logger = logging.getLogger(__name__)
@@ -50,7 +51,7 @@ def final_aggregator(state: MainGraphState) -> Dict:
     # ── 构造 final_output（补全 research_domain / simbad_info / error_log）──
     final_output = {
         "schema_version": SCHEMA_VERSION,
-        "research_domain": "astrophysics",  # M4: 补充领域标识
+        "research_domain": get_settings().default_research_domain,  # M4: 补充领域标识
         "query_metadata": {
             "query_id": state.get("query_id", ""),
             "user_query": state.get("user_query", ""),
@@ -61,6 +62,8 @@ def final_aggregator(state: MainGraphState) -> Dict:
         "simbad_info": state.get("simbad_info", {}),  # M5: 补充 SIMBAD 解析结果
         "sources": sources,
         "records": records,
+        # Figure 证据（独立通路，直接展示用，不进质量管线）
+        "figure_evidence": state.get("figure_evidence", []) or [],
     }
 
     # ── 悬空 source_id 检查（非阻断）──

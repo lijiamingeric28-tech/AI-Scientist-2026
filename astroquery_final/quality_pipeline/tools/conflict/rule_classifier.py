@@ -132,7 +132,7 @@ def classify_variance_cause(
 
 
 # ── 向后兼容: 旧 API ──
-def classify_conflict_rule(
+def classify_conflict_ule(
     conflict: dict[str, Any],
     semantic_types: dict[str, Any] | None = None,
     field_criticality: str = "important",
@@ -140,7 +140,7 @@ def classify_conflict_rule(
     """
     向后兼容的旧 API — 内部转调 V3.0 classify_variance_cause()。
 
-    旧返回格式: {conflict_id, type, subtype, severity, rule_confidence}
+    旧返回格式: {conflict_d, type, subtype, severity, rule_confidence}
     """
     result = classify_variance_cause(conflict, semantic_types)
 
@@ -155,7 +155,7 @@ def classify_conflict_rule(
     }
 
     return {
-        "conflict_id": conflict.get("conflict_id"),
+        "conflict_d": conflict.get("conflict_d"),
         "type": "multi_source_variance",
         "subtype": cause_subtype_map.get(result["cause"], "undetermined"),
         "severity": "info",  # V3.0: 方差不是错误, 是信息

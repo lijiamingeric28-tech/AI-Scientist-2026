@@ -29,7 +29,7 @@ def result_aggregator(state: RetrievalState) -> RetrievalState:
     target_entity = state["target_entity"]
 
     logger.info(f"[Result Aggregator] Query ID: {query_id}")
-    logger.info(f"[Result Aggregator] Aggregating results...")
+    logger.info("[Result Aggregator] Aggregating results...")
 
     # Step 1: 构建 SIMBAD 解析结果（已在 state 中）
     simbad_resolution = {
@@ -53,9 +53,11 @@ def result_aggregator(state: RetrievalState) -> RetrievalState:
     }
 
     # Step 3: 构建论文检索结果
+    # Phase 2 统一后子图 state 键为 download_paths（原 downloaded_papers）
+    downloaded = state.get("download_paths", [])
     paper_results = {
         "total_papers_found": state.get("ads_total_found", 0),
-        "downloaded_papers": len(state.get("downloaded_papers", [])),
+        "downloaded_papers": len(downloaded),
         "failed_downloads": len(state.get("failed_downloads", [])),
         "search_metadata": {
             "search_query": state.get("ads_query_string"),
@@ -63,7 +65,7 @@ def result_aggregator(state: RetrievalState) -> RetrievalState:
             "search_timestamp": datetime.now().isoformat()
         },
         "sources": state.get("paper_sources", []),
-        "download_paths": state.get("downloaded_papers", [])
+        "download_paths": downloaded
     }
 
     # Step 4: 记录完成时间
@@ -74,8 +76,8 @@ def result_aggregator(state: RetrievalState) -> RetrievalState:
     supp_sources = state.get("supplementary_sources", []) or []
     supp_records = state.get("supplementary_records", []) or []
 
-    logger.info(f"[Result Aggregator] Completed!")
-    logger.info(f"[Result Aggregator] === Summary ===")
+    logger.info("[Result Aggregator] Completed!")
+    logger.info("[Result Aggregator] === Summary ===")
     logger.info(f"[Result Aggregator]   SIMBAD: {simbad_resolution['status']}")
     logger.info(f"[Result Aggregator]   Database sources: {len(database_results['sources'])}")
     logger.info(f"[Result Aggregator]   Database records: {len(database_results['records'])}")

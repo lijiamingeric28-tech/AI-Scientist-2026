@@ -1,18 +1,18 @@
-"""子图适配层
+"""子图适配层（Phase 2 精简）
 
 每个子图被包装成一个主图节点。包装节点承担三件事：
 
-1. **投影输入**：从主图状态挑出子图需要的字段，按子图的键名传入
+1. **投影输入**：从主图状态挑出子图需要的字段（Phase 2 后键名已统一，
+   不再需要改名，只做选键）
 2. **映射输出**：把子图返回的扁平字段整理成主图的嵌套契约
 3. **隔离失败**：子图抛异常时记录到 error_log 并返回可继续的降级状态，
    保证主图永远能走到 aggregation 出 JSON
 
 为什么不直接 add_node(subgraph)
 ------------------------------
-子图的状态键名与主图不一致（downloaded_papers vs download_paths，
-original_query vs user_query），且子图 2 的嵌套输出结构原先只存在于它的
-main.py:save_output() 里，从未进入 state。适配层把这些差异吸收掉，
-使三个子图源码保持零改动。
+官方文档推荐的方式B：子图有私有 state 时在节点内调用并做接口转换。
+子图内部字段（chat_history / clarification_turns 等）经包装节点出口过滤，
+不会污染主图 state。子图接口契约由 schemas/ 的 Pydantic IO 声明并验证。
 
 error_log 与 add reducer
 -----------------------
@@ -23,15 +23,50 @@ error_log 与 add reducer
 import logging
 import time
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Type
+
+from langchain_core.runnables import RunnableConfig
+from langgraph.errors import GraphInterrupt
+from pydantic import BaseModel, ValidationError
 
 from .property_standardization import property_standardization_node
+from .schemas import Sg1Input, Sg1Output, Sg2Input, Sg2Output, Sg3Input, Sg3Output
 from .state import MainGraphState
 from .subgraph1.graph import create_intent_clarification_subgraph
 from .subgraph2.graph import create_retrieval_subgraph
 from .subgraph3.graph import create_extraction_subgraph
 
 logger = logging.getLogger(__name__)
+
+
+def _validate_input(schema: Type[BaseModel], data: Dict, node: str) -> Dict:
+    """校验子图输入契约。失败只记警告并原样透传（降级，不阻塞主流程）。"""
+    try:
+        return schema.model_validate(data).model_dump()
+    except ValidationError as exc:
+        logger.warning("[%s] 输入契约校验失败（降级透传）: %s", node, str(exc)[:200])
+        return data
+
+
+def _validate_output(schema: Type[BaseModel], data: Dict, node: str) -> Dict:
+    """校验子图输出契约。失败只记警告（子图私有键由 extra=ignore 忽略）。"""
+    try:
+        schema.model_validate(data)
+    except ValidationError as exc:
+        logger.warning("[%s] 输出契约校验失败（降级继续）: %s", node, str(exc)[:200])
+    return data
+
+
+def _shared_checkpointer(config: RunnableConfig = None):
+    """从主图 config 取共享 checkpointer（HITL 中断持久化用）。
+
+    Phase 4c: 主图 run_pipeline 把 MemorySaver 实例放入
+    config["configurable"]["checkpointer"]，子图用同一实例编译，
+    使方式B 子图内的 interrupt 能与主图共享 thread 状态。
+    """
+    if not config:
+        return None
+    return (config.get("configurable") or {}).get("checkpointer")
 
 
 _stage_times: Dict[str, float] = {}
@@ -55,12 +90,13 @@ def _err(node: str, exc: Exception) -> Dict:
 # Node 1: 意图澄清
 # ══════════════════════════════════════════════════════════════
 
-def clarification_node(state: MainGraphState) -> Dict:
+def clarification_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
     """
     调用子图 1，把 user_query 澄清成结构化检索参数。
 
-    输入投影：user_query -> original_query
+    输入投影：user_query（Phase 2 后键名统一，直接选键传入）
     输出映射：target_entity / requested_properties / user_confirmed 等平铺上浮
+    Phase 4c: config 透传给子图 invoke（子图内 interrupt 需要继承 checkpointer）
     """
     t0 = time.time()
     logger.info("[Node 1] 意图澄清开始 query_id=%s", state.get("query_id"))
@@ -78,14 +114,20 @@ def clarification_node(state: MainGraphState) -> Dict:
             "conversation_history": state.get("conversation_history", []),
         }
 
-    sub_input = {
-        "original_query": state["user_query"],
+    sub_input = _validate_input(Sg1Input, {
+        "user_query": state["user_query"],
         "query_id": state.get("query_id", ""),
-    }
+    }, "clarification_node")
 
     try:
-        subgraph = create_intent_clarification_subgraph()
-        result = subgraph.invoke(sub_input)
+        subgraph = create_intent_clarification_subgraph(
+            checkpointer=_shared_checkpointer(config)
+        )
+        result = subgraph.invoke(sub_input, config)
+        _validate_output(Sg1Output, result, "clarification_node")
+    except GraphInterrupt:
+        # Phase 4c: HITL —— 子图 interrupt 不是失败，重新抛出让主图处理
+        raise
     except Exception as exc:
         logger.exception("[Node 1] 子图执行失败")
         return {
@@ -177,22 +219,22 @@ def _empty_retrieval() -> Dict:
     }
 
 
-def retrieval_node(state: MainGraphState) -> Dict:
+def retrieval_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
     """
     调用子图 2，并把它的扁平状态组装成主图的嵌套契约。
 
     这里承接了原 subgraph2/main.py:save_output() 的组装逻辑 —— 子图的
     result_aggregator 只返回 retrieval_timestamp，嵌套结构必须在此重建。
 
-    关键改名：downloaded_papers(list) -> paper_results.download_paths
-              以对齐子图 3 的输入契约。
+    Phase 2 后子图2 内部键已统一为 download_paths，此处仅组装嵌套结构。
+    Phase 4c: config 透传给子图 invoke。
     """
     logger.info("[Node 2] 并行检索开始 entity=%s", state.get("target_entity"))
 
     # 从 P1 的 simbad_info 构建子图 2 所需的 simbad_* 字段
     # （原来由 simbad_resolver 二次查询产出，B2 收敛后直接从 P1 映射）
     p1_simbad = state.get("simbad_info") or {}
-    sub_input = {
+    sub_input = _validate_input(Sg2Input, {
         "query_id": state.get("query_id", ""),
         "target_entity": state.get("target_entity") or "",
         "requested_properties": state.get("requested_properties", []),
@@ -210,18 +252,23 @@ def retrieval_node(state: MainGraphState) -> Dict:
             if (p1_simbad.get("ra") or p1_simbad.get("RA_ICRS")) else None
         ),
         "simbad_resolved_at": datetime.now().isoformat(),
-    }
+    }, "retrieval_node")
 
     try:
-        subgraph = create_retrieval_subgraph()
-        r = subgraph.invoke(sub_input)
+        subgraph = create_retrieval_subgraph(
+            checkpointer=_shared_checkpointer(config)
+        )
+        r = subgraph.invoke(sub_input, config)
+        _validate_output(Sg2Output, r, "retrieval_node")
+    except GraphInterrupt:
+        raise  # Phase 4c: HITL 中断重新抛出
     except Exception as exc:
         logger.exception("[Node 2] 子图执行失败")
         fallback = _empty_retrieval()
         fallback["error_log"] = [_err("retrieval_node", exc)]
         return fallback
 
-    downloaded = r.get("downloaded_papers", [])
+    downloaded = r.get("download_paths", [])
 
     out = {
         "database_results": {
@@ -306,13 +353,14 @@ def _merge_extra_pdfs(download_paths: List[Dict], extra_pdfs: List[str]) -> List
     return merged
 
 
-def extraction_node(state: MainGraphState) -> Dict:
+def extraction_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
     """
     调用子图 3，从 PDF 抽取带 bbox 的 records。
 
     输入投影：paper_results.download_paths + extra_pdfs -> download_paths
              paper_results.sources -> paper_sources（子图声明为必填）
     输出映射：paper_records / processing_summary
+    Phase 4c: config 透传给子图 invoke。
     """
     paper_results = state.get("paper_results") or {}
     download_paths = _merge_extra_pdfs(
@@ -322,7 +370,7 @@ def extraction_node(state: MainGraphState) -> Dict:
 
     logger.info("[Node 3] 多模态提取开始 pdf_count=%d", len(download_paths))
 
-    sub_input = {
+    sub_input = _validate_input(Sg3Input, {
         "query_id": state.get("query_id", ""),
         "target_entity": state.get("target_entity") or "",
         "entity_type": (state.get("simbad_info") or {}).get("object_type") or "Unknown",
@@ -330,11 +378,16 @@ def extraction_node(state: MainGraphState) -> Dict:
         "property_spec": state.get("property_spec", []),  # 新增
         "paper_sources": paper_results.get("sources", []),
         "download_paths": download_paths,
-    }
+    }, "extraction_node")
 
     try:
-        subgraph = create_extraction_subgraph()
-        r = subgraph.invoke(sub_input)
+        subgraph = create_extraction_subgraph(
+            checkpointer=_shared_checkpointer(config)
+        )
+        r = subgraph.invoke(sub_input, config)
+        _validate_output(Sg3Output, r, "extraction_node")
+    except GraphInterrupt:
+        raise  # Phase 4c: HITL 中断重新抛出
     except Exception as exc:
         logger.exception("[Node 3] 子图执行失败")
         return {
@@ -351,6 +404,8 @@ def extraction_node(state: MainGraphState) -> Dict:
     out = {
         "paper_records": r.get("paper_records", []),
         "processing_summary": r.get("processing_summary", {}),
+        # Figure 证据上浮（独立通路，供 aggregator 写入 final_output）
+        "figure_evidence": r.get("figure_evidence", []),
     }
     if r.get("error_log"):
         out["error_log"] = list(r["error_log"])

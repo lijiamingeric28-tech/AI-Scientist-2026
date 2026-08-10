@@ -208,7 +208,7 @@ def ads_search(state: RetrievalState) -> RetrievalState:
             # 判断错误类型
             if "429" in error_msg or "rate limit" in error_msg.lower():
                 # 限额用完，直接跳过
-                logger.error(f"[ADS Search] Rate limit reached, skipping paper search")
+                logger.error("[ADS Search] Rate limit reached, skipping paper search")
                 return {
                     "ads_search_status": "skipped",
                     "ads_total_found": 0,
@@ -244,7 +244,7 @@ def ads_search(state: RetrievalState) -> RetrievalState:
     state["ads_search_status"] = "completed"
     state["ads_papers_metadata"] = papers_metadata
 
-    logger.info(f"[ADS Search] Completed!")
+    logger.info("[ADS Search] Completed!")
     logger.info(f"[ADS Search]   Papers found: {len(papers_metadata)}")
 
     # 只返回更新的字段

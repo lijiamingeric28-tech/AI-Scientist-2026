@@ -366,7 +366,7 @@ def loop_controller_node(state: QualityGraphState) -> dict[str, Any]:
         else:
             logger.info("[Loop] C→B done → back to Conflict (loop %d)", loop_count)
             next_route, _force, _phase = "Conflict", False, "conflict"
-        from_conflict_after = False  # 清除标记
+        from_conflict_fter = False  # 清除标记
     else:
         # 来源: A→B (Normalization) 或 Conflict 完成
         conflict = state.get("report_state", {}).get("conflict") or {}
@@ -394,7 +394,7 @@ def loop_controller_node(state: QualityGraphState) -> dict[str, Any]:
         else:
             logger.info("[Loop] → Export (route=%s)", route)
             next_route, _force, _phase = "Export", False, "export"
-        from_conflict_after = from_conflict  # 非 C→B 完成, 保持原值 (通常 False)
+        from_conflict_fter = from_conflict  # 非 C→B 完成, 保持原值 (通常 False)
 
     return {
         "workflow_state": {
@@ -402,7 +402,7 @@ def loop_controller_node(state: QualityGraphState) -> dict[str, Any]:
             "route_decision": next_route,
             "next_route": next_route,
             "force_export": _force,
-            "from_conflict": from_conflict_after,
+            "from_conflict": from_conflict_fter,
             "phase": _phase,
             "pending_sources": pending,
             "completed_sources": completed,

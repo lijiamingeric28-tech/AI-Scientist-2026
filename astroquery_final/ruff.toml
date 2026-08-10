@@ -1,0 +1,35 @@
+# Ruff 配置 — Phase 0 从宽松规则起步，逐阶段收紧
+# 目标：ruff check . 零报错
+
+line-length = 100
+
+# 历史 print 脚本不纳入门禁（非 pytest，Phase 4 起由 tests/ 取代）
+exclude = ["quality_pipeline/test"]
+
+[lint]
+select = ["E", "F", "W", "I"]
+# Phase 0/3 暂缓的规则（存量代码问题，重构阶段逐步消灭后移除）：
+#   E501  行超长（存量大量）
+#   F401  未使用 import（存量大量）
+#   F811  变量重定义（存量版本号模式）
+#   F841  未使用变量（存量大量）
+#   E402  模块级 import 非顶部（quality_pipeline 延迟导入模式）
+#   E701/E702  单行多语句（quality_pipeline 存量 ds=x; rs=y 风格）
+#   E741  模糊变量名 l（存量）
+ignore = [
+    "E501",
+    "F401",
+    "F811",
+    "F841",
+    "E402",
+    "E701",
+    "E702",
+    "E741",
+    "I001",  # import 排序（存量未整理，Phase 4 再开）
+]
+
+[lint.isort]
+known-first-party = ["astroquery_ai", "quality_pipeline"]
+
+[format]
+quote-style = "double"

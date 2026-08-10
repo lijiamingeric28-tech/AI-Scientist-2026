@@ -22,9 +22,10 @@ from .nodes import (
 logger = logging.getLogger(__name__)
 
 
-def create_retrieval_subgraph() -> StateGraph:
+def create_retrieval_subgraph(checkpointer=None) -> StateGraph:
     """
     创建并行检索子图（B2 收敛版——无 simbad_resolver 入口）。
+    Phase 4c: checkpointer 可选（HITL interrupt 支持）。
 
     流程：
       START → [database_query, build_ads_query] 并行
@@ -65,6 +66,6 @@ def create_retrieval_subgraph() -> StateGraph:
     # 汇合 → 结束
     graph.add_edge("result_aggregator", END)
 
-    compiled_graph = graph.compile()
+    compiled_graph = graph.compile(checkpointer=checkpointer)
     logger.info("Retrieval Subgraph created successfully!")
     return compiled_graph

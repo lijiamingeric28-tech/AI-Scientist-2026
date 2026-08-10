@@ -1,0 +1,30 @@
+# ── 密钥 ──
+.env
+
+# ── 运行生成物 ──
+output/
+astroquery_ai/data/
+*.log
+
+# ── 缓存 ──
+*.py[cod]
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.bak
+column_mapping_cache.json
+table_meta_cache.json
+
+# ── IDE ──
+.idea/
+.vscode/
+
+# ── 打包产物 ──
+*.egg-info/
+
+# ── 下游质量管线导出 ──
+quality_pipeline/output/
+
+# ── Claude Code 本地配置（不提交）──
+.claude/

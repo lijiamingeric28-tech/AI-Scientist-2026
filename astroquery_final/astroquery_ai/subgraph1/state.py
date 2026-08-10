@@ -9,8 +9,8 @@ class IntentClarificationState(TypedDict):
     """
 
     # ===== 输入字段（从主图或用户传入） =====
-    original_query: str
-    """用户的原始自然语言查询，必填"""
+    user_query: str
+    """用户的原始自然语言查询，必填（Phase 2 统一：原 original_query）"""
 
     query_id: NotRequired[str]
     """查询唯一标识符（UUID），在主图中生成"""

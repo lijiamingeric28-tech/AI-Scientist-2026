@@ -27,7 +27,7 @@ from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 
-from ..configs import load_yaml
+from astroquery_ai.config import get_settings
 from ..utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -59,21 +59,25 @@ _current_agent_var: contextvars.ContextVar[str] = contextvars.ContextVar("llm_ag
 
 
 def _load_config() -> dict:
-    """加载 LLM 配置（带缓存）。"""
+    """加载 LLM 配置（带缓存）。
+
+    Phase 1 收敛：原从 llm_config.yaml 读取（且 yaml 优先于 env，方向反了），
+    现统一从 Settings 读取（env 优先），默认值与历史 yaml 保持一致。
+    """
     global _config_cache
     if _config_cache is None:
-        _config_cache = load_yaml("llm_config.yaml")
-        if not _config_cache:
-            logger.warning("llm_config.yaml 为空或不存在，使用默认配置。")
-            _config_cache = {
-                "model": "gpt-4o",
-                "api_key": os.environ.get("OPENAI_API_KEY", ""),
-                "base_url": os.environ.get("OPENAI_BASE_URL", ""),
-                "temperature": 0.0,
-                "max_tokens": 4096,
-                "timeout": 120,
-                "max_retries": 3,
-            }
+        s = get_settings()
+        _config_cache = {
+            "model": s.openai_model,
+            "api_key": s.openai_api_key,
+            "base_url": s.openai_base_url,
+            "temperature": 0.0,
+            "max_tokens": 8096,
+            "timeout": s.llm_timeout,
+            "max_retries": s.llm_max_retries,
+            "structured_output_method": "prompt_parsing",
+            "schema_prefix": "quality_pipeline",
+        }
     return _config_cache
 
 
@@ -105,8 +109,7 @@ def get_llm(
 
     if not api_key:
         logger.warning(
-            "LLM API Key 未配置！请在 configs/llm_config.yaml 中设置 api_key，"
-            "或设置环境变量 OPENAI_API_KEY。"
+            "LLM API Key 未配置！请在 .env 中设置 OPENAI_API_KEY。"
         )
 
     kwargs = {
@@ -418,7 +421,7 @@ def print_llm_stats():
     """打印格式化的 LLM 调用统计。"""
     s = get_llm_stats()
     print(f"\n{'='*60}")
-    print(f"  LLM 调用统计")
+    print("  LLM 调用统计")
     print(f"{'='*60}")
     print(f"  总调用次数:    {s['total_calls']}")
     print(f"  首次策略成功:  {s['success_calls']}")
@@ -429,7 +432,7 @@ def print_llm_stats():
     print(f"  总思考耗时:    {s['total_thinking_seconds']:.2f}s")
     print(f"  平均思考/调用: {s['avg_thinking_time']:.3f}s")
     if s["per_agent_calls"]:
-        print(f"\n  按 Agent 分组:")
+        print("\n  按 Agent 分组:")
         for agent in sorted(s["per_agent_calls"].keys()):
             calls = s["per_agent_calls"][agent]
             t = s["per_agent_time"].get(agent, 0.0)
