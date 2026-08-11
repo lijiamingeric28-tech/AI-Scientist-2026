@@ -94,13 +94,19 @@ def map_columns_to_properties(
 
     # 构造 prompt
     columns_desc = "\n".join(
-        f"- {c['name']} | unit={c.get('unit', '')} | ucd={c.get('ucd', '')} | {c.get('description', '')[:80]}"
+        f"- {c['name']} | unit={c.get('unit', '')} | {c.get('description', '')[:80]}"
         for c in columns_meta
     )
 
     properties_desc = "\n".join(
-        f"- {p['property_id']} | {p.get('name_cn', '')} | unit={p.get('unit', '')} | ucd={p.get('ucd', '')} | {p.get('description', '')[:80]}"
+        f"- {p['property_id']} | {p.get('name_cn', '')} | unit={p.get('unit', '')} | {p.get('description', '')[:80]}"
         for p in property_spec
+    )
+
+    # 示例值必须取自标准性质列表（旧示例 parallax/g_mag/bp_rp 不在列表内，诱导非法输出后被过滤成 None）
+    sample_ids = [p["property_id"] for p in property_spec][:2]
+    sample_example = json.dumps(
+        {f"<列名_{i + 1}>": pid for i, pid in enumerate(sample_ids)}, ensure_ascii=False
     )
 
     prompt = f"""你是天文数据标准化专家。任务：将 VizieR 表的列映射到标准性质名。
@@ -114,12 +120,12 @@ def map_columns_to_properties(
 
 ## 规则
 1. 只输出能确定映射的列，无法判断的列不要出现在输出中
-2. 映射依据：列名、UCD、单位、描述的综合匹配
-3. UCD 优先但不唯一：UCD 匹配时，还需检查单位量纲是否一致
+2. 映射依据：列名、单位、描述的综合匹配
+3. 值必须是标准性质列表中的 property_id（见上方列表），输出列表外的值视为无效
 4. 输出格式：严格 JSON，不要任何解释文字或 markdown 围栏
 
-输出示例：
-{{"Plx": "parallax", "Gmag": "g_mag", "BP-RP": "bp_rp"}}
+输出示例（键=表列名，值=标准性质列表中的 property_id）：
+{sample_example}
 
 请判定并输出映射结果："""
 
@@ -151,7 +157,11 @@ def map_columns_to_properties(
         valid_ids = {p["property_id"] for p in property_spec}
         result = {k: (v if v in valid_ids else None) for k, v in mapping.items()}
 
-        logger.info(f"[ColumnMapper] 映射完成 {vizier_table}: {len(result)} 列有映射")
+        valid_count = sum(1 for v in result.values() if v)
+        logger.info(
+            f"[ColumnMapper] 映射完成 {vizier_table}: {valid_count} 列有映射"
+            f"（LLM 返回 {len(result)} 列）"
+        )
 
         # 只缓存有实际映射的列（空映射不写缓存——避免 LLM 临时失败/空响应
         # 被永久缓存，导致后续查询永远命中空结果不再重试）

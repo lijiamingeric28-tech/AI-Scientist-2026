@@ -60,6 +60,49 @@ _JOURNAL_PREFIX = {
 # H-08: LLM 表分类的四枚举白名单（缓存命中/写入前校验）
 _TABLE_CLASS_ENUM = ("whole_entity", "sub_structure", "other_entity", "irrelevant")
 
+# ── CDS 验证熔断 (2026-08-11) ──
+# 网络故障 (代理/SSL/超时) 被误判为"表不存在" + urllib3 默认重试风暴 →
+# 33 篇论文逐个表慢失败 1-2 小时。修复:
+#   - retries=0 禁用 urllib3 自动重试 (每次失败只花一次连接时间)
+#   - 连续 _CDS_CIRCUIT_BREAK_LIMIT 次网络类失败 → 熔断, 剩余候选表全跳过
+#   - 验证结果按 cat_id 缓存 (表真实性不变, 跨查询复用)
+_CDS_VERIFY_CACHE: dict = {}          # cat_id → bool (仅模块级, 进程内)
+_CDS_NETWORK_ERRORS: list = []        # 连续网络失败计数窗口
+_CDS_CIRCUIT_BREAK_LIMIT = 3          # 连续 3 次网络类失败 → 熔断
+_CDS_TIMEOUT_SEC = 8                  # 25s → 8s (失败快速收敛)
+# retries=0 的正确姿势: requests.get() 不接受 retries 参数 (urllib3 层概念),
+# 需用 Session + HTTPAdapter(max_retries=0) 显式禁用重试 (2026-08-11 真实运行
+# 暴露 "Session.request() got an unexpected keyword argument 'retries'")
+_CDS_SESSION: "requests.Session" | None = None
+
+
+def _get_cds_session() -> "requests.Session":
+    """获取禁用了重试的 requests Session（模块级复用连接池）。"""
+    global _CDS_SESSION
+    if _CDS_SESSION is None:
+        import requests as _r
+        _s = _r.Session()
+        _s.mount("https://", _r.adapters.HTTPAdapter(max_retries=0))
+        _CDS_SESSION = _s
+    return _CDS_SESSION
+
+
+def _is_network_error(exc: Exception) -> bool:
+    """判断是否为网络类错误 (区别于"表不存在"的业务性结论)。
+
+    网络类 (可重试/可熔断): 代理、SSL、连接、超时、DNS。
+    业务性 (不重试): HTTP 200 + "Redirection error" = 表不存在。
+    """
+    import requests as _r
+    return isinstance(exc, (
+        _r.exceptions.ProxyError,
+        _r.exceptions.SSLError,
+        _r.exceptions.ConnectionError,
+        _r.exceptions.Timeout,
+        _r.exceptions.ConnectTimeout,
+        _r.exceptions.ReadTimeout,
+    ))
+
 
 def _parse_bibcode_parts(bibcode: str) -> Optional[tuple]:
     """
@@ -102,20 +145,49 @@ def guess_j_tables(bibcode: str) -> List[str]:
 
 def _catalog_real_exists(cat_id: str) -> bool:
     """
-    CDS 页面验证表号真实性
+    CDS 页面验证表号真实性（带缓存 + 网络熔断，2026-08-11 加固）。
 
     判据：页面含 "Redirection error" = 表不存在；含表标题 = 真实存在。
     astroquery get_catalogs 对不存在表不抛异常返回空，不可靠，必须用页面判据。
+
+    加固点：
+      - 验证结果按 cat_id 缓存（表真实性不变，跨查询/跨论文复用，请求量大降）
+      - retries=0 禁用 urllib3 自动重试（SSLEOFError 等会触发重试风暴，
+        每个失败表空耗 2-4 分钟）
+      - 连续 _CDS_CIRCUIT_BREAK_LIMIT 次网络类失败 → 熔断：剩余候选表全跳过
+        （网络故障不逐表空耗；熔断后本进程内本次查询不再请求 CDS）
+      - 超时 25s → 8s
     """
+    if cat_id in _CDS_VERIFY_CACHE:
+        return _CDS_VERIFY_CACHE[cat_id]
+
+    # 熔断检查：网络连续失败超过阈值 → 快速跳过（不逐表请求）
+    if len(_CDS_NETWORK_ERRORS) >= _CDS_CIRCUIT_BREAK_LIMIT:
+        logger.warning(
+            f"[Supplementary] CDS 网络故障熔断（连续 {len(_CDS_NETWORK_ERRORS)} 次），"
+            f"跳过 {cat_id} 验证"
+        )
+        return False
+
     try:
-        r = requests.get(
+        r = _get_cds_session().get(
             f"https://cdsarc.cds.unistra.fr/viz-bin/cat/{cat_id}",
             headers=_HEADERS,
-            timeout=25
+            timeout=_CDS_TIMEOUT_SEC,
         )
-        return r.status_code == 200 and "Redirection error" not in r.text
+        exists = r.status_code == 200 and "Redirection error" not in r.text
+        _CDS_VERIFY_CACHE[cat_id] = exists
+        return exists
     except Exception as e:
-        logger.warning(f"[Supplementary] CDS 验证失败 {cat_id}: {e}")
+        if _is_network_error(e):
+            # 网络类失败：记入熔断窗口（表真实性未知，不缓存）
+            _CDS_NETWORK_ERRORS.append(cat_id)
+            logger.warning(
+                f"[Supplementary] CDS 网络错误 {cat_id} "
+                f"({len(_CDS_NETWORK_ERRORS)}/{_CDS_CIRCUIT_BREAK_LIMIT} 熔断阈值): {e}"
+            )
+        else:
+            logger.warning(f"[Supplementary] CDS 验证失败 {cat_id}: {e}")
         return False
 
 
@@ -166,7 +238,8 @@ property_columns 规则：
             model=s1_config.llm['model'],
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=1000
+            max_tokens=1000,
+            timeout=60,  # 2026-08-11: 单表判断 60s 上限, 防 LLM 卡死整阶段
         )
         text = response.choices[0].message.content
         # 提取 JSON
@@ -259,15 +332,34 @@ def supplementary_query(state: RetrievalState) -> RetrievalState:
     supplementary_records = []
     errors = []
 
-    for paper in papers:
+    for _p_idx, paper in enumerate(papers, 1):
         bibcode = paper.get("source_id") or paper.get("bibcode")
         if not bibcode:
             continue
 
+        # 进度日志（2026-08-11）：find_catalogs/取数据是静默网络调用，
+        # 不打印进度会看起来"卡死"——每篇论文可见进度与耗时
+        _t0 = time.time()
+        logger.info(f"[Supplementary] [{_p_idx}/{len(papers)}] 处理 {bibcode}")
+
         # 1. 候选表号：推导 + find_catalogs 补充
+        # 2026-08-11 用户决策：find_catalogs 候选表 > 1 张（大目录/模糊关联）直接
+        # 跳过该论文——1 张 = 论文专属 J/ 表（明确关联，高价值）；多张（如 337）
+        # = 高成本（逐张验证 + LLM 判断）低价值
         candidates = guess_j_tables(bibcode)
         try:
-            fc = query_with_fallback(lambda v: v.find_catalogs(bibcode))
+            fc = query_with_fallback(
+                lambda v: v.find_catalogs(bibcode), timeout=10
+            )
+            logger.info(
+                f"[Supplementary] [{_p_idx}] {bibcode} find_catalogs "
+                f"{len(fc)} 张候选表 ({time.time() - _t0:.1f}s)"
+            )
+            if len(fc) > 1:
+                logger.info(
+                    f"[Supplementary] [{_p_idx}] {bibcode}: 候选表 {len(fc)} 张（>1），跳过"
+                )
+                continue
             for k, v in fc.items():
                 n = str(getattr(v, "name", None) or k)
                 if n.startswith("J/"):
@@ -282,35 +374,46 @@ def supplementary_query(state: RetrievalState) -> RetrievalState:
             logger.debug(f"[Supplementary] {bibcode}: 无真实 J/ 表")
             continue
 
-        for table_id in real_tables:
-            # 3. LLM 判断（缓存优先）
-            judgment = None
-            # H-08: 缓存键并入 target_entity 指纹——判断结果强依赖 prompt 中的
-            # 目标天体，仅按表号缓存会让不同天体的查询互相污染
+        # 3. LLM 判断（并发化，2026-08-11）：每张真实表一次 qwen3.7-flash 判断
+        # 是主卡点（串行 25 篇 × 多表可耗 12-25 分钟）→ 表级 4 workers 并行。
+        # 缓存优先（H-08: 键并入 target_entity 指纹 + 四枚举结构校验，失败不缓存）
+        from concurrent.futures import ThreadPoolExecutor as _TableTPE
+
+        def _judge_table(table_id: str):
             cache_key = f"{table_id}#{target_entity}"
             cached = cache.get(cache_key)
-            # 命中时校验结构：judgment 必须是 dict 且 table_class 在四枚举内，
-            # 否则视为无效缓存重新判断（旧格式/损坏条目自愈）
             if isinstance(cached, dict) and cached.get("table_class") in _TABLE_CLASS_ENUM:
-                judgment = cached
-            if judgment is None:
-                meta = _load_table_meta(table_id)
-                if not meta:
-                    continue
-                meta_text = (
-                    f"标题: {meta['title']}\n描述: {meta['description']}\n"
-                    f"列:\n" + "\n".join(meta["columns"])
-                )
-                judgment = _llm_judge_table(meta_text, target_entity)
-                if not isinstance(judgment, dict) or judgment.get("table_class") not in _TABLE_CLASS_ENUM:
-                    # H-08: LLM 异常/解析失败兜底不写缓存——否则失败结果被永久
-                    # 缓存，后续所有查询永远跳过该表（与 column_mapper 空映射
-                    # 不缓存约定一致）
-                    logger.warning(f"[Supplementary] {table_id}: LLM 判断失败，不写缓存")
-                    continue
+                return table_id, cached, True
+            meta = _load_table_meta(table_id)
+            if not meta:
+                return table_id, None, False
+            meta_text = (
+                f"标题: {meta['title']}\n描述: {meta['description']}\n"
+                f"列:\n" + "\n".join(meta["columns"])
+            )
+            judgment = _llm_judge_table(meta_text, target_entity)
+            valid = (
+                isinstance(judgment, dict)
+                and judgment.get("table_class") in _TABLE_CLASS_ENUM
+            )
+            if valid:
                 cache[cache_key] = judgment
                 time.sleep(0.3)
+            else:
+                # H-08: LLM 异常/解析失败兜底不写缓存——否则失败结果被永久
+                # 缓存，后续所有查询永远跳过该表（与 column_mapper 空映射
+                # 不缓存约定一致）
+                logger.warning(f"[Supplementary] {table_id}: LLM 判断失败，不写缓存")
+            return table_id, judgment, valid
 
+        judgments: dict = {}
+        with _TableTPE(max_workers=4) as _ex:
+            for _tid, _j, _ok in _ex.map(_judge_table, real_tables):
+                if _ok:
+                    judgments[_tid] = _j
+
+        for table_id in real_tables:
+            judgment = judgments.get(table_id)
             if not judgment or judgment.get("table_class") != "whole_entity":
                 logger.debug(f"[Supplementary] {table_id}: 分类={judgment.get('table_class') if judgment else 'N/A'}，跳过")
                 continue
@@ -335,17 +438,29 @@ def supplementary_query(state: RetrievalState) -> RetrievalState:
                     column_metadata.append({
                         "name": col_name,
                         "unit": unit,
-                        "description": "",  # VizieR 元数据通常在 judgment 里，这里简化
+                        # description 从 VOTable table.meta 读（与 database_query 对齐），
+                        # col.meta 兜底；UCD 按决策弃用
+                        "description": (
+                            getattr(table, "meta", {}).get(f"description[{col_name}]", "")
+                            or getattr(table[col_name], "meta", {}).get("description", "")
+                        ),
                     })
 
                 # 调用列名映射（按表 + PropertySpec 指纹缓存）
                 # 返回 {列名: property_id字符串 | None}
+                # 2026-08-11: 按 parent 论文的性质子集做列映射（与 VLM 单一性质提取
+                # 对齐）；无标记 → 全量 spec 兜底
                 column_mapping = {}
                 if property_spec:
+                    paper_pids = paper.get("property_ids", []) or []
+                    paper_spec = (
+                        [p for p in property_spec if p["property_id"] in paper_pids]
+                        or property_spec
+                    )
                     column_mapping = map_columns_to_properties(
                         vizier_table=table_id,
                         columns_meta=column_metadata,
-                        property_spec=property_spec,
+                        property_spec=paper_spec,
                     )
                     # 过滤掉无匹配的列（值为 None）
                     column_mapping = {k: v for k, v in column_mapping.items() if v}

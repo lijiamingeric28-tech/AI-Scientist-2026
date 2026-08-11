@@ -150,9 +150,19 @@ def database_query(state: RetrievalState) -> RetrievalState:
                                 continue  # 跳过主键列
                             col_meta = {
                                 "name": col_name,
-                                "unit": catalog_units_config.get(cat_key, {}).get(col_name, ""),
-                                "ucd": table[col_name].meta.get("ucd", ""),
-                                "description": table[col_name].meta.get("description", ""),
+                                # 单位实时直取 VOTable 列 unit（如 S159MHz 的 Jy），
+                                # catalog_units.json 稀疏配置降级为兜底
+                                "unit": (
+                                    str(table[col_name].unit)
+                                    if getattr(table[col_name], "unit", None)
+                                    else ""
+                                ) or catalog_units_config.get(cat_key, {}).get(col_name, ""),
+                                # description 在 VOTable table.meta（astropy 不写 col.meta），
+                                # col.meta 兜底；UCD 按决策弃用（新旧格式不兼容）
+                                "description": (
+                                    getattr(table, "meta", {}).get(f"description[{col_name}]", "")
+                                    or getattr(table[col_name], "meta", {}).get("description", "")
+                                ),
                             }
                             columns_meta.append(col_meta)
 

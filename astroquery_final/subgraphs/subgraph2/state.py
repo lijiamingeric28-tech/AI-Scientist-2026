@@ -102,7 +102,11 @@ class RetrievalState(TypedDict):
     """
 
     ads_query_string: NotRequired[str]
-    """ADS 查询字符串（用于记录）"""
+    """ADS 查询字符串（用于记录，取逐性质查询列表的第一个）"""
+
+    ads_query_strings: NotRequired[List[str]]
+    """逐性质 ADS 查询串列表（按性质分开检索，每个性质一个查询串，
+    build_ads_query 产出；ads_search 逐串查询后按 bibcode 合并去重）"""
 
     ads_total_found: NotRequired[int]
     """ADS 返回的论文总数"""

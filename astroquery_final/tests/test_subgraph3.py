@@ -72,13 +72,14 @@ def test_figure_extractor_saves_relevant_only(tmp_path, monkeypatch):
     # mock VLM：页1 两张图，1 相关 1 不相关
     # 注意：节点经 `from ..utils.figure_client import ...` 绑定，须 patch 节点模块属性
     def fake_detect(image, page, target_entity, property_spec):
+        # 2026-08-11 契约: 去掉 high/medium/low 分级, 只留 is_relevant + reason
         return {"page": page, "figures": [
             {"bbox": [10, 20, 400, 300], "caption": "Fig. 1.",
              "description": "赫罗图", "is_relevant": True,
-             "relevance": "high", "relevance_reason": "展示目标天体数据"},
+             "reason": "展示目标天体数据"},
             {"bbox": [500, 20, 900, 300], "caption": "Fig. 2.",
              "description": "示意图", "is_relevant": False,
-             "relevance": "low", "relevance_reason": "无关"},
+             "reason": "无关"},
         ]}
 
     monkeypatch.setattr(fe_mod, "call_qwen_figure_detect", fake_detect)
@@ -96,7 +97,9 @@ def test_figure_extractor_saves_relevant_only(tmp_path, monkeypatch):
     assert len(evidence) == 1, f"应只保存 1 张相关图: {evidence}"
     assert evidence[0]["source_id"] == "FAKE_BIBCODE"
     assert evidence[0]["page"] == 1
-    assert evidence[0]["relevance"] == "high"
+    # 2026-08-11: relevance 分级已移除, reason 统一进 relevance_reason
+    assert evidence[0]["relevance_reason"] == "展示目标天体数据"
+    assert "relevance" not in evidence[0]
     assert evidence[0]["caption"] == "Fig. 1."
     # 图片文件真的落盘
     saved = tmp_path / evidence[0]["image_path"]

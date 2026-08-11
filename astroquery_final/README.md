@@ -42,7 +42,7 @@ astroquery_final/
 ├── subgraphs/                # 9 个子图（subgraph1/2/3 + data_assessment/normalization/conflict/export/insights/human_review）
 ├── rag_properties/           # RAG 性质库（~100 个 otype，含标准单位）
 ├── scripts/                  # 工具脚本（KB 覆盖率报告、catalog schema 生成等）
-├── tests/                    # pytest 测试（全 mock 离线，271 个）
+├── tests/                    # pytest 测试（全 mock 离线，270 个）
 ├── docs/                     # 设计文档 / OPTIMIZATION_STATUS / AUDIT_REPORT
 └── .env                      # API Keys（ADS/Unpaywall/DashScope/DeepSeek）
 ```
@@ -64,7 +64,7 @@ python -m astroquery_ai
 ## 测试与门禁
 
 ```bash
-python -m pytest tests/ -m "not network"   # 271 个测试，全 mock 离线（EXIT=0）
+python -m pytest tests/ -m "not network"   # 270 个测试，全 mock 离线（EXIT=0）
 python -m pytest tests/                    # 含网络冒烟（需真实 API Keys）
 python -m ruff check .                     # 全库 lint
 ```

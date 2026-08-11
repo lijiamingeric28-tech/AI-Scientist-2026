@@ -149,6 +149,9 @@ class WorkflowState(TypedDict, total=False):
     """C→B→C 循环轮次 (替代 _loop_count)"""
     from_conflict: bool
     """最近一次 Normalization 是否由 Conflict 触发 (C→B 标记, 替代 _from_conflict)"""
+    loop_source: str
+    """H2 fix: gate 记录的本轮来源节点 (normalization_graph/conflict_graph)。
+    loop_controller 据此区分读 resolution_report (C 本轮) 还是 wf.route_decision (B 本轮)。"""
     force_export: bool
     """循环超限强制导出 (替代 _force_export)"""
     next_route: str
@@ -204,6 +207,16 @@ class OutputState(TypedDict, total=False):
     """导出到磁盘的文件路径列表。"""
     output_dir: str | None
     """输出目录。"""
+
+    # ── V3.2: export 校验闸门输出 ──
+    consumable: bool | None
+    """V3.2: 数据是否可消费（校验通过=true；校验失败时 quarantine=true 且 consumable=false）。"""
+    quarantine: bool | None
+    """V3.2: export 校验失败标记（export_generation 写入，非静默产出）。"""
+
+    # ── P2-3: 人工审核辅助 ──
+    human_review_support: dict[str, Any] | None
+    """P2-3: 人工审核辅助信息（human_review_agent 用确定性组件生成，0 LLM）。"""
 
     # ── V1.1 新增: 版本信息 ──
     schema_version: str

@@ -44,17 +44,20 @@ def _crop_figure(
 ) -> bool:
     """按 1000 归一化 bbox 裁剪页面图并保存。
 
-    Returns:
-        是否成功保存
+    LLM bbox 定位偏窄，裁剪前将框向外扩大 20%（每边 10%），
+    避免裁掉图边/图注；外扩后 clamp 到页面边界。
     """
     try:
         if len(bbox) != 4:
             return False
         w, h = image.size
-        x0 = int(max(0, min(bbox[0], 1000)) / 1000 * w)
-        y0 = int(max(0, min(bbox[1], 1000)) / 1000 * h)
-        x1 = int(max(0, min(bbox[2], 1000)) / 1000 * w)
-        y1 = int(max(0, min(bbox[3], 1000)) / 1000 * h)
+        bx0, by0, bx1, by1 = (float(v) for v in bbox)
+        pad_x = (bx1 - bx0) * 0.1
+        pad_y = (by1 - by0) * 0.1
+        x0 = int(max(0.0, bx0 - pad_x) / 1000 * w)
+        y0 = int(max(0.0, by0 - pad_y) / 1000 * h)
+        x1 = int(min(1000.0, bx1 + pad_x) / 1000 * w)
+        y1 = int(min(1000.0, by1 + pad_y) / 1000 * h)
         if x1 <= x0 or y1 <= y0:
             return False
         cropped = image.crop((x0, y0, x1, y1))
@@ -123,8 +126,9 @@ def _process_page(
             "figure_index": idx,
             "caption": fig.get("caption", ""),
             "description": fig.get("description", ""),
-            "relevance": fig.get("relevance", "medium"),
-            "relevance_reason": fig.get("relevance_reason", ""),
+            # 2026-08-11: 去掉 high/medium/low 分级，reason 为新契约字段名，
+            # 兼容旧输出键 relevance_reason
+            "relevance_reason": fig.get("reason") or fig.get("relevance_reason", ""),
             "image_path": f"{rel_dir}/{filename}",
         })
 

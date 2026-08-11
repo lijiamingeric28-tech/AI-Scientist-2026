@@ -61,9 +61,8 @@ Main Graph (graph.py + routers.py, 198 行)
 | `domain_config.py` | 领域常量（KB_TOP_K / ENTITY_TYPE_PARENT_SCORE 等） |
 | `llm_config.yaml` / `value_parser_rules.yaml` | LLM 配置 / 数值解析规则 |
 
-**数据源**（项目根）：`vizier_catalogs_schema.json`（23 个 VizieR 目录列定义）+ `query_results_progress_final.json`（25 天体多目录查询）→ 生成脚本 `scripts/gen_catalog_schema.py`（行级合并/幂等/备份回滚）。
-
-**生成脚本**：`gen_entity_types.py`（153 类型）/ `gen_astro_units.py`（单位组）/ `gen_catalog_schema.py`（目录别名+单位）/ `append_knowledge.py`（知识库）。
+**生成脚本**：`gen_entity_types.py`（153 类型）/ `gen_astro_units.py`（单位组）/ `append_knowledge.py`（知识库）。
+> 注：`gen_catalog_schema.py`（目录别名+单位生成，依赖外部数据源）已于 2026-08-11 删除；其产物已完整合入 `schema_mapping.yaml`（database_catalog_properties 919 别名 + 34 单位组），运行时依赖产物而非脚本。
 
 ## 目录结构
 

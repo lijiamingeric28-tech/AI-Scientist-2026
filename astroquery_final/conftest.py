@@ -116,13 +116,3 @@ def mock_ads_rate_limit(monkeypatch):
             return iter([])
 
     monkeypatch.setattr(ads_search_mod.ads, "SearchQuery", _RateLimitSearchQuery)
-
-
-def make_minimal_pipeline_query():
-    """构造最小主图输入（与 run.py 初始 state 一致）"""
-    return {
-        "user_query": "M31 的距离",
-        "query_id": "test-query-id",
-        "extra_pdfs": [],
-        "error_log": [],
-    }

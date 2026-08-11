@@ -145,5 +145,6 @@ class ExtractionState(TypedDict):
     """
     与查询相关的论文图表证据（figure_extractor 产出，供前端直接展示）。
     格式：[{"source_id", "page", "figure_index", "caption", "description",
-           "relevance", "relevance_reason", "image_path"}, ...]
+           "relevance_reason", "image_path"}, ...]
+    （2026-08-11: 去掉 high/medium/low 分级 relevance 字段，reason 统一进 relevance_reason）
     """

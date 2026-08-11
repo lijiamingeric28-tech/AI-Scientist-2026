@@ -67,6 +67,8 @@ class Sg2Output(BaseModel):
     # 论文路
     ads_search_status: str = "pending"
     ads_query_string: str = ""
+    ads_query_strings: List[str] = []
+    """逐性质 ADS 查询串列表（按性质分开检索，合并去重后 papers 跨性质去重）"""
     ads_total_found: int = 0
     ads_papers_metadata: List[Dict[str, Any]] = []
     unpaywall_query_status: str = "pending"

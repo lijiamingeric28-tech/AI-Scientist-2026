@@ -12,7 +12,6 @@ import datetime
 import time
 from typing import Any
 from quality_pipeline.quality_state import QualityGraphState
-from quality_pipeline.utils.llm import set_agent_context
 from quality_pipeline.utils.logger import get_logger
 logger = get_logger(__name__)
 # A13 fix: 单份模块级严重度表 (原在循环内重复定义一份局部 dict)

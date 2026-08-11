@@ -362,21 +362,38 @@ def build_selection_prompt(rag: Dict, target_name: str, user_request: str) -> st
 每行格式：[property_id] 中文名 (单位) - 描述
 {chr(10).join(parts)}
 
-## 选择规则
-1. **只能从上述性质库中选择**，不得臆造 property_id
-2. **同一物理量只选一个**：若多个候选性质中文名相同（如 [stellar_mass] 与 [mass] 都是"恒星质量"），
-   只选其一，优先选择单位明确、描述完整的那一个；禁止同一物理量输出两个 property_id
-3. **宽泛请求**（"radio properties"、"所有光度"）→ 包含该类别的所有相关性质
-4. **模糊请求**（"基本参数"、"全部"）→ 选 10-15 个最基础的性质
-5. **空请求**（用户未指定、直接回车、说"都行"）→ 选 10-15 个最基础的性质
-6. **包含不确定度**（如 fe_h_err）当用户关注精度时
-7. **输出必须严格 JSON，不要任何解释文字**
+## 选择步骤（按思维链顺序执行：读查询 → 读备选 → 定颗粒度 → 挑性质）
 
-输出格式：
+**Step 1 读查询性质**：解析用户需求，确定物理概念列表（如"红移""距离""金属丰度"）。
+
+**Step 2 读备选性质**：对每个概念，读库中所有候选性质的 description，
+观察候选之间的区分维度（物理表征 / 观测方法 / 波段仪器 / 不可区分）。
+
+**Step 3 确定颗粒度**：为该概念选择有意义的细化维度——
+   - 候选按物理表征或观测方法区分且互不等价 → 按该维度细化
+   - 候选只是同一物理量的波段/名称变体 → 合并为一个代表
+   - 库中仅 1 个候选 → 不细化
+   每个概念的细化维度可不同，由候选实际结构决定。
+
+**Step 4 挑选实际查询性质**：按 Step 3 确定的颗粒度，从备选中选出最终集合。
+每个入选候选必须同时满足：
+   ① 直接回答用户概念（description 为依据）
+   ② 与同概念其他入选者同级（无具体化/被具体化关系）
+   ③ 与同概念其他入选者物理异构（度量方式或量纲不同）
+
+## 其他规则
+- 只能从上述性质库中选择，不得臆造 property_id
+- 用户关注精度时（如"误差""不确定度"），可额外包含对应不确定度性质
+- 模糊请求（"基本参数"、"全部"）或空请求（未指定、直接回车、说"都行"）
+  → 选 10-15 个最基础的性质
+
+## 输出（严格 JSON，不要任何解释文字）
+每个条目必须携带 group 字段（= 该性质所属的物理概念，即 Step 1 解析出的概念名）：
 {{
   "requested_properties": [
-    {{"property_id": "fe_h", "reason": "用户要求金属丰度"}},
-    {{"property_id": "distance", "reason": "基本物理参数"}}
+    {{"property_id": "parallax", "group": "距离", "reason": "直接回答距离概念，与同概念其他入选者同级异构"}},
+    {{"property_id": "distance_sun", "group": "距离", "reason": "直接回答距离概念，度量方式与视差不同"}},
+    {{"property_id": "cluster_age", "group": "年龄", "reason": "直接回答年龄概念"}}
   ]
 }}"""
 
@@ -464,23 +481,25 @@ def select_properties_with_llm(
 
 def build_property_spec(
     rag: Dict,
-    selected_ids: List[str]
+    selected: List[Dict],
 ) -> List[Dict]:
     """
     从 RAG 完整信息构造 PropertySpec
 
     Args:
         rag: RAG 性质库
-        selected_ids: LLM 筛选出的 property_id 列表
+        selected: LLM 筛选结果 items（含 property_id / group / reason）
 
     Returns:
-        PropertySpec: [{property_id, name_cn, unit, category, ucd, description}, ...]
+        PropertySpec: [{property_id, name_cn, unit, category, ucd, description, group}, ...]
+        group 为概念族名（P1 解析，ADS 查询按组消费，不再二次分组）
     """
     props = rag.get('properties', [])
     prop_map = {p['property_id']: p for p in props}
 
     spec = []
-    for pid in selected_ids:
+    for item in selected:
+        pid = item.get('property_id', '')
         if pid in prop_map:
             p = prop_map[pid]
             spec.append({
@@ -489,7 +508,10 @@ def build_property_spec(
                 'unit': p.get('unit', ''),
                 'category': p.get('category', ''),
                 'ucd': p.get('ucd', ''),
-                'description': p.get('description', '')
+                'description': p.get('description', ''),
+                # 概念族名（2026-08-11）：LLM 输出缺失时用性质名兜底，
+                # ADS 侧按此分组构造查询串
+                'group': item.get('group') or p.get('name_cn', '') or p['property_id'],
             })
         else:
             logger.warning(f"[PropertySpec] 性质 {pid} 在 RAG 库中不存在，跳过")
@@ -581,8 +603,8 @@ def property_standardization_node(state: MainGraphState) -> MainGraphState:
         }
 
     # Step 4: 构建 PropertySpec
-    selected_ids = [item['property_id'] for item in selected]
-    property_spec = build_property_spec(rag, selected_ids)
+    # 2026-08-11: 传入完整 items（含 group 概念族名，ADS 查询按组消费，不再二次分组）
+    property_spec = build_property_spec(rag, selected)
 
     if not property_spec:
         err = "PropertySpec 为空"

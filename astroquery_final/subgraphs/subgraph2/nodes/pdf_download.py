@@ -393,7 +393,10 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
                         "local_path": result["local_path"],
                         "file_size_mb": round(result["file_size"] / (1024 * 1024), 2),
                         "download_source": result["source"],
-                        "downloaded_at": datetime.now().isoformat()
+                        "downloaded_at": datetime.now().isoformat(),
+                        # 论文级性质子集（ADS 命中标记透传，VLM 单一性质提取依据；
+                        # 空列表 → 提取端全量 spec 兜底）
+                        "property_ids": paper.get("property_ids", []),
                     })
                     logger.info(f"[PDF Download] [{completed}/{total}] [OK] {paper['bibcode']}")
                 else:
@@ -437,7 +440,9 @@ def pdf_download(state: RetrievalState) -> RetrievalState:
                 "abstract": paper.get("abstract"),
                 "keywords": paper.get("keywords", []),
                 "search_query": paper["search_query"],
-                "search_rank": paper["search_rank"]
+                "search_rank": paper["search_rank"],
+                # 论文级性质子集（supplementary 按 parent 论文性质做列映射）
+                "property_ids": paper.get("property_ids", []),
             }
             paper_sources.append(source)
 

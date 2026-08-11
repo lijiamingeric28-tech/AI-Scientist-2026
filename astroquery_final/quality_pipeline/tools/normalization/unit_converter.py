@@ -14,6 +14,10 @@ logger = get_logger(__name__)
 _SEMANTIC_TO_CATEGORY: dict[str, str] = {}
 _CACHED_DOMAIN: str | None = None
 
+# 无量纲伪单位别名 — VLM 对无量纲量 (如 redshift) 常输出这些形态, 统一归一为 "dimensionless"
+# (2026-08-11 真实运行暴露: 13 条 redshift 出现 ''/z/dimensionless/unitless 四种形态)
+DIMENSIONLESS_UNIT_ALIASES = {None, "", "z", "unitless", "dimensionless"}
+
 def _load_semantic_category_map(research_domain: str | None = None):
     """从 quality_rules.yaml 动态加载 semantic_type → unit_category 映射 (领域感知)。
 
@@ -145,6 +149,20 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
             continue  # 非数值, 无法转换
         if unit == target:
             continue  # 已是目标单位
+
+        # 无量纲归一: 字段无标准目标单位 (target 为空 → 该字段在标准单位表中无量纲,
+        # 如 redshift) 且 VLM 单位是无量纲别名 → 统一归一为 "dimensionless",
+        # 消除 ''/z/unitless 形态混乱; 数值不变, 留痕可追溯。
+        if not target and unit in DIMENSIONLESS_UNIT_ALIASES:
+            log.append({
+                "record_id": rec.get("record_id"), "field": fn,
+                "original_value": val, "new_value": val,
+                "from": unit or "(empty)", "to": "dimensionless", "factor": "1.0",
+                "category": "dimensionless",
+            })
+            rec["field_unit"] = "dimensionless"
+            continue
+
         if not unit:
             unconv.append({"record_id": rec.get("record_id"), "field": fn,
                            "reason": f"missing unit (empty), target={target}",

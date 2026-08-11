@@ -48,15 +48,30 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
 
     state["extraction_status"] = "running"
 
+    # 论文级性质子集（2026-08-11）：每篇论文只提取其 ADS 命中的性质（单一性质提取），
+    # 无标记（手动上传/单查询回退）→ 全量 spec 兜底
+    pids_by_bibcode = {}
+    for p in state.get("download_paths", []) or []:
+        pids_by_bibcode[p.get("bibcode", "")] = p.get("property_ids", []) or []
+
     # 构建任务列表（只带路径，不加载图片）
     tasks = []
     for bibcode, image_paths in paper_image_paths.items():
+        paper_pids = pids_by_bibcode.get(bibcode, [])
+        paper_spec = (
+            [p for p in property_spec if p["property_id"] in paper_pids]
+            or property_spec
+        )
+        if paper_pids and len(paper_spec) != len(paper_pids):
+            logger.debug(
+                f"[VLM Extractor] {bibcode}: 性质交集 {len(paper_spec)}/{len(paper_pids)}"
+            )
         tasks.append({
             "bibcode": bibcode,
             "image_paths": image_paths,  # 路径而非图片对象
             "target_entity": target_entity,
             "requested_properties": requested_properties,
-            "property_spec": property_spec,  # 新增
+            "property_spec": paper_spec,  # 论文级子集（无标记 → 全量）
         })
 
     raw_extractions = {}

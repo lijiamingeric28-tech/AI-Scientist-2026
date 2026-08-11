@@ -215,8 +215,13 @@ def _infer_variance_cause(
         elif len(overlap) < min(len(tags_a), len(tags_b)):
             return CAUSE_CONDITION, 0.70
 
-    # 4. 时间差异
-    if year_a and year_b and abs(year_a - year_b) > TEMPORAL_GAP_YEARS:
+    # 4. 时间差异 (数值化防御: 上游 year 可能是 str, 直接相减 TypeError —
+    #    2026-08-11 真实链路暴露, paper source year 曾为 '2001' 字符串)
+    try:
+        ya, yb = int(year_a), int(year_b)
+    except (TypeError, ValueError):
+        ya = yb = None
+    if ya is not None and yb is not None and abs(ya - yb) > TEMPORAL_GAP_YEARS:
         return CAUSE_TEMPORAL, 0.75
 
     # 5. 同方法+同条件+同时间段 → 看效应量

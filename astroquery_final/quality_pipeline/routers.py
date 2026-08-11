@@ -364,19 +364,27 @@ def loop_controller_node(state: QualityGraphState) -> dict[str, Any]:
     # ── 状态机: 决定 next_route (V3.3 显式字段) ──
     if from_conflict:
         # 来源: C→B (Conflict 要求 Normalization 执行修改)
-        # M2 fix: 复检无冲突 (needs_conflict_analysis=False) → 直接 Export (C→B→D),
-        # 不再无条件回 Conflict 制造轮次 (与 H3 数据源修复配合干净收敛)
-        norm_validation = ((state.get("report_state", {}).get("normalization") or {})
-                           .get("validation", {}) or {})
-        if not norm_validation.get("needs_conflict_analysis", True):
-            logger.info("[Loop] C→B 复检无冲突 → Export (C→B→D)")
-            next_route, _force, _phase = "Export", False, "export"
-        elif loop_count > MAX_LOOP:
-            logger.warning("[Loop] C→B max loops (%d) → force Export", MAX_LOOP)
-            next_route, _force, _phase = "Export", True, "export"
+        # HR fix (2026-08-11): C→B 中 Normalization 失败/重试耗尽时,
+        # gate_normalization 已写 route_decision="HumanReview" (见 _make_stage_gate)。
+        # 本分支此前只读 needs_conflict_analysis/loop_count, HR 信号被吞 →
+        # 失败来源直接回 Conflict 或强制 Export, 数据问题无人复核。此处显式优先。
+        if wf.get("route_decision") == "HumanReview":
+            logger.warning("[Loop] C→B 中 Normalization 失败/重试耗尽 → HumanReview")
+            next_route, _force, _phase = "HumanReview", False, "human_review"
         else:
-            logger.info("[Loop] C→B done → back to Conflict (loop %d)", loop_count)
-            next_route, _force, _phase = "Conflict", False, "conflict"
+            # M2 fix: 复检无冲突 (needs_conflict_analysis=False) → 直接 Export (C→B→D),
+            # 不再无条件回 Conflict 制造轮次 (与 H3 数据源修复配合干净收敛)
+            norm_validation = ((state.get("report_state", {}).get("normalization") or {})
+                               .get("validation", {}) or {})
+            if not norm_validation.get("needs_conflict_analysis", True):
+                logger.info("[Loop] C→B 复检无冲突 → Export (C→B→D)")
+                next_route, _force, _phase = "Export", False, "export"
+            elif loop_count > MAX_LOOP:
+                logger.warning("[Loop] C→B max loops (%d) → force Export", MAX_LOOP)
+                next_route, _force, _phase = "Export", True, "export"
+            else:
+                logger.info("[Loop] C→B done → back to Conflict (loop %d)", loop_count)
+                next_route, _force, _phase = "Conflict", False, "conflict"
         from_conflict_flag = False  # 清除标记
     else:
         # 来源: A→B (Normalization) 或 Conflict 完成

@@ -76,7 +76,7 @@ class BBoxVLMConfig:
 @dataclass
 class BBoxConcurrencyConfig:
     """BBox 标注并发配置。"""
-    max_workers: int = 100  # Data-point level concurrency
+    max_workers: int = 50  # Data-point level concurrency（2026-08-11: 100→50 缓解 DashScope 限流）
     max_retries: int = 3  # Max retries per data point
     retry_delay_base: int = 2  # Retry delay base (seconds)
 

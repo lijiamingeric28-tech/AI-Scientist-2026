@@ -1393,6 +1393,7 @@ def test_vlm_client_request_timeout_from_settings(monkeypatch):
           (inferred_cat, unit) 与 (matched_cat, target) 双向可命中
   - M-36: 无消费方配置段已删除, 有消费方段保留, 加载器不回归
   - M-37: gen_catalog_schema 列源并入 catalog_units.json 键集 (5 列逃逸列兜底)
+          （2026-08-11: gen_catalog_schema.py 已删除，其产物 schema_mapping.yaml 保留）
   - L-22: 三个知识库脚本改 Path(__file__) 相对定位
   - L-23: 脚本幂等去重改真实列表过滤 (assert 在 -O 下被剥离)
 """
@@ -1410,16 +1411,6 @@ def _load_quality_rules() -> dict:
 
 def _load_schema_mapping() -> dict:
     return load_yaml("schema_mapping.yaml")
-
-
-def _load_script_module(rel_path: str):
-    """从文件路径加载独立脚本模块 (不依赖包路径, 不执行 append 副作用)。"""
-    abs_path = os.path.join(REPO_ROOT, rel_path)
-    spec = importlib.util.spec_from_file_location(
-        "g12_tmp_" + os.path.basename(rel_path).replace(".", "_"), abs_path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
 
 
 # ==========================================================
@@ -1477,7 +1468,7 @@ def test_density_units_exclude_surface_density_units():
     assert "mas**-2" not in cfg["units"]
     conv = _load_schema_mapping()["unit_conversions_astrophysics"]["density"]
     assert "pc**-2" not in conv and "mas**-2" not in conv
-    # 面密度转换组保留 (gen_catalog_schema UNIT_PATCH 幂等锚点)
+    # 面密度转换组保留 (gen_catalog_schema UNIT_PATCH 产物, 脚本已删, 产物保留)
     sd = _load_schema_mapping()["unit_conversions_astrophysics"]["surface_density"]
     assert "pc**-2" in sd and "mas**-2" in sd
 
@@ -1591,38 +1582,6 @@ def test_config_loaders_after_cleanup():
         assert key in rt
     lc = load_yaml("quality_rules.yaml").get("loop_control", {})
     assert lc.get("max_loop") == 3 and lc.get("max_iterations") == 8
-
-
-# ==========================================================
-# M-37: gen_catalog_schema 列源并入 catalog_units.json
-# ==========================================================
-
-def _load_gen_catalog_schema():
-    path = os.path.join(SCRIPTS_DIR, "gen_catalog_schema.py")
-    spec = importlib.util.spec_from_file_location("g12_gen_catalog_schema", path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
-
-
-def test_gen_catalog_schema_column_source_union():
-    """M-37: _load_used_columns 列源并入 catalog_units.json 键集 (与 vizier schema 并集)"""
-    mod = _load_gen_catalog_schema()
-    used, col_info = mod._load_used_columns()
-    # catalog_units.json 独有的 5 列必须进入兜底列源 (audit U12: S159MHz/e_S159MHz
-    # 3c、f.mag ucac、AV(HK)/AV(JH) fermi)
-    for col in ("S159MHz", "e_S159MHz", "f.mag", "AV(HK)", "AV(JH)"):
-        assert col in col_info, f"catalog_units 列 {col} 未并入列源"
-
-
-def test_gen_catalog_schema_aliases_cover_escaped_columns():
-    """M-37: 逃逸列经 build_alias_patch 落入 database_catalog_properties 兜底"""
-    mod = _load_gen_catalog_schema()
-    used, col_info = mod._load_used_columns()
-    patch = mod.build_alias_patch(used, col_info)
-    rest = patch.get("database_catalog_properties", [])
-    for col in ("S159MHz", "e_S159MHz", "f.mag", "AV(HK)", "AV(JH)"):
-        assert col in rest, f"逃逸列 {col} 未进入 database_catalog_properties 兜底"
 
 
 # ==========================================================

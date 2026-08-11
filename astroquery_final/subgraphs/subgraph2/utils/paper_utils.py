@@ -100,7 +100,17 @@ def extract_paper_metadata(paper, search_rank: int, search_query: str) -> dict:
     doi = paper.doi[0] if hasattr(paper, 'doi') and paper.doi else None
     title = paper.title[0] if hasattr(paper, 'title') and paper.title else "Untitled"
     authors = paper.author if hasattr(paper, 'author') and paper.author else []
-    year = paper.year if hasattr(paper, 'year') else None
+    # year 治本 fix (2026-08-11 真实链路暴露): ADS paper.year 是 str ('2001'),
+    # 直接透传会让 quality 管线 statistical_conflict 的 year_a - year_b 崩 TypeError。
+    # 统一转 int, 解析失败置 None (不参与时间差异判定)。
+    _year = paper.year if hasattr(paper, 'year') else None
+    year = None
+    if _year is not None:
+        try:
+            year = int(_year)
+        except (ValueError, TypeError):
+            logger.warning(f"[extract_paper_metadata] year 非数值, 置 None: {_year!r}")
+            year = None
     journal = paper.pub if hasattr(paper, 'pub') else None
     abstract = paper.abstract if hasattr(paper, 'abstract') else None
 

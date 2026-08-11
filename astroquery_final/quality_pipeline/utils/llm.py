@@ -4,7 +4,7 @@ utils/llm.py
 LLM 工厂模块 — 统一管理 LangChain ChatModel 实例。
 
 支持 OpenAI 兼容接口（GPT-4o / DeepSeek / 本地模型等）。
-配置从 configs/llm_config.yaml 读取。
+配置从统一 Settings（astroquery_ai/config.py，env 优先）读取。
 
 结构化输出策略:
   1. method="function_calling" → 适用于 DeepSeek 等支持 tool calling 的模型

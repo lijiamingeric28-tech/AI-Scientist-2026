@@ -43,6 +43,21 @@ def final_aggregator(state: MainGraphState) -> Dict:
     paper_records = state.get("paper_records", []) or []
     supp_sources = state.get("supplementary_sources", []) or []
     supp_records = state.get("supplementary_records", []) or []
+    figure_evidence = state.get("figure_evidence", []) or []
+
+    # ── 只保留有产物的 source（2026-08-11 用户决策）：数据库/补充有 records、
+    # 论文有 records 或 figure_evidence——0 产物的来源不进最终输出（不干净），
+    # 且不再拖低质量管线的完整性评分。records 的 source_id 关联天然闭合。──
+    db_ids_with_data = {r.get("source_id") for r in db_records}
+    supp_ids_with_data = {r.get("source_id") for r in supp_records}
+    paper_ids_with_data = {r.get("source_id") for r in paper_records}
+    paper_ids_with_fig = {f.get("source_id") for f in figure_evidence}
+    db_sources = [s for s in db_sources if s.get("source_id") in db_ids_with_data]
+    supp_sources = [s for s in supp_sources if s.get("source_id") in supp_ids_with_data]
+    paper_sources = [
+        s for s in paper_sources
+        if s.get("source_id") in (paper_ids_with_data | paper_ids_with_fig)
+    ]
 
     # ── 拼装：数据库在前，论文在后，补充材料最后，均保留原始字段名 ──
     sources = [*db_sources, *paper_sources, *supp_sources]
