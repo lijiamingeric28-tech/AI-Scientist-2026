@@ -1,10 +1,12 @@
 """沙箱安全回归测试 (C1 fix) — 逃逸 PoC 全部必须被拦截。
 
 覆盖: AST 白名单校验 (别名赋值/dunder 属性链) + sandbox 运行时防线
-(_safe_import 白名单包装器 + 移除 type)。
+(_safe_import 白名单包装器; P0 起 type 放行 — §8 同步, dunder 属性块兜底)。
 
 背景: 旧实现 safe_builtins 裸暴露 __import__/type, AST 黑名单只查 Call 的
 func 名 — `_imp = __import__` (Name Load) 可绕过 → 任意代码执行。
+P0 (b): operator/logging 移出模块白名单 (operator.attrgetter 字符串 dunder
+路径完整任意代码执行), builtins 扩充 (reversed/type/... + 异常类)。
 """
 
 import pytest
@@ -43,6 +45,21 @@ _ESCAPE_POCS = [
      'exec("x = 1")'),
     ("getattr_call",
      'getattr(obj, "__class__")'),
+    # P0 (b): operator 移出白名单 (V1 实测字符串 dunder 路径任意代码执行)
+    ("operator_attrgetter_escape",
+     'import operator\n'
+     'b = operator.attrgetter("__class__.__bases__")(())[0]\n'
+     's = operator.attrgetter("__subclasses__")(b)()'),
+    # P1 (a): NamedExpr/Match 节点放行后的逃逸路径 — 白名单放宽必须同时验证
+    # 对应 PoC 仍拦截 (walrus/match 分支内的 dunder 属性链由 dunder 块拦截)
+    ("walrus_escape",
+     'if (t := type.__subclasses__):\n    pass'),
+    ("match_escape",
+     'match x:\n    case _:\n        type.__subclasses__'),
+    # P1 (a): Name 黑名单 Load 上下文 — `x = eval` 中 eval 是 Load (别名绑定逃逸),
+    # AST 直接拦截; 运行时防线 (eval 不在 safe_builtins → NameError) 另测
+    ("store_eval_then_call",
+     'x = eval\nx("1+1")'),
 ]
 
 
@@ -92,8 +109,14 @@ def test_runtime_whitelisted_import_works(sandbox_mods):
     assert sb.get("x") == 2.0
 
 
-def test_runtime_type_removed(sandbox_mods):
-    """type 已从 builtins 移除 — type.__subclasses__ 逃逸链起点被切断。"""
-    sb, _ = sandbox_mods
-    with pytest.raises(NameError):
-        exec('t = type(1)', sb)
+def test_type_subclasses_after_allow(sandbox_mods):
+    """§8 同步 (P0 type 放行后): type 本身可用, __subclasses__ 逃逸链仍被拦截。
+
+    安全前提: _validate_code_ast 的 dunder 属性块挡 type.__subclasses__/__mro__。
+    """
+    sb, validate = sandbox_mods
+    exec('t = type(1)', sb)
+    assert sb.get("t") is int
+    assert not validate('x = type.__subclasses__')
+    assert not validate('t = type(1)\nfor c in t.__mro__: pass')
+    assert not validate('c = type(1).__class__.__bases__')

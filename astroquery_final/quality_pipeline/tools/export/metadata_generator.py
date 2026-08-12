@@ -109,13 +109,31 @@ def generate_metadata(
 
     if normalization:
         mods = normalization.get("modifications", {})
+        layer3 = normalization.get("layer3", {}) or {}
+        # P2 (g)7: 错误导出细化 — errors_count + errors[:50] 逐条明细
+        # (all_errors = modifications.errors + layer3.attempts, 键对齐 source_id→source,
+        #  error 截断 200 字符) — 此前只导出 len(errors), 失败不可见
+        all_errors = list(mods.get("errors", []) or []) + list(layer3.get("attempts", []) or [])
+        errors_out = []
+        for e in all_errors[:50]:
+            if isinstance(e, dict):
+                errors_out.append({
+                    "source": e.get("source_id", e.get("source", "")),
+                    "tool": e.get("tool", ""),
+                    "kind": e.get("kind", ""),
+                    "error": str(e.get("error", e.get("message", "")))[:200],
+                })
+            else:
+                errors_out.append({"source": "", "tool": "", "kind": "",
+                                   "error": str(e)[:200]})
         processing["normalization"] = {
             # H-15 fix: M9 只修了 writer (report_agent.py) 未修 reader,
             # 拼写不一致 → 恒命中默认值 "Completed"; 与 writer 键名对齐
             "status": normalization.get("normalization_status", "Completed"),
             "modifications": mods.get("total", 0),
             "by_layer": mods.get("by_layer", {}),
-            "errors": len(mods.get("errors", [])),
+            "errors_count": len(all_errors),
+            "errors": errors_out,
         }
     else:
         processing["normalization"] = {"status": "Skipped"}

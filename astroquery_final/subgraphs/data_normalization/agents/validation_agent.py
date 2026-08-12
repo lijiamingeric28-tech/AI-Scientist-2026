@@ -5,6 +5,8 @@ import time
 from typing import Any
 from quality_pipeline.quality_state import QualityGraphState
 from quality_pipeline.utils.logger import get_logger
+# P2 (g)6: 三态重试门判据 — 可修复 kind 集合 (与 planning 修复循环同源 SSOT)
+from quality_pipeline.sandbox.sandbox_common import _REPAIRABLE_KINDS
 logger = get_logger(__name__)
 
 class ValidationAgent:
@@ -67,19 +69,40 @@ class ValidationAgent:
         # L-13 fix: 与 normalization_graph 图边 (retry_count<2) 及注释
         # "最多 2 次" 统一 — 此前 MAX=1 使第二次重试成为不可达死代码
         MAX_NORM_RETRIES = 2
+        # P2 (g)6: 三态重试门 — gen_errors 含可修复 kind 且 layer3.repair_left[sid]>0
+        # 且 retry_count<MAX → Retry; 预算耗尽/不可修复 kind → Success+note;
+        # 无 gen_errors → 现状。错误可见性 errors_count = gen_errors + layer3.attempts。
+        layer3 = norm.get("layer3", {}) or {}
+        layer3_attempts = list(layer3.get("attempts", []) or [])
+        repair_left = dict(layer3.get("repair_left", {}) or {})
+
+        def _gen_error_repairable(e):
+            return (isinstance(e, dict) and e.get("kind") in _REPAIRABLE_KINDS
+                    and repair_left.get(e.get("source_id", ""), 0) > 0)
+
         if has_base_issues and retry_count < MAX_NORM_RETRIES:
             status = "Retry"
             route = ""
             retry_count += 1
             logger.info("[Validation] Base tool issues remain → retry %d/%d", retry_count, MAX_NORM_RETRIES)
         elif gen_errors and not has_base_issues:
-            # Layer 3 生成的工具有运行时错误, 但不影响整体验证通过
-            status = "Success"
-            # V4 fix: 复检发现冲突时优先 B→C, 不再无条件 Export
-            route = "Conflict" if needs_conflict else "Export"
-            remaining.append(f"Note: {len(gen_errors)} generated tool(s) had runtime errors (non-blocking)")
-            logger.warning("[Validation] %d generated tool errors (non-blocking), valid=%s",
-                          len(gen_errors), is_valid)
+            errors_count = len(gen_errors) + len(layer3_attempts)
+            if any(_gen_error_repairable(e) for e in gen_errors) \
+                    and retry_count < MAX_NORM_RETRIES:
+                # Layer 3 生成工具失败但修复预算未耗尽 → 回退 Planning 重新生成
+                status = "Retry"
+                route = ""
+                retry_count += 1
+                logger.info("[Validation] Generated tool errors repairable (repair_left>0) → retry %d/%d",
+                            retry_count, MAX_NORM_RETRIES)
+            else:
+                # Layer 3 生成的工具有运行时错误, 但不影响整体验证通过
+                status = "Success"
+                # V4 fix: 复检发现冲突时优先 B→C, 不再无条件 Export
+                route = "Conflict" if needs_conflict else "Export"
+                remaining.append(f"Note: {errors_count} generated tool(s) had runtime errors (non-blocking)")
+                logger.warning("[Validation] %d generated tool errors (non-blocking), valid=%s",
+                              errors_count, is_valid)
         else:
             status = "Success"
             # V4 fix: 与 needs_conflict_analysis 字段保持一致 —

@@ -12,49 +12,26 @@ from __future__ import annotations
 import datetime
 import time
 import copy
-import json
-import ast
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 from quality_pipeline.quality_state import QualityGraphState
 from quality_pipeline.utils.logger import get_logger
+# P0 (c): 沙箱 SSOT — 常量/工厂/校验统一收纳于 quality_pipeline/sandbox/sandbox_common.py,
+# 此处 re-export 保持既有 import 路径兼容 (tests/test_sandbox_security.py 等不破)
+from quality_pipeline.sandbox.sandbox_common import (  # noqa: F401 — re-export
+    _ALLOWED_AST_NODES, _ALLOWED_MODULES, _FORBIDDEN_FUNCTIONS,
+    _SANDBOX_TIMEOUT_SEC, _SANDBOX_MAX_LOG_ENTRIES, _MODULE_GLOBALS,
+    _safe_import, _make_sandbox, _validate_code_ast, _validate_generated_result,
+    # P1 (f): confidence 契约共享常量与自检验证 (与 planning 同源, identity 测试守护)
+    _CONFIDENCE_EXEC_THRESHOLD, _verify_self_check, _compute_effective_confidence,
+    # P2 (h): no-op 检测 (执行端全量 0 修改 → kind=noop)
+    _detect_noop,
+)
 logger = get_logger(__name__)
 
 # Base Tool 注册表
 _BASE_TOOLS = {}
-
-# AST 白名单: 允许的节点类型
-_ALLOWED_AST_NODES = {
-    ast.Module, ast.FunctionDef, ast.Return, ast.Assign, ast.Expr,
-    ast.Call, ast.Name, ast.Load, ast.Store, ast.Constant, ast.arg,
-    ast.arguments, ast.BinOp, ast.UnaryOp, ast.Compare, ast.BoolOp,
-    ast.If, ast.For, ast.While, ast.Attribute, ast.Subscript, ast.Index,
-    ast.List, ast.Dict, ast.Tuple, ast.Set,
-    ast.ListComp, ast.DictComp, ast.SetComp, ast.GeneratorExp,
-    ast.comprehension, ast.Slice, ast.UAdd, ast.USub, ast.Add, ast.Sub, ast.Mult, ast.Div,
-    ast.Mod, ast.Pow, ast.Eq, ast.NotEq, ast.Lt, ast.Gt, ast.LtE, ast.GtE,
-    ast.And, ast.Or, ast.Not, ast.In, ast.NotIn, ast.Is, ast.IsNot,
-    ast.Pass, ast.Break, ast.Continue, ast.Try, ast.ExceptHandler,
-    ast.Raise, ast.Assert, ast.Import, ast.ImportFrom, ast.alias,
-    ast.JoinedStr, ast.FormattedValue, ast.Lambda, ast.IfExp,
-    ast.AugAssign, ast.AnnAssign, ast.keyword, ast.Starred,
-    ast.withitem, ast.With, ast.Yield, ast.YieldFrom,
-    # V3.1: 常见数据清洗操作符
-    ast.FloorDiv, ast.BitAnd, ast.BitOr, ast.LShift, ast.RShift,
-    ast.Invert, ast.Del, ast.Delete,
-}
-
-# 允许的模块白名单 (Import/ImportFrom 只能白名单)
-_ALLOWED_MODULES = {"math", "re", "json", "copy", "datetime", "collections", "itertools",
-                    "functools", "typing", "statistics", "decimal", "fractions", "hashlib",
-                    "logging", "warnings",
-                    "base64", "uuid", "string", "textwrap", "itertools", "operator"}
-
-# H-12 fix: 沙箱硬超时 (秒) 与输出大小上限 — LLM 生成的 while True 死循环
-# 不再挂死整条管线; 超时/超限判生成失败, 回退 Base Tools。
-_SANDBOX_TIMEOUT_SEC = 8.0
-_SANDBOX_MAX_LOG_ENTRIES = 50000
 
 
 def _run_with_timeout(target, args=(), timeout=None) -> dict:
@@ -198,44 +175,6 @@ def _apply_conflict_ction(action: dict, records: list[dict],
     return logs, errors
 
 
-def _safe_import(name, *args, **kwargs):
-    """受限 import 包装器 (C1 fix): 仅允许白名单模块, 防沙箱逃逸。
-
-    exec 的 import 语句经 __builtins__['__import__'] 解析, 直接删除会让
-    `import math` 等报错; 此包装器是 AST 白名单之外的第二道运行时防线。
-    """
-    base = name.split(".")[0]
-    if base not in _ALLOWED_MODULES:
-        raise ImportError(f"[Sandbox] Module '{name}' not allowed")
-    return __import__(name, *args, **kwargs)
-
-
-def _make_sandbox() -> dict:
-    """创建独立的安全沙箱 (V3.1 fix: 每 source 一个, 避免并发共享污染)。
-
-    C1 fix: 不再裸暴露 __import__ 与 type (逃逸链: __import__→os.system /
-    type.__subclasses__→任意类); __import__ 由 _safe_import 白名单包装器接管。
-    """
-    safe_builtins = {
-        "True": True, "False": False, "None": None,
-        "__import__": _safe_import,  # C1 fix: 白名单包装器 (第二道防线)
-        "abs": abs, "all": all, "any": any, "bool": bool, "dict": dict,
-        "enumerate": enumerate, "filter": filter, "float": float, "int": int,
-        "isinstance": isinstance, "len": len, "list": list, "map": map,
-        "max": max, "min": min, "print": print, "range": range,
-        "round": round, "set": set, "sorted": sorted, "str": str,
-        "sum": sum, "tuple": tuple, "zip": zip,  # C1: 移除 type (逃逸链起点)
-        "Exception": Exception, "ValueError": ValueError, "TypeError": TypeError,
-        "KeyError": KeyError, "IndexError": IndexError, "AttributeError": AttributeError,
-    }
-    return {
-        "__builtins__": safe_builtins,
-        "json": json, "copy": copy,
-        "math": __import__("math"), "re": __import__("re"),
-        "datetime": __import__("datetime"), "collections": __import__("collections"),
-    }
-
-
 def _execute_one_source(sid: str, by_src: dict, records: list[dict],
                         ctx: dict | None = None) -> dict:
     """执行单个 source 的全部工具 (在独立线程中运行, V3.1: 独立 sandbox)。
@@ -327,25 +266,35 @@ def _execute_one_source(sid: str, by_src: dict, records: list[dict],
                 srecs = r["data"]
 
     # Layer 3: Generated Tools (V3.1 fix: 每 source 独立 sandbox, 避免并发函数名覆盖)
+    # P3 (层 A): mode=="ops" 走确定性 ops 执行器 (execute_ops, 不进沙箱),
+    # confidence 不设 <0.7 门槛; mode=="code" 走原沙箱路径 (M-16 门槛保留)
     sandbox_globals = _make_sandbox()
     for gen in by_src.get("generated", []):
         if gen.get("source_id") != sid:
             continue
-        # M-16 fix: 低置信生成工具不落地 — 跳过执行, 记 errors 待人工审核
-        # (CLAUDE.md Layer 3 契约: confidence<0.7 需人工审核)
-        try:
-            confidence = float(gen.get("confidence") or 0)
-        except (TypeError, ValueError):
-            confidence = 0.0
-        if confidence < 0.7:
-            result["errors"].append({
-                "source_id": sid, "tool": gen.get("tool_name", "?"),
-                "kind": "low_confidence",
-                "confidence": confidence,
-                "error": f"generated tool confidence {confidence} < 0.7, requires human review",
-            })
-            continue
-        r = agent._execute_generated(gen, srecs, sandbox_globals)
+        is_ops = gen.get("mode") == "ops"
+        if not is_ops:
+            # M-16 fix: 低置信生成工具不落地 — 跳过执行, 记 errors 待人工审核
+            # (CLAUDE.md Layer 3 契约: confidence<0.7 需人工审核)
+            try:
+                confidence = float(gen.get("confidence") or 0)
+            except (TypeError, ValueError):
+                confidence = 0.0
+            # P1 (f): 阈值引用共享常量 (planning/exec 同源, 禁止任一侧硬编码漂移)
+            if confidence < _CONFIDENCE_EXEC_THRESHOLD:
+                result["errors"].append({
+                    "source_id": sid, "tool": gen.get("tool_name", "?"),
+                    "kind": "low_confidence",
+                    "confidence": confidence,
+                    "error": (f"generated tool confidence {confidence} < "
+                              f"{_CONFIDENCE_EXEC_THRESHOLD}, requires human review"),
+                })
+                continue
+        prev_err_count = len(result["errors"])
+        if is_ops:
+            r = agent._execute_ops(gen, srecs, ctx, result["errors"])
+        else:
+            r = agent._execute_generated(gen, srecs, sandbox_globals, result["errors"])
         if r:
             logs = r.get("log", [])
             result["generated_logs"].extend(logs)
@@ -354,8 +303,11 @@ def _execute_one_source(sid: str, by_src: dict, records: list[dict],
             if "data" in r:
                 srecs = r["data"]
         else:
-            result["errors"].append({"source_id": sid, "tool": gen.get("tool_name", "?"),
-                                     "error": "generated tool execution failed"})
+            # P2 (g)1: 结构化错误 — _execute_generated 已记录具体 kind 时不重复追加
+            if len(result["errors"]) == prev_err_count:
+                result["errors"].append({"source_id": sid, "tool": gen.get("tool_name", "?"),
+                                         "kind": "exec_error",
+                                         "error": "generated tool execution failed"})
 
     # V2: aggregate per-entity modification counts
     # L-14 fix: 预建 {record_id: (entity_type, entity_name)} 索引, 再对日志 O(L) 查表
@@ -556,37 +508,55 @@ class NormalizationAgent:
             logger.error("[ToolExec] Adapted '%s/%s' failed: %s", adapt.get("base_tool"), adapt.get("adaptation"), e)
             return None
 
-    def _execute_generated(self, gen, records, sandbox_globals):
+    def _execute_generated(self, gen, records, sandbox_globals, error_sink=None):
         """V2.1: 安全沙箱执行 — AST 白名单 + 空 __builtins__
 
         H-12 fix: exec 与 fn 调用在线程中执行并设硬超时 + 输出大小上限,
         超时/超限判生成失败 (回退 Base Tools)。
         M-19 fix: 全量执行复现 dry-run 的记录数/字段键集合稳定性校验,
         不满足则丢弃结果并记错误 (在深拷贝上执行, 校验通过才采纳)。
+        P2 (g)(h): error_sink 可选错误收集列表 (调用方传 result["errors"]),
+        失败路径写入结构化对象 {source_id, tool, kind, error, line?};
+        执行端 no-op 检测 (全量 0 修改 → kind=noop, 无 unverifiable 概念);
+        边界: 数据变但 log 空 → 采纳 + kind=missing_log 非阻断错误。
         """
+        def _fail(kind, message, line=None):
+            if error_sink is not None:
+                entry = {"source_id": gen.get("source_id", ""),
+                         "tool": gen.get("tool_name", "?"),
+                         "kind": kind, "error": message}
+                if line is not None:
+                    entry["line"] = line
+                error_sink.append(entry)
+            return None
+
         try:
             code = gen.get("tool_code", "")
             if not code:
-                return None
+                return _fail("exec_error", "generated tool has no tool_code")
 
             # ── V2.1: AST 安全校验 (H-12: 含死循环静态防护) ──
-            if not _validate_code_ast(code):
+            verdict = _validate_code_ast(code)
+            if not verdict:
                 logger.warning("[ToolExec] Generated code blocked: AST validation failed")
-                return None
+                return _fail("ast_blocked", verdict.get("message", ""),
+                             verdict.get("line"))
 
             # H-12 fix: 编译 + exec 在线程中执行, 硬超时
             def _exec_code():
                 exec(compile(code, "<sandbox>", "exec"), sandbox_globals)  # nosec B102 — AST 白名单沙箱
 
-            if not _run_with_timeout(_exec_code)["ok"]:
+            exec_outcome = _run_with_timeout(_exec_code)
+            if not exec_outcome["ok"]:
                 logger.warning("[ToolExec] Generated '%s' exec timed out/failed",
                                gen.get("tool_name", "?"))
-                return None
+                return _fail("exec_timeout" if isinstance(exec_outcome["error"], TimeoutError)
+                             else "exec_error", str(exec_outcome["error"]))
 
             # V3.1 fix: 模板固定生成 def tool(...), 兼容 LLM 声明的 tool_name
             fn = sandbox_globals.get(gen["tool_name"]) or sandbox_globals.get("tool")
             if not fn:
-                return None
+                return _fail("exec_error", "generated function not found in sandbox")
 
             # M-19 fix: 在深拷贝上执行, 校验通过才采纳 (失败可安全丢弃, 不改原记录)
             records_copy = copy.deepcopy(records)
@@ -594,35 +564,115 @@ class NormalizationAgent:
             if not outcome["ok"]:
                 logger.error("[ToolExec] Generated '%s' failed: %s",
                              gen.get("tool_name", "?"), outcome["error"])
-                return None
+                return _fail("exec_timeout" if isinstance(outcome["error"], TimeoutError)
+                             else "exec_error", str(outcome["error"]))
             result = outcome["result"]
-            if not isinstance(result, dict) or "data" not in result:
-                logger.warning("[ToolExec] Generated '%s': invalid return format",
+            # P0 (c): 共享不变量门 — 与 planning dry-run 同一 _validate_generated_result
+            # (invalid_format / record_count_changed / key_set_changed / log_too_large)
+            check = _validate_generated_result(records, result, _SANDBOX_MAX_LOG_ENTRIES)
+            if not check["ok"]:
+                logger.warning("[ToolExec] Generated '%s': rejected (kind=%s): %s",
+                               gen.get("tool_name", "?"), check["kind"], check["message"])
+                return _fail(check["kind"], check["message"])
+            # P2 (h): 执行端 no-op 检测 — 全量 0 修改 → kind=noop 失败对象 → 丢弃
+            # (无 unverifiable 概念 — 目标问题必存在否则不会规划 Layer 3)
+            if _detect_noop(records, result)["noop"]:
+                logger.warning("[ToolExec] Generated '%s': no-op on full data (rejected)",
                                gen.get("tool_name", "?"))
-                return None
-            data = result.get("data", [])
-            # M-19 fix: 记录数一致性 — Normalization 工具只允许修改, 禁止增删记录
-            if len(data) != len(records):
-                logger.warning("[ToolExec] Generated '%s': record count changed "
-                               "%d -> %d (rejected)", gen.get("tool_name", "?"),
-                               len(records), len(data))
-                return None
-            # M-19 fix: 字段键集合校验 — 禁止新增/删除字段键
-            for orig, new in zip(records, data):
-                if not isinstance(new, dict) or set(new.keys()) != set(orig.keys()):
-                    logger.warning("[ToolExec] Generated '%s': field key set changed (rejected)",
-                                   gen.get("tool_name", "?"))
-                    return None
-            # H-12 fix: 输出大小上限 (log 条数)
-            logs = result.get("log", [])
-            if len(logs) > _SANDBOX_MAX_LOG_ENTRIES:
-                logger.warning("[ToolExec] Generated '%s': log too large (%d entries, rejected)",
-                               gen.get("tool_name", "?"), len(logs))
-                return None
+                return _fail("noop", "generated tool made zero modifications on full data")
+            # P1 (f): self_check 验证 (M-19 键集合检查之后, 与 planning dry-run 共用
+            # _verify_self_check) — 失败 → effective confidence ×0.3 (exec 只消费
+            # effective; planning 侧已在注册时算好 effective, 此处做审计兜底)
+            self_check_data = gen.get("self_check")
+            self_check_ok = True
+            if self_check_data:
+                sc = _verify_self_check(result, self_check_data, records)
+                self_check_ok = sc["ok"]
+                if not sc["ok"]:
+                    logger.warning("[ToolExec] Generated '%s': self_check FAILED (%d): %s",
+                                   gen.get("tool_name", "?"), len(sc["failed"]),
+                                   str(sc["failed"][:2])[:200])
+            try:
+                conf = float(gen.get("confidence") or 0)
+            except (TypeError, ValueError):
+                conf = 0.0
+            result["effective_confidence"] = _compute_effective_confidence(conf, self_check_ok)
+            # P2 (h): 边界 — 数据变但 log 空 → 采纳 + 非阻断错误 (缺审计轨迹需人工可见)
+            if not (result.get("log") or []):
+                if error_sink is not None:
+                    error_sink.append({
+                        "source_id": gen.get("source_id", ""),
+                        "tool": gen.get("tool_name", "?"),
+                        "kind": "missing_log",
+                        "error": "data modified but log is empty (traceability gap)",
+                    })
             return result
         except Exception as e:
             logger.error("[ToolExec] Generated '%s' failed: %s", gen.get("tool_name", "?"), e)
+            return _fail("exec_error", str(e))
+
+    def _execute_ops(self, gen, records, ctx=None, error_sink=None):
+        """P3 (层 A): 模板驱动 ops 执行 — 确定性执行器, 不进沙箱。
+
+        execute_ops 内部已做逐 op 不变量门 (kind=op_invariant_failed 结构化失败);
+        此处复用共享 _validate_generated_result 门 + _detect_noop (与 code 路径
+        同一 SSOT), 边界: 数据变但 log 空 → 采纳 + kind=missing_log 非阻断错误。
+        """
+        def _fail(kind, message, line=None):
+            if error_sink is not None:
+                entry = {"source_id": gen.get("source_id", ""),
+                         "tool": gen.get("tool_name", "?"),
+                         "kind": kind, "error": message}
+                if line is not None:
+                    entry["line"] = line
+                error_sink.append(entry)
             return None
+
+        try:
+            from quality_pipeline.tools.normalization.op_executor import (
+                execute_ops, OpSpec,
+            )
+            raw_ops = gen.get("ops") or []
+            if not raw_ops:
+                return _fail("exec_error", "ops entry has no ops")
+            try:
+                specs = [op if isinstance(op, OpSpec) else OpSpec.model_validate(op)
+                         for op in raw_ops]
+            except Exception as e:  # noqa: BLE001 — 契约失败即结构化错误
+                return _fail("exec_error", f"invalid op spec: {e}")
+            ctx = ctx or {}
+            result = execute_ops(
+                records, specs,
+                research_domain=ctx.get("research_domain"),
+                semantic_types=ctx.get("semantic_types"),
+                target_schema=ctx.get("target_schema"),
+                standard_units=ctx.get("standard_units"),
+            )
+            # 不变量违规 — 确定性执行器理论上不应触发 (防御纵深), 结构化失败
+            if result.get("kind") == "op_invariant_failed":
+                return _fail("op_invariant_failed",
+                             f"{result.get('op', '?')}: {result.get('message', '')}")
+            # 共享不变量门 (invalid_format / record_count_changed / key_set_changed
+            # / log_too_large) — 与 _execute_generated 同一 _validate_generated_result
+            check = _validate_generated_result(records, result, _SANDBOX_MAX_LOG_ENTRIES)
+            if not check["ok"]:
+                return _fail(check["kind"], check["message"])
+            # 执行端 no-op 检测 — 全量 0 修改 → kind=noop 拒绝 (无 unverifiable 概念)
+            if _detect_noop(records, result)["noop"]:
+                return _fail("noop", "ops made zero modifications on full data")
+            # 边界 — 数据变但 log 空 → 采纳 + 非阻断错误 (缺审计轨迹需人工可见)
+            if not (result.get("log") or []):
+                if error_sink is not None:
+                    error_sink.append({
+                        "source_id": gen.get("source_id", ""),
+                        "tool": gen.get("tool_name", "?"),
+                        "kind": "missing_log",
+                        "error": "data modified but ops log is empty (traceability gap)",
+                    })
+            return result
+        except Exception as e:
+            logger.error("[ToolExec] Ops '%s' failed: %s", gen.get("tool_name", "?"), e)
+            return _fail("exec_error", str(e))
 
 
 def _append_trace(data_trace: list, sid: str, tool: str, reason: str,
@@ -637,76 +687,3 @@ def _append_trace(data_trace: list, sid: str, tool: str, reason: str,
     if entity_name:
         entry["entity_name"] = entity_name
     data_trace.append(entry)
-
-
-# 危险函数名黑名单 (即使 AST 节点在白名单中也拒绝)
-_FORBIDDEN_FUNCTIONS = {"eval", "exec", "compile", "open",
-                        "getattr", "setattr", "delattr", "globals", "locals",
-                        "breakpoint", "input",
-                        # 防止沙箱逃逸: 显式调用 __import__ 或 __subclasses__ 链
-                        "__import__", "__subclasses__", "__class__",
-                        "__bases__", "__mro__", "__subclasshook__",
-                        "__init_subclass__"}
-
-
-def _validate_code_ast(code: str) -> bool:
-    """AST 白名单校验: 拒绝含危险节点的代码 (V2.1)。"""
-    try:
-        tree = ast.parse(code)
-    except SyntaxError:
-        return False
-
-    for node in ast.walk(tree):
-        # 拒绝非白名单节点类型
-        if type(node) not in _ALLOWED_AST_NODES:
-            logger.warning("[Sandbox] Blocked AST node: %s", type(node).__name__)
-            return False
-
-        # 对 Import/ImportFrom 校验模块白名单
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                mod = alias.name.split(".")[0]
-                if mod not in _ALLOWED_MODULES:
-                    logger.warning("[Sandbox] Blocked import: %s", alias.name)
-                    return False
-        if isinstance(node, ast.ImportFrom):
-            if node.module:
-                mod = node.module.split(".")[0]
-                if mod not in _ALLOWED_MODULES:
-                    logger.warning("[Sandbox] Blocked import from: %s", node.module)
-                    return False
-
-        # C1 fix: 任意 ast.Name (Load 上下文) 命中黑名单即拒绝 — 杀死别名赋值逃逸
-        # (e.g. `_imp = __import__` 中 __import__ 是 Name Load, 旧检查只查 Call 漏掉它)
-        if isinstance(node, ast.Name):
-            if node.id in _FORBIDDEN_FUNCTIONS:
-                logger.warning("[Sandbox] Blocked name reference: %s", node.id)
-                return False
-
-        # H-12 fix: 死循环静态防护 — While 循环体无 break 即拒绝 (保守方案),
-        # 与 _run_with_timeout 硬超时互为双保险 (break 存在但永不触达时由超时兜底)
-        if isinstance(node, ast.While):
-            if not any(isinstance(n, ast.Break) for n in ast.walk(node)):
-                logger.warning("[Sandbox] Blocked unbounded while loop (no break)")
-                return False
-
-        # C1 fix: 任何 dunder 属性访问拒绝 — 杀死属性链逃逸
-        # (x.__class__.__mro__ / type.__subclasses__ / obj.__getattribute__ 等),
-        # 白名单例外: __name__ (模板代码中仅作可读属性使用)
-        if isinstance(node, ast.Attribute):
-            if node.attr.startswith("__") and node.attr != "__name__":
-                logger.warning("[Sandbox] Blocked dunder attribute: %s", node.attr)
-                return False
-
-        # 对函数调用校验危险函数名 (保留原检查, 与 Name/Attribute 检查互为冗余)
-        if isinstance(node, ast.Call):
-            func_name = None
-            if isinstance(node.func, ast.Name):
-                func_name = node.func.id
-            elif isinstance(node.func, ast.Attribute):
-                func_name = node.func.attr
-            if func_name and func_name in _FORBIDDEN_FUNCTIONS:
-                logger.warning("[Sandbox] Blocked function call: %s()", func_name)
-                return False
-
-    return True

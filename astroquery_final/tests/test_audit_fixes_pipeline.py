@@ -105,11 +105,13 @@ def test_h03_normalize_unit_dimension_mismatch_records_error():
 
 # ─────────────────────────── H-12 ───────────────────────────
 
-def test_h12_ast_rejects_while_without_break():
-    """While 无 break 的代码被 AST 校验拒绝 (保守静态防护)。"""
+def test_h12_ast_while_three_tiers():
+    """while 三档判定 (P1 a): 无界拒绝 / 有界计数器放行 / 有 break 放行 (由硬超时兜底)。"""
     from subgraphs.data_normalization.agents.normalization_agent import _validate_code_ast
+    # 无界 (常量真 + 无 break) 仍拒绝
     assert not _validate_code_ast("def tool(records):\n    while True:\n        pass")
-    assert not _validate_code_ast("def tool(records):\n    while i < 10:\n        i += 1")
+    # 有界计数器 (Compare + Constant + 同名字段 AugAssign) 放行
+    assert _validate_code_ast("def tool(records):\n    while i < 10:\n        i += 1")
     # 有 break 的 while 仍放行 (由硬超时兜底)
     assert _validate_code_ast("def tool(records):\n    while True:\n"
                               "        if len(records) > 3:\n            break")
@@ -271,17 +273,23 @@ def test_m19_generated_rejects_keyset_change():
 
 
 def test_m19_generated_valid_transform_accepted():
-    """合法变换 (改值 + 记 log) 正常采纳。"""
+    """合法变换 (改值 + 记 log) 正常采纳。
+
+    P2 (h) 同步: 原用例只追加本地 _log 不改数据 — 恰是 no-op 检测要拒的
+    静默零修改工具, 已改为真实改值 (docs §6(h): 全量 0 修改 → kind=noop)。
+    """
     agent = _na_agent()
     recs = [{"record_id": "r1", "field_name": "f", "field_value": "1", "field_unit": "pc"}]
     code = ("def tool(records):\n"
             "    _log = []\n"
             "    _log.append({'record_id': 'r1', 'field': 'f', 'action': 'transform'})\n"
+            "    records[0]['field_value'] = '2'\n"
             "    return {'data': records, 'log': _log, 'summary': 'ok'}\n")
     from subgraphs.data_normalization.agents.normalization_agent import _make_sandbox
     r = agent._execute_generated(_gen_tool(code), recs, _make_sandbox())
     assert r is not None
     assert r["log"] == [{"record_id": "r1", "field": "f", "action": "transform"}]
+    assert r["data"][0]["field_value"] == "2"  # 真实修改才采纳 (非 no-op)
 
 
 # ─────────────────────────── M-20 ───────────────────────────

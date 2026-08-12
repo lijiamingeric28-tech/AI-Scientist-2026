@@ -19,6 +19,8 @@
 - 任何失败只跳过该表/该论文，绝不中断主流程
 """
 
+from __future__ import annotations  # 使模块级变量注解惰性求值 (修复 "requests.Session" | None 在 3.10 import 期崩溃)
+
 import json
 import logging
 import re
