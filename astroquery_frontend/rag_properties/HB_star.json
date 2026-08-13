@@ -1,0 +1,323 @@
+{
+  "otype": "HB*",
+  "name_cn": "水平支星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "gaia_g_mag",
+      "name_cn": "Gaia G波段视星等",
+      "description": "Gaia宽带G波段视星等，BHB选择与绝对星等定标的基准测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_bp_rp_color",
+      "name_cn": "Gaia BP-RP颜色指数",
+      "description": "Gaia BP与RP波段的颜色差，BHB候选在CMD上的主选择判据",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.BR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_g_abs_mag",
+      "name_cn": "G波段绝对星等",
+      "description": "由视差导出的G波段绝对星等，用于水平分支定位与标准烛光距离",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sdss_g_mag",
+      "name_cn": "SDSS g波段星等",
+      "description": "消光改正后的SDSS g波段星等，Xue样本的核心测光量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sdss_u_g_color",
+      "name_cn": "SDSS u-g颜色",
+      "description": "u-g颜色对温度极敏感，是区分BHB与蓝离散星的关键颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.UB",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sdss_g_r_color",
+      "name_cn": "SDSS g-r颜色",
+      "description": "g-r颜色指示水平支蓝端/红端位置，配合u-g区分BHB/BS/MS",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.BR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_e44m55",
+      "name_cn": "星际红化E(44-55)",
+      "description": "由SED拟合得出的红化量，用于修正测光与距离估计",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "日心视向速度",
+      "description": "SDSS光谱测量的日心视向速度，用于银河晕运动学分析",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactocentric_radial_velocity",
+      "name_cn": "银心视向速度",
+      "description": "扣除太阳运动与本地转动后相对银心的视向速度分量",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_line_width",
+      "name_cn": "Hδ/Hγ线宽",
+      "description": "Hδ线在连续谱20%深度处的宽度D0.2及Hγ的b参数，重力灵敏的谱线测量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width;em.line.H",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_line_profile",
+      "name_cn": "Hγ线轮廓形状参数",
+      "description": "Hγ Sersic拟合的c参数，与线宽组合用于BHB/BS/MS分类",
+      "category": "spectroscopy",
+      "ucd": "spect.line.shape;em.line.H",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ca2_flux_index",
+      "name_cn": "Ca II线核流量指数",
+      "description": "Ca II线相对连续谱的线核流量，用于估计贫金属性与污染剔除",
+      "category": "spectroscopy",
+      "ucd": "spect.line.index;em.line.Ca",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_fe_h",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "SDSS低分辨率光谱测定的[Fe/H]，HB星典型贫金属（-1至-3 dex）",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度Teff",
+      "description": "SED拟合或光谱分析的有效温度，BHB范围约6000-30000K",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力log g",
+      "description": "对数表面重力，水平支星典型值约2.5-4.5（cgs），区分演化阶段",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "SED拟合得出的恒星质量，HB星约0.5-0.7太阳质量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "由角直径与距离或SED拟合得出的半径",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_luminosity",
+      "name_cn": "恒星光度",
+      "description": "SED拟合光度，水平支上光度近似恒定，支撑标准烛光应用",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "BHB星对应A-F型（B端至F型），SDSS/文献分类结果",
+      "category": "physical",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "source_id",
+      "name_cn": "源标识符",
+      "description": "Gaia EDR3/DR3源标识，用于跨星表交叉证认",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000历元赤经（ICRS）",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000历元赤纬（ICRS）",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude",
+      "name_cn": "银经",
+      "description": "银道坐标经度，用于银河晕结构研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度，高银纬样本选择依据",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "三角视差",
+      "description": "Gaia三角视差（含误差），BHB距离与绝对星等基础",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "自行（赤经方向）",
+      "description": "赤经方向自行分量（含cosδ改正与误差）",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "自行（赤纬方向）",
+      "description": "赤纬方向自行分量（含误差）",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "total_proper_motion",
+      "name_cn": "总自行",
+      "description": "总自行大小，简化自行选择与运动学分析用",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "日心距离",
+      "description": "光度/视差距离，SDSS BHB样本中位数约25 kpc（Sirko）",
+      "category": "astrometry",
+      "ucd": "pos.distance;pos.heliocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactocentric_distance",
+      "name_cn": "银心距离",
+      "description": "距银心距离及银心直角坐标x/y/z，用于晕密度与速度分布",
+      "category": "astrometry",
+      "ucd": "pos.distance;pos.galactocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_class",
+      "name_cn": "变星分类",
+      "description": "不稳定带内HB星为RR Lyr型变星，交叉Gaia DR3变星分类/VSX获得变星类型标记",
+      "category": "variability",
+      "ucd": "src.class.star.variable",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hb_subtype",
+      "name_cn": "水平支亚型",
+      "description": "按颜色区分的蓝水平支(BHB)/红水平支(RHB)/极端水平支(EHB)亚型",
+      "category": "classification",
+      "ucd": "src.class.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_class",
+      "name_cn": "源类型分类",
+      "description": "由D0.2与fm方法判定的BHB/蓝离散星(BS)/主序星(MS)类型标签",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "neighbor_count_5arcsec",
+      "name_cn": "5角秒内邻星数",
+      "description": "候选星周围5角秒内Gaia源数目，用于剔除双星/星族混合污染",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团成员归属",
+      "description": "球状星团内HB星的成员判定，文献中结合自行/视向速度与CMD给出",
+      "category": "environment",
+      "ucd": "src.class.membership",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

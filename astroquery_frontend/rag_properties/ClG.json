@@ -1,0 +1,197 @@
+{
+  "otype": "ClG",
+  "name_cn": "星系团",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "星系团中心天球坐标赤经(J2000;ACO原表为B1950,精度约1分);X射线/SZ目录为X射线质心或SZ峰值位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "星系团中心天球坐标赤纬;MCXC为X射线质心,PSZ2为SZ探测位置,eRASS1为X射线延展源质心",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coords",
+      "name_cn": "银道坐标",
+      "description": "银经/银纬,用于银河系消隐区(如CIZA)与超星系团环境研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "星系团红移(成员星系光谱测量,Struble & Rood给出日心与CMB参考系两种值,含质量标记);PSZ2/MCXC亦提供红移(部分为光度估计)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_redshift",
+      "name_cn": "光度红移",
+      "description": "基于富集度红序列的光度红移z_lambda及误差(eRASS1光学巡天),用于无光谱测量的高红移与暗弱团",
+      "category": "spectroscopy",
+      "ucd": "src.redshift.phot",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_dispersion",
+      "name_cn": "速度弥散",
+      "description": "成员星系视向速度弥散σ_v(经维里参考系修正),星系团动力学质量的经典示踪量,Struble & Rood汇编含395个ACO团",
+      "category": "physical",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "richness_class",
+      "name_cn": "富集度等级",
+      "description": "Abell富集度等级0-5(m3至m3+2星等范围内成员星系计数:30-49/50-79/80-129/130-199/200-299/>299),eRASS1光学侧亦有以红序列成员数定义的光度富集度",
+      "category": "classification",
+      "ucd": "src.class.richness",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bautz_morgan_type",
+      "name_cn": "Bautz-Morgan类型",
+      "description": "按最亮成员相对光度对比划分的I/II/III型(cD星系主导至无主导星系),反映团内亮星系集中度",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_class",
+      "name_cn": "距离等级",
+      "description": "Abell距离等级1-7,由第10亮成员星等(m10)划分的团距离粗略估计",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m10_mag",
+      "name_cn": "第10亮星系星等",
+      "description": "第10亮成员星系视星等m10(南天m10S与北天m10N两套标度,统计使用须注意),用于距离等级与估计红移",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity_l500",
+      "name_cn": "X射线光度L500",
+      "description": "R500内0.1-2.4keV(MCXC/eRASS1为0.2-2.3keV)X射线光度,团内介质(ICM)热辐射的直接度量,质量-光度标定关系的主轴量",
+      "category": "physical",
+      "ucd": "phys.luminosity.X",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_m500",
+      "name_cn": "质量M500",
+      "description": "R500球内总质量(约为临界密度500倍的平均过密度),M500=(4π/3)R500³·500ρc(z);MCXC由X射线光度-质量标定外推,eRASS1由MBProj2D气体模型导出",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius_r500",
+      "name_cn": "特征半径R500",
+      "description": "平均过密度为临界密度500倍的球半径(Mpc),定义团物理边界与所有R500内量的积分限;MCXC同时给出kpc/arcsec线性尺度因子以便角度-物理尺度转换",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_temperature_kt",
+      "name_cn": "X射线温度kT",
+      "description": "ICM谱拟合温度(keV),eRASS1用MBProj2D双投影谱拟合给出kT及1σ上下限;与Yx、质量构成星系团核心标定关系",
+      "category": "physical",
+      "ucd": "phys.temperature",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sz_flux_y500",
+      "name_cn": "SZ积分通量Y500",
+      "description": "R500内积分康普顿参数Y500及5R500内Y5R500,SZ信号与ICM热压积分成正比,由普朗克多频(100-857GHz)匹配滤波测得,含S/N与检测似然度",
+      "category": "physical",
+      "ucd": "phys.comptonParameter",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sz_angular_radius_theta500",
+      "name_cn": "SZ角半径θ500",
+      "description": "SZ拟合的团角尺度θ500(与r_core核心半径相关),由普朗克~5'波束限定,是SZ质量估计的几何参数",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gas_mass_mgas500",
+      "name_cn": "气体质量Mgas500",
+      "description": "R500内ICM气体质量(eRASS1经MBProj2D热压剖面对比光度得出),与热压Yx共同作为质量代理",
+      "category": "physical",
+      "ucd": "phys.mass.gas",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "yx_mass_proxy",
+      "name_cn": "Yx质量代理",
+      "description": "Yx=kT·Mgas(R500内),eRASS1直接给出的最稳健质量代理量,低散射、对冷核不敏感,用于团丰度宇宙学",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_count_rate_cr500",
+      "name_cn": "X射线计数率",
+      "description": "R500内X射线计数率(0.2-2.3keV)及未吸收值CR500_NH0,巡天原始探测量,含1σ上下限",
+      "category": "photometry",
+      "ucd": "phot.count;em.X-ray",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_galaxy_count",
+      "name_cn": "成员星系计数",
+      "description": "用于速度弥散/红移测定的成员星系数及富集度成员计数,表征团所在环境的密度规模;ACO富集度等级即成员数分级,Struble & Rood给出每团用于测量的星系数",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sz_detection_snr",
+      "name_cn": "SZ探测信噪比",
+      "description": "SZ检测S/N(三套流水线各一)与可靠性标志,决定团入选质量;PSZ2含质量相关可靠性(flagged)字段",
+      "category": "classification",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

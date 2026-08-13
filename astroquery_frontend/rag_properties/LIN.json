@@ -1,0 +1,314 @@
+{
+  "otype": "LIN",
+  "name_cn": "LINER型星系核",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经(精度0.1秒级)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(精度1角秒级)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon",
+      "name_cn": "银经",
+      "description": "银道坐标经度, 用于银河系前景消光评估",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度, 用于银河系前景消光评估",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "基于红移或本动速度的宿主星系距离(Mpc)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "app_mag",
+      "name_cn": "视星等",
+      "description": "视星等, 波段由波段标志给出(V/P/B/R/I/J/K等)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_mag",
+      "name_cn": "绝对星等",
+      "description": "绝对星等(采用H0=71km/s/Mpc, q0=0)",
+      "category": "photometry",
+      "ucd": "phot.mag.abs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "(B-V)色指数",
+      "description": "B减V颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color",
+      "name_cn": "(U-B)色指数",
+      "description": "U减B颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_6cm",
+      "name_cn": "6cm射电流量密度",
+      "description": "6cm(5GHz)射电流量密度, 探测射电弱/强核活动",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.6cm",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_20cm",
+      "name_cn": "20cm射电流量密度",
+      "description": "20cm(1.4GHz)射电流量密度",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.20cm",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux",
+      "name_cn": "X射线流量",
+      "description": "Chandra观测的核X射线流量密度(0.3-8keV), 含探测标志",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_hardness_ratio",
+      "name_cn": "X射线硬度比",
+      "description": "X射线硬度比(硬/软能带计数比), 表征吸收与谱形",
+      "category": "photometry",
+      "ucd": "phot.color;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "谱学红移(含估计标志E与下限标志>)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_flux_halpha",
+      "name_cn": "Hα发射线流量",
+      "description": "核区Hα发射线绝对流量",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line.Halpha",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_flux_oiii",
+      "name_cn": "[O III]5007发射线流量",
+      "description": "核区[O III]5007发射线流量",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line;em.opt.5007nm",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_hbeta",
+      "name_cn": "[O III]5007/Hβ流量比",
+      "description": "[O III]5007与Hβ流量比, BPT/Veilleux-Osterbrock图核心诊断量之一(LINER通常<3)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt.5007nm;em.opt.Hbeta",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nii_halpha",
+      "name_cn": "[N II]6583/Hα流量比",
+      "description": "[N II]6583与Hα流量比, BPT图主判据(LINER通常>=0.6)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt.6583nm;em.opt.Halpha",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sii_halpha",
+      "name_cn": "[S II]6716+6731/Hα流量比",
+      "description": "[S II]6716,6731合计与Hα流量比, 区分AGN与恒星电离(LINER通常>=0.4)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt.6731nm;em.opt.Halpha",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oi_halpha",
+      "name_cn": "[O I]6300/Hα流量比",
+      "description": "[O I]6300与Hα流量比, 对电离谱形状最敏感的LINER判据(>=0.17)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt.6300nm;em.opt.Halpha",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_hbeta",
+      "name_cn": "Hα/Hβ流量比",
+      "description": "巴尔末减缩, 用于估计核区消光",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt.Halpha;em.opt.Hbeta",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fwhm_halpha",
+      "name_cn": "Hα线宽FWHM",
+      "description": "Hα窄/宽成分线宽, 区分LINER 1(宽Hα)与LINER 2",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width;em.opt.Halpha",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_dispersion",
+      "name_cn": "恒星速度弥散",
+      "description": "核区恒星速度弥散σ*, 用于黑洞质量估计(M-σ关系)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "色余E(B-V)",
+      "description": "基于巴尔末减缩的核区消光",
+      "category": "spectroscopy",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "electron_density",
+      "name_cn": "电子密度",
+      "description": "由[S II]6716/6731双线比导出的电子密度",
+      "category": "spectroscopy",
+      "ucd": "phys.electron.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "o_abundance",
+      "name_cn": "氧丰度",
+      "description": "氧丰度12+log(O/H)及电离参数, 表征LINER气体化学丰度",
+      "category": "physical",
+      "ucd": "phys.abund.O",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_abundance",
+      "name_cn": "氮丰度",
+      "description": "氮丰度log(N/O)与N2O2等比值, 检验N增强假说",
+      "category": "physical",
+      "ucd": "phys.abund.N",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "核X射线(0.3-8keV)光度, 判断低光度AGN(LINER)的X射线属性",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eddington_ratio",
+      "name_cn": "爱丁顿比率",
+      "description": "X射线光度与爱丁顿光度之比, 表征吸积率(LINER多为极低吸积率), 由测光/黑洞质量数据推算",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_class",
+      "name_cn": "核谱分类",
+      "description": "Palomar巡天核分类: S1/S2(Seyfert)、L1/L2(LINER宽/窄)、T(转变型)、H(HII核)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_type",
+      "name_cn": "天体类型代码",
+      "description": "Véron汇编类型代码, 其中S3='Seyfert 3 or LINER', S3b/S3h含宽(偏振)巴尔末线变体",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hubble_type",
+      "name_cn": "哈勃形态类型",
+      "description": "宿主星系哈勃形态类型(早型星系中LINER比例高)",
+      "category": "environment",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_abs_mag",
+      "name_cn": "宿主星系绝对星等",
+      "description": "宿主星系总绝对星等, 描述LINER所在星系的环境光度",
+      "category": "environment",
+      "ucd": "phot.mag.abs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "宿主星系恒星质量(MaNGA管道估计), LINER存在率随恒星质量上升",
+      "category": "environment",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    }
+  ]
+}

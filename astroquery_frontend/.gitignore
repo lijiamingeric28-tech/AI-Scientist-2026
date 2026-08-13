@@ -1,0 +1,36 @@
+# ── 密钥 ──
+.env
+
+# ── 运行生成物 ──
+output/
+astroquery_ai/data/
+tests/cassettes/
+web/data/
+frontend/dist/
+frontend/node_modules/
+# 论文 PDF 下载目录（子图2 运行生成，2026-08-11 加入防误上传）
+subgraphs/data/
+*.log
+
+# ── 缓存 ──
+*.py[cod]
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.bak
+column_mapping_cache.json
+table_meta_cache.json
+
+# ── IDE ──
+.idea/
+.vscode/
+
+# ── 打包产物 ──
+*.egg-info/
+
+# ── 下游质量管线导出 ──
+quality_pipeline/output/
+
+# ── Claude Code 本地配置（不提交）──
+.claude/

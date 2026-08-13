@@ -1,0 +1,188 @@
+{
+  "otype": "RR*",
+  "name_cn": "天琴座 RR 型变星",
+  "description": "年老、贫金属的水平支脉动变星。周期 0.2-1 天，径向脉动。绝对星等相对恒定（M_V≈0.6），是重要的距离指示器和最老星族的示踪体",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pulsation_mode",
+      "name_cn": "脉动模式",
+      "description": "RRab/RR0=基本模式（不对称光变曲线，大振幅）, RRc/RR1=一阶泛音（近正弦，小振幅）, RRd/RR01=双模脉动",
+      "category": "classification",
+      "ucd": "meta.code;src.var.pulse",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "脉动周期。RRab 0.3-1.0天, RRc 0.2-0.5天。周期-金属丰度-光度关系是距离测定基础",
+      "category": "variability",
+      "ucd": "time.period.pulsation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "V_band_mean_mag",
+      "name_cn": "V 波段平均星等",
+      "description": "时间平均 V 星等。用于距离模数计算",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "V_band_amplitude",
+      "name_cn": "V 波段光变振幅",
+      "description": "RRab 振幅 0.3-2 mag（不对称光变曲线）, RRc 振幅 <0.5 mag（近正弦）",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "I_band_light_curve",
+      "name_cn": "I 波段光变曲线",
+      "description": "OGLE I 波段（~0.8μm）密集采样光变曲线。精度 mmag 级，时间基线 10+ 年",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I;src.var",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "G_band_light_curve",
+      "name_cn": "Gaia G 波段光变曲线",
+      "description": "Gaia DR3 G 波段光变曲线。全天均匀，mmag 级精度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt;src.var",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_Fe_H",
+      "name_cn": "[Fe/H] 金属丰度",
+      "description": "光球铁丰度。RR Lyr 星金属丰度范围 [-2.5, 0] dex。周期与金属丰度反相关。用于银晕化学演化研究",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_V_mag",
+      "name_cn": "绝对 V 星等",
+      "description": "M_V。RR Lyr 星标准烛光值 ~0.6（有金属丰度依赖：M_V = a[Fe/H] + b）",
+      "category": "physical",
+      "ucd": "phys.magAbs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "基于 M_V 关系或 Gaia 视差的距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3 三角视差。对近距（<5kpc）RR Lyr 可直接标定 M_V",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "μ_α cosδ, μ_δ。用于银晕动力学和子结构探测",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "系统视向速度。Gaia RVS 光谱可提供。结合自行得 3D 速度矢量",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Oosterhoff_type",
+      "name_cn": "Oosterhoff 类型",
+      "description": "OoI（金属丰度较高，平均周期 <Pab>≈0.55天） vs OoII（金属丰度较低，<Pab>≈0.65天）。球状星团 RR Lyr 星族分类",
+      "category": "classification",
+      "ucd": "meta.code;src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Blazhko_effect_flag",
+      "name_cn": "Blazhko 效应标识",
+      "description": "是否检测到 Blazhko 效应（周期性振幅/相位调制）。~20-50% RRab 有此效应",
+      "category": "classification",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Blazhko_period",
+      "name_cn": "Blazhko 周期",
+      "description": "Blazhko 效应的调制周期（通常 10-100 倍脉动周期）",
+      "category": "variability",
+      "ucd": "time.period;src.var",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Fourier_parameters",
+      "name_cn": "光变曲线傅里叶参数",
+      "description": "光变曲线傅里叶分解参数（R21, φ21, R31, φ31 等）。φ31 与 [Fe/H] 相关——可用于光变曲线的金属丰度估计",
+      "category": "variability",
+      "ucd": "src.var;stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "A-F 型。处于不稳定带与水平支交叉处",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银道坐标",
+      "description": "l, b。RR Lyr 星广泛分布在银晕（|b| 可很大），是银晕结构（星流、子结构）的优秀示踪体",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates",
+      "name_cn": "赤道坐标",
+      "description": "J2000.0 赤经赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variable_star_designation",
+      "name_cn": "变星命名",
+      "description": "GCVS 编号（如 RR Lyr, X Ari）或巡天编号（OGLE-BLG-RRLYR-xxxxx）",
+      "category": "identification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

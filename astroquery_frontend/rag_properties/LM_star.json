@@ -1,0 +1,359 @@
+{
+  "otype": "LM*",
+  "name_cn": "低质量恒星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000历元赤经(度),ICRS坐标系",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000历元赤纬(度),ICRS坐标系",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "三角视差(mas),主要来自Gaia DR2,含误差与参考来源",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "绝对自行pmRA/pmDE及SUPERBLINK相对自行rPMRA/rPMDE(arcsec/yr),ICRS/Tycho-2/2MASS参考架",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "恒星距离(视差反推或光度距离,pc),含误差与来源标志",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "视向速度(km/s),MEarth表为FAST光谱测量,含误差",
+      "category": "astrometry",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_dr2_id",
+      "name_cn": "Gaia DR2天体编号",
+      "description": "Gaia DR2源编号(主星及近密双星伴星各一列),用于交叉证认",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ruwe_flag",
+      "name_cn": "RUWE天体测量质量标志",
+      "description": "布尔标志,指示Gaia DR2 RUWE>1.41(天体测量解不可靠)的恒星",
+      "category": "astrometry",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "catalog_cross_id",
+      "name_cn": "交叉证认编号",
+      "description": "LHS/NLTT/Hipparcos/Tycho-2/ASCC2.5/UCAC2/2MASS/USNO-B1多星表交叉编号,便于跨表关联",
+      "category": "astrometry",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag_uv",
+      "name_cn": "紫外视星等(FUV/NUV)",
+      "description": "GALEX远紫外(FUV)与近紫外(NUV)星等,含误差与质量标志",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag_optical",
+      "name_cn": "光学视星等",
+      "description": "Johnson u/B/V、Tycho-2 BT/VT、SDSS g/r/i等多波段光学星等,含误差、质量标志与参考来源",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag_gaia",
+      "name_cn": "Gaia G/BP/RP视星等",
+      "description": "Gaia DR2 G、BP、RP测光星等,含误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag_2mass",
+      "name_cn": "2MASS JHKs红外视星等",
+      "description": "2MASS近红外J、H、Ks星等,含误差与三字符质量标志",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag_wise",
+      "name_cn": "WISE W1-W4中红外视星等",
+      "description": "WISE/AllWISE W1(3.4um)至W4(22um)中红外星等,含误差与质量标志",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photographic_mag",
+      "name_cn": "照相星等(BJ/RF/IN)",
+      "description": "USNO-B1.0/DSS照相蓝(BJ)、红(RF)、红外(IN)星等,用于暗端测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "颜色指数",
+      "description": "V-J估计颜色(LSPM全表提供)及Gaia BP-RP等颜色指数,用于初步分类",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V/em.IR.J",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_mag_ks",
+      "name_cn": "Ks绝对星等",
+      "description": "2MASS Ks波段绝对星等,由距离换算,用于光度定标",
+      "category": "photometry",
+      "ucd": "phot.mag.abs;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "有效温度Teff(CARMENES V用BT-Settl CIFIST网格拟合VOSA SED,误差50K;Birky用Cannon数据驱动模型,精度77K)",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力logg",
+      "description": "恒星表面重力(log g),来自SED/光谱拟合,误差约0.5dex",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_luminosity",
+      "name_cn": "热光度Lbol",
+      "description": "热光度(Lsun),VOSA拟合SED积分得到,含误差;Magaudda表另给出基于Gaia距离的对数热光度",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.bol",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(Msun),由半径与Schweitzer+2019食双星半径-质量关系导出",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(Rsun),由Lbol与Teff经Stefan-Boltzmann定律导出",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_feh",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "APOGEE近红外光谱导出的金属丰度([Fe/H],Cannon模型,精度0.09dex),与ASPCAP管道的[M/H]对照",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rossby_number",
+      "name_cn": "罗斯贝数",
+      "description": "自转周期与对流翻转时间之比,三种参数化(CS11/Brun17/Wright18),活动-自转关系核心参数",
+      "category": "physical",
+      "ucd": "phys.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(CARMENES V为K5V-L8;CARMENES V/Birky给出M0-M9亚型数值或字符串;LSPM给出MK型)",
+      "category": "classification",
+      "ucd": "spect.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type_numeric",
+      "name_cn": "光谱型数值编码",
+      "description": "光谱型数值化:SpTnum=-2(K5V)、0(M0.0V)、10(L0)等,便于统计与排序",
+      "category": "classification",
+      "ucd": "spect.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_equiv_width",
+      "name_cn": "Hα等值宽度",
+      "description": "Hα发射线等值宽度(Angstrom,发射为正),色球活动核心指标,含误差",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_lbol_ratio",
+      "name_cn": "Hα与热光度比",
+      "description": "log(L_Halpha/Lbol)对数比值,归一化色球活动强度",
+      "category": "spectroscopy",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tio_cah_indices",
+      "name_cn": "TiO/CaH分子谱带指数",
+      "description": "TiO1-5、CaH2-3、CaOH分子谱带指数(Reid+1995定义),用于M矮星光谱分型与温度/光度判别",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nai_equiv_width",
+      "name_cn": "NaI等值宽度",
+      "description": "NaI吸收线等值宽度(Angstrom),恒星大气参数指示,含误差",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期",
+      "description": "测光自转周期(天):MEarth给出0.16-154.2天并带稳健性标志,Magaudda给出K2光变曲线周期",
+      "category": "variability",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_amplitude",
+      "name_cn": "自转光变半振幅",
+      "description": "自转调制光变半振幅(mag),表征星斑覆盖率",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度LX",
+      "description": "X射线光度log(LX)(erg/s或10^-7W),由XMM-Newton/Chandra观测及文献均匀化,含未探测上限标志",
+      "category": "variability",
+      "ucd": "phys.luminosity.X",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lx_lbol_ratio",
+      "name_cn": "X射线光度比log(LX/Lbol)",
+      "description": "X射线与热光度对数比值,磁活动强度标准量,含误差",
+      "category": "variability",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chromospheric_activity_flag",
+      "name_cn": "色球活动标志",
+      "description": "基于Hα的活跃/非活跃布尔标志(AFlag),并附自转周期稳健性标志(RFlag)",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_uvw_velocity",
+      "name_cn": "银河系空间速度(U,V,W)",
+      "description": "日心直角空间速度分量U(指向银心)、V、W(km/s),含误差,用于运动学年龄/星族判定",
+      "category": "environment",
+      "ucd": "phys.veloc;pos.galactic",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_cartesian_position",
+      "name_cn": "银心直角坐标(X,Y,Z)",
+      "description": "银心直角坐标位置与速度分量(kpc、km/s),由Gaia视差与自行换算,用于银河系结构研究",
+      "category": "environment",
+      "ucd": "pos.cartesian",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiple_star_flag",
+      "name_cn": "近密复合星标志",
+      "description": "布尔标志指示分离<5\"的近密多星系统,并给出物理伴星Gaia DR2编号,用于双星/活动污染剔除",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "young_star_flag",
+      "name_cn": "年轻过亮星标志",
+      "description": "布尔标志指示光度偏亮的年轻银盘/星群成员候选(36颗),与年龄估计相关",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

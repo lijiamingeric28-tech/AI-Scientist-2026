@@ -1,0 +1,3266 @@
+{
+  "report_meta": {
+    "title": "AstroQuery AI Web 层审计报告",
+    "date": "2026-08-12",
+    "report_path": "docs/WEB_AUDIT_REPORT.md",
+    "method": "8 finder + 8 verifier（默认推翻制）+ 动态探针 DP-01~12 / DF-01~04",
+    "seeds_total": 47
+  },
+  "stats": {
+    "confirmed_verdicts": 112,
+    "refuted_verdicts": 9,
+    "uncertain_verdicts": 0,
+    "seed_confirmed": 42,
+    "new_found": 70,
+    "entries_after_dedup": 60,
+    "severity": {
+      "critical": 3,
+      "high": 18,
+      "medium": 24,
+      "low": 15
+    }
+  },
+  "findings": [
+    {
+      "id": "CR-01",
+      "title": "卡 7 最终总结读取陈旧 result：所有完成任务恒报「0 个数据源、0 条记录」（主路径静默错误数据）",
+      "severity": "critical",
+      "category": "data_correctness",
+      "contract_ref": "D6-3",
+      "verdict_ids": [
+        "W04-01",
+        "W05-02",
+        "F4"
+      ],
+      "duplicate_of": [
+        "W05-02",
+        "F4"
+      ],
+      "files": [
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 158,
+          "line_end": null
+        },
+        {
+          "file": "astroquery_ai/main_graph.py",
+          "line": 158,
+          "line_end": 161
+        },
+        {
+          "file": "web/summary.py",
+          "line": 64,
+          "line_end": 85
+        },
+        {
+          "file": "web/main.py",
+          "line": 59,
+          "line_end": 61
+        }
+      ],
+      "failure_scenario": "quality_finalize 是 END 前必经节点，mode=\"end\" wrap 的 finally 在 `app.invoke` 尚未返回时同步发 `stage_completed(done)`；闭包 result 此时仍是 `{}`（首轮）或上一轮 `__interrupt__` dict，恒无 final_output → `generate_final_summary` 得空 state → n_sources=n_records=0 → LLM prompt 与降级模板均报「共提取 0 个数据源、0 条记录」。DP-04 动态实证 2/2 独立任务：message（seq 3583/4125）报 0/0，实际 final_output sources=6/records=3 与 sources=7/records=3。",
+      "evidence_chain": "web_runner.py:140 `result={}`；:175/:182 invoke 返回后才赋值；main_graph.py:159-161 finally 先于 invoke 返回触发；summary.py:64 `final = (state or {}).get(\"final_output\") or {}`；CLAUDE.md §7.7 声称已修实未修——修复只把「从 store 读快照」换成「闭包 result」，取值时刻仍早于最终赋值，:157 注释「当前最终 state」与代码事实不符。",
+      "fix_suggestion": "总结生成移到最后一次 app.invoke 返回之后（runner 尾部、发 task_completed 之前），或 wrap finally 把 fn 返回值经 event_cb 一并传出、_events 用之；删除误导注释。回归锚点：DP-04 场景红测——假图发 done 事件后断言 on_final_summary 收到含 final_output 的 state；E2E 断言 summary 数字与 records 实际数一致（与 H-16 联动）。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B2",
+        "commit": "860c89a87a1184161d26d8d4f2704a18c09890aa",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_runner_summary_receives_true_final_state"
+        ],
+        "contributors": [
+          "B2"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "CR-02",
+      "title": "SSE 事件双份应用 + 断线重连全量重放：消息/日志/澄清历史重复、已答澄清卡重弹（D1-4 断线续播未实现）",
+      "severity": "critical",
+      "category": "state_contract",
+      "contract_ref": "D1-4 / D8-3",
+      "verdict_ids": [
+        "W02-03",
+        "P0-1",
+        "P0-2",
+        "W01-01",
+        "W03-02",
+        "W01-02"
+      ],
+      "duplicate_of": [
+        "P0-1",
+        "P0-2",
+        "W01-01",
+        "W03-02",
+        "W01-02"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 172,
+          "line_end": 191
+        },
+        {
+          "file": "frontend/src/services/api.js",
+          "line": 88,
+          "line_end": 89
+        },
+        {
+          "file": "web/main.py",
+          "line": 250,
+          "line_end": 251
+        }
+      ],
+      "failure_scenario": "openTask 先 `events.forEach(applyEvent)` 重放快照全部事件（:175），随后 :188 以 after_seq=0 开 SSE → 服务端再全量回放同一事件集；message/log/clarification 无条件 append 无 seq 去重（stage 时间线有 some() 守卫不重复）；EventSource 自动重连复用同一 URL（仍 after_seq=0）→ 每次重连再次翻倍。DP-12 实证：同一 542 事件集经 /state 快照与 SSE after_seq=0 回放各交付一次；DP-11 单任务 425 条 log → 打开历史任务日志即 850 行、对话消息双份。重放 clarification 事件绕过 main.py:187-191 的 running 守卫把已答澄清重弹为 pending 卡（W01-02 证实），用户再提交 → 409。",
+      "evidence_chain": "usePipeline.js:65/72 lastSeqRef 写入后全仓库无其他读取（grep 证实）；api.js:88-89 `afterSeq=0` 默认；main.py:250-251/184；DP-12/DP-11 动态闭合。",
+      "fix_suggestion": "① 快照重放后把 lastSeqRef.current 传给 `api.openEventStream(taskId, handlers, lastSeqRef.current)`；② applyEvent 开头按 ev.seq 幂等去重；③ EventSource 无法改重连 URL → onerror 中 close 并用 lastSeq 重建流（或改 fetch ReadableStream 带参重连）；④ 按 D8-3 提供独立 HTTP 事件数组端点供历史回看，SSE 只做实时。回归锚点：DP-12 一致性断言（快照重放 + SSE 续播后无重复 seq）；重放 clarification 不置 pending。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B5",
+        "commit": "29a35f40c00ba9f5f70308d47a8cf12437d25410",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          },
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_events_history_http_endpoint",
+          "test_sse_no_gap_events_published_during_replay"
+        ],
+        "contributors": [
+          "b5-backend",
+          "b5-frontend"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "CR-03",
+      "title": "前端任务对象用 task.id 而后端/契约返回 task_id：历史回看、右侧面板、结果区全链路断链",
+      "severity": "critical",
+      "category": "interface_mismatch",
+      "contract_ref": "D8-4",
+      "verdict_ids": [
+        "W06-01"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/App.jsx",
+          "line": 31,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/components/layout/Sidebar.jsx",
+          "line": 118,
+          "line_end": 122
+        },
+        {
+          "file": "frontend/src/components/layout/DetailPanel.jsx",
+          "line": 76,
+          "line_end": 99
+        },
+        {
+          "file": "frontend/src/components/chat/ChatView.jsx",
+          "line": 171,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 195,
+          "line_end": 200
+        },
+        {
+          "file": "web/task_store.py",
+          "line": 89,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "list_tasks 返回 items 含 task_id 无 id（全仓库后端无任何 id 兼容键，仅 mock/tasks.js 用 id）→ 点侧边栏 onSelect(task.id=undefined) → selectedId=undefined → selected=null → openTask 不触发 → 历史回看死；新建任务 submitQuery(task.task_id) 直开流可跑，但 DetailPanel 守卫与 ResultTabs `if(!taskId) return` 使右侧栏与记录表对新任务也永远空白；handleRetry 传 undefined → POST /api/tasks/undefined/retry 404。",
+      "evidence_chain": "",
+      "fix_suggestion": "推荐前端统一改 task.task_id（App.jsx:31 find、Sidebar key/onSelect/onRetry、DetailPanel 守卫与五个调用、ChatView:171、usePipeline.js:195-200、App.jsx:90 handleTaskTitle 同步改）；或后端 list_tasks/get_task 补 `id=task_id` 兼容键（不推荐，与 D8-4 键名相悖）。回归锚点：侧边栏点击历史任务 → DetailPanel 拉取五接口、ResultTabs 渲染记录表。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B7",
+        "commit": "B7-手动",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B7-手动"
+        ],
+        "fail_reason": null,
+        "note": "前端全链路 task.id→task.task_id（App/Sidebar/DetailPanel/ChatView/usePipeline 切换 effect）；后端按 D8-4 不补 id 兼容键"
+      }
+    },
+    {
+      "id": "H-01",
+      "title": "失败任务状态词表断裂（后端只写 failed，前端全链路用 error）：徽标「未知」、失败筛选恒空、重试按钮永不出现",
+      "severity": "high",
+      "category": "interface_mismatch",
+      "contract_ref": "D2-4 / D8 状态映射表",
+      "verdict_ids": [
+        "W02-02",
+        "W03-05",
+        "P1-STATUS"
+      ],
+      "duplicate_of": [
+        "W03-05",
+        "P1-STATUS"
+      ],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 149,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/components/status.jsx",
+          "line": 3,
+          "line_end": 17
+        },
+        {
+          "file": "frontend/src/components/layout/Sidebar.jsx",
+          "line": 31,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/App.jsx",
+          "line": 35,
+          "line_end": null
+        },
+        {
+          "file": "web/task_store.py",
+          "line": 79,
+          "line_end": 83
+        }
+      ],
+      "failure_scenario": "全仓 grep 无任何 status='error' 写入，真实执行线程异常（executor.py:146-150 路径）时失败任务 status='failed' → STATUS_LABELS 无 failed → 灰点「未知」；失败筛选 key='error' → 前端过滤恒空且传给后端 status='error' → SQL 0 行；:156 重试条件 status==='error' 恒假 → D2-4 重试入口在 UI 永不出现。契约自身不一致：D2 状态机定 failed、D8 前端映射表定 error，两端各实现一半。",
+      "evidence_chain": "",
+      "fix_suggestion": "单点定义终态枚举——后端统一为 error（executor.py:149 同步改），或两端接受别名（status.jsx 补 failed 映射、Sidebar 失败档匹配 failed、list_tasks 对 status=error 同时匹配 failed），以契约 D8 表为准并修正 API_CONTRACT 的 D2 状态机文案。回归锚点：注入 status='failed' 任务断言徽标红色「失败」、失败档可见、重试按钮出现。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B7",
+        "commit": "B7-手动",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B7-手动"
+        ],
+        "fail_reason": null,
+        "note": "executor 异常终态统一写 error（_finish 不覆写 error）；main.py failed→error 归一；task_store error 筛选兼容 failed；status.jsx 补 failed 别名；同步 test_web_offline 两处旧词表断言"
+      }
+    },
+    {
+      "id": "H-02",
+      "title": "task_cancelled/澄清超时后 pending 不清理：输入栏永久禁用、无「澄清超时，任务已取消」提示（D10-3 违约）",
+      "severity": "high",
+      "category": "state_contract",
+      "contract_ref": "D10-3",
+      "verdict_ids": [
+        "W02-04"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 145,
+          "line_end": 151
+        },
+        {
+          "file": "frontend/src/components/chat/ChatView.jsx",
+          "line": 106,
+          "line_end": null
+        },
+        {
+          "file": "web/executor.py",
+          "line": 87,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "澄清卡挂起 15 分钟无回答 → 后端发 error(fatal,\"澄清超时（15 分钟），任务已取消\")+task_cancelled → 前端只 taskDone、pending 残留 → ChatView clarifying 恒 true → 输入框与提交永久 disabled、handleSubmit 提前 return；无任何「已取消」灰卡或提示文字（对照 useMockPipeline.js:599-600 会 patchStage cancelled + addMessage「查询已取消」未在真实管线复刻）。新建按钮（App.jsx:61）只清 selectedId 不清 pending（叠加 M-02），用户必须切换其他任务才解困。",
+      "evidence_chain": "",
+      "fix_suggestion": "① task_cancelled/task_failed/error(fatal) 分支统一 `setPending(null); pendingRef.current=null`；② fatal error 的 ev.message 追加为 AI 消息（满足 D10-3 显式提示）；③ 挂起澄清所属 stage 置 cancelled 灰态。回归锚点：构造超时事件序列断言输入框恢复可输入、提示消息存在、卡片灰态。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B6",
+        "commit": "5545e03fc2c52e10f0beb2b5e9f4a3aab05ef06b",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_b6_pending.py::test_timeout_fatal_error_precedes_cancel"
+        ],
+        "contributors": [
+          "B6-pending-lifecycle"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-03",
+      "title": "上传失败静默放行：uploadFiles 无 res.ok 检查，任务无 PDF 静默创建执行，错误原因丢失",
+      "severity": "high",
+      "category": "error_handling",
+      "contract_ref": "D4-2 / D10 错误处理总表",
+      "verdict_ids": [
+        "W02-05",
+        "W01-05"
+      ],
+      "duplicate_of": [
+        "W01-05"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/services/api.js",
+          "line": 24,
+          "line_end": 28
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 206,
+          "line_end": 210
+        },
+        {
+          "file": "web/main.py",
+          "line": 126,
+          "line_end": 128
+        }
+      ],
+      "failure_scenario": "上传 4xx/5xx（磁盘满 500、422 等）响应体 JSON {detail} 正常解析不抛错 → up.rejected undefined、pdfIds=undefined → JSON.stringify 丢弃 undefined pdf_ids → 后端默认 [] → 任务不带任何用户 PDF 静默创建执行；契约要求失败 toast + 输入框保留，此处连 toast 都没有（catch 只接 throw 路径），ChatView finally 还清空输入与文件（叠加 L-02）；若 404 返回 HTML 则 r.json() 抛 SyntaxError，报错信息完全失真。",
+      "evidence_chain": "",
+      "fix_suggestion": "uploadFiles 复用 request() 的 res.ok 检查（`if (!r.ok) { 解析 detail; throw }`）；submitQuery 上传失败时保留已选文件 chip 供重试。回归锚点：mock 上传 500/422 断言抛错、无任务创建、文件 chip 保留。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B10",
+        "commit": "B10-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_upload_rejects_disguised_extension",
+          "tests/test_web_offline.py::test_create_task_conflicting_pdf_id_409_no_orphan"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "api.js uploadFiles 补 res.ok 检查（4xx/5xx 抛错不再静默解析错误体）；submitQuery 失败冒泡 → ChatView toast + 保留输入；拒绝原因透传"
+      }
+    },
+    {
+      "id": "H-04",
+      "title": "resume 不校验真实挂起状态 + /state 把已答复澄清当 pending：陈旧答案自动消费进下一轮真实澄清",
+      "severity": "high",
+      "category": "state_contract",
+      "contract_ref": "D5-1 / D5-4",
+      "verdict_ids": [
+        "W03-03",
+        "W04-07",
+        "F15",
+        "F9"
+      ],
+      "duplicate_of": [
+        "W04-07",
+        "F15",
+        "F9"
+      ],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 164,
+          "line_end": 169
+        },
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 78,
+          "line_end": 93
+        },
+        {
+          "file": "web/main.py",
+          "line": 186,
+          "line_end": 191
+        }
+      ],
+      "failure_scenario": "slot 自 _start_locked 创建至 _finish 才 pop，任务运行全程存在 → 非等待期 POST /resume 恒 200 并 set_answer；get_answer 的 wait 在事件已置位时立即返回 → 陈旧答案被下一次真实澄清（final_confirm/human_review）未经用户确认自动消费。DP-07 动态实证：首澄清出现前 1.5s 提交 resume \"garbage\" → 200 被接受 → 无人再提交即被自动消费 → 图重入澄清子图 → 第 2 个澄清阻塞至外部 cancel；主任务 74 次幽灵 resume 全部 200。/state 对 running 任务返回最后一条澄清事件（已答复不消失）→ 重连/重开时误显挂起卡，配合重放（CR-02）注入陈旧答案。",
+      "evidence_chain": "",
+      "fix_suggestion": "① _AnswerSlot 加 waiting 标志：wait 前置 True、返回后置 False，resume 仅 waiting 且未 cancelled 时 set_answer，否则返回 False → HTTP 409；② GET /state 的 pending_clarification 改由 executor 暴露真实挂起状态；③ 前端收到 409 收起澄清卡。回归锚点：DP-07 红测——非等待期 resume 断言 409、/state 对已答复澄清返回 null。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B3",
+        "commit": "19115e1fab5ec556e2aac9b7acd93285c77f4165",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_answer_slot_waiting_semantics",
+          "test_resume_409_task_running_not_waiting",
+          "test_state_pending_clarification_null_when_not_waiting",
+          "test_state_pending_clarification",
+          "test_resume_cancel_404_nonexistent",
+          "test_cancel_does_not_overwrite_completed"
+        ],
+        "contributors": [
+          "B3"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-05",
+      "title": "CORS allow_origins=* + 全端点零认证 + 静态挂载暴露整个 output/：数据外泄、配置投毒、任意写操作",
+      "severity": "high",
+      "category": "security",
+      "contract_ref": "D10-1 / D10-2 / D9-4",
+      "verdict_ids": [
+        "W03-04",
+        "F12",
+        "W03-11"
+      ],
+      "duplicate_of": [
+        "F12",
+        "W03-11"
+      ],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 96,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "恶意网页跨源 fetch 直连 http://127.0.0.1:8000（简单请求免预检，响应带 ACAO:* 可读；PUT 预检也被 * 放行）→ 读取全部任务数据（/api/tasks、/state、/records）、/static/figures/<tid>/user_pdfs/*.pdf 与导出 json/csv（get_exports 返回全部文件名可作枚举字典）；PUT /api/config 可改写 .env（重启后 base_url 投毒把 LLM 流量导向攻击者服务器；verifier 补正：get_settings 为 lru_cache、进程内不生效，投毒仅在重启后生效）；open-file 触发 os.startfile。verifier 修正 finder 一处事实错误：uvicorn 0.51 默认 host=127.0.0.1，「局域网/公网可达」不成立，但浏览器同机跨源直连 127.0.0.1 攻击面成立（Firefox/Safari 无 PNA 缓解）。",
+      "evidence_chain": "",
+      "fix_suggestion": "① CORS 白名单（http://localhost:5173、http://127.0.0.1:5173），禁用 *；② 本地会话认证（启动 token + Host 头 + 随机端口校验）；③ 静态挂载收窄到 `StaticFiles(directory=OUTPUT_DIR/\"figures\")`（导出与 user_pdfs 不再静态可达，与 H-06 修复联动）；④ PUT /api/config 至少要求自定义 X-API-Token 头。回归锚点：跨源 fetch 断言无 ACAO:*；/static/figures/<tid>/user_pdfs/ 与导出文件 404。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B12",
+        "commit": "B12-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_figures_image_url_uses_image_path",
+          "tests/test_web_offline.py::test_open_file_rejects_path_separator",
+          "tests/test_web_offline.py::test_config_put_keeps_comments_and_sanitizes_value"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "CORS 白名单（localhost:5173 双端口，禁 *）；PUT /api/config 要求 X-Requested-With: AstroQuery（触发 preflight，跨源预检即拒）；静态挂载收窄到 output/figures/（user_pdfs 与导出文件不再无鉴权可达）；前端 putConfig 带头"
+      }
+    },
+    {
+      "id": "H-06",
+      "title": "图证 image_url 双错位恒 404：读错键（file_name 不存在）+ 缺 figures/ 路径段，D7-3/D9-4 图证功能整体静默失效",
+      "severity": "high",
+      "category": "interface_mismatch",
+      "contract_ref": "D7-3 / D9-4",
+      "verdict_ids": [
+        "W03-01",
+        "W07-04",
+        "F2"
+      ],
+      "duplicate_of": [
+        "W07-04",
+        "F2"
+      ],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 310,
+          "line_end": null
+        },
+        {
+          "file": "subgraphs/subgraph3/nodes/figure_extractor.py",
+          "line": 116,
+          "line_end": 133
+        },
+        {
+          "file": "frontend/src/components/layout/DetailPanel.jsx",
+          "line": 24,
+          "line_end": 27
+        }
+      ],
+      "failure_scenario": "双重错位——(a) 端点读不存在的 file_name 键恒得空串；(b) 挂载根是 output/，正确 URL 需多一个 figures/ 段。DP-01 动态实证 16/16 条 image_url 均以空 file_name 结尾且 HEAD 404；磁盘真实文件 2013MNRAS.430..459D_p1_f1.png 经 `/static/figures/figures/{tid}/{fname}` 构造的 URL 200；bbox 恒 None（figure_evidence 无 bbox_2d/bbox 键）。任务完成→state_json 写 figure_evidence→get_figures 返回坏 URL→前端破图，图证 Tab 全裂。",
+      "evidence_chain": "",
+      "fix_suggestion": "image_url 改直接拼接生产字段 `f\"/static/figures/{f.get('image_path','')}\"`（image_path 已含 figures/<tid>/<fname>，配合当前 output/ 挂载根）；或按 H-05 收窄挂载根到 output/figures 并把 URL 改 /static/figures/<tid>/<fname>；bbox 按契约 D7-3 定为可选字段或生产侧补取。回归锚点：DP-01——对 output/figures/<tid>/ 真实文件断言 image_url 200。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B12",
+        "commit": "B12-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_figures_image_url_uses_image_path",
+          "tests/test_web_offline.py::test_open_file_rejects_path_separator",
+          "tests/test_web_offline.py::test_config_put_keeps_comments_and_sanitizes_value"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "get_figures image_url 由生产字段 image_path 推导（basename，配合收窄挂载）；不再读不存在的 file_name（恒 404 修复）"
+      }
+    },
+    {
+      "id": "H-07",
+      "title": "澄清超时（D5-3，15 分钟）任务终态被覆写为 completed：事件流 task_cancelled 与 DB completed 直接矛盾",
+      "severity": "high",
+      "category": "state_contract",
+      "contract_ref": "D5-3 / D10-3",
+      "verdict_ids": [
+        "W04-02",
+        "F1",
+        "W08-05"
+      ],
+      "duplicate_of": [
+        "F1",
+        "W08-05"
+      ],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 86,
+          "line_end": 92
+        },
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 147,
+          "line_end": 149
+        }
+      ],
+      "failure_scenario": "15 分钟无回答 → 事件流发 fatal error + task_cancelled，DB 却经 _finish 置 completed；侧边栏绿色「已完成」与对话流「已取消」并存，三处矛盾（DB/事件流/中断残留快照）。verifier 修正：executor.py:148 引用不实（那是通用 except 分支，超时路径被 _CancelledError 内捕不命中）；DF-01 佐证状态机断裂（全库 0 条 task_cancelled、9 个 cancelled 任务 completed_at 批量 UPDATE 特征）。",
+      "evidence_chain": "",
+      "fix_suggestion": "超时分支与 cancel 对齐：get_answer 超时同步 `update_task(status=\"cancelled\", completed_at=...)`；或 _finish 前检查 slot.cancelled 为真则跳过 completed 覆写。回归锚点：W08-05 红测——注入短超时后断言 DB status=='cancelled' 且事件含 task_cancelled/error fatal。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B2",
+        "commit": "860c89a87a1184161d26d8d4f2704a18c09890aa",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_executor_clarification_timeout_marks_db_cancelled"
+        ],
+        "contributors": [
+          "B2"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-08",
+      "title": "cancel 不终止执行线程（D1-8 未兑现）+ queued 取消无任何事件通知",
+      "severity": "high",
+      "category": "state_contract",
+      "contract_ref": "D1-8",
+      "verdict_ids": [
+        "W04-03",
+        "F5"
+      ],
+      "duplicate_of": [
+        "F5"
+      ],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 171,
+          "line_end": 181
+        },
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 147,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "非澄清阶段（检索/VLM/质量管线，分钟级）取消后图照常跑至 END 并发完成事件——场景 A 浪费 LLM/网络费用且同任务双终态（DB 已取消 vs 事件流完成）；queued 分支（:177-180）只改 DB。DP-08 动态实证：queued 取消 200/status=cancelled 但 SSE 全文件 0 处 task_cancelled、流保持打开；澄清中取消事件正常送达（seq 4462）——「永远收不到」修正为「仅 queued 与计算中途成立」。",
+      "evidence_chain": "",
+      "fix_suggestion": "① 取消检查下沉到 main_graph wrap 节点边界（进入/退出节点时检查 should_cancel 并抛 _CancelledError）；② cancel 时立即 bus.emit(task_cancelled, reason='cancelled')（含 queued 分支）；③ runner 发 task_completed 前检查 should_cancel，已取消只发 task_cancelled。回归锚点：DP-08——queued 取消断言收到 task_cancelled。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B2",
+        "commit": "860c89a87a1184161d26d8d4f2704a18c09890aa",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_executor_cancel_emits_events_running_and_queued",
+          "test_main_graph_wrap_cancel_boundary",
+          "test_runner_should_cancel_skips_task_completed"
+        ],
+        "contributors": [
+          "B2"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-09",
+      "title": "取消路径（final_confirm 选 n）发 task_completed 而非 task_cancelled，且 understand 卡 stage_completed 永久缺失",
+      "severity": "high",
+      "category": "state_contract",
+      "contract_ref": "D5-5（选 n → task_cancelled 统一灰态）",
+      "verdict_ids": [
+        "W05-03",
+        "F10"
+      ],
+      "duplicate_of": [
+        "F10"
+      ],
+      "files": [
+        {
+          "file": "astroquery_ai/main_graph.py",
+          "line": 88,
+          "line_end": 90
+        },
+        {
+          "file": "subgraphs/subgraph1/nodes/final_confirm.py",
+          "line": 137,
+          "line_end": 141
+        },
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 155,
+          "line_end": 160
+        },
+        {
+          "file": "web/executor.py",
+          "line": 160,
+          "line_end": 161
+        }
+      ],
+      "failure_scenario": "选 n → 路由 aggregation → quality(空数据 skipped) → quality_finalize wrap finally 无条件发 stage_completed(done) → runner 发 message(ai 总结)+task_completed；全链无 task_cancelled、DB 置 completed；understand 的 stage_started 已发（mode=\"start\"）但 stage_completed 永不发 → 卡 1 永久「进行中」。DP-06 实证 started/completed 不配对（取消任务 started=1/completed=0，1 次澄清 started=2/completed=1 的重复 start 亦实证）。",
+      "evidence_chain": "",
+      "fix_suggestion": "① runner 循环退出后检查 result.clarification_status==\"cancelled\" → 发 task_cancelled 而非 task_completed；② _finish 对 cancelled 不覆写（与 H-07 同机制）；③ 取消/非天文分支补发 understand stage_completed(status=\"cancelled\")；④ wrap 内对已启动未完成的 stage_id 去重（抑制澄清重入的重复 stage_started）。回归锚点：选 n 断言事件流含 task_cancelled 且无 task_completed、卡 1 灰态。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B2",
+        "commit": "860c89a87a1184161d26d8d4f2704a18c09890aa",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_runner_user_cancel_emits_task_cancelled_not_completed",
+          "test_executor_cancelled_result_db_final_state",
+          "test_main_graph_stage_started_dedup_on_reentry"
+        ],
+        "contributors": [
+          "B2"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-10",
+      "title": "HITL 澄清 question 恒空：human_review 与 final_confirm_modify 的 interrupt payload 只有 text 键，Web 端人工审核卡无任何指引",
+      "severity": "high",
+      "category": "interface_mismatch",
+      "contract_ref": "D3-2（结构化 {cl_type,title,fields,question}）",
+      "verdict_ids": [
+        "W05-04",
+        "F6"
+      ],
+      "duplicate_of": [
+        "F6"
+      ],
+      "files": [
+        {
+          "file": "subgraphs/data_human_review/human_review_agent.py",
+          "line": 151,
+          "line_end": null
+        },
+        {
+          "file": "subgraphs/subgraph1/nodes/final_confirm.py",
+          "line": 118,
+          "line_end": 122
+        },
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 113,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/components/chat/ClarificationCard.jsx",
+          "line": 54,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "web_runner 只读 question 键，但 6 个 human_review interrupt 与 final_confirm_modify 均无该键（text 被丢弃）→ 澄清事件 question=\"\"；前端 human_review 无 fields/无 quickButtons/无 options/无 question → 只剩 title+空输入框，用户无从得知应输入 [1]提交裁决/[2]送回评估/[3]取消 或裁决 1-5，HITL 人工审核在 Web 端实际不可用。DP-05 实证 3 任务 5 个真实澄清 question 全空（fields 带值）；DF-01 10/10 clarification question 为空。",
+      "evidence_chain": "",
+      "fix_suggestion": "生产端 interrupt payload 补 question 键（取 text 指引去分隔符）；web_runner 兜底 `question = raw.get(\"question\") or raw.get(\"text\", \"\")`；透传 options 并在 CLARIFICATION_QUICK_BUTTONS 补 human_review 类型。回归锚点：DP-05——构造 human_review interrupt 断言澄清事件 question 非空、前端渲染快捷选项。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B8",
+        "commit": "B8-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b8_telemetry.py",
+          "tests/test_b8_quality_telemetry.py"
+        ],
+        "contributors": [
+          "b8-subgraph",
+          "b8-quality"
+        ],
+        "fail_reason": null,
+        "note": "生产端补 question 键（human_review 4 类 interrupt + final_confirm_modify）；web_runner question 兜底取 text；options 透传 + 前端按 options 渲染按钮"
+      }
+    },
+    {
+      "id": "H-11",
+      "title": "VCR 回放不校验请求 body（match_on 默认不含 body）：prompt 与录制不同时静默返回错位响应",
+      "severity": "high",
+      "category": "logic_bug",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-06"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 104,
+          "line_end": 107
+        },
+        {
+          "file": "tests/test_e2e_recorded.py",
+          "line": 34,
+          "line_end": 38
+        },
+        {
+          "file": "vcr/config.py",
+          "line": 38,
+          "line_end": null
+        },
+        {
+          "file": "web/summary.py",
+          "line": 46,
+          "line_end": 59
+        }
+      ],
+      "failure_scenario": "所有 LLM 调用为 POST 同 URL（/chat/completions），回放按「同 URL 首个未播放」顺序交付录制响应，与当前请求内容无关 → 查询串/实体/数值错位、静默错误数据。项目自证：CLAUDE.md §5.1「查询串 1 个/6 篇/0 条/bbox 全失败」即此机制；summary.py 的防透传校验仅兜住卡 7 总结。",
+      "evidence_chain": "",
+      "fix_suggestion": "LLM 回放专用 match_on 增 \"body\"（POST 按请求体区分 prompt；GET/下载请求 body 为空不受影响）；回放前校验 cassette 记录的 query/首条 prompt 与当前查询一致，不一致拒绝回放。回归锚点：修改 prompt 后回放断言不命中旧交互。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_vcr_match_on_includes_body_and_replays_per_body",
+          "test_validate_replay_query_unit",
+          "test_executor_replay_query_mismatch_fails_task",
+          "test_executor_replay_query_match_runs"
+        ],
+        "contributors": [
+          "B4"
+        ],
+        "fail_reason": null,
+        "note": "；验收回归修复：smart_body matcher（chat 严格 body + VLM 宽松，防 VLM 动态 prompt 回放不命中）"
+      }
+    },
+    {
+      "id": "H-12",
+      "title": "vcrpy 8.3.0 无任何线程锁：15 并发 VLM 回放 play_counts 检查-自增非原子 → 响应错配/越界抛异常",
+      "severity": "high",
+      "category": "logic_bug",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-03",
+        "F18"
+      ],
+      "duplicate_of": [
+        "F18"
+      ],
+      "files": [
+        {
+          "file": "tests/cassettes/m13_query.yaml",
+          "line": 273903,
+          "line_end": 280409
+        },
+        {
+          "file": "subgraphs/subgraph3/nodes/vlm_extractor.py",
+          "line": 86,
+          "line_end": null
+        },
+        {
+          "file": "vcr/cassette.py",
+          "line": 258,
+          "line_end": 268
+        }
+      ],
+      "failure_scenario": "回放期两线程可同时通过 `play_counts[index]==0` 检查取走同一记录（每个请求得到另一篇论文的响应），其余记录被跳过；54 次消费完后任何重试 → write_protected → CannotOverwriteExistingCassetteException → vlm_extractor 捕获记 extraction_failed（静默）。F18（回放按完成序消费与录制请求序不一致的错位机制）与 D8 种子同家族并入本条目（verifier 修正：错位「必然发生」过强，但贡献性成立）。",
+      "evidence_chain": "",
+      "fix_suggestion": "对 Cassette 实例（或 executor 级）加 RLock 串行化 play_response 检查-自增；回放模式 VLM max_workers 降为 1；match_on 加 body 不能防同 URL 竞态，锁才是根治；录制端对并发同 URL 请求串行化。回归锚点：多线程并发回放断言无重复消费 seq。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_guard_cassette_play_serializes_concurrent_consumption",
+          "test_replay_mode_vlm_max_workers_one"
+        ],
+        "contributors": [
+          "B4"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-13",
+      "title": "tests/cassettes/m13_query.yaml 明文记录真实 API Bearer 密钥且未 .gitignore：提交/分发即泄露",
+      "severity": "high",
+      "category": "security",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-05"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "tests/cassettes/m13_query.yaml",
+          "line": 22,
+          "line_end": 23
+        },
+        {
+          "file": "tests/test_e2e_recorded.py",
+          "line": 10,
+          "line_end": 11
+        }
+      ],
+      "failure_scenario": "141 条交互请求头均含明文 Bearer（录制期真实 200 调用，为有效工作空间级凭证）；58MB cassette 作为赛题交付物提交/打包/分发即外泄，任何人可冒用计费 API 与工作空间资源。密钥有效性未在本轮复测（禁止网络），但来源为真实 200 调用。",
+      "evidence_chain": "",
+      "fix_suggestion": ".gitignore 增 `tests/cassettes/*.yaml`；录制用 `filter_headers=[('authorization', None)]` + filter_query_parameters 脱敏；立即轮换已泄露的 MaaS/DeepSeek 密钥。回归锚点：grep cassette 断言无 authorization 键。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_cassette_contains_no_secrets"
+        ],
+        "contributors": [
+          "B4-H13-H16"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-14",
+      "title": "LLM_RECORD_MODE 默认 'once'：cassette 缺失时 vcrpy 静默降级为真实录制（真实计费），日志仍谎报 \"(replay)\"",
+      "severity": "high",
+      "category": "config_drift",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-07"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 27,
+          "line_end": null
+        },
+        {
+          "file": "vcr/cassette.py",
+          "line": 360,
+          "line_end": 369
+        },
+        {
+          "file": "stubs/__init__.py",
+          "line": 287,
+          "line_end": 310
+        }
+      ],
+      "failure_scenario": "once 模式写保护仅当文件存在；LLM_CASSETTE 拼错/未录制/换机器 → 全任务真实调用真实 .env 密钥（计费、结果与录制不同），退出时 _save 全量重写 58MB；日志「VCR cassette loaded: 0 interactions (replay)」造成回放已生效假象。回放（离线）保证完全依赖「文件存在」这一隐性前提。",
+      "evidence_chain": "",
+      "fix_suggestion": "默认值改 'none'（未匹配即抛错，显式录制才用 all/once）；启动校验：设置 LLM_CASSETTE 但文件不存在 → 启动直接报错退出；日志同时打印 mode 与 interactions 数。回归锚点：cassette 缺失时断言启动失败而非发请求。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_default_record_mode_is_none",
+          "test_validate_cassette_missing_mode_none_raises",
+          "test_executor_missing_cassette_fails_fast",
+          "test_startup_selftest_noop_failfast_and_probe"
+        ],
+        "contributors": [
+          "B4"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-15",
+      "title": "pyproject.toml/requirements 未声明 web 栈运行时依赖：全新环境按文档安装后装不起来",
+      "severity": "high",
+      "category": "config_drift",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-08",
+        "W08-06"
+      ],
+      "duplicate_of": [
+        "W08-06"
+      ],
+      "files": [
+        {
+          "file": "pyproject.toml",
+          "line": 10,
+          "line_end": 34
+        },
+        {
+          "file": "web/main.py",
+          "line": 19,
+          "line_end": 24
+        },
+        {
+          "file": "web/executor.py",
+          "line": 101,
+          "line_end": null
+        },
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 22,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "全新环境按 README `pip install -r astroquery_ai/requirements.txt` 后启动后端在 web_runner 导入即 ModuleNotFoundError（回放模式再叠加 vcrpy 缺失任务 ImportError → failed）；pytest 收集即挂。当前环境能跑是 site-packages 偶然完备，非声明保证。verifier 修正：requires-python \">=3.10\" 与 log_bridge 不存在版本错配（该部分 finder 自否，同意）。",
+      "evidence_chain": "",
+      "fix_suggestion": "dependencies 增 fastapi>=0.110、uvicorn>=0.25、sse-starlette>=1.6、langgraph-checkpoint-sqlite>=2.0，vcrpy 放 dev extra；同步 README。回归锚点：干净 venv 按文档安装后 import web.main 成功。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B13",
+        "commit": "B13-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "pyproject.toml dependencies 补 fastapi/uvicorn/sse-starlette/langgraph-checkpoint-sqlite，vcrpy 入 dev extra；README 同步安装说明"
+      }
+    },
+    {
+      "id": "H-16",
+      "title": "test_e2e_recorded 断言仅存在性：VCR 错位数据（项目自述头号已知问题）下全绿；bus_events 收集后从未断言",
+      "severity": "high",
+      "category": "test_gap",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W08-07",
+        "T2-E2E"
+      ],
+      "duplicate_of": [
+        "T2-E2E"
+      ],
+      "files": [
+        {
+          "file": "tests/test_e2e_recorded.py",
+          "line": 73,
+          "line_end": 85
+        }
+      ],
+      "failure_scenario": "零内容/零数值/零顺序断言 → 查询串错、数值荒诞、0 条记录全部放行（'records' 键存在不等于非空/正确）；仅澄清次数>2 时才以 StopIteration 显式失败；唯一自动化 E2E 防线对项目自述头号已知问题完全无感。",
+      "evidence_chain": "",
+      "fix_suggestion": "断言锚点：① final[\"target_entity\"]==\"M13\" 且 requested_properties 含 距离/年龄/金属丰度；② records 非空且每条 field_name/field_value/field_unit 非空；③ 7 卡 stage_started 全集与 stage_completed 配对；④ 事件 seq 严格单调递增；⑤ 删除 bus_events 死代码。回归锚点：注入错位数据断言测试失败。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_m13_contract_accepts_valid_data",
+          "test_m13_contract_rejects_mismatched_data"
+        ],
+        "contributors": [
+          "B4-H13-H16"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-17",
+      "title": "openTask 任务切换竞态：快照乱序返回跨任务串台 + SSE 流句柄被覆写泄漏",
+      "severity": "high",
+      "category": "error_handling",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W01-04",
+        "P2-SWITCH"
+      ],
+      "duplicate_of": [
+        "P2-SWITCH"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 158,
+          "line_end": 192
+        },
+        {
+          "file": "api.js",
+          "line": 96,
+          "line_end": 99
+        }
+      ],
+      "failure_scenario": "快速 A→B 切换且 A/B 快照响应乱序返回时，后 resolve 的旧任务事件被应用到当前（B）视图（applyEvent 无 taskId 归属校验）；旧流句柄被覆写永不 close（卸载只关 esRef.current），其 onEvent 继续注入 → B 视图混入 A 事件、B 的连接与服务端订阅残留。DP 数据规模（542 事件 JSON）放大 getState 延迟窗口。",
+      "evidence_chain": "",
+      "fix_suggestion": "await 后加 `if (taskIdRef.current !== taskId) return`；openEventStream 返回值先存局部变量，`taskIdRef.current===taskId` 才赋 esRef，否则立即 es.close()；applyEvent 可选带 taskId 校验。回归锚点：模拟乱序快照响应断言无跨任务事件、无双连接。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B5",
+        "commit": "29a35f40c00ba9f5f70308d47a8cf12437d25410",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "b5-frontend"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "H-18",
+      "title": "submitAnswer 乐观清 pending 无回滚：resume 失败（网络/409）后澄清卡消失、无重试入口、后端挂到 15 分钟超时",
+      "severity": "high",
+      "category": "error_handling",
+      "contract_ref": "D5-1 / D10",
+      "verdict_ids": [
+        "W01-03",
+        "P2-409"
+      ],
+      "duplicate_of": [
+        "P2-409"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 226,
+          "line_end": 234
+        },
+        {
+          "file": "frontend/src/components/chat/ClarificationCard.jsx",
+          "line": 21,
+          "line_end": 24
+        },
+        {
+          "file": "ChatView.jsx",
+          "line": 134,
+          "line_end": 135
+        }
+      ],
+      "failure_scenario": "resume 请求失败（网络抖动）→ 答案丢失、卡片已消失、历史已记答案、无重试入口 → 后端仍等待 → 15 分钟超时取消，前后端状态不一致。verifier 推翻种子「双击双发」机制（pendingRef 在 await 前同步置空，第二击必读 null 走 :219 早退），但失败回滚缺陷独立成立（DP-07 亦证 stale resume 多为 200，409 罕见但网络错误可达）。",
+      "evidence_chain": "",
+      "fix_suggestion": "await 成功后再清 pending（失败恢复 `pendingRef.current=cl; setPending(cl)` 并 toast 允许重答）；ClarificationCard 侧 catch 显示错误；加 submitting 标志防重入。回归锚点：mock resume reject 断言卡恢复可重试、历史未记答案。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B6",
+        "commit": "5545e03fc2c52e10f0beb2b5e9f4a3aab05ef06b",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B6-pending-lifecycle"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-01",
+      "title": "SettingsDialog 配置状态大小写不匹配：'已配置' 徽标与计数恒不命中",
+      "severity": "medium",
+      "category": "interface_mismatch",
+      "contract_ref": "D10-2",
+      "verdict_ids": [
+        "W02-01",
+        "P3-CONFIG"
+      ],
+      "duplicate_of": [
+        "P3-CONFIG"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/components/settings/SettingsDialog.jsx",
+          "line": 72,
+          "line_end": 85
+        },
+        {
+          "file": "web/main.py",
+          "line": 418,
+          "line_end": 419
+        }
+      ],
+      "failure_scenario": "GET /api/config 返回大写键（DASHSCOPE_API_KEY…），KEY_MAP 值为小写（dashscope_api_key…）→ `configuredKeys.includes(envKey(f.key))` 大写列表 vs 小写查询恒 false → 「已配置」徽标永不显示、计数恒「0/6 项已填 · 必填 0/2」，即使 .env 已配置 6 项（后端 PUT 映射为小写→大写，说明 GET 侧键应为大写）。仅展示误导，无数据损坏。",
+      "evidence_chain": "",
+      "fix_suggestion": "① isConfigured 改大写比对 `configuredKeys.includes(f.key.toUpperCase())`；② 或 KEY_MAP 保留两套键，比对 `configuredKeys.includes(KEY_MAP[f.key].toUpperCase())`。回归锚点：后端注入大写 configured 断言徽标出现与计数正确。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B12",
+        "commit": "B12-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_figures_image_url_uses_image_path",
+          "tests/test_web_offline.py::test_open_file_rejects_path_separator",
+          "tests/test_web_offline.py::test_config_put_keeps_comments_and_sanitizes_value"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "SettingsDialog isConfigured 改大写比对（KEY_MAP[f.key].toUpperCase() 匹配后端大写键）"
+      }
+    },
+    {
+      "id": "M-02",
+      "title": "「新建提取任务」只清 selectedId：主区旧对话/SSE 流与右侧面板旧数据全部残留",
+      "severity": "medium",
+      "category": "state_contract",
+      "contract_ref": "WEB_DESIGN-C1（点击新建清空主区、聚焦输入框）",
+      "verdict_ids": [
+        "W02-06",
+        "P2-NEW"
+      ],
+      "duplicate_of": [
+        "P2-NEW"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/App.jsx",
+          "line": 61,
+          "line_end": 63
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 195,
+          "line_end": 200
+        },
+        {
+          "file": "frontend/src/components/layout/DetailPanel.jsx",
+          "line": 75,
+          "line_end": 99
+        }
+      ],
+      "failure_scenario": "点「新建」后主区仍是上一任务全部卡片且 SSE 继续实时跳变（事件继续 applyEvent 重渲染）；右侧面板显示旧任务数据（概览状态为 '—'）；旧任务未完成时输入栏保持禁用（叠加 H-02/W02-04 场景）。直到用户提交新查询（submitQuery→openTask）才重置。",
+      "evidence_chain": "",
+      "fix_suggestion": "usePipeline 暴露 reset()（task 为 null 时清空 messages/stages/timeline/pending/logs 并 esRef.current?.close()）；DetailPanel 在 task null 时清空各 state。回归锚点：handleNew 后断言消息/卡片/日志清空、SSE 关闭。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B7",
+        "commit": "B7-手动",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B7-手动"
+        ],
+        "fail_reason": null,
+        "note": "usePipeline 新增 reset()（task 变 null 清空全部状态+关 SSE）；DetailPanel task null 清空各 state"
+      }
+    },
+    {
+      "id": "M-03",
+      "title": "日志抽屉无节流全量重渲染 + 计数分母用 mock 常量：真实模式 400+ 行每事件整表重建",
+      "severity": "medium",
+      "category": "performance",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W02-09",
+        "P3-LOG"
+      ],
+      "duplicate_of": [
+        "P3-LOG"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/components/log/LogDrawer.jsx",
+          "line": 24,
+          "line_end": 41
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 140,
+          "line_end": 141
+        }
+      ],
+      "failure_scenario": "真实模式下 liveLogs=[] 亦为 truthy → mock 回退永不启用，分母必为 mock 常量 38 → 显示「412/38 行」式荒谬值；每条 log 事件触发全数组重建+每行 4 span 重渲染，SSE 每 2-3 秒洪泛（DP-11 425 条/任务）时 UI 掉帧；叠加 CR-02 双份应用后行数再翻倍。",
+      "evidence_chain": "",
+      "fix_suggestion": "① logs 容量上限（500 条环形截断）；② 行数>200 时 requestAnimationFrame 合并或视口截断渲染；③ 计数分母改 `liveLogs ? lines.length : MOCK_LOGS.length`（或去分母）。回归锚点：注入 500+ log 断言渲染行数与交互帧率。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B9",
+        "commit": "B9-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b9_telemetry.py",
+          "tests/test_web_offline.py"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "logs 容量 500 环形截断；LogDrawer 仅渲染最近 200 行；计数分母真实行数（liveLogs ? lines : MOCK）"
+      }
+    },
+    {
+      "id": "M-04",
+      "title": "卡 1 完成态 output 与卡头摘要未接线：snap.state 被丢弃、summary 恒走兜底文案（D6-1/D6-5 悬空）",
+      "severity": "medium",
+      "category": "dead_code",
+      "contract_ref": "D6-1 / D6-5",
+      "verdict_ids": [
+        "W02-13",
+        "P1-SNAP",
+        "P1-SUMM"
+      ],
+      "duplicate_of": [
+        "P1-SNAP",
+        "P1-SUMM"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 173,
+          "line_end": 175
+        },
+        {
+          "file": "frontend/src/components/chat/StageCard.jsx",
+          "line": 416,
+          "line_end": 423
+        },
+        {
+          "file": "frontend/src/mock/pipeline.js",
+          "line": 271,
+          "line_end": null
+        },
+        {
+          "file": "web/main.py",
+          "line": 174,
+          "line_end": 192
+        }
+      ],
+      "failure_scenario": "openTask 从不消费 snap.state → 卡 1 完成态三项产出空白（UnderstandOutput 死代码）、所有卡头摘要退化为「已完成/进行中…」，与 mock 演示行为不一致。CLAUDE.md §5.3 自认已知缺口，但契约仍悬空。",
+      "evidence_chain": "",
+      "fix_suggestion": "openTask 从 snap.state 读取各 stage output 映射 stage.output（snake→camel：targetEntity/simbad{mainId,otype,ra,dec}/properties，property_spec 键名需与后端 aggregator 核对）；卡头摘要按 D6-5 用 output/step_progress data 拼装。回归锚点：快照含 output 断言卡 1 渲染三项产出与卡头摘要。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B5",
+        "commit": "29a35f40c00ba9f5f70308d47a8cf12437d25410",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "b5-frontend"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-05",
+      "title": "pendingRef 缺 stageId：澄清历史 answer 回填恒失败",
+      "severity": "medium",
+      "category": "logic_bug",
+      "contract_ref": "D5-4",
+      "verdict_ids": [
+        "W02-11",
+        "W01-06"
+      ],
+      "duplicate_of": [
+        "W01-06"
+      ],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 128,
+          "line_end": 129
+        },
+        {
+          "file": "frontend/src/components/chat/StageCard.jsx",
+          "line": 390,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "live 澄清（SSE 到达，最常见路径）必走 :128 分支 → 回填永不命中 → 澄清历史末条 answer 恒 '' → 每轮都显示「（跳过）」（多轮澄清 D5-7 历史完全失真）。仅快照恢复路径行为正确。",
+      "evidence_chain": "",
+      "fix_suggestion": "`pendingRef.current = { ...cl, stageId: ev.stage_id }`（与 setPending 同构）。回归锚点：live 澄清提交后断言历史 answer 回填。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B6",
+        "commit": "5545e03fc2c52e10f0beb2b5e9f4a3aab05ef06b",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B6-pending-lifecycle"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-06",
+      "title": "SSE 订阅队列满即丢 + 重放/订阅间隙丢失窗口 + 流无结束信号 + 跨线程 put_nowait（事件流缺口家族）",
+      "severity": "medium",
+      "category": "error_handling",
+      "contract_ref": "D3-3 / D1-4",
+      "verdict_ids": [
+        "W03-10",
+        "W04-11",
+        "W04-04",
+        "W03-13",
+        "F14",
+        "F8"
+      ],
+      "duplicate_of": [
+        "W04-11",
+        "W04-04",
+        "W03-13",
+        "F14",
+        "F8"
+      ],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 253,
+          "line_end": null
+        },
+        {
+          "file": "web/event_bus.py",
+          "line": 35,
+          "line_end": 38
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 65,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/services/api.js",
+          "line": 88,
+          "line_end": 89
+        }
+      ],
+      "failure_scenario": "①队列满（200）即丢事件，log 洪泛（DP-11 425 条/任务，76% 为 log）突发时可达；丢弃为全局序不保证先丢 log → stage_completed/clarification 可被丢；前端无 gap 检测，仅在重开任务全量重放后恢复；②「DB 重放→bus.subscribe」之间发布的事件对该连接永久缺失（微秒级结构性窗口，任务运行中随时可 publish）；③任务完成后流无限保持（DP-10 实证 15s 收 162KB 全量重放+持续 ping，每已完成任务永占连接与订阅队列，重连恒全量重放）；④执行器线程跨线程 put_nowait 非线程安全（Python 3.14.5 实测唤醒正常、lost-wakeup 理论竞态未观测，低风险子项）。",
+      "evidence_chain": "",
+      "fix_suggestion": "①分级丢弃——stage_*/clarification/task_*/message 不丢，仅允许丢 log/step_progress 并记录 dropped_seq 范围；②先 subscribe 再重放 + 重放后补 get_events(last_seq) 去重（或 EventBus 维护 per-task 已发布游标）；③任务终态后关闭 SSE 流或 TTL 空闲关闭；④重连携带 lastSeqRef 走 after_seq 续播；⑤发布侧 loop.call_soon_threadsafe 包装。回归锚点：队列满断言关键事件不丢；重放间隙事件补发断言；任务完成后流关闭断言。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B5",
+        "commit": "29a35f40c00ba9f5f70308d47a8cf12437d25410",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          },
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_sse_closes_after_terminal_event",
+          "test_sse_done_ttl_delivers_trailing_then_closes",
+          "test_event_bus_dropped_range_and_critical_kept",
+          "test_event_bus_publish_threadsafe_from_worker_thread"
+        ],
+        "contributors": [
+          "b5-backend",
+          "b5-frontend"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-07",
+      "title": "测试 fixture 单例未重绑 emitter/log_bridge：离线测试向真实 tasks.db 写孤儿事件",
+      "severity": "medium",
+      "category": "test_gap",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W04-05",
+        "W08-02",
+        "F17"
+      ],
+      "duplicate_of": [
+        "W08-02",
+        "F17"
+      ],
+      "files": [
+        {
+          "file": "tests/test_web_offline.py",
+          "line": 73,
+          "line_end": 88
+        },
+        {
+          "file": "web/main.py",
+          "line": 72,
+          "line_end": 74
+        },
+        {
+          "file": "web/log_bridge.py",
+          "line": 42,
+          "line_end": 48
+        },
+        {
+          "file": "web/executor.py",
+          "line": 98,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "测试任务线程内 main_graph 的 logger.info 与埋点经旧通道写入真实 web/data/tasks.db（task_id 在真实 tasks 表不存在），跨测试累积污染；import web.main 还启动原始 executor daemon 线程（_loop 永久阻塞），每 client 测试再建一线程；污染面含 log 事件 + subgraph 埋点 emit_progress。",
+      "evidence_chain": "",
+      "fix_suggestion": "fixture 重绑 events._emit_fn 与 log_bridge handler 到新 bus（或 monkeypatch 路径后重新 import web.main）；test_create_task_moves_pdf 同时 monkeypatch create_main_graph；executor 提供 stop()/join 或 session 级单例。回归锚点：测试后断言真实 DB 事件数不变。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B1",
+        "commit": "53a405c905845ef3660b5f49e0f63dbe8dfe7595",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_offline_tests_do_not_pollute_real_db",
+          "test_create_task_moves_pdf（增强：真实目录双端断言+等待收尾）"
+        ],
+        "contributors": [
+          "B1"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-08",
+      "title": "list_tasks 整行返回：state_json/pdf_paths 随列表膨胀且形状与 get_task 不一致",
+      "severity": "medium",
+      "category": "performance",
+      "contract_ref": "D8-4",
+      "verdict_ids": [
+        "W03-06",
+        "W04-09",
+        "F11"
+      ],
+      "duplicate_of": [
+        "W04-09",
+        "F11"
+      ],
+      "files": [
+        {
+          "file": "web/task_store.py",
+          "line": 80,
+          "line_end": null
+        },
+        {
+          "file": "web/main.py",
+          "line": 161,
+          "line_end": null
+        },
+        {
+          "file": "web/executor.py",
+          "line": 135,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "DB 实测 3 个 completed 任务 state_json 各 379/469/459KB（合计 1.3MB）；limit=50 时列表响应 ~20-25MB（verifier 修正规模：非「数十 MB/单响应」但达该量级趋势）；list 侧 pdf_paths 为 JSON 字符串而 get_task 为列表，同字段两种形状；state_json 无任何消费者。",
+      "evidence_chain": "",
+      "fix_suggestion": "list_tasks 显式列 SELECT（task_id, query, title, status, created_at, completed_at），不取 state_json/pdf_paths；get_task 详情需要 state 走 /state 端点；或复用 get_task 解析统一形状。回归锚点：断言列表响应无 state_json 键且体积受限。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B7",
+        "commit": "B7-手动",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B7-手动"
+        ],
+        "fail_reason": null,
+        "note": "list_tasks 显式列 SELECT（不返回 state_json/pdf_paths）；get_task 保持完整"
+      }
+    },
+    {
+      "id": "M-09",
+      "title": "upload 先整文件读入内存再判 50MB：超大上传先受损后拒绝（D4-1 框架层限制未落地）",
+      "severity": "medium",
+      "category": "resource_leak",
+      "contract_ref": "D4-1（明确「需修改 Web 框架底层限制」）",
+      "verdict_ids": [
+        "W03-07"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 108,
+          "line_end": 111
+        }
+      ],
+      "failure_scenario": "Starlette 1MB 以上落盘 SpooledTemporaryFile 后 read 全量回内存 → 2GB 上传内存峰值≈文件大小 → 32 位进程/低内存机 OOM；uvicorn 0.51 无请求体上限参数、无框架层限制被配置；多文件为逐文件处理，峰值≈单文件而非并发叠加（verifier 修正）。",
+      "evidence_chain": "",
+      "fix_suggestion": "分块读取并在累计超过 MAX_UPLOAD_BYTES 时立即截断拒绝（`while chunk := await f.read(1MB)`），不再整块读入；或配置 uvicorn max request body / 中间件按 Content-Length+流式累计提前 413。回归锚点：monkeypatch MAX 后传超限文件断言 rejected 且内存峰值受限。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B10",
+        "commit": "B10-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_upload_rejects_disguised_extension",
+          "tests/test_web_offline.py::test_create_task_conflicting_pdf_id_409_no_orphan"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "upload 分块读取（1MB/块）累计超 MAX_UPLOAD_BYTES 立即截断拒绝——不再整文件读入内存（OOM 修复）"
+      }
+    },
+    {
+      "id": "M-10",
+      "title": "create_task 校验与 Move 非原子：并发同 pdf_id 致 move 抛异常 → 500 + 永久 queued 孤儿任务",
+      "severity": "medium",
+      "category": "error_handling",
+      "contract_ref": "D4-6 / D4-3",
+      "verdict_ids": [
+        "W03-08"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 139,
+          "line_end": 155
+        }
+      ],
+      "failure_scenario": "两并发请求同 pdf_id 均过校验 → 第二个 move 抛 FileNotFoundError → 未捕获 500 → 该任务行从未 submit 永久 status=queued；重启无恢复逻辑（_loop 只消费显式 submit 入队）。verifier 修正 finder 描述顺序（实际校验 :139-142 在 create_task :143 之前），但 TOCTOU 竞态与孤儿任务结论独立成立。",
+      "evidence_chain": "",
+      "fix_suggestion": "move 循环逐文件 try/except，失败即回滚（删已建任务行或置 status=cancelled 记录原因）并返回 400/409 说明 pdf 已被占用；pdf_ids 去重；上传阶段把文件与唯一 pid 绑定。回归锚点：并发同 pdf_id 断言 400/409 且无 queued 孤儿行。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B10",
+        "commit": "B10-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_upload_rejects_disguised_extension",
+          "tests/test_web_offline.py::test_create_task_conflicting_pdf_id_409_no_orphan"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "create_task move 循环逐文件 try/except + pdf_ids 去重；失败回滚任务行置 cancelled + 409（不再 500 + 永久 queued 孤儿）"
+      }
+    },
+    {
+      "id": "M-11",
+      "title": "VCR 启动自测在模块 import 期执行：无 fail-fast、日志洪泛放大（211MB/5 任务）",
+      "severity": "medium",
+      "category": "build_deploy",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W03-09",
+        "F13"
+      ],
+      "duplicate_of": [
+        "F13"
+      ],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 80,
+          "line_end": 93
+        },
+        {
+          "file": "web/executor.py",
+          "line": 26,
+          "line_end": 27
+        }
+      ],
+      "failure_scenario": "cassette 缺失时自测向真实 api.deepseek.com 发请求（最长阻塞导入 15s，仅 except warning）；DP-09 实证 cassette 存在时 play_count=1 零网络调用但无 fail-fast；启动 141 行 'Appending' 日志（~9.6MB），5 任务后 /tmp/backend_audit.log 达 211MB/3938 行；LLM_CASSETTE 拼错路径时自测与任务静默真实调用（与 H-14 叠加）。",
+      "evidence_chain": "",
+      "fix_suggestion": "自测移入 @app.on_event('startup') 或诊断开关下执行；cassette 缺失先 _cp.exists() 检查跳过而非进入录制；timeout 降 3s 不阻塞启动路径；'Appending' 日志降 debug 级。回归锚点：无 cassette 时 import 不产生网络请求、日志可控。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_startup_selftest_noop_failfast_and_probe",
+          "test_appending_log_downgraded_to_debug"
+        ],
+        "contributors": [
+          "B4"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-12",
+      "title": "执行器线程内同步 LLM 阻塞完成事件与排队任务（最坏 60+60 秒）",
+      "severity": "medium",
+      "category": "performance",
+      "contract_ref": "D8-2",
+      "verdict_ids": [
+        "W04-10"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "astroquery_ai/web_runner.py",
+          "line": 155,
+          "line_end": 160
+        },
+        {
+          "file": "web/executor.py",
+          "line": 139,
+          "line_end": 145
+        },
+        {
+          "file": "web/summary.py",
+          "line": 38,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "LLM 慢或不可达（悬挂至 60s 超时）时任务已完成但前端 60s 收不到 message/task_completed，排队任务延迟最多 60s 才启动（标题再 60s）。verifier 补正：stage_completed(done) 于 :154 在总结前已 publish，实际延迟的是 ai message、task_completed 与队列释放。",
+      "evidence_chain": "",
+      "fix_suggestion": "先发 task_completed 再异步生成总结/标题（D8-2 已声明 task_title_ready 异步语义）；标题生成移出执行器线程（_finish 不等待）；或缩短 LLM 超时。回归锚点：慢 LLM 断言 task_completed 先于总结消息到达、排队任务及时启动。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B2",
+        "commit": "860c89a87a1184161d26d8d4f2704a18c09890aa",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_runner_task_completed_before_slow_summary",
+          "test_executor_title_async_does_not_block_finish"
+        ],
+        "contributors": [
+          "B2"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-13",
+      "title": "flow_started/flow_completed 无发送方 + clean/deliver 卡永久 running + pdf_converter 无埋点",
+      "severity": "medium",
+      "category": "state_contract",
+      "contract_ref": "D6-flow_events / D6-4",
+      "verdict_ids": [
+        "W05-06",
+        "F20"
+      ],
+      "duplicate_of": [
+        "F20"
+      ],
+      "files": [
+        {
+          "file": "astroquery_ai/main_graph.py",
+          "line": 165,
+          "line_end": 173
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 118,
+          "line_end": null
+        },
+        {
+          "file": "subgraphs/subgraph3/nodes/pdf_converter.py",
+          "line": 1,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "全仓 grep flow_started/flow_completed 零发送方（DF-01 实证 DB flow_* 计数 0）；卡 5「数据清洗」/卡 6「数据交付」每条正常任务永久「进行中…」，轮次分组无法呈现（规范化第 1 轮/冲突第 1 轮/规范化第 2 轮被按 agent 名去重折叠）；pdf_converter 转换阶段（多篇大 PDF 时耗时）前端无任何进度信号（'paper' 步最早由 vlm_extractor.py:106 发）。",
+      "evidence_chain": "",
+      "fix_suggestion": "按契约在 quality_pipeline/routers.py dispatch/loop 处实现 flow_started/completed（flow_id=轮次、round=loop_round），agent 事件带 flow_id；pdf_converter 循环内加 'paper' step_progress（completed/total/current，完成/失败时发 completed）；最小修复：clean/deliver 出口补发 stage_completed。回归锚点：正常任务断言卡 5/6 到达 completed 且 flow 事件配对。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B8",
+        "commit": "B8-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b8_telemetry.py",
+          "tests/test_b8_quality_telemetry.py"
+        ],
+        "contributors": [
+          "b8-subgraph",
+          "b8-quality"
+        ],
+        "fail_reason": null,
+        "note": "graph.py 新增 _flow_wrap（flow_started/completed 配对，flow_id=子流程、round=loop_round、stage_id=clean/deliver）；pdf_converter 补 step_progress 埋点；前端 FLOW_NAMES + flow 事件消费"
+      }
+    },
+    {
+      "id": "M-14",
+      "title": "agent traces 前端「替换」而非「累积」：规范化多轮/回跳场景第 1 轮轨迹丢失（D7-5）",
+      "severity": "medium",
+      "category": "interface_mismatch",
+      "contract_ref": "D7-5（事件累积，前端持有）",
+      "verdict_ids": [
+        "W05-07"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 115,
+          "line_end": null
+        },
+        {
+          "file": "quality_pipeline/agent_events.py",
+          "line": 62,
+          "line_end": null
+        },
+        {
+          "file": "subgraphs/data_normalization/normalization_graph.py",
+          "line": 64,
+          "line_end": 71
+        }
+      ],
+      "failure_scenario": "normalization 第 1 轮 20 条 → Retry 第 2 轮增量 5 条 → 前端同一 NormalizationAgent 行被替换为 5 条，第 1 轮对用户不可见（HumanReview E→B 同理）；数据本身无损，展示丢失。",
+      "evidence_chain": "",
+      "fix_suggestion": "前端改为累积 `traces: a.traces ? [...(a.traces||[]), ...(ev.traces||[])] : (ev.traces||null)`；重放按 timestamp+field+after 三元组去重（与 quality_state._merge_dict 策略一致）。回归锚点：两轮增量事件断言 traces 长度=和。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B9",
+        "commit": "B9-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b9_telemetry.py",
+          "tests/test_web_offline.py"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "前端 agent traces 累积而非替换（mergeTraces + timestamp/field/after 三元组去重）；规范化多轮/回跳不丢第 1 轮轨迹"
+      }
+    },
+    {
+      "id": "M-15",
+      "title": "失败/空数据早退路径不发子步骤终止事件：子步骤永久 waiting",
+      "severity": "medium",
+      "category": "test_gap",
+      "contract_ref": "D6-6",
+      "verdict_ids": [
+        "W05-08"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "subgraphs/subgraph2/nodes/database_query.py",
+          "line": 72,
+          "line_end": 81
+        },
+        {
+          "file": "ads_search.py",
+          "line": 404,
+          "line_end": 421
+        },
+        {
+          "file": "pdf_download.py",
+          "line": 290,
+          "line_end": 303
+        },
+        {
+          "file": "subgraphs/subgraph3/nodes/bbox_annotator.py",
+          "line": 90,
+          "line_end": 94
+        },
+        {
+          "file": "figure_extractor.py",
+          "line": 163,
+          "line_end": 166
+        }
+      ],
+      "failure_scenario": "这些路径零事件 → 对应子步骤前端永久 waiting，而 stage_completed 由 wrap finally 无条件发（main_graph.py:158-161）→ 卡片完成与子步骤悬空矛盾（如 ADS 全 429 时论文②③、补充①全 waiting）。",
+      "evidence_chain": "",
+      "fix_suggestion": "各早退分支补发对应 step 终止事件（status=failed/skipped，带 data 摘要如 paper/search {per_query:[],deduped:0}、paper/download {downloaded:0,failed:0}、bbox {success:0,failed:0}）；前端对非 running/waiting 有明确展示。回归锚点：空数据路径断言收到 skipped 事件。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B8",
+        "commit": "B8-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b8_telemetry.py",
+          "tests/test_b8_quality_telemetry.py"
+        ],
+        "contributors": [
+          "b8-subgraph",
+          "b8-quality"
+        ],
+        "fail_reason": null,
+        "note": "5 个节点（database_query/ads_search/pdf_download/bbox_annotator/figure_extractor）失败/空数据早退路径补发子步骤终止事件（status=failed/skipped + data 摘要）"
+      }
+    },
+    {
+      "id": "M-16",
+      "title": "HumanReviewAgent 节点未包 wrap_agent_node：卡 5 人工审核零活动反馈",
+      "severity": "medium",
+      "category": "test_gap",
+      "contract_ref": "D6 卡4-6（agent 行 ← agent_started/completed）",
+      "verdict_ids": [
+        "W05-05"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "quality_pipeline/graph.py",
+          "line": 67,
+          "line_end": 70
+        },
+        {
+          "file": "normalization_graph.py",
+          "line": 49,
+          "line_end": 65
+        }
+      ],
+      "failure_scenario": "5 子图外的第 6 个 agent 节点遗漏事件包装 → HITL 挂起与完成均无 HumanReview 活动行，用户会误以为任务卡死。",
+      "evidence_chain": "",
+      "fix_suggestion": "graph.py human_review_node 改 `_wrap(\"HumanReviewAgent\", HumanReviewAgent().run, \"clean\")(state)`（返回结构不含 data_trace 时 traces 自动省略）。回归锚点：触发 HumanReview 断言 agent_started(HumanReviewAgent) 与 agent_completed。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B8",
+        "commit": "B8-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b8_telemetry.py",
+          "tests/test_b8_quality_telemetry.py"
+        ],
+        "contributors": [
+          "b8-subgraph",
+          "b8-quality"
+        ],
+        "fail_reason": null,
+        "note": "human_review_node 改 _wrap(HumanReviewAgent) 发 agent_started/completed 事件"
+      }
+    },
+    {
+      "id": "M-17",
+      "title": "卡 7 总结 prompt 硬编码「M13 数据检索任务」：非 M13 查询错误引用天体名",
+      "severity": "medium",
+      "category": "data_correctness",
+      "contract_ref": "D6-3",
+      "verdict_ids": [
+        "W04-06"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/summary.py",
+          "line": 74,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "任何非 M13 查询（M31 等）的卡 7 总结以 M13 为主体生成 → AI 消息出现错误天体名；当前被 CR-01 掩盖（总结恒 0/0），CR-01 修复后即刻用户可见。确定性 prompt 缺陷。",
+      "evidence_chain": "",
+      "fix_suggestion": "prompt 模板化 `f\"...总结一次「{state.get('target_entity') or user_query}」数据检索任务的结果...\"`（generate_final_summary 已可拿到 state，与 generate_task_title:91 同模式）。回归锚点：M31 查询断言总结含 M31。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B2",
+        "commit": "860c89a87a1184161d26d8d4f2704a18c09890aa",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_summary_prompt_uses_target_entity"
+        ],
+        "contributors": [
+          "B2"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-18",
+      "title": "exports 恒空：导出落随机 8-hex 目录与任务完全解耦，D9 数据交付功能整体失效",
+      "severity": "medium",
+      "category": "interface_mismatch",
+      "contract_ref": "D9-2 / D9-3",
+      "verdict_ids": [
+        "F3"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "quality_pipeline/state.py",
+          "line": 408,
+          "line_end": null
+        },
+        {
+          "file": "subgraphs/data_export/agents/export_generation_agent.py",
+          "line": 182,
+          "line_end": 190
+        },
+        {
+          "file": "web/main.py",
+          "line": 326,
+          "line_end": 345
+        }
+      ],
+      "failure_scenario": "导出文件写入 output/{8hex}/（与任务完全解耦）→ API 永远扫描不到。DP-02 实证两已完成任务 exports 均 []，而 output/c70b6a99/（8 文件，manifest exported_at=2026-08-12T21:49:24、row_count=3、validation_passed=true）与 output/9326fb8c/ 真实存在；DF-03 磁盘对照：12 任务 output_dir 全在但仅空 user_pdfs/，46 个 8-hex 目录 269 JSON+90 CSV 与任务运行时刻一一对应。输出文件区永远为空、打开/下载不可达。",
+      "evidence_chain": "",
+      "fix_suggestion": "导出目录与任务绑定（EXPORT_OUTPUT_DIR 改 output/{task_id}/，或 quality_adapter 把 run_id→task_id 映射落库、API 按映射扫描）；最小修复：get_exports 先按 OUTPUT_DIR 下 run 目录 manifest 关联任务。回归锚点：DP-02——任务完成后断言 exports 非空且 export_file 200。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B11",
+        "commit": "B11-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_exports_resolves_task_bound_directory"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "run_id 绑定 query_id（make_initial_state 可选参数 + quality_adapter 透传，Web 任务 query_id=task_id）→ 导出目录 output/{task_id[:8]}/；get_exports/export_file/open-output 三端点统一扫描该目录"
+      }
+    },
+    {
+      "id": "M-19",
+      "title": "vite proxy 仅配置 server 块：npm run preview 下 /api、/static 全部不可用",
+      "severity": "medium",
+      "category": "build_deploy",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-09",
+        "B1-PROXY"
+      ],
+      "duplicate_of": [
+        "B1-PROXY"
+      ],
+      "files": [
+        {
+          "file": "frontend/vite.config.js",
+          "line": 12,
+          "line_end": 19
+        },
+        {
+          "file": "frontend/package.json",
+          "line": 9,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/services/api.js",
+          "line": 5,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "vite preview 下 GET /api/* 被 SPA fallback 重写为 /index.html 返回 200 text/html → api.js res.json() 抛 SyntaxError；POST /api 404；/static 404（verifier 已按 vite 6 源码核实 fallback 条件：fetch 默认 Accept */* 命中）。preview 脚本不可用。",
+      "evidence_chain": "",
+      "fix_suggestion": "vite.config.js 增 `preview: { proxy: { '/api': ..., '/static': ... } }`（vite 5+ 支持 preview.proxy）；或删除 preview 脚本文档改为生产用后端挂载 dist。回归锚点：preview 模式断言 /api/tasks 返回 JSON。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B13",
+        "commit": "B13-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "vite.config.js 增 preview.proxy（preview 模式 /api、/static 不再被 SPA fallback 吞掉）"
+      }
+    },
+    {
+      "id": "M-20",
+      "title": "构建部署链断裂：无 base 配置、dist 无承载方、BASE 硬编码 /api",
+      "severity": "medium",
+      "category": "build_deploy",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-10",
+        "B3-DIST",
+        "B2-BASE",
+        "B4-ENV"
+      ],
+      "duplicate_of": [
+        "B3-DIST",
+        "B2-BASE",
+        "B4-ENV"
+      ],
+      "files": [
+        {
+          "file": "frontend/vite.config.js",
+          "line": 5,
+          "line_end": 20
+        },
+        {
+          "file": "frontend/dist/index.html",
+          "line": 6,
+          "line_end": 7
+        },
+        {
+          "file": "web/main.py",
+          "line": 486,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/services/api.js",
+          "line": 5,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "构建产物存在但无任何承载路径：仅起后端 '/' 404、仅起 preview 见 M-19、子路径部署时 /assets、/api、/static 全 404；改 API 地址需改源码。B2-BASE/B3-DIST/B4-ENV 同链并入（verifier：构建链断言与磁盘一致 DF-04，dist 是无人托管的死产物）。",
+      "evidence_chain": "",
+      "fix_suggestion": "① 后端 `app.mount(\"/\", StaticFiles(directory=FRONTEND_DIST, html=True))`（注意与 /api、/static 路由顺序）单进程交付，dist 入 .gitignore；② 或提供 nginx 站点模板；③ 子路径部署：vite base 与 api.js BASE 用 VITE_API_BASE 环境注入。回归锚点：单进程启动断言 '/' 返回 index.html 且 /api 正常。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B13",
+        "commit": "B13-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "后端挂载 frontend/dist（单进程交付，/api 与 /static/figures 先行注册优先匹配）；vite base 支持 VITE_BASE；api.js BASE 支持 VITE_API_BASE 注入"
+      }
+    },
+    {
+      "id": "M-21",
+      "title": "离线测试覆盖缺口：SSE/重度数据端点/超时路径/上传大小分支/恒真断言",
+      "severity": "medium",
+      "category": "test_gap",
+      "contract_ref": "D1-4 / D8-3 / D5-4 / D4-3 / D4-1",
+      "verdict_ids": [
+        "T1-COVER",
+        "W08-01",
+        "W08-03",
+        "W08-04",
+        "W08-08"
+      ],
+      "duplicate_of": [
+        "W08-01",
+        "W08-03",
+        "W08-04",
+        "W08-08"
+      ],
+      "files": [
+        {
+          "file": "tests/test_web_offline.py",
+          "line": 91,
+          "line_end": 115
+        }
+      ],
+      "failure_scenario": "/events、/state、/result、/records、/sources、/figures、/quality、/exports、/export、/config、/retry、/resume、/cancel、open-file/open-output 全零覆盖；上传 50MB 分支与混合「部分拒收」无测试；executor 超时路径（F1/H-07）、VCR 分支、title 生成、log_bridge、summary 降级均无测试。",
+      "evidence_chain": "",
+      "fix_suggestion": "断言锚点：① SSE after_seq=N 首帧补发 seq>N 且升序、与 store.get_events 逐条相等；② /state 的 pending_clarification 仅 running 且末事件为 clarification 时返回；③ retry 新 task_id+旧事件保留+pdf copy；④ /api/config GET 永不回传明文 + PUT（monkeypatch _ENV_FILE）写回断言；⑤ /export/{file} 用 ../ 断言 404；⑥ resume 对非澄清等待 409；⑦ 上传超限 rejected[0].reason 含 50MB；⑧ move 双端断言（暂存区不存在 + OUTPUT_DIR/{task_id}/user_pdfs 存在，task_id 取响应）。回归锚点：逐项红测。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B1",
+        "commit": "53a405c905845ef3660b5f49e0f63dbe8dfe7595",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": false
+          },
+          {
+            "n": 2,
+            "ok": false
+          },
+          {
+            "n": 3,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_sse_replay_after_seq",
+          "test_state_pending_clarification",
+          "test_retry_new_task_keeps_history",
+          "test_config_get_never_leaks_plaintext_and_put_writes",
+          "test_export_path_traversal_404",
+          "test_resume_not_clarification_409",
+          "test_upload_over_50mb_rejected"
+        ],
+        "contributors": [
+          "B1"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-22",
+      "title": "quality_check 卡预置 QA_MOCK：mock 文案与 M31 演示数字进入真实任务渲染",
+      "severity": "medium",
+      "category": "data_correctness",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W01-09"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/mock/pipeline.js",
+          "line": 280,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 110,
+          "line_end": 118
+        },
+        {
+          "file": "quality_pipeline/agent_events.py",
+          "line": 39,
+          "line_end": 44
+        }
+      ],
+      "failure_scenario": "真实任务质量检查卡显示 M31 演示文案与数字（DP-01 实证真实 quality 卡 agent_completed 均无 traces → mock traces 原样展示），用户把演示数据误认为本任务结果。",
+      "evidence_chain": "",
+      "fix_suggestion": "真实路径下 quality_check 初始 agents 置 null 依赖 agent 事件动态追加；或 makeInitialStages 对 quality_check 仅保留 id/agent 占位去掉 reason/traces。回归锚点：真实任务断言无 mock 文案与数字。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B9",
+        "commit": "B9-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b9_telemetry.py",
+          "tests/test_web_offline.py"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "makeInitialStages 初始 agents 统一 null，真实任务渲染完全依赖 agent 事件动态追加（M31 演示文案/数字不再进入真实卡 4）"
+      }
+    },
+    {
+      "id": "M-23",
+      "title": "error warn 级事件无消费侧（生产侧亦无 warn 生产者）：D10 错误总表两端死承诺",
+      "severity": "medium",
+      "category": "state_contract",
+      "contract_ref": "D10（阶段失败 warn → 卡片红态+错误行）",
+      "verdict_ids": [
+        "W01-07"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 135,
+          "line_end": 139
+        },
+        {
+          "file": "web/executor.py",
+          "line": 87,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "warn 分支无任何状态写入，error warn 事件在服务端根本不存在 → 「阶段失败(warn)→卡片红态+错误行」两端均为死承诺；降级失败用户仅能从日志抽屉得知（叠加 M-03 洪泛更难找）。",
+      "evidence_chain": "",
+      "fix_suggestion": "两端补齐——节点降级处发 error warn 事件，或明确降级走 log 并同步修订 D10 总表；前端累积 stage.error 列表供 StageCard 渲染红态与错误行。回归锚点：注入 warn 事件断言卡片红态。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B6",
+        "commit": "5545e03fc2c52e10f0beb2b5e9f4a3aab05ef06b",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_b6_pending.py::test_error_warn_event_roundtrip_preserves_fields"
+        ],
+        "contributors": [
+          "B6-pending-lifecycle"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "M-24",
+      "title": "死代码：mock/results.js、mock/tasks.js、QualityReport 组件",
+      "severity": "medium",
+      "category": "dead_code",
+      "contract_ref": "",
+      "verdict_ids": [
+        "P3-DEAD2"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/mock/results.js",
+          "line": 1,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/mock/tasks.js",
+          "line": 1,
+          "line_end": null
+        },
+        {
+          "file": "frontend/src/components/results/ResultTabs.jsx",
+          "line": 173,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "全 frontend/src grep 无任何 import 引用（被引用的仅 mock/pipeline.js、mock/logs.js）；QualityReport 无消费者（DetailPanel 只导入 SourcesList/OutputFiles）。死代码+死导出，易误导后续维护者。",
+      "evidence_chain": "",
+      "fix_suggestion": "删除或确认无演示用途后清理；配套 W07-11 的工程建议（补 eslint/vitest 门禁）。回归锚点：grep 断言零引用后删除。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B14",
+        "commit": "B14-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "删除死代码：mock/results.js、mock/tasks.js、QualityReport 组件（ResultTabs.jsx）、QA_MOCK（mock/pipeline.js，useMockPipeline 删除后无引用）"
+      }
+    },
+    {
+      "id": "L-01",
+      "title": "task_title_ready 忽略 task_id 字段（D8-2 契约字段未用）：切换竞态窗口标题错配/丢失",
+      "severity": "low",
+      "category": "interface_mismatch",
+      "contract_ref": "D8-2",
+      "verdict_ids": [
+        "W02-10"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/App.jsx",
+          "line": 89,
+          "line_end": 91
+        },
+        {
+          "file": "frontend/src/hooks/usePipeline.js",
+          "line": 152,
+          "line_end": 153
+        },
+        {
+          "file": "web/executor.py",
+          "line": 143,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "A 的标题事件在选中 B 时到达 → 错配到 B 或整体丢弃，列表条目标题残留/丢失。事件只对选中任务流动，窗口较窄；影响限于列表标题错配/丢失。",
+      "evidence_chain": "",
+      "fix_suggestion": "handleTaskTitle 接收完整 payload 按 ev.task_id 更新（`prev.map(t => t.id===payload.task_id ? {...t, title: payload.title} : t)`）；usePipeline 透传 ev。回归锚点：切换竞态注入标题事件断言正确归属。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B7",
+        "commit": "B7-手动",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "B7-手动"
+        ],
+        "fail_reason": null,
+        "note": "后端 _gen_title bus.publish 携带 task_id（修复 emit 关键字冲突 TypeError）；前端透传完整事件，App 按 ev.task_id 归属更新"
+      }
+    },
+    {
+      "id": "L-02",
+      "title": "提交失败 finally 清空输入与文件：契约「输入框内容保留」直接违背",
+      "severity": "low",
+      "category": "state_contract",
+      "contract_ref": "D10 错误处理总表（任务创建失败 4xx → toast + 输入框内容保留）",
+      "verdict_ids": [
+        "W02-12"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/components/chat/ChatView.jsx",
+          "line": 134,
+          "line_end": 140
+        }
+      ],
+      "failure_scenario": "query 超长 400（D4-5）、pdf_id 校验 400（D4-6）、上传失败（H-03）等场景命中 → 用户已输入的长查询与已选 PDF 全部丢失，需重打重选。",
+      "evidence_chain": "",
+      "fix_suggestion": "setInput('')/setFiles([]) 移入 try 成功分支（submitQuery 返回后），catch 分支保留输入与文件。回归锚点：mock 400 断言输入与文件保留。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B10",
+        "commit": "B10-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_upload_rejects_disguised_extension",
+          "tests/test_web_offline.py::test_create_task_conflicting_pdf_id_409_no_orphan"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "ChatView 提交成功后才清输入与文件（失败保留，契约 D10 错误处理总表）"
+      }
+    },
+    {
+      "id": "L-03",
+      "title": "request() 错误体未归一 + 空 body SyntaxError + SSE 404 无限重连",
+      "severity": "low",
+      "category": "error_handling",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W01-08"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/services/api.js",
+          "line": 15,
+          "line_end": 20
+        }
+      ],
+      "failure_scenario": "pdf_ids 非法 422 → toast 显示 [object Object]；打开已删除任务 → getState 404 被 catch{} 吞掉 → 对 /events 持续重试。均为边缘路径。",
+      "evidence_chain": "",
+      "fix_suggestion": "detail 为数组/对象时 JSON.stringify 或取首项 message；res.json() 包 try 兼容空 body；openEventStream 增加 onopen 未触发即 close+上报，避免 404 无限重连。回归锚点：422 断言错误消息可读。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B10",
+        "commit": "B10-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_upload_rejects_disguised_extension",
+          "tests/test_web_offline.py::test_create_task_conflicting_pdf_id_409_no_orphan"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "api.js formatErrorDetail 错误体归一（数组/对象/字符串），不再显示 [object Object]；uploadFiles 同步复用"
+      }
+    },
+    {
+      "id": "L-04",
+      "title": "export_file/open-file 路径白名单用 startswith 前缀匹配：防穿越脆弱实现",
+      "severity": "low",
+      "category": "security",
+      "contract_ref": "D9-3",
+      "verdict_ids": [
+        "W03-14"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 374,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "构造性场景：兄弟任务目录名以当前 task_id 为字符串前缀时（uuid4 前缀碰撞实践不可达），open-file 的 name（JSON body 可含 ../）可指向兄弟任务文件；校验逻辑本身错误属防穿越脆弱实现（export_file 的 file_name 为路径参数 %2F 解码后可含斜杠，需前缀碰撞才可达）。",
+      "evidence_chain": "",
+      "fix_suggestion": "改用 `target.is_relative_to(out_dir)`（或 os.path.commonpath）严格包含判断；open-file 的 name 先 `Path(name).name` 拒绝含分隔符输入。回归锚点：../ 构造断言 404。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B12",
+        "commit": "B12-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_figures_image_url_uses_image_path",
+          "tests/test_web_offline.py::test_open_file_rejects_path_separator",
+          "tests/test_web_offline.py::test_config_put_keeps_comments_and_sanitizes_value"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "export_file/open-file 改 target.is_relative_to(out_dir) 严格包含；open-file name 拒绝含分隔符输入（Path(name).name 校验）"
+      }
+    },
+    {
+      "id": "L-05",
+      "title": "PUT /api/config 重写 .env 丢注释与空行 + 值内换行可注入新键",
+      "severity": "low",
+      "category": "config_drift",
+      "contract_ref": "D10-1",
+      "verdict_ids": [
+        "W03-15"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 468,
+          "line_end": 479
+        }
+      ],
+      "failure_scenario": "保存任意配置后注释说明与空行被静默删除（verifier 修正：注释实为 6 行非 9 行）；值含 '\\n' 被拆多行，下一行形如 KEY=value 会被 _env_values 当作新键读入（verifier 修正：全后端无 dotenv 加载器，「重启后被系统环境读取」不成立——注入影响限于 .env 文件污染与 _env_values 杂键）。",
+      "evidence_chain": "",
+      "fix_suggestion": "① 重写 .env 保留原注释行；② 值写回前单行化（replace('\\n','').replace('\\r','')）并限长（512 字符）。回归锚点：保存后断言注释行数与文件结构不变。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B12",
+        "commit": "B12-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_figures_image_url_uses_image_path",
+          "tests/test_web_offline.py::test_open_file_rejects_path_separator",
+          "tests/test_web_offline.py::test_config_put_keeps_comments_and_sanitizes_value"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "put_config 重写 .env 保留注释行与空行；值单行化（去 \r\n）+ 512 限长（防换行注入新键）"
+      }
+    },
+    {
+      "id": "L-06",
+      "title": "resume/cancel 对不存在任务返回 409 而非 404：HTTP 语义不一致 + 误导文案",
+      "severity": "low",
+      "category": "interface_mismatch",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W03-16"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 202,
+          "line_end": 212
+        },
+        {
+          "file": "web/executor.py",
+          "line": 164,
+          "line_end": 181
+        }
+      ],
+      "failure_scenario": "任务已删/URL 误拼 → 409「任务未在澄清等待中」误导用户为状态冲突；同族其它端点对不存在任务均 404（main.py:169/246/273/330/219）。",
+      "evidence_chain": "",
+      "fix_suggestion": "resume/cancel 端点先 store.get_task(task_id)，不存在则 404；再调 executor 判断可操作性（409）。回归锚点：不存在任务 resume 断言 404。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B3",
+        "commit": "19115e1fab5ec556e2aac9b7acd93285c77f4165",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_resume_cancel_404_nonexistent"
+        ],
+        "contributors": [
+          "B3"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "L-07",
+      "title": "cancel 无锁读 _slots 不二次校验：与 _finish 竞态把已完成任务覆写为 cancelled",
+      "severity": "low",
+      "category": "state_contract",
+      "contract_ref": "D2-2",
+      "verdict_ids": [
+        "W04-08"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 171,
+          "line_end": 175
+        }
+      ],
+      "failure_scenario": "任务完成瞬间用户点取消 → cancel 读到陈旧 slot → 后写 update_task(cancelled) 覆写 completed；终态与已发 task_completed 事件矛盾。毫秒级窗口且需完成瞬间点击，影响极小。",
+      "evidence_chain": "",
+      "fix_suggestion": "cancel 全程持 _lock，拿到 slot 后二次读取 rec 状态，仅当 status in ('queued','running') 才置 cancelled；或 _finish 与 cancel 状态写入同一临界区，后写者校验当前状态。回归锚点：并发模拟断言终态不被覆写。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B3",
+        "commit": "19115e1fab5ec556e2aac9b7acd93285c77f4165",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          },
+          {
+            "n": 2,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_cancel_does_not_overwrite_completed"
+        ],
+        "contributors": [
+          "B3"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "L-08",
+      "title": "figure_extractor 同一步骤发两条 completed（事件重复）",
+      "severity": "low",
+      "category": "dead_code",
+      "contract_ref": "D6 卡3",
+      "verdict_ids": [
+        "W05-09"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "subgraphs/subgraph3/nodes/figure_extractor.py",
+          "line": 198,
+          "line_end": 203
+        }
+      ],
+      "failure_scenario": "len(tasks) 恰为 5 的倍数时同一 step 'figure' 两条 completed；前端幂等不崩溃，但 D8-3 事件落库与 after_seq 重放会看到重复完成事件。",
+      "evidence_chain": "",
+      "fix_suggestion": "循环内只发 running（去掉 completed 分支），completed 统一由 :209 循环后埋点发。回归锚点：构造 5 倍数任务断言单条 completed。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B8",
+        "commit": "B8-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b8_telemetry.py",
+          "tests/test_b8_quality_telemetry.py"
+        ],
+        "contributors": [
+          "b8-subgraph",
+          "b8-quality"
+        ],
+        "fail_reason": null,
+        "note": "figure_extractor 循环内只发 running，completed 统一由循环后埋点发（消除 5 倍数页数双 completed）"
+      }
+    },
+    {
+      "id": "L-09",
+      "title": "data_trace 无 confidence：前端轨迹渲染显示「置信度 undefined」",
+      "severity": "low",
+      "category": "interface_mismatch",
+      "contract_ref": "D7-5",
+      "verdict_ids": [
+        "W05-10"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "subgraphs/data_normalization/agents/normalization_agent.py",
+          "line": 425,
+          "line_end": 434
+        },
+        {
+          "file": "frontend/src/components/chat/StageCard.jsx",
+          "line": 207,
+          "line_end": null
+        },
+        {
+          "file": "pipeline.js",
+          "line": 162,
+          "line_end": 164
+        }
+      ],
+      "failure_scenario": "每条轨迹显示「置信度 undefined」，用户观感脏数据；属性缺失不崩溃。",
+      "evidence_chain": "",
+      "fix_suggestion": "二选一：① normalization_agent 写入时补 confidence（确定性置信度 1.0 或 op 记录值）；② StageCard.jsx:207 对 undefined 不渲染该段。回归锚点：轨迹渲染断言无 undefined。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B9",
+        "commit": "B9-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b9_telemetry.py",
+          "tests/test_web_offline.py"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "StageCard 轨迹渲染 confidence 为 null 时不渲染该段（不再显示“置信度 undefined”）"
+      }
+    },
+    {
+      "id": "L-10",
+      "title": "补充材料子状态 data.substatus 从未产出：「正在验证表 J/MNRAS/427/1463…」文字永久缺失",
+      "severity": "low",
+      "category": "test_gap",
+      "contract_ref": "D6-6（补充进度 ← data{substatus}）",
+      "verdict_ids": [
+        "W05-11"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "subgraphs/subgraph2/nodes/supplementary_query.py",
+          "line": 344,
+          "line_end": 347
+        },
+        {
+          "file": "frontend/src/components/chat/StageCard.jsx",
+          "line": 354,
+          "line_end": 358
+        },
+        {
+          "file": "WEB_DESIGN.md",
+          "line": 112,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "论文内验证表阶段（耗时最长）前端只见进度条无当前表号文字，长任务期间无中间信息。功能可用，仅设计要求的子状态缺失。",
+      "evidence_chain": "",
+      "fix_suggestion": "supplementary_query 循环内发 data={\"substatus\": f\"正在验证表 {table_id}\"}（_catalog_real_exists/LLM 判断处更新）；前端 formatStepDetail 增加 supplementary/find 分支。回归锚点：事件断言含 substatus。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B9",
+        "commit": "B9-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_b9_telemetry.py",
+          "tests/test_web_offline.py"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "supplementary_query 表验证前发 substatus「正在验证表 X」；前端 step_progress 消费 data.substatus + formatStepDetail supplementary/find 分支"
+      }
+    },
+    {
+      "id": "L-11",
+      "title": "log_bridge 用 threading.local 路由 task_id：worker 线程日志全被丢弃（版本前提修正：全版本存在）",
+      "severity": "low",
+      "category": "logic_bug",
+      "contract_ref": "",
+      "verdict_ids": [
+        "F19"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/log_bridge.py",
+          "line": 25,
+          "line_end": 35
+        },
+        {
+          "file": "web/executor.py",
+          "line": 98,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "verifier 实测 Python 3.14.5 子线程读父线程 threading.local 为 None（不继承），且 3.12 whatsnew 无 thread-local 继承变更 → 前提「3.12+ 子线程继承」错误，缺陷全版本存在：worker 线程日志（VLM/bbox/下载/图提取）全部被 log_bridge 丢弃。仅影响 SSE 日志抽屉观测完整性，不损任务数据。",
+      "evidence_chain": "",
+      "fix_suggestion": "用 contextvars.ContextVar 替代 threading.local（contextvars 随线程/任务传播，ThreadPoolExecutor 亦传播）；或在 worker 提交时显式透传 task_id。回归锚点：worker 线程 emit 断言事件落库。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B1",
+        "commit": "53a405c905845ef3660b5f49e0f63dbe8dfe7595",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_log_bridge_worker_thread_log"
+        ],
+        "contributors": [
+          "B1"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "L-12",
+      "title": "死代码 useMockPipeline.js（600+ 行钩子）",
+      "severity": "low",
+      "category": "dead_code",
+      "contract_ref": "",
+      "verdict_ids": [
+        "P3-DEAD1"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/hooks/useMockPipeline.js",
+          "line": 25,
+          "line_end": null
+        },
+        {
+          "file": "usePipeline.js",
+          "line": 1,
+          "line_end": null
+        },
+        {
+          "file": "ChatView.jsx",
+          "line": 11,
+          "line_end": null
+        }
+      ],
+      "failure_scenario": "600+ 行钩子为死代码（mock/pipeline.js 仍被 usePipeline 使用，死的仅是 useMockPipeline.js 本身）；其行为基准曾对 W02-04 实现产生误导（参照其 cancelled 行为未复刻）。",
+      "evidence_chain": "",
+      "fix_suggestion": "删除或标记为演示归档。回归锚点：grep 零引用后删除。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B14",
+        "commit": "B14-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "删除死代码：useMockPipeline.js（600+ 行，无任何 import）"
+      }
+    },
+    {
+      "id": "L-13",
+      "title": "OutputFiles「打开」仍是 mock toast：api.js 无 openFile 封装，/open-file 已实现未对接",
+      "severity": "low",
+      "category": "dead_code",
+      "contract_ref": "D9-3",
+      "verdict_ids": [
+        "P3-OUTPUT"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "frontend/src/components/results/ResultTabs.jsx",
+          "line": 217,
+          "line_end": 220
+        },
+        {
+          "file": "main.py",
+          "line": 391,
+          "line_end": 401
+        }
+      ],
+      "failure_scenario": "「打开」按钮无真实效果且以 mock 提示掩盖；叠加 M-18（exports 恒空）下载 Tab 本就无文件可操作。",
+      "evidence_chain": "",
+      "fix_suggestion": "api.js 补 openFile(name) 封装并让 ResultTabs 调用真实接口 + toast 错误；同步修复 M-18 后文件才可操作。回归锚点：点击打开断言调用真实端点。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B11",
+        "commit": "B11-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_exports_resolves_task_bound_directory"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "api.js 新增 openFile(taskId, name)；OutputFiles 接 taskId 调真实 POST /open-file（不再 mock toast）"
+      }
+    },
+    {
+      "id": "L-14",
+      "title": "58MB cassette 每次任务/启动全量 YAML 解析 + 录制退出全量重写",
+      "severity": "low",
+      "category": "performance",
+      "contract_ref": "",
+      "verdict_ids": [
+        "W07-12"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/executor.py",
+          "line": 109,
+          "line_end": null
+        },
+        {
+          "file": "web/main.py",
+          "line": 87,
+          "line_end": null
+        },
+        {
+          "file": "cassette.py",
+          "line": 350,
+          "line_end": 358
+        }
+      ],
+      "failure_scenario": "回放模式每次任务提交/启动阻塞秒级；录制模式每次退出全量重写 58MB；叠加 DP-09 的 'Appending' 日志洪泛（~9.6MB/次）。",
+      "evidence_chain": "",
+      "fix_suggestion": "cassette 按用途分文件（LLM 与下载分离），回放任务只加载 LLM 文件；进程级单例缓存解析结果；加载期日志降 debug。回归锚点：回放任务提交时间受控。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B4",
+        "commit": "9136cdc6b163e0727e0093f0b0d7c062d8dbdf8c",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "test_cassette_parse_cache_single_load",
+          "test_appending_log_downgraded_to_debug"
+        ],
+        "contributors": [
+          "B4"
+        ],
+        "fail_reason": null
+      }
+    },
+    {
+      "id": "L-15",
+      "title": "上传校验缺扩展名检查：D4-2「扩展名 + 魔数」降级为单维度",
+      "severity": "low",
+      "category": "config_drift",
+      "contract_ref": "D4-2",
+      "verdict_ids": [
+        "W03-12"
+      ],
+      "duplicate_of": [],
+      "files": [
+        {
+          "file": "web/main.py",
+          "line": 112,
+          "line_end": 115
+        }
+      ],
+      "failure_scenario": "任意非 .pdf 扩展名文件只要文件头 %PDF（可伪造）即被接受；扩展名维度完全无校验，契约降级为单维度。影响限于上传准入口径与契约不符，无直接安全后果。",
+      "evidence_chain": "",
+      "fix_suggestion": "魔数校验后追加扩展名白名单 `Path(f.filename or \"\").suffix.lower() == \".pdf\"`，不满足计入 rejected（reason='扩展名不是 .pdf'）。回归锚点：伪装 .txt 断言 rejected。",
+      "fix_status": {
+        "status": "fixed",
+        "batch": "B10",
+        "commit": "B10-主对话",
+        "test_rounds": [
+          {
+            "n": 1,
+            "ok": true
+          }
+        ],
+        "tests": [
+          "tests/test_web_offline.py::test_upload_rejects_disguised_extension",
+          "tests/test_web_offline.py::test_create_task_conflicting_pdf_id_409_no_orphan"
+        ],
+        "contributors": [
+          "main"
+        ],
+        "fail_reason": null,
+        "note": "上传扩展名白名单（.pdf），伪装 %PDF 魔数的非 pdf 扩展名计入 rejected"
+      }
+    }
+  ],
+  "refuted": [
+    {
+      "id": "R-01",
+      "verdict_ids": [
+        "W02-07",
+        "P3-BBOX"
+      ],
+      "title": "FigureThumb SVG 分支 bbox 无守卫崩溃",
+      "refute_reason": "生产端恒构造非空 image_url → img 分支恒走且 b 守卫生效，SVG 分支为死路径；H-06 修复后需同步补 b 守卫。"
+    },
+    {
+      "id": "R-02",
+      "verdict_ids": [
+        "W02-08"
+      ],
+      "title": "ResultTabs 任务切换记录残留/页码越界",
+      "refute_reason": "切换必触发 openTask→makeInitialStages 重置，组件随 done 卡卸载重挂，records/page 随实例销毁；残余 .catch 缺失为低严重度。"
+    },
+    {
+      "id": "R-03",
+      "verdict_ids": [
+        "P1-RACE"
+      ],
+      "title": "主区记录表格大概率永远空白（时序竞态）",
+      "refute_reason": "DP-03 动态反证 60/60 次 records 非空；窗口毫秒级被客户端链路掩盖，外部 HTTP 不可观测。"
+    },
+    {
+      "id": "R-04",
+      "verdict_ids": [
+        "W05-01",
+        "F16",
+        "F16-BUG"
+      ],
+      "title": "agent_completed.traces 仅 NormalizationAgent 违反 D7-5",
+      "refute_reason": "契约语义主体是修改轨迹；唯一写 data_trace 的 agent 即 Normalization（返回全量累积使切片正确）；DF-01 实证 3/57 为正确行为写照。属潜在脆弱性非现行问题。"
+    },
+    {
+      "id": "R-05",
+      "verdict_ids": [
+        "W07-01"
+      ],
+      "title": "启动自测消耗 cassette 回放预算致第 35 次调用失败",
+      "refute_reason": "play_counts 为 Cassette 实例状态、每次新建实例，自测与任务互不影响；次级子主张（静默真实调用）由 H-14/M-11 覆盖。"
+    },
+    {
+      "id": "R-06",
+      "verdict_ids": [
+        "W07-02"
+      ],
+      "title": "gzip 头+明文 body 使 VLM 回放解码必然失败",
+      "refute_reason": "VCRHTTPResponse 绕过 urllib3 解码层，requests iter_content 走 raw.stream 原样吐字节；54 条 header/body 不一致属实但回放路径无影响。"
+    },
+    {
+      "id": "R-07",
+      "verdict_ids": [
+        "W07-11"
+      ],
+      "title": "缺 lint/test 脚本与 VITE_ 环境体系",
+      "refute_reason": "开发流程/工具链建议，无任何可观测错误行为，未达审计发现门槛；工程建议并入 M-20/M-24。"
+    }
+  ]
+}

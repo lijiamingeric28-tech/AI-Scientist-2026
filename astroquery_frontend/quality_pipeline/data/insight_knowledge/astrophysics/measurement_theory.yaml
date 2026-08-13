@@ -1,0 +1,1861 @@
+entries:
+- id: radio_dm_measurement
+  title: 射电 DM 测量原理与精度
+  category: measurement_principle
+  tags:
+  - DM
+  - dispersion
+  - radio
+  - pulsar_timing
+  - FRB
+  - dedispersion
+  hypothetical_queries:
+  - 色散量DM怎么测量
+  - DM测量精度取决于哪些因素
+  - 脉冲星色散延迟公式
+  applies_to:
+    fields:
+    - dispersion_measure
+    methods:
+    - radio_interferometry
+    - pulsar_timing
+    - radio
+  content: 'DM 测量原理: Δt = 4.15 ms × DM × (ν_low⁻² - ν_high⁻²)
+
+
+    其中 Δt 为低频相对于高频的到达时间延迟 (cold plasma dispersion)。
+
+
+    DM 精度取决于:
+
+    1. 频率覆盖: 带宽越大精度越高 (∝ 1/Δν)
+
+    2. S/N: DM error ∝ 1/S/N
+
+    3. 时间分辨率: 亚毫秒采样可分辨精细结构 → 更精确的 DM
+
+    4. 脉冲宽度: 宽脉冲 (scattering) → 更大的 DM 不确定性
+
+
+    典型精度:
+
+    - FAST L-band, S/N>100, 128μs 采样: DM error ~0.1-0.3 pc cm⁻³
+
+    - Parkes multi-band, S/N~20: DM error ~0.5-2 pc cm⁻³
+
+    - CHIME 400-800MHz, S/N~10: DM error ~1-5 pc cm⁻³
+
+
+    因此 FAST 和 Parkes 间 ~0.5-2 pc cm⁻³ 的 DM 差异是正常的仪器系统误差
+
+    '
+  source: Lorimer & Kramer 2004, Handbook of Pulsar Astronomy
+  confidence: established
+- id: spectroscopic_redshift_method
+  title: 光谱红移测量原理
+  category: measurement_principle
+  tags:
+  - redshift
+  - spectroscopy
+  - absorption
+  - emission
+  - lines
+  hypothetical_queries:
+  - 光谱红移怎么测量
+  - 光谱分辨率如何影响红移精度
+  - 如何识别谱线确定红移
+  applies_to:
+    fields:
+    - redshift
+    methods:
+    - spectroscopy
+  content: '光谱红移测量: 通过识别已知谱线 (如 Lyα, CIV, MgII, Hα)
+
+    的波长偏移 Δλ/λ₀ = z 来确定红移。
+
+
+    精度取决于:
+
+    1. 光谱分辨率 R=λ/Δλ: R~1000 → Δz~0.001; R~10000 → Δz~0.0001
+
+    2. 谱线信噪比: 弱线导致较大的质心不确定度
+
+    3. 谱线数量: 多条谱线可互相校验
+
+    4. 仪器波长校准: 弧光灯精度 ~0.1Å
+
+
+    典型仪器:
+
+    - SDSS/BOSS: R~2000, Δz~0.0001-0.001
+
+    - Keck/DEIMOS: R~5000, Δz~0.00005
+
+    - VLT/XSHOOTER: R~5000-10000, Δz~0.00005
+
+    '
+  source: Dawson et al. 2016, AJ
+  confidence: established
+- id: photometric_redshift_method
+  title: 测光红移原理与局限性
+  category: measurement_principle
+  tags:
+  - redshift
+  - photometry
+  - photo-z
+  - SED
+  - template_fitting
+  hypothetical_queries:
+  - 测光红移的原理是什么
+  - photo-z精度受哪些因素限制
+  - 测光红移的系统偏差来源
+  applies_to:
+    fields:
+    - redshift
+    methods:
+    - photometry
+  content: '测光红移 (photo-z): 通过多波段测光数据拟合 SED 模板来估计红移。
+
+
+    精度限制:
+
+    1. 滤光片数量: 宽带 (Δz~0.06) < 中带 (Δz~0.03) < 窄带 (Δz~0.01)
+
+    2. SED 模板完备性: 缺少稀有天体类型 → 系统偏差
+
+    3. 红移简并: 某些 SED 特征在不同 z 处无法区分 (如 Lyman break vs Balmer break)
+
+    4. 混染: 相邻天体污染测光孔径 → 错误 SED
+
+
+    关键: photo-z 与 spec-z 之间的偏差是系统性的, 不是数据错误
+
+    '
+  source: Salvato et al. 2019, Nature Astronomy
+  confidence: established
+- id: interferometry_basics
+  title: 射电干涉测量基本原理
+  category: measurement_principle
+  tags:
+  - interferometry
+  - VLBI
+  - resolution
+  - beam
+  - synthesis
+  hypothetical_queries:
+  - 射电干涉测量分辨率怎么算
+  - VLBI能达到多高的角分辨率
+  - 相位校准误差对干涉成像的影响
+  applies_to:
+    methods:
+    - radio_interferometry
+    - VLBI
+    - interferometry
+  content: '射电干涉测量: 多个天线组成阵列, 空间分辨率 θ ≈ λ/D_max
+
+    其中 D_max 为最长基线, λ 为观测波长。
+
+
+    FAST (500m 单天线): θ ~ 3 arcmin at L-band (单天线衍射极限)
+
+    VLA (A 配置 36km): θ ~ 0.04 arcsec at C-band
+
+    VLBI (千公里基线): θ ~ 0.001 arcsec
+
+
+    系统误差来源:
+
+    - 相位校准误差 (大气 + 仪器)
+
+    - 流量校准 (标准源模型不确定度 ~5-10%)
+
+    - 带宽涂污 (bandwidth smearing)
+
+    '
+  source: Thompson, Moran & Swenson 2017, Interferometry and Synthesis in Radio Astronomy
+  confidence: established
+- id: astrometry_parallax_principle
+  title: 天体测量视差原理 (Gaia)
+  category: measurement_principle
+  tags:
+  - parallax
+  - astrometry
+  - Gaia
+  - proper_motion
+  - mas
+  hypothetical_queries:
+  - 视差怎么换算成距离
+  - Gaia视差测量精度
+  - 负视差怎么理解
+  applies_to:
+    fields:
+    - parallax
+    - proper_motion_ra
+    - proper_motion_dec
+    - right_ascension
+    - declination
+    entities:
+    - Star
+    - star
+  content: '视差 (parallax) 是地球轨道运动引起的天体位置周年视位移:
+
+    π (mas) = 1000 / d (pc)
+
+
+    关键性质:
+
+    - 视差越小 → 距离越远; π=1 mas → d=1 kpc
+
+    - 负视差 (π<0) 是测量噪声的体现, 常见于远距离/低 S/N 目标
+
+    - 距离误差: σ(d)/d ≈ σ(π)/π (小误差近似), 相对误差随距离恶化
+
+
+    Gaia DR3 精度:
+
+    - 亮源 (G<13): σ(π) ~ 0.02-0.03 mas
+
+    - 暗源 (G~19): σ(π) ~ 0.5-1 mas
+
+    - 系统误差: ~0.02-0.03 mas (zonal errors)
+
+
+    跨来源视差比较:
+
+    - Gaia vs Hipparcos 视差存在 ~0.05 mas 系统差异
+
+    - 比较时需考虑参考系 (ICRS) 和历元差 (proper motion 外推)
+
+    '
+  source: Gaia Collaboration 2023, A&A 674, A1; Lindegren et al. 2021, A&A 649, A4
+  confidence: established
+- id: photometric_system_differences
+  title: 测光系统差异 (G/BP/RP, J/H/K)
+  category: measurement_principle
+  tags:
+  - photometry
+  - magnitude
+  - Gmag
+  - Jmag
+  - Kmag
+  - filter
+  - zero_point
+  hypothetical_queries:
+  - Gaia G星等与地面V星等怎么转换
+  - 2MASS JHK测光系统零点
+  - 不同测光系统的星等能直接比较吗
+  applies_to:
+    fields:
+    - apparent_magnitude
+    methods:
+    - photometry
+  content: '不同测光系统的星等不可直接比较:
+
+    - Gaia: G (broad), BP (blue), RP (red) — 无地面标准零点, 需转换
+
+    - 2MASS: J (1.25μm), H (1.65μm), Ks (2.16μm) — Vega 零点
+
+    - SDSS: u g r i z — AB 零点
+
+
+    转换注意事项:
+
+    - G 与 V 星等差异可达 0.1-0.5 mag (取决于颜色)
+
+    - J-K 颜色是恒星/星系分类的常用指标
+
+    - 测光系统转换需用恒星颜色关系 (如 G-K vs T_eff)
+
+    '
+  source: Jordi et al. 2010, A&A; Cutri et al. 2003, 2MASS Explanatory Supplement
+  confidence: established
+- id: mk_spectral_classification
+  title: MK 光谱分类原理
+  category: measurement_principle
+  tags:
+  - mk
+  - classification
+  hypothetical_queries:
+  - MK光谱分类的温度序与光度级
+  - 光谱型与有效温度怎么对应
+  - 如何从谱线区分巨星与矮星
+  applies_to:
+    fields:
+    - spectral_type
+    entities:
+    - star
+  content: 'MK 分类 = 温度序 (OBAFGKM, 谱线相对强度) × 光度级 (I-V, 线宽/强度)。
+
+    物理原理: 温度决定电离态与分子平衡; 光度级由表面重力 (线展宽) 判别 —
+
+    同光谱型巨星与矮星温度相同但重力不同。
+
+    判定线索: SpT 与 Teff 矛盾 (如标 M 型却给 20000 K) = 字段错位;
+
+    金属丰度低会使金属线变弱、误判为更热型; 双星 (SB2) 模糊线型。
+
+    测量方法: 目视比较标准星谱 + 自动分类 (MKCLASS/机器学习)。'
+  source: Gray 2005; MK 分类原始文献
+  confidence: established
+- id: agn_emission_line_diagnostics
+  title: AGN 谱线诊断 (BPT 图)
+  category: measurement_principle
+  tags:
+  - bpt
+  - agn
+  - diagnostics
+  hypothetical_queries:
+  - BPT图怎么区分AGN与恒星形成
+  - LINER星系是什么性质
+  - '[OIII]/Hβ线比诊断电离机制'
+  applies_to:
+    entities:
+    - agn
+    - seyfert_galaxy
+    - liner
+    - emission_line_galaxy
+  content: 'BPT 图 ([OIII]/Hβ vs [NII]/Hα) 区分电离机制: Kewley 2001 最大星暴线上
+
+    需要 ≥30-50% AGN/激波贡献; Kauffmann 2003 经验线与 Kewley 线之间为 composite;
+
+    [SII]/Hα、[OI]/Hα 分离 Seyfert 与 LINER。
+
+    物理原理: 恒星形成 (O/B 星电离) 与 AGN (幂律电离) 产生不同的线强度比 —
+
+    AGN 硬光子产生更高的 [OIII]/Hβ 与 [OI]/Hα。
+
+    关键误区: LINER 不是单一物理类 — 低光度 AGN / post-AGB 老年恒星 / 激波
+
+    三机制共存; 宽 Hα + 硬 X 射线指向 AGN 型。'
+  source: Kewley 2001; Kauffmann 2003; 两类 LINER (0902.1023)
+  confidence: consensus
+- id: sersic_profile_fitting
+  title: Sérsic 剖面拟合
+  category: measurement_principle
+  tags:
+  - sersic
+  - profile
+  hypothetical_queries:
+  - Sérsic剖面公式与n指数含义
+  - 星系表面亮度分布怎么拟合
+  - n=1与n=4分别对应什么星系形态
+  applies_to:
+    entities:
+    - galaxy
+  content: 'Sérsic 剖面 I(r) = I_e exp[-b_n ((r/r_e)^(1/n) - 1)]: n=1 指数盘 (旋涡),
+
+    n=4 de Vaucouleurs (椭圆), 中间值过渡形态。
+
+    物理原理: 表面亮度分布反映恒星轨道分布与松弛程度;
+
+    测量方法: 二维剖面拟合 (GALFIT 等), r_e 有效半径, n 形态参数。
+
+    判定线索: 单分量拟合残差大的星系 = 核球+盘双组分 (n 值需分别拟合);
+
+    LSB 星系 μ0(B) ≥ 23 mag/arcsec^2 是操作定义 (表面亮度受限巡天的物理根源)。'
+  source: Sérsic 1963; GALFIT 文档; UTK 星系讲义
+  confidence: established
+- id: iras_farir_photometry
+  title: IRAS 远红外测光口径
+  category: measurement_principle
+  tags:
+  - iras
+  - farir
+  - photometry
+  hypothetical_queries:
+  - IRAS远红外测光要注意什么
+  - 红外色-色图怎么区分AGN与星暴
+  - 远红外光度为什么示踪恒星形成
+  applies_to:
+    entities:
+    - far_infrared_source
+    - infrared_source
+  content: 'IRAS 60/100 μm 测光需注意: Cirrus 污染 (银河系红外 Cirrus 背景)、
+
+    色修正 (不同 SED 假设)、SES 误差列 (噪声)、q_* 质量标志 (质量等级,
+
+    q=2 表示可靠, 低质量需标注)。
+
+    物理原理: 远红外 = 尘埃再辐射 (消光免疫的恒星形成示踪);
+
+    IRAS 色-色图 (log(S60/S25) > 0.57 星暴 / 0-0.57 AGN) 是 AGN-恒星形成
+
+    最佳单色判据。
+
+    判定线索: q_* 标志低的通量不可直接用于定量分析;
+
+    FIR 光度 >1e13 Lsun 且无红移 = 需复核 (ULIRG 极罕见)。'
+  source: IRAS Explanatory Supplement 1988; Helou; de Grijp
+  confidence: consensus
+- id: extragalactic_distance_ladder
+  title: 河外距离阶梯
+  category: measurement_principle
+  tags:
+  - distance
+  - ladder
+  hypothetical_queries:
+  - 河外距离阶梯由哪些级组成
+  - 造父变星周光关系怎么定距离
+  - 同一星系不同方法距离差多少算正常
+  applies_to:
+    fields:
+    - distance
+    entities:
+    - galaxy
+  content: '河外距离由阶梯逐级校准: 几何视差 (Gaia) → Cepheid PL 关系 → TRGB →
+
+    SN Ia (Phillips 关系) → Tully-Fisher; 每级误差累积增大。
+
+    物理原理: 各级标准烛光/尺子在不同距离域可校准; 交叉验证约束系统差。
+
+    判定线索: 同一星系的距离记录方法不同时, 差异 <10% 属正常 (近邻大星系 ~780 kpc
+
+    Cepheid/TRGB/SN Ia 一致); 孤立方法异常值需复核;
+
+    距离与红移应满足 Hubble 流 (z=0.001 对应 ~4.3 Mpc)。'
+  source: 距离阶梯综述; McConnachie 2012; Benedict 2002
+  confidence: established
+- id: radial_velocity_measurement
+  title: 径向速度测量
+  category: measurement_principle
+  tags:
+  - radial_velocity
+  - doppler
+  hypothetical_queries:
+  - 视向速度测量原理与精度
+  - 谱线多普勒位移怎么换算速度
+  - 同一恒星RV记录差异大说明什么
+  applies_to:
+    fields:
+    - radial_velocity
+    entities:
+    - star
+    - galaxy
+  content: 'RV 由谱线多普勒位移测量: Δλ/λ = v/c; 精度受谱分辨率与信噪比限制
+
+    (典型 0.1-10 km/s, 高精度 spectrograph 可达 m/s 级)。
+
+    误差来源: 波长定标漂移、恒星活动 (星斑伪信号)、大气视向速度、
+
+    双星轨道相位 (同一源不同历元 RV 不同)。
+
+    物理原理: 谱线位置 vs 实验室波长; 天基 (Gaia RVS) 与地基联合。
+
+    判定线索: 同一恒星的 RV 记录差异 >50 km/s = 双星或测量错误;
+
+    星系 RV 与红移矛盾 = 本动速度 vs 宇宙学红移混淆。'
+  source: RV 测量方法文献; HARPS/ESPRESSO 综述
+  confidence: established
+- id: 2mass_jhk_photometry
+  title: 2MASS JHK 测光列语义
+  category: measurement_principle
+  tags:
+  - 2mass
+  - jhk
+  - photometry
+  hypothetical_queries:
+  - 2MASS JHK星等的物理含义
+  - K20e等照度口径星等是什么
+  - 近红外测光为什么示踪恒星质量
+  applies_to:
+    entities:
+    - near_infrared_source
+    - galaxy
+  content: '2MASS XSC 列语义 (VII/233/xsc): J 1.25μm / H 1.65μm / K 2.16μm (Vega 零点);
+
+    J.K20e = 20 mag/arcsec^2 等照度椭圆口径星等; Jconc 集中度、Jb/a 轴比、
+
+    Jpa 位置角、Jmu 表面亮度、Jfe/Jext 标志位。
+
+    物理原理: 近红外对尘埃不敏感, 示踪恒星质量主导成分;
+
+    判定线索: K20e 是等照度口径 — 与 PSF 口径星等不可直接比较;
+
+    Jfe 标志位非零 = 星等质量存疑;
+
+    2MASS 零点与 Vega 一致, 跨目录同波段 (同为 2MASS) 可直接比较。'
+  source: Cutri 2003 2MASS Explanatory Supplement; VizieR VII/233
+  confidence: consensus
+- id: metallicity_measurement
+  title: 金属丰度测量与双标尺
+  category: measurement_principle
+  tags:
+  - metallicity
+  - feh
+  hypothetical_queries:
+  - 恒星[Fe/H]怎么测量
+  - 12+log(O/H)与[Fe/H]怎么换算
+  - 金属丰度两个标尺的区别
+  applies_to:
+    fields:
+    - metallicity
+    entities:
+    - star
+    - galaxy
+  content: '金属丰度两个标尺: 恒星 [Fe/H] (谱线等效宽度/曲线增长分析) 与
+
+    星云 12+log(O/H) (氧禁线比, 电子温度法); 太阳 12+log(O/H)=8.69,
+
+    换算 Z/Zsun = 10^(A-8.69)。
+
+    物理原理: Fe 由 SN Ia 主导, O/Mg 由核塌缩 SN 主导 — [O/Fe] 是恒星形成
+
+    时标探针, 两标尺间不是常数偏移。
+
+    判定线索: [Fe/H] 与 12+log(O/H) 数值混用 (差 ~8.7) 是常见单位错误;
+
+    [Fe/H] < -3 的恒星记录需高置信证据 (极贫金属星极罕见)。'
+  source: Asplund 2009; 氧丰度转换讨论; 谱线分析文献
+  confidence: consensus
+- id: galaxy_kinematics_measurement
+  title: 星系动力学测量
+  category: measurement_principle
+  tags:
+  - kinematics
+  - rotation
+  hypothetical_queries:
+  - 星系旋转曲线怎么测量
+  - 平坦旋转曲线说明什么
+  - 星系团速度弥散的典型值
+  applies_to:
+    entities:
+    - galaxy
+  content: '星系动力学: 旋转曲线 (HI 21cm / Hα 长缝) 与速度弥散 σ;
+
+    logD25 等光度直径、logR25 轴比、i 倾角用于几何修正。
+
+    物理原理: 旋转速度 + 半径 → 动力学质量 (维里/盘模型);
+
+    平坦旋转曲线 = 暗物质晕主导。
+
+    判定线索: 旋转速度与形态矛盾 (矮星系 300 km/s 不可能) = 单位错误
+
+    (km/s vs km); 倾角未知时 v_rot 是下界 (投影效应);
+
+    团成员速度弥散 ~800-1000 km/s 是团级特征 (群 ~150 km/s)。'
+  source: 星系动力学讲义; HI 21cm 观测文献
+  confidence: established
+- id: photometric_redshift_galaxy
+  title: 星系测光红移
+  category: measurement_principle
+  tags:
+  - photoz
+  - redshift
+  hypothetical_queries:
+  - 星系测光红移的典型精度
+  - photo-z灾难性失败的原因
+  - 高红移星系为什么需要光谱证认
+  applies_to:
+    fields:
+    - redshift
+    entities:
+    - galaxy
+  content: 'photo-z 由宽带/窄带测光 SED 模板拟合 (χ²) 或机器学习估计;
+
+    典型精度: 宽带 0.03-0.05 (σ(Δz/(1+z))), 多/窄带 0.007-0.02;
+
+    spec-z 精度 1e-3-1e-4 (基准方法)。
+
+    误差机制: 颜色-红移简并 (尘埃中间红移星系可伪装高 z 洁净星系 →
+
+    灾难性失败)、模板库不完备、测光定标误差; 现代方法输出整条 PDF。
+
+    判定线索: photo-z 与 spec-z 差异 >0.1 (1+z) 需标记;
+
+    z > 4 的 photo-z 误差 >0.2 是常态 — 高红移结论必须有 spec-z 或
+
+    多波段独立证据; 两步法 (先 photo-z 再固定 z 拟合) 会低估不确定度。'
+  source: Ilbert 2009 COSMOS; EDisCS; PAU; Conroy 2013
+  confidence: consensus
+- id: photometric_system_ugriz
+  title: SDSS ugriz 测光系统与 AB 零点
+  category: measurement_principle
+  tags:
+  - sdss
+  - ugriz
+  - ab_magnitude
+  - zero_point
+  - photometry
+  hypothetical_queries:
+  - SDSS ugriz测光系统的波段定义
+  - AB星等零点怎么定义
+  - AB与Vega星等怎么换算
+  applies_to:
+    fields:
+    - apparent_magnitude
+    methods:
+    - photometry
+  content: 'SDSS u''g''r''i''z'' 五色宽带系统 (Fukugita 1996): 有效中心波长约 3550/4770/6230/7630/9130 A, 覆盖 3000-11000 A; 滤光片设计避开强夜天光发射线, 带宽比 Johnson-Cousins 更宽, 利于暗弱源探测。
+
+
+    AB 零点定义: m_AB = -2.5 log10(f_nu) - 48.60 (f_nu 单位 erg/s/cm^2/Hz), 对应恒定谱 f_nu = 3631 Jy 的物理通量; SDSS 零点基于 Oke & Gunn (1983) 的 AB_95 绝对定标。
+
+
+    与 Vega 系统换算: 同一物理通量下两系统差值取决于滤光片有效波长与源颜色, u 波段可达 ~1 mag 量级; g/r/i 与 Johnson V/R/I 亦存在 ~0.1-0.5 mag 的颜色相关差, 数值不可直接互换。
+
+
+    判定线索: 同一源 u 星等跨系统差 >1 mag 属正常而非数据错误; 标称 AB 却按 Vega 零点还原通量会系统性偏移; 星等误差列与波段不匹配 (如 g 带误差与 r 带星等混用) 是常见错误。'
+  source: Fukugita et al. 1996, AJ 111, 1748; Oke & Gunn 1983, ApJ 266, 713
+  confidence: established
+- id: spectral_line_measurement
+  title: 谱线参数测量 (中心波长/等值宽度/FWHM)
+  category: measurement_principle
+  tags:
+  - equivalent_width
+  - fwhm
+  - line_profile
+  - continuum
+  - signal_to_noise
+  hypothetical_queries:
+  - 谱线等值宽度怎么测量
+  - 谱线FWHM的测量精度
+  - 弱线等值宽度的误差有多大
+  applies_to:
+    fields:
+    - equivalent_width
+    - spectral_line_width
+    entities:
+    - star
+    - galaxy
+  content: '谱线基本参数: 中心波长 (质心法或高斯/福格特轮廓拟合), FWHM (半高全宽), 等值宽度 W = ∫(1 - F_l/F_c) dλ (吸收线; 发射线为负)。未饱和时 EW 正比于谱线强度且不依赖分辨率, 但依赖连续谱归一化。
+
+
+    测量精度: Cayrel 经验公式 ΔW ~ 1.5 × sqrt(FWHM × pixel) / (S/N) (Gaussian 线); 弱线极限 σ(W) ∝ W/(S/N); 总误差 = 光子噪声项 ⊕ 连续谱定位不确定项 (Vollmann & Eversberg 2006)。
+
+
+    FWHM 由天然展宽、热/湍流展宽与仪器轮廓 (R = λ/Δλ) 卷积: 观测线宽^2 = 天然^2 + 物理^2 + 仪器^2; 未分辨线 FWHM 即仪器轮廓宽度, 只能给出上限。
+
+
+    判定线索: S/N < 10 时 EW 相对误差 >30% 属正常; 低分辨率 (R < 3000) 下吸收 EW 系统性偏小, 比较需同分辨率; 连续谱窗口选择不同引入 ~5-10% 系统差; 发射线 EW 为负值, 与吸收线混用比较会误判。'
+  source: Cayrel de Strobel 1988; Vollmann & Eversberg 2006, AN 327, 12
+  confidence: consensus
+  ranges:
+    equivalent_width:
+      lo: 0.01
+      hi: 100.0
+      unit: Angstrom
+- id: radial_velocity_precision
+  title: 径向速度测量精度与抖动源
+  category: measurement_principle
+  tags:
+  - radial_velocity
+  - precision
+  - jitter
+  - granulation
+  - stellar_activity
+  hypothetical_queries:
+  - 视向速度能达到多高的精度
+  - 恒星活动引起的RV抖动有多大
+  - m/s级精度需要什么条件
+  applies_to:
+    fields:
+    - radial_velocity
+    entities:
+    - star
+  content: 'RV 精度层次: 常规中低分辨光谱 ~1-10 km/s; 高分辨光纤光谱仪 (HARPS 级) 光子噪声 ~0.3 m/s、仪器长期稳定 ~1 m/s (13 年波长解漂移 <0.75 m/s); ESPRESSO 设计精度 ~0.1 m/s, 此时微水气线等成为新误差源。
+
+
+    光子噪声极限: σ_v ∝ c / (Q × S/N), Q 为品质因子 ~ sqrt(N_lines) × R 相关项 — 需高 S/N (>100)、窄谱线与多条谱线联合提取。
+
+
+    恒星抖动 (jitter) 是 m/s 级精度的主要瓶颈: 米粒组织 ~0.5 m/s (日尺度), 超米粒 ~0.6 m/s, 星斑/磁活动 ~1-5 m/s (随自转与活动周期演化), 磁周期长时标 ~3 m/s (10 年尺度, 可用活动指数建模扣除)。
+
+
+    判定线索: 同星跨历元 RV 散差 >50 km/s = 双星/谱线混合或测量错误; 宣称 m/s 级精度必须说明 jitter 与活动建模; RV 与活动指数 (S-index/H alpha) 强相关 = 活动伪信号而非轨道信号。'
+  source: Dumusque et al. 2021 (HARPS-N solar decade); Pepe et al. 2021, A&A 645, A96 (ESPRESSO)
+  confidence: established
+  ranges:
+    radial_velocity_precision:
+      lo: 0.0001
+      hi: 10.0
+      unit: km/s
+- id: stokes_polarimetry
+  title: 偏振测量与 Stokes 参数
+  category: measurement_principle
+  tags:
+  - polarimetry
+  - stokes
+  - polarization
+  - degree_of_polarization
+  - position_angle
+  hypothetical_queries:
+  - Stokes参数怎么测量
+  - 线偏振度与偏振位置角怎么计算
+  - 低信噪比偏振测量的系统性偏差
+  applies_to:
+    fields:
+    - polarization_degree
+    - polarization_angle
+    entities:
+    - star
+    - galaxy
+    - radio_source
+  content: 'Stokes 参数 (I, Q, U, V): I 总强度, Q/U 描述线偏振 (两垂直方向强度差及旋转 45 度后再测之差), V 圆偏振; 由多个方向偏振片/双线偏振馈源的强度测量联立求解。
+
+
+    线偏振度 p_L = sqrt(Q^2 + U^2) / I, 偏振位置角 θ = 0.5 × atan2(U, Q) (IAU 约定, 自北向东); 总偏振度 p = sqrt(Q^2 + U^2 + V^2) / I。
+
+
+    关键统计问题: p 为正定有偏量, 低 S/N 时噪声使 p 系统性偏大 — 需 Rice 分布去偏 (Serkowski 1958 查表校正); σ(p) ~ σ_r/I, σ(θ) ~ σ(p)/(2p); 仪器偏振需偏振定标/Mueller 矩阵扣除。
+
+
+    典型精度: 高信号偏振测量 p 精度 ~0.1-0.5%, 位置角 ~1 度; 多数天体线偏振度 <5%, 声称 >30% 的偏振度极罕见、需强证据。
+
+
+    判定线索: p 列无误差列不可信; p ~ 0 时位置角无定义 (记为 0 度是常见假值); 未去偏的低 S/N p 系统性偏高, 跨目录比较需同 S/N 水平。'
+  source: Serkowski 1958; Simmons & Stewart 1985, A&A 142, 100; Myserlis et al. 2018
+  confidence: established
+  ranges:
+    polarization_degree:
+      lo: 0.001
+      hi: 0.3
+      unit: '1'
+- id: light_curve_phase_folding
+  title: 光变曲线相位折叠与周期搜索
+  category: measurement_principle
+  tags:
+  - light_curve
+  - period
+  - lomb_scargle
+  - phase_folding
+  - ephemeris
+  - variability
+  hypothetical_queries:
+  - Lomb-Scargle周期搜索方法
+  - 相位折叠图怎么判断周期正确性
+  - 谐波混淆导致的周期错误
+  applies_to:
+    fields:
+    - variability_period
+    - epoch
+    entities:
+    - star
+    - galaxy
+  content: '周期搜索: Lomb-Scargle 周期图处理非均匀采样; 总基线 T 决定频率分辨率 Δf ~ 1/T, 即周期相对误差 ΔP/P ~ P/T; PDM (相位弥散最小化) 对非正弦波形更稳健; 需检查窗口函数引入的混叠峰。
+
+
+    相位折叠: φ = ((t - T0) mod P) / P; 折叠图按相位 bin 平均后应呈平滑曲线; 真周期判别要点 — 谐波混淆 (P/2 与 2P 均可产生峰值)、消食双星奇偶次极小不对称 (揭示真实周期为 2 倍)、折叠散差最小化。
+
+
+    食/掩事件计时: 极小时刻 (O-C) 图用于精化历元; 数十年基线的高精度计时可达秒级 (O-C 散差 ~10-40 s); O-C 二次项揭示周期演化 (质量转移/轨道变化), 周期导数 |P_dot/P| 典型 < 1e-10 每周期量级。
+
+
+    判定线索: 周期列与折叠图不符 (折叠平坦无结构) = 周期错误或采样假峰; 不同目录周期相差 2 倍 = 谐波混淆; 短周期 (P < 0.1 d) 记录需警惕混叠与混染; 相位 bin 内散差远大于测光误差 = 周期不准或次生周期。'
+  source: Lomb 1976; Scargle 1982; VanderPlas 2018, ApJS 236, 16
+  confidence: consensus
+  ranges:
+    variability_period:
+      lo: 0.01
+      hi: 1000.0
+      unit: d
+- id: astrometric_precession_nutation
+  title: 岁差/章动/自行修正与历元转换
+  category: measurement_principle
+  tags:
+  - precession
+  - nutation
+  - proper_motion
+  - aberration
+  - epoch
+  - icrs
+  hypothetical_queries:
+  - 岁差与章动对坐标的影响
+  - 自行怎么外推到不同历元
+  - 跨目录位置比较要注意什么
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - proper_motion_ra
+    - proper_motion_dec
+    entities:
+    - star
+  content: '跨历元坐标转换 (如 J2000.0 → 观测历元) 需依次施加: 自行 (μ × Δt)、岁差、章动、周年光行差与视差, 各效应幅度差异巨大。
+
+
+    岁差: 黄经总岁差 ~50.29 角秒/年 (IAU 2006 模型); 春分点移动使给定恒星赤经按 Newcomb 公式变化 (m = 3.074 + 1.337 sin(α) tan(δ) s/yr, n = 20.043 cos(α) 角秒/yr, 即典型 ~46 角秒/yr 量级)。
+
+
+    章动: 主轴振幅 Δψ ~ 17.2 角秒 (黄经) 与 Δε ~ 9.2 角秒 (黄赤交角), 主周期 18.6 年; 周年光行差由地球轨道速度 (v/c ~ 1e-4) 引起, 幅度 ~20.5 角秒; 恒星周年视差一般 <1 角秒, 需单独施加。
+
+
+    判定线索: 跨目录位置比较必须先统一历元与参考系 (ICRS 与旧 FK5/历元系统差异 ~0.02-0.1 角秒); 高自行源 (μ > 0.1 角秒/yr) 混用不同历元坐标会引入 >1 角秒系统差; 视差/自行/历元不一致是交叉证认失败的常见原因。'
+  source: IAU 2006 岁差模型 (Capitaine et al. 2003); Astronomical Almanac; Lieske et al. 1977
+  confidence: established
+  ranges:
+    proper_motion:
+      lo: 0.0
+      hi: 10000.0
+      unit: mas/yr
+- id: radio_interferometry_uv
+  title: 干涉测量 uv 覆盖与综合孔径
+  category: measurement_principle
+  tags:
+  - interferometry
+  - uv_coverage
+  - aperture_synthesis
+  - visibility
+  - cleaning
+  - synthesis_imaging
+  hypothetical_queries:
+  - uv覆盖是什么
+  - 综合孔径成像的基本原理
+  - 短基线缺失对延展源成像的影响
+  applies_to:
+    fields:
+    - flux_density
+    methods:
+    - radio_interferometry
+    - VLBI
+    - interferometry
+  content: '综合孔径: 每对天线测量一个复可见度 V(u,v) = ∫ I(l,m) exp(-2πi(ul + vm)) dl dm, 即天空亮度的一个空间傅里叶分量; N 天线给出 N(N-1)/2 条基线, 地球自转使基线投影旋转, 跟踪观测逐步填充 uv 平面。
+
+
+    分辨与视场: 角分辨率 θ ~ λ/B_max (最长基线决定); 可成像的最大延展尺度 ~ λ/B_min (最短基线决定) — 短基线缺失造成零间隔问题, 延展发射整体不可见; 视场受单天线主波束限制。
+
+
+    成像: 可见度逆傅里叶变换得脏图 = 真天图 ⊗ 脏束 (uv 采样函数的变换), 需 CLEAN/最大熵去卷积; 加权方案: natural (∝1/σ², 灵敏度最高), uniform (分辨率最高), robust (折中), tapering (抑制旁瓣、牺牲分辨率)。
+
+
+    误差: 相位定标误差 (大气 + 仪器) 主导像质量; 带宽/时间平均涂污 ∝ 离相位中心角距; 流量定标 ~5-10%; 天体赤纬低时 uv 覆盖变差 (近一维)。
+
+
+    判定线索: 宣称的高分辨结构须与 λ/B_max 分辨率自洽; 延展源通量在短基线不足的阵列上系统性低估; 不同配置/历元观测的延展源通量差异 >20% 应复核。'
+  source: Thompson, Moran & Swenson 2017, Interferometry and Synthesis in Radio Astronomy
+  confidence: established
+  ranges:
+    angular_resolution:
+      lo: 1.0e-05
+      hi: 1000.0
+      unit: arcsec
+- id: error_propagation_weighted
+  title: 误差传播与加权平均
+  category: measurement_principle
+  tags:
+  - error_propagation
+  - weighted_mean
+  - inverse_variance
+  - bessel
+  - statistics
+  hypothetical_queries:
+  - 误差传播公式怎么用
+  - 逆方差加权平均怎么合并测量
+  - 测量散差大于误差预期怎么办
+  content: '误差传播: 对 f(x1, x2, ...), σ_f^2 = Σ (∂f/∂xi)^2 σ_xi^2 (独立误差相加); 幂律 f = x^a y^b → (σ_f/f)^2 = a^2 (σ_x/x)^2 + b^2 (σ_y/y)^2; 相关误差需引入协方差项。
+
+
+    加权平均: x̄ = Σ w_i x_i / Σ w_i, 权重 w_i = 1/σ_i^2 (逆方差加权, 高斯噪声下即最大似然估计), 合并不确定度 σ_x̄ = 1/sqrt(Σ w_i); N 个等精度测量合并 → σ/√N。
+
+
+    注意: 方差由有限样本估计时需 Bessel 修正 — 第 i 源由 n_i 个样本估计方差时权重 ∝ (n_i - 1)/v_i; 测量间散差超过误差预期 (MSWD >> 1) 表示过离散, 需随机效应模型 w_i = 1/(v_i + τ^2) 或分层模型, 否则 σ_x̄ 被系统性低估。
+
+
+    判定线索: 加权平均误差显著小于任一单测量误差时应检查一致性; 合并值必须说明是否含系统差 (定标误差不随 N 减小); 加权平均只对同量纲、同口径定义的量有效; 个别坏点会破坏逆方差加权, 需稳健统计 (中位数/剔除)。'
+  source: Taylor 1997, An Introduction to Error Analysis; Hogg et al. 2010, arXiv:1008.4686
+  confidence: consensus
+- id: spectral_index_measurement
+  title: 谱指数测量 (连续谱幂律斜率)
+  category: measurement_principle
+  tags:
+  - spectral_index
+  - synchrotron
+  - power_law
+  - radio
+  - free_free
+  hypothetical_queries:
+  - 谱指数怎么测量
+  - 两点法谱指数的误差
+  - 同步辐射的典型谱指数范围
+  applies_to:
+    fields:
+    - spectral_index
+    methods:
+    - radio
+    - radio_interferometry
+  content: '谱指数定义: 通量密度幂律 S(ν) ∝ ν^α; 两点指数 α = log(S1/S2) / log(ν1/ν2), 通常取 1.4 GHz 与另一频段的积分通量组合。
+
+
+    典型值: 同步辐射非热成分 α ≈ -0.5 至 -1.1 (典型 ~-0.7 至 -0.8); 自由-自由热辐射 α ≈ -0.1 (近平坦); 恒星形成星系整体谱指数 ~-0.5 至 -0.8; 反坡 (α > 0) 常见于恒星射电/行星大气而非河外同步辐射。
+
+
+    误差: σ(α) = (1/ln(ν1/ν2)) × sqrt((σ1/S1)^2 + (σ2/S2)^2); 频段间隔越大误差越小; 流量定标系统差 (5-10%) 常主导误差, 必须并入; 谱曲率 (两段斜率差) 指示自吸收或辐射老化。
+
+
+    判定线索: 不同目录谱指数须同频段比较 (α 随频段变化); 平坦谱可能是热 + 非热混合而非单一成分; 仅两点且缺误差列的 α 不可直接用于物理推断; 低 S/N (S/N < 10) 时 α 误差急剧增大。'
+  source: Condon 1992, ARA&A 30, 575; MIGHTEE-COSMOS 2023
+  confidence: consensus
+  ranges:
+    spectral_index:
+      lo: -2.0
+      hi: 1.0
+      unit: '1'
+- id: stromgren_photometry
+  title: Strömgren uvby 中间带测光
+  category: measurement_principle
+  tags:
+  - stromgren
+  - uvby
+  - hbeta
+  - intermediate_band
+  - metallicity_index
+  hypothetical_queries:
+  - Strömgren uvby测光系统
+  - m1与c1指数分别表示什么
+  - 中间带测光的优势
+  applies_to:
+    fields:
+    - apparent_magnitude
+    entities:
+    - star
+  content: 'Strömgren-Crawford uvby 系统 (中间带, 中心波长约 3500/4110/4670/5470 A) + Hβ 窄带滤光片对, 专为恒星物理参数测量设计, 对温度/金属度/重力的分辨能力显著优于宽带系统。
+
+
+    指数定义: (b-y) 为温度指示; m1 = (v-b) - (b-y) 为金属丰度指数; c1 = (u-v) - (v-b) 为表面重力/光度指数; Hβ 对温度敏感且对红化与金属度相对不敏感。
+
+
+    精度: CCD 观测内部精度 0.005-0.02 mag (亮至 V~17), 微分金属度可达 ~0.01-0.06 dex; 红化换算 E(b-y) ≈ 0.74 E(B-V)。
+
+
+    判定线索: uvby 星等/指数与宽带 (B-V) 直接互换是错误; m1/c1 负值需查错 (正常恒星 m1 约 0.05-0.4); 理论定标 (模型大气) 与经验定标存在小系统偏移, 跨研究比较需同一定标源。'
+  source: Strömgren 1966, ARA&A 4, 433; Önehag et al. 2009, A&A 498, 527; Twarog et al. 2023, AJ 165, 105
+  confidence: consensus
+  ranges:
+    stromgren_index_m1:
+      lo: 0.0
+      hi: 0.5
+      unit: mag
+- id: sed_fitting_method
+  title: SED 拟合方法 (模板网格/χ² 最小化)
+  category: measurement_principle
+  tags:
+  - sed
+  - template_fitting
+  - chi_square
+  - bayesian
+  - energy_balance
+  - photometry
+  hypothetical_queries:
+  - SED拟合怎么做
+  - CIGALE/MAGPHYS输出哪些参数
+  - 能量平衡约束是什么
+  applies_to:
+    fields:
+    - redshift
+    - flux_density
+    entities:
+    - galaxy
+    - agn
+    methods:
+    - photometry
+  content: 'SED 拟合: 将多波段测光点与模型 SED 库比对, 通过 χ² 最小化估计物理参数: χ² = Σ_i (F_obs,i - F_model,i)² / σ_i²。
+
+
+    模型通量 = 模板光谱经滤光片透过率卷积: F_model,i = ∫ T_i(λ) F_λ dλ / ∫ T_i(λ) dλ。
+
+
+    物理原理: 天体 SED 由恒星合成 (Bruzual & Charlot) + 尘埃消光 (Calzetti/Charlot-Fall 律) + 尘埃再辐射 (远红外) + 星云发射 + AGN 供体 (torus) 组成。
+
+
+    能量平衡约束: 紫外-光学被尘埃吸收的能量必须由远红外再辐射补足, 违反能量平衡的拟合结果不可信。
+
+
+    现代代码 (CIGALE/MAGPHYS) 输出参数后验分布而非单点最优: P(θ|D) ∝ exp(-χ²/2) × p(θ), 网格穷举或 MCMC 采样。
+
+
+    常用输出: 恒星质量、SFR、消光 A_V、尘埃质量; 恒星质量与尘埃温度等参数存在简并, 需多波段覆盖缓解。
+
+
+    污染源: 孔径混入邻星/核光使颜色变蓝 → 系统性低估年龄与质量 (光斑污染)。
+
+
+    发射线落入宽带滤光片 (高 z 时 Hα 进入 J/K 带) 是系统性偏差, 拟合高 z 或低质量星系必须开启 nebular 模块; AGN 污染需中红外成分建模。
+
+
+    判定线索: 参数后验双峰/多峰 = 简并未解决; 拟合残差单波段 >3σ 需复核该波段测光。
+
+
+    单点最优 χ² 无不确定度直接当物理量引用是常见错误; 仅宽带测光 (σ_z > 0.05) 时高 z 参数外推不可靠。'
+  source: Boquien et al. 2019, A&A 622, A103 (CIGALE); da Cunha, Charlot & Elbaz 2008, MNRAS 388, 1595 (MAGPHYS); Conroy 2013, ARA&A 51, 393
+  confidence: consensus
+- id: aperture_photometry
+  title: 孔径测光 (孔径半径/天空扣除/孔径改正)
+  category: measurement_principle
+  tags:
+  - aperture
+  - photometry
+  - fwhm
+  - sky_annulus
+  - aperture_correction
+  - curve_of_growth
+  hypothetical_queries:
+  - 孔径测光怎么选半径
+  - 天空背景怎么扣除
+  - 孔径改正为什么必要
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+    entities:
+    - star
+    - galaxy
+    methods:
+    - photometry
+  content: '孔径测光: 以源为中心的圆孔径内累加计数, 扣除天空背景: F = Σ(孔径内像素值) - B × N_pix。
+
+
+    天空背景 B 由源外环形区 (annulus, 内径常取 2-3 倍孔径) 的 sigma-clipped 中位数估计; 拥挤场用 3×median - 2×mean 稳健估计。
+
+
+    孔径半径选择: 半径越大含通量越多, 但天空噪声与邻源混染越大。
+
+
+    天空主导时点源 S/N 最优半径 ~0.7 × FWHM (高斯 PSF 理论解); 常用 1.5-2 × FWHM 兼顾通量完整与视宁稳健, ~2.5 × FWHM 包住绝大部分通量。
+
+
+    延展源 (星系) 用 Kron 半径 R = 2.5 × 一阶矩半径 (SExtractor FLUX_AUTO)。
+
+
+    孔径改正: 小孔径漏掉的 PSF 翼通量 (2 × FWHM 外仍残留 ~1-5%) 由孤立亮星曲线增长 (curve of growth) 测得, 统一加到所有目标。
+
+
+    物理原理: 天空噪声 ∝ sqrt(面积), 目标信号集中在 PSF 内 — 孔径是信噪比与通量完整性的折中; 时序测光固定孔径 + 统一改正可消除视宁变化影响。
+
+
+    判定线索: 无孔径改正的星等与全通量口径星等差 0.05-0.2 mag 属正常。
+
+
+    天空环混入亮星 → 背景偏高 → 目标偏暗; 不同孔径配置的星等直接比较是错误。
+
+
+    混染源的孔径测光需标记或改用 PSF 拟合; 混染使信号与背景同时失真, 是拥挤场孔径测光的失效模式。'
+  source: Stetson 1987, PASP 99, 191; Bertin & Arnouts 1996, A&AS 117, 393; Naylor 1998, MNRAS 296, 339
+  confidence: consensus
+  ranges:
+    aperture_radius_fwhm:
+      lo: 1.0
+      hi: 2.5
+      unit: '1'
+- id: surface_brightness_measure
+  title: 表面亮度测量与单位 (mag/arcsec²)
+  category: measurement_principle
+  tags:
+  - surface_brightness
+  - mag_arcsec2
+  - isophote
+  - ellipse
+  - selection_effect
+  hypothetical_queries:
+  - 表面亮度单位mag/arcsec²怎么换算
+  - 低面亮度星系为什么难探测
+  - D25等光度直径的定义
+  applies_to:
+    fields:
+    - surface_brightness
+    entities:
+    - galaxy
+    methods:
+    - photometry
+  content: '表面亮度 SB 定义: 单位天区面积内的亮度, 单位 mag/arcsec²。
+
+
+    换算关系: μ = m + 2.5 × log10(A), A 为面积 (arcsec²); 由每像素标定通量换算: μ = -2.5 × log10(I) + 零点常数。
+
+
+    物理原理: 对延伸源, 表面亮度与距离无关 — 距离增大 N 倍, 总流量与张角面积各减 N², 比值不变。
+
+
+    这使低面亮度星系在所有距离上同样难以探测, 是面亮度选择效应 (SB 限制巡天) 的物理根源。
+
+
+    典型值: 暗夜夜空 V 带 ~21.5-22 mag/arcsec² (好台址, 月光/黄道光使其更亮)。
+
+
+    正常星系中心面亮度 μ0(B) 大多 14-21, 低面亮度星系 μ0(B) > 23 (操作定义); 深巡天有效极限 ~26-28 mag/arcsec²。
+
+
+    测量: 沿椭圆等光度线积分 (ELLIPSE) 或圆孔测光换算; 参考等光度 D25 即 B 带 25 mag/arcsec² 等光度直径 (RC3)。
+
+
+    等光度半径随限值变化, 不同限值 (23.5/25/27) 不可直接比较。
+
+
+    判定线索: mag 与 mag/arcsec² 混用 (差 2.5 log10 A) 是常见单位错误; 声称面亮度暗于夜空 2 mag 以上需核对天空扣除。
+
+
+    用 PSF 口径星等直接换算面亮度会把点源误判为极亮面亮度源; 未做 PSF 展宽改正的核心面亮度系统性偏高。'
+  source: Jedrzejewski 1987, MNRAS 226, 747; RC3 (de Vaucouleurs et al. 1991); Disney 1976, Nature 263, 573
+  confidence: established
+  ranges:
+    surface_brightness:
+      lo: 15.0
+      hi: 30.0
+      unit: mag/arcsec2
+- id: ccd_calibration
+  title: CCD 校准 (偏置/暗流/平场/非线性)
+  category: measurement_principle
+  tags:
+  - ccd
+  - bias
+  - dark_current
+  - flat_field
+  - read_noise
+  - gain
+  - nonlinearity
+  hypothetical_queries:
+  - CCD减偏置减暗流除平场的顺序
+  - 读出噪声与增益怎么测量
+  - 平场精度如何限制测光精度
+  applies_to:
+    fields:
+    - apparent_magnitude
+    methods:
+    - photometry
+    - spectroscopy
+  content: 'CCD 校准链: 原始计数 ≈ (目标光子 + 暗流 + 偏置) × 平场响应 + 读出噪声。
+
+
+    处理顺序: 减偏置 (零曝光帧或过扫区) → 减暗流 (按曝光时间标定) → 除平场 (归一化像素响应); 顺序颠倒会引入系统误差。
+
+
+    关键参数 (光子转移曲线测量): 增益 G ~0.4-2 e-/ADU; 读出噪声 RN ~2-15 e-/pix (慢读出低, 快读出高)。
+
+
+    满阱 ~1e5-3.5e5 e- (深耗尽芯片更高); 暗流随温度近似指数增长, 温度每降 ~6-7 °C 暗流减半。
+
+
+    深冷科学 CCD 暗流 <0.01-0.3 e-/s/pix; 非线性: 满阱 ~80-90% 以上响应偏离线性, 典型非线性 ~0.3-2%。
+
+
+    饱和像素及非线性区不可用于定量测光; 光子转移曲线斜率偏离 1 即非线性指示。
+
+
+    平场: 天空平场优于圆顶平场 (照明色温更接近夜间光谱); 多帧平均压低泊松噪声, 平场精度 ~0.2-1%, 直接限制测光精度下限。
+
+
+    物理原理: 暗流与偏置是加法噪声, 平场是乘法 (响应) 改正; 读出噪声每帧固定叠加, 是快读出/短曝光的主导噪声。
+
+
+    判定线索: 计数接近满阱 (如 >60k ADU, gain ~1) 的源误差列不可信 (非线性)。
+
+
+    未平场的图像像素间响应差 ~1% 直接进入测光; 长曝光需检查暗流稳定性与宇宙线比例; 暗流减除前必须先减偏置。'
+  source: Howell 2006, Handbook of CCD Astronomy (2nd ed.); Janesick 2001, Scientific Charge-Coupled Devices
+  confidence: established
+  ranges:
+    read_noise:
+      lo: 2.0
+      hi: 30.0
+      unit: e-/pixel
+- id: flux_calibration_standards
+  title: 流量定标 (标准星/大气消光/仪器响应)
+  category: measurement_principle
+  tags:
+  - flux_calibration
+  - standard_stars
+  - extinction
+  - airmass
+  - color_term
+  - zero_point
+  hypothetical_queries:
+  - 测光定标的标准流程
+  - 大气消光系数典型值
+  - 零点与色项改正的作用
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+    methods:
+    - photometry
+    - spectroscopy
+  content: '定标链: 仪器星等 → 大气消光改正 → 零点与色项改正 → 标准系统星等/物理通量。
+
+
+    观测标准星建立零点: m_std = m_inst - k × X - c × color - Z; 大气消光 (Bouguer 定律): m = m0 + k(λ) × X, X 为气团。
+
+
+    典型消光系数: V 带 ~0.1-0.2 mag/airmass (好台址 ~0.1), U 带 ~0.4-0.5, I 带 ~0.05-0.1。
+
+
+    物理原理: 瑞利散射 ∝ λ^-4 使蓝端消光强, 叠加臭氧/水气吸收带。
+
+
+    标准星网络: 测光标准星 Landolt UBVRI 星场 (与目标同视场/同气团观测), 分光标准星 CALSPEC (精度 ~1-2%), 合成测光可校验零点。
+
+
+    色项: 仪器滤光片+探测器与标准系统响应不同, 需色项改正 c × (color - color_std), 典型 ~0.01-0.1 mag/mag。
+
+
+    未色项改正的仪器星等与标准系统星等不可互换 (差值随颜色变化)。
+
+
+    定标精度受标准星固有误差、大气消光时变、滤光片透射老化限制; 非测光夜 (薄云) 零点漂移可 >0.05 mag; 分光响应函数须每夜重建。
+
+
+    判定线索: 无气团/时刻记录的测光不可信; 同一夜零点散差 >0.05 mag 提示云或仪器漂移。
+
+
+    不注明零点系统 (AB vs Vega) 的星等无法跨目录比较 (差值可达 ~1 mag); 单标准星定标且无误差传播报告是常见缺陷。'
+  source: Landolt 1992, AJ 104, 340; Bohlin et al. 2020, AJ 160, 21 (CALSPEC); Harris, Fitzgerald & Reed 1981, PASP 93, 507
+  confidence: established
+  ranges:
+    extinction_coefficient_v:
+      lo: 0.05
+      hi: 0.35
+      unit: mag/airmass
+- id: time_resolution_sampling
+  title: 时间分辨率与采样 (Nyquist 与混叠)
+  category: measurement_principle
+  tags:
+  - nyquist
+  - sampling
+  - aliasing
+  - cadence
+  - exposure_time
+  - spectral_window
+  hypothetical_queries:
+  - 采样定理与周期混叠
+  - 曝光时间对短周期信号的影响
+  - 如何避免混叠假周期
+  applies_to:
+    fields:
+    - variability_period
+    - epoch
+    entities:
+    - star
+    methods:
+    - photometry
+  content: '采样定理: 规则采样间隔 Δt 只能可靠恢复周期 P ≥ 2 × Δt 的信号 (Nyquist 频率 f_Nyq = 1/(2Δt))。
+
+
+    高于 Nyquist 的频率折叠为假峰 (混叠): f_alias = |f ± k × f_sample|。
+
+
+    曝光时间同样设限: 曝光 τ 相当于与矩形窗卷积, 高频振幅被 sinc 因子衰减, 短周期信号 (P < ~4τ) 明显被抹平。
+
+
+    可探测的最短时标由 max(采样间隔, 曝光时间) 决定。
+
+
+    物理原理: 混叠是采样过程的固有模糊 — 周期图必须对照频谱窗 (spectral window) 函数判别假峰。
+
+
+    夜间近同时观测的 ~1 d 采样可将真周期 ~0.8 d 折叠为假周期 ~4 d; 谐波相关采样 (如 30 min 与 10 min) 保留相同混叠峰。
+
+
+    对策: 非谐波相关采样间隔; 日心/质心改正的时间戳调制打破严格周期性 (超 Nyquist 恢复); Lomb-Scargle 周期图处理非均匀采样。
+
+
+    判定线索: 声称周期 P < 2 × 采样间隔的检测需非规则采样或显式建模支持; 周期峰与窗口函数峰重合 = 混叠嫌疑。
+
+
+    同一源不同巡天周期差 2 倍 = 谐波混淆; 曝光长于周期 1/4 时振幅系统性低估。'
+  source: Kurtz 1983, IBVS 2285; VanderPlas 2018, ApJS 236, 16; Murphy, Shibahashi & Kurtz 2013, MNRAS 430, 2986
+  confidence: consensus
+- id: isophotal_analysis
+  title: 等光度分析 (椭圆拟合/位置角/轮廓)
+  category: measurement_principle
+  tags:
+  - isophote
+  - ellipse_fitting
+  - position_angle
+  - ellipticity
+  - sersic
+  - surface_photometry
+  hypothetical_queries:
+  - 等光度椭圆拟合输出什么参数
+  - 等光度扭转说明什么结构
+  - 面亮度轮廓怎么展开
+  applies_to:
+    fields:
+    - surface_brightness
+    entities:
+    - galaxy
+    methods:
+    - photometry
+  content: '等光度分析: 以同心椭圆拟合星系表面亮度分布 (IRAF ELLIPSE / GALFIT)。
+
+
+    每环输出面亮度 μ、椭圆度 ε = 1 - b/a、位置角 PA 及高次形变参数 a4/a; 轮廓按等效圆半径 r = a × sqrt(1-ε) 展开为 μ(r)。
+
+
+    拟合策略: 中心/ε/PA 允许逐环变化 (探测等光度扭转与盘-核球过渡), 内外环固定为平均。
+
+
+    天空扣除误差会致外圈假上翘, 拟合范围选择是关键。
+
+
+    物理原理: 等光度形状反映恒星分布的三维结构 — PA/ε 随半径变化指示盘、棒、螺旋结构; 等光度线偏离纯椭圆 (a4 项显著) 指示盘形或块状结构。
+
+
+    亮度轮廓: Sérsic 律 I(r) = I_e × exp[-b_n × ((r/r_e)^(1/n) - 1)], b_n ≈ 2n - 1/3; n=1 指数盘 (旋涡), n=4 de Vaucouleurs (经典椭圆)。
+
+
+    单分量残差大的星系需核球+盘双分量; μ_e 与 n 构成基本结构参数对。
+
+
+    口径定义: D25 = B 带 25 mag/arcsec² 等光度直径 (RC3), logD25 用于几何修正; 不同等光度限值 (23.5/25/27) 的直径不可直接比较。
+
+
+    判定线索: PA/ε 急剧随半径变化而用单椭圆模型外推 = 系统偏差; 未扣天空的轮廓外圈上翘会被误认为额外成分。
+
+
+    面亮度口径不匹配 (等光度半径 vs 有效半径) 混用是常见错误; n > 8 或 < 0.2 的拟合值需复核。'
+  source: Jedrzejewski 1987, MNRAS 226, 747; Sérsic 1963; Ciotti & Bertin 1999, A&A 352, 447; RC3
+  confidence: established
+  ranges:
+    sersic_index:
+      lo: 0.2
+      hi: 8.0
+      unit: '1'
+- id: narrowband_imaging
+  title: 窄带成像 (发射线滤光片/连续谱扣除)
+  category: measurement_principle
+  tags:
+  - narrowband
+  - emission_line
+  - halpha
+  - oiii
+  - filter
+  - continuum_subtraction
+  hypothetical_queries:
+  - 窄带成像怎么做连续谱扣除
+  - Hα窄带怎么估算恒星形成率
+  - 窄带滤光片怎么按红移调谐
+  applies_to:
+    fields:
+    - equivalent_width
+    - flux_density
+    entities:
+    - galaxy
+    - emission_line_galaxy
+    methods:
+    - photometry
+    - spectroscopy
+  content: '窄带成像: 用窄带滤光片 (FWHM ~30-100 Å, 巡天常用 60-80 Å) 隔离发射线: Hα 6563 Å、[OIII] 5007 Å、[SII] 6716/6731 Å、Hβ 4861 Å、[NII] 6584 Å。
+
+
+    滤光片中心波长须按红移调谐到 λ0 × (1+z)。
+
+
+    连续谱扣除: 窄带图 = 线发射 + 连续谱; 用宽带/邻线窄带图按通量比缩放后相减得纯线图, 比例由视场内无发射恒星测得。
+
+
+    等值宽度近似: EW ≈ Δλ_NB × (f_NB/f_BB - 1), 无需绝对定标。
+
+
+    物理原理: 窄带同时削减夜空辉光噪声 (点源 S/N 增益 ∝ sqrt(带宽比))。
+
+
+    Hα 直接示踪恒星形成: log SFR(Msun/yr) ≈ log L(Hα)(erg/s) - 41.27; [OIII]/Hβ 与 [NII]/Hα 比区分电离机制 (BPT 图); [SII] 6716/6731 比定电子密度。
+
+
+    噪声与选择: 带宽越窄天空噪声越小但线中心失配风险越大; OH 夜空线残留需剔除。
+
+
+    发射线天体选择判据: 窄带图 S/N ≥ 5 且颜色超出 ~3σ (对应 EW 下限 ~15-20 Å)。
+
+
+    判定线索: 未连续谱扣除的 "线通量" 系统性偏高; Hα 与 [NII] 6584 (间隔 21 Å) 在 ~60 Å 窄带内不可分离, 报告 Hα 通量须说明混叠处理。
+
+
+    滤光片中心波长与目标红移失配 → 通量系统性低估; 强线天体误配红移 (如 [OIII] 当 Hα) 是常见目录错误。'
+  source: Kennicutt 1998, ARA&A 36, 189; Baldwin, Phillips & Terlevich 1981, PASP 93, 5; 窄带巡天方法 (NBS)
+  confidence: consensus
+  ranges:
+    narrowband_fwhm:
+      lo: 20
+      hi: 200
+      unit: Angstrom
+- id: spectrum_snr_optimization
+  title: 光谱信噪比优化 (曝光/拼接/抖动)
+  category: measurement_principle
+  tags:
+  - signal_to_noise
+  - exposure_time
+  - stacking
+  - binning
+  - dithering
+  - spectroscopy
+  hypothetical_queries:
+  - 光谱信噪比怎么提高
+  - 曝光时间与S/N的标度关系
+  - 抖动观测的目的是什么
+  applies_to:
+    fields:
+    - equivalent_width
+    entities:
+    - star
+    - galaxy
+    methods:
+    - spectroscopy
+  content: '光谱 S/N 公式: S/N = S / sqrt(S + n_pix × (B_sky + D) + n_pix × n_read × RN²), S/B/D 为每像素目标/天空/暗流计数。
+
+
+    n_pix 为积分像素数, RN 为读出噪声; 各噪声项平方相加。
+
+
+    三种主导区: 目标光子主导 S/N ≈ sqrt(S); 天空主导 S/N ∝ sqrt(t) 且与 PSF 尺寸成反比; 读出噪声主导 (短曝光/小像素) 时需加长曝光或 binning。
+
+
+    好视宁直接换 S/N (天空主导时)。
+
+
+    曝光与抽取: S/N ∝ sqrt(总曝光), S/N 翻倍需 4 倍曝光; 长缝光谱沿缝最优抽取长度 ~1.4 × FWHM (视宁方向)。
+
+
+    天空主导时先保证单帧读出噪声可忽略, 再多次拼接。
+
+
+    拼接与抖动: N 帧合并 S/N 增益 sqrt(N), 按方差加权; 抖动 (dither) 不直接提 S/N 但可剔除宇宙线、热像素与干涉条纹, 子像素抖动 + drizzling 改善采样。
+
+
+    合并帧曝光差异悬殊时须按权重处理; 物理原理: 噪声为光子泊松 + 读出固定项, 连续谱归一化误差与像素间响应误差为系统项, 不随叠加减少。
+
+
+    判定线索: S/N 随曝光线性增长 (而非 sqrt) = 口径错误; 误差只含光子项的光谱 S/N 偏高。
+
+
+    同源不同谱 EW 散差超 Cayrel 预期 (ΔW ~ 1.5 × sqrt(FWHM×pixel)/S/N) 先查连续谱归一再查 S/N; S/N < 10 的谱线参数误差 >10-30% 属正常。'
+  source: STIS Instrument Handbook (exposure-time 计算); ESO ETC 公式书; Cayrel de Strobel 1988
+  confidence: consensus
+  ranges:
+    spectral_snr:
+      lo: 3.0
+      hi: 1000.0
+      unit: '1'
+- id: astrometry_plate_solution
+  title: 天体测量板解 (切点投影/参考星/畸变)
+  category: measurement_principle
+  tags:
+  - astrometry
+  - plate_solution
+  - gnomonic
+  - distortion
+  - reference_stars
+  - wcs
+  hypothetical_queries:
+  - 天体测量板解怎么建立
+  - WCS切点投影原理
+  - 畸变改正怎么处理
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - proper_motion_ra
+    - proper_motion_dec
+    entities:
+    - star
+  content: '板解: 建立像面 (x, y) 与天球坐标的映射, 基准为切点 (gnomonic) 投影。
+
+
+    以板心为切点: ξ = cos δ × sin(α - α0) / D, η = (cos δ0 × sin δ - sin δ0 × cos δ × cos(α - α0)) / D, D = sin δ0 × sin δ + cos δ0 × cos δ × cos(α - α0); 小视场近似 ξ ≈ 角距 × cos δ。
+
+
+    基本参数: 板心 (α0, δ0)、比例尺 (arcsec/pix)、旋转角。
+
+
+    参考星: 实测 (x, y) 与目录坐标最小二乘拟合, 须 >10 颗且覆盖全视场; 现代首选 Gaia (mas 级), 历史用 Tycho-2/UCAC3。
+
+
+    畸变改正: 光学/探测器几何畸变需高阶改正; 经典径向立方模型: 半径因子 (1 + q × (ξ²+η²)), Schmidt 相机 q ≈ -1/3, q > 0 枕形 / q < 0 桶形。
+
+
+    现代 WCS 用 SIP 像元多项式或 SCAMP PV 关键字表达高阶项。
+
+
+    精度: CCD 单帧板解 RMS ~0.01-0.1 arcsec (受视宁与参考星限制); 扫描底片经 6 阶多项式畸变改正后 RMS ~0.1-0.3 arcsec。
+
+
+    残差随距板心距离系统性增大 = 畸变未改正特征; 物理原理: 板解把测量坐标转化为标准坐标, 光学畸变、温度、读数误差全部折叠进映射系数。
+
+
+    参考星自行须外推到板历元。
+
+
+    判定线索: 残差随半径系统增大 = 畸变阶数不足; 参考星集中局部 → 外推区不可信。
+
+
+    跨目录比较前必须统一历元与自行 (高自行源 μ > 0.1 arcsec/yr 混历元引入 >1 arcsec 差); 像素坐标直接当天球坐标引用是常见错误。'
+  source: Servillat et al. 2011, arXiv:1102.4874 (DASCH); Lang et al. 2010, AJ 139, 1782 (astrometry.net); Bertin 2006 (SCAMP)
+  confidence: consensus
+  ranges:
+    astrometric_residual:
+      lo: 0.001
+      hi: 1.0
+      unit: arcsec
+- id: psf_fitting_photometry
+  title: PSF 拟合测光 (拥挤场点源)
+  category: measurement_principle
+  tags:
+  - psf_fitting
+  - daophot
+  - moffat
+  - crowded_field
+  - point_source
+  hypothetical_queries:
+  - PSF拟合测光是什么
+  - 拥挤场测光为什么用PSF拟合
+  - DAOPHOT怎么构建经验PSF
+  applies_to:
+    fields:
+    - apparent_magnitude
+    entities:
+    - star
+    methods:
+    - photometry
+  content: 'PSF 拟合测光: 对源周围像素以点扩散函数做最小二乘拟合, 同时求解重叠源通量与位置: I_model(x,y) = Σ_k F_k × PSF(x - x_k, y - y_k) + B。
+
+
+    DAOPHOT ALLSTAR/ALLFRAME 为经典实现。
+
+
+    PSF 构建: 由 10-50 颗亮孤立星平均 (经验表格) 或 Moffat 解析式 I(r) = I0 × (1 + (r/α)²)^(-β), 地面视宁 β 典型 2.5-4.5。
+
+
+    跨视场 PSF 变化用多项式插值, 欠采样需掩膜处理。
+
+
+    物理原理: 拥挤场孔径混染无法靠扣背景消除, PSF 拟合以已知形状为先验分离重叠源, 良好条件下可达接近光子统计的精度 (内部 ~0.005-0.03 mag)。
+
+
+    精度限制: PSF 误差 (非圆/视场变化)、饱和与变光邻星是主要误差源; 拟合半径 ~2-3 × FWHM 最优。
+
+
+    输出 PSF 星等须经孔径改正归一到无限口径。
+
+
+    判定线索: 残差图源位置残留正/负结构 = PSF 不匹配, 结果不可信; 大视场未建模 PSF 变化 → 场边缘误差 ~0.05 mag 起。
+
+
+    饱和源 PSF 拟合失效须剔除; PSF 星等与孔径星等系统差 >0.1 mag = 缺孔径改正。'
+  source: Stetson 1987, PASP 99, 191; Anderson & King 2000, PASP 112, 1360; Trujillo et al. 2001, MNRAS 328, 977
+  confidence: established
+- id: lucky_imaging
+  title: 幸运成像 (短曝光选帧叠加)
+  category: measurement_principle
+  tags:
+  - lucky_imaging
+  - strehl
+  - seeing
+  - short_exposure
+  - diffraction_limited
+  - shift_and_add
+  hypothetical_queries:
+  - 幸运成像的原理
+  - 幸运成像选帧比例怎么定
+  - 幸运成像能达到多高的分辨率
+  applies_to:
+    fields:
+    - apparent_magnitude
+    entities:
+    - star
+    methods:
+    - photometry
+  content: '幸运成像 (lucky imaging): 高帧率拍摄极短曝光 (10-30 ms, 冻结大气湍流), 按像质 (Strehl 比/锐度) 排序, 仅选最佳一小部分帧平移叠加 (shift-and-add), 逼近衍射极限。
+
+
+    物理原理: 大气湍流偶有瞬时波前近乎平滑的 "幸运" 时刻; 单帧幸运概率 (Fried 1978): P ≈ 5.6 × exp(-0.1557 × (D/r0)²), D 为口径, r0 为 Fried 参数 (好台址 ~0.5-1 m)。
+
+
+    D/r0 增大概率骤降 — 适用口径 ~2.5 m 以下, D/r0 ~ 7 附近最优。
+
+
+    选帧: 典型选最佳 1-10% (依亮度与目标折中, 0.3-50% 均有使用); 选帧越严 Strehl 越高但有效曝光越短。
+
+
+    需低读出噪声快速相机 (EMCCD/L3Vision), 帧率 10-100 Hz。
+
+
+    性能: 2 m 级望远镜 I/z 带可达 ~0.1 arcsec FWHM、Strehl ~0.2-0.3 (长波长有利); 与快速自适应光学联合已扩展到 5 m 级。
+
+
+    最佳工作波段 ~800-1000 nm。
+
+
+    判定线索: 声称亚角秒分辨必须说明选帧比例与有效曝光; D/r0 > 10 时幸运概率极低, 高 Strehl 声明需核实。
+
+
+    Strehl 与口径须自洽 (小口径高 Strehl 但角分辨低); 未说明选帧条件的 "幸运成像" 结果不可复现。'
+  source: Fried 1978, JOSA 68, 1651; Baldwin et al. 2001, A&A 368, L1; Tubbs 2003, lucky exposures (剑桥学位论文)
+  confidence: established
+  ranges:
+    lucky_frame_fraction:
+      lo: 0.003
+      hi: 0.5
+      unit: '1'
+- id: spectral_resolution_rvalue
+  title: 光谱分辨率 R 值与仪器轮廓
+  category: measurement_principle
+  tags:
+  - resolving_power
+  - spectral_resolution
+  - instrument_profile
+  - velocity_resolution
+  - echelle
+  applies_to:
+    fields:
+    - spectral_line_width
+    - radial_velocity
+    methods:
+    - spectroscopy
+  hypothetical_queries:
+  - 光谱分辨率R值怎么算
+  - R=5000的光谱能分辨多快的速度
+  - echelle光谱仪分辨率为什么高
+  content: '分辨本领 R = lambda/delta_lambda (delta_lambda 为可分辨最小波长差, 常用 FWHM 定义)。
+
+    速度分辨率 delta_v = c/R: R = 1e3 → 300 km/s, R = 5e3 → 60 km/s, R = 1e4 → 30 km/s, R = 4e4 → 7.5 km/s, R = 1e5 → 3 km/s。
+
+    仪器实现: 光栅光谱仪 R = m N (m 级次, N 照射刻线数); echelle 掠射光栅 (刻角 ~63-76°) 以高次 (m ~ 60-130) 工作, R 达 5e4-1.5e5 且十字色散覆盖全波段。
+
+    狭缝宽度控制 R (缝窄 R 高但光损大, 像切分器缓解); 光纤光谱仪 R 由光纤芯径与谱仪参数固定。
+
+    采样要求: 每分辨元需 ≥2-3 像素采样 (欠采样丢失信息/产生伪峰); 观测线宽^2 = 物理^2 + 仪器^2 (卷积) — R 低于物理线宽时测得 FWHM 即仪器轮廓, 只能给线宽上限。
+
+    与测光关系: R 是光谱仪固有属性, 与视宁无关 (狭缝损失另计); 分辨率越高每像素光子越少, 连续谱 S/N 随 sqrt(R) 下降 — 高 R 观测需要更高总曝光。
+
+    物理原理: 衍射极限与狭缝投影决定最小分辨元; R 与色散、准直比、相机焦距互锁, 高 R 通常牺牲波长覆盖或效率。
+
+    判定线索: 声称速度精度优于 c/R 需高 S/N 质心拟合支撑 (可达 ~1/10 分辨元, 但要求 S/N >> 100); 不同 R 的谱线 FWHM/EW 直接比较引入系统差 (低 R 抹平窄线、吸收 EW 系统性偏小); 记录的 R 与刻线数/级次/狭缝宽不自洽 = 记录错误。'
+  source: 光谱仪设计教科书 (Schroeder); echelle 设计文献; 光谱分辨率综述
+  confidence: established
+- id: twod_spectroscopy
+  title: 二维光谱 (长缝与积分视场单元)
+  category: measurement_principle
+  tags:
+  - long_slit
+  - ifu
+  - integral_field_unit
+  - data_cube
+  - spatial_resolved_spectroscopy
+  applies_to:
+    entities:
+    - galaxy
+    - star
+    - hii_region
+    - agn
+    methods:
+    - spectroscopy
+  hypothetical_queries:
+  - IFU积分视场光谱是什么
+  - 长缝光谱和IFU有什么区别
+  - 星系数据立方体怎么做运动学分析
+  content: '二维光谱: 同时获取空间二维与波长维 (x, y, lambda) 数据立方体。
+
+    三类实现 — 长缝 (沿缝 1D 空间 + 波长, 每缝位置一条谱)、狭缝扫描 (多条缝拼接, 效率低)、积分视场单元 IFU (一次曝光覆盖二维视场)。
+
+    IFU 技术路线: 微透镜阵列 (TIGER 型, 空间填充率高、无光纤弯折损失)、光纤束 (MaNGA 型, 127 根/束、束径 12-32 角秒、采样 0.5-2 角秒)、像切分器 (MUSE/SINFONI 型, 视场切条重排上狭缝, 填充因子高, 光谱不受光纤制约)。
+
+    典型参数: 视场 5 角秒-1 角分量级 — MUSE 宽场 1''x1'' @0.2 角秒采样 (窄场 7.5 角秒 @0.025 角秒); 光谱分辨率 R ~ 2e3-4e4 (R 与空间采样互锁)。
+
+    数据规模: 立方体 ~1e5-1e7 空间元素 × 1e3-1e4 通道 (数 GB-数十 GB)。
+
+    测量要点: 天空背景逐空间像素单独扣除 (立方体天光随波长/位置变化); PSF 随波长演化 (大气色散、衍射) 需逐层建模; 波长定标须逐层进行 (色散弯曲与畸变)。
+
+    物理原理: 成像的空间分辨 × 光谱的物理诊断 — 旋转曲线/速度场、外向流与喷流、恒星形成分布、逐像素 BPT 诊断 (AGN-星暴分离)、恒星族与运动学解耦。
+
+    判定线索: 立方体逐像素光谱与小孔径测光/单缝光谱系统性不符 = 天空扣除或 PSF 混叠问题; 声称空间分辨优于视宁/采样极限需复核; 未定标立方体 (通道号当波长) 是常见导出错误; 长缝数据标 ''''二维'''' 却无空间维 = 字段错位。'
+  source: Allington-Smith 2006, New Astron. Rev. 50, 244; Bacon et al. 2010 (MUSE); Bundy et al. 2015 (MaNGA)
+  confidence: established
+- id: sky_background_estimation
+  title: 天光背景估计与扣除
+  category: measurement_principle
+  tags:
+  - sky_background
+  - airglow
+  - zodiacal_light
+  - sky_subtraction
+  - night_sky
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - surface_brightness
+    methods:
+    - photometry
+    - spectroscopy
+  hypothetical_queries:
+  - 暗夜天空背景有多亮
+  - 天光背景怎么扣除
+  - 气辉对观测有什么影响
+  content: '夜空背景: 暗夜无月好台址天顶 V 带 ~21.8-22 mag/arcsec^2。
+
+    实测值: La Palma V=21.9/B=22.7/R=21.0; Paranal U=22.35/B=22.67/V=21.71/R=20.93/I=19.65; 光污染城区 ~18 mag/arcsec^2。
+
+    成分与量级: 气辉主导 (OI 557.7/630 nm、Na 589 nm、OH 近红外转动带; 太阳极大年亮 ~0.5 mag, 分钟-小时尺度时变)。
+
+    黄道光 ~60 S10 (高黄纬, 黄道面内 ~140 S10, 随季节变化); 未分辨恒星与弥散银河光 ~10-15 S10; 河外背景光 <1 S10。
+
+    扣除方法 (成像): 源外环形区 sigma-clipped 中位数 (孔径测光), 或全图背景模型 (SExtractor BACK_SIZE ~ 128 像素量级网格)。
+
+    光谱扣除: 长缝源两侧天空区 + AB 交替/抖动逐帧扣除; IFU/立方体逐层天空模型; 近红外天光被 OH 发射线主导 (数万根线), 需高分辨率分辨线间窗口或 OH 抑制滤光片; 气辉时变使长曝光天空模型失效。
+
+    物理原理: 天空是加法背景, 其泊松噪声是暗源探测极限的主导项 (暗源 S/N ∝ 1/sqrt(sky)); 扣除残余误差线性进入目标测光。
+
+    判定线索: 未标天空扣除方法的暗源测光不可跨目录比较; 天空高估 → 星等偏暗, 低估 → 偏亮 (同一目标不同孔径系统差 = 扣空不一致); 光谱负值连续谱 = 过扣; OH 线残余呈梳状条纹 = 近红外扣空不彻底; 声称面亮度暗于夜空 2 mag 以上需核对扣空。'
+  source: Benn & Ellison 1998, New Astron. Rev. 42, 503; Patat 2008, A&A 481, 575; ESO Paranal 天光测量文档
+  confidence: established
+  ranges:
+    sky_brightness_v:
+      lo: 21.5
+      hi: 22.5
+      unit: mag/arcsec2
+- id: radio_channel_dm_smearing
+  title: 射电通道内色散涂抹
+  category: measurement_principle
+  tags:
+  - dispersion_smearing
+  - channel_bandwidth
+  - dedispersion
+  - time_resolution
+  - radio_spectrometer
+  applies_to:
+    fields:
+    - dispersion_measure
+    - scattering_timescale
+    entities:
+    - pulsar
+    - FRB
+    methods:
+    - radio
+    - pulsar_timing
+  hypothetical_queries:
+  - 色散涂抹是什么
+  - 通道带宽怎么影响脉冲宽度
+  - 为什么低频脉冲搜索需要窄通道
+  content: '通道内色散涂抹: 有限频率分辨率 delta_nu 内色散延迟差把脉冲展宽 delta_t_smear = 8.3 × DM × delta_nu[MHz] × nu[GHz]^(-3) μs。
+
+    推导: 由 delta_t = 4.15 ms DM (nu1^-2 - nu2^-2) 对频率微分; 涂抹与 DM、通道宽成正比, 与频率三次方成反比。
+
+    数值: L 波段 (1.4 GHz), DM = 100, delta_nu = 1 MHz → ~300 μs; 低频 (400 MHz) 同参数 → ~13 ms — nu^-3 使低频涂抹严重数十倍, 低频巡天必须用窄通道。
+
+    对搜索的影响: 涂抹并入观测脉宽使 S/N 下降 (窄脉冲损失最大), 有效脉宽 W_eff = sqrt(W^2 + delta_t_smear^2 + delta_t_scat^2)。
+
+    通道带宽减半 → 涂抹减半; 非相干消色散 (通道化后延迟对齐) 无法恢复通道内涂抹, 相干消色散 (电压域) 可完全消除。
+
+    设计权衡: 窄通道涂抹小但数据量与通道噪声增大 — 典型搜索系统低频用 ~0.1-1 MHz 通道, L 波段以上用 ~0.5-4 MHz; 时间采样与通道宽互锁 (要求涂抹 < 采样间隔)。
+
+    物理原理: 色散延迟 ∝ nu^-2, 通道内高低频端到达时间差即涂抹; 与散射展宽 (∝ nu^-4) 联合可约束视线介质与 DM 精度。
+
+    判定线索: 记录脉宽与 DM/通道宽/频率违反 delta_t = 8.3 DM delta_nu nu^-3 量级 = 通道宽或 DM 字段错误; 低频宽通道观测声称亚毫秒结构 = 不可信 (已被涂抹抹平); 跨望远镜脉宽比较必须先扣除各自涂抹与散射项, 直接比较差 2-3 倍属正常。'
+  source: 'Lorimer & Kramer 2004 脉冲星天文手册; Swinburne COSMOS: Pulsar Dispersion Measure'
+  confidence: established
+- id: faraday_rotation_measurement
+  title: 法拉第旋转与旋转量测量
+  category: measurement_principle
+  tags:
+  - faraday_rotation
+  - rotation_measure
+  - rm
+  - depolarization
+  - magnetic_field
+  - rm_synthesis
+  applies_to:
+    fields:
+    - polarization_angle
+    - rotation_measure
+    entities:
+    - agn
+    - galaxy
+    - galaxy_cluster
+    methods:
+    - radio
+    - polarimetry
+  hypothetical_queries:
+  - 法拉第旋转测量是什么
+  - 旋转量RM怎么计算
+  - 银河系对河外源RM贡献多大
+  content: '法拉第旋转: 线偏振波穿越磁化等离子体时偏振角旋转 chi = chi_0 + RM lambda^2 (lambda^2 律)。
+
+    RM = 0.81 ∫ n_e B_∥ dl rad/m^2 (n_e 单位 cm^-3, B_∥ 单位 μG, l 单位 pc) — 电子密度与视线磁场的路径积分, 正负指示 B_∥ 方向。
+
+    测量方法: 多频段 (≥3-4 个) 偏振角对 lambda^2 线性拟合, 斜率即 RM; 频段须覆盖足够 delta_lambda^2 以解 180 度周期模棱两可 (n pi 模糊)。
+
+    拟合残差大 = 多 RM 成分 (法拉第厚介质) 或去偏振, 需 RM 合成 (宽频偏振谱傅里叶重构)。
+
+    典型值: 河外源视向银河系贡献 ~10-100 rad/m^2 (低银纬可达上千); AGN 核区 pc 尺度 ~1e3-1e4 rad/m^2 (吸积流/喷流外鞘), 喷流 ~1e2-1e3; 星系团内背景源 ~5e3-1.2e4 (团磁场 ~5-10 μG)。
+
+    去偏振: 观测带宽内 RM 色散 (delta_chi > 180 度) 或分辨单元内 RM 涨落使偏振度下降 — 低频更严重 (lambda^2 放大); 圆偏振不受法拉第旋转影响 (用于诊断去偏振是否 Faraday 起源)。
+
+    物理原理: 圆偏振正常/异常模折射率差 → 两模相位差随 lambda^2 累积。
+
+    判定线索: 单频段无法测 RM (偏振角单点无 lambda^2 斜率); 目录 RM 须附 lambda^2 拟合残差与频段覆盖说明; 自洽性检查: chi(lambda1) - chi(lambda2) = RM (lambda1^2 - lambda2^2); |RM| 与声称 n_e B_∥ l 违反 0.81 换算量级 = 单位错误。'
+  source: Burn 1966, MNRAS 133, 67; Brentjens & de Bruyn 2005, A&A 441, 1217 (RM 合成)
+  confidence: established
+- id: pulsar_timing_method
+  title: 脉冲星计时方法 (TOA 与计时模型)
+  category: measurement_principle
+  tags:
+  - pulsar_timing
+  - toa
+  - timing_residual
+  - glitch
+  - timing_noise
+  - template_fitting
+  applies_to:
+    fields:
+    - spin_period
+    - period_derivative
+    - dispersion_measure
+    entities:
+    - pulsar
+    - neutron_star
+    methods:
+    - pulsar_timing
+    - radio
+  hypothetical_queries:
+  - 脉冲星计时怎么做
+  - TOA精度取决于什么
+  - 脉冲星glitch是什么
+  content: 'TOA 测量: 高时间分辨率折叠脉冲轮廓与高 S/N 模板互相关, 得单脉冲到达时间 (TOA)。
+
+    计时精度: sigma_TOA ∝ W/(S/N) (W 为脉宽) — 毫秒脉冲星 (W ~ 0.1-1 ms, 高 S/N) 数十年观测可达 ~100 ns-1 μs, 普通脉冲星 ~10-100 μs。
+
+    计时模型: 自转参数 (P, Pdot)、天体测量 (位置/自行/视差)、色散 (DM 及其时变)、双星轨道 (Kepler 参数 + 相对论效应: 夏皮罗延迟/爱因斯坦延迟)。
+
+    全参数最小二乘拟合, 残差随机化检验模型完备性; 残差 = 模型与数据之差, 系统残差揭示未建模效应。
+
+    DM 时变: 视线电子柱密度随季节与星际介质结构变化, 使低频 TOA 抖动 — 需多频同时计时分离 DM 项 (见射电 DM 测量条目)。
+
+    计时噪声与事件: 低频红噪声 (自转不稳定, 以活动参数表征); 年轻脉冲星 glitch — 相位突跳 (delta_nu/nu ~ 1e-9-1e-6, 恢复时标天-年)。
+
+    毫秒脉冲星计时噪声小, 是引力波探测 (PTA) 与双星质量测量 (见质量函数条目) 的主力; 物理原理: 脉冲星是天然时钟, TOA 编码自转相位 = 频率积分 + 各物理效应的到达时间偏移。
+
+    判定线索: 残差呈周年正弦 = 位置误差或周年视差未建模; 残差线性漂移 = Pdot 错误; 残差阶跃 = glitch 或时钟/历元错误; 声称 TOA 精度优于 W/(S/N) 需高 S/N 与窄轮廓支撑; 双星系统残差随轨道相位变化 = 轨道参数错误。'
+  source: Lorimer & Kramer 2004 脉冲星天文手册; Hobbs, Edwards & Manchester 2006, MNRAS 369, 655 (TEMPO2)
+  confidence: established
+- id: multi_object_spectroscopy
+  title: 多目标光谱观测 (光纤/多缝)
+  category: measurement_principle
+  tags:
+  - multi_object
+  - fiber_spectroscopy
+  - slit_mask
+  - multiplexing
+  - galaxy_survey
+  applies_to:
+    entities:
+    - galaxy
+    - star
+    methods:
+    - spectroscopy
+  hypothetical_queries:
+  - 多目标光谱观测是什么
+  - 光纤光谱和长缝光谱有什么区别
+  - 巡天光谱分辨率一般是多少
+  content: '多目标光谱 (MOS): 一次曝光获取大量目标光谱 — 两大路线: 光纤定位与多缝掩膜。
+
+    光纤定位: SDSS 640 根/3 度视场, BOSS 1000 根 2 角秒光纤, DESI 5000 根/3.2 度; 多缝掩膜 (DEIMOS 型) 每掩膜 ~100 缝。
+
+    复用效率: N 目标同时观测等效单目标曝光 ×N — 巡天光谱 (测光红移定标、星系巡天、盲测证认) 的主力, 典型巡天每晚数千-数万条光谱。
+
+    限制: 光纤碰撞 (最小间距 ~1 角分量级, 密场目标系统性遗漏); 光纤口径 (~1.5-2 角秒天区) 与视宁失配 → 通量系统损失 (孔径损耗, 依赖星等与大气视宁); 目标分配算法与平铺重叠区。
+
+    测量要点: 光纤谱绝对通量标定需同视场标准星 + 孔径改正 (与缝谱/测光比较); 巡天光谱多为单次曝光 (S/N 10-20), 弱线参数误差大。
+
+    典型巡天光谱: R ~ 2e3-3e3, 覆盖 3600-10400 A; 目标与天空光谱分开观测 (专用天光光纤)。
+
+    物理原理: 复用因子决定巡天吞吐量; 光纤采样目标核心 (非全通量) — 延展源 (星系核) 存在孔径偏差。
+
+    判定线索: 光纤谱通量与测光/缝谱系统性差 ~0.1-0.3 mag = 孔径损耗 (正常), 更大偏差查定标; 拥挤场光纤光谱缺失源 = 碰撞限制而非源不存在; 延展星系光纤谱报全通量星等 = 口径混淆错误。'
+  source: York et al. 2000 (SDSS); DESI Collaboration 2016 (DESI 设计报告); 多目标光谱综述
+  confidence: established

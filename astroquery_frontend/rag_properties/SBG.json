@@ -1,0 +1,305 @@
+{
+  "otype": "SBG",
+  "name_cn": "星暴星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "目标天球赤经坐标(24um/IRS、IUE、ACS等定位)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "目标天球赤纬坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "星暴星系红移:由IRS谱PAH特征测得(光谱)或COSMOS光度红移zph",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "距离(H0=70或非红移距离,含星暴矮星系的Cepheid/TRGB距离)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "河心视向速度",
+      "description": "河心视向速度HRV(来自RC3/NED等光谱资料)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;pos.heliocentric",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_extinction",
+      "name_cn": "银河前景消光",
+      "description": "银道前景B波段消光A(B),由Burstein-Heiles与SFD/CCM给出,用于修正测光",
+      "category": "environment",
+      "ucd": "phys.absorption;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_mag",
+      "name_cn": "B波段视星等",
+      "description": "积分B波段视星等(RC3修正后或直接积分,已扣银河消光)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_magnitude",
+      "name_cn": "绝对星等",
+      "description": "绝对B星等M_B(由视星等与距离推出)",
+      "category": "physical",
+      "ucd": "phys.mag.abs;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_mag",
+      "name_cn": "紫外星等",
+      "description": "HST/WFPC2 F170W/F185W/F218W/F255W紫外AB星等(由IUE谱合成)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jhk_mag",
+      "name_cn": "近红外JHK星等",
+      "description": "与IUE孔径匹配的J、H、K近红外星等(IRTF/MLO/KPNO)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "颜色指数",
+      "description": "多色颜色指数:U-B、B-V、V-K、V-i、B-R等,用于选源与星族/消光诊断",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_brightness",
+      "name_cn": "表面亮度",
+      "description": "星暴星系表面亮度(COMSOS多波段测光)",
+      "category": "photometry",
+      "ucd": "phot.sb",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fuv_flux",
+      "name_cn": "FUV流量密度",
+      "description": "静止系GALEX FUV 153nm流量密度(幂律内插),SFR(UV)输入量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.UV",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux",
+      "name_cn": "1.4GHz射电流量密度",
+      "description": "VLA/FIRST静止系1.4GHz流量密度(α=-0.7改正),SFR(radio)输入量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pah_flux",
+      "name_cn": "7.7um PAH峰值流量密度",
+      "description": "Spitzer IRS 7.7um PAH特征峰值流量密度,星暴强度核心示踪",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ha_flux",
+      "name_cn": "Hα积分流量",
+      "description": "积分Hα流量(已扣恒星吸收改正,10^-14 erg/s/cm^2)",
+      "category": "photometry",
+      "ucd": "phot.flux;em.line.Halpha",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pah_ew",
+      "name_cn": "PAH 6.2um等效宽度",
+      "description": "静止系6.2um PAH特征等效宽度,区分星暴与AGN的强诊断量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.IR",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_ha",
+      "name_cn": "Hα等效宽度",
+      "description": "Hα等效宽度(0.1nm/埃),恒星形成强度与星暴年龄相关量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nii_ha_ratio",
+      "name_cn": "[NII]/Hα强度比",
+      "description": "[NII]6584与Hα强度比,BCDs金属度/激发条件诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "星暴星系恒星形成率(单位Msun/yr):由PAH 7.7um、FUV、1.4GHz射电三通道独立给出并互比;亦含单位面积SFR(Sigma_SFR, Msun/yr/kpc2)",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_luminosity",
+      "name_cn": "红外光度",
+      "description": "红外光度:PAH 7.7um光度L7.7、Spitzer 70um/160um光度、3-1100um总红外光度LTIR,星暴L_IR核心量",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.IR",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_luminosity",
+      "name_cn": "紫外光度",
+      "description": "静止系153nm紫外光度(与SFR(UV)对应,未消光改正时代表星暴上限)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.UV",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_luminosity",
+      "name_cn": "1.4GHz射电光度",
+      "description": "静止系1.4GHz光度,与超新星率/热星风驱动同步辐射相关",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.radio",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ha_luminosity",
+      "name_cn": "Hα光度",
+      "description": "Hα光度(电离气体区,HII区与星暴年龄加权SFR示踪)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.line.Halpha",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_luminosity",
+      "name_cn": "[OIII]光度",
+      "description": "[OIII]5007发射线光度,与Hα联合诊断激发机制(AGN/星暴分离)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.line.optical",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "氧丰度",
+      "description": "氧丰度12+log(O/H)及高/低金属度分组(H/L),影响红外-SFR标定适用范围",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galaxy_mass",
+      "name_cn": "恒星质量",
+      "description": "星暴星系恒星质量(10^7-10^8 Msun量级,COSMOS SED拟合)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminous_radius",
+      "name_cn": "光度半径",
+      "description": "光度半径Rlum(kpc)及光学半径R25、电离气体发射半径RHa(arcsec),星暴尺度量",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ellipticity",
+      "name_cn": "椭圆度",
+      "description": "星系面椭圆度(形态/合并结构参数)",
+      "category": "classification",
+      "ucd": "src.ellipticity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type",
+      "name_cn": "形态类型",
+      "description": "形态分类:RC3形态型、合并/预合并标志、Loose & Thuan BCD类型(含M82型/nE型等)",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "knot_class",
+      "name_cn": "星暴团块分类",
+      "description": "HST/ACS星暴团块(knot)分类(每星系1-4个),反映星暴局域化程度",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "knot_mass",
+      "name_cn": "团块质量",
+      "description": "单个星暴团块的恒星质量(10^8 Msun量级)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "knot_radius",
+      "name_cn": "团块半径",
+      "description": "星暴团块半径(pc)及其距星系中心距离,巨团块(clump)演化关键量",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "pc",
+      "_unit_filled": true
+    }
+  ]
+}

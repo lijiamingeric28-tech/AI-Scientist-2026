@@ -1,0 +1,260 @@
+{
+  "otype": "s*b",
+  "name_cn": "蓝超巨星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "star_identifier",
+      "name_cn": "恒星标识符",
+      "description": "恒星名称/编号（BLOeM编号、Simbad名等）",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_dec",
+      "name_cn": "赤经赤纬",
+      "description": "ICRS赤经/赤纬（历元2016.0），单位度",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_dr3_source_id",
+      "name_cn": "Gaia DR3 源编号",
+      "description": "Gaia DR3源标识，用于位置/视差交叉证认与多波段匹配",
+      "category": "astrometry",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coords",
+      "name_cn": "银经银纬",
+      "description": "银河系恒星银经GLON/银纬GLAT（度），刻画银盘/悬臂分布",
+      "category": "environment",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "修订光谱型：银河系O9-B5亮蓝星、SMC早B超巨星（含新旧两套标定）",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "光度级（I, II, III等），配合光谱型构成MK分类",
+      "category": "classification",
+      "ucd": "src.luminosityClass",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度(K)，FASTWIND非LTE谱拟合，附上下不对称不确定度",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "表面重力log g（[cm/s2]），附不确定度与质量标记",
+      "category": "physical",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg_corr",
+      "name_cn": "转动修正表面重力",
+      "description": "扣除离心力效应的表面重力loggt",
+      "category": "physical",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "投影自转速度vsini（km/s），IACOB-BROAD方法测量",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmac",
+      "name_cn": "宏观湍流速度",
+      "description": "宏观湍流/脉动增宽速度vmac（km/s），vsini>180km/s时不可解",
+      "category": "physical",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmic",
+      "name_cn": "微湍流速度",
+      "description": "微湍流速度xi（km/s）",
+      "category": "physical",
+      "ucd": "phys.veloc.microTurb",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "he_abundance",
+      "name_cn": "氦丰度",
+      "description": "氦表面丰度N(He)/N(H)（或Y_He），指示双星并合/演化增丰（≤20%样本富氦）",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "si_abundance",
+      "name_cn": "硅丰度",
+      "description": "硅表面丰度（论文摘要报道，与He同批导出）",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wind_strength_logq",
+      "name_cn": "星风强度参数",
+      "description": "FASTWIND风强度参数logQ，衡量星风质量损失强度（v∞·Ṁ^(0.4)/R^1.5比例化量），未发现跨双稳态区跳变",
+      "category": "physical",
+      "ucd": "phys.massLoss",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "log L/Lsun，基于SMC距离与光谱参数导出",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "半径R（Rsun）",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "演化质量M（Msun），由光度与Teff结合演化轨迹推得",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kmag",
+      "name_cn": "K波段星等",
+      "description": "K波段星等（2MASS），受星际消光影响小，SMC目标距校准之需",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ha_ew",
+      "name_cn": "Hα等效宽度",
+      "description": "Hα线等效宽度EW，指示星风发射强度（O型星风诊断）",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ha_emission_flag",
+      "name_cn": "Hα发射标志",
+      "description": "Hα发射存在与否标志（yes/no），区分星风发射与Be现象",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "测量视向速度RV及文献值RVlit（km/s），含系统速度γ",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_amplitude",
+      "name_cn": "视向速度变幅",
+      "description": "多历元视向速度峰峰值RVpp（km/s），指示双星轨道运动或脉动",
+      "category": "variability",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "RV变化周期Porb（天），*号标记OGLE-IV食双星；含n_Porb注释标志",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_status",
+      "name_cn": "双星状态",
+      "description": "单星(--)/SB1/SB2/lpv-SB1/SB1-SB2?等双星分类，含长周期候选注记",
+      "category": "classification",
+      "ucd": "src.class.binary",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_epochs",
+      "name_cn": "监测历元数",
+      "description": "视向速度监测可用历元数Nepochs",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "snr",
+      "name_cn": "光谱信噪比",
+      "description": "4000-5000A波段平均信噪比S/N，附质量标记q(1/4)",
+      "category": "spectroscopy",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系环境",
+      "description": "银河系(太阳金属丰度)与SMC(低金属丰度Z~0.2Zsun)对比环境，研究金属丰度对BSG演化与星风的影响",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

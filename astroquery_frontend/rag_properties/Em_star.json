@@ -1,0 +1,188 @@
+{
+  "otype": "Em*",
+  "name_cn": "发射线星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经(历史星表为B1900/1950历元),各表精度随时代而异",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(历史星表为B1900/1950历元)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_gal_lb",
+      "name_cn": "银道坐标",
+      "description": "银经l、银纬b,用于研究发射线星在银盘/星协中的分布",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "HAeBe候选星距离(约77%超过1kpc),基于Gaia视差,用于HR图与样本完备性分析",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_v",
+      "name_cn": "V星等",
+      "description": "Johnson V视星等,Be星亮度基准(含B-V色指数)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_2mass_jhk",
+      "name_cn": "2MASS JHK星等",
+      "description": "2MASS近红外J/H/K星等,用于区分CAeBe与HAeBe(HAeBe红外过量更大)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_wise",
+      "name_cn": "WISE W1-W4星等",
+      "description": "WISE中红外W1-W4星等,红外过量与尘埃辐射诊断(W1-W2、W1-W3、W1-W4颜色)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_ir_excess",
+      "name_cn": "红外过量",
+      "description": "由(H-K,K-W1)与(H-K,J-H)颜色-颜色图判定的红外过量标志,区分经典与赫比格Ae/Be的关键判据",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(OBA为主,含F及更晚型;LEMC为模板匹配重估,精度约±2亚型)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "emission_lines_list",
+      "name_cn": "发射线清单",
+      "description": "观测到发射的谱线列表(Hα、Hβ、Hγ、FeII等),经典Be星表的核心字段",
+      "category": "spectroscopy",
+      "ucd": "spect.line",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_alpha_ew",
+      "name_cn": "Hα等值宽度",
+      "description": "Hα发射线等值宽度(负值表示发射),LEMC用IRAF同源测量;与Gaia DR3伪EW(pEW_espels)的转换关系已由Shridharan+2022建立",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Hα",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_alpha_fwhm",
+      "name_cn": "Hα谱线FWHM",
+      "description": "Hα发射线半高全宽,由双高斯+星云分量拟合给出,表征线宽与旋转/盘结构",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_alpha_peak_sep",
+      "name_cn": "Hα双峰峰间距",
+      "description": "双峰发射轮廓两峰间距(km/s),反映Be星盘运动学与倾角",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_alpha_profile_class",
+      "name_cn": "Hα轮廓形态类别",
+      "description": "发射线形态分类:Traven+2015为8类(单峰、发射混合、锐峰、双峰、P Cygni、反P Cygni、自吸收、吸收内发射);Zhang+2022为3类10亚型",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wind_velocity",
+      "name_cn": "星风/吸积流速度",
+      "description": "由P Cygni或反P Cygni轮廓蓝/红移吸收翼计算的星风或吸积流速度,101颗(74%低于400km/s)",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "由光谱型-温度定标推导的有效温度(如Pecaut & Mamajek 2013标定),发射线星物理参数基础",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_flag",
+      "name_cn": "发射线变率标志",
+      "description": "Hα强度或连续谱随时间的定性变化标志(历史星表)及1,430颗重复观测的定量轮廓变率分析",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_subclass",
+      "name_cn": "发射线星子类",
+      "description": "细分类:经典Ae/Be(CAeBe)、Herbig Ae/Be(HAeBe)、B[e]/A[e]、候选等;由光谱型+红外判据综合判定",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nebula_contam_flag",
+      "name_cn": "星云发射线污染标志",
+      "description": "标注受HII区星云发射线污染的光谱,防止将星云线误认为恒星发射",
+      "category": "classification",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团/星协成员资格",
+      "description": "Gaia-ESO样本主要为年轻疏散星团成员,附SIMBAD交叉认证的成员信息,支持发射线星与恒星形成环境关联研究",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

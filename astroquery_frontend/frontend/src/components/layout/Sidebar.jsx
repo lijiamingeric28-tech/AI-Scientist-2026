@@ -1,0 +1,212 @@
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Icon } from '@/components/icons'
+import { StatusDot } from '@/components/status'
+
+/* 相对时间格式化（契约 D7：created_at → "10 分钟前"） */
+function formatRelativeTime(iso) {
+  const diff = Date.now() - new Date(iso).getTime()
+  const min = Math.floor(diff / 60000)
+  if (min < 1) return '刚刚'
+  if (min < 60) return `${min} 分钟前`
+  const hr = Math.floor(min / 60)
+  if (hr < 24) return `${hr} 小时前`
+  const day = Math.floor(hr / 24)
+  if (day < 30) return `${day} 天前`
+  return new Date(iso).toLocaleDateString('zh-CN')
+}
+
+/* 侧边栏（块 2 定案）：
+ * - 顶部：新建提取任务按钮（点击清空主区、聚焦输入框）
+ * - 状态筛选：全部 / 运行中 / 已完成 / 失败
+ * - 任务列表：标题 + 相对时间 + 状态圆点，新→旧，选中高亮
+ * - 底部：设置入口（内容块 7 再定）
+ */
+
+const FILTERS = [
+  { key: 'all', label: '全部' },
+  { key: 'running', label: '运行中' },
+  { key: 'completed', label: '已完成' },
+  { key: 'error', label: '失败' },
+]
+
+export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onOpenSettings, onLoadMore, filter, onFilterChange }) {
+  const [hoveredId, setHoveredId] = useState(null)
+
+  // 契约 D8-1：queued 归入"运行中"筛选档
+  // H-01: 失败档按 error 匹配，同时兼容旧词表 failed（存量记录防御）
+  const filtered = filter === 'all'
+    ? tasks
+    : filter === 'running'
+      ? tasks.filter((t) => t.status === 'running' || t.status === 'queued')
+      : tasks.filter((t) => t.status === filter || (filter === 'error' && t.status === 'failed'))
+
+  return (
+    <aside
+      style={{
+        width: 240,
+        minWidth: 240,
+        background: 'var(--sidebar-bg)',
+        borderRight: '1px solid var(--sidebar-border)',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* 新建任务 + 收起 */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '16px 12px 12px 16px' }}>
+        <Button variant="sidebar" className="flex-1 justify-start gap-2 text-sm font-normal" onClick={onNew}>
+          <Icon.Plus />
+          <span>新建提取任务</span>
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onCollapse} title="收起侧边栏">
+          <Icon.ChevronLeft />
+        </Button>
+      </div>
+
+      {/* 状态筛选 */}
+      <div style={{ display: 'flex', gap: 2, padding: '0 12px 8px' }}>
+        {FILTERS.map((f) => (
+          <button
+            key={f.key}
+            onClick={() => onFilterChange(f.key)}
+            style={{
+              flex: 1,
+              padding: '4px 0',
+              fontSize: 12,
+              borderRadius: 5,
+              border: 'none',
+              cursor: 'pointer',
+              background: filter === f.key ? 'var(--sidebar-active)' : 'transparent',
+              color: filter === f.key ? 'var(--sidebar-text)' : 'var(--sidebar-text-secondary)',
+              fontWeight: filter === f.key ? 510 : 400,
+            }}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 历史任务 */}
+      <div
+        style={{
+          padding: '4px 8px 8px',
+          color: 'var(--sidebar-text-secondary)',
+          fontSize: 11,
+          fontWeight: 510,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+        }}
+      >
+        历史任务
+      </div>
+      <ScrollArea
+        className="flex-1 px-2 pb-2"
+        onScroll={(e) => {
+          // 无限滚动（契约 D8-4）：接近底部触发加载更多
+          const el = e.currentTarget
+          if (el.scrollHeight - el.scrollTop - el.clientHeight < 120) {
+            onLoadMore?.()
+          }
+        }}
+      >
+        {filtered.length === 0 ? (
+          <div style={{ padding: '16px 10px', color: 'var(--sidebar-text-secondary)', fontSize: 12, textAlign: 'center' }}>
+            无符合条件的任务
+          </div>
+        ) : (
+          filtered.map((task) => {
+            const isActive = task.task_id === selectedId  // CR-03: 契约 D8-4 键名 task_id
+            return (
+              <div
+                key={task.task_id}
+                onClick={() => onSelect(task.task_id)}
+                onMouseEnter={() => setHoveredId(task.task_id)}
+                onMouseLeave={() => setHoveredId(null)}
+                style={{
+                  padding: '8px 10px',
+                  borderRadius: 6,
+                  marginBottom: 2,
+                  cursor: 'pointer',
+                  background: isActive
+                    ? 'var(--sidebar-active)'
+                    : hoveredId === task.task_id
+                      ? 'var(--sidebar-hover)'
+                      : 'transparent',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <StatusDot status={task.status} size={6} />
+                  <span
+                    style={{
+                      color: isActive ? 'var(--sidebar-text)' : 'var(--content-fg-secondary)',
+                      fontSize: 13,
+                      fontWeight: isActive ? 510 : 400,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      flex: 1,
+                    }}
+                  >
+                    {task.title}
+                  </span>
+                </div>
+                <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center' }}>
+                  {formatRelativeTime(task.created_at)}
+                  {/* 失败任务：悬停显示重试（块 7 定案；H-01 兼容旧词表 failed） */}
+                  {(task.status === 'error' || task.status === 'failed') && hoveredId === task.task_id && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onRetry(task.task_id)
+                      }}
+                      style={{
+                        marginLeft: 'auto',
+                        border: 'none',
+                        background: 'var(--status-error-bg)',
+                        color: 'var(--status-error)',
+                        fontSize: 11,
+                        padding: '1px 8px',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                      }}
+                    >
+                      <Icon.Refresh style={{ width: 10, height: 10 }} />重试
+                    </button>
+                  )}
+                </div>
+              </div>
+            )
+          })
+        )}
+        {/* 无限滚动底部指示（契约 D8-4） */}
+        {filtered.length > 0 && (
+          <div style={{ padding: '10px 0 14px', textAlign: 'center', fontSize: 11, color: 'var(--sidebar-text-secondary)' }}>
+            {tasks.length < total ? '加载中…' : `共 ${total} 个任务`}
+          </div>
+        )}
+      </ScrollArea>
+
+      {/* 设置入口 */}
+      <div style={{ padding: '12px 16px', borderTop: '1px solid var(--sidebar-border)' }}>
+        <div
+          onClick={onOpenSettings}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            color: 'var(--sidebar-text-secondary)',
+            fontSize: 13,
+            cursor: 'pointer',
+          }}
+        >
+          <Icon.Settings />
+          <span>设置</span>
+        </div>
+      </div>
+    </aside>
+  )
+}

@@ -1,0 +1,368 @@
+{
+  "otype": "RC*",
+  "name_cn": "北冕R型变星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000 赤经坐标,所有表均含",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000 赤纬坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离(视差)",
+      "description": "距离,含 Gaia DR2 视差距离 DistG 及其误差",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "pmRA/pmDE 自行,来自 GCVS 5.1 的交叉参考数据",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "i_mag_max",
+      "name_cn": "I波段最大星等",
+      "description": "OGLE I 波段极大亮度(Imax),RCB 亮度基准",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag_max",
+      "name_cn": "V波段最大星等",
+      "description": "V 波段极大亮度(Vmax)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "V星等",
+      "description": "光谱观测时的 V 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiband_flux",
+      "name_cn": "多波段流量",
+      "description": "U 至红外多波段流量及误差(双尘埃包层模型输入)",
+      "category": "photometry",
+      "ucd": "phot.flux",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "光度最大期间的低振幅半规则脉动主周期(天),常为多周期",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_amplitude",
+      "name_cn": "脉动振幅",
+      "description": "I 波段脉动振幅(0.004-0.2 mag 量级)",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_decline_amplitude",
+      "name_cn": "最大骤降深度",
+      "description": "I 波段最大骤降幅度 Adrop(I),可达 7-9 mag,是 RCB 尘埃事件的核心表征",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "decline_frequency",
+      "name_cn": "骤降频率/活跃度",
+      "description": "骤降发生频率与恢复时间尺度(定性,由光变曲线判读;低活动 RCB 长时间无下降)",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_status",
+      "name_cn": "观测相位状态",
+      "description": "光谱观测时的光度状态:Max(最大值)/Dimin(变暗中),用于解释光谱变形",
+      "category": "variability",
+      "ucd": "time.phase",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lc_available",
+      "name_cn": "光变曲线可用标志",
+      "description": "候选体是否具有可利用的光变曲线(LC 标志)及光变曲线优先级 lc-pri",
+      "category": "variability",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_class_hdc",
+      "name_cn": "HdC光谱分类",
+      "description": "新 HdC 分类系统类号(HdC1-8,C2 带强度),188 颗 HdC/RCB/DY Per/EHe 星",
+      "category": "spectroscopy",
+      "ucd": "src.class.spectral",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "传统光谱型",
+      "description": "传统光谱型(如 G0Iab:pe, F/G 黄色超巨星或 C-R 型碳星)及 GCVS 类型代码 RCB",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "temp_group",
+      "name_cn": "温度分组",
+      "description": "RCB/HdC 温度亚组:Cold(~4000-6800 K)/Warm(~6800-8500 K)/Hot(>15000 K)",
+      "category": "spectroscopy",
+      "ucd": "src.class.spectral",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "class_hdc_type",
+      "name_cn": "氢缺乏碳星类型",
+      "description": "对象类别:RCB(产尘)/dLHdC(无尘 HdC)/EHe(极端氦星)等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectrum_filename",
+      "name_cn": "光谱FITS文件名",
+      "description": "近红外(或光学)光谱 FITS 文件链接及波长覆盖",
+      "category": "spectroscopy",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "instrument",
+      "name_cn": "观测仪器",
+      "description": "获取光谱的仪器(如 GS-GNIRS, FIRE, WiFeS 等)",
+      "category": "spectroscopy",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "snr",
+      "name_cn": "光谱信噪比",
+      "description": "光谱观测信噪比 S/N",
+      "category": "spectroscopy",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "he1_10833_wind",
+      "name_cn": "He I 1.083µm尘埃驱动星风",
+      "description": "强蓝移(>200 km/s)He I 1.0833 µm 吸收:RCB 存在而 dLHdC 缺失,指示尘埃驱动星风",
+      "category": "spectroscopy",
+      "ucd": "spect.line",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度 Teff(约 3500-20000 K,冷/暖/热亚组)",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "对数表面重力 log g",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "microturbulence",
+      "name_cn": "微湍流速度",
+      "description": "微湍流速度 Vt (km/s)",
+      "category": "physical",
+      "ucd": "phys.microturbulence",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "光度 L(Lsun),由视差距离导出(约 10^4 Lsun 量级)",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abund_c_logeps",
+      "name_cn": "碳丰度log eps",
+      "description": "C 元素对数丰度(基于 C2 谱带合成)及所用谱线数",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abund_o_logeps",
+      "name_cn": "氧丰度log eps",
+      "description": "O 元素对数丰度",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_o_ratio",
+      "name_cn": "C/O比",
+      "description": "C/O 丰度比(C2 Swan 带合成;RCB 富碳 C/O>1)",
+      "category": "physical",
+      "ucd": "phys.abund.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isotope_c13_c12",
+      "name_cn": "12C/13C同位素比",
+      "description": "12C/13C 同位素比(C2/CN 带合成;区分 RCB 与 DY Per 型的重要诊断量)",
+      "category": "physical",
+      "ucd": "phys.abund.isotope",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isotope_o16_o18",
+      "name_cn": "16O/18O同位素比",
+      "description": "16O/18O 同位素比(12C16O/12C18O K 带吸收;RCB 大多 16O/18O<1 强 18O 过丰,白矮星并合判据),数据在论文表内",
+      "category": "physical",
+      "ucd": "phys.abund.isotope",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_deficiency",
+      "name_cn": "氢缺乏程度",
+      "description": "大气氢缺乏程度(相对氦 H/He 低至 10^-3-10^-6;dLHdC 中约 20 颗为较低氢缺乏型)",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type_code",
+      "name_cn": "变星类型代码",
+      "description": "GCVS 变星类型代码(RCB,以及 DY Per 等关联类型)",
+      "category": "classification",
+      "ucd": "src.var.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "status_confirmed",
+      "name_cn": "确认/候选状态",
+      "description": "确认(confirmed)或候选(candidate)RCB 状态标志",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "candidate_priority",
+      "name_cn": "候选体优先级",
+      "description": "光变曲线优先级 lc-pri 与颜色优先级 col-pri(A/B/C/D),用于分级确认",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_available",
+      "name_cn": "光谱可用标志",
+      "description": "候选体是否已有光谱(SP 标志)及分类结果",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_id",
+      "name_cn": "交叉证认",
+      "description": "跨目录证认:OGLE-II/III, MACHO, EROS-2, GCVS, 2MASS, Simbad 名",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "av_extinction",
+      "name_cn": "星际消光AV",
+      "description": "星际消光 AV(银道面/核球方向 RCB 显著)",
+      "category": "environment",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "色余E(B-V)",
+      "description": "色余 E(B-V)",
+      "category": "environment",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_shell",
+      "name_cn": "尘埃包层性质",
+      "description": "双尘埃包层(暖/冷壳层)性质:尘埃温度、包层半径与质量,由 Spitzer IRS 谱与 IRAC/WISE 流量拟合",
+      "category": "environment",
+      "ucd": "phys.dust",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

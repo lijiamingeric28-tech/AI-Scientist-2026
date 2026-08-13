@@ -1,0 +1,206 @@
+{
+  "otype": "AGN",
+  "name_cn": "活动星系核通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经 (J2000)",
+      "description": "源赤经坐标,精度可达0.1角秒(光学)或射电位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬 (J2000)",
+      "description": "源赤纬坐标,精度可达1角秒(光学)或射电位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "AGN/类星体的光谱红移;Véron目录含slitless估计(E)与下限标志(>)",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_magnitude",
+      "name_cn": "视星等",
+      "description": "光学视星等(U/B/V/R/I/J/K等波段,以标志区分),SDSS目录另含u,g,r,i,z",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ubv_color",
+      "name_cn": "UBV颜色",
+      "description": "B-V与U-B颜色指数,用于AGN颜色选择(UV excess)与SED粗判",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_magnitude",
+      "name_cn": "绝对星等",
+      "description": "绝对光学星等(H0=71假设),SDSS DR7采用i波段Mi<-22选择判据",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_6cm",
+      "name_cn": "6cm射电流量密度",
+      "description": "5GHz(6cm)射电流量密度(mJy/Jy),射电噪类星体与射电星系的标志",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio.3-6GHz",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_20cm",
+      "name_cn": "20cm射电流量密度",
+      "description": "1.4GHz(20cm)射电流量密度,射电噪度计算的基础观测量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hard_xray_flux",
+      "name_cn": "硬X射线流量(14-195keV)",
+      "description": "Swift-BAT 14-195keV硬X射线流量(erg/cm2/s),基于8个能带镶嵌图测光,含90%置信区间",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray.hard",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_photon_index",
+      "name_cn": "X射线光子指数",
+      "description": "硬X射线幂律谱光子指数gamma(8能带XSPEC拟合),反映吸积盘冕物理状态,含90%误差",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.X-ray.hard",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_line_luminosity",
+      "name_cn": "Balmer发射线光度(Hα/Hβ/Hγ)",
+      "description": "Hα、Hβ、Hγ发射线光度,宽线成分用于SE黑洞质量估计与BPT图窄线诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.line;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mgii_luminosity",
+      "name_cn": "MgII发射线光度",
+      "description": "MgII 2798A发射线光度,0.7<z<1.9红移段单epoch黑洞质量的标定线",
+      "category": "spectroscopy",
+      "ucd": "spect.line;em.UV",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "civ_luminosity",
+      "name_cn": "CIV发射线光度",
+      "description": "CIV 1549A发射线光度与FWHM,高红移(z>1.9)类星体质量估计(注意其系统性偏差问题)",
+      "category": "spectroscopy",
+      "ucd": "spect.line;em.UV",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_fwhm",
+      "name_cn": "发射线半高全宽(FWHM)",
+      "description": "宽发射线(Hβ/MgII/CIV等)的FWHM,SE virial质量估计的线宽输入量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "black_hole_mass",
+      "name_cn": "黑洞质量",
+      "description": "维里(单epoch SE)黑洞质量,基于Hβ(z<0.7)/MgII(0.7<z<1.9)/CIV(z>1.9)标定,对数质量(log MBH),误差约0.3-0.5 dex",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eddington_ratio",
+      "name_cn": "爱丁顿比",
+      "description": "吸积光度与爱丁顿光度之比Lbol/LEdd,量化黑洞吸积速率,典型SDSS类星体0.01-1",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_luminosity",
+      "name_cn": "热光度",
+      "description": "基于光学连续谱光度与热改正得到的全天区积分光度log Lbol,AGN能量输出与反馈研究的基础量",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "monochromatic_luminosity",
+      "name_cn": "单色连续谱光度",
+      "description": "静止系5100A(Hβ段)、3000A(MgII段)、1350A(CIV段)单色光度,SE质量与热改正的输入量",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_loudness",
+      "name_cn": "射电噪度参数(logR)",
+      "description": "射电(5GHz)与光学(B波段)流量比logR,区分射电噪/射电视类星体(R>10),喷流存在的间接标志",
+      "category": "physical",
+      "ucd": "phot.flux;arith.ratio;em.radio.3-6GHz;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "静止系X射线光度:2-10keV(logLX,来自交叉匹配)或BAT 14-195keV(基于流量+红移计算),吸积功率的直接探针",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_eddington_ratio",
+      "name_cn": "X射线爱丁顿光度比",
+      "description": "log(LX/LEdd),X射线光度与爱丁顿光度之比(LEdd=1.3e38*M/Msun erg/s),X射线选择的吸积率指示量",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio;em.X-ray.medium",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_type",
+      "name_cn": "源类型/AGN分类",
+      "description": "AGN类别:Véron码(S1,S1.5,S2,NLS1,LINER/S3,BL Lac,类星体Q,II型类星体Q2等)或BAT对应体分类(Sy1/Sy2/LINER/blazar/BL Lac)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

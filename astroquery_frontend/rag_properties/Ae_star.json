@@ -1,0 +1,341 @@
+{
+  "otype": "Ae*",
+  "name_cn": "Herbig Ae/Be星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "赤经(ICRS,历元2015.5,源自Gaia DR2;旧目录为B1950)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "赤纬(ICRS,历元2015.5,源自Gaia DR2;旧目录为B1950)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR2三角视差(mas)及其误差",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由Gaia视差以指数递减密度先验(Bailer-Jones)导出的距离(pc)及95%置信误差",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V波段星等",
+      "description": "文献V波段星等(mag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ubvri_mag",
+      "name_cn": "UBVRI多波段星等",
+      "description": "Johnson-Cousins UBVRI测光(收集自文献,用于SED拟合与红化估计)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess_nir",
+      "name_cn": "近中红外超额",
+      "description": "J/H/Ks/W1/W2/W3/W4各波段红外超额:消光改正实测流量与Castelli-Kurucz光球模型流量之比Fobs/FCK,反映热尘埃盘辐射(1.24-22um)",
+      "category": "photometry",
+      "ucd": "phot.color.excess;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess_start",
+      "name_cn": "红外超额起始波长",
+      "description": "SED中红外超额开始出现的波长(um),用于过渡盘判定",
+      "category": "photometry",
+      "ucd": "phot.color.excess;em.IR",
+      "unit": "um",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_excess",
+      "name_cn": "巴末耳连续谱超出量ΔDB",
+      "description": "紫外连续谱中的巴末耳超出量(mag),磁层吸积模型的关键输入量,由此直接拟合质量吸积率与填充因子",
+      "category": "spectroscopy",
+      "ucd": "phot.color.excess;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_halpha",
+      "name_cn": "Hα等值宽度",
+      "description": "Hα发射线等值宽度(0.1nm;负值表示发射),吸积活动指标",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_flux",
+      "name_cn": "Hα线流量",
+      "description": "Hα线流量及线心连续谱流量密度(W/m2/Å),经标定(Fairlamb+2017)用于吸积光度与吸积率计算",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_profile",
+      "name_cn": "Hα线轮廓类型",
+      "description": "Hα线轮廓按Reipurth等(1996)分类:I单峰/II-III双峰(峰强弱与方位)/IV_P Cygni(规则或逆);双峰强变源指示近侧向盘",
+      "category": "spectroscopy",
+      "ucd": "spect.line.profile",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度(K),Vioque+2018按优先级收集自Fairlamb+2015等文献",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "对数表面重力logg(cm/s2)",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "由Teff与光度导出的恒星半径(Rsun)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "由HR图位置与前主序演化轨迹/等时线插值导出的质量(Msun)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "由前主序等时线导出的年龄(Myr)",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "恒星光度",
+      "description": "以log(L/Lsun)给出的恒星光度(由Gaia距离与消光改正测光导出)",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction",
+      "name_cn": "星际消光Av",
+      "description": "总视觉消光Av(mag)",
+      "category": "physical",
+      "ucd": "phys.absorption;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_rate",
+      "name_cn": "质量吸积率",
+      "description": "由Hα等值宽度与消光改正测光经Fairlamb+2017标定得出的质量吸积率log(dM/dt)(Msun/yr);IVOA无吸积率专用UCD,以phys.mass.loss(质量损失率)近似",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_luminosity",
+      "name_cn": "吸积光度",
+      "description": "吸积光度logLacc(Lsun),由Hα线光度标定",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "filling_factor",
+      "name_cn": "吸积填充因子",
+      "description": "磁层吸积模型中吸积热斑覆盖恒星表面的填充因子f(%),仅对可被磁层吸积模型描述的源给出(Herbig Be星多不适用)",
+      "category": "physical",
+      "ucd": "arith.ratio",
+      "unit": "%",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "disk_mass",
+      "name_cn": "尘埃盘质量",
+      "description": "由(亚)毫米连续谱流量(文献)拟合的盘质量Mdiskfmm(Msun);另有由吸积率与年龄估计的Mdiskacc",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_temperature",
+      "name_cn": "尘埃温度",
+      "description": "(亚)毫米SED拟合的尘埃温度Td(K)",
+      "category": "physical",
+      "ucd": "phys.temperature",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_opacity_index",
+      "name_cn": "尘埃不透明度谱指数",
+      "description": "毫米波段尘埃不透明度谱指数β,反映盘尘粒径分布与生长",
+      "category": "physical",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inner_dust_radius",
+      "name_cn": "内尘埃洞半径",
+      "description": "由红外超额起始波长推算的尘埃内半径(内洞半径)rin(au),过渡盘诊断量",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "AU",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_indicator",
+      "name_cn": "光变指标Vi",
+      "description": "基于Gaia DR2多历元测光构建的光变指标;约25%的HAeBe为强变源,与侧向盘尘埃结构相关",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_range",
+      "name_cn": "测光变幅范围",
+      "description": "已知测光变幅范围(最暗-最亮星等,含各滤光带类型),摘自历史文献",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uxor_flag",
+      "name_cn": "UX Ori型变星标志",
+      "description": "是否被分类为UXOR(UX Ori型,大振幅不规则光变的HAe)型变星;强变HAe中UXOR比例与A型UX Ori星相近",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱型(如A0e/B5e,含发射线标记),区分HAe与HBe亚类",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "meeus_class",
+      "name_cn": "Meeus SED分组",
+      "description": "Meeus等(2001)红外SED形态分组(Group I/I?/II/II?),反映盘几何(平盘/有洞)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jh_k_class",
+      "name_cn": "JH-K红外分组",
+      "description": "基于JHKs色指数的红外SED分组(JH-K系统)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "transitional_disk",
+      "name_cn": "过渡盘标志",
+      "description": "红外超额自K波段或更长波段起始判定为过渡盘(样本中约28%);HBe的过渡盘频率(~34%)高于HAe(~15%)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_class",
+      "name_cn": "成员/候选分类",
+      "description": "Thé等(1994)五表体系:表1公认HAeBe真成员、表2 F型及光谱未知发射线星、表3极端发射线天体EELO、表4a/b Bep/B[e]红外超额星、表5无发射线年轻候选、表6被排除天体",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binarity",
+      "name_cn": "双星状态",
+      "description": "双星/多重系统状态(文献汇总);约70%的HAeBe处于双星或多重系统中",
+      "category": "environment",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nebula_association",
+      "name_cn": "星云成协",
+      "description": "是否与反射星云/暗星云成协(Neb标志),以及备注中的星云性质(Herbig-Haro天体、暗云边缘等)",
+      "category": "environment",
+      "ucd": "src.env",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_flag",
+      "name_cn": "IRAS源关联",
+      "description": "光学源与IRAS点源的关联(N无/Y有/O光学-IRAS位置偏移/IRAS盲区),指示冷尘埃环境",
+      "category": "environment",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

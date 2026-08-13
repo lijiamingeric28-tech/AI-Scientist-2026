@@ -1,0 +1,260 @@
+{
+  "otype": "Er*",
+  "name_cn": "爆发变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "var_type",
+      "name_cn": "爆发变星类型编码",
+      "description": "变光子类编码:GCVS体系(UV耀星、N/NA/NB/NC/NR新星、RC北冕R型、UG/UGSS/UGSU/UGWZ矮新星、ZAND共生、FU、SDOR、WR、RS);B/cb用CV亚型编码(DN、NL、AM、DQ、IP、SU、WZ等)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_max",
+      "name_cn": "极大视星等",
+      "description": "最大亮度视星等(新星取极小态、矮新星取宁静态、类新星取常态/高态)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_min",
+      "name_cn": "极小视星等",
+      "description": "最小亮度视星等(新星/矮新星取爆发态、VY Scl型取低态),与极大星等联合给出爆发幅度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_amplitude",
+      "name_cn": "变光振幅",
+      "description": "总变光振幅(星等):新星可超8-9等,RCB可达1-9等突暗,耀星耀斑振幅0.1-3.4等",
+      "category": "photometry",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_mag",
+      "name_cn": "紫外星等(FUV/NUV)",
+      "description": "GALEX FUV/NUV星等及耀斑期间的紫外增亮幅度,紫外波段对耀斑能量更敏感",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_mag",
+      "name_cn": "红外星等(2MASS/WISE)",
+      "description": "近/中红外星等,RCB候选体依靠红外过量与色判据选取,碳尘在红外保持辐射",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_color",
+      "name_cn": "色指数(g-i)",
+      "description": "KIC g-i色指数,与恒星质量及耀斑活动率(耀斑恒星比例随g-i增大)相关",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_period",
+      "name_cn": "变光周期",
+      "description": "周期性变光成分的周期(RCB低温脉动、共生星长期变光等),爆发变星中多为部分周期成分",
+      "category": "variability",
+      "ucd": "period.variation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_extremum",
+      "name_cn": "极值历元",
+      "description": "极大/极小(爆发/突暗)时刻的历元与发现年份,用于研究爆发时标与复发历史",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "CV双星轨道周期(约0.05-10天),与爆发行为(SU UMa超晕峰周期)密切相关",
+      "category": "variability",
+      "ucd": "src.orbital.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extra_period",
+      "name_cn": "附加周期(超晕峰/自转/脉动)",
+      "description": "正/负超晕峰周期、白矮星旋转(自转)周期(秒量级,IP/DQ类)、相干脉动周期及QPO标志",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_interval",
+      "name_cn": "爆发间隔",
+      "description": "矮新星连续两次正常爆发(UG/ZC)或超级爆发(SU/WZ)之间的典型时间间隔(天),即爆发频率的直接量",
+      "category": "variability",
+      "ucd": "time.interval",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flare_count",
+      "name_cn": "耀斑数目",
+      "description": "检测到的耀斑事件总数(Kepler给出68%完整度阈值之上数目Nfl68;GFCAT为紫外耀斑事件数)",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flare_energy",
+      "name_cn": "耀斑能量",
+      "description": "单个耀斑辐射能量(Kepler白耀斑平均约1e35 erg;GFCAT为FUV/NUV波段耀斑能量),爆发能量的核心物理量",
+      "category": "variability",
+      "ucd": "em.energy",
+      "unit": "erg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ffd_params",
+      "name_cn": "耀斑频次分布参数",
+      "description": "耀斑频次分布(FFD)幂律拟合的斜率α与截距β,表征不同能量耀斑的发生频率比例",
+      "category": "variability",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flare_frac_lum",
+      "name_cn": "耀斑总光度占比",
+      "description": "耀斑总光度与恒星静止光度之比Lfl/Lkp,反映磁活动能量预算,随Rossby数呈幂律衰减",
+      "category": "variability",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flare_duration",
+      "name_cn": "耀斑时标",
+      "description": "耀斑上升/衰减持续时间与事件历元(分钟至小时级),Kepler/GFCAT光变曲线中提取",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星/子星质量",
+      "description": "恒星质量:Kepler表为等时线恒星质量(0.1-1.9 Msun);B/cb为白矮星主星M1与伴星M2质量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比",
+      "description": "双星质量比 q=M1/M2,由轨道运动与超晕峰周期-质量比关系约束",
+      "category": "physical",
+      "ucd": "src.orbital.massRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面倾角(度),影响食深、径向速度幅值进而决定质量测量,食型CV为高倾角",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期",
+      "description": "恒星自转周期(0.2-39天),用于构建Rossby数-耀斑活动关系(饱和在Ro约0.03以下)",
+      "category": "physical",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "主星/伴星光谱型;RCB表给出HdC/热RCB/DY Per等氢缺陷碳星光谱特征;B/cb含两子星光谱型",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_flag",
+      "name_cn": "双星/食标志",
+      "description": "SB1/SB2分光双星标志与食(Eclipse=1/2/D)标志,爆发行为与双星构型直接相关",
+      "category": "spectroscopy",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_equatorial",
+      "name_cn": "赤道坐标",
+      "description": "J2000赤经赤纬(ICRS),精度0.01秒-1角分不等,用于交叉证认与巡天定位",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_galactic",
+      "name_cn": "银河坐标",
+      "description": "银经银纬(l,b),用于研究爆发天体在银盘/银晕的分布(如RCB多分布在银晕方向)",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "赤经/赤纬方向自行,对近邻耀星成员判定与运动学年龄估计重要",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差/距离",
+      "description": "三角视差(GCVS 5.1并入Gaia数据),换算距离后可将视星等转为爆发光度与能量",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_member",
+      "name_cn": "星团成员标志",
+      "description": "球状星团(G)/疏散星团(O)成员标志,区分不同环境下的CV/爆发源群体",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

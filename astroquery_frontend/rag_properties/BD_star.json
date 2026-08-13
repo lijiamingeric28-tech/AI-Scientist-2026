@@ -1,0 +1,323 @@
+{
+  "otype": "BD*",
+  "name_cn": "褐矮星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000 赤经（度），BD 普查表中的坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000 赤纬（度），BD 普查表中的坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "三角视差（mas），来自 Gaia/地面测光监测，用于距离与光度定标",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由视差导出的日心距离（pc）",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "自行赤经分量",
+      "description": "自行 mu_alpha*cos(delta)（mas/yr），高自行是邻近 BD 的典型特征",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "自行赤纬分量",
+      "description": "自行 mu_delta（mas/yr）",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "space_velocity_uvw",
+      "name_cn": "空间速度 UVW",
+      "description": "银河系笛卡尔空间速度分量（km/s），由视差、自行与视向速度合成，用于场/年轻星群运动学判别",
+      "category": "astrometry",
+      "ucd": "phys.veloc;pos.galactic",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "近红外光谱型（如 L3.5、T5、Y0），BD 分类的核心属性",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gravity_class",
+      "name_cn": "引力级别/年轻标志",
+      "description": "低重力（年轻）vs 场龄重力标志（如 beta/gamma 或 vl-g 标签），由 H/K 波段重力敏感光谱特征判定",
+      "category": "classification",
+      "ucd": "src.class.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_J",
+      "name_cn": "J 波段星等",
+      "description": "2MASS/UKIDSS J 波段星等，超冷矮星最常用的亮度与分类测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_H",
+      "name_cn": "H 波段星等",
+      "description": "H 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_K",
+      "name_cn": "K 波段星等",
+      "description": "K 波段星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_W1",
+      "name_cn": "WISE W1 星等",
+      "description": "WISE 3.4um 星等，T/Y 矮星探测关键波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_W2",
+      "name_cn": "WISE W2 星等",
+      "description": "WISE 4.6um 星等，CH4 吸收使 T/Y 矮星在此波段明亮",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.4-8um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_j_minus_k",
+      "name_cn": "J-K 颜色",
+      "description": "近红外颜色，L/T 矮星温度与尘埃云性质诊断",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.J;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_w1_minus_w2",
+      "name_cn": "W1-W2 颜色",
+      "description": "WISE 颜色，冷 T/Y 矮星与行星质量天体筛选指标",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.3-4um;em.IR.4-8um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_mag_j",
+      "name_cn": "J 波段绝对星等",
+      "description": "由视差与 J 星等导出的绝对星等，用于颜色-星等图与光度定标",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "半经验/模型拟合有效温度（K），L/T/Y 矮星约 2200-300 K 且随年龄冷却",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "质量",
+      "description": "亚恒星质量（M_jup 或 M_sun），来自动力学轨道测量或演化模型推断",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "M_jup",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "半径",
+      "description": "由演化模型结合 Lbol 与 Teff 得到的半径（R_jup）",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "R_jup",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力 log g",
+      "description": "表面重力（cm/s2 的对数），年轻低质量 BD 的 log g 较低",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "年龄",
+      "description": "场龄（>0.5 Gyr）或年轻（<0.5 Gyr）对象的年龄约束，年轻 BD 由移动星群成员或锂吸收判定",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_luminosity",
+      "name_cn": "热光度",
+      "description": "由视差与全波段 SED 积分得到的热光度 Lbol（L_sun），红外主导",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.IR",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "金属丰度 Fe/H",
+      "description": "光谱或模型推断的金属丰度，影响 BD 大气与冷却序列",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lithium_abundance",
+      "name_cn": "锂丰度",
+      "description": "Li I 6708A 吸收推导的锂丰度，<65 M_jup 的 BD 不消耗锂，是亚恒星本质与年轻诊断",
+      "category": "physical",
+      "ucd": "phys.abund;em.opt",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h2o_band_index",
+      "name_cn": "H2O 谱带指数",
+      "description": "近红外水吸收带指数，L/T 矮星温度与光谱分类的定量指标",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "methane_band_index",
+      "name_cn": "CH4 谱带指数",
+      "description": "CH4 吸收指数（1.6/2.2um 或 W2 波段），T 型矮星的特征判据",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gravity_sensitive_indices",
+      "name_cn": "重力敏感谱指数",
+      "description": "H/K 波段重力敏感光谱指数（如 K-band、H-cont 比值），区分年轻低重力与场龄 BD",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_alpha_ew",
+      "name_cn": "H-alpha 等值宽度",
+      "description": "H-alpha 发射线等值宽度（A），M 型矮星色球活动与磁场活动指标",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.opt.R",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lithium_ew",
+      "name_cn": "Li I 6708A 等值宽度",
+      "description": "Li I 6708A 吸收线等值宽度，锂存在是年轻 BD/亚恒星本质的直接证据（锂测试）",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.opt",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_flag",
+      "name_cn": "光变标志/类型",
+      "description": "红外光变标志（云层/斑块旋转调制、L/T 转变区强变源等）",
+      "category": "variability",
+      "ucd": "src.var;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_amplitude",
+      "name_cn": "光变振幅",
+      "description": "近红外光变振幅（mag），L/T 转变区尘埃云不透明度变化可致较大振幅",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期",
+      "description": "由旋转调制光变得到的自转周期（小时-天量级），与年龄/磁场相关",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "hr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "association_membership",
+      "name_cn": "年轻星群成员",
+      "description": "年轻移动星群/星团成员标识与概率（如 BANYAN 判定），年轻 BD 的年龄与环境定标",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_separation",
+      "name_cn": "伴星角距",
+      "description": "双星/伴星角距（arcsec），用于轨道拟合与系统分解",
+      "category": "environment",
+      "ucd": "pos.angDistance",
+      "unit": "arcsec",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "otype": "a2*",
+  "name_cn": "猎犬Alpha2型变星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型",
+      "description": "GCVS变星类型代码，本类为a2*（ACV，猎犬Alpha2型）：B8p–A7p磁Ap星因自转调制产生光变与谱变",
+      "category": "variability",
+      "ucd": "src.vari.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "光变/自转周期",
+      "description": "旋转调制光变周期，ACV类典型0.5–160 d（斜转子模型下等于自转周期），长周期极端者达年甚至更久（如HD 187474约6.4年）",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_max",
+      "name_cn": "极大历元",
+      "description": "亮度极大对应的儒略日（HJD），用于相位计算与历元更新",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_mag",
+      "name_cn": "极大视星等",
+      "description": "光变周期内亮度极大时的视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "min_mag",
+      "name_cn": "极小视星等",
+      "description": "光变周期内亮度极小时的视星等（或直接给出变幅）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_amplitude",
+      "name_cn": "光变幅",
+      "description": "极大与极小星等之差，ACV典型0.01–0.1 mag；反映斑块与视线几何的相对贡献",
+      "category": "photometry",
+      "ucd": "phot.mag;arith.diff",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_system",
+      "name_cn": "测光系统代码",
+      "description": "极大/极小星等所采用的测光系统（V、pg、Strömgren u v b y、Gaia G等），因ACV在紫外区变化最显著，系统间变幅不可直接比较",
+      "category": "photometry",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B−V色指数",
+      "description": "宽带色指数；Ap星因背向加热效应与元素斑块导致能量分布异常，色指数偏离正常主序",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color",
+      "name_cn": "U−B色指数",
+      "description": "U−B色指数，紫外区对Ap星反常吸收更敏感",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "by_color",
+      "name_cn": "Strömgren b−y色指数",
+      "description": "Strömgren uvby系统中的b−y色指数",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m1_index",
+      "name_cn": "Strömgren m1金属指数",
+      "description": "m1=(v−b)−(b−y)，反映金属线强度，Ap星因元素增丰而异常",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c1_index",
+      "name_cn": "Strömgren c1巴尔末跳变指数",
+      "description": "c1=(u−v)−(v−b)，度量巴尔末跳变与表面重力，Ap星常因反常紫外通量偏离主序关系",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hbeta_index",
+      "name_cn": "Hβ窄带指数",
+      "description": "Hβ窄带光度指数，用于确定有效温度",
+      "category": "photometry",
+      "ucd": "phot.flux;spect.line",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱分类含化学特殊性后缀，如A0p(SiCrEu)、A0Vp(Si-Cr-Eu)；ACV类光谱型范围B8p–A7p",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chemical_peculiarity",
+      "name_cn": "化学特殊性元素",
+      "description": "异常增强元素组合（Si、Sr、Cr、Eu、稀土等），决定表面化学斑块分布；斑块随自转造成谱线强度与光变调制",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.peculiar",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "v sin i；ACV/mCP星普遍慢自转，利于斑块与磁场结构观测",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "视向速度；变视向速度标记可指示双星系统（如原型星α2 CVn为双星成员）",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "longitudinal_mag_field",
+      "name_cn": "纵向有效磁场",
+      "description": "视线方向平均纵向磁场Be（由圆偏振/塞曼测量），随自转相位呈周期变化，典型强度数百G至数十kG；对观测视角（几何）敏感",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_quadratic_mag_field",
+      "name_cn": "平均二次有效磁场",
+      "description": "平均二次有效磁场<Be^2>^(1/2)，由文献测量汇编（596颗星，其中352颗化学特殊A/B星），用于磁场强度统计分布研究",
+      "category": "physical",
+      "ucd": "phys.magField;stat.mean",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_phase_curve_amplitude",
+      "name_cn": "磁场相位曲线振幅",
+      "description": "对Be(旋转相位)正弦或双波拟合所得的振幅参数，约束偶极场倾角与强度",
+      "category": "physical",
+      "ucd": "phys.magField;arith",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_phase_curve_phase",
+      "name_cn": "磁场极值相位",
+      "description": "磁场（Be）极值对应的旋转相位，与光变/谱变极值相位对比可检验斜转子模型",
+      "category": "physical",
+      "ucd": "time.phase",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnetic_rot_period",
+      "name_cn": "磁场自转周期",
+      "description": "由Be变化独立确定的自转周期；ACV类中光变、谱变与磁场变化周期一致，均等于自转周期",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "有效温度，用于H-R图定位与演化状态判断（来源于Netopil等2017年mCP星基本参数研究）",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "恒星光度（log L/Lsun），结合温度定位主序演化位置",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量，ACV/mCP星质量范围约1.5–4 Msun",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_age",
+      "name_cn": "恒星年龄",
+      "description": "恒星年龄/主序演化阶段，约束磁场的化石场起源假说",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "ICRS J2000赤经",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "ICRS J2000赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "自行分量μα、μδ（mas/yr），用于星团成员判定",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coords",
+      "name_cn": "银道坐标",
+      "description": "银经l与银纬b，用于银河系环境与空间分布统计",
+      "category": "astrometry",
+      "ucd": "pos.galactic",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cp_subtype",
+      "name_cn": "CP子类",
+      "description": "化学特殊性细分（ApSi、ApSrCrEu、ApSiCr等），与磁场强度及光变行为相关",
+      "category": "classification",
+      "ucd": "src.class.peculiar",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cp_probability_flag",
+      "name_cn": "特殊性概率标志",
+      "description": "条目可靠性标志：W/公认Ap或Am星，?/性质存疑，N/实非Ap（可配分光观测核实）",
+      "category": "classification",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_uncertainty_flag",
+      "name_cn": "周期可靠性标志",
+      "description": "周期或星等不确定标志（':'不确定，'('表示变幅等），以及周期可能为倍数/分数关系的提示",
+      "category": "variability",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_association",
+      "name_cn": "星团/星协成员关系",
+      "description": "所属星团、星群或星协及内部编号（WEBDA标识），用于研究mCP星的诞生环境与磁场出现时标",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binarity",
+      "name_cn": "双星/多重性",
+      "description": "双星或多重系统信息：ADS/BDS编号、角距、伴星星等及轨道周期与偏心率",
+      "category": "environment",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_id",
+      "name_cn": "分量标识",
+      "description": "变星所属分量的字母标识（A/B等），区分双星中哪一分量为ACV变量",
+      "category": "environment",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

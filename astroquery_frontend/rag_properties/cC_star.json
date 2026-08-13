@@ -1,0 +1,296 @@
+{
+  "otype": "cC*",
+  "name_cn": "经典造父变星",
+  "description": "年轻大质量（4-20Msun）径向脉动变星。著名的周光关系使其成为宇宙距离阶梯的关键标准烛光。基本模式周期1-200天，光谱型F-K超巨星",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "variability_type_GCVS",
+      "name_cn": "变星类型",
+      "description": "GCVS 变星分类代码（如 DCEP=经典造父变星, DCEPS=一阶泛音造父变星）。同时区分脉动模式",
+      "category": "classification",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "脉动周期（天）。造父变星周期1-200天，典型<10天。周期越长→光度越高（周光关系）",
+      "category": "variability",
+      "ucd": "time.period.pulsation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period_error",
+      "name_cn": "脉动周期误差",
+      "description": "周期测量误差",
+      "category": "variability",
+      "ucd": "stat.error;time.period.pulsation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_mode",
+      "name_cn": "脉动模式",
+      "description": "脉动模式：F/FO=基本模式, 1O=一阶泛音, 2O=二阶泛音, F+1O=双模。用于周光关系的模式标定",
+      "category": "classification",
+      "ucd": "meta.code;src.var.pulse",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_of_maximum",
+      "name_cn": "极大历元",
+      "description": "光变曲线极大值的历元（JD-2400000）。用于相位折叠和周期更新",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "V_band_max_mag",
+      "name_cn": "V 波段极大星等",
+      "description": "V 波段最亮星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V;stat.max",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "V_band_min_mag",
+      "name_cn": "V 波段极小星等",
+      "description": "V 波段最暗星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V;stat.min",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "V_band_amplitude",
+      "name_cn": "V 波段光变振幅",
+      "description": "V 波段光变幅度 = max - min。典型 0.5-2 mag",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "I_band_mean_mag",
+      "name_cn": "I 波段平均星等",
+      "description": "I 波段（~0.8μm）平均星等。OGLE 的主要测光波段，受消光影响比 V 小",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "I_band_amplitude",
+      "name_cn": "I 波段光变振幅",
+      "description": "I 波段光变幅度。造父变星 I 波段振幅比 V 波段小约30%",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_G_mag",
+      "name_cn": "Gaia G 平均星等",
+      "description": "Gaia DR3 G 波段平均星等。高精度（mmag级），全天均匀",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "W1_mag",
+      "name_cn": "WISE W1 星等",
+      "description": "AllWISE W1(3.4μm) 星等。中红外周光关系的核心波段，消光影响极小",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "W2_mag",
+      "name_cn": "WISE W2 星等",
+      "description": "AllWISE W2(4.6μm) 星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.4-8um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "W3_mag",
+      "name_cn": "WISE W3 星等",
+      "description": "AllWISE W3(12μm) 星等。中红外周光关系",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.8-15um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mid_IR_absolute_mag_W1",
+      "name_cn": "W1 波段绝对星等",
+      "description": "基于周光关系计算的 WISE W1 绝对星等。用于距离测定",
+      "category": "physical",
+      "ucd": "phys.magAbs;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK 光谱型（F5-K0 I-II）。光度级 I=超巨星，II=亮巨星",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity_curve",
+      "name_cn": "视向速度曲线",
+      "description": "脉动引起的视向速度变化曲线。用于 Baade-Wesselink 方法测定半径和距离。Gaia DR3 FPR 提供了 9614 颗星的高质量 RV 曲线",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt;src.var",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_radial_velocity",
+      "name_cn": "平均视向速度",
+      "description": "系统视向速度。结合自行得到 3D 空间运动。用于银河系旋转曲线拟合",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3 三角视差。对近距离造父变星可独立于周光关系测定距离",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax_error",
+      "name_cn": "视差误差",
+      "description": "视差测量误差。远距离造父变星视差不确定度较大（>40%）",
+      "category": "astrometry",
+      "ucd": "stat.error;pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经自行",
+      "description": "μ_α cosδ。用于银河系动力学和旋转曲线研究",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬自行",
+      "description": "μ_δ",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_from_PL_relation",
+      "name_cn": "周光关系距离",
+      "description": "基于中红外/光学周光关系测定的距离。精度优于 Gaia 视差距离（尤其远距离源）",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_error",
+      "name_cn": "距离误差",
+      "description": "周光关系距离的不确定度。中红外 PL 关系散度~0.07-0.15 mag",
+      "category": "astrometry",
+      "ucd": "stat.error;pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_E_BV",
+      "name_cn": "色余 E(B-V)",
+      "description": "星际红化色余。造父变星内禀颜色已知，通过观测颜色校正消光。银盘方向造父变星消光显著",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_Fe_H",
+      "name_cn": "[Fe/H] 金属丰度",
+      "description": "铁丰度。造父变星周光关系的金属丰度依赖是距离尺度系统误差的关键来源",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age_estimate",
+      "name_cn": "年龄估计",
+      "description": "基于周龄关系（周期→质量→年龄）估计的年龄。典型 20-400 Myr。单星不确定度~50%",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude",
+      "name_cn": "银经",
+      "description": "银道坐标 l。用于银河系结构绘图——造父变星是银盘和旋臂的优秀示踪体",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude",
+      "name_cn": "银纬",
+      "description": "银道坐标 b。造父变星集中在银盘（|b|<10°），属极端星族 I",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates",
+      "name_cn": "赤道坐标",
+      "description": "J2000.0 赤经赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variable_star_designation",
+      "name_cn": "变星命名",
+      "description": "GCVS 标准变星编号（如 δ Cep, S Vul, OGLE-GD-CEP-1884）",
+      "category": "identification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_curve_shape_parameters",
+      "name_cn": "光变曲线形态参数",
+      "description": "傅里叶分解参数（R21, φ21 等）。光变曲线形态对周期和金属丰度敏感。常被 OGLE 和 Gaia 提供",
+      "category": "variability",
+      "ucd": "src.var;meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+{
+  "otype": "V*",
+  "name_cn": "变星通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "变星 J2000 赤经,GCVS 5.1 精度优于 0.01s;Gaia/ASAS-SN/ZTF/VSX 均提供",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "变星 J2000 赤纬,GCVS 5.1 精度优于 0.1\"",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon",
+      "name_cn": "银经",
+      "description": "银道坐标经度,用于银河系结构分布统计",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度,银盘/银晕变星区分",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_ra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行(mas/yr),来自 Hipparcos/UCAC 等参照系归算",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra;stat.mean",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_dec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行(mas/yr),精度 1 mas/yr",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec;stat.mean",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia 视差(mas),用于变星距离与光度标定",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude",
+      "name_cn": "极大星等",
+      "description": "最大亮度处的视星等;含上下限标记(>明限/<暗限)及不确定标记",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.max",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "min_magnitude",
+      "name_cn": "极小星等",
+      "description": "最小亮度处的视星等,可能以变幅形式给出",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.min",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "secondary_min_magnitude",
+      "name_cn": "次极小星等",
+      "description": "食双星次食极小处的星等或变幅,表征食深",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.min;src.var",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_magnitude",
+      "name_cn": "平均星等",
+      "description": "时间平均视星等:ASAS-SN 平均 V 星等、Gaia G 波段平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.mean",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude",
+      "name_cn": "变幅",
+      "description": "光变幅度(mag),各目录自行测定;Gaia 提供最大半幅、ASAS-SN 提供变幅",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_system",
+      "name_cn": "测光系统",
+      "description": "极值星等所用测光系统:pg(照相)、V、B、Ic/Rc、g'r'i'(SDSS)、Gaia G、JHK 红外等",
+      "category": "photometry",
+      "ucd": "phot.system",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "色指数",
+      "description": "多波段颜色(如 VSX 中 BV/GBP-GRP、ASAS-SN g-i),用于变星本质分类(YSO、AGN 等区分)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "周期",
+      "description": "光变周期(天),GCVS 精度最高至 1e-10 天,含上下限与倍数/分数修正标记",
+      "category": "variability",
+      "ucd": "src.var.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_error",
+      "name_cn": "周期误差",
+      "description": "周期拟合不确定度",
+      "category": "variability",
+      "ucd": "stat.error;src.var.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "frequency",
+      "name_cn": "主振荡频率",
+      "description": "最强振荡频率及显著谐波数(周期倒数),脉动与自转变星重要参数",
+      "category": "variability",
+      "ucd": "src.var.frequency",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_of_maximum",
+      "name_cn": "极亮历元",
+      "description": "极大光历元(JD-2400000.5),食/椭球/RV Tau/RS CVn 型为极小光历元;含精度位数与不确定性标记",
+      "category": "variability",
+      "ucd": "time.epoch;src.var",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rise_eclipse_time",
+      "name_cn": "上升时间/食持续时间",
+      "description": "内禀变星 M-m 上升时间或食双星 D 食宽,以周期百分比表示,刻画光变曲线形状",
+      "category": "variability",
+      "ucd": "src.var;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nova_year",
+      "name_cn": "爆发年份",
+      "description": "新星/超新星爆发年份(爆发时刻详见历元字段),用于激变与爆发变星",
+      "category": "variability",
+      "ucd": "time.epoch;src.var.event",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_variable_flag",
+      "name_cn": "变源探测标志",
+      "description": "Gaia DR3 变源判据标志(如 per_mag/semi_per_mag/seasonal/stochastic 等 8 类变源定义)",
+      "category": "variability",
+      "ucd": "src.var.flag",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_curve_statistics",
+      "name_cn": "光变曲线统计特征",
+      "description": "60+ 光变曲线特征参数:显著性、相位、偏度、峰度、Eta(Von Neumann)统计、信噪比等,用于自动分类",
+      "category": "variability",
+      "ucd": "src.var;stat",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type",
+      "name_cn": "变星类型(GCVS分类代码)",
+      "description": "GCVS 变星分类代码(EA、RRAB、DSCT、M、SR、ROT 等,含 2006 新分类体系)",
+      "category": "classification",
+      "ucd": "src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "class_probability",
+      "name_cn": "分类概率/评分",
+      "description": "Gaia 变分类器的最高分类得分与各类概率分布(best_class_score/class_probability),用于分类可靠性评估",
+      "category": "classification",
+      "ucd": "stat.probability;src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "变星的光谱分类(如 M0III),与变星类型关联判断恒星本质",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction",
+      "name_cn": "星际消光",
+      "description": "G 波段消光 A_G(Gaia)或消光图插值,用于去红化与光度校正",
+      "category": "physical",
+      "ucd": "phys.absorption;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "河外变源(AGN、类星体、超新星)红移,区分河内恒星与河外变源",
+      "category": "environment",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_galaxy",
+      "name_cn": "所属星系",
+      "description": "变源所属星系(Gaia:银河系/麦哲伦云/仙女星系等;GCVS 河外变星卷),用于环境关联",
+      "category": "environment",
+      "ucd": "meta.id.parent",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_flag",
+      "name_cn": "子星分量标识",
+      "description": "双星/多星系统中变星所在分量(A、B、1、2…),处理双分量变星(如 CE Cas A/B)",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alternative_names",
+      "name_cn": "别名与交叉证认",
+      "description": "变星标准命名(星座 R..QZ、V0335 等)、GCVS 替代名与其他目录名交叉证认",
+      "category": "environment",
+      "ucd": "meta.id.alt",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

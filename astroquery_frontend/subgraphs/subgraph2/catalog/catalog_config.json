@@ -1,0 +1,164 @@
+{
+  "gaia_dr3": {
+    "pattern": "Gaia DR3 (\\d+)",
+    "name": "Gaia DR3",
+    "vizier_table": "I/355/gaiadr3",
+    "key_column": "Source"
+  },
+  "gaia_dr2": {
+    "pattern": "Gaia DR2 (\\d+)",
+    "name": "Gaia DR2",
+    "vizier_table": "I/345/gaia2",
+    "key_column": "Source"
+  },
+  "2mass": {
+    "pattern": "2MASS J([\\d\\+\\-\\.]+)",
+    "name": "2MASS",
+    "vizier_table": "II/246/out",
+    "key_column": "_2MASS"
+  },
+  "wise": {
+    "pattern": "WISE[A]? (J[\\d\\+\\-\\.]+)",
+    "name": "AllWISE",
+    "vizier_table": "II/328/allwise",
+    "key_column": "AllWISE"
+  },
+  "sdss": {
+    "pattern": "SDSS (J[\\d\\+\\-\\.]+)",
+    "name": "SDSS DR12",
+    "vizier_table": "V/147/sdss12",
+    "key_column": "SDSS12"
+  },
+  "tic": {
+    "pattern": "TIC\\s+(\\d+)",
+    "name": "TESS Input Catalog",
+    "vizier_table": "IV/38/tic",
+    "key_column": "TIC"
+  },
+  "epic": {
+    "pattern": "EPIC\\s+(\\d+)",
+    "name": "K2 EPIC",
+    "vizier_table": "IV/34/epic",
+    "key_column": "ID"
+  },
+  "hipparcos": {
+    "pattern": "HIP\\s+(\\d+)",
+    "name": "Hipparcos",
+    "vizier_table": "I/239/hip_main",
+    "key_column": "HIP"
+  },
+  "hd": {
+    "pattern": "HD\\s+(\\d+)",
+    "name": "Henry Draper",
+    "vizier_table": "III/135A/catalog",
+    "key_column": "HD"
+  },
+  "ngc": {
+    "pattern": "NGC\\s+(\\d+)",
+    "name": "NGC 2000.0",
+    "vizier_table": "VII/118/ngc2000",
+    "key_column": "Name"
+  },
+  "ic": {
+    "pattern": "IC\\s+(\\d+)",
+    "name": "IC (NGC 2000.0)",
+    "vizier_table": "VII/118/ngc2000",
+    "key_column": "Name"
+  },
+  "ugc": {
+    "pattern": "UGC\\s+(\\d+)",
+    "name": "UGC",
+    "vizier_table": "VII/26D/catalog",
+    "key_column": "UGC"
+  },
+  "mwsc": {
+    "pattern": "MWSC\\s+(\\d+)",
+    "name": "Milky Way Star Clusters",
+    "vizier_table": "J/A+A/558/A53/catalog",
+    "key_column": "MWSC"
+  },
+  "ocl": {
+    "pattern": "OCl\\s+([\\d\\.]+)",
+    "name": "Open Clusters (Dias+)",
+    "vizier_table": "B/ocl/clusters",
+    "key_column": "OCl"
+  },
+  "pgc": {
+    "pattern": "(?:PGC|LEDA)\\s+(\\d+)",
+    "name": "HYPERLEDA / PGC",
+    "vizier_table": "VII/237/pgc",
+    "key_column": "PGC"
+  },
+  "2masx": {
+    "pattern": "2MASX J([\\d\\+\\-\\.]+)",
+    "name": "2MASS Extended Sources",
+    "vizier_table": "VII/233/xsc",
+    "key_column": "2MASX"
+  },
+  "iras": {
+    "pattern": "IRAS\\s+([\\d\\+\\-\\.]+)",
+    "name": "IRAS Point Sources",
+    "vizier_table": "II/125/main",
+    "key_column": "IRAS"
+  },
+  "abell": {
+    "pattern": "ACO\\s+(\\d+)",
+    "name": "Abell Galaxy Clusters",
+    "vizier_table": "VII/110A",
+    "key_column": "ACO"
+  },
+  "bax": {
+    "pattern": "BAX\\s+([\\d\\.\\+\\-]+)",
+    "name": "BAX X-ray Clusters",
+    "vizier_table": "B/bax/bax",
+    "key_column": "BAX"
+  },
+  "mcxc": {
+    "pattern": "MCXC\\s+(J[\\d\\+\\-\\.]+)",
+    "name": "MCXC X-ray Clusters",
+    "vizier_table": "J/A+A/534/A109/mcxc",
+    "key_column": "MCXC"
+  },
+  "psz2": {
+    "pattern": "PSZ2\\s+(G[\\d\\+\\-\\.]+)",
+    "name": "Planck SZ Clusters",
+    "vizier_table": "J/A+A/594/A27",
+    "key_column": "PSZ2"
+  },
+  "nbgg": {
+    "pattern": "NBGG\\s+([\\d\\-]+)",
+    "name": "Nearby Galaxies Groups",
+    "vizier_table": "VII/145/groups",
+    "key_column": "NBGG"
+  },
+  "ghcg": {
+    "pattern": "GHCG\\s+(\\d+)",
+    "name": "Garcia General Galaxy Groups (LGG)",
+    "vizier_table": "J/A+AS/100/47",
+    "key_column": "GHCG"
+  },
+  "3c": {
+    "pattern": "\\b3C\\s+(\\d+)",
+    "name": "3C Radio Source Catalogue",
+    "vizier_table": "VIII/1A/3c",
+    "key_column": "3C"
+  },
+  "hr": {
+    "pattern": "\\bHR\\s+(\\d+)",
+    "name": "Bright Star Catalogue (HR)",
+    "vizier_table": "V/50/catalog",
+    "key_column": "HR"
+  },
+  "ucac": {
+    "pattern": "UCAC4\\s+(\\d+-\\d+)",
+    "name": "Fourth USNO CCD Astrograph Catalog (UCAC4)",
+    "vizier_table": "I/322A/out",
+    "key_column": "UCAC4"
+  },
+  "fermi": {
+    "pattern": "4FGL (J[\\d\\.]+[+-][\\d\\.]+)",
+    "name": "Fermi LAT 4FGL Catalog (DR3)",
+    "vizier_table": "IX/67",
+    "key_column": "4FGL"
+  }
+}

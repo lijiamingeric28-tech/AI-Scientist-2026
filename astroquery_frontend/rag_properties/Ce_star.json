@@ -1,0 +1,296 @@
+{
+  "otype": "Ce*",
+  "name_cn": "造父变星通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3三角视差(μas)，用于几何距离与PL关系零点",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmra",
+      "name_cn": "自行(赤经方向)",
+      "description": "Gaia DR3赤经方向自行(mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmdec",
+      "name_cn": "自行(赤纬方向)",
+      "description": "Gaia DR3赤纬方向自行(mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "采用的几何/文献距离(kpc)，SED拟合的输入量",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "G波段星等",
+      "description": "Gaia G波段平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_mag",
+      "name_cn": "BP波段星等",
+      "description": "Gaia蓝端G_BP平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rp_mag",
+      "name_cn": "RP波段星等",
+      "description": "Gaia红端G_RP平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "i_mag",
+      "name_cn": "I波段平均星等",
+      "description": "OGLE I波段强度平均星等，PL关系最常用波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V波段平均星等",
+      "description": "OGLE V波段平均星等(部分样本)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_bol",
+      "name_cn": "热星等",
+      "description": "由SED拟合得到的恒星热星等/热光度换算量",
+      "category": "photometry",
+      "ucd": "phot.mag.bol",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wesenheit_index",
+      "name_cn": "Wesenheit红化无关指数",
+      "description": "W_I等红化无关测光指数，距离测定与PL关系的关键量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv",
+      "name_cn": "视向速度",
+      "description": "Gaia DR3 RVS视向速度(km/s)，可经交叉匹配获取；用于Baade-Wesselink/大气脉动研究",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "SED拟合采用/推定的恒星金属丰度(dex)，经典造父多为太阳丰度，麦哲伦样本约-0.5~-0.75",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "SED拟合导出的有效温度(K)，与理论不稳定带比较",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_bol",
+      "name_cn": "热光度",
+      "description": "SED拟合的热光度(L_sun)，周期-光度关系与恒星演化模型的直接输出量",
+      "category": "physical",
+      "ucd": "phys.luminosity.bolometric",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "周期-半径关系给出的恒星半径(R_sun)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "结合演化轨迹/脉动模型推定的质量(M_sun)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ebv",
+      "name_cn": "色余E(B-V)",
+      "description": "星际红化色余，SED拟合输入量",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "av",
+      "name_cn": "星际消光A_V",
+      "description": "视线方向视觉波段消光(mag)，来自3D红化图或文献",
+      "category": "physical",
+      "ucd": "phys.absorption.galactic",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess",
+      "name_cn": "红外超标志",
+      "description": "中/远红外超标志(尘埃包层)，SED拟合的附加尘埃成分判定",
+      "category": "physical",
+      "ucd": "phys.IR.excess",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "脉动周期",
+      "description": "主脉动周期(天)，造父变星最核心参数，决定光度(Leavitt定律)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_err",
+      "name_cn": "周期误差",
+      "description": "主脉动周期的拟合不确定度",
+      "category": "variability",
+      "ucd": "stat.error;time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude",
+      "name_cn": "光变振幅",
+      "description": "I或V波段光变振幅(mag)，区分模式与次型的重要判据",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fourier_r21",
+      "name_cn": "傅里叶谐波振幅比R21",
+      "description": "一阶谐波与主频振幅比，光变曲线形态定量参数(模式/次型判据)",
+      "category": "variability",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fourier_phi21",
+      "name_cn": "傅里叶相位差φ21",
+      "description": "一阶谐波相对主频的相位差(rad)，与R21共同刻画光变形状",
+      "category": "variability",
+      "ucd": "stat.param",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_max",
+      "name_cn": "极大光时刻",
+      "description": "光变极大对应的时刻(HJD)，相位基准与O-C分析输入",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型",
+      "description": "DCEP(经典I型)、DCEPS(短周期经典)、T2CEP(II型)、ACEP(反常)等类型标签",
+      "category": "classification",
+      "ucd": "src.class.starType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sub_type",
+      "name_cn": "II型造父次型",
+      "description": "II型造父细分类：BL Her(1-4d)、W Vir(4-20d)、peculiar W Vir、RV Tau(>20d)",
+      "category": "classification",
+      "ucd": "src.class.starType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_mode",
+      "name_cn": "脉动模式",
+      "description": "基频(F)/一阶泛音(FO)/二阶泛音(SO)/三阶泛音(TO)/双模等脉动模式标签",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "所在星系",
+      "description": "成员关系：银河系(银盘/银心)、LMC、SMC、M31、M33等",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

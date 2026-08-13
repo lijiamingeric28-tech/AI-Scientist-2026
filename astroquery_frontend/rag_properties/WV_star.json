@@ -1,0 +1,287 @@
+{
+  "otype": "WV*",
+  "name_cn": "室女W型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "period",
+      "name_cn": "脉动周期(天)",
+      "description": "主脉动周期,WV*典型10-20天(GCVS CW型整体约1-35天;W Vir原型17.27天);所有入选表均提供",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_secondary",
+      "name_cn": "次周期/多模式周期",
+      "description": "多模式脉动(T2C双模式、一阶泛音等)的第二周期;Gaia DR3 Cepheid星表及OGLE特殊星(候选单模1O BL Her、双模T2C)提供",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_max_light",
+      "name_cn": "光度极大历元",
+      "description": "最大光度时刻(HJD/日),用于构建历元-周期星历表;GCVS与Gaia DR3均给出",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rise_time",
+      "name_cn": "上升时间M-m",
+      "description": "极大前到极大的上升时间,以占周期百分比表示,刻画WV*光变曲线陡峭上升、缓慢下降的不对称形状",
+      "category": "variability",
+      "ucd": "phot.lc",
+      "unit": "%",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_v",
+      "name_cn": "V波段变光振幅",
+      "description": "V波段峰峰振幅(星等),WV*约0.3-1.5等;OGLE/GCVS/ASAS-SN均提供,与周期共同构成周期-振幅图诊断",
+      "category": "photometry",
+      "ucd": "phot.mag;arith.diff;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_i",
+      "name_cn": "I波段变光振幅",
+      "description": "I波段峰峰振幅(星等),OGLE提供,用于V-I色幅行为与亚类区分",
+      "category": "photometry",
+      "ucd": "phot.mag;arith.diff;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_mag_v",
+      "name_cn": "V波段平均星等",
+      "description": "相位平均V星等(OGLE为强度平均),与周期构成周期-光度关系,用于距离测定",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_mag_i",
+      "name_cn": "I波段平均星等",
+      "description": "相位平均I星等,与V星等联用构建红化不敏感的维森海特指数",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_min_mag",
+      "name_cn": "极大/极小视星等",
+      "description": "亮度极大与极小时的表观星等及其限制/不确定度标志;GCVS以V(或pg等)系统给出",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_mag_g",
+      "name_cn": "Gaia G波段强度平均星等",
+      "description": "Gaia DR3 G波段(宽带)强度平均星等及不确定度,由34个月SOS Cep&RRL管线测定",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_mag_bp_rp",
+      "name_cn": "Gaia BP/RP平均星等",
+      "description": "Gaia DR3 BP与RP波段强度平均星等,用于构造颜色与颜色-幅值关系",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index_bp_rp",
+      "name_cn": "BP-RP色指数",
+      "description": "由Gaia BP/RP平均星等导出的颜色,反映WV*温度与消光,用于PLR红化修正",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_photometry",
+      "name_cn": "近/中红外测光",
+      "description": "2MASS JHK、WISE、Spitzer/IRAC红外星等(汇编自Groenewegen 2017),红外PLR对消光不敏感,是WV*距离尺度关键",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess",
+      "name_cn": "红外超",
+      "description": "E(J-K)等红外色超,指示WV*(尤其RV Tau型)的尘埃包层或未分辨伴星",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_curve_timeseries",
+      "name_cn": "光变曲线时间序列",
+      "description": "OGLE V/I波段多历元时域测光(数年至数十年基线),用于周期变化分析、Fourier分解与亚类判别;Gaia另有34个月多波段光变曲线",
+      "category": "variability",
+      "ucd": "phot.lc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fourier_params",
+      "name_cn": "傅里叶参数R21/phi21/R31/phi31",
+      "description": "Gaia DR3对光变曲线作Fourier分解给出的振幅比与相位(含bootstrap不确定度),刻画光变曲线形状并用于T2C内部亚类区分",
+      "category": "variability",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type_gcvs",
+      "name_cn": "GCVS变星类型",
+      "description": "GCVS变星分类(如CW=W Vir型),连同极大/极小星等限制标志,是WV*权威分类标签",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t2c_subclass",
+      "name_cn": "T2C亚类(BL Her/W Vir/RV Tau)",
+      "description": "OGLE按周期与光变曲线形态划分的亚类:BL Her(1-4天)、W Vir(4-24天,含特殊W Vir)、RV Tau(20-150天),并附双模/泛音模式",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_sos_class",
+      "name_cn": "Gaia SOS分类与脉动模式",
+      "description": "Gaia DR3 SOS Cep&RRL管线分类(DCEP/T2CEP/ACEP及模式F/1O/MULTI)与可信度标志,15颗被重新分类的伪Cepheid经人工复核",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱型(如W Vir为F0Ib-G0Ib超巨星),反映低表面重力、膨胀外壳的年轻超巨星外观",
+      "category": "spectroscopy",
+      "ucd": "src.class.spectralType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "平均视向速度",
+      "description": "Gaia DR3平均视向速度;对799颗Cepheid(含T2C)发布RVS时间序列速度曲线,可测脉动速度幅度",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_fe_h",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "金属丰度,WV*为贫金属年老Pop II星([Fe/H]约-0.5至-1.5);Gaia DR3光度[Fe/H]仅覆盖经典DCEP_F,WV*的[Fe/H]来自小型光谱样本(如Maas et al. 2007, ApJ 656, 1141)及PLZ关系文献,无大规模专用星表",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度/距离模数",
+      "description": "汇编的绝对光度与距离模数(基于OGLE光变曲线+红外测光),WV*绝对星等介于经典造父与RR Lyr之间,为Pop II距离指示器",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "ICRS赤经(度或时角),各表均以J2000给出",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "ICRS赤纬(度),各表均以J2000给出",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia(EDR3/DR3)三角视差及误差,经gaia_source交叉匹配获取,是WV*几何距离的直接来源",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "赤经/赤纬方向自行(mas/yr);GCVS给出早期测定,Gaia DR3给出高精度值,用于运动学(晕/盘成分)研究",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由视差/PLR导出的距离或距离模数;Gaia DR3星表按全天子区提供,是WV*作为Pop II标准烛光的产品",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coords",
+      "name_cn": "银道坐标(l,b)",
+      "description": "银经/银纬,GCVS逐星给出,用于银晕/银盘分布与W Vir的双成分分布研究",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_system",
+      "name_cn": "宿主系统",
+      "description": "所属星系/环境:银河系(全天)、LMC、SMC、M31、M33;Gaia DR3 Cepheid星表与OGLE按此分表,WV*可用于各系统距离测定",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_flag",
+      "name_cn": "星团/伴星系成员标记",
+      "description": "成员归属备注:OGLE银河核球表标注6颗可能属人马座矮星系(Sgr dSph)的T2C;J/AcA/70/101标注球状星团成员候选;食双星/椭球变光叠加标志(16颗)",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

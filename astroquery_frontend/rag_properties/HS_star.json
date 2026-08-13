@@ -1,0 +1,305 @@
+{
+  "otype": "HS*",
+  "name_cn": "热亚矮星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000 历元赤经(ICRS);Gaia 为历元 2016.0",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000 历元赤纬(ICRS)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon_glat",
+      "name_cn": "银经银纬",
+      "description": "银河系坐标,用于星族与银道面分布分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia EDR3/DR2/DR3 三角视差(带误差),热亚矮星距离与光度测定的基础",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "自行 pmRA/pmDE 及其误差,SDSS 目录亦以 3-sigma 自行选择样本",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ruwe",
+      "name_cn": "RUWE 拟合优度",
+      "description": "Gaia 重归一化单位权重误差,用于甄别双星/复合系统与较差天体测量",
+      "category": "astrometry",
+      "ucd": "stat.fit.quality",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gmag",
+      "name_cn": "Gaia G 星等",
+      "description": "Gaia 宽带 G 星等(含误差);由 G 与 BP-RP 构造颜色-星等图以识别热欠光度恒星",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_rp",
+      "name_cn": "BP-RP 颜色",
+      "description": "Gaia BP-RP 色指数;热亚矮星典型 -0.65~0.46,用于候选筛选与复合星识别",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sdss_ugriz",
+      "name_cn": "SDSS ugriz 测光",
+      "description": "SDSS 五波段测光,SDSS 目录的基准测光;热亚矮星颜色判据的主要来源",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiband_phot",
+      "name_cn": "多波段测光",
+      "description": "跨 11 个巡天的多波段测光:GALEX FUV/NUV、APASS BVgri、PS1 grizzy、SkyMapper uvgriz、VST ugriz、2MASS JHK、UKIDSS YJHK、VISTA ZYJHKs、WISE W1-W4",
+      "category": "photometry",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "星际红化 E(B-V)",
+      "description": "星际消光红化;Dawson+2024 提供 Stilism 与 SED 拟合两组估计",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "av_extinction",
+      "name_cn": "V 带消光 A_V",
+      "description": "V 波段星际吸收,由 E(B-V) 换算",
+      "category": "photometry",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess",
+      "name_cn": "红外超指示",
+      "description": "SED 拟合红外超,指示复合双星系统中存在晚型主序伴星(48/305 系统)",
+      "category": "classification",
+      "ucd": "phot.flux;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_class",
+      "name_cn": "光谱分类",
+      "description": "热亚矮星光谱类型:sdB/sdOB/sdO/He-sdO(B)等,兼有光谱与颜色两套独立分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "20000-40000K 极端水平支大气温度;来自文献大气模型拟合(含 LAMOST/SDSS 光谱与非LTE网格)",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "log g ~ 5.0-6.5,区分 sdO/sdB 与白矮星及水平支的关键判据",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "he_abundance",
+      "name_cn": "氦丰度 log y",
+      "description": "表面 He 丰度 y=n(He)/n(H) 的对数;区分 He-rich/He-poor,对应双 HeWD 并合/公共包层抛射/稳定洛希瓣流量等不同形成通道",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "log L/Lsun,由 Gaia 视差与有效温度推导,用于确认亚矮星本质并筛除候选污染",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "由大气参数+演化/星震模型给出的质量;星震质量约束来自脉动频率",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由视差/光谱光度给出的距离;Dawson+2024 为 500pc 体积限成员判据",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_gmag",
+      "name_cn": "绝对 G 星等",
+      "description": "绝对 Gaia G 星等(由视差计算),识别热欠光度性质的核心量",
+      "category": "physical",
+      "ucd": "phot.mag.abs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv",
+      "name_cn": "视向速度",
+      "description": "SDSS/LAMOST 视向速度(2791 颗有文献值),双星搜寻与银河运动学研究基础",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_semiamplitude",
+      "name_cn": "RV 半振幅 K",
+      "description": "轨道视向速度半振幅,与周期共同约束伴星质量函数",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.amp",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_velocity",
+      "name_cn": "系统质心速度",
+      "description": "双星系统质心速度 gamma,对应单星视向速度",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期(P<30d 汇编,0.04-28d);热亚矮星双星比例高(~50%),短周期系统为质量传输与并合前身研究重点",
+      "category": "classification",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_type",
+      "name_cn": "伴星类型",
+      "description": "伴星性质:MS(主序)/WD(白矮星)/BD(棕矮星),兼有光谱与测光(光变曲线)两路识别",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_type",
+      "name_cn": "脉动类型",
+      "description": "p 模(P)/g 模(G)/混合(H)/疑似双星(B);sdBV 变星沿不稳定带分布,混合脉动者遍布全域",
+      "category": "variability",
+      "ucd": "src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_frequency",
+      "name_cn": "脉动频率",
+      "description": "TESS 光变周期图多峰频率;星震学质量与内部结构探针,区分 p/g 模的依据",
+      "category": "variability",
+      "ucd": "time.frequency",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_var_flag",
+      "name_cn": "双星变光标记",
+      "description": "周期图单峰+谐波标志的轨道/反射效应变光,指示双星(含已知 sdBV 中新增双星候选)",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "space_velocity_uvw",
+      "name_cn": "银道空间速度 UVW",
+      "description": "由 LAMOST RV+Gaia 视差自行计算的三维空间速度,区分盘/晕运动学",
+      "category": "environment",
+      "ucd": "phys.veloc.space",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_position_xyz",
+      "name_cn": "银道三维坐标 XYZ",
+      "description": "银河系笛卡尔坐标(银心距与高度),Z 分量用于标高研究",
+      "category": "environment",
+      "ucd": "pos.cartesian.x",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbit_parameters",
+      "name_cn": "银河轨道参数",
+      "description": "轨道数值积分给出的偏心距、R_ap/R_peri、z_max 与角动量 J_z,刻画热亚矮星轨道形状",
+      "category": "environment",
+      "ucd": "orbit.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_population",
+      "name_cn": "银河系星族分类",
+      "description": "按 UVW 图与 J_z-偏心距图分为 Halo/厚盘/薄盘;He-rich 星在晕与薄盘中的比例超出双星族合成预言",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

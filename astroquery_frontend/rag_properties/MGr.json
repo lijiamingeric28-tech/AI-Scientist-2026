@@ -1,0 +1,242 @@
+{
+  "otype": "MGr",
+  "name_cn": "移动星群",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000 赤经(时角/度), 成员星天空位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000 赤纬, 成员星天空位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmra",
+      "name_cn": "自行(赤经分量)",
+      "description": "μ_αcosδ 自行, 移动星群运动学识别的核心量之一",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmdec",
+      "name_cn": "自行(赤纬分量)",
+      "description": "μ_δ 自行, 与 pmra 联合用于共动判据",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "三角视差",
+      "description": "Hipparcos/Tycho-2 三角视差, 计算空间速度与距离所需",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "恒星距离",
+      "description": "成员星距离(三角视差或组平均距离)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "成员星视向速度, 结合自行与视差得到三维空间速度以确认共动",
+      "category": "astrometry",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_space_velocity",
+      "name_cn": "银河系空间速度(UVW)",
+      "description": "银河系笛卡尔空间速度 U,V,W(日心), 星群运动学特征与成员判据的核心量",
+      "category": "astrometry",
+      "ucd": "phys.veloc.space",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "total_velocity",
+      "name_cn": "总空间速度",
+      "description": "Vtot=(U^2+V^2+W^2)^(1/2), 用于与群预期速度比较",
+      "category": "astrometry",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "peculiar_velocity",
+      "name_cn": "本动速度",
+      "description": "相对于群预期(收敛点模型)的本动速度, 收敛点法成员判定标志(n_Vpec)",
+      "category": "astrometry",
+      "ucd": "phys.veloc.peculiar",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "predicted_rv",
+      "name_cn": "收敛点法预测视向速度",
+      "description": "由收敛点法(群空间运动)预测的视向速度 rhoc, 与实测RV比较作成员判定",
+      "category": "astrometry",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xyz_position",
+      "name_cn": "日心笛卡尔坐标XYZ",
+      "description": "星群/成员星日心 XYZ 三维位置(pc), 用于6维 XYZUVW 聚类与空间分布分析",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.x",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_age",
+      "name_cn": "星群年龄",
+      "description": "星群年龄: 等时线拟合年龄(Bell+2015 给出各组绝对年龄, 如 AB Dor 149Myr, TWA 10Myr)或 Kounkel+2019 的 logAge",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_av",
+      "name_cn": "星际消光",
+      "description": "星群平均消光 Av, 年龄/距离估计的消光改正",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "V波段视星等",
+      "description": "Johnson V 视星等, 用于构建 M_V vs V-J 色星等图做等时线年龄拟合",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vj_color",
+      "name_cn": "V-J色指数",
+      "description": "V-J 色指数(2MASS J 波段), PMS等时线拟合的关键色指标",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V;em.IR.J",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "成员星光谱型(B9-L2), 兼作年轻性判据与质量估计依据",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_id",
+      "name_cn": "星群标识",
+      "description": "星群身份: Theia 组编号(1-1640)与常见群名(如 UMa, ABDMG, BPMG, TWA), 成员归群字段",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_probability",
+      "name_cn": "成员概率",
+      "description": "BANYAN Σ 贝叶斯成员概率(依据天球坐标+自行, 可选视差/RV/分光距离), 星群成员筛选的标准判据",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_flag",
+      "name_cn": "成员判定标志",
+      "description": "星群成员标志(Y/N/-), 如 Bell+2015 基于CMD位置τ^2拟合的成员归属标记",
+      "category": "classification",
+      "ucd": "src.class.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_ids",
+      "name_cn": "交叉证认标识",
+      "description": "2MASS/ALLWISE/Gaia 源标识与其它名称, 用于跨星表证认",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "comoving_system_flag",
+      "name_cn": "共动系统标志",
+      "description": "共动双星/多星系统标志与伴星信息(BANYAN XIII 的 co-moving systems 表), 区分群内宽距双星",
+      "category": "classification",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "string_morphology",
+      "name_cn": "丝状结构标志",
+      "description": "星群是否为丝状'string'结构及其长度(最长可达数百pc), 反映移动星群的形成与动力学演化",
+      "category": "environment",
+      "ucd": "src.morph",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_size",
+      "name_cn": "星群投影尺度",
+      "description": "星群投影宽度与高度(pc), 描述空间尺度",
+      "category": "environment",
+      "ucd": "phys.size.angSize",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_galactic_position",
+      "name_cn": "星群银道坐标",
+      "description": "星群质心的银经/银纬(GLON, GLAT), 描述在银河系中的位置与银道面分布",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_distance",
+      "name_cn": "星群距离",
+      "description": "星群平均距离(由成员平均视差导出), 用于统计群样本的空间范围",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    }
+  ]
+}

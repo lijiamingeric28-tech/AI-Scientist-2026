@@ -1,0 +1,332 @@
+{
+  "otype": "bCG",
+  "name_cn": "蓝致密星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000历元赤经坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000历元赤纬坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "光谱红移",
+      "description": "SDSS光谱红移z,范围约0.001-0.06",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_helio",
+      "name_cn": "光学视向速度",
+      "description": "光学(或射电)赫利ocentric视向速度km/s,取自NED或观测",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;pos.heliocentric",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_hi",
+      "name_cn": "21cm HI速度",
+      "description": "中性氢21cm谱线导出的视向速度及误差",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;em.radio.21cm",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "w50_w20",
+      "name_cn": "HI线宽W50/W20",
+      "description": "21cm谱线在50%/20%峰值处线宽(km/s),反映旋转与湍流",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_5500",
+      "name_cn": "5500Å连续谱流量",
+      "description": "5475-5525Å平均连续谱流量(10^-17 W/m^2/nm),蓝连续谱强度代理",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "snr_spectrum",
+      "name_cn": "光谱信噪比",
+      "description": "光谱信噪比,数据质量代理",
+      "category": "spectroscopy",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_ha",
+      "name_cn": "Hα流量",
+      "description": "Hα发射线流量(10^-14 erg/cm^2/s),强发射线星系核心测量",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;em.line.Halpha",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_hb",
+      "name_cn": "Hβ流量",
+      "description": "Hβ流量,经恒星吸收与内部红化改正,相对于Hβ的发射线通量表亦可用",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;em.line.Hbeta",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_ha",
+      "name_cn": "Hα等值宽度",
+      "description": "Hα等值宽度(埃),表征爆发恒星形成强度",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_hb",
+      "name_cn": "Hβ等值宽度",
+      "description": "Hβ等值宽度(埃)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Hbeta",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_hbeta",
+      "name_cn": "巴耳末减缩常数c(Hβ)",
+      "description": "由Hα/Hβ巴耳末减缩导出的内部红化常数",
+      "category": "spectroscopy",
+      "ucd": "phys.absorption",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_mag",
+      "name_cn": "B波段总星等",
+      "description": "集成B波段星等及误差(含BT总星等)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r_mag",
+      "name_cn": "R波段总星等",
+      "description": "集成R波段星等及误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_r_color",
+      "name_cn": "B−R颜色",
+      "description": "集成B−R颜色,BCD'蓝'性判据(B-R<1)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "SDSS g波段星等",
+      "description": "SDSS g波段AB星等及误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.G",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "u_g_color",
+      "name_cn": "u−g颜色",
+      "description": "SDSS u−g颜色指数",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U;em.opt.G",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_abs_b",
+      "name_cn": "B波段绝对星等",
+      "description": "绝对B星等,'矮'性判据(M_B>-18.15)",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "f_hi",
+      "name_cn": "21cm HI积分流量",
+      "description": "HI 21cm积分流量(Jy·km/s)及峰值流量",
+      "category": "photometry",
+      "ucd": "phot.flux;em.radio.21cm",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "a_b_gal",
+      "name_cn": "银河系B波段消光",
+      "description": "Schlegel等银河系前景B波段消光A_B",
+      "category": "photometry",
+      "ucd": "phys.absorption;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist",
+      "name_cn": "距离",
+      "description": "光度距离(Mpc,Planck宇宙学)及Mould+2000局域速度场改正距离",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_o_h",
+      "name_cn": "氧丰度12+log(O/H)",
+      "description": "氧丰度(12+log(O/H)),BCD核心量,范围约6.4-8.7,低金属端强发射线直接测量",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_o",
+      "name_cn": "N/O丰度比",
+      "description": "氮氧丰度比对数log(N/O),恒星核合成探针",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ne_o",
+      "name_cn": "Ne/O丰度比",
+      "description": "氖氧丰度比对数log(Ne/O)",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "s_o",
+      "name_cn": "S/O丰度比",
+      "description": "硫氧丰度比对数log(S/O)",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ar_o",
+      "name_cn": "Ar/O丰度比",
+      "description": "氩氧丰度比对数log(Ar/O)",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "o_fe",
+      "name_cn": "O/Fe丰度比",
+      "description": "氧铁丰度比对数log(O/Fe),恒星历史演化探针",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "由Hα光度导出的恒星形成率(M_sun/yr),BCD为强星暴天体",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "l_ha",
+      "name_cn": "Hα光度",
+      "description": "Hα光度对数(logL, erg/s)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.line.Halpha",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量M*(10^9 M_sun)及误差,由光谱能量分布拟合导出",
+      "category": "physical",
+      "ucd": "phys.mass.stellar",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_hi",
+      "name_cn": "HI质量",
+      "description": "中性氢质量M_HI(10^8 M_sun),气体质量核心量",
+      "category": "physical",
+      "ucd": "phys.mass.gas",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_tot",
+      "name_cn": "动力学总质量",
+      "description": "由HI线宽与尺寸导出的动力学总质量(10^8 M_sun)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mhi_lb",
+      "name_cn": "M_HI/L_B比",
+      "description": "HI质量与蓝光度比,气体含量丰度代理",
+      "category": "physical",
+      "ucd": "arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "diam_kpc",
+      "name_cn": "线直径",
+      "description": "光学线直径(kpc),'致密'性参考量",
+      "category": "physical",
+      "ucd": "phys.size.diameter",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type",
+      "name_cn": "形态类型",
+      "description": "形态类型分类(BCD/BCD-nB等),含iE/nE/nB/BCDG等子类",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

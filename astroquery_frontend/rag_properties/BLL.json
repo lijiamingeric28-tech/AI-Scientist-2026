@@ -1,0 +1,386 @@
+{
+  "otype": "BLL",
+  "name_cn": "BL Lac型天体",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "name",
+      "name_cn": "源名称",
+      "description": "源命名,如BZCAT 5BZ坐标名、3HSPJ/2WHSPJ名称、VCV通用名",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_deg",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000赤经,多来自VLBI/光学/SDSS/WISE位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_deg",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lon",
+      "name_cn": "银经",
+      "description": "银道坐标经度,用于银河系消光/前景污染评估",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度,高银纬样本选择依据",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "blazar_type",
+      "name_cn": "耀变体子类",
+      "description": "BZCAT分类:BZB(BL Lac)、BZQ(平谱射电类星体)、BZG(星系辐射主导的BL Lac样源)、BZU(不确定型)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_peak_class",
+      "name_cn": "SED峰类(HBL/IBL/LBL)",
+      "description": "按同步峰频率分类:log nu_peak<14.5为LBL,14.5-16.5为IBL,>16.5为HBL(抛物线拟合)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hsp_isp_lsp_class",
+      "name_cn": "X射线SED分类(HSP/ISP/LSP)",
+      "description": "XMM样本基于X射线谱形与SED给出的HSP/ISP/LSP分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "candidate_flag",
+      "name_cn": "候选/确认标志",
+      "description": "BZCAT中'候选'标注(无光学谱)、3HSP源标志sflag(不确定/可疑光度/低峰流量比/IR-光数据起源模糊)及峰频估计质量标志f_lognu、红移质量标志f_z",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "BL Lac红移(约40%缺失;多来自宿主星系吸收线或弱窄发射线;部分为光度红移)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift_flag",
+      "name_cn": "红移不确定性标志",
+      "description": "红移估计标志:不确定'?'、下限'>'、狭缝光谱估计'E'、光度红移(谱无特征)等",
+      "category": "spectroscopy",
+      "ucd": "meta.code;src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_1_4ghz",
+      "name_cn": "1.4GHz射电流量密度",
+      "description": "1.4GHz流量(NVSS/FIRST),缺失时用0.843GHz(SUMSS);BZCAT入选必要条件之一",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_845mhz",
+      "name_cn": "845MHz射电流量",
+      "description": "南天SUMSS 845MHz流量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mm_flux_143ghz",
+      "name_cn": "143GHz毫米波流量",
+      "description": "Planck PCSC P1毫米波流量,刻画射电谱陡度/毫米波成分",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.mm",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_5ghz",
+      "name_cn": "6cm(5GHz)射电流量",
+      "description": "VCV目录6cm流量,平谱射电性判据",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux_rosat",
+      "name_cn": "0.1-2.4keV X射线流量",
+      "description": "ROSAT存档或Swift-XRT的0.1-2.4keV流量,BL Lac X射线波段主流量值",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux_5kev",
+      "name_cn": "5keV X射线通量密度",
+      "description": "EPIC联合拟合(幂律或对数抛物线)得到的5keV通量密度",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.X-ray",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux_band",
+      "name_cn": "分波段X射线流量(0.2-2/2-10/0.2-10keV)",
+      "description": "EPIC pn/MOS1/MOS2在软、硬、全波段的吸收修正流量及68%置信区间",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "0.2-10/0.2-2/2-10keV光度(基于红移计算)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_r_mag",
+      "name_cn": "R波段星等",
+      "description": "USNO-B1 R星等(SDSS r或其他波段替代),用于射电-光学谱指数与光度计算",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag",
+      "name_cn": "视星等(多波段)",
+      "description": "VCV目录视星等,带波段标志(V/P/B/R/I/J/K),及(B-V)、(U-B)色指数",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "om_mag_uv",
+      "name_cn": "OM紫外/光学星等",
+      "description": "XMM-OM V/B/U/UVW1/UVW2/UVM2星等,刻画同步辐射光学-紫外段与宿主星系贡献",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "om_flux_uv",
+      "name_cn": "OM紫外/光学通量",
+      "description": "XMM-OM各波段通量(10^-17 W/m2/nm)",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.UV",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_mag",
+      "name_cn": "绝对星等",
+      "description": "VCV绝对星等(H0=71,q0=0宇宙学)",
+      "category": "physical",
+      "ucd": "phys.magAbs;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_flux_1_100gev",
+      "name_cn": "1-100GeV伽马流量",
+      "description": "Fermi 1-100GeV光子流量(ph/cm2/s)",
+      "category": "photometry",
+      "ucd": "phot.flux;em.gamma",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_energy_flux",
+      "name_cn": "100MeV-100GeV能流量",
+      "description": "4FGL幂律拟合能流量与1-100GeV积分光子流量",
+      "category": "photometry",
+      "ucd": "phot.flux;em.gamma",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_photon_index",
+      "name_cn": "伽马光子谱指数",
+      "description": "Fermi 0.3-500GeV或1-100GeV光子谱指数,BL Lac通常比FSRQ更硬",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.gamma",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_photon_index",
+      "name_cn": "X射线光子谱指数",
+      "description": "EPIC幂律拟合光子指数Gamma(含68%区间),HBL通常硬(1.5-2.2)",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logpar_curvature",
+      "name_cn": "对数抛物线曲率Beta",
+      "description": "X射线对数抛物线模型曲率参数,用于估计同步峰位置",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_nh",
+      "name_cn": "X射线氢柱密度",
+      "description": "HI4PI银河系中性氢柱密度NH及X射线拟合自由NH(上下限)",
+      "category": "environment",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sync_peak_freq",
+      "name_cn": "同步辐射峰值频率nu_peak",
+      "description": "SED同步峰频率(log Hz,观测系):BLL核心物理量,决定LBL/IBL/HBL(HSP/EHSP)划分与blazar sequence检验",
+      "category": "physical",
+      "ucd": "phys.spectral.max",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sync_peak_flux",
+      "name_cn": "同步辐射峰值流量nuFnu",
+      "description": "同步峰处nuFnu流量(erg/cm2/s),用于FOM与logN-logS",
+      "category": "physical",
+      "ucd": "phot.flux.density;phys.spectral.max",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "figure_of_merit",
+      "name_cn": "优值FOM",
+      "description": "同步峰亮度FOM(2.5e-12 erg/s/cm2为单位),指示TeV探测前景的统计量",
+      "category": "physical",
+      "ucd": "meta.code;phot.flux",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_opt_index",
+      "name_cn": "射电-光学谱指数",
+      "description": "1.4GHz至光学波段谱指数(alpha_ro),反映射电-光学能谱倾斜与样本选择效应",
+      "category": "physical",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_count_rate",
+      "name_cn": "X射线计数率",
+      "description": "EPIC pn/MOS源计数率(ct/s)及各能段净计数",
+      "category": "photometry",
+      "ucd": "phot.count;em.X-ray",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_frac_var",
+      "name_cn": "X射线分数变幅Fvar",
+      "description": "0.2-2与2-10keV能段分数变幅及其误差,BL Lac日内时标光变的统计量",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_variability_flag",
+      "name_cn": "X射线变源标志",
+      "description": "软(0.2-2keV)/硬(2-10keV)能段变异性检验标志(chi2统计与概率)",
+      "category": "variability",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_var_index",
+      "name_cn": "伽马变异性指数",
+      "description": "4FGL变异性指数与分数变幅,BLL在伽马波段变幅通常弱于FSRQ",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "exposure_time",
+      "name_cn": "累计曝光时间",
+      "description": "XMM-Newton存档累计曝光与观测次数,决定光变曲线采样能力",
+      "category": "variability",
+      "ucd": "time.expo",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tev_detection",
+      "name_cn": "TeV探测标志",
+      "description": "是否列入TeVCat的VHE伽马探测标志,TeV-BL Lac(HBL)研究关键",
+      "category": "classification",
+      "ucd": "meta.code;em.gamma",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_flag",
+      "name_cn": "宿主星系主导标志",
+      "description": "3HSP sflag=4(IR/光数据可能由宿主星系主导)与BZCAT的BZG分类,用于识别宿主星系污染源",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_member",
+      "name_cn": "星系团成员标志",
+      "description": "BZCAT注释中给出的星系团成员/发射线等备注信息,表征BL Lac大尺度环境",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}
