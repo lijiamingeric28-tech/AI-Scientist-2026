@@ -78,6 +78,13 @@ function AppInner() {
   const handleTaskDone = async () => {
     // 任务完成 → 刷新列表（状态徽标联动）
     await loadTasks(0)
+    // P0-1/P0-2：task_completed 在 status 落库后发出，但网络/落库仍有微小窗口——
+    // 兜底最多 3 次 × 500ms 延迟重拉（不读闭包 tasks，固定重试直到大概率稳定），
+    // 保证选中任务 status 最终为 completed（DetailPanel 依赖其触发重拉）
+    for (let i = 0; i < 3; i++) {
+      await new Promise((r) => setTimeout(r, 500))
+      await loadTasks(0)
+    }
   }
 
   const handleNew = () => {
@@ -185,7 +192,9 @@ function AppInner() {
               <Icon.Menu />
             </Button>
           )}
-          <h1 style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {/* P1-8：minWidth:0 让 ellipsis 真正生效（flex 子项默认 min-width:auto，
+              长标题会把状态徽标/视图切换按钮挤出工具栏） */}
+          <h1 title={selected ? selected.title : undefined} style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)', flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {selected ? selected.title : '新建任务'}
           </h1>
           {selected && <StatusBadge status={selected.status} />}

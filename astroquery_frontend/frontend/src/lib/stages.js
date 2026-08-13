@@ -43,7 +43,7 @@ export const FLOW_LABELS = {
 /* 卡 1「任务理解」展开：垂直时间线子步骤（对齐后端 step_progress.path） */
 export const UNDERSTAND_SUBSTEPS = [
   { id: 'confirm', label: '查询确认' },
-  { id: 'simbad', label: 'simbad查询' },
+  { id: 'simbad', label: 'SIMBAD 查询' },
   { id: 'research', label: '研究方向确定' },
 ]
 

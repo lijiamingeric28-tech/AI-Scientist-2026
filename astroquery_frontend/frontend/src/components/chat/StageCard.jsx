@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
 import Markdown from '@/lib/markdown'
+import { FLOW_LABELS } from '@/lib/stages'
+import { cleanCliQuestion, fmtPair, fmtRaDec } from '@/lib/format'
 
 /* 阶段卡片（设计文档 5.2 E7）：未展开 = 单行卡（状态点 + 阶段名 + 摘要）；
  * 展开 = 垂直子步骤时间线（竖线 + 节点 + 文字）。具体卡片具体设计：
@@ -11,27 +14,11 @@ function Substeps({ substeps }) {
   return (
     <div style={{ marginTop: 12 }}>
       {substeps.map((ss, i) => (
-        <div key={ss.id} style={{ display: 'flex' }}>
-          {/* 左侧时间线：节点 + 竖线 */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 18, flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', height: 24 }}>
-              <StatusDot status={ss.status} size={8} />
-            </div>
-            {i < substeps.length - 1 && (
-              <div
-                style={{
-                  width: 2,
-                  flex: 1,
-                  minHeight: 20,
-                  borderRadius: 1,
-                  background:
-                    ss.status === 'completed'
-                      ? 'var(--status-success)'
-                      : 'var(--surface-border)',
-                  opacity: ss.status === 'completed' ? 0.6 : 1,
-                }}
-              />
-            )}
+        <div key={ss.id} style={{ display: 'flex', alignItems: 'flex-start' }}>
+          {/* 左侧节点列（P1-1：统一圆点不连线 7px；height 与文字行一致，
+              圆点垂直居中于文字行而非整行——此前被 stretch 撑满导致偏上） */}
+          <div style={{ display: 'flex', alignItems: 'center', width: 12, height: 24, flexShrink: 0 }}>
+            <StatusDot status={ss.status} size={7} />
           </div>
           {/* 节点内容（与圆点中心对齐） */}
           <div style={{ paddingBottom: 14, paddingLeft: 8, flex: 1, minWidth: 0 }}>
@@ -82,72 +69,78 @@ function Substeps({ substeps }) {
   )
 }
 
-/* 卡 1 完成态产出：结构化定义列表（固定列对齐，回归主题色） */
+/* 卡 1 完成态产出：结构化定义列表（P1-8 重设计：标签列统一 88px、SIMBAD otype
+ * 友好映射、标准性质代码标签样式、RA/Dec 独立层级） */
+const OTYPE_LABELS = {
+  's*r': '红超巨星', G: '星系', '*': '恒星', '**': '双星系统',
+  V: '变星', 'V*': '变星', IR: '红外源', 'LP*': '长周期变星',
+  NIR: '近红外源', smm: '亚毫米源', UV: '紫外源', 'AB*': '共生星',
+  GlC: '球状星团', OCl: '疏散星团', 'Cl*': '星团',
+}
+
 function UnderstandOutput({ output }) {
   const { targetEntity, simbad, properties } = output
-  const labelStyle = {
-    width: 88,
-    flexShrink: 0,
-    fontSize: 12,
-    fontWeight: 510,
-    color: 'var(--content-fg-tertiary)',
-    letterSpacing: '0.03em',
-    paddingTop: 2,
-  }
+  const otype = OTYPE_LABELS[simbad.otype] || simbad.otype || null
   return (
-    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-      {/* 目标天体 */}
-      <div style={{ display: 'flex', gap: 12 }}>
-        <span style={labelStyle}>目标天体</span>
-        <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>{targetEntity}</span>
-      </div>
-
-      {/* SIMBAD 身份（main_id + 类型一行，坐标或别名第二行——部分源缺坐标） */}
-      <div style={{ display: 'flex', gap: 12 }}>
-        <span style={labelStyle}>SIMBAD 身份</span>
-        <div style={{ fontSize: 13, color: 'var(--content-fg)', lineHeight: 1.5 }}>
-          <div>
-            {simbad.mainId} · {simbad.otype}
-          </div>
-          {simbad.ra && simbad.dec ? (
-            <div className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginTop: 2 }}>
-              RA {simbad.ra} · Dec {simbad.dec}
-            </div>
-          ) : (
-            Array.isArray(simbad.aliases) && simbad.aliases.length > 0 && (
-              <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginTop: 2 }}>
-                别名：{simbad.aliases.slice(0, 3).join(' · ')}
-                {simbad.aliases.length > 3 ? ` 等 ${simbad.aliases.length} 个` : ''}
-              </div>
-            )
+    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 14 }}>
+      {/* 区块一：天体身份（P1-8 v2：主次分明——目标天体为主标题，
+           mainId/otype/坐标为元数据副行；组内间距 < 组间间距） */}
+      <div>
+        <div className="section-label" style={{ marginBottom: 6 }}>目标天体</div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 18, fontWeight: 590, color: 'var(--content-fg)', letterSpacing: '-0.01em' }}>{targetEntity}</span>
+          {simbad.mainId && (
+            <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>{simbad.mainId}</span>
+          )}
+          {otype && (
+            <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-light)', color: 'var(--accent-text)' }}>
+              {otype}
+            </span>
           )}
         </div>
+        {simbad.ra && simbad.dec ? (
+          /* P1-6：RA/Dec 时角/度分秒制（原样小数直出改为天文标准格式） */
+          <div className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-tertiary)', marginTop: 4 }}>
+            {fmtRaDec(simbad.ra, simbad.dec)}
+          </div>
+        ) : (
+          Array.isArray(simbad.aliases) && simbad.aliases.length > 0 && (
+            <div style={{ fontSize: 12, color: 'var(--content-fg-tertiary)', marginTop: 4 }}>
+              别名：{simbad.aliases.slice(0, 3).join(' · ')}
+              {simbad.aliases.length > 3 ? ` 等 ${simbad.aliases.length} 个` : ''}
+            </div>
+          )
+        )}
       </div>
 
-      {/* 标准性质：三列网格（名称 | property_id | 标准单位） */}
-      <div style={{ display: 'flex', gap: 12 }}>
-        <span style={labelStyle}>标准性质</span>
-        <div
-          style={{
-            flex: 1,
-            display: 'grid',
-            gridTemplateColumns: '72px 108px 1fr',
-            gap: '4px 10px',
-            fontSize: 13,
-            alignItems: 'center',
-          }}
-        >
-          {properties.map((p) => (
-            <div key={p.propertyId} style={{ display: 'contents' }}>
-              <span style={{ color: 'var(--content-fg)' }}>{p.name}</span>
-              <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
-                {p.propertyId}
-              </span>
-              <span style={{ color: 'var(--content-fg-secondary)', fontSize: 12 }}>{p.unit}</span>
-            </div>
-          ))}
+      {/* 区块二：标准性质（数据卡网格——名称 + 代码标签 + 单位紧凑成组） */}
+      {properties.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>标准性质</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
+            {properties.map((p) => (
+              <div key={p.propertyId} className="row-item" style={{ padding: '8px 12px' }}>
+                <div style={{ fontSize: 12.5, color: 'var(--content-fg)' }}>{p.name}</div>
+                <div style={{ marginTop: 5, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                  <span
+                    className="font-mono"
+                    style={{
+                      fontSize: 10.5,
+                      color: 'var(--accent-text)',
+                      background: 'var(--accent-light)',
+                      padding: '1px 6px',
+                      borderRadius: 4,
+                    }}
+                  >
+                    {p.propertyId}
+                  </span>
+                  <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{p.unit}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
@@ -200,7 +193,8 @@ function Traces({ traces }) {
         <div key={i} className="trace-item">
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', color: 'var(--content-fg)' }}>
             <span style={{ fontWeight: 510 }}>{t.field}</span>
-            <span className="font-mono" style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>{t.before} → {t.after}</span>
+            {/* P1-6：fmtPair 统一 before→after 展示（缺值显示 —） */}
+            <span className="font-mono" style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>{fmtPair(t.before, t.after)}</span>
             <span style={{ color: 'var(--accent-text)', fontSize: 11, marginLeft: 'auto' }}>{t.tool}</span>
           </div>
           <div style={{ color: 'var(--content-fg-tertiary)', fontSize: 11, marginTop: 2 }}>
@@ -213,79 +207,96 @@ function Traces({ traces }) {
   )
 }
 
-/* 层 2：Agent 列表（workflow_history 结构）—— 点击展开 data_trace 轨迹 */
-function AgentTree({ agents }) {
+/* 层 2：Agent 列表（workflow_history 结构）—— P1-2：点击行 → 右侧抽屉下钻
+ *（视觉对齐 StageDetailPanel 的 AgentRow：状态点 + 名称 + 徽章 + 箭头） */
+function AgentRow({ agent, onOpen }) {
+  const traceCount = Array.isArray(agent.traces) ? agent.traces.length : 0
+  const logCount = Array.isArray(agent.logs) ? agent.logs.length : 0
+  const [hover, setHover] = useState(false)
+  return (
+    <div
+      onClick={onOpen}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '6px 10px', borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--surface-border-subtle)',
+        background: hover ? 'var(--surface-secondary)' : 'var(--surface-bg)',
+        cursor: 'pointer', marginBottom: 4, transition: 'background .12s',
+      }}
+    >
+      <StatusDot status={agent.status} size={6} />
+      <span style={{ fontSize: 12.5, fontWeight: 510, color: 'var(--content-fg)' }}>{agent.agent}</span>
+      {agent.status === 'running' && (
+        <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>执行中…</span>
+      )}
+      {agent.duration && (
+        <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{agent.duration}</span>
+      )}
+      <span style={{ flex: 1 }} />
+      {logCount > 0 && (
+        <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+          {logCount} 条执行日志
+        </span>
+      )}
+      {traceCount > 0 && (
+        <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+          {traceCount} 条修改
+        </span>
+      )}
+      <Icon.ChevronRight style={{ width: 11, height: 11, color: 'var(--content-fg-tertiary)', flexShrink: 0 }} />
+    </div>
+  )
+}
+
+function AgentTree({ agents, onOpenAgent }) {
   if (!agents || agents.length === 0) return null
   return (
     <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       {agents.map((a) => (
-        <details key={a.id || a.agent} style={{ fontSize: 13 }}>
-          <summary
-            style={{
-              cursor: 'pointer',
-              listStyle: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '4px 0',
-            }}
-          >
-            <StatusDot status={a.status} size={6} />
-            <span style={{ color: 'var(--content-fg)', fontWeight: 510, fontSize: 13 }}>{a.agent}</span>
-            {a.status === 'running' && (
-              <span style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>执行中…</span>
-            )}
-            {a.duration && (
-              <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', marginLeft: 'auto' }}>
-                {a.duration}
-              </span>
-            )}
-            <Icon.ChevronDown style={{ width: 10, height: 10, flexShrink: 0, color: 'var(--content-fg-tertiary)' }} />
-          </summary>
-          {a.reason && (
-            <div style={{ padding: '2px 0 4px 14px', fontSize: 12, color: 'var(--content-fg-secondary)', lineHeight: 1.6 }}>
-              {a.reason}
-            </div>
-          )}
-          <div style={{ paddingLeft: 14 }}>
-            <Traces traces={a.traces} />
-          </div>
-        </details>
+        <AgentRow key={a.id || a.agent} agent={a} onOpen={() => onOpenAgent(a)} />
       ))}
+      <div className="hint-dim" style={{ marginTop: 2, fontSize: 11 }}>
+        点击 Agent 查看其执行日志与数据修改轨迹
+      </div>
     </div>
   )
 }
 
 /* 卡 5 动态流转序列：流转节点（规范化/冲突消解 × 轮次）→ AgentTree */
+/* P1-4：流转轮次时间线行（圆点 + 流程名 + 第 N 轮 + 状态 pill；与步骤表达一致）。
+ * node 结构来自 usePipeline flow 事件：{ key, flowId, round, status } */
+const FLOW_STATUS_LABELS = { completed: '已完成', running: '执行中', waiting: '等待中' }
+
 function FlowNodes({ flow }) {
   if (!flow || flow.length === 0) return null
   return (
-    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className="hint-dim" style={{ fontSize: 11 }}>流程轮次</div>
       {flow.map((node) => (
-        <div
-          key={node.id}
-          style={{
-            border: '1px solid var(--surface-border-subtle)',
-            borderRadius: 8,
-            padding: '8px 12px',
-            background: 'var(--surface-secondary)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <StatusDot status={node.status} size={7} />
-            <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>
-              {node.name} 第 {node.round} 轮
+        <div key={node.id || node.key} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <StatusDot status={node.status} size={7} />
+          <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>
+            {FLOW_LABELS[node.flowId] || node.flowId || node.name}
+          </span>
+          <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>第 {node.round} 轮</span>
+          {node.note && (
+            <span style={{ fontSize: 10.5, color: 'var(--content-fg-secondary)', background: 'var(--surface-secondary)', padding: '1px 8px', borderRadius: 'var(--radius-pill)' }}>
+              {node.note}
             </span>
-            {node.note && (
-              <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', background: 'var(--surface-bg)', padding: '1px 6px', borderRadius: 4 }}>
-                {node.note}
-              </span>
-            )}
-            {node.status === 'running' && (
-              <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>执行中…</span>
-            )}
-          </div>
-          <AgentTree agents={node.agents} />
+          )}
+          <span style={{ flex: 1 }} />
+          <span
+            style={{
+              fontSize: 11, fontWeight: 510,
+              color: node.status === 'completed' ? 'var(--status-success)'
+                : node.status === 'running' ? 'var(--status-progress)'
+                : 'var(--content-fg-tertiary)',
+            }}
+          >
+            {FLOW_STATUS_LABELS[node.status] || node.status}
+          </span>
         </div>
       ))}
     </div>
@@ -315,11 +326,10 @@ function GroupSteps({ groups }) {
           ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {group.steps.map((step) => (
-              <div key={step.id} style={{ display: 'flex' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 18, flexShrink: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', height: 22 }}>
-                    <StatusDot status={step.status} size={7} />
-                  </div>
+              <div key={step.id} style={{ display: 'flex', alignItems: 'flex-start' }}>
+                {/* P1-8：圆点列高度与文字行一致（22px），垂直居中于文字行 */}
+                <div style={{ display: 'flex', alignItems: 'center', width: 18, height: 22, flexShrink: 0 }}>
+                  <StatusDot status={step.status} size={7} />
                 </div>
                 <div style={{ flex: 1, paddingLeft: 8, paddingBottom: 10, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', height: 22, gap: 8 }}>
@@ -369,44 +379,75 @@ function GroupSteps({ groups }) {
 }
 
 /* 澄清历史（已折叠的交互卡，可展开回溯） */
+/* 澄清记录（P1-8：折叠式——summary 只显示序号 + 回答状态，展开看提问 + 回答；
+ * 无引用框/无终端原文；提问优先结构化字段，历史任务无 fields 用清洗文本） */
 function ClarificationHistory({ clarifications }) {
   if (!clarifications || clarifications.length === 0) return null
   return (
-    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
-      {clarifications.map((cl, i) => (
-        <details key={i} style={{ fontSize: 13 }}>
-          <summary
-            style={{
-              cursor: 'pointer',
-              color: 'var(--content-fg-secondary)',
-              listStyle: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            <Icon.ChevronRight style={{ width: 10, height: 10, flexShrink: 0 }} />
-            <span style={{ color: 'var(--status-progress)' }}>●</span>
-            <span>
-              澄清 {i + 1} · 已回答：{cl.answer || '（跳过）'}
-            </span>
-          </summary>
-          <div
-            style={{
-              marginTop: 6,
-              padding: '8px 12px',
-              background: 'var(--surface-secondary)',
-              borderRadius: 6,
-              color: 'var(--content-fg-secondary)',
-              whiteSpace: 'pre-wrap',
-              lineHeight: 1.6,
-              fontSize: 12,
-            }}
-          >
-            {cl.question}
-          </div>
-        </details>
-      ))}
+    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div className="hint-dim" style={{ fontSize: 11 }}>澄清记录</div>
+      {clarifications.map((cl, i) => {
+        const fields = Array.isArray(cl.fields) ? cl.fields : []
+        const question = fields.length ? null : cleanCliQuestion(cl.question)
+        return (
+          <details key={i} style={{ fontSize: 13 }}>
+            <summary
+              style={{
+                cursor: 'pointer',
+                listStyle: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '4px 0',
+              }}
+            >
+              <Icon.ChevronRight style={{ width: 10, height: 10, flexShrink: 0, color: 'var(--content-fg-tertiary)' }} />
+              <span style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg)' }}>澄清 {i + 1}</span>
+              {cl.answer ? (
+                <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--status-success-bg)', color: 'var(--status-success)', fontWeight: 510 }}>
+                  已回答
+                </span>
+              ) : (
+                <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', color: 'var(--content-fg-tertiary)' }}>
+                  未回答
+                </span>
+              )}
+              <span style={{ flex: 1 }} />
+              {cl.answer && (
+                <span className="hint-dim" style={{ fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>
+                  回答：{cl.answer}
+                </span>
+              )}
+            </summary>
+            <div style={{ marginTop: 4, padding: '8px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {/* 提问：结构化字段（新任务）或清洗文本（历史任务） */}
+              {fields.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {fields.map((f) => (
+                    <div key={f.label} style={{ display: 'flex', gap: 10, fontSize: 12 }}>
+                      <span style={{ width: 72, flexShrink: 0, color: 'var(--content-fg-tertiary)' }}>{f.label}</span>
+                      <span style={{ color: 'var(--content-fg)' }}>{f.value}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                question && (
+                  <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                    {question}
+                  </div>
+                )
+              )}
+              {/* 回答 */}
+              <div style={{ fontSize: 12, display: 'flex', gap: 10 }}>
+                <span style={{ width: 72, flexShrink: 0, color: 'var(--content-fg-tertiary)' }}>回答</span>
+                <span style={{ color: cl.answer ? 'var(--content-fg)' : 'var(--content-fg-tertiary)' }}>
+                  {cl.answer || '未回答'}
+                </span>
+              </div>
+            </div>
+          </details>
+        )
+      })}
     </div>
   )
 }
@@ -429,11 +470,12 @@ function InsightOutput({ insights, onOpenInsights }) {
   return (
     <div style={{ marginTop: 12 }}>
       {insights.overall_narrative && (
+        /* P1-7：综合叙述改 Markdown 渲染（加粗/列表/引用生效） */
         <div style={{
           fontSize: 13, color: 'var(--content-fg-secondary)', lineHeight: 1.7, marginBottom: 10,
           padding: '10px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
         }}>
-          {insights.overall_narrative}
+          <Markdown>{insights.overall_narrative}</Markdown>
         </div>
       )}
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -462,27 +504,48 @@ function InsightOutput({ insights, onOpenInsights }) {
   )
 }
 
-export default function StageCard({ stage, expanded, onToggle, onOpenInsights }) {
+export default function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent }) {
   const isExpanded = expanded
+  const [hover, setHover] = useState(false)
 
+  // 2026-08-14：运行中卡头显示具体子流程进度（替代笼统"进行中…"）——
+  // clean/deliver/insight 优先显示当前 flow 轮次（如"规范化 第 2 轮"），
+  // 其余显示最近启动的 Agent 名
+  const runningFlow = (stage.flows || []).filter((f) => f.status === 'running').slice(-1)[0]
+  const runningAgents = (stage.agents || []).filter((a) => a.status === 'running')
   const statusText = {
     waiting: '等待上游完成',
-    running: stage.summary || '进行中…',
+    running: stage.summary
+      || (runningFlow ? `${FLOW_LABELS[runningFlow.flowId] || runningFlow.flowId} 第 ${runningFlow.round} 轮` : null)
+      || (runningAgents.length ? `执行中：${runningAgents[runningAgents.length - 1].agent}` : null)
+      || '进行中…',
     completed: stage.summary || '已完成',
     error: '执行失败',
     skipped: stage.summary || '已跳过',
     cancelled: '已取消',
   }[stage.status]
+  // P1-3：卡头状态胶囊（对齐工作流 pill 视觉：状态色文字 + 浅色底）
+  const statusPill = {
+    completed: { color: 'var(--status-success)', bg: 'var(--status-success-bg)' },
+    running: { color: 'var(--status-progress)', bg: 'var(--status-progress-bg)' },
+    error: { color: 'var(--status-error)', bg: 'var(--status-error-bg)' },
+    waiting: { color: 'var(--content-fg-tertiary)', bg: 'var(--surface-secondary)' },
+    skipped: { color: 'var(--content-fg-tertiary)', bg: 'var(--surface-secondary)' },
+    cancelled: { color: 'var(--content-fg-tertiary)', bg: 'var(--surface-secondary)' },
+  }[stage.status] || { color: 'var(--content-fg-tertiary)', bg: 'var(--surface-secondary)' }
 
   return (
     <div
       data-component="stage-card"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       style={{
         background: 'var(--surface-bg)',
-        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : 'var(--surface-border)'}`,
+        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : hover ? 'var(--accent-border)' : 'var(--surface-border)'}`,
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
-        boxShadow: 'var(--shadow-card)',
+        boxShadow: hover ? '0 2px 12px color-mix(in srgb, var(--accent-text) 12%, transparent)' : 'var(--shadow-card)',
+        transition: 'box-shadow .15s, border-color .15s',
       }}
     >
       {/* 头部：未展开态 = 单行卡（状态信息由状态点承载，不加彩色左边框） */}
@@ -496,7 +559,7 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights })
         }}
       >
         <div style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, flexShrink: 0 }}>
-          <StatusDot status={stage.status} size={8} />
+          <StatusDot status={stage.status} size={7} />
         </div>
         <span style={{ fontWeight: 510, fontSize: 14, color: 'var(--content-fg)' }}>{stage.name}</span>
         {stage.duration && (
@@ -506,9 +569,17 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights })
         {statusText && (
           <span
             style={{
-              fontSize: 12,
-              color: stage.status === 'error' ? 'var(--status-error)' : 'var(--content-fg-tertiary)',
+              fontSize: 11,
+              fontWeight: 510,
+              color: statusPill.color,
+              background: statusPill.bg,
+              padding: '2px 10px',
+              borderRadius: 'var(--radius-pill)',
               marginRight: 8,
+              maxWidth: 320,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
             }}
           >
             {statusText}
@@ -524,17 +595,20 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights })
         <div style={{ padding: '4px 14px 14px 42px', borderTop: '1px solid var(--surface-border-subtle)' }}>
           {stage.substeps ? (
             <Substeps substeps={stage.substeps} />
-          ) : stage.flow ? (
-            <FlowNodes flow={stage.flow} />
+          ) : Array.isArray(stage.flows) && stage.flows.length ? (
+            /* 2026-08-13：字段名修正 stage.flow → stage.flows（usePipeline 写入复数，
+               FlowNodes 从未渲染）；流转轮次 + Agent 明细并列展示 */
+            <>
+              <FlowNodes flow={stage.flows} />
+              {Array.isArray(stage.agents) && stage.agents.length > 0 && (
+                <AgentTree agents={stage.agents} onOpenAgent={onOpenAgent} />
+              )}
+            </>
           ) : stage.agents ? (
-            <AgentTree agents={stage.agents} />
+            <AgentTree agents={stage.agents} onOpenAgent={onOpenAgent} />
           ) : stage.groups ? (
             <GroupSteps groups={stage.groups} />
-          ) : (
-            <div style={{ marginTop: 10, fontSize: 13, color: 'var(--content-fg-tertiary)' }}>
-              阶段内容设计进行中
-            </div>
-          )}
+          ) : null /* P1-8：无内容卡（如 done）展开区为空——不再显示"阶段内容设计进行中"占位 */}
 
           {stage.status === 'completed' && stage.id === 'understand' && stage.output && (
             <UnderstandOutput output={stage.output} />

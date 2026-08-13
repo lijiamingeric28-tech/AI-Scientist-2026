@@ -460,14 +460,23 @@ class NormalizationAgent:
         logger.info("[ToolExec] %d mods across %d sources (PARALLEL, %.2fs)",
                     total, n_sources, elapsed)
 
-        return {"data_state": {"current_data": data, "data_trace": data_trace},
-                "report_state": {"normalization": norm},
-                "workflow_state": {"current_node": "normalization", "execution_status": "Success",
-                                   "tool_call_count": wf.get("tool_call_count", 0) + tc,
-                                   "workflow_history": [{"agent": "ToolExecutorAgent", "stage": "ToolExecution",
-                                        "status": "Success", "timestamp": datetime.datetime.now().isoformat(),
-                                        "duration": elapsed,
-                                        "reason": f"{total} mods (PARALLEL, base={len(mods['base'])} adapted={len(mods['adapted'])} generated={len(mods['generated'])})"}]}}
+        result = {"data_state": {"current_data": data, "data_trace": data_trace},
+                  "report_state": {"normalization": norm},
+                  "workflow_state": {"current_node": "normalization", "execution_status": "Success",
+                                     "tool_call_count": wf.get("tool_call_count", 0) + tc,
+                                     "workflow_history": [{"agent": "ToolExecutorAgent", "stage": "ToolExecution",
+                                          "status": "Success", "timestamp": datetime.datetime.now().isoformat(),
+                                          "duration": elapsed,
+                                          "reason": f"{total} mods (PARALLEL, base={len(mods['base'])} adapted={len(mods['adapted'])} generated={len(mods['generated'])})"}]}}
+        # 2026-08-13 兜底：执行器已拦截工具结果环，此处双保险 — 检出环/超深则
+        # 整个结果剥环重建（循环引用替换 <cycle>，超深替换 <deep>，正常修改保留），
+        # 保证任何环来源都进不了 checkpoint（记录路径便于定位环的写入方）
+        bad = _find_cyclic_or_deep(result)
+        if bad:
+            logger.error("[ToolExec] 兜底检出循环/超深数据 (path=%s, kind=%s)，返回状态已剥环重建",
+                         bad[0], bad[1])
+            result = _strip_cycles(result)
+        return result
 
     def _execute_base(self, tool_name, records, ctx=None):
         """V3.2 fix: 使用 context_state 配置 (target_schema/standard_units/semantic_types)。"""
@@ -606,6 +615,13 @@ class NormalizationAgent:
                         "kind": "missing_log",
                         "error": "data modified but log is empty (traceability gap)",
                     })
+            # 2026-08-13 根治：工具返回数据环/深度检测 — 有环或超深则丢弃
+            #（否则环进入子图状态，checkpointer ormsgpack 序列化炸整条管线）
+            bad = _find_cyclic_or_deep(result)
+            if bad:
+                logger.error("[ToolExec] Generated '%s': 检出循环/超深数据 (path=%s, kind=%s), 丢弃该工具结果",
+                             gen.get("tool_name", "?"), bad[0], bad[1])
+                return _fail("cyclic_data", f"cyclic/deep data at {bad[0]} (kind={bad[1]})")
             return result
         except Exception as e:
             logger.error("[ToolExec] Generated '%s' failed: %s", gen.get("tool_name", "?"), e)
@@ -669,10 +685,90 @@ class NormalizationAgent:
                         "kind": "missing_log",
                         "error": "data modified but ops log is empty (traceability gap)",
                     })
+            # 2026-08-13 根治：与 _execute_generated 同款环/深度检测 — 有环则丢弃
+            bad = _find_cyclic_or_deep(result)
+            if bad:
+                logger.error("[ToolExec] Ops '%s': 检出循环/超深数据 (path=%s, kind=%s), 丢弃该工具结果",
+                             gen.get("tool_name", "?"), bad[0], bad[1])
+                return _fail("cyclic_data", f"cyclic/deep data at {bad[0]} (kind={bad[1]})")
             return result
         except Exception as e:
             logger.error("[ToolExec] Ops '%s' failed: %s", gen.get("tool_name", "?"), e)
             return _fail("exec_error", str(e))
+
+
+# 2026-08-13 根治：工具返回数据环/深度检测 — LLM 生成的工具代码可能把 records
+# 列表嵌入记录字段形成循环引用（deepcopy 保留环），LangGraph checkpointer 用
+# ormsgpack 序列化时抛 "Recursion limit reached" 使整条质量管线瘫痪
+#（任务 7601ee09 / 23ccc187 实测：ormsgpack 深度 >400 层或循环引用均抛该错）。
+# 检测函数返回首个问题路径；None = 干净。ancestors 为祖先链集合（出栈即移除），
+# 只报真环，兄弟节点的相同对象不算环。
+_STRUCT_MAX_DEPTH = 100  # ormsgpack 实测 ~400 层炸，留 4 倍余量
+
+
+def _find_cyclic_or_deep(obj, max_depth: int = _STRUCT_MAX_DEPTH):
+    """返回 (path, kind) 首个超深/循环引用；无问题返回 None。
+    kind: 'depth'（嵌套超 _STRUCT_MAX_DEPTH）| 'cycle'（循环引用）。
+    path 形如 records[3].parent，便于定位是哪个工具写入的脏数据。"""
+    ancestors = set()
+
+    def walk(x, depth: int, path: str):
+        if depth > max_depth:
+            return (path or "<root>", "depth")
+        oid = id(x)
+        if oid in ancestors:
+            return (path or "<root>", "cycle")
+        ancestors.add(oid)
+        try:
+            if isinstance(x, dict):
+                for k, v in x.items():
+                    if isinstance(v, (dict, list)):
+                        r = walk(v, depth + 1, f"{path}.{k}")
+                        if r:
+                            return r
+            elif isinstance(x, list):
+                for i, v in enumerate(x):
+                    if isinstance(v, (dict, list)):
+                        r = walk(v, depth + 1, f"{path}[{i}]")
+                        if r:
+                            return r
+        finally:
+            ancestors.discard(oid)
+        return None
+
+    return walk(obj, 0, "")
+
+
+def _strip_cycles(obj, max_depth: int = _STRUCT_MAX_DEPTH):
+    """重建结构为无环副本：循环引用替换为 "<cycle>"、超深引用替换为 "<deep>"。
+
+    兜底防线 — 源头（planning_agent layer3.attempts 深拷贝）修好前/修好后的
+    双保险：任何环进了返回状态，LangGraph checkpointer 序列化必炸，剥环后
+    正常字段（工具修改等）全部保留，仅环引用被替换。
+    """
+    ancestors = set()
+
+    def build(x, depth: int):
+        if depth > max_depth:
+            return "<deep>"
+        if isinstance(x, dict):
+            if id(x) in ancestors:
+                return "<cycle>"
+            ancestors.add(id(x))
+            out = {k: (build(v, depth + 1) if isinstance(v, (dict, list)) else v)
+                   for k, v in x.items()}
+            ancestors.discard(id(x))
+            return out
+        if isinstance(x, list):
+            if id(x) in ancestors:
+                return "<cycle>"
+            ancestors.add(id(x))
+            out = [build(v, depth + 1) if isinstance(v, (dict, list)) else v for v in x]
+            ancestors.discard(id(x))
+            return out
+        return x
+
+    return build(obj, 0)
 
 
 def _append_trace(data_trace: list, sid: str, tool: str, reason: str,

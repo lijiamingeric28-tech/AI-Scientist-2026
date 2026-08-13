@@ -223,9 +223,11 @@ def run_task_streaming(
         if result.get("query_type") in ("greeting", "exit", "invalid"):
             # H-09③：非天文分支同样未走 property_std → 补发 understand 完成事件
             bus.emit(task_id, "stage_completed", stage_id="understand", status="cancelled", duration=0)
-        # M-12：先发 task_completed 再异步生成 LLM 总结（慢/超时 LLM 不阻塞
-        # 执行线程与排队任务；D8-2 task_title_ready 同款异步语义）
-        bus.emit(task_id, "task_completed", summary="任务完成")
+        # P0-1：task_completed 不再由 runner 发出——迁移到 executor._finish 在
+        # state_json/status 落库之后发（此前 runner 先发导致前端 loadTasks 拿到
+        # running 列表、右侧面板/结果表格停在全 0 的时序竞态）。
+        # M-12 保留：LLM 总结仍异步生成（慢/超时 LLM 不阻塞执行线程与排队任务），
+        # 由 _summarize 线程在 task_completed 之后补发 ai message。
         if on_final_summary:
             def _summarize() -> None:
                 try:

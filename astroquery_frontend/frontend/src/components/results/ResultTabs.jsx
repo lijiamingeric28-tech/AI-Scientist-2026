@@ -78,7 +78,8 @@ export function RecordsTable({ records, onRowClick }) {
               >
                 <td style={tdStyle}>{r.entity_name}</td>
                 <td style={{ ...tdStyle, fontWeight: 510 }}>{r.field_name}</td>
-                <td style={{ ...tdStyle, fontFamily: 'ui-monospace, Menlo, Consolas, monospace' }}>{r.field_value}</td>
+                {/* P1-8：数值列右对齐（视觉审查反馈） */}
+                <td style={{ ...tdStyle, fontFamily: 'ui-monospace, Menlo, Consolas, monospace', textAlign: 'right' }}>{r.field_value}</td>
                 <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)' }}>{r.field_unit}</td>
                 <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)', fontSize: 12 }}>
                   <span className="font-mono" style={{ fontSize: 11 }}>{r.source_id}</span>
@@ -134,7 +135,8 @@ const tdStyle = { padding: '7px 12px', borderTop: '1px solid var(--surface-borde
 export function SourcesList({ sources }) {
   const [typeFilter, setTypeFilter] = useState('all')
   const types = ['database', 'paper', 'supplementary']
-  const filtered = typeFilter === 'all' ? sources : sources.filter((s) => s.type === typeFilter)
+  // 2026-08-13：字段名修正 s.type → s.source_type（后端契约字段，此前分类计数恒 0）
+  const filtered = typeFilter === 'all' ? sources : sources.filter((s) => s.source_type === typeFilter)
   const typeLabel = { database: '数据库', paper: '论文', supplementary: '补充材料' }
 
   return (
@@ -143,7 +145,7 @@ export function SourcesList({ sources }) {
         <FilterChip active={typeFilter === 'all'} onClick={() => setTypeFilter('all')}>全部（{sources.length}）</FilterChip>
         {types.map((t) => (
           <FilterChip key={t} active={typeFilter === t} onClick={() => setTypeFilter(t)}>
-            {typeLabel[t]}（{sources.filter((s) => s.type === t).length}）
+            {typeLabel[t]}（{sources.filter((s) => s.source_type === t).length}）
           </FilterChip>
         ))}
       </div>
@@ -153,7 +155,7 @@ export function SourcesList({ sources }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>{s.title}</span>
               <span style={{ marginLeft: 'auto', fontSize: 11, padding: '1px 8px', borderRadius: 4, background: 'var(--surface-secondary)', color: 'var(--content-fg-secondary)' }}>
-                {typeLabel[s.type] || s.type}
+                {typeLabel[s.source_type] || s.source_type}
               </span>
             </div>
             <div className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', marginTop: 4 }}>
@@ -229,7 +231,7 @@ export function OutputFiles({ files, taskId }) {
 
 /* 主区记录表格容器（契约 D7-1：主区只放表格，全宽；数据走 HTTP 接口）
  * 点击行 → 记录详情弹窗：血缘数据（quality/sources）首次点开时惰性加载并缓存 */
-export default function ResultTabs({ taskId }) {
+export default function ResultTabs({ taskId, status }) {
   const [records, setRecords] = useState(null)
   const [detail, setDetail] = useState(null)          // 当前查看的记录
   const [quality, setQuality] = useState(null)        // GET /quality（血缘/轨迹/洞察）
@@ -243,6 +245,17 @@ export default function ResultTabs({ taskId }) {
     api.getRecords(taskId).then((r) => alive && setRecords(r || []))
     return () => { alive = false }
   }, [taskId])
+
+  // P0-2：done 卡完成（挂载）先于 final_output 落库 → 首拉可能拿到空数组且永不重拉。
+  // status 变为 completed 且 records 为空时延迟 600ms 重拉一次（alive 由 timer 清理保证）
+  useEffect(() => {
+    if (!taskId || status !== 'completed') return
+    if (records && records.length > 0) return
+    const timer = setTimeout(() => {
+      api.getRecords(taskId).then((r) => setRecords((prev) => (Array.isArray(r) && r.length ? r : prev)))
+    }, 600)
+    return () => clearTimeout(timer)
+  }, [taskId, status])
 
   // 任务切换时重置血缘缓存
   useEffect(() => {

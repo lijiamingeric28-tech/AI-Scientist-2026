@@ -6,6 +6,7 @@ import StageCard from './StageCard'
 import ClarificationCard from './ClarificationCard'
 import ResultTabs from '@/components/results/ResultTabs'
 import LogDrawer from '@/components/log/LogDrawer'
+import StageDetailPanel from '@/components/workflow/StageDetailPanel'
 import { useToast } from '@/components/ui/toast'
 
 /* 对话视图（块 3 定案）：
@@ -66,8 +67,11 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
   const [submitting, setSubmitting] = useState(false)
   const fileInputRef = useRef(null)
   const { toast } = useToast()
-  // 卡片默认展开，用户手动收起才收起（collapsed 记录用户收起过的卡）
-  const [collapsedIds, setCollapsedIds] = useState(() => new Set())
+  // 卡片默认展开，用户手动收起才收起（collapsed 记录用户收起过的卡）。
+  // P1-8：done 卡无展开内容（完成摘要已在卡头）→ 默认折叠
+  const [collapsedIds, setCollapsedIds] = useState(() => new Set(['done']))
+  // P1-2：Agent 侧抽屉下钻（对话卡点击 Agent 行 → StageDetailPanel L3）
+  const [agentDrill, setAgentDrill] = useState(null)   // { stage, agent } | null
   const scrollRef = useRef(null)
   // 贴底跟随：用户在底部附近才自动滚动，向上翻阅时不被拽回
   const stickToBottomRef = useRef(true)
@@ -173,6 +177,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                     expanded={!collapsedIds.has(stage.id)}
                     onToggle={() => toggleStage(stage.id)}
                     onOpenInsights={onOpenInsights}
+                    onOpenAgent={(agent) => setAgentDrill({ stage, agent })}
                   />
                 </div>
                 {/* 澄清卡：挂起时渲染在所属卡片下方（greeting 走普通对话不渲染） */}
@@ -180,8 +185,13 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                   <ClarificationCard payload={pending} onSubmit={submitAnswer} />
                 )}
                 {/* 兜底：stageId 缺失时渲染在时间线末尾（下方统一处理） */}
-                {/* 任务完成：主区全宽结果区（记录表格/来源/质量/下载） */}
-                {stage.id === 'done' && stage.status === 'completed' && <ResultTabs taskId={task?.task_id} />}
+                {/* 任务完成：结果区（记录表格）——P0-3 与其他卡片同款缩进对齐
+                    （此前直接嵌 Fragment 比其他块宽 38px），status 透传供 P0-2 完成重拉 */}
+                {stage.id === 'done' && stage.status === 'completed' && (
+                  <div className="stage-indent" style={{ marginLeft: 38, marginBottom: 8 }}>
+                    <ResultTabs taskId={task?.task_id} status={task?.status} />
+                  </div>
+                )}
               </Fragment>
             )
           })}
@@ -306,6 +316,15 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
 
       {/* 底部日志抽屉（块 7，真实事件流日志） */}
       <LogDrawer open={logOpen} onClose={onToggleLog} liveLogs={logs} />
+
+      {/* P1-2：Agent 明细侧抽屉（对话卡点击 Agent 行 → L3 下钻） */}
+      {agentDrill && (
+        <StageDetailPanel
+          stage={agentDrill.stage}
+          initialAgentKey={agentDrill.agent.id || agentDrill.agent.agent}
+          onClose={() => setAgentDrill(null)}
+        />
+      )}
     </div>
   )
 }

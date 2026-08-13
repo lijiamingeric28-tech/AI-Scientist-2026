@@ -11,6 +11,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as api from '@/services/api'
 import { makeInitialStages, CLARIFICATION_QUICK_BUTTONS } from '@/lib/stages'
+import { fmtDuration } from '@/lib/format'
 
 let seq = 0
 const nextId = () => `evt-${++seq}`
@@ -172,6 +173,16 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   // 窗口精确归属到各 Agent（工作流下钻 L3 的"执行日志"即来源于此）。
   const activeStagesRef = useRef(new Set())   // 运行中的 stage_id 集合
   const activeAgentsRef = useRef(new Map())   // stageId -> Map(agent 名 -> 启动 seq)
+  // P0-5：log 归属两级回退 — 无运行窗口时承接日志（阶段间隙/终态收尾/completed 后
+  // 迟到的节点日志），否则此前"无运行 stage 即 return / 只认运行中 agent"导致
+  // 大量日志只进全局抽屉、Agent L3"执行日志"分区恒空
+  const lastStageRef = useRef(null)           // 最近活跃/完成的 stage_id
+  const recentAgentsRef = useRef(new Map())   // stageId -> Map(agent 名 -> 完成 seq)
+  // P0-9：log 批量节流——质量管线阶段 400+ log 事件逐个 setStages（stage.logs +
+  // agent.logs 全量更新）造成渲染风暴/主线程卡顿（CLAUDE.md 已知问题 6，实证
+  // 卡状态迟迟不更新）。缓冲后每 100ms 批量 flush 一次，最终一致。
+  const logBufferRef = useRef([])             // [{entry, stageId, agentName}]
+  const logTimerRef = useRef(null)
 
   /* ── 数据洞察 hydration：insights 内容不在事件流里，只能从 /state 快照
    *    final_output.quality_report.output_state.insights 读取。
@@ -196,6 +207,53 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       ? prev : [...prev, { kind: 'stage', id: 'insight' }]))
     return true
   }, [])
+
+  /* ── P0-9：log 批量 flush（一次 setLogs + 一次 setStages，替代逐事件渲染） ── */
+  const flushLogs = useCallback(() => {
+    logTimerRef.current = null
+    const batch = logBufferRef.current
+    logBufferRef.current = []
+    if (!batch.length) return
+    // 全局日志（M-03 500 条环形截断）
+    setLogs((prev) => [...prev, ...batch.map((b) => b.entry)].slice(-500))
+    // 阶段/Agent 归属：按 stageId 分组（agent 再按名分组），一次 setStages
+    const byStage = new Map()   // stageId -> { items: [], agentMap: Map(agent -> items) }
+    for (const b of batch) {
+      if (!b.stageId) continue
+      let g = byStage.get(b.stageId)
+      if (!g) { g = { items: [], agentMap: new Map() }; byStage.set(b.stageId, g) }
+      g.items.push(b.entry)
+      if (b.agentName) {
+        if (!g.agentMap.has(b.agentName)) g.agentMap.set(b.agentName, [])
+        g.agentMap.get(b.agentName).push(b.entry)
+      }
+    }
+    if (byStage.size) {
+      setStages((prev) => prev.map((s) => {
+        const g = byStage.get(s.id)
+        if (!g) return s
+        const next = { ...s, logs: [...(s.logs || []), ...g.items].slice(-200) }
+        if (g.agentMap.size) {
+          next.agents = (s.agents || []).map((a) => {
+            const items = g.agentMap.get(a.id || a.agent)
+            return items ? { ...a, logs: [...(a.logs || []), ...items].slice(-300) } : a
+          })
+        }
+        return next
+      }))
+    }
+  }, [])
+
+  const scheduleLogFlush = useCallback(() => {
+    if (logTimerRef.current) return
+    logTimerRef.current = setTimeout(() => flushLogs(), 100)
+  }, [flushLogs])
+
+  // 终态/任务切换：立即 flush 剩余缓冲（防尾部日志丢失）
+  const flushLogsNow = useCallback(() => {
+    if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
+    flushLogs()
+  }, [flushLogs])
 
   /* ── 事件 → 状态 reducer ── */
   const applyEvent = useCallback((ev, taskId, replay = false) => {
@@ -223,18 +281,32 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       setTimeline((prev) => [...prev, { kind: 'msg', id: prev.length }])
     } else if (type === 'stage_started') {
       activeStagesRef.current.add(ev.stage_id)   // 同步维护：log 归属用
+      lastStageRef.current = ev.stage_id         // P0-5：最近活跃阶段
       setStages((prev) => prev.map((s) => (s.id === ev.stage_id ? { ...s, status: 'running' } : s)))
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
     } else if (type === 'stage_completed') {
+      activeStagesRef.current.delete(ev.stage_id)  // P0-5：完成即出运行窗口，记最近
+      lastStageRef.current = ev.stage_id
       setStages((prev) => prev.map((s) => {
         if (s.id !== ev.stage_id) return s
         // D6-5：卡头摘要——已有（如卡 1 快照接线）不覆盖，否则用累积数据拼数字摘要
         const summary = s.summary || composeStageSummary(ev.stage_id, statsRef.current, s) || s.summary
+        // 2026-08-14：卡 1 完成态实时 output——后端 stage_completed(understand)
+        // 携带 target_entity/simbad_info/property_spec，运行中即渲染标准性质
+        //（此前只在 openTask 快照恢复时建 output，需刷新才显示）
+        const out = (ev.stage_id === 'understand' && ev.target_entity && !s.output)
+          ? buildUnderstandOutput(ev)
+          : s.output
         // 模块级阶段的耗时由 agent 事件累加（见 MODULE_DURATION_STAGES）——
         // quality_check 的 stage_completed.duration 横跨整条质量流水线，不可用；
         // duration<=0（如 done）视为未计时
         const useEventDuration = ev.duration > 0 && !MODULE_DURATION_STAGES.includes(ev.stage_id)
-        return { ...s, status: ev.status || 'completed', duration: useEventDuration ? `${ev.duration}s` : s.duration, summary }
+        return {
+          ...s, status: ev.status || 'completed',
+          duration: useEventDuration ? fmtDuration(ev.duration) : s.duration,
+          summary: out && out !== s.output ? `已确认目标天体 ${out.targetEntity} 与 ${out.properties.length} 项标准性质` : summary,
+          output: out,
+        }
       }))
       // done 卡只有 completed 事件（main_graph quality_finalize=end 模式）→ 补弹卡
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
@@ -275,7 +347,10 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       const status = type === 'flow_started' ? 'running' : 'completed'
       if (isInsights) insightActiveRef.current = type === 'flow_started'
       // clean/deliver/insight 无 stage_started 事件 → flow 启动即视为阶段运行中（log 归属用）
-      if (type === 'flow_started') activeStagesRef.current.add(targetStage)
+      if (type === 'flow_started') {
+        activeStagesRef.current.add(targetStage)
+        lastStageRef.current = targetStage   // P0-5：最近活跃阶段（无 stage_started 卡）
+      }
       setStages((prev) => prev.map((s) => {
         if (s.id !== targetStage) return s
         const round = ev.round ?? 1
@@ -306,10 +381,16 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       //（后端无 tool_call 事件，节点级日志是工具/检查器明细的唯一来源）
       if (type === 'agent_started') {
         activeStagesRef.current.add(targetStage)
+        lastStageRef.current = targetStage   // P0-5：agent 启动即视为阶段活跃
         if (!activeAgentsRef.current.has(targetStage)) activeAgentsRef.current.set(targetStage, new Map())
         activeAgentsRef.current.get(targetStage).set(ev.agent, ev.seq || Date.now())
+        // P0-5：重新运行 → 清该 agent 的 recent 记录（以最新运行窗口为准）
+        recentAgentsRef.current.get(targetStage)?.delete(ev.agent)
       } else {
         activeAgentsRef.current.get(targetStage)?.delete(ev.agent)
+        // P0-5：completed → 写入 recent（该 agent 完成后迟到的日志仍可归属）
+        if (!recentAgentsRef.current.has(targetStage)) recentAgentsRef.current.set(targetStage, new Map())
+        recentAgentsRef.current.get(targetStage).set(ev.agent, ev.seq || Date.now())
       }
       // 模块级耗时累积：各模块 agent_completed.duration 之和 = 该阶段耗时
       //（quality_check=assessment / clean=normalization+conflict / deliver=export / insight=insights）
@@ -324,9 +405,10 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
           ? (s.agents || []).map((a) => a.agent === ev.agent
               // M-14：traces 累积而非替换（规范化多轮/回跳场景第 1 轮轨迹不丢）；
               // 按 timestamp+field+after 三元组去重（与 quality_state._merge_dict 策略一致）
-              ? { ...a, status, duration: type === 'agent_completed' ? (ev.duration ? `${ev.duration}s` : a.duration) : a.duration, traces: mergeTraces(a.traces, ev.traces) }
+              // P0-4：reason 透传（后端 agent_completed 新增字段，L3 下钻结论展示）
+              ? { ...a, status, duration: type === 'agent_completed' ? (ev.duration ? fmtDuration(ev.duration) : a.duration) : a.duration, traces: mergeTraces(a.traces, ev.traces), reason: ev.reason != null ? ev.reason : a.reason }
               : a)
-          : [...(s.agents || []), { id: ev.agent, agent: ev.agent, status, duration: type === 'agent_completed' ? `${ev.duration}s` : null, traces: ev.traces || null }]
+          : [...(s.agents || []), { id: ev.agent, agent: ev.agent, status, duration: type === 'agent_completed' ? fmtDuration(ev.duration) : null, traces: ev.traces || null, reason: type === 'agent_completed' ? (ev.reason || null) : null }]
         // insight 阶段：agent 状态同步到预置 substeps（卡片时间线展示）
         const substeps = Array.isArray(s.substeps) && s.substeps.some((st) => st.id === ev.agent)
           ? s.substeps.map((st) => (st.id === ev.agent ? { ...st, status } : st))
@@ -350,10 +432,21 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         pendingRef.current = { ...cl, stageId: ev.stage_id }
         setPending({ ...cl, stageId: ev.stage_id })
       }
-      // 澄清历史追加到所属卡片
+      // 澄清历史追加到所属卡片（P1-8：连带存结构化 fields——展开时优先
+      // 渲染键值对而非后端 CLI 原文）
       setStages((prev) => prev.map((s) => s.id !== ev.stage_id ? s : {
         ...s,
-        clarifications: [...(s.clarifications || []), { type: ev.cl_type, question: ev.question, answer: '' }],
+        clarifications: [...(s.clarifications || []), { type: ev.cl_type, question: ev.question, fields: ev.fields || null, answer: '' }],
+      }))
+    } else if (type === 'clarification_answered') {
+      // P1-8：回答回填——resume 后后端落库的事件（重放时补上澄清记录的回答；
+      // 实时场景 submitAnswer 已回填，这里只处理 answer 仍为空的情况）
+      setStages((prev) => prev.map((s) => {
+        const cls = s.clarifications || []
+        if (!cls.length) return s
+        const last = cls[cls.length - 1]
+        if (last.answer) return s
+        return { ...s, clarifications: [...cls.slice(0, -1), { ...last, answer: ev.answer }] }
       }))
     } else if (type === 'error') {
       if (ev.level === 'fatal') {
@@ -372,43 +465,46 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         }))
       }
     } else if (type === 'log') {
-      // M-03：容量上限 500 环形截断（单任务 400+ log 事件，防无界累积 + 全量重渲染）
-      // 后端 log 事件无时间字段 → 前端记录接收时刻供日志抽屉展示
+      // P0-9：log 批量节流——只做归属计算并入缓冲，100ms 批量 flush 一次
+      //（原实现每事件两次 setStages，400+ log 造成渲染风暴卡死主线程）
       const time = new Date().toTimeString().slice(0, 8)
       const entry = { id: nextId(), node: ev.node, level: ev.level, message: ev.message, time }
-      setLogs((prev) => [...prev, entry].slice(-500))
       // 阶段归属：同步维护的运行集合（快照重放安全），多个阶段并行时取规范
-      // 顺序中最靠后的运行阶段（stagesRef 提供顺序）——工作流下钻"阶段日志"
+      // 顺序中最靠后的运行阶段（stagesRef 提供顺序）——工作流下钻"阶段日志"。
+      // P0-5 回退：无运行阶段时挂到最近活跃阶段（阶段间隙/终态收尾日志不再丢弃）
       let stageId = null
       for (const s of stagesRef.current || []) {
         if (activeStagesRef.current.has(s.id)) stageId = s.id
       }
-      if (!stageId) return
-      // Agent 归属：该阶段最近启动且仍在运行的 Agent（节点级日志——检查器
-      // 评分 / LLM / httpx 工具调用——都落在 agent_started→completed 窗口内）
+      if (!stageId) stageId = lastStageRef.current
       let agentName = null
-      const agentWindow = activeAgentsRef.current.get(stageId)
-      if (agentWindow && agentWindow.size) {
-        let best = -1
-        for (const [name, startSeq] of agentWindow) {
-          if (startSeq > best) { best = startSeq; agentName = name }
+      if (stageId) {
+        // Agent 归属：该阶段最近启动且仍在运行的 Agent；P0-5 回退最近完成的 Agent
+        const agentWindow = activeAgentsRef.current.get(stageId)
+        if (agentWindow && agentWindow.size) {
+          let best = -1
+          for (const [name, startSeq] of agentWindow) {
+            if (startSeq > best) { best = startSeq; agentName = name }
+          }
+        }
+        if (!agentName) {
+          const recent = recentAgentsRef.current.get(stageId)
+          if (recent && recent.size) {
+            let best = -1
+            for (const [name, doneSeq] of recent) {
+              if (doneSeq > best) { best = doneSeq; agentName = name }
+            }
+          }
         }
       }
-      const logItem = { node: ev.node, level: ev.level, message: ev.message, time }
-      setStages((prev) => prev.map((s) => {
-        if (s.id !== stageId) return s
-        // 阶段日志保留最近 200 条（质量检查阶段单阶段 300+ 条节点日志）
-        const next = { ...s, logs: [...(s.logs || []), logItem].slice(-200) }
-        if (agentName) {
-          next.agents = (s.agents || []).map((a) => ((a.id || a.agent) === agentName
-            ? { ...a, logs: [...(a.logs || []), logItem].slice(-300) }
-            : a))
-        }
-        return next
-      }))
+      logBufferRef.current.push({ entry, stageId, agentName })
+      scheduleLogFlush()
     } else if (type === 'task_completed' || type === 'task_cancelled') {
       closeStream()
-      activeStagesRef.current.clear()   // 终态：运行窗口清空（log 不再归属）
+      flushLogsNow()   // P0-9：立即 flush 剩余 log 缓冲（防尾部丢失）
+      // P0-5：终态只清运行窗口，保留 lastStageRef/recentAgentsRef——终态收尾
+      // 到达的节点日志仍可归属到最后阶段/Agent（此前全部只进全局抽屉）
+      activeStagesRef.current.clear()
       activeAgentsRef.current.clear()
       // H-02①③: task_cancelled（澄清超时/用户取消）清理挂起澄清 + 卡片置灰
       if (type === 'task_cancelled') clearPending()
@@ -416,13 +512,22 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       onTaskDone?.()
       // task_completed：final_output 此刻才落盘，insights 不在事件流里 → 重拉 /state hydrate 洞察报告
       if (type === 'task_completed' && taskId != null) {
-        api.getState(taskId).then((snap) => {
-          if (taskIdRef.current !== taskId) return
-          hydrateInsights((snap && snap.state) || {})
-        }).catch(() => { /* hydrate 失败忽略（洞察缺省走空态） */ })
+        // P0-2：落库窗口内快照可能还没有 final_output（5MB state 写入需数百 ms）→
+        // hydrate 失败时 800ms 后重试一次（taskIdRef 校验防任务切换串台）
+        const tryHydrate = (attempt) => {
+          api.getState(taskId).then((snap) => {
+            if (taskIdRef.current !== taskId) return
+            if (!hydrateInsights((snap && snap.state) || {}) && attempt < 1) {
+              setTimeout(() => tryHydrate(attempt + 1), 800)
+            }
+          }).catch(() => { /* hydrate 失败忽略（洞察缺省走空态） */ })
+        }
+        tryHydrate(0)
       }
     } else if (type === 'task_failed') {
       closeStream()
+      flushLogsNow()   // P0-9：立即 flush 剩余 log 缓冲
+      // P0-5：同 task_completed——保留 last/recent 承接收尾日志
       activeStagesRef.current.clear()
       activeAgentsRef.current.clear()
       clearPending()
@@ -452,6 +557,10 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     modDurRef.current = {}  // 模块级耗时跨任务不复用
     activeStagesRef.current.clear()   // log 归属窗口跨任务不复用
     activeAgentsRef.current.clear()
+    lastStageRef.current = null       // P0-5：跨任务不复用
+    recentAgentsRef.current.clear()   // P0-5：跨任务不复用
+    logBufferRef.current = []         // P0-9：log 缓冲跨任务不复用
+    if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
     esRef.current?.close()
     esRef.current = null
     lastSeqRef.current = 0   // CR-02：每次打开任务重置，快照重放确定续播锚点
@@ -543,6 +652,10 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     modDurRef.current = {}
     activeStagesRef.current.clear()
     activeAgentsRef.current.clear()
+    lastStageRef.current = null       // P0-5：跨任务不复用
+    recentAgentsRef.current.clear()   // P0-5：跨任务不复用
+    logBufferRef.current = []         // P0-9：log 缓冲跨任务不复用
+    if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
     esRef.current?.close()
     esRef.current = null
     setStarted(false)

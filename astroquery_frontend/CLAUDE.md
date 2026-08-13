@@ -121,3 +121,12 @@ python -m pytest tests/test_e2e_recorded.py -m network          # VCR E2E（首�
 - **log 归属用同步窗口**：usePipeline 的 `activeStagesRef`/`activeAgentsRef` 在 applyEvent 内同步维护，勿改回读 `stagesRef`（快照重放期间滞后，历史任务日志会归属失败）；节点级 log 按 agent 运行窗口挂到 `agent.logs`，是工作流下钻"执行日志/工具调用明细"的唯一数据源（后端无独立 tool_call 事件）
 - **VCR 只对 pytest 装饰器方式完全可靠**；executor 线程内 use_cassette 会打大量 "Appending" 日志（是回放不是录制，勿误判）
 - **回放模式启动**：必须用 `python -c` 代码内注入环境变量（`os.environ['LLM_CASSETTE']=...`），shell 前缀在后台任务里不可靠
+
+## 8. 视觉闭环（改 UI 后必做）
+
+改任何前端 UI 后，用"截图 → 多模态审查 → 修复 → 再截图"闭环验证（qwen-mm-plugins-api MCP 已连接）：
+
+1. **截图**：`powershell -ExecutionPolicy Bypass -File scripts/screenshot.ps1 output/screen_N.png`（截主屏；**先 `cmd /c start http://127.0.0.1:5173` 确保浏览器在前台**，否则截到终端）
+2. **审查**：`vision_chat`（qwen）读截图，按 5 维审查：布局对齐/样式一致/内容显示（乱码、原始 JSON、超长小数）/组件状态/难看区域
+3. **修复** → 截图再验证（qwen 确认修复生效）
+4. **注意**：表格在对话区底部需滚动才能看到表头/末尾——全屏截图只能看到可视区，视口外内容不算 bug；长标题 ellipsis 截断是设计行为（悬停 title 可见完整），按钮不被挤出即可（h1 必须有 `minWidth: 0`）

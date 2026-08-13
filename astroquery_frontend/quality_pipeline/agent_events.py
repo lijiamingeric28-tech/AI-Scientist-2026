@@ -35,23 +35,29 @@ def _traces_of(state: Dict[str, Any]) -> list:
 
 
 def _emit_agent(qid: str, stage_id: str, agent: str, status: str,
-                duration: float = 0.0, traces: list = None) -> None:
+                duration: float = 0.0, traces: list = None,
+                reason: str = None) -> None:
     ev: Dict[str, Any] = {"type": f"agent_{status}", "stage_id": stage_id, "agent": agent}
     if status == "completed":
         ev["duration"] = round(duration, 2)
         if traces:
             ev["traces"] = traces
+        if reason:
+            ev["reason"] = reason
     emit(qid, ev)
 
 
 def wrap_agent_node(label: str, fn: Callable[[Dict[str, Any]], Dict[str, Any]],
                     subgraph: str):
-    """包装子图 agent 节点：发 agent_started/completed + data_trace 增量。"""
+    """包装子图 agent 节点：发 agent_started/completed + data_trace 增量 + reason。"""
     stage_id = _STAGE_IDS.get(subgraph, subgraph)
 
     def wrapped(state: Dict[str, Any]) -> Dict[str, Any]:
         qid = _qid(state)
         traces_before = len(_traces_of(state))
+        # P0-4：调用前记录 workflow_history 长度，调用后取新增条目 reason
+        #（前端 L3 下钻的 agent 结论；此前 payload 无 reason 字段，前端永空）
+        wf_before = len((state.get("workflow_state") or {}).get("workflow_history") or [])
         _emit_agent(qid, stage_id, label, "started")
         t0 = time.time()
         try:
@@ -60,7 +66,18 @@ def wrap_agent_node(label: str, fn: Callable[[Dict[str, Any]], Dict[str, Any]],
         finally:
             # 增量 traces：本轮新增的 data_trace 条目
             new_traces = _traces_of(result)[traces_before:] if isinstance(result, dict) else []
+            reason = None
+            if isinstance(result, dict):
+                hist = (result.get("workflow_state") or {}).get("workflow_history") or []
+                added = hist[wf_before:]
+                if added and isinstance(added[-1], dict) and added[-1].get("reason"):
+                    reason = str(added[-1]["reason"])[:300]
+                elif new_traces:
+                    reason = f"修改 {len(new_traces)} 条数据"
+                elif subgraph == "assessment":
+                    reason = "评估完成（只读检查，未修改数据）"
             _emit_agent(qid, stage_id, label, "completed",
-                        duration=time.time() - t0, traces=new_traces or None)
+                        duration=time.time() - t0, traces=new_traces or None,
+                        reason=reason)
 
     return wrapped

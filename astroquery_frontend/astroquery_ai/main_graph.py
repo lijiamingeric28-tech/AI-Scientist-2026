@@ -180,7 +180,17 @@ def create_main_graph(checkpointer=None, event_cb=None, should_cancel=None):
                 if event_cb and mode in ("end", "both"):
                     status = "skipped" if stage_id == "extraction" and fn is skip_extraction_node else "completed"
                     _active_stages.discard(stage_id)
-                    event_cb("stage_completed", stage_id=stage_id, duration=_time.time() - t0, status=status)
+                    payload = dict(stage_id=stage_id, duration=_time.time() - t0, status=status)
+                    # 2026-08-14：卡 1 完成态实时数据——stage_completed(understand)
+                    # 携带 target_entity/simbad_info/property_spec，前端运行中即渲染
+                    # 标准性质（此前前端只在 openTask 快照恢复时从 /state 建 output，
+                    # 运行中不显示、需刷新才出现）
+                    if stage_id == "understand" and args and isinstance(args[0], dict):
+                        _st = args[0]
+                        payload["target_entity"] = _st.get("target_entity")
+                        payload["simbad_info"] = _st.get("simbad_info")
+                        payload["property_spec"] = _st.get("property_spec")
+                    event_cb("stage_completed", **payload)
         return wrapped
 
     # 前端阶段映射：clarification+property_std → 任务理解；quality_finalize → 任务完成

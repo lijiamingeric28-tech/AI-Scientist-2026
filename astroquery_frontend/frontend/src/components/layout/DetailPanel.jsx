@@ -210,7 +210,19 @@ function InsightsReport({ insights }) {
                   {arr.map((item, i) => (
                     <div key={i} className="hint" style={{ display: 'flex', gap: 8 }}>
                       <span style={{ color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>·</span>
-                      <span>{typeof item === 'string' ? item : JSON.stringify(item)}</span>
+                      {/* P1-7：JSON 直渲改为键值对结构化行（键 hint-dim + 值） */}
+                      {typeof item === 'string' ? (
+                        <span>{item}</span>
+                      ) : (
+                        <span style={{ display: 'flex', flexWrap: 'wrap', gap: '2px 10px' }}>
+                          {Object.entries(item).map(([k, v]) => (
+                            <span key={k}>
+                              <span className="hint-dim">{k}</span>{' '}
+                              <span>{typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v)}</span>
+                            </span>
+                          ))}
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -244,7 +256,20 @@ function scoreColor(v) {
   return 'var(--status-warn)'
 }
 
-function QualityReport({ qState }) {
+/* P0-6：冲突标注 chip（与 RecordDetail 同款视觉，就地实现避免跨文件依赖） */
+function Chip({ children, color, bg }) {
+  return (
+    <span style={{
+      fontSize: 11, padding: '1px 8px', borderRadius: 'var(--radius-pill)',
+      background: bg || 'var(--surface-secondary)',
+      border: '1px solid var(--surface-border-subtle)', color: color || 'var(--content-fg-secondary)',
+    }}>
+      {children}
+    </span>
+  )
+}
+
+function QualityReport({ qState, conflictReport }) {
   const scoring = qState?.quality_scoring || {}
   const srcMap = qState?.sources || {}
   const perScores = scoring.per_source_scores || {}
@@ -252,6 +277,12 @@ function QualityReport({ qState }) {
   const reasons = qState?.per_source_reasons || {}
   const routeCounts = qState?.route_counts || {}
   const ci = Array.isArray(scoring.overall_score_ci) && scoring.overall_score_ci.length >= 2 ? scoring.overall_score_ci : null
+  // P0-6：后端有数据此前未渲染的分区（decision_matrix/conditional_routes/
+  // multi_source_variance/assessment_summary + 冲突标注）
+  const dmRows = Object.entries(qState?.decision_matrix || {})
+  const crList = Array.isArray(qState?.conditional_routes) ? qState.conditional_routes : []
+  const mv = qState?.multi_source_variance || null
+  const anns = Array.isArray(conflictReport?.annotations) ? conflictReport.annotations : []
   // 逐源按分数升序（最差的排前面，便于审视问题源）
   const rows = Object.keys(perScores)
     .sort((a, b) => (perScores[a] ?? 0) - (perScores[b] ?? 0))
@@ -328,6 +359,145 @@ function QualityReport({ qState }) {
                 </div>
               )
             })}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：综合评估摘要（assessment_summary：每源一行路由摘要文本） */}
+      {qState?.assessment_summary && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>综合评估摘要</div>
+          <div style={{ fontSize: 12.5, color: 'var(--content-fg-secondary)', lineHeight: 1.7, padding: '10px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)', whiteSpace: 'pre-line', wordBreak: 'break-all' }}>
+            {qState.assessment_summary}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：路由决策矩阵（decision_matrix：每源 matrix/rule 路由 + 等级/修复成本） */}
+      {dmRows.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>路由决策矩阵 · {dmRows.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {dmRows.map(([sid, dm]) => (
+              <div key={sid} className="row-item" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', padding: '7px 10px' }}>
+                <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{sid}</span>
+                {dm.quality_level && (
+                  <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: gradeColor(dm.quality_level), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
+                    等级 {String(dm.quality_level).toUpperCase()}
+                  </span>
+                )}
+                {dm.repair_cost && (
+                  <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+                    修复成本 {dm.repair_cost}
+                  </span>
+                )}
+                <span style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
+                  {dm.matrix_route && (
+                    <span style={{ padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(dm.matrix_route), background: 'var(--status-progress-bg)' }}>
+                      矩阵 {ROUTE_LABELS[dm.matrix_route] || dm.matrix_route}
+                    </span>
+                  )}
+                  {dm.rule_route && (
+                    <span style={{ padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(dm.rule_route), background: 'var(--status-progress-bg)' }}>
+                      规则 {ROUTE_LABELS[dm.rule_route] || dm.rule_route}
+                    </span>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：条件路由（conditional_routes：每源主路由 + 条件分支） */}
+      {crList.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>条件路由 · {crList.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {crList.map((cr, i) => (
+              <div key={i} className="row-item" style={{ padding: '7px 10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{cr.source_id || '—'}</span>
+                  <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>主路由</span>
+                  <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(cr.primary_route), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
+                    {ROUTE_LABELS[cr.primary_route] || cr.primary_route || '—'}
+                  </span>
+                </div>
+                {Array.isArray(cr.conditions) && cr.conditions.length > 0 && (
+                  <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    {cr.conditions.map((c, j) => (
+                      <div key={j} className="hint-dim" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
+                        <span className="font-mono" style={{ color: 'var(--content-fg-secondary)' }}>{c.condition}</span>
+                        <span style={{ color: 'var(--content-fg-tertiary)' }}>→</span>
+                        <span style={{ color: routeColor(c.route), fontWeight: 510 }}>{ROUTE_LABELS[c.route] || c.route}</span>
+                        {c.reason && <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.reason}</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：多源方差（multi_source_variance：方差/异常计数 + 明细） */}
+      {mv && Array.isArray(mv.variances) && mv.variances.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>多源方差与异常</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 8, marginBottom: 10 }}>
+            <div className="kpi-card" style={{ padding: '8px 12px' }}>
+              <div className="kpi-label">方差数</div>
+              <div className="font-mono kpi-value-sm">{mv.variance_count ?? mv.variances.length}</div>
+            </div>
+            <div className="kpi-card" style={{ padding: '8px 12px' }}>
+              <div className="kpi-label">异常数</div>
+              <div className="font-mono kpi-value-sm">{mv.anomaly_count ?? (Array.isArray(mv.anomalies) ? mv.anomalies.length : 0)}</div>
+            </div>
+            <div className="kpi-card" style={{ padding: '8px 12px' }}>
+              <div className="kpi-label">风险级</div>
+              <div className="kpi-value-sm" style={{ color: mv.risk_level === 'high' ? 'var(--status-error)' : mv.risk_level === 'medium' ? 'var(--status-progress)' : 'var(--content-fg)' }}>
+                {mv.risk_level || '—'}
+              </div>
+            </div>
+          </div>
+          {mv.summary && <div className="hint" style={{ marginBottom: 8 }}>{mv.summary}</div>}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {mv.variances.map((v, i) => (
+              <div key={i} className="row-item" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', padding: '7px 10px' }}>
+                <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{v.field_name || '—'}</span>
+                {v.entity_name && <span style={{ fontSize: 11, color: 'var(--content-fg-secondary)' }}>{v.entity_name}</span>}
+                <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
+                  {v.source_count ?? (Array.isArray(v.source_ids) ? v.source_ids.length : 0)} 个来源
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：冲突标注（report_state.conflict.resolution_report.annotations） */}
+      {anns.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>冲突标注 · {anns.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {anns.map((c, i) => (
+              <div key={i} className="row-item" style={{ padding: '8px 12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
+                  <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">{c.annotation_type || 'annotation'}</Chip>
+                  {c.cause_label && <Chip>{c.cause_label}</Chip>}
+                  {typeof c.confidence === 'number' && (
+                    <span className="font-mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
+                      置信度 {Math.round(c.confidence * 100)}%
+                    </span>
+                  )}
+                </div>
+                <div className="hint">
+                  {c.source_count != null && `${c.source_count} 个来源的值域 ${Array.isArray(c.value_range) ? c.value_range.join(' – ') : '—'}`}
+                  {c.action ? ` · 处置：${c.action}` : ''}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -426,6 +596,8 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
   const [traces, setTraces] = useState([])
   const [recordCount, setRecordCount] = useState(null)
   const [loading, setLoading] = useState(false)
+  // P0-2：任务完成时数据仍空的延迟重拉触发器（递增以触发主 effect 重跑）
+  const [reloadTick, setReloadTick] = useState(0)
   // 洞察报告来自 pipeline（usePipeline 从 /state 快照 hydrate；
   // 后端 GET /quality 的 insights 字段恒为 null，不再消费）
   const insights = pipeline?.insights || null
@@ -466,7 +638,15 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
     return () => { alive = false }
     // task.status 变化（running→completed）时重拉：任务进行中 final_output 未生成，
     // 完成后必须刷新右侧栏（修复"右侧栏永远 0"）
-  }, [task?.task_id, task?.status])
+  }, [task?.task_id, task?.status, reloadTick])
+
+  // P0-2：任务完成瞬间数据仍空（落库/网络窗口）→ 800ms 后触发一次重拉
+  useEffect(() => {
+    if (!task?.task_id || !pipeline?.taskDone) return
+    if (quality || recordCount != null || sources.length) return
+    const timer = setTimeout(() => setReloadTick((n) => n + 1), 800)
+    return () => clearTimeout(timer)
+  }, [task?.task_id, pipeline?.taskDone])
 
   /* 拖拽调宽 */
   const startDrag = (e) => {
@@ -645,7 +825,7 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
 
               {/* ── 质量报告（report_state.quality 完整评分/路由） ── */}
               {section === 'quality' && (
-                qState ? <QualityReport qState={qState} /> : <TabEmpty text={taskRunning ? '任务进行中，质检完成后生成质量报告' : '暂无质量报告'} />
+                qState ? <QualityReport qState={qState} conflictReport={quality?.quality_report?.report_state?.conflict?.resolution_report} /> : <TabEmpty text={taskRunning ? '任务进行中，质检完成后生成质量报告' : '暂无质量报告'} />
               )}
 
               {/* ── 运行统计（workflow_state + processing_statistics） ── */}
@@ -678,20 +858,32 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
                 ) : <TabEmpty text="暂无图证" />
               )}
 
-              {/* ── 修改轨迹（data_state.data_trace：{source_id, tool, reason, timestamp}） ── */}
+              {/* ── 修改轨迹（P0-6：字段级明细 field/before→after/tool/reason/record_id） ── */}
               {section === 'traces' && (
                 traces.length ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {traces.map((t, i) => (
-                      <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline', padding: '7px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
-                        <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(t.timestamp)}</span>
-                        <span className="font-mono" style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg)' }}>{t.source_id || '—'}</span>
-                        {t.tool && (
-                          <span style={{ flexShrink: 0, fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
-                            {t.tool}
-                          </span>
+                      <div key={i} style={{ padding: '7px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                          <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(t.timestamp)}</span>
+                          <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{t.source_id || '—'}</span>
+                          {t.tool && (
+                            <span style={{ flexShrink: 0, fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+                              {t.tool}
+                            </span>
+                          )}
+                          <span style={{ flex: 1, fontSize: 11, color: 'var(--content-fg-tertiary)', textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.reason || ''}</span>
+                        </div>
+                        {/* 字段级明细（并行标记等无 field 的条目不渲染第二行） */}
+                        {(t.field || t.before !== undefined || t.after !== undefined) && (
+                          <div style={{ marginTop: 5, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', fontSize: 12 }}>
+                            {t.field && <span className="font-mono" style={{ fontWeight: 510, color: 'var(--content-fg)' }}>{t.field}</span>}
+                            {t.before !== undefined && (
+                              <span className="font-mono" style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>{String(t.before ?? '—')} → {String(t.after ?? '—')}</span>
+                            )}
+                            {t.record_id && <span className="hint-dim" style={{ marginLeft: 'auto' }}>记录 {t.record_id}</span>}
+                          </div>
                         )}
-                        <span style={{ flex: 1, fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.reason || ''}</span>
                       </div>
                     ))}
                   </div>

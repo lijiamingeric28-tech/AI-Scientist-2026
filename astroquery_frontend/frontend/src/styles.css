@@ -105,7 +105,7 @@
   /* 对话气泡（派生：fg 少量混入 bg） */
   --bubble-bg: color-mix(in srgb, var(--seed-fg) 6%, var(--seed-bg));
   --bubble-text: var(--seed-fg);
-  --chat-maxw: 768px;
+  --chat-maxw: 900px;
 
   /* 阴影 / 滚动条 / 遮罩（OpenAI：卡片默认无阴影，悬停才给轻阴影） */
   --shadow-card: none;

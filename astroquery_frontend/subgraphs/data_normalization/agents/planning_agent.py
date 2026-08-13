@@ -9,6 +9,7 @@ planning_agent.py — Stage 2: ToolPlanningAgent (V2.3)
 V2.3: per-source 并行规划 (Layer 3 LLM 调用并行化)。
 """
 from __future__ import annotations
+import copy
 import datetime
 import time
 import json
@@ -894,7 +895,10 @@ class PlanningAgent:
                                           retry_context=retry_context, few_shots=few_shots)
             calls = round_i
             if not res.get("kind"):
-                res["attempts"] = attempts_done
+                # 2026-08-13: 深拷贝断环 — attempts_done 若被调用方 extend 进
+                # layer3.attempts, 引用原列表会把历史尝试带进 checkpoint 且
+                # 后续轮次嵌列表成环（ormsgpack 序列化炸整条管线）
+                res["attempts"] = copy.deepcopy(attempts_done)
                 res["llm_calls"] = calls
                 res["repair_consumed"] = max(0, calls - 1)
                 return res
@@ -909,7 +913,11 @@ class PlanningAgent:
             few_shots = False  # 修复轮不重发 few-shot
             retry_context = _render_repair_context(attempts_done)
         last = attempts_done[-1]
-        last["attempts"] = attempts_done
+        # 2026-08-13: 深拷贝断环 — 原代码把 attempts_done（含 last 自身）直接塞进
+        # last["attempts"] 形成自包含循环引用, layer3.attempts 序列化时
+        # ormsgpack 抛 "Recursion limit reached" 使整条质量管线瘫痪
+        #（任务 23ccc187/e6844e54 实测, 环路径 .layer3.attempts[N].attempts[M]）
+        last["attempts"] = copy.deepcopy(attempts_done)
         last["llm_calls"] = calls
         last["repair_consumed"] = max(0, calls - 1)
         return last

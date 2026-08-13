@@ -353,6 +353,12 @@ class Executor:
                     self._store.update_task(task_id, status="cancelled", completed_at=_now_iso())
                 else:
                     self._store.update_task(task_id, status="completed", completed_at=_now_iso())
+                    # P0-1：status 落库后再发 task_completed（此前 runner 先发、
+                    # state_json/status 数百 ms 后才落库，前端 loadTasks 拿到
+                    # running 列表 → 右侧面板/表格停在全 0）。
+                    # cancelled/error 分支不发（H-08/H-09 已发 task_cancelled，
+                    # error 分支已发 task_failed）。
+                    self._bus.emit(task_id, "task_completed", summary="任务完成")
 
     # ── resume / cancel ──
     def resume(self, task_id: str, answer: str) -> bool:
@@ -360,7 +366,12 @@ class Executor:
         if not slot:
             return False
         # H-04①：仅 waiting 且未 cancelled 时写入（set_answer 返回 False → 409）
-        return slot.set_answer(answer)
+        ok = slot.set_answer(answer)
+        if ok:
+            # P1-8：回答落库为事件（此前答案只在内存 slot，历史任务快照重放
+            # 时澄清记录恒显示"未回答"——前端消费 clarification_answered 回填）
+            self._bus.emit(task_id, "clarification_answered", answer=str(answer)[:200])
+        return ok
 
     def is_waiting_clarification(self, task_id: str) -> bool:
         """H-04②：真实挂起状态（slot 存在且正等待答案），供 /state 判 pending。"""

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
+import { cleanCliQuestion } from '@/lib/format'
 
 /* HITL 澄清卡（结构化渲染版）
  *
@@ -120,10 +121,12 @@ export default function ClarificationCard({ payload, onSubmit }) {
           </div>
         )}
 
-        {/* 描述文本 */}
+        {/* 描述文本（P1-7：pre-wrap 整段改为分段段落，不再整块原始平铺） */}
         {payload.description && !isConfirm && (
-          <div style={{ fontSize: 13, color: 'var(--content-fg)', lineHeight: 1.7, marginBottom: 12, whiteSpace: 'pre-wrap' }}>
-            {payload.description}
+          <div style={{ fontSize: 13, color: 'var(--content-fg)', lineHeight: 1.7, marginBottom: 12 }}>
+            {String(payload.description).split(/\n+/).filter(Boolean).map((para, i) => (
+              <p key={i} style={{ margin: '0 0 6px' }}>{para}</p>
+            ))}
           </div>
         )}
 
@@ -171,7 +174,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
           </div>
         )}
 
-        {/* 后端原文（可回溯） */}
+        {/* 后端原文（可回溯；P1-7：套引用块样式，不再裸 pre-wrap 平铺） */}
         {showRaw && payload.question && (
           <div
             style={{
@@ -185,9 +188,10 @@ export default function ClarificationCard({ payload, onSubmit }) {
               lineHeight: 1.6,
               maxHeight: 160,
               overflowY: 'auto',
+              borderLeft: '3px solid var(--accent-light)',
             }}
           >
-            {payload.question}
+            {cleanCliQuestion(payload.question)}
           </div>
         )}
       </div>

@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
+import LogLine from './LogLine'
 
 /* 底部日志抽屉（块 7 定案）：可折叠 / 可调高度 / 级别过滤 / 实时追加
  * 数据源：usePipeline logs（SSE log 事件，契约 D3-3）。
  * 性能：上游已做 500 条环形截断；本组件仅渲染最近 200 行（防全量重渲染掉帧）。
+ * P1-5：日志行统一 LogLine 胶囊化结构化渲染。
  */
-
-const LEVEL_COLOR = {
-  INFO: 'var(--content-fg-tertiary)',
-  WARN: 'var(--status-warn)',
-  ERROR: 'var(--status-error)',
-}
 
 const MAX_RENDER_LINES = 200
 
@@ -88,22 +84,17 @@ export default function LogDrawer({ open, onClose, liveLogs }) {
         </Button>
       </div>
 
-      {/* 日志区 */}
+      {/* 日志区（P1-5：胶囊化结构化行，取消整块 mono/nowrap 终端风） */}
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        style={{ height, overflowY: 'auto', padding: '6px 12px 10px', fontFamily: 'ui-monospace, Menlo, Consolas, monospace', fontSize: 11.5, lineHeight: 1.7 }}
+        style={{ height, overflowY: 'auto', padding: '8px 12px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}
       >
         {filtered.length === 0 && (
           <div style={{ color: 'var(--content-fg-tertiary)', padding: '20px 0', textAlign: 'center' }}>暂无日志</div>
         )}
         {filtered.map((l) => (
-          <div key={l.id} style={{ display: 'flex', gap: 10, whiteSpace: 'nowrap' }}>
-            <span style={{ color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>{l.time || '--:--:--'}</span>
-            <span style={{ color: LEVEL_COLOR[l.level] || 'var(--content-fg-tertiary)', width: 44, flexShrink: 0 }}>{l.level}</span>
-            <span style={{ color: 'var(--accent-text)', width: 110, flexShrink: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>[{l.node}]</span>
-            <span style={{ color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{l.message || l.msg}</span>
-          </div>
+          <LogLine key={l.id} l={{ ...l, time: l.time || '--:--:--', message: l.message || l.msg }} />
         ))}
       </div>
     </div>

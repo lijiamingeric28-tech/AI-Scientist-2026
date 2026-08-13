@@ -651,14 +651,18 @@ def test_runner_summary_receives_true_final_state(tmp_path, monkeypatch):
     final_output = (received["state"] or {}).get("final_output") or {}
     assert len(final_output.get("sources", [])) == 1
     assert len(final_output.get("records", [])) == 1
+    # P0-1：task_completed 改由 executor._finish 在 status 落库后发（时序竞态根治），
+    # runner 层不再发——终态事件链见 test_executor_task_completed_after_persist
     types = [e["type"] for e in store.get_events(t["task_id"])]
-    assert "task_completed" in types
+    assert "task_completed" not in types
 
 
-def test_runner_task_completed_before_slow_summary(tmp_path, monkeypatch):
-    """M-12 锚点：慢 LLM 总结 → task_completed 先于 ai 总结消息到达。"""
-    from astroquery_ai.web_runner import run_task_streaming
+def test_executor_task_completed_after_persist_before_slow_summary(tmp_path, monkeypatch):
+    """M-12 + P0-1 锚点：task_completed 由 executor._finish 在 status 落库之后发出——
+    慢 LLM 总结（0.3s）不阻塞 task_completed；ai 总结消息仍晚于 task_completed；
+    事件到达时 DB status 已是 completed（时序竞态根治的断言核心）。"""
     from web.event_bus import EventBus
+    from web.executor import Executor
     from web.task_store import TaskStore
 
     store = TaskStore(tmp_path / "t.db")
@@ -673,32 +677,43 @@ def test_runner_task_completed_before_slow_summary(tmp_path, monkeypatch):
         summary_done.set()
         return "慢总结完成"
 
+    # runner 真跑（假图发 done 事件），仅替换图构造
     monkeypatch.setattr(
         "astroquery_ai.web_runner.create_main_graph",
         lambda checkpointer=None, event_cb=None, should_cancel=None: _fake_done_graph(checkpointer, event_cb),
     )
-    run_task_streaming(
-        task_id=t["task_id"], user_query="q", extra_pdfs=[], bus=bus,
-        get_answer=lambda _tid, _p: None, should_cancel=lambda: False,
-        checkpointer_path=str(tmp_path / "cp.sqlite"),
-        on_final_summary=slow_summary,
-    )
-    assert summary_started.wait(2), "总结未开始"
-    # LLM 仍在跑：task_completed 已到、ai 消息未到
-    events_now = store.get_events(t["task_id"])
-    assert "task_completed" in [e["type"] for e in events_now], "慢总结阻塞了 task_completed"
-    assert not any(e["type"] == "message" and e["role"] == "ai" for e in events_now)
-    assert summary_done.wait(3)
-    # 轮询等 ai 消息落库（总结线程在 summary_done 之后才发消息，需短轮询）
-    deadline = time.time() + 3
-    while time.time() < deadline:
-        events = store.get_events(t["task_id"])
-        if any(e["type"] == "message" and e["role"] == "ai" for e in events):
-            break
-        time.sleep(0.05)
-    tc = next(i for i, e in enumerate(events) if e["type"] == "task_completed")
-    ai = next(i for i, e in enumerate(events) if e["type"] == "message" and e["role"] == "ai")
-    assert tc < ai, "ai 总结消息应晚于 task_completed 到达"
+    ex = Executor(bus, store, str(tmp_path / "cp.sqlite"), str(tmp_path / "out"),
+                  summary_fn=slow_summary)
+    try:
+        ex.submit(t["task_id"], "q", [])
+        assert summary_started.wait(2), "总结未开始"
+        # 慢总结仍阻塞：task_completed 已到（_finish 不等待总结）、ai 消息未到
+        deadline = time.time() + 10
+        while time.time() < deadline:
+            events_now = store.get_events(t["task_id"])
+            if any(e["type"] == "task_completed" for e in events_now):
+                break
+            time.sleep(0.05)
+        assert "task_completed" in [e["type"] for e in store.get_events(t["task_id"])], \
+            "慢总结阻塞了 task_completed"
+        # P0-1 核心：task_completed 到达时 DB status 已落 completed（快照/状态就绪）
+        rec = store.get_task(t["task_id"])
+        assert rec and rec["status"] == "completed", "task_completed 应先于 status 落库？"
+        assert not any(e["type"] == "message" and e["role"] == "ai"
+                       for e in store.get_events(t["task_id"]))
+        assert summary_done.wait(3)
+        # 轮询等 ai 消息落库（总结线程在 summary_done 之后才发消息，需短轮询）
+        deadline = time.time() + 3
+        while time.time() < deadline:
+            events = store.get_events(t["task_id"])
+            if any(e["type"] == "message" and e["role"] == "ai" for e in events):
+                break
+            time.sleep(0.05)
+        tc = next(i for i, e in enumerate(events) if e["type"] == "task_completed")
+        ai = next(i for i, e in enumerate(events) if e["type"] == "message" and e["role"] == "ai")
+        assert tc < ai, "ai 总结消息应晚于 task_completed 到达"
+    finally:
+        ex.stop()
 
 
 def test_executor_clarification_timeout_marks_db_cancelled(tmp_path, monkeypatch):

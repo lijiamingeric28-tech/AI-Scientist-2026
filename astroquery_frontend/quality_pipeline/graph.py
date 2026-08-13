@@ -153,8 +153,18 @@ def human_review_node(state: QualityGraphState) -> dict[str, Any]:
         raise  # interrupt 挂起等 → 不发 completed，原异常原样上浮
     ds = result.get("data_state") or {}
     traces = ds.get("data_trace") or []
+    # P0-4：HumanReview 结论 reason（冲突消解摘要 / 路由决策 / traces 兜底）
+    reason = None
+    res = result.get("conflict") or {}
+    rr = res.get("resolution_report") or {}
+    if isinstance(rr, dict) and rr.get("summary"):
+        reason = str(rr["summary"])[:300]
+    elif (result.get("workflow_state") or {}).get("route_decision"):
+        reason = f"路由决策：{result['workflow_state']['route_decision']}"
+    elif traces:
+        reason = f"修改 {len(traces)} 条数据"
     _agent_ev(qid, "completed", duration=round(_time.time() - t0, 2),
-              traces=traces or None)
+              traces=traces or None, reason=reason)
     return result
 
 

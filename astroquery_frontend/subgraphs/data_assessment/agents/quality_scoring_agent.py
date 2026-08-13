@@ -186,10 +186,17 @@ class QualityScoringAgent:
             overall_score_ci = [round(float(_ci_lo), 4), round(float(_ci_hi), 4)]
 
         # ── V2.0 S2: 非线性惩罚 ──
+        # 2026-08-14 fix: ①惩罚只对"有数值记录"的源生效——聚合侧（aggregator）
+        # 保留条件是 records 或 figure_evidence，"仅图证/无数据"的源是正常产物
+        # 形态而非系统性失败（此前 10 个仅图证论文源 completeness=0 触发 ×0.7，
+        # 任务 5a22f9d3 实证 89.9→62.9 分）。②惩罚后 CI 同步乘惩罚系数（此前
+        # CI 是惩罚前 bootstrap，显示与分数矛盾）。③惩罚后 overall_score 重新
+        # round（此前 0.8988×0.7 产出 0.6291599999999999 浮点脏值）。
         penalty_applied = False
         penalty_reason = ""
-        # Systematic failure: 任何 source 的维度得分=0 → 乘性惩罚
         for sid, sr in source_reports.items():
+            if sr.get("record_count", 0) <= 0:
+                continue
             for dim in ("completeness", "consistency", "format"):
                 if sr.get(dim, {}).get("score", 1.0) == 0.0:
                     overall_score *= 0.7
@@ -198,6 +205,11 @@ class QualityScoringAgent:
                     break
             if penalty_applied:
                 break
+        if penalty_applied:
+            overall_score = round(overall_score, 4)
+            if overall_score_ci is not None:
+                overall_score_ci = [round(overall_score_ci[0] * 0.7, 4),
+                                    round(overall_score_ci[1] * 0.7, 4)]
 
         # Sparsity penalty: 总记录数 < 10 → 降低置信度
         total_records = sum(sr.get("record_count", 0) for sr in source_reports.values())

@@ -23,9 +23,12 @@ V1.1 优化:
 from __future__ import annotations
 
 import copy
+import logging
 import uuid
 from datetime import datetime, timezone
 from typing import Annotated, Any, Literal, TypedDict
+
+logger = logging.getLogger(__name__)
 
 
 # ==========================================================
@@ -41,36 +44,51 @@ _LIST_APPEND_KEYS = {"workflow_history", "data_trace", "issues", "base_logs",
                        "exported_files"}
 
 
+# 2026-08-13 止血：递归合并深度上限 — LLM 生成的工具代码可能把 records
+# 引用嵌入记录字段形成循环引用（deepcopy 保留环），_merge_dict 无限递归
+# 直接 RecursionError 使整条质量管线瘫痪（任务 7601ee09 实测）。
+# 超深/环时放弃深合并、right 覆盖并记 warning（含 key 便于定位环来源）。
+_MAX_MERGE_DEPTH = 50
+
+
 def _merge_dict(left: dict | None, right: dict | None) -> dict:
     """
     LangGraph reducer：将 right 合并到 left 中。
 
     对于每个 key:
-    - 若两侧值均为 dict → 递归合并
+    - 若两侧值均为 dict → 递归合并（深度上限 _MAX_MERGE_DEPTH）
     - 若两侧值均为 list 且 key 在拼接白名单 → 拼接 (如 workflow_history)
     - 若两侧值均为 list 且 key 不在白名单 → right 覆盖 left (如 records, sources)
     - 否则 → right 覆盖 left
     """
+
+    def _merge(a: dict, b: dict, depth: int) -> dict:
+        if depth > _MAX_MERGE_DEPTH:
+            logger.warning("[QualityState] _merge_dict 超过深度上限 %d（疑似循环引用）"
+                           ", 放弃深合并改用 right 覆盖", _MAX_MERGE_DEPTH)
+            return b
+        result = dict(a)
+        for k, v in b.items():
+            if k in result and isinstance(result[k], dict) and isinstance(v, dict):
+                result[k] = _merge(result[k], v, depth + 1)
+            elif k in result and isinstance(result[k], list) and isinstance(v, list):
+                if k in _LIST_APPEND_KEYS:
+                    # V4 fix: 编译子图作为主图节点时, 子图 final-state 携带
+                    # "父历史前缀 + 本子图新条目" 的完整列表, 整段追加会重复。
+                    # 按 dict 全等去重 — 重复条目是同一批 dict 透传 (时间戳一致),
+                    # 真正的新条目不会被误删。
+                    result[k] = list(result[k]) + [e for e in v if e not in result[k]]
+                else:
+                    result[k] = v  # V3.0: 非拼接列表直接覆盖 (如 records, sources)
+            else:
+                result[k] = v
+        return result
+
     if left is None:
         return right or {}
     if right is None:
         return left or {}
-    result = dict(left)
-    for k, v in right.items():
-        if k in result and isinstance(result[k], dict) and isinstance(v, dict):
-            result[k] = _merge_dict(result[k], v)
-        elif k in result and isinstance(result[k], list) and isinstance(v, list):
-            if k in _LIST_APPEND_KEYS:
-                # V4 fix: 编译子图作为主图节点时, 子图 final-state 携带
-                # "父历史前缀 + 本子图新条目" 的完整列表, 整段追加会重复。
-                # 按 dict 全等去重 — 重复条目是同一批 dict 透传 (时间戳一致),
-                # 真正的新条目不会被误删。
-                result[k] = list(result[k]) + [e for e in v if e not in result[k]]
-            else:
-                result[k] = v  # V3.0: 非拼接列表直接覆盖 (如 records, sources)
-        else:
-            result[k] = v
-    return result
+    return _merge(dict(left), right, 1)
 
 
 # ==========================================================

@@ -3,6 +3,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
 import { FLOW_LABELS } from '@/lib/stages'
+import LogLine from '@/components/log/LogLine'
 
 /* 工作流下钻面板（三级）：
  *   L1 阶段流程图（WorkflowView）→ 点击阶段节点
@@ -165,33 +166,30 @@ function TraceRow({ t }) {
 }
 
 /* 日志盒（阶段日志 / Agent 执行日志共用；usePipeline 按阶段保留最近 200 条、
- * 按 Agent 保留最近 300 条） */
+ * 按 Agent 保留最近 300 条）。P1-5：统一 LogLine 胶囊化结构化行。 */
 function LogBox({ logs, maxHeight = 220 }) {
   return (
     <div style={{
       borderRadius: 'var(--radius-md)', border: '1px solid var(--surface-border-subtle)',
       background: 'var(--surface-secondary)', padding: '8px 10px',
-      maxHeight, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 3,
+      maxHeight, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 4,
     }}>
-      {logs.map((l, i) => (
-        <div key={i} className="font-mono" style={{ fontSize: 11, lineHeight: 1.5, display: 'flex', gap: 8 }}>
-          <span style={{ color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>{l.time}</span>
-          {l.node && <span style={{ color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>[{l.node}]</span>}
-          <span style={{ color: l.level === 'error' ? 'var(--status-error)' : 'var(--content-fg-secondary)', wordBreak: 'break-all' }}>
-            {l.message}
-          </span>
-        </div>
-      ))}
+      {logs.map((l, i) => <LogLine key={i} l={l} />)}
     </div>
   )
 }
 
-export default function StageDetailPanel({ stage, onClose, onShowStageInChat }) {
+export default function StageDetailPanel({ stage, onClose, onShowStageInChat, initialAgentKey }) {
   // null = L2 阶段明细；否则为选中的 agent key（L3）
   const [agentKey, setAgentKey] = useState(null)
 
   // 切换阶段时回到 L2
   useEffect(() => { setAgentKey(null) }, [stage?.id])
+
+  // P1-2：外部指定初始 Agent（对话卡点击 Agent 行 → 直接进入 L3 明细）
+  useEffect(() => {
+    if (initialAgentKey) setAgentKey(initialAgentKey)
+  }, [initialAgentKey])
 
   // Esc 关闭
   useEffect(() => {
@@ -280,7 +278,7 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat }) 
                     {STAGE_STATUS_LABELS[agent.status] || '未知状态'}
                   </span>
                   {agent.duration && (
-                    <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-tertiary)' }}>耗时 {agent.duration}s</span>
+                    <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-tertiary)' }}>耗时 {agent.duration}</span>
                   )}
                 </div>
 
@@ -293,12 +291,19 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat }) 
                     agent.traces.map((t, i) => <TraceRow key={i} t={t} />)
                   ) : (Array.isArray(agent.logs) && agent.logs.length) ? (
                     <div className="hint-dim" style={{ padding: '4px 2px' }}>
-                      该 Agent 未修改数据（评估 / 评分类节点只读不写）
+                      {/* P0-6：质量检查阶段为只读评估 Agent（traces 增量恒空），文案如实区分 */}
+                      {stage.id === 'quality_check'
+                        ? '评估 / 评分类 Agent 只读检查，不修改数据'
+                        : '该 Agent 未修改数据'}
                     </div>
                   ) : (
                     <div className="empty-state" style={{ padding: '24px 12px' }}>
                       <Icon.Wrench style={{ width: 16, height: 16, opacity: 0.6 }} />
-                      <span style={{ fontSize: 'var(--fs-sm)' }}>后端未上报该 Agent 的修改轨迹</span>
+                      <span style={{ fontSize: 'var(--fs-sm)' }}>
+                        {stage.id === 'quality_check'
+                          ? '评估 / 评分类 Agent 只读检查，不产生修改轨迹'
+                          : '后端未上报该 Agent 的修改轨迹'}
+                      </span>
                     </div>
                   )}
                 </Section>

@@ -193,8 +193,10 @@ def quality_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
             }
         raise
     except Exception as exc:
+        # 2026-08-13: traceback 从 debug 升为 error — 此前 INFO 级日志不落堆栈,
+        # RecursionError 复现时无法定位（任务 7601ee09 仅见一行错误信息）。
         logger.error(f"[Quality Adapter] 质量管线执行失败: {exc}")
-        logger.debug(traceback.format_exc())
+        logger.error("[Quality Adapter] 质量管线失败堆栈:\n%s", traceback.format_exc())
         return {
             "error_log": [{
                 "node": "quality_adapter",

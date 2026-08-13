@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
+import { fmtPair } from '@/lib/format'
 
 /* 记录详情弹窗（居中玻璃模态，风格对齐 SettingsDialog）：
  * 点击记录表格某行 → 展示该记录的完整数据血缘：
@@ -242,7 +243,7 @@ export default function RecordDetailDialog({ record, quality, sources, loading, 
                           <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(m.timestamp)}</span>
                           <Chip>{m.stage}</Chip>
                           <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>
-                            {String(m.before)} → {String(m.after)}
+                            {fmtPair(m.before, m.after)}
                           </span>
                           <span style={{ flex: 1, fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.reason || ''}</span>
                         </div>
