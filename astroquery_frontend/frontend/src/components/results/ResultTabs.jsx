@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { useToast } from '@/components/ui/toast'
+import RecordDetailDialog from './RecordDetail'
 import * as api from '@/services/api'
 
 /* 结果组件库（契约 D7-1：主区只留记录表格；来源/质量/下载移右侧面板）
@@ -10,7 +11,7 @@ import * as api from '@/services/api'
 
 const PAGE_SIZE = 15
 
-export function RecordsTable({ records }) {
+export function RecordsTable({ records, onRowClick }) {
   const [fieldFilter, setFieldFilter] = useState('all')
   const [sourceFilter, setSourceFilter] = useState('all')
   const [page, setPage] = useState(1)
@@ -63,11 +64,18 @@ export function RecordsTable({ records }) {
                   {h}
                 </th>
               ))}
+              <th style={{ width: 32 }} />
             </tr>
           </thead>
           <tbody>
             {pageRows.map((r) => (
-              <tr key={r.record_id} style={{ borderTop: '1px solid var(--surface-border-subtle)' }}>
+              <tr
+                key={r.record_id}
+                className="record-row"
+                onClick={() => onRowClick?.(r)}
+                title="点击查看该记录的来源与处理详情"
+                style={{ borderTop: '1px solid var(--surface-border-subtle)', cursor: 'pointer' }}
+              >
                 <td style={tdStyle}>{r.entity_name}</td>
                 <td style={{ ...tdStyle, fontWeight: 510 }}>{r.field_name}</td>
                 <td style={{ ...tdStyle, fontFamily: 'ui-monospace, Menlo, Consolas, monospace' }}>{r.field_value}</td>
@@ -76,17 +84,25 @@ export function RecordsTable({ records }) {
                   <span className="font-mono" style={{ fontSize: 11 }}>{r.source_id}</span>
                 </td>
                 <td style={{ ...tdStyle, fontSize: 12 }}>
-                  <span
-                    style={{
-                      padding: '1px 8px',
-                      borderRadius: 4,
-                      fontSize: 11,
-                      background: r.extraction_method === 'vlm_extraction' ? 'var(--status-progress-bg)' : 'var(--surface-secondary)',
-                      color: r.extraction_method === 'vlm_extraction' ? 'var(--status-progress)' : 'var(--content-fg-secondary)',
-                    }}
-                  >
-                    {r.extraction_method === 'vlm_extraction' ? 'VLM' : '数据库'}
-                  </span>
+                  {(() => {
+                    const isVlm = typeof r.extraction_method === 'string' && r.extraction_method.startsWith('vlm')
+                    return (
+                      <span
+                        style={{
+                          padding: '1px 8px',
+                          borderRadius: 4,
+                          fontSize: 11,
+                          background: isVlm ? 'var(--status-progress-bg)' : 'var(--surface-secondary)',
+                          color: isVlm ? 'var(--status-progress)' : 'var(--content-fg-secondary)',
+                        }}
+                      >
+                        {isVlm ? (r.extraction_method === 'vlm_table' ? 'VLM 表格' : 'VLM') : '数据库'}
+                      </span>
+                    )
+                  })()}
+                </td>
+                <td style={{ ...tdStyle, width: 32, color: 'var(--content-fg-tertiary)', textAlign: 'center' }}>
+                  <Icon.ChevronRight style={{ width: 12, height: 12 }} />
                 </td>
               </tr>
             ))}
@@ -152,19 +168,7 @@ export function SourcesList({ sources }) {
 
 function FilterChip({ active, onClick, children }) {
   return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: '4px 12px',
-        fontSize: 12,
-        borderRadius: 20,
-        border: '1px solid var(--surface-border)',
-        cursor: 'pointer',
-        background: active ? 'var(--accent-light)' : 'var(--surface-bg)',
-        color: active ? 'var(--accent-text)' : 'var(--content-fg-secondary)',
-        fontWeight: active ? 510 : 400,
-      }}
-    >
+    <button onClick={onClick} className={`filter-chip${active ? ' active' : ''}`}>
       {children}
     </button>
   )
@@ -223,9 +227,15 @@ export function OutputFiles({ files, taskId }) {
   )
 }
 
-/* 主区记录表格容器（契约 D7-1：主区只放表格，全宽；数据走 HTTP 接口） */
+/* 主区记录表格容器（契约 D7-1：主区只放表格，全宽；数据走 HTTP 接口）
+ * 点击行 → 记录详情弹窗：血缘数据（quality/sources）首次点开时惰性加载并缓存 */
 export default function ResultTabs({ taskId }) {
   const [records, setRecords] = useState(null)
+  const [detail, setDetail] = useState(null)          // 当前查看的记录
+  const [quality, setQuality] = useState(null)        // GET /quality（血缘/轨迹/洞察）
+  const [sources, setSources] = useState([])          // GET /sources（来源标题）
+  const [detailLoading, setDetailLoading] = useState(false)
+  const lineageLoaded = useRef(false)
 
   useEffect(() => {
     if (!taskId) return
@@ -233,6 +243,28 @@ export default function ResultTabs({ taskId }) {
     api.getRecords(taskId).then((r) => alive && setRecords(r || []))
     return () => { alive = false }
   }, [taskId])
+
+  // 任务切换时重置血缘缓存
+  useEffect(() => {
+    lineageLoaded.current = false
+    setQuality(null)
+    setSources([])
+    setDetail(null)
+  }, [taskId])
+
+  const openDetail = (rec) => {
+    setDetail(rec)
+    if (lineageLoaded.current || !taskId) return
+    lineageLoaded.current = true
+    setDetailLoading(true)
+    Promise.all([
+      api.getQuality(taskId).catch(() => null),
+      api.getSources(taskId).catch(() => []),
+    ]).then(([q, s]) => {
+      setQuality(q)
+      setSources(Array.isArray(s) ? s : [])
+    }).finally(() => setDetailLoading(false))
+  }
 
   const total = records ? records.length : 0
 
@@ -242,16 +274,34 @@ export default function ResultTabs({ taskId }) {
       <div style={{ display: 'flex', alignItems: 'center', padding: '10px 16px', borderBottom: '1px solid var(--surface-border)', gap: 8 }}>
         <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>记录表格</span>
         <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
-          {records === null ? '加载中…' : `${total} 条 · 来源 / 质量报告 / 下载见右侧面板`}
+          {records === null ? '加载中…' : `${total} 条 · 点击行查看来源与处理详情`}
         </span>
       </div>
       <div style={{ padding: 16 }}>
         {records === null ? (
-          <div style={{ textAlign: 'center', padding: 30, color: 'var(--content-fg-tertiary)', fontSize: 13 }}>加载记录…</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '6px 0' }}>
+            {[0, 1, 2].map((i) => <div key={i} className="skeleton" style={{ height: 30 }} />)}
+            <div style={{ textAlign: 'center', fontSize: 'var(--fs-sm)', color: 'var(--content-fg-tertiary)', paddingTop: 4 }}>加载记录…</div>
+          </div>
+        ) : records.length === 0 ? (
+          <div className="empty-state" style={{ padding: '24px 16px' }}>
+            <span style={{ fontSize: 'var(--fs-sm)' }}>本次任务未产生记录</span>
+          </div>
         ) : (
-          <RecordsTable records={records} />
+          <RecordsTable records={records} onRowClick={openDetail} />
         )}
       </div>
+
+      {/* 记录详情弹窗 */}
+      {detail && (
+        <RecordDetailDialog
+          record={detail}
+          quality={quality}
+          sources={sources}
+          loading={detailLoading}
+          onClose={() => setDetail(null)}
+        />
+      )}
     </div>
   )
 }

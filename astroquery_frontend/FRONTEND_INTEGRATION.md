@@ -44,16 +44,21 @@ frontend/
 │   ├── App.jsx                    # 三栏布局 + 任务列表（无限滚动/筛选/重试）
 │   ├── services/api.js            # 全部端点封装 + SSE（EventSource + 断线重建）
 │   ├── hooks/
-│   │   └── usePipeline.js         # ★ 前端核心：SSE 事件消费 → stage reducer
-│   ├── mock/pipeline.js           # 阶段定义/初始结构/澄清快捷按钮（非演示数据）
+│   │   └── usePipeline.js         # ★ 前端核心：SSE 事件消费 → stage reducer（含 log→stage/agent 归属）
+│   ├── lib/
+│   │   ├── stages.js              # 阶段定义/初始结构/澄清快捷按钮（真实数据源）
+│   │   ├── markdown.jsx           # react-markdown 封装（AI 消息渲染）
+│   │   └── utils.js               # cn() class 合并
+│   ├── mock/pipeline.js           # 仅 useMockPipeline（演示钩子）引用，真实流程不依赖
 │   ├── components/
 │   │   ├── chat/                  # ChatView（时间线+输入区）、StageCard（7 卡）、ClarificationCard
-│   │   ├── results/               # ResultTabs（主区记录表格）、OutputFiles（输出文件区）
-│   │   ├── layout/                # Sidebar（任务列表）、DetailPanel（右侧详情 6 Tab）
+│   │   ├── workflow/              # WorkflowView（KPI+时间线）、StageDetailPanel（阶段/Agent 三级下钻）
+│   │   ├── results/               # ResultTabs（主区记录表格）、RecordDetail（单记录血缘弹窗）、OutputFiles
+│   │   ├── layout/                # Sidebar（任务列表）、DetailPanel（右侧详情 8 Tab）
 │   │   ├── log/                   # LogDrawer（实时日志，500 条上限 + 渲染 200 行截断）
 │   │   ├── settings/              # SettingsDialog（配置页，GET/PUT /api/config）
 │   │   └── ui/                    # button/scroll-area/toast（Radix + cva）
-│   └── lib/markdown.jsx           # react-markdown 封装（AI 消息渲染）
+│   └── styles.css                 # 毛玻璃设计系统：seed token + glass-bg + 过渡动画
 ├── vite.config.js                 # proxy（/api /static → :8000）+ preview 同配 + VITE_BASE
 └── package.json                   # dev/build/preview（无 test/lint，验证靠 build）
 ```
@@ -63,17 +68,21 @@ frontend/
 ## 3. 三栏布局（WEB_DESIGN 块 1）
 
 ```
-┌─ 侧边栏 240px（可折叠）─┬─ 主区 ──────────────────┬─ 右侧详情面板 380px（可折叠）─┐
-│ 新建提取任务             │ 工具栏（任务标题+状态徽标） │ 概览 / 来源 / 图证 / 轨迹     │
-│ 任务列表（无限滚动）      │ 对话时间线：              │ / 洞察 / 输出文件（6 Tab）    │
-│ 状态筛选 全部/运行中/…   │   AI 消息 · 7 阶段卡片    │ （DetailPanel 按 [task_id,   │
-│ 底部设置入口             │   澄清卡（内嵌对话流）     │  status] 重拉）              │
-│                         │ 输入区（自然语言+PDF 上传）│                             │
-└─────────────────────────┴───────────────────────────┴─────────────────────────────┘
+┌─ 侧边栏 240px（可折叠）─┬─ 主区 ──────────────────────┬─ 右侧详情面板（可折叠/拖拽调宽）─┐
+│ 新建提取任务             │ 工具栏：任务标题+状态徽标      │ 概览 / 质量 / 运行 / 来源        │
+│ 任务列表（无限滚动）      │   + 对话/工作流 视图切换       │ / 图证 / 轨迹 / 洞察 / 下载      │
+│ 状态筛选 全部/运行中/…   │   + 取消任务（运行中可见）     │ （DetailPanel 按 [task_id,       │
+│ 底部设置入口             │ 视图 A 对话时间线：           │  status] 重拉，8 Tab）           │
+│                         │   AI 消息 · 7 阶段卡片 · 澄清卡 │                                │
+│                         │ 视图 B 工作流：KPI 带+执行时间线 │                                │
+│                         │ 输入区（自然语言+PDF 上传）     │                                │
+└─────────────────────────┴───────────────────────────────┴────────────────────────────────┘
 ```
 
 - 侧边栏任务条目：标题 + 相对时间 + 状态圆点（queued=灰"排队中"、running=蓝呼吸、completed=绿、error=红、cancelled=灰）
 - 点"新建提取任务"清空主区（含 SSE 关闭与右侧面板重置）
+- **主区视图切换**（`view` 状态）：`chat` 对话视图（默认）与 `workflow` 工作流视图共享同一份 `pipeline` 实时状态，切换带淡入过渡（见 §11A）
+- **取消任务**：选中任务处于 queued/running/pending 时工具栏显示"取消任务"按钮 → `POST /api/tasks/{id}/cancel`
 
 ---
 
@@ -88,12 +97,14 @@ frontend/
           ├─ api.getState()       GET /state → 快照事件全部 applyEvent（replay 模式）
           └─ api.openEventStream(afterSeq=lastSeq)   SSE 实时续播
 事件到达 → usePipeline.applyEvent(ev)   ← 唯一 reducer 入口（seq 幂等去重 + taskId 归属校验）
-  ├─ stage_started/completed   → 卡片状态 + 时间线弹卡
+  ├─ stage_started/completed   → 卡片状态 + 时间线弹卡（同步维护 activeStagesRef 运行集合）
   ├─ step_progress             → locateStep 定位子步骤 + formatStepDetail 拼中文
-  ├─ agent_started/completed   → 质量管线 agent 动态追加（流式，无预置列表）
+  ├─ agent_started/completed   → agent 动态追加（流式）+ 同步维护 activeAgentsRef 运行窗口
   ├─ flow_started/completed    → 卡 5 动态流转节点（规范化/冲突消解 × 轮次）
   ├─ clarification             → 挂起澄清卡（按 cl_type 渲染 + 快捷按钮）
   ├─ message / log / error     → 消息时间线 / 日志抽屉（500 截断）/ 错误行
+  │                              log 另按运行窗口归属：stage.logs（200 截断）
+  │                              + agent.logs（300 截断，工作流下钻"执行日志"）
   └─ task_completed/cancelled/failed/title_ready → 终态收尾 + 列表标题更新
 渲染 → ChatView 时间线交错渲染：消息 + 7 卡 + 澄清卡 → 任务完成挂载 ResultTabs（记录表）
 ```
@@ -128,12 +139,13 @@ frontend/
 | `clarification` | `{stage_id, cl_type, title, fields, question}` | HITL 澄清卡（重放不重弹） |
 | `message` | `{role, content}` | 对话时间线（AI 消息 Markdown 渲染） |
 | `error` | `{level: warn\|fatal, node, message}` | fatal→任务失败+红字；warn→卡片错误行累积 |
-| `log` | `{node, level, message}` | 日志抽屉（500 条截断） |
+| `log` | `{node, level, message}` | 日志抽屉（500 条截断）+ 按运行窗口归属 stage.logs / agent.logs（工作流下钻执行日志）。**后端无独立 tool_call 事件**——检查器评分/LLM/httpx 工具调用明细全部在节点级 log 里 |
 | `task_completed` / `task_cancelled` / `task_failed` | `{summary?}` / `{reason?}` / `{error}` | 终态收尾（清理挂起澄清、输入栏恢复） |
 | `task_title_ready` | `{task_id, title}` | 列表标题异步更新（按 task_id 归属） |
 
 **关键机制**：
 - **seq 幂等去重**：快照重放与 SSE 续播可能交叠，`applyEvent` 按 `ev.seq <= lastSeqRef` 丢弃重复
+- **log 归属同步窗口**：运行中的阶段/Agent 由 `activeStagesRef` / `activeAgentsRef` 在 `applyEvent` 内**同步**维护——`stagesRef` 是 useEffect 镜像，快照重放（同步 forEach）期间滞后，依赖它会导致历史任务日志全部归属失败
 - **断线续播**（D1-4）：EventSource onerror → close → 按 `lastSeqRef` 重建流（重连不重复）
 - **任务终态后关流**（M-06）：收到终态事件立即关闭 SSE（流不再有新事件）
 - **重放不重弹澄清**：快照重放的 clarification 不置 pending（挂起状态由 `snap.pending_clarification` 精确恢复）
@@ -187,6 +199,10 @@ frontend/
 8. **SSE 关闭时机**：终态事件 + 组件卸载 + 任务切换（三处都关，防泄漏）
 9. **导出目录**：`output/{task_id[:8]}/`（run_id 绑定任务，M-18）；静态挂载仅 `output/figures/`（H-05/H-06）
 10. **配置写回**：`PUT /api/config` 必须带 `X-Requested-With: AstroQuery` 头（CORS 白名单 + 校验头防跨源投毒）
+11. **log 归属用同步窗口**：`activeStagesRef`/`activeAgentsRef` 在 `applyEvent` 内同步维护，勿改回读 `stagesRef`（快照重放期间滞后，历史任务日志会全部归属失败）；日志按 agent_started→completed 窗口挂到 `agent.logs`
+12. **工具调用明细 = 节点级 log**：后端没有独立 `tool_call` 事件类型；检查器评分/LLM/httpx 调用明细全部在 `log` 事件里，工作流下钻 L3"执行日志"是唯一呈现入口（勿再写"后端未上报工具明细"类文案）
+13. **记录详情走 /state 血缘**：`RecordDetailDialog` 的来源/处理轨迹/冲突/Insight 全部来自 `quality_report`（`per_record_trace` / `provenance` / `resolution_report.annotations` / `field_insights` / `per_source_routes`），首次点开行时懒加载 `getQuality`+`getSources` 并缓存，勿随表格预拉
+14. **视觉走 seed token**：新样式禁止硬编码颜色——从 `--seed-bg/fg/primary/accent/surface/radius` 经 `color-mix()` 派生（深色模式只覆写 seed）；动效统一 `cubic-bezier(0.16,1,0.3,1)` 并尊重 `prefers-reduced-motion`
 
 ---
 
@@ -222,4 +238,37 @@ python -m pytest tests/             # addopts 已排除 network，380+ 测试
 - **回放模式数据正确性受限**：VCR 只按 URL/body 匹配，错位风险已被 H-11（smart_body matcher）+ H-12（并发串行化）大幅降低，但数据正确性最终验收建议真实模式跑一次并重新录制 cassette（`tests/test_e2e_recorded.py -m network`）
 - **前端无自动化测试基建**（无 test/lint 脚本）：验证靠 `npm run build` + 回放端到端；`tests/test_web_offline.py` 覆盖后端契约（70+ 测试）
 - **并发限制**：执行器并发=1，新任务排队 queued
-- **日志量大**：单任务 400+ log 事件（前端 500 条截断 + 渲染 200 行截断已处理）
+- **日志量大**：单任务 400+ log 事件（日志抽屉 500 条截断 + 渲染 200 行截断；阶段日志保留最近 200 条、单 Agent 执行日志保留最近 300 条）
+
+---
+
+## 11A. 验收后新增前端能力（2026-08-13，纯前端迭代，后端零改动）
+
+### 工作流视图与三级下钻（WorkflowView / StageDetailPanel）
+
+主区工具栏"对话 / 工作流"切换（共享同一份 pipeline 状态）。工作流视图 = KPI 概览带（总耗时/阶段进度/当前阶段/瓶颈）+ 纵向执行时间线；点击阶段节点打开右侧 `StageDetailPanel` 三级下钻：
+
+| 层级 | 内容 |
+|---|---|
+| L1 | 阶段流程图（WorkflowView 节点） |
+| L2 | 阶段执行明细：子步骤/检索分组进度、flow 轮次、Agent 列表（含"N 条执行日志 / N 条修改"徽章）、阶段错误、阶段日志 |
+| L3 | Agent 明细：耗时 / reason / **数据修改轨迹**（`agent.traces`：field before→after + tool + confidence）/ **执行日志 · 工具与检查器调用**（`agent.logs`） |
+
+**执行日志来源**：后端没有独立 `tool_call` 事件；检查器逐来源评分（`[ExtractionQuality] score=…`）、LLM 初始化（`[llm]`）、httpx 工具调用等明细全部是节点级 `log` 事件。`usePipeline` 按 `agent_started→agent_completed` 运行窗口把日志归属到各 Agent（真实快照验证：1043 条日志 1040 条命中，QualityAssessmentAgent 独占 255 条）。评估类 Agent 的 `traces` 为 null 属正常（只读不写），此时 L3 如实标注"未修改数据"。
+
+### 记录详情弹窗（RecordDetailDialog）
+
+主区记录表格行可点击 → 居中毛玻璃弹窗，呈现该条记录的完整血缘（首次点开懒加载 `getQuality`+`getSources` 并缓存）：数据来源（DB：表/键/原始列/行号；论文：页码/bbox/上下文原文）、处理轨迹（`per_record_trace`：原始值→最终值 + 逐次修改的 stage/before/after/reason）、冲突标注（`resolution_report.annotations` 按实体+字段匹配，标注本记录来源是否涉事）、Insight 建议（`field_insights`，来源类型一致的排前）、字段定义（`field_definitions`）+ 低置信记录警示（`usage_recommendations.low_confidence_records`）。Esc / 点击遮罩关闭；弹窗体 `flex + minHeight:0 + overflowY:auto` 保证小屏可滚动。
+
+### DetailPanel 8 Tab
+
+原 6 Tab 扩展为 8：**概览 / 质量 / 运行** / 来源 / 图证 / 轨迹 / 洞察 / 下载。新增两 Tab 全部消费真实数据：
+
+- **质量**（`GET /quality` → `report_state.quality`）：总分 + 置信区间 + 等级徽章 + 路由分布（`route_counts`），逐来源评分行（升序，含分数条、路由 chip、原因文案）。路由键位于 `report_state.quality.per_source_routes / per_source_reasons / route_counts`——**不在 `quality_scoring` 内**（曾踩坑，61/61 命中验证后修正）。
+- **运行**（`workflow_state` + `output_state.quality_summary.processing_statistics`）：LLM 调用 / 工具调用 / 总耗时 / B⇄C 循环次数 4 统计卡 + `workflow_history` 审计时间线（时间 + agent + stage + reason + duration）。
+
+### 毛玻璃设计系统与过渡动画
+
+- **seed token**：`--seed-bg/fg/primary/accent/surface/radius`，其余颜色一律 `color-mix()` 派生；深色模式 `html[data-theme='dark']` 只覆写 seed；`--bg-ambient` 双色 radial 环境光让半透明可见；`@supports not (backdrop-filter)` 降为 92% 不透明兜底。
+- **玻璃层级**：`.glass`（浮层：面板/弹窗/toast，blur 18px）> `--surface-bg`（74% 半透明卡片）。
+- **过渡动画**：tab/视图切换内容按 `key` 重挂载触发 `animate-tab-in`（淡入 + 6px 上移，0.24s）；主区对话/工作流切换仅淡入（避免 transform 干扰内部 fixed 浮层）；`.tab-btn` / `.filter-chip` / `.log-chip` 状态变化 0.16s 微过渡；全部动效尊重 `prefers-reduced-motion`。

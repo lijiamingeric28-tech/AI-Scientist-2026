@@ -49,6 +49,8 @@ export function ToastProvider({ children }) {
                 border: `1px solid ${c.border}`,
                 borderRadius: 8,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                backdropFilter: 'blur(var(--glass-blur)) saturate(1.15)',
+                WebkitBackdropFilter: 'blur(var(--glass-blur)) saturate(1.15)',
                 fontSize: 13,
                 color: 'var(--content-fg)',
                 cursor: 'pointer',

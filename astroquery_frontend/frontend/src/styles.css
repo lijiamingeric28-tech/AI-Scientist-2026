@@ -2,50 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+ * Design tokens —— seed → 派生 token 两层结构（OpenAI 风格重制）
+ * 深色模式：html[data-theme='dark'] 覆盖同一组 seed token，
+ * 组件只消费 var(--*)，不写死颜色。
+ *
+ * 视觉语言：真白画布 + 深墨色（近黑微冷调），近乎单色；
+ * 唯一品牌色 OpenAI 青（#10a37f）只作点缀（链接/高亮/聚焦/选中），
+ * 主交互（CTA / 发送）仍用墨色。发丝线边框（#e5e5e5 级）+ 留白分区，
+ * 卡片默认无阴影；克制、安静、研究实验室式的产品表面。
+ * ============================================================ */
+
 :root {
-  /* Seed tokens */
-  --seed-bg: #f5f6f8;
-  --seed-fg: #1a1d23;
-  --seed-primary: #5e6ad2;
-  --seed-accent: #7170ff;
+  /* Seed tokens —— 唯一主题真相；其余 token 尽量由此派生（var/color-mix），
+   * 明暗切换（html[data-theme='dark'] 覆盖 seed）与外观预设（只 patch seed）
+   * 因此能整体联动。 */
+  --seed-bg: #ffffff;
+  --seed-fg: #0d0d0d;
+  --seed-primary: #0d0d0d;
+  --seed-accent: #10a37f;   /* OpenAI 青：中性系统中唯一的品牌色 */
   --seed-surface: #ffffff;
-  --seed-radius: 6px;
+  --seed-radius: 12px;      /* OpenAI：8–12px 柔和圆角，chips 用 pill */
 
-  /* Sidebar */
-  --sidebar-bg: #f8f9fb;
-  --sidebar-hover: #eef0f4;
-  --sidebar-active: #e8ebf2;
-  --sidebar-text: #1a1d23;
-  --sidebar-text-secondary: #6b7280;
-  --sidebar-border: #e5e7eb;
+  /* Sidebar（hover/active 为主题特例，显式声明；半透明以融入玻璃侧栏） */
+  --sidebar-bg: color-mix(in srgb, var(--seed-surface) 55%, var(--seed-bg));
+  --sidebar-hover: color-mix(in srgb, var(--seed-fg) 6%, transparent);
+  --sidebar-active: color-mix(in srgb, var(--seed-fg) 10%, transparent);
+  --sidebar-text: var(--seed-fg);
+  --sidebar-text-secondary: #6e6e6e;
+  --sidebar-border: color-mix(in srgb, var(--seed-fg) 9%, transparent);
 
-  /* Main content */
-  --content-bg: #f5f6f8;
-  --content-fg: #1a1d23;
-  --content-fg-secondary: #5f6572;
-  --content-fg-tertiary: #8b8f9a;
+  /* Main content（由 seed 派生） */
+  --content-bg: var(--seed-bg);
+  --content-fg: var(--seed-fg);
+  --content-fg-secondary: color-mix(in srgb, var(--seed-fg) 70%, var(--seed-bg));
+  --content-fg-tertiary: color-mix(in srgb, var(--seed-fg) 48%, var(--seed-bg));
 
-  /* Surfaces */
-  --surface-bg: #ffffff;
-  --surface-secondary: #f5f6f8;
-  --surface-border: #e5e7eb;
-  --surface-border-subtle: #f0f1f3;
+  /* Surfaces（白底 + 发丝线，靠边框与留白分区）
+   * surface-bg 半透明：全站 UI 组件（卡片/行项/按钮/弹层）统一获得轻透明质感，
+   * 叠在环境光渐变底色上呈现毛玻璃层次。 */
+  --surface-bg: color-mix(in srgb, var(--seed-surface) 74%, transparent);
+  --surface-secondary: #f5f5f5;
+  --surface-border: color-mix(in srgb, var(--seed-fg) 10%, transparent);        /* ≈ #e5e5e5 发丝线 */
+  --surface-border-subtle: color-mix(in srgb, var(--seed-fg) 7%, transparent); /* ≈ #ededed */
 
-  /* Status */
-  --status-success: #27a644;
-  --status-success-bg: #edf9f0;
-  --status-progress: #3b82f6;
+  /* Status（OpenAI 语义色：青绿 success / 蓝 info / #ef4146 error / 琥珀 warn） */
+  --status-success: #10a37f;
+  --status-success-bg: #e8f5f0;
+  --status-progress: #2563eb;
   --status-progress-bg: #eff6ff;
-  --status-error: #ef4444;
-  --status-error-bg: #fef2f2;
-  --status-waiting: #9ca3af;
-  --status-waiting-bg: #f3f4f6;
+  --status-error: #ef4146;
+  --status-error-bg: #fdeeee;
+  --status-warn: #f5a623;
+  --status-warn-bg: #fef6e7;
+  --status-waiting: #9b9b9b;
+  --status-waiting-bg: #f5f5f5;
 
-  /* Accent */
-  --accent: #5e6ad2;
-  --accent-hover: #7170ff;
-  --accent-light: #ecedfa;
-  --accent-text: #4f5bc4;
+  /* Accent（OpenAI 青：链接/高亮/聚焦/选中；主 CTA 仍走墨色 seed-primary） */
+  --accent: var(--seed-accent);
+  --accent-hover: color-mix(in srgb, var(--seed-accent) 78%, black);  /* ≈ Teal Deep */
+  --accent-light: color-mix(in srgb, var(--seed-accent) 8%, transparent);
+  --accent-text: var(--seed-accent);
+  --accent-on: #ffffff;
+
+  /* 字阶 */
+  --fs-2xs: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-base: 14px;
+  --fs-lg: 15px;
+  --fs-xl: 22px;
+
+  /* 间距（4px 基准） */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+
+  /* 圆角（OpenAI：控件 8–12px 柔和，卡片 16，气泡 20，chips pill） */
+  --radius-sm: 8px;
+  --radius-md: var(--seed-radius);
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* 毛玻璃（增强）：固定表面（侧栏/顶栏/面板/输入舱）用更强的模糊与透明，
+   * 配合环境光底色呈现通透层次；只用于固定/低频更新表面。bg/border 派生自 seed */
+  --glass-bg: color-mix(in srgb, var(--seed-surface) 58%, transparent);
+  --glass-border: color-mix(in srgb, var(--seed-fg) 9%, transparent);
+  --glass-blur: 18px;
+  --glass-highlight: inset 0 1px 0 color-mix(in srgb, var(--seed-surface) 68%, transparent);
+
+  /* 环境光底色：极淡的品牌青与墨色径向渐变，令透明/模糊效果可见；
+   * 由 seed 派生，明暗主题自动联动 */
+  --bg-ambient:
+    radial-gradient(900px 520px at 8% -12%, color-mix(in srgb, var(--seed-accent) 9%, transparent), transparent 68%),
+    radial-gradient(1000px 640px at 104% 112%, color-mix(in srgb, var(--seed-primary) 6%, transparent), transparent 70%);
+
+  /* 对话气泡（派生：fg 少量混入 bg） */
+  --bubble-bg: color-mix(in srgb, var(--seed-fg) 6%, var(--seed-bg));
+  --bubble-text: var(--seed-fg);
+  --chat-maxw: 768px;
+
+  /* 阴影 / 滚动条 / 遮罩（OpenAI：卡片默认无阴影，悬停才给轻阴影） */
+  --shadow-card: none;
+  --shadow-pop: 0 4px 16px rgba(13, 13, 13, 0.08);
+  --shadow-modal: 0 12px 40px rgba(13, 13, 13, 0.14);
+  --scrollbar-thumb: color-mix(in srgb, var(--seed-fg) 14%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--seed-fg) 24%, transparent);
+  --overlay: color-mix(in srgb, var(--seed-fg) 48%, transparent);
+  --skeleton-base: color-mix(in srgb, var(--seed-fg) 8%, var(--seed-bg));
+  --skeleton-shine: color-mix(in srgb, var(--seed-fg) 3%, var(--seed-bg));
+}
+
+html[data-theme='dark'] {
+  /* Seed tokens (dark) —— 覆盖 seed，派生 token 自动联动 */
+  --seed-bg: #212121;
+  --seed-fg: #ececec;
+  --seed-primary: #f0f0f0;
+  --seed-accent: #19b88c;   /* 暗底提亮的 OpenAI 青 */
+  --seed-surface: #2a2a2a;
+
+  /* 青绿 accent 上叠深色文字（暗底对比更佳） */
+  --accent-on: #111111;
+
+  /* 主题特例：侧栏填充、次级表面（hover/active 半透明，与玻璃侧栏融合） */
+  --sidebar-bg: #171717;
+  --sidebar-hover: color-mix(in srgb, var(--seed-fg) 8%, transparent);
+  --sidebar-active: color-mix(in srgb, var(--seed-fg) 13%, transparent);
+  --surface-secondary: #333333;
+
+  /* Status（暗底下提亮 + 半透明底色） */
+  --status-success: #2ec99a;
+  --status-success-bg: rgba(46, 201, 154, 0.13);
+  --status-progress: #5f9df8;
+  --status-progress-bg: rgba(95, 157, 248, 0.14);
+  --status-error: #f0716f;
+  --status-error-bg: rgba(240, 113, 111, 0.13);
+  --status-warn: #f0a13c;
+  --status-warn-bg: rgba(240, 161, 60, 0.13);
+  --status-waiting: #71717a;
+  --status-waiting-bg: rgba(113, 113, 122, 0.16);
+
+  /* 阴影（暗底：依然克制，仅弹层/输入舱需要） */
+  --shadow-card: none;
+  --shadow-pop: 0 4px 18px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 12px 44px rgba(0, 0, 0, 0.55);
 }
 
 * {
@@ -61,14 +166,30 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Inter', 'SF Pro Display', -apple-system, system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, system-ui, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
   font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--content-fg);
-  background: var(--content-bg);
+  background-color: var(--content-bg);
+  background-image: var(--bg-ambient);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "cv01", "ss03";
+  font-variant-numeric: tabular-nums;
+}
+
+/* 标题负字距（craft 规则：32px+ 负 tracking；这里标题偏小，用轻负值保持精致） */
+h1, h2, h3 {
+  letter-spacing: -0.01em;
+}
+
+/* 主题切换平滑过渡（仅背景/边框/文字色） */
+body,
+.theme-transition,
+.theme-transition * {
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 /* Scrollbar styling */
@@ -82,25 +203,292 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--scrollbar-thumb-hover);
 }
 
 .sidebar-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--scrollbar-thumb);
 }
 
 .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.18);
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Monospace for data/code */
 .font-mono {
-  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+}
+
+/* ============================================================
+ * 毛玻璃基元 —— 只用于固定/低频更新表面（侧栏/顶栏/输入舱/弹层/面板）
+ * 禁止给聊天滚动列表内逐条消息加 backdrop-filter（性能）
+ * ============================================================ */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight);
+}
+
+/* 玻璃卡片：玻璃底 + 更明显的边框与圆角 */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-highlight), var(--shadow-card);
+}
+
+/* 玻璃 pill（输入舱/分段控件） */
+.glass-pill {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--glass-highlight), var(--shadow-pop);
+}
+
+/* 降级：不支持 backdrop-filter 时退化为近实底，避免文字糊（glass-bg 现在更透） */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .glass-card, .glass-pill, .composer {
+    background: color-mix(in srgb, var(--seed-surface) 92%, transparent);
+  }
+}
+
+/* ============================================================
+ * 语义组件 class —— 收敛各组件重复的 inline style
+ * ============================================================ */
+
+/* 居中对话列 */
+.chat-column {
+  max-width: var(--chat-maxw);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 用户消息气泡（中性灰底大圆角，深色文字，不用主色填充） */
+.msg-bubble {
+  background: var(--bubble-bg);
+  color: var(--bubble-text);
+  padding: 10px 16px;
+  border-radius: var(--radius-xl);
+  max-width: 560px;
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 悬浮玻璃输入舱 */
+.composer {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-highlight), var(--shadow-pop);
+  overflow: hidden;
+}
+
+/* 卡片容器（实底，供工作流/统计等非玻璃场景） */
+.card {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+}
+
+/* 工作流纵向时间线：阶段行卡片（hover/selected 态走 CSS，避免 inline 覆盖） */
+.stage-row {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stage-row:hover {
+  border-color: var(--content-fg-tertiary);
+}
+
+.stage-row.selected {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* 分区小标题 */
+.section-label {
+  font-size: var(--fs-xs);
+  font-weight: 510;
+  color: var(--content-fg-tertiary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* 辅助说明文字 */
+.hint {
+  font-size: var(--fs-sm);
+  color: var(--content-fg-secondary);
+  line-height: 1.6;
+}
+
+.hint-dim {
+  font-size: var(--fs-xs);
+  color: var(--content-fg-tertiary);
+  line-height: 1.5;
+}
+
+/* KPI 统计卡 */
+.kpi-card {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+
+.kpi-label {
+  font-size: var(--fs-sm);
+  color: var(--content-fg-tertiary);
+  margin-bottom: var(--sp-1);
+  font-weight: 510;
+  letter-spacing: 0.02em;
+}
+
+.kpi-value {
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kpi-value-sm {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Tab 按钮（详情面板分区，品牌青下划线选中） */
+.tab-btn {
+  padding: 7px 10px;
+  font-size: var(--fs-sm);
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  color: var(--content-fg-secondary);
+  border-bottom: 2px solid transparent;
+  transition: color 0.16s ease, border-color 0.16s ease;
+}
+
+.tab-btn:hover {
+  color: var(--content-fg);
+}
+
+.tab-btn.active {
+  color: var(--accent-text);
+  font-weight: 590;
+  border-bottom-color: var(--accent);
+}
+
+/* 筛选 chip（pill） */
+.filter-chip {
+  padding: 5px 14px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  background: var(--surface-bg);
+  color: var(--content-fg-secondary);
+  transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+
+.filter-chip:hover {
+  border-color: var(--content-fg-tertiary);
+}
+
+.filter-chip.active {
+  background: var(--accent);
+  color: var(--accent-on);
+  font-weight: 510;
+  border-color: transparent;
+}
+
+/* 日志级别 chip */
+.log-chip {
+  padding: 2px 8px;
+  font-size: var(--fs-xs);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  background: transparent;
+  color: var(--content-fg-secondary);
+  transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+
+.log-chip.active {
+  background: var(--accent);
+  color: var(--accent-on);
+  border-color: transparent;
+}
+
+/* 数据行条目（来源/轨迹/洞察/文件） */
+.row-item {
+  border: 1px solid var(--surface-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  background: var(--surface-bg);
+}
+
+/* 记录表格可点击行：悬停半透明高亮（融入玻璃体系） */
+.record-row {
+  transition: background-color 0.12s ease;
+}
+
+.record-row:hover {
+  background: var(--sidebar-hover);
+}
+
+/* 修改轨迹条目 */
+.trace-item {
+  padding: 6px 10px;
+  background: var(--surface-secondary);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+/* 骨架屏 */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+.skeleton {
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 400px 100%;
+  animation: skeleton-shimmer 1.3s ease-in-out infinite;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 40px var(--sp-4);
+  color: var(--content-fg-tertiary);
+  font-size: var(--fs-md);
+  text-align: center;
 }
 
 /* Streaming cursor */
@@ -134,7 +522,17 @@ body {
 }
 
 .animate-slide-in {
-  animation: slide-in-right 0.2s ease-out;
+  animation: slide-in-right 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Drawer slide in（详情面板窄屏覆盖式） */
+@keyframes drawer-in {
+  0% { transform: translateX(40px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.animate-drawer-in {
+  animation: drawer-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Fade in */
@@ -144,7 +542,26 @@ body {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.15s ease-out;
+  animation: fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tab 内容切换进场：淡入 + 轻微上移，弱化"瞬间换页"的生硬感 */
+@keyframes tab-in {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-tab-in {
+  animation: tab-in 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tab-in,
+  .animate-fade-in,
+  .animate-slide-in,
+  .animate-drawer-in {
+    animation: none;
+  }
 }
 
 /* Stage tree connector lines */
@@ -178,7 +595,7 @@ textarea::placeholder {
   color: var(--content-fg-tertiary);
 }
 
-/* Focus visible for accessibility */
+/* Focus visible for accessibility（OpenAI：青绿聚焦环 + 柔和外圈） */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -187,5 +604,33 @@ textarea::placeholder {
 button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: var(--seed-radius);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+ * 响应式
+ * ============================================================ */
+
+/* 窄屏：详情面板改覆盖式抽屉（App 层配遮罩） */
+@media (max-width: 1279px) {
+  .detail-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    border-left: 1px solid var(--surface-border);
+    box-shadow: var(--shadow-modal);
+  }
+}
+
+/* 更窄：主区卡片左缩进取消，输入区边距收窄 */
+@media (max-width: 1023px) {
+  .stage-indent {
+    margin-left: 0 !important;
+  }
+  .chat-gutter {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
 }

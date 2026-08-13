@@ -1,52 +1,40 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
-import { MOCK_LOGS } from '@/mock/logs'
 
 /* 底部日志抽屉（块 7 定案）：可折叠 / 可调高度 / 级别过滤 / 实时追加
- * mock：打开后按节奏逐行追加预生成日志（模拟 WebSocket 日志流）
+ * 数据源：usePipeline logs（SSE log 事件，契约 D3-3）。
+ * 性能：上游已做 500 条环形截断；本组件仅渲染最近 200 行（防全量重渲染掉帧）。
  */
 
 const LEVEL_COLOR = {
   INFO: 'var(--content-fg-tertiary)',
-  WARN: '#d97706',
+  WARN: 'var(--status-warn)',
   ERROR: 'var(--status-error)',
 }
+
+const MAX_RENDER_LINES = 200
 
 export default function LogDrawer({ open, onClose, liveLogs }) {
   const [height, setHeight] = useState(240)
   const [levelFilter, setLevelFilter] = useState('all')
-  const [lines, setLines] = useState([])
-  const dragRef = useRef(null)
   const scrollRef = useRef(null)
+  const dragRef = useRef(null)
 
-  // 真实日志流（契约 D3-3：log 事件经 SSE 传入）；无 liveLogs 时退回 mock 定时器
+  const lines = liveLogs || []
+
+  // 自动滚动到底（仅在已接近底部时，避免用户回看被拽走）
+  const stickRef = useRef(true)
+  const handleScroll = () => {
+    const el = scrollRef.current
+    if (!el) return
+    stickRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 60
+  }
   useEffect(() => {
-    if (!open) return
-    if (liveLogs) {
-      setLines(liveLogs.map((l) => ({ ...l })))
-      return
+    if (stickRef.current && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
-    setLines([])
-    let i = 0
-    const timer = setInterval(() => {
-      if (i < MOCK_LOGS.length) {
-        setLines((prev) => [...prev, { ...MOCK_LOGS[i], time: `12:0${1 + Math.floor(i / 10)}:${String(10 + i).slice(-2)}` }])
-        i += 1
-      } else {
-        clearInterval(timer)
-      }
-    }, 180)
-    return () => clearInterval(timer)
-  }, [open, liveLogs])
-
-  // M-03：仅渲染最近 200 行（真实流单任务 400+ 条，全量渲染 O(n²) 掉帧）
-  const MAX_RENDER_LINES = 200
-
-  // 自动滚动到底
-  useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-  }, [lines])
+  }, [lines.length, open])
 
   // 高度拖拽
   const startDrag = (e) => {
@@ -67,33 +55,28 @@ export default function LogDrawer({ open, onClose, liveLogs }) {
 
   if (!open) return null
 
+  const total = lines.length
   const filtered = lines.filter((l) => levelFilter === 'all' || l.level === levelFilter).slice(-MAX_RENDER_LINES)
+  const truncated = filtered.length < (levelFilter === 'all' ? total : lines.filter((l) => l.level === levelFilter).length)
 
   return (
-    <div style={{ flexShrink: 0, borderTop: '1px solid var(--surface-border)', background: 'var(--surface-bg)', display: 'flex', flexDirection: 'column' }}>
+    <div data-component="log-drawer" className="glass" style={{ flexShrink: 0, borderTop: '1px solid var(--surface-border)', borderLeft: 'none', borderRight: 'none', borderBottom: 'none', display: 'flex', flexDirection: 'column' }}>
       {/* 拖拽手柄 */}
       <div onMouseDown={startDrag} style={{ height: 4, cursor: 'ns-resize', background: 'transparent' }} />
 
       {/* 头部 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderBottom: '1px solid var(--surface-border-subtle)' }}>
         <Icon.FileText style={{ width: 13, height: 13, color: 'var(--content-fg-tertiary)' }} />
-        <span style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg)' }}>实时日志</span>
-        {/* M-03：真实流（liveLogs）分母是真实行数，不用 mock 常量（曾显示 412/38 行） */}
-        <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{liveLogs ? `${lines.length} 行` : `${lines.length}/${MOCK_LOGS.length} 行`}</span>
+        <span style={{ fontSize: 'var(--fs-sm)', fontWeight: 510, color: 'var(--content-fg)' }}>实时日志</span>
+        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--content-fg-tertiary)' }}>
+          {total} 行{truncated ? ` · 仅显示最近 ${MAX_RENDER_LINES} 行` : ''}
+        </span>
         <div style={{ display: 'flex', gap: 4, marginLeft: 12 }}>
           {['all', 'INFO', 'WARN', 'ERROR'].map((lv) => (
             <button
               key={lv}
               onClick={() => setLevelFilter(lv)}
-              style={{
-                padding: '2px 8px',
-                fontSize: 11,
-                borderRadius: 4,
-                border: '1px solid var(--surface-border)',
-                cursor: 'pointer',
-                background: levelFilter === lv ? 'var(--accent-light)' : 'transparent',
-                color: levelFilter === lv ? 'var(--accent-text)' : 'var(--content-fg-secondary)',
-              }}
+              className={`log-chip${levelFilter === lv ? ' active' : ''}`}
             >
               {lv}
             </button>
@@ -106,16 +89,20 @@ export default function LogDrawer({ open, onClose, liveLogs }) {
       </div>
 
       {/* 日志区 */}
-      <div ref={scrollRef} style={{ height, overflowY: 'auto', padding: '6px 12px 10px', fontFamily: 'ui-monospace, Menlo, Consolas, monospace', fontSize: 11.5, lineHeight: 1.7 }}>
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        style={{ height, overflowY: 'auto', padding: '6px 12px 10px', fontFamily: 'ui-monospace, Menlo, Consolas, monospace', fontSize: 11.5, lineHeight: 1.7 }}
+      >
         {filtered.length === 0 && (
           <div style={{ color: 'var(--content-fg-tertiary)', padding: '20px 0', textAlign: 'center' }}>暂无日志</div>
         )}
-        {filtered.map((l, i) => (
-          <div key={i} style={{ display: 'flex', gap: 10, whiteSpace: 'nowrap' }}>
-            <span style={{ color: 'var(--content-fg-tertiary)' }}>{l.time}</span>
+        {filtered.map((l) => (
+          <div key={l.id} style={{ display: 'flex', gap: 10, whiteSpace: 'nowrap' }}>
+            <span style={{ color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>{l.time || '--:--:--'}</span>
             <span style={{ color: LEVEL_COLOR[l.level] || 'var(--content-fg-tertiary)', width: 44, flexShrink: 0 }}>{l.level}</span>
             <span style={{ color: 'var(--accent-text)', width: 110, flexShrink: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>[{l.node}]</span>
-            <span style={{ color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{l.msg}</span>
+            <span style={{ color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{l.message || l.msg}</span>
           </div>
         ))}
       </div>

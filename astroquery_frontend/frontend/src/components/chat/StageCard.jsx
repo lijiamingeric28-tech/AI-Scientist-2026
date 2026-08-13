@@ -102,16 +102,25 @@ function UnderstandOutput({ output }) {
         <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>{targetEntity}</span>
       </div>
 
-      {/* SIMBAD 身份（main_id + 类型一行，坐标独立一行） */}
+      {/* SIMBAD 身份（main_id + 类型一行，坐标或别名第二行——部分源缺坐标） */}
       <div style={{ display: 'flex', gap: 12 }}>
         <span style={labelStyle}>SIMBAD 身份</span>
         <div style={{ fontSize: 13, color: 'var(--content-fg)', lineHeight: 1.5 }}>
           <div>
             {simbad.mainId} · {simbad.otype}
           </div>
-          <div className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginTop: 2 }}>
-            RA {simbad.ra} · Dec {simbad.dec}
-          </div>
+          {simbad.ra && simbad.dec ? (
+            <div className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginTop: 2 }}>
+              RA {simbad.ra} · Dec {simbad.dec}
+            </div>
+          ) : (
+            Array.isArray(simbad.aliases) && simbad.aliases.length > 0 && (
+              <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginTop: 2 }}>
+                别名：{simbad.aliases.slice(0, 3).join(' · ')}
+                {simbad.aliases.length > 3 ? ` 等 ${simbad.aliases.length} 个` : ''}
+              </div>
+            )
+          )}
         </div>
       </div>
 
@@ -188,16 +197,7 @@ function Traces({ traces }) {
   return (
     <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
       {traces.map((t, i) => (
-        <div
-          key={i}
-          style={{
-            padding: '6px 10px',
-            background: 'var(--surface-secondary)',
-            borderRadius: 6,
-            fontSize: 12,
-            lineHeight: 1.6,
-          }}
-        >
+        <div key={i} className="trace-item">
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', color: 'var(--content-fg)' }}>
             <span style={{ fontWeight: 510 }}>{t.field}</span>
             <span className="font-mono" style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>{t.before} → {t.after}</span>
@@ -411,7 +411,58 @@ function ClarificationHistory({ clarifications }) {
   )
 }
 
-export default function StageCard({ stage, expanded, onToggle }) {
+/* 卡「数据洞察」完成态产出（来自 /state 的 output_state.insights，结构见 hydrateInsights） */
+function InsightOutput({ insights, onOpenInsights }) {
+  const fi = Array.isArray(insights.field_insights) ? insights.field_insights.length : 0
+  const rel = Array.isArray(insights.cross_field_relationships) ? insights.cross_field_relationships.length : 0
+  const grade = insights.usage_recommendations?.overall_grade
+  const g = String(grade || '').toLowerCase()
+  const gradeColor = !grade ? null
+    : /excellent|good|^a$|^a[-_]/.test(g) ? 'var(--status-success)'
+    : /poor|bad|fail|^c$|^d$|^c[-_]|^d[-_]/.test(g) ? 'var(--status-error)'
+    : 'var(--status-progress)'
+  const chipStyle = {
+    fontSize: 11, padding: '2px 10px', borderRadius: 'var(--radius-pill)',
+    background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)',
+    color: 'var(--content-fg-secondary)',
+  }
+  return (
+    <div style={{ marginTop: 12 }}>
+      {insights.overall_narrative && (
+        <div style={{
+          fontSize: 13, color: 'var(--content-fg-secondary)', lineHeight: 1.7, marginBottom: 10,
+          padding: '10px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
+        }}>
+          {insights.overall_narrative}
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+        <span style={chipStyle}>{fi} 条字段洞察</span>
+        <span style={chipStyle}>{rel} 条跨字段关系</span>
+        {grade && (
+          <span style={{ ...chipStyle, color: gradeColor, borderColor: 'transparent', background: 'color-mix(in srgb, currentColor 10%, transparent)' }}>
+            可用等级 {grade}
+          </span>
+        )}
+        {onOpenInsights && (
+          <button
+            onClick={onOpenInsights}
+            style={{
+              marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 5,
+              border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-pill)',
+              background: 'transparent', color: 'var(--content-fg)',
+              fontSize: 12, padding: '4px 12px', cursor: 'pointer', fontWeight: 510,
+            }}
+          >
+            查看完整报告<Icon.ChevronRight style={{ width: 10, height: 10 }} />
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default function StageCard({ stage, expanded, onToggle, onOpenInsights }) {
   const isExpanded = expanded
 
   const statusText = {
@@ -425,14 +476,16 @@ export default function StageCard({ stage, expanded, onToggle }) {
 
   return (
     <div
+      data-component="stage-card"
       style={{
         background: 'var(--surface-bg)',
-        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : 'var(--surface-border)'}`,
-        borderRadius: 8,
+        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : 'var(--surface-border)'}`,
+        borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
+        boxShadow: 'var(--shadow-card)',
       }}
     >
-      {/* 头部：未展开态 = 单行卡 */}
+      {/* 头部：未展开态 = 单行卡（状态信息由状态点承载，不加彩色左边框） */}
       <div
         onClick={onToggle}
         style={{
@@ -440,13 +493,6 @@ export default function StageCard({ stage, expanded, onToggle }) {
           alignItems: 'center',
           padding: '10px 14px',
           cursor: 'pointer',
-          borderLeft: `3px solid ${
-            stage.status === 'completed' ? 'var(--status-success)'
-            : stage.status === 'running' ? 'var(--status-progress)'
-            : stage.status === 'error' ? 'var(--status-error)'
-            : stage.errors && stage.errors.length > 0 ? 'var(--status-error)'   // M-23: warn 级阶段错误 → 红态
-            : 'var(--surface-border)'
-          }`,
         }}
       >
         <div style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, flexShrink: 0 }}>
@@ -492,6 +538,11 @@ export default function StageCard({ stage, expanded, onToggle }) {
 
           {stage.status === 'completed' && stage.id === 'understand' && stage.output && (
             <UnderstandOutput output={stage.output} />
+          )}
+
+          {/* 数据洞察卡完成态：综合叙述 + 计数 + 完整报告入口（stage.output 来自 /state） */}
+          {stage.status === 'completed' && stage.id === 'insight' && stage.output && (
+            <InsightOutput insights={stage.output} onOpenInsights={onOpenInsights} />
           )}
 
           <ClarificationHistory clarifications={stage.clarifications} />

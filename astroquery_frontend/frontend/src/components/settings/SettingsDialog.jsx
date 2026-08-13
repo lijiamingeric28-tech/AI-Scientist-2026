@@ -111,13 +111,14 @@ export default function SettingsDialog({ open, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
+        className="glass"
         style={{
           width: 520,
           maxWidth: '94vw',
           maxHeight: '88vh',
           display: 'flex',
           flexDirection: 'column',
-          background: 'var(--surface-bg)',
+          background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',
           borderRadius: 12,
           boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
           overflow: 'hidden',

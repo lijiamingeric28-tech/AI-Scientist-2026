@@ -349,3 +349,22 @@
 
 ### 遗留说明
 - 回放模式数据正确性仍受 VCR 不校验语义影响（错位风险已由 H-11/H-12 大幅降低）；最终数据正确性验收建议真实模式跑一次 M13 并重新录制 cassette。
+
+---
+
+## 验收后前端增强迭代（2026-08-13，纯前端，后端零改动）
+
+> P15 最终验收之后的产品化迭代，不属于 60 条审计清单；按时间顺序追加记录。
+> 每轮验证方式统一为 `cd frontend && npm run build`（vite 6.4.3）+ 浏览器实机走查。
+
+| 轮次 | 内容 | 关键改动 | 验证 |
+|---|---|---|---|
+| F1 | DetailPanel 质量/运行 Tab 接线 + 执行统计 + 取消任务 | 质量 Tab 消费 `report_state.quality`（评分/CI/逐来源分数与路由），运行 Tab 消费 `workflow_state` 计数 + `workflow_history` 审计时间线 + `processing_statistics`；工具栏取消按钮 → `POST /cancel` | build 通过 |
+| F2 | 毛玻璃风格强化 | `--surface-bg` 降至 74% 半透明、`--glass-bg` 58% + blur 18px、`--bg-ambient` 环境光、`@supports` 兜底 | build 通过 |
+| F3 | 记录详情弹窗（RecordDetailDialog） | 记录表行点击 → 居中玻璃弹窗：来源/处理轨迹（per_record_trace）/冲突标注（annotations）/Insight 建议（field_insights）/字段定义；懒加载 getQuality+getSources 缓存；修正路由键归属（per_source_routes 在 report_state.quality 而非 quality_scoring）与 extraction_method chip（vlm_text/vlm_table 前缀判断）；快照验证 5 项血缘匹配率 60+/61 | build 通过 |
+| F4 | 工作流下钻补齐工具调用明细 | 排查确认后端无 tool_call 事件、明细在节点级 log；usePipeline 新增 activeStagesRef/activeAgentsRef 同步运行窗口，日志按 agent_started→completed 窗口归属 agent.logs（阶段上限 30→200、Agent 上限 300），修复快照重放期间日志归属整体失效；StageDetailPanel L3 新增"执行日志 · 工具与检查器调用"分区 + Agent 行日志徽章；真实快照模拟 1043 条日志归属命中 1040 | build 通过 |
+| F5 | 选项卡过渡动画 | 新增 tab-in 进场动画（淡入+6px 上移，0.24s）应用于 DetailPanel 分区切换与下钻 L2↔L3；主区对话/工作流切换淡入（仅 opacity）；.tab-btn/.filter-chip/.log-chip 状态微过渡；prefers-reduced-motion 降级 | build 通过 |
+
+### 说明
+- F1-F5 均遵守「不改后端逻辑」约束，未触碰 `web/`、`astroquery_ai/`、`quality_pipeline/`、`subgraphs/`。
+- 设计文档同步：`docs/FRONTEND_INTEGRATION.md` §2/§3/§4/§6/§9/§11 更新并新增 §11A 章节。

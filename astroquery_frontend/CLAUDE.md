@@ -42,8 +42,8 @@
 
 ### 第 4 层：前端
 16. `frontend/src/services/api.js` —— 全部端点封装 + SSE 流
-17. `frontend/src/hooks/usePipeline.js` —— **SSE 事件消费 → stage reducer**（前端核心！）
-18. `frontend/src/components/`：`chat/`（ChatView/StageCard/ClarificationCard）、`results/`（ResultTabs/OutputFiles）、`layout/`（Sidebar/DetailPanel）、`settings/`、`log/`、`ui/`（toast/button）
+17. `frontend/src/hooks/usePipeline.js` —— **SSE 事件消费 → stage reducer**（前端核心！含 log→stage/agent 归属）
+18. `frontend/src/components/`：`chat/`（ChatView/StageCard/ClarificationCard）、`workflow/`（WorkflowView/StageDetailPanel 三级下钻）、`results/`（ResultTabs/RecordDetail/OutputFiles）、`layout/`（Sidebar/DetailPanel 8 Tab）、`settings/`、`log/`、`ui/`（toast/button）
 19. `frontend/vite.config.js` —— proxy `/api`、`/static` → :8000
 
 ### 第 5 层：测试
@@ -117,6 +117,7 @@ python -m pytest tests/test_e2e_recorded.py -m network          # VCR E2E（首�
 - **澄清卡定位**：后端 clarification 事件必须带 `stage_id`（`web_runner._CLAR_STAGES` 按 cl_type 推断），前端按它渲染；quickButtons 在前端按 cl_type 生成（`CLARIFICATION_QUICK_BUTTONS`）
 - **agent 事件是流式的**：前端 agents 列表动态追加，不要依赖预置列表
 - **clean/deliver/done 卡无 stage_started 事件**：前端在 agent 事件/stage_completed 时自动弹卡（usePipeline 已实现，勿删）
-- **右侧栏数据**：DetailPanel 依赖 `[task?.id, task?.status]` 重拉（任务完成时刷新），不要改回只依赖 id
+- **右侧栏数据**：DetailPanel 依赖 `[task?.task_id, task?.status]` 重拉（任务完成时刷新），不要改回只依赖 id（task.id 已在 B7 统一为 task.task_id）
+- **log 归属用同步窗口**：usePipeline 的 `activeStagesRef`/`activeAgentsRef` 在 applyEvent 内同步维护，勿改回读 `stagesRef`（快照重放期间滞后，历史任务日志会归属失败）；节点级 log 按 agent 运行窗口挂到 `agent.logs`，是工作流下钻"执行日志/工具调用明细"的唯一数据源（后端无独立 tool_call 事件）
 - **VCR 只对 pytest 装饰器方式完全可靠**；executor 线程内 use_cassette 会打大量 "Appending" 日志（是回放不是录制，勿误判）
 - **回放模式启动**：必须用 `python -c` 代码内注入环境变量（`os.environ['LLM_CASSETTE']=...`），shell 前缀在后台任务里不可靠

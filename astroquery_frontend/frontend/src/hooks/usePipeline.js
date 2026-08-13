@@ -10,10 +10,16 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as api from '@/services/api'
-import { makeInitialStages, CLARIFICATION_QUICK_BUTTONS } from '@/mock/pipeline'
+import { makeInitialStages, CLARIFICATION_QUICK_BUTTONS } from '@/lib/stages'
 
 let seq = 0
 const nextId = () => `evt-${++seq}`
+
+/* 耗时按后端模块统计的阶段：quality_check=assessment、clean=normalization+conflict、
+ * deliver=export、insight=insights。这些阶段的耗时由各模块 agent_completed.duration
+ * 累加得出——quality_check 的 stage_completed.duration 横跨整条质量流水线（含清洗/
+ * 交付/洞察），直接用会把后续所有阶段的耗时都算进"质量检查"。 */
+const MODULE_DURATION_STAGES = ['quality_check', 'clean', 'deliver', 'insight']
 
 /* step_progress.path: "database/match" 等 → stage 内定位 */
 function locateStep(stage_id, path) {
@@ -67,6 +73,46 @@ function formatStepDetail(stageId, step, data) {
   return ''
 }
 
+/* 契约 D6-5：卡头摘要前端拼字段 —— stage_completed 时用累积的步骤数据 /
+ * agent 列表拼出具体数字摘要（替代泛化的"已完成"）。
+ * stats 为 step_progress.data 累积器（stage → step → data）。 */
+function composeStageSummary(stageId, stats, stage) {
+  const g = (step, k) => stats?.[stageId]?.[step]?.[k]
+  if (stageId === 'retrieval') {
+    const parts = []
+    const dbRecords = g('database/summary', 'records')
+    if (dbRecords != null) parts.push(`星表提取 ${dbRecords} 条`)
+    const dl = g('paper/download', 'downloaded')
+    if (dl != null) {
+      const failed = g('paper/download', 'failed')
+      parts.push(`下载论文 ${dl} 篇${failed ? `（${failed} 篇失败）` : ''}`)
+    }
+    const supp = g('supplementary/summary', 'records')
+    if (supp) parts.push(`补充材料 ${supp} 条`)
+    return parts.join(' · ') || null
+  }
+  if (stageId === 'extraction') {
+    const parts = []
+    const rec = g('summary', 'records') ?? g('paper', 'records')
+    if (rec != null) parts.push(`提取 ${rec} 条记录`)
+    const figs = g('figure', 'figures')
+    if (figs != null) parts.push(`${figs} 张图证`)
+    return parts.join(' · ') || null
+  }
+  const agents = Array.isArray(stage.agents) ? stage.agents : []
+  if (stageId === 'quality_check') {
+    return agents.length ? `${agents.length} 个评估 Agent 完成` : null
+  }
+  if (stageId === 'clean') {
+    const tr = agents.reduce((n, a) => n + ((a.traces || []).length), 0)
+    return agents.length ? `${agents.length} 个清洗 Agent${tr ? ` · ${tr} 条修改轨迹` : ''}` : null
+  }
+  if (stageId === 'deliver') {
+    return agents.length ? `${agents.length} 个交付 Agent 完成` : null
+  }
+  return null
+}
+
 /* 契约 D6-1/D6-5（M-04）：快照 state → 卡 1 完成态 output（snake→camel）。
  * 键名对齐后端：target_entity / simbad_info{main_id,otype,ra,dec} /
  * property_spec[{property_id,name_cn,unit}]（property_standardization.build_property_spec） */
@@ -75,6 +121,10 @@ function buildUnderstandOutput(state) {
   if (!targetEntity) return null
   const simbad = state.simbad_info || {}
   const props = Array.isArray(state.property_spec) ? state.property_spec : []
+  // SIMBAD 别名：优先 ALIASES 数组，退回 ids 竖线串（部分源缺坐标，卡 1 用别名兜底展示）
+  const aliases = Array.isArray(simbad.ALIASES) && simbad.ALIASES.length
+    ? simbad.ALIASES
+    : (typeof simbad.ids === 'string' && simbad.ids ? simbad.ids.split('|').map((s) => s.trim()).filter(Boolean) : [])
   return {
     targetEntity,
     simbad: {
@@ -82,6 +132,7 @@ function buildUnderstandOutput(state) {
       otype: simbad.otype || null,
       ra: simbad.ra || null,
       dec: simbad.dec || null,
+      aliases,
     },
     properties: props.map((p) => ({ propertyId: p.property_id, name: p.name_cn, unit: p.unit })),
   }
@@ -95,12 +146,56 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   const [started, setStarted] = useState(false)
   const [taskDone, setTaskDone] = useState(false)
   const [logs, setLogs] = useState([])
+  // 数据洞察报告（来源 /state 快照 final_output.quality_report.output_state.insights）
+  const [insights, setInsights] = useState(null)
 
   const esRef = useRef(null)
   const lastSeqRef = useRef(0)
   const taskIdRef = useRef(null)
   const pendingRef = useRef(null)   // 当前挂起澄清（供 submitAnswer）
   const submittingRef = useRef(false)  // H-18: resume 在途标志（防双击重发）
+  // D6-5：step_progress.data 累积器（stage → step → data），stage_completed 时拼卡头摘要
+  const statsRef = useRef({})
+  // insights flow 进行中标志：此后 stage_id='deliver' 的 agent 事件归属 insight 虚拟阶段
+  const insightActiveRef = useRef(false)
+  // 模块化耗时累积器（stage → 秒）：quality_check=assessment 模块、clean=normalization+conflict、
+  // deliver=export、insight=insights——用各模块 agent_completed.duration 累加。
+  // quality_check 的 stage_completed.duration 横跨整条质量流水线（含清洗/交付/洞察），不可用。
+  const modDurRef = useRef({})
+  // stages 镜像（提供阶段规范顺序；log 归属的运行判定改用下方同步 ref）
+  const stagesRef = useRef([])
+  useEffect(() => { stagesRef.current = stages }, [stages])
+  // log 归属（同步版）：stagesRef 在快照重放期间滞后（useEffect 渲染后才更新），
+  // 历史任务回看时所有日志会因此无法归属到阶段/Agent。运行中的阶段与 Agent
+  // 必须在 applyEvent 内同步维护。后端无独立 tool_call 事件，但节点级 log
+  //（检查器评分 / LLM 初始化 / httpx 工具调用）可按 agent_started→completed
+  // 窗口精确归属到各 Agent（工作流下钻 L3 的"执行日志"即来源于此）。
+  const activeStagesRef = useRef(new Set())   // 运行中的 stage_id 集合
+  const activeAgentsRef = useRef(new Map())   // stageId -> Map(agent 名 -> 启动 seq)
+
+  /* ── 数据洞察 hydration：insights 内容不在事件流里，只能从 /state 快照
+   *    final_output.quality_report.output_state.insights 读取。
+   *    打开任务（快照恢复）与任务完成（final_output 落盘）后各调用一次。 ── */
+  const hydrateInsights = useCallback((state) => {
+    const ins = state?.final_output?.quality_report?.output_state?.insights
+    if (!ins || typeof ins !== 'object') return false
+    setInsights(ins)
+    const fi = Array.isArray(ins.field_insights) ? ins.field_insights.length : 0
+    const rel = Array.isArray(ins.cross_field_relationships) ? ins.cross_field_relationships.length : 0
+    const rec = ins.usage_recommendations && Array.isArray(ins.usage_recommendations.suitable_use_cases)
+      ? ins.usage_recommendations.suitable_use_cases.length : 0
+    const parts = []
+    if (fi) parts.push(`${fi} 条字段洞察`)
+    if (rel) parts.push(`${rel} 条跨字段关系`)
+    if (rec) parts.push(`${rec} 条使用建议`)
+    const summary = parts.length ? parts.join(' · ') : '已生成数据洞察报告'
+    setStages((prev) => prev.map((s) => (s.id === 'insight'
+      ? { ...s, status: 'completed', output: ins, summary }
+      : s)))
+    setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === 'insight')
+      ? prev : [...prev, { kind: 'stage', id: 'insight' }]))
+    return true
+  }, [])
 
   /* ── 事件 → 状态 reducer ── */
   const applyEvent = useCallback((ev, taskId, replay = false) => {
@@ -127,15 +222,30 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       setMessages((prev) => [...prev, { id: nextId(), role: ev.role, content: ev.content }])
       setTimeline((prev) => [...prev, { kind: 'msg', id: prev.length }])
     } else if (type === 'stage_started') {
+      activeStagesRef.current.add(ev.stage_id)   // 同步维护：log 归属用
       setStages((prev) => prev.map((s) => (s.id === ev.stage_id ? { ...s, status: 'running' } : s)))
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
     } else if (type === 'stage_completed') {
-      setStages((prev) => prev.map((s) => (s.id === ev.stage_id ? { ...s, status: ev.status || 'completed', duration: ev.duration ? `${ev.duration}s` : s.duration } : s)))
+      setStages((prev) => prev.map((s) => {
+        if (s.id !== ev.stage_id) return s
+        // D6-5：卡头摘要——已有（如卡 1 快照接线）不覆盖，否则用累积数据拼数字摘要
+        const summary = s.summary || composeStageSummary(ev.stage_id, statsRef.current, s) || s.summary
+        // 模块级阶段的耗时由 agent 事件累加（见 MODULE_DURATION_STAGES）——
+        // quality_check 的 stage_completed.duration 横跨整条质量流水线，不可用；
+        // duration<=0（如 done）视为未计时
+        const useEventDuration = ev.duration > 0 && !MODULE_DURATION_STAGES.includes(ev.stage_id)
+        return { ...s, status: ev.status || 'completed', duration: useEventDuration ? `${ev.duration}s` : s.duration, summary }
+      }))
       // done 卡只有 completed 事件（main_graph quality_finalize=end 模式）→ 补弹卡
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
     } else if (type === 'step_progress') {
       const loc = locateStep(ev.stage_id, ev.step)
       if (!loc) return
+      // D6-5：累积步骤数据（供 stage_completed 拼卡头摘要；合并保留同 step 多次上报的键）
+      if (ev.data && typeof ev.data === 'object') {
+        const byStage = statsRef.current[ev.stage_id] || (statsRef.current[ev.stage_id] = {})
+        byStage[ev.step] = { ...(byStage[ev.step] || {}), ...ev.data }
+      }
       const patch = { status: ev.status }
       if (ev.progress) patch.progress = { ...ev.progress }
       if (ev.data) {
@@ -157,11 +267,58 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
           substeps: (s.substeps || []).map((st) => st.id === loc.id ? { ...st, ...patch } : st),
         }))
       }
+    } else if (type === 'flow_started' || type === 'flow_completed') {
+      // quality_pipeline 子流程（normalization/conflict/export/insights，带轮次）。
+      // insights flow 归属前端虚拟阶段 insight；其余按事件 stage_id（clean/deliver）。
+      const isInsights = ev.flow_id === 'insights'
+      const targetStage = isInsights ? 'insight' : ev.stage_id
+      const status = type === 'flow_started' ? 'running' : 'completed'
+      if (isInsights) insightActiveRef.current = type === 'flow_started'
+      // clean/deliver/insight 无 stage_started 事件 → flow 启动即视为阶段运行中（log 归属用）
+      if (type === 'flow_started') activeStagesRef.current.add(targetStage)
+      setStages((prev) => prev.map((s) => {
+        if (s.id !== targetStage) return s
+        const round = ev.round ?? 1
+        const key = `${ev.flow_id}-${round}`
+        const flows = [...(s.flows || [])]
+        const idx = flows.findIndex((f) => f.key === key)
+        if (idx >= 0) {
+          flows[idx] = { ...flows[idx], status }
+        } else {
+          flows.push({ key, flowId: ev.flow_id, round, status })
+        }
+        // clean/deliver/insight 无 stage_started → 首个 flow 事件点亮阶段
+        return { ...s, flows, status: (status === 'running' && s.status === 'waiting') ? 'running' : s.status }
+      }))
+      // insight 阶段完成：insights flow 收尾即视为洞察阶段完成（耗时后端未上报）
+      if (isInsights && status === 'completed') {
+        activeStagesRef.current.delete('insight')
+        setStages((prev) => prev.map((s) => (s.id === 'insight' && s.status !== 'completed'
+          ? { ...s, status: 'completed' } : s)))
+      }
+      setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === targetStage)
+        ? prev : [...prev, { kind: 'stage', id: targetStage }]))
     } else if (type === 'agent_started' || type === 'agent_completed') {
       const status = type === 'agent_started' ? 'running' : 'completed'
+      // insights flow 执行期间，stage_id='deliver' 的 agent 归属 insight 虚拟阶段
+      const targetStage = (ev.stage_id === 'deliver' && insightActiveRef.current) ? 'insight' : ev.stage_id
+      // 同步维护运行窗口：log 事件按 agent_started→completed 窗口归属到 Agent
+      //（后端无 tool_call 事件，节点级日志是工具/检查器明细的唯一来源）
+      if (type === 'agent_started') {
+        activeStagesRef.current.add(targetStage)
+        if (!activeAgentsRef.current.has(targetStage)) activeAgentsRef.current.set(targetStage, new Map())
+        activeAgentsRef.current.get(targetStage).set(ev.agent, ev.seq || Date.now())
+      } else {
+        activeAgentsRef.current.get(targetStage)?.delete(ev.agent)
+      }
+      // 模块级耗时累积：各模块 agent_completed.duration 之和 = 该阶段耗时
+      //（quality_check=assessment / clean=normalization+conflict / deliver=export / insight=insights）
+      if (type === 'agent_completed' && MODULE_DURATION_STAGES.includes(targetStage) && ev.duration > 0) {
+        modDurRef.current[targetStage] = (modDurRef.current[targetStage] || 0) + ev.duration
+      }
       // 后端 agent 事件是流式的（无预置列表）——动态追加
       setStages((prev) => prev.map((s) => {
-        if (s.id !== ev.stage_id) return s
+        if (s.id !== targetStage) return s
         const has = (s.agents || []).some((a) => a.agent === ev.agent)
         const agents = has
           ? (s.agents || []).map((a) => a.agent === ev.agent
@@ -170,10 +327,15 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
               ? { ...a, status, duration: type === 'agent_completed' ? (ev.duration ? `${ev.duration}s` : a.duration) : a.duration, traces: mergeTraces(a.traces, ev.traces) }
               : a)
           : [...(s.agents || []), { id: ev.agent, agent: ev.agent, status, duration: type === 'agent_completed' ? `${ev.duration}s` : null, traces: ev.traces || null }]
-        return { ...s, agents, status: s.status === 'waiting' ? 'running' : s.status }
+        // insight 阶段：agent 状态同步到预置 substeps（卡片时间线展示）
+        const substeps = Array.isArray(s.substeps) && s.substeps.some((st) => st.id === ev.agent)
+          ? s.substeps.map((st) => (st.id === ev.agent ? { ...st, status } : st))
+          : s.substeps
+        const duration = modDurRef.current[targetStage] != null ? `${modDurRef.current[targetStage].toFixed(1)}s` : s.duration
+        return { ...s, agents, substeps, duration, status: s.status === 'waiting' ? 'running' : s.status }
       }))
-      // clean/deliver 卡没有 stage_started 事件 → 首个 agent 事件时弹卡
-      setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
+      // clean/deliver/insight 卡没有 stage_started 事件 → 首个 agent 事件时弹卡
+      setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === targetStage) ? prev : [...prev, { kind: 'stage', id: targetStage }]))
     } else if (type === 'clarification') {
       const cl = {
         type: ev.cl_type, title: ev.title, fields: ev.fields,
@@ -211,15 +373,58 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       }
     } else if (type === 'log') {
       // M-03：容量上限 500 环形截断（单任务 400+ log 事件，防无界累积 + 全量重渲染）
-      setLogs((prev) => [...prev, { id: nextId(), node: ev.node, level: ev.level, message: ev.message }].slice(-500))
+      // 后端 log 事件无时间字段 → 前端记录接收时刻供日志抽屉展示
+      const time = new Date().toTimeString().slice(0, 8)
+      const entry = { id: nextId(), node: ev.node, level: ev.level, message: ev.message, time }
+      setLogs((prev) => [...prev, entry].slice(-500))
+      // 阶段归属：同步维护的运行集合（快照重放安全），多个阶段并行时取规范
+      // 顺序中最靠后的运行阶段（stagesRef 提供顺序）——工作流下钻"阶段日志"
+      let stageId = null
+      for (const s of stagesRef.current || []) {
+        if (activeStagesRef.current.has(s.id)) stageId = s.id
+      }
+      if (!stageId) return
+      // Agent 归属：该阶段最近启动且仍在运行的 Agent（节点级日志——检查器
+      // 评分 / LLM / httpx 工具调用——都落在 agent_started→completed 窗口内）
+      let agentName = null
+      const agentWindow = activeAgentsRef.current.get(stageId)
+      if (agentWindow && agentWindow.size) {
+        let best = -1
+        for (const [name, startSeq] of agentWindow) {
+          if (startSeq > best) { best = startSeq; agentName = name }
+        }
+      }
+      const logItem = { node: ev.node, level: ev.level, message: ev.message, time }
+      setStages((prev) => prev.map((s) => {
+        if (s.id !== stageId) return s
+        // 阶段日志保留最近 200 条（质量检查阶段单阶段 300+ 条节点日志）
+        const next = { ...s, logs: [...(s.logs || []), logItem].slice(-200) }
+        if (agentName) {
+          next.agents = (s.agents || []).map((a) => ((a.id || a.agent) === agentName
+            ? { ...a, logs: [...(a.logs || []), logItem].slice(-300) }
+            : a))
+        }
+        return next
+      }))
     } else if (type === 'task_completed' || type === 'task_cancelled') {
       closeStream()
+      activeStagesRef.current.clear()   // 终态：运行窗口清空（log 不再归属）
+      activeAgentsRef.current.clear()
       // H-02①③: task_cancelled（澄清超时/用户取消）清理挂起澄清 + 卡片置灰
       if (type === 'task_cancelled') clearPending()
       setTaskDone(true)
       onTaskDone?.()
+      // task_completed：final_output 此刻才落盘，insights 不在事件流里 → 重拉 /state hydrate 洞察报告
+      if (type === 'task_completed' && taskId != null) {
+        api.getState(taskId).then((snap) => {
+          if (taskIdRef.current !== taskId) return
+          hydrateInsights((snap && snap.state) || {})
+        }).catch(() => { /* hydrate 失败忽略（洞察缺省走空态） */ })
+      }
     } else if (type === 'task_failed') {
       closeStream()
+      activeStagesRef.current.clear()
+      activeAgentsRef.current.clear()
       clearPending()
       setMessages((prev) => [...prev, { id: nextId(), role: 'ai', content: `⚠️ 任务失败：${ev.error || ''}` }])
       setTaskDone(true)
@@ -227,7 +432,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     } else if (type === 'task_title_ready') {
       onTaskTitle?.(ev)   // L-01：透传完整事件（含 task_id），App 按归属更新列表
     }
-  }, [onTaskDone, onTaskTitle])
+  }, [onTaskDone, onTaskTitle, hydrateInsights])
 
   /* ── 打开任务：先拉快照恢复历史，再 SSE 续播 ── */
   const openTask = useCallback(async (taskId) => {
@@ -240,7 +445,13 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     setTimeline([])
     setPending(null)
     setLogs([])
+    setInsights(null)
     pendingRef.current = null
+    insightActiveRef.current = false
+    statsRef.current = {}   // D6-5：跨任务不复用步骤累积数据
+    modDurRef.current = {}  // 模块级耗时跨任务不复用
+    activeStagesRef.current.clear()   // log 归属窗口跨任务不复用
+    activeAgentsRef.current.clear()
     esRef.current?.close()
     esRef.current = null
     lastSeqRef.current = 0   // CR-02：每次打开任务重置，快照重放确定续播锚点
@@ -269,6 +480,29 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
           output: out,
           summary: `已确认目标天体 ${out.targetEntity} 与 ${out.properties.length} 项标准性质`,
         }))
+      }
+      // D6-5：done 卡摘要 —— 快照 final_output 计数（历史任务回看时直接显示最终产出）
+      const fo = (snap.state || {}).final_output
+      if (fo) {
+        const parts = []
+        if (Array.isArray(fo.records)) parts.push(`${fo.records.length} 条记录`)
+        if (Array.isArray(fo.sources)) parts.push(`${fo.sources.length} 个来源`)
+        if (Array.isArray(fo.figure_evidence)) parts.push(`${fo.figure_evidence.length} 张图证`)
+        if (parts.length) {
+          const doneSummary = `共 ${parts.join(' · ')}`
+          setStages((prev) => prev.map((s) => (s.id === 'done' ? { ...s, summary: doneSummary } : s)))
+        }
+      }
+      // 数据洞察 hydration（历史任务回看直接呈现洞察报告）；
+      // 终态任务无 insights（旧任务可能未跑洞察流程）→ insight 阶段优雅置 skipped
+      const insightOk = hydrateInsights(snap.state || {})
+      if (!insightOk) {
+        const st = snap.task && snap.task.status
+        if (st && st !== 'queued' && st !== 'running') {
+          setStages((prev) => prev.map((s) => (s.id === 'insight'
+            ? { ...s, status: 'skipped', summary: '该任务未生成数据洞察' }
+            : s)))
+        }
       }
       // M-06：任务已终态 → 不再开 SSE（流不会有新事件，避免长连接悬挂）
       const status = snap.task && snap.task.status
@@ -304,6 +538,11 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     taskIdRef.current = null
     lastSeqRef.current = 0
     pendingRef.current = null
+    insightActiveRef.current = false
+    statsRef.current = {}
+    modDurRef.current = {}
+    activeStagesRef.current.clear()
+    activeAgentsRef.current.clear()
     esRef.current?.close()
     esRef.current = null
     setStarted(false)
@@ -313,6 +552,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     setTimeline([])
     setPending(null)
     setLogs([])
+    setInsights(null)
   }, [])
 
   useEffect(() => {
@@ -378,7 +618,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   useEffect(() => () => esRef.current?.close(), [])
 
   return {
-    messages, stages, timeline, pending, started, taskDone, logs,
+    messages, stages, timeline, pending, started, taskDone, logs, insights,
     submitQuery, submitAnswer,
   }
 }

@@ -44,11 +44,11 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
 
   return (
     <aside
+      className="glass"
       style={{
         width: 240,
         minWidth: 240,
-        background: 'var(--sidebar-bg)',
-        borderRight: '1px solid var(--sidebar-border)',
+        borderRight: '1px solid var(--glass-border)',
         display: 'flex',
         flexDirection: 'column',
       }}

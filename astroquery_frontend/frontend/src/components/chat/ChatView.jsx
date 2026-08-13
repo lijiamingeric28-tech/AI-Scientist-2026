@@ -1,18 +1,17 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
-import { StatusDot } from '@/components/status'
 import Markdown from '@/lib/markdown'
 import StageCard from './StageCard'
 import ClarificationCard from './ClarificationCard'
 import ResultTabs from '@/components/results/ResultTabs'
 import LogDrawer from '@/components/log/LogDrawer'
 import { useToast } from '@/components/ui/toast'
-import { usePipeline } from '@/hooks/usePipeline'
 
 /* 对话视图（块 3 定案）：
  * - 消息流 / 阶段卡片 / HITL 澄清 / 输入栏（块 6）
- * 数据源：usePipeline（SSE 事件流 + REST，契约 API_CONTRACT.md）
+ * 数据源：App 层上提的 usePipeline（SSE 事件流 + REST，契约 API_CONTRACT.md），
+ * 与工作流视图共享同一份实时状态。
  */
 
 /* AI 消息（文档流）：Sparkle 图标 + markdown —— 用于对话消息与卡片下方总结 */
@@ -46,28 +45,22 @@ function Message({ msg }) {
   if (msg.role === 'user') {
     return (
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
-        <div
-          style={{
-            background: 'var(--accent)',
-            color: '#fff',
-            padding: '10px 16px',
-            borderRadius: '12px 12px 2px 12px',
-            maxWidth: 520,
-            fontSize: 14,
-            lineHeight: 1.6,
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {msg.content}
-        </div>
+        <div className="msg-bubble">{msg.content}</div>
       </div>
     )
   }
   return <AiMessage content={msg.content} />
 }
 
-export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, logOpen, onToggleLog }) {
-  const { messages, stages, timeline, pending, started, taskDone, logs, submitQuery, submitAnswer } = usePipeline(task, { onTaskDone, onTaskTitle })
+/* 空状态示例提问（引导新用户，点击填入输入框） */
+const EXAMPLE_PROMPTS = [
+  '查询 M13 的距离、年龄与金属丰度',
+  '提取蟹状星云中心脉冲星的自转参数',
+  '收集 M31 球状星团系统的金属丰度数据',
+]
+
+export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleLog, focusStage, onOpenInsights }) {
+  const { messages, stages, timeline, pending, started, taskDone, logs, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState('')
   const [files, setFiles] = useState([])   // 已选 PDF chips [{name, size}]
   const [submitting, setSubmitting] = useState(false)
@@ -87,6 +80,23 @@ export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, log
       return next
     })
   }
+
+  // 工作流视图"在对话中查看" → 展开目标卡并滚动定位
+  useEffect(() => {
+    if (!focusStage?.id) return
+    setCollapsedIds((prev) => {
+      if (!prev.has(focusStage.id)) return prev
+      const next = new Set(prev)
+      next.delete(focusStage.id)
+      return next
+    })
+    // 等卡片展开渲染后再滚动
+    const timer = setTimeout(() => {
+      const el = scrollRef.current?.querySelector(`[data-stage-id="${focusStage.id}"]`)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 60)
+    return () => clearTimeout(timer)
+  }, [focusStage])
 
   const handleScroll = () => {
     const el = scrollRef.current
@@ -145,8 +155,8 @@ export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, log
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       {/* 内容区：统一时间线 —— 消息与卡片按产生顺序交错排列 */}
-      <div ref={scrollRef} onScroll={handleScroll} style={{ flex: 1, overflowY: 'auto', padding: '24px 24px 16px' }}>
-        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+      <div ref={scrollRef} onScroll={handleScroll} className="chat-gutter" style={{ flex: 1, overflowY: 'auto', padding: '24px 24px 16px' }}>
+        <div className="chat-column">
           {timeline.map((entry) => {
             if (entry.kind === 'msg') {
               const msg = messages.find((m) => m.id === entry.id)
@@ -156,12 +166,13 @@ export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, log
             if (!stage) return null
             return (
               <Fragment key={`s-${entry.id}`}>
-                {/* 卡片（默认展开，用户可收起） */}
-                <div style={{ marginLeft: 38, marginBottom: 8 }}>
+                {/* 卡片（默认展开，用户可收起）；data-stage-id 供工作流联动定位 */}
+                <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
                   <StageCard
                     stage={stage}
                     expanded={!collapsedIds.has(stage.id)}
                     onToggle={() => toggleStage(stage.id)}
+                    onOpenInsights={onOpenInsights}
                   />
                 </div>
                 {/* 澄清卡：挂起时渲染在所属卡片下方（greeting 走普通对话不渲染） */}
@@ -180,27 +191,41 @@ export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, log
             <ClarificationCard payload={pending} onSubmit={submitAnswer} />
           )}
 
-          {!started && (
-            <div style={{ marginLeft: 38, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--content-fg-tertiary)', fontSize: 13 }}>
-              <StatusDot status="waiting" size={7} />
-              等待任务启动…
+          {/* 空状态：无任务或时间线为空 → 引导 + 示例提问（点击填入输入框） */}
+          {!started && timeline.length === 0 && (
+            <div className="empty-state" style={{ paddingTop: 72, gap: 10 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--surface-bg)', border: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', marginBottom: 4 }}>
+                <Icon.Sparkle style={{ width: 18, height: 18 }} />
+              </div>
+              <div style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)' }}>
+                {task ? '任务准备中…' : '开始一次天文数据提取'}
+              </div>
+              <div style={{ maxWidth: 420, lineHeight: 1.6 }}>
+                描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+                {EXAMPLE_PROMPTS.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setInput(p)}
+                    className="filter-chip"
+                    style={{ borderRadius: 8, padding: '7px 14px' }}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* 输入栏（块 6 定案：附件 chips / 状态禁用） */}
+      {/* 输入栏（块 6 定案：附件 chips / 状态禁用；玻璃输入舱） */}
       <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
-        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+        <div className="chat-column">
           <div
-            style={{
-              background: 'var(--surface-bg)',
-              border: '1px solid var(--surface-border)',
-              borderRadius: 12,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-              overflow: 'hidden',
-              opacity: running || clarifying ? 0.6 : 1,
-            }}
+            className="composer"
+            style={{ opacity: running || clarifying ? 0.6 : 1 }}
           >
             {/* 已选 PDF chips */}
             {files.length > 0 && (
@@ -244,7 +269,7 @@ export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, log
                 }
               }}
               disabled={running || clarifying}
-              placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '描述您的天文查询需求，或上传 PDF 文献…'}
+              placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '描述您的天文查询需求，智能体将自动检索文献（也可上传 PDF）…'}
               style={{
                 width: '100%',
                 padding: '14px 16px 8px',
@@ -268,7 +293,7 @@ export default function ChatView({ task, onTaskDone, onNewTask, onTaskTitle, log
                 <Icon.Paperclip />上传 PDF
               </Button>
               <div style={{ flex: 1 }} />
-              <Button variant="accent" size="icon" onClick={handleSubmit} disabled={!input.trim() || running || clarifying}>
+              <Button variant="accent" size="icon" className="rounded-full" onClick={handleSubmit} disabled={!input.trim() || running || clarifying}>
                 <Icon.Send />
               </Button>
             </div>
