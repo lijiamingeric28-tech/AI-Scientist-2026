@@ -173,7 +173,8 @@ def create_main_graph(checkpointer=None, event_cb=None, should_cancel=None):
                 event_cb("stage_started", stage_id=stage_id, name=name)
             t0 = _time.time()
             try:
-                return fn(*args, **kwargs)
+                result = fn(*args, **kwargs)
+                return result
             finally:
                 if should_cancel is not None and should_cancel():
                     raise _CancelledError()
@@ -183,13 +184,15 @@ def create_main_graph(checkpointer=None, event_cb=None, should_cancel=None):
                     payload = dict(stage_id=stage_id, duration=_time.time() - t0, status=status)
                     # 2026-08-14：卡 1 完成态实时数据——stage_completed(understand)
                     # 携带 target_entity/simbad_info/property_spec，前端运行中即渲染
-                    # 标准性质（此前前端只在 openTask 快照恢复时从 /state 建 output，
-                    # 运行中不显示、需刷新才出现）
-                    if stage_id == "understand" and args and isinstance(args[0], dict):
-                        _st = args[0]
-                        payload["target_entity"] = _st.get("target_entity")
-                        payload["simbad_info"] = _st.get("simbad_info")
-                        payload["property_spec"] = _st.get("property_spec")
+                    # 标准性质。2026-08-17 fix：此前从 args[0]（节点执行前输入 state）
+                    # 取 → simbad_info/property_spec 由 property_std 执行后产出，恒 null；
+                    # 改从节点返回值 result 取（target_entity 输入/输出都有，取输出优先）。
+                    if stage_id == "understand":
+                        _in = args[0] if (args and isinstance(args[0], dict)) else {}
+                        _out = result if isinstance(result, dict) else {}
+                        payload["target_entity"] = _out.get("target_entity") or _in.get("target_entity")
+                        payload["simbad_info"] = _out.get("simbad_info") or _in.get("simbad_info")
+                        payload["property_spec"] = _out.get("property_spec") or _in.get("property_spec")
                     event_cb("stage_completed", **payload)
         return wrapped
 

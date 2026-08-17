@@ -61,7 +61,7 @@ const EXAMPLE_PROMPTS = [
 ]
 
 export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleLog, focusStage, onOpenInsights }) {
-  const { messages, stages, timeline, pending, started, taskDone, logs, submitQuery, submitAnswer } = pipeline
+  const { messages, stages, timeline, pending, started, taskDone, logs, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState('')
   const [files, setFiles] = useState([])   // 已选 PDF chips [{name, size}]
   const [submitting, setSubmitting] = useState(false)
@@ -170,27 +170,32 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
             if (!stage) return null
             return (
               <Fragment key={`s-${entry.id}`}>
-                {/* 卡片（默认展开，用户可收起）；data-stage-id 供工作流联动定位 */}
-                <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
-                  <StageCard
-                    stage={stage}
-                    expanded={!collapsedIds.has(stage.id)}
-                    onToggle={() => toggleStage(stage.id)}
-                    onOpenInsights={onOpenInsights}
-                    onOpenAgent={(agent) => setAgentDrill({ stage, agent })}
-                  />
-                </div>
-                {/* 澄清卡：挂起时渲染在所属卡片下方（greeting 走普通对话不渲染） */}
-                {pending && pending.stageId === stage.id && pending.type !== 'greeting' && (
-                  <ClarificationCard payload={pending} onSubmit={submitAnswer} />
-                )}
-                {/* 兜底：stageId 缺失时渲染在时间线末尾（下方统一处理） */}
-                {/* 任务完成：结果区（记录表格）——P0-3 与其他卡片同款缩进对齐
-                    （此前直接嵌 Fragment 比其他块宽 38px），status 透传供 P0-2 完成重拉 */}
-                {stage.id === 'done' && stage.status === 'completed' && (
-                  <div className="stage-indent" style={{ marginLeft: 38, marginBottom: 8 }}>
-                    <ResultTabs taskId={task?.task_id} status={task?.status} />
-                  </div>
+                {stage.id === 'done' ? (
+                  /* 「任务完成」卡不渲染卡片本体——结果区表格直接展示在时间线对应位置；
+                     LLM 总结已由 usePipeline 排到 done entry 之前（数据洞察卡与表格之间） */
+                  stage.status === 'completed' && (
+                    <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
+                      <ResultTabs taskId={task?.task_id} status={task?.status} />
+                    </div>
+                  )
+                ) : (
+                  <>
+                    {/* 卡片（默认展开，用户可收起）；data-stage-id 供工作流联动定位 */}
+                    <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
+                      <StageCard
+                        stage={stage}
+                        expanded={!collapsedIds.has(stage.id)}
+                        onToggle={() => toggleStage(stage.id)}
+                        onOpenInsights={onOpenInsights}
+                        onOpenAgent={(agent) => setAgentDrill({ stage, agent })}
+                        sourceScores={sourceScores}
+                      />
+                    </div>
+                    {/* 澄清卡：挂起时渲染在所属卡片下方（greeting 走普通对话不渲染） */}
+                    {pending && pending.stageId === stage.id && pending.type !== 'greeting' && (
+                      <ClarificationCard payload={pending} onSubmit={submitAnswer} />
+                    )}
+                  </>
                 )}
               </Fragment>
             )

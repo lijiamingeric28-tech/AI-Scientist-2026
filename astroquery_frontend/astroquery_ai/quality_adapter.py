@@ -187,7 +187,7 @@ def quality_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
                 "error_log": [{
                     "node": "quality_adapter",
                     "error": "HumanReview HITL 需要 checkpointer (config 未注入)",
-                    "timestamp": datetime.datetime.now().isoformat(),
+                    "timestamp": datetime.now().isoformat(),
                 }],
                 "quality_report": {"skipped": True, "reason": "hitl_needs_checkpointer"},
             }

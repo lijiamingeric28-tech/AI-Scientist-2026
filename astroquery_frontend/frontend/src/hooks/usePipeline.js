@@ -10,7 +10,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as api from '@/services/api'
-import { makeInitialStages, CLARIFICATION_QUICK_BUTTONS } from '@/lib/stages'
+import { makeInitialStages, CLARIFICATION_QUICK_BUTTONS, STAGE_DEFS } from '@/lib/stages'
 import { fmtDuration } from '@/lib/format'
 
 let seq = 0
@@ -114,6 +114,33 @@ function composeStageSummary(stageId, stats, stage) {
   return null
 }
 
+const STAGE_NAMES = Object.fromEntries(STAGE_DEFS.map((d) => [d.id, d.name]))
+
+/* 已完成阶段的「数据」摘要（用于转场旁白「已完成 X（数据）」）。
+ * retrieval/extraction 用 stats 累积的 step 数据；understand 用已确认目标。 */
+function stageDataSummary(stageId, stats, target) {
+  if (stageId === 'understand') return target ? `已确认目标 ${target}` : null
+  if (stageId === 'retrieval') {
+    const parts = []
+    const db = stats?.retrieval?.['database/summary']?.records
+    if (db != null) parts.push(`星表提取 ${db} 条`)
+    const dl = stats?.retrieval?.['paper/download']?.downloaded
+    if (dl != null) parts.push(`下载论文 ${dl} 篇`)
+    const supp = stats?.retrieval?.['supplementary/summary']?.records
+    if (supp) parts.push(`补充材料 ${supp} 条`)
+    return parts.length ? parts.join(' · ') : null
+  }
+  if (stageId === 'extraction') {
+    const parts = []
+    const rec = stats?.extraction?.summary?.records ?? stats?.extraction?.paper?.records
+    if (rec != null) parts.push(`提取 ${rec} 条记录`)
+    const figs = stats?.extraction?.figure?.figures
+    if (figs != null) parts.push(`${figs} 张图证`)
+    return parts.length ? parts.join(' · ') : null
+  }
+  return null
+}
+
 /* 契约 D6-1/D6-5（M-04）：快照 state → 卡 1 完成态 output（snake→camel）。
  * 键名对齐后端：target_entity / simbad_info{main_id,otype,ra,dec} /
  * property_spec[{property_id,name_cn,unit}]（property_standardization.build_property_spec） */
@@ -149,6 +176,9 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   const [logs, setLogs] = useState([])
   // 数据洞察报告（来源 /state 快照 final_output.quality_report.output_state.insights）
   const [insights, setInsights] = useState(null)
+  // 数据源质量分布（report_state.quality.quality_scoring.per_source_scores + 各源等级）——
+  // 洞察卡「数据源质量分布」图的数据源（[{id, score, level}]，按分数降序）
+  const [sourceScores, setSourceScores] = useState(null)
 
   const esRef = useRef(null)
   const lastSeqRef = useRef(0)
@@ -183,11 +213,54 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   // 卡状态迟迟不更新）。缓冲后每 100ms 批量 flush 一次，最终一致。
   const logBufferRef = useRef([])             // [{entry, stageId, agentName}]
   const logTimerRef = useRef(null)
+  // task_completed 后等待 LLM 总结 message（role=ai）到达的标记——到达才关 SSE 流
+  const awaitSummaryRef = useRef(false)
+  // 转场旁白状态：卡片出现顺序 / 开场白是否已发 / 已确认目标天体
+  const cardOrderRef = useRef([])             // stage_id 出现顺序（驱动「已完成 X，下面 Y」）
+  const introDoneRef = useRef(false)          // 开场白只发一次（首卡理解首次 step 时）
+  const understandTargetRef = useRef(null)    // understand 完成时记录 target_entity（转场数据用）
+
+  /* 追加一条对话气泡（消息 + 时间线同步，id 用 nextId 字符串保持一致） */
+  const pushMessage = useCallback((role, content) => {
+    const id = nextId()
+    setMessages((prev) => [...prev, { id, role, content }])
+    setTimeline((prev) => [...prev, { kind: 'msg', id }])
+  }, [])
+
+  /* 卡片首次出现 → 补上一张卡的「已完成 X（数据），下面开始 Y」。
+   * 不挂在 stage_completed 上：clean/deliver/quality_check 的 stage_completed
+   * 迟到（整条质量流水线收尾时才发），会导致旁白乱序。改为下一张卡出现时补前一张。 */
+  const noteCardAppeared = useCallback((stageId) => {
+    if (!stageId || cardOrderRef.current.includes(stageId)) return
+    const prev = cardOrderRef.current[cardOrderRef.current.length - 1]
+    cardOrderRef.current.push(stageId)
+    if (stageId === 'done') return   // 收尾卡：转场由最终 LLM 总结承担，不再发「下面开始任务完成」
+    if (!prev) return
+    const prevName = STAGE_NAMES[prev]
+    const curName = STAGE_NAMES[stageId]
+    if (!prevName || !curName) return
+    const data = stageDataSummary(prev, statsRef.current, understandTargetRef.current)
+    pushMessage('ai', `已完成「${data ? `${prevName}（${data}）` : prevName}」，下面开始「${curName}」。`)
+  }, [pushMessage])
 
   /* ── 数据洞察 hydration：insights 内容不在事件流里，只能从 /state 快照
    *    final_output.quality_report.output_state.insights 读取。
    *    打开任务（快照恢复）与任务完成（final_output 落盘）后各调用一次。 ── */
   const hydrateInsights = useCallback((state) => {
+    // 数据源质量分布（独立于 insights 报告；有质量报告即可提取）
+    const quality = state?.final_output?.quality_report?.report_state?.quality
+    const scoring = quality?.quality_scoring || {}
+    const perSource = scoring.per_source_scores || {}
+    const srcMeta = quality?.sources || {}
+    const list = Object.entries(perSource)
+      .map(([id, score]) => ({
+        id,
+        score: Number(score) || 0,
+        level: srcMeta?.[id]?.quality_scoring?.quality_level || 'poor',
+      }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+    if (list.length) setSourceScores(list)
     const ins = state?.final_output?.quality_report?.output_state?.insights
     if (!ins || typeof ins !== 'object') return false
     setInsights(ins)
@@ -277,12 +350,30 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     }
 
     if (type === 'message') {
-      setMessages((prev) => [...prev, { id: nextId(), role: ev.role, content: ev.content }])
-      setTimeline((prev) => [...prev, { kind: 'msg', id: prev.length }])
+      const id = nextId()
+      setMessages((prev) => [...prev, { id, role: ev.role, content: ev.content }])
+      setTimeline((prev) => {
+        // LLM 总结（task_completed 后异步补发）排在 done entry 之前，使渲染顺序为
+        // …洞察卡 → 总结 → 结果表格（done 卡不渲染本体，表格在 done entry 处展示）
+        const doneIdx = prev.findIndex((t) => t.kind === 'stage' && t.id === 'done')
+        if (doneIdx >= 0) return [...prev.slice(0, doneIdx), { kind: 'msg', id }, ...prev.slice(doneIdx)]
+        return [...prev, { kind: 'msg', id }]
+      })
+      // 总结 message（task 已完成、role=ai）到达 → 关闭 SSE（此前 task_completed 立即关流丢总结）
+      if (awaitSummaryRef.current && ev.role === 'ai') {
+        awaitSummaryRef.current = false
+        closeStream()
+      }
     } else if (type === 'stage_started') {
       activeStagesRef.current.add(ev.stage_id)   // 同步维护：log 归属用
       lastStageRef.current = ev.stage_id         // P0-5：最近活跃阶段
+      // 开场白：首卡「任务理解」出现时发一句，紧跟用户提问（澄清卡之前）
+      if (ev.stage_id === 'understand' && !introDoneRef.current) {
+        introDoneRef.current = true
+        pushMessage('ai', '好的，我先开始「任务理解」——确认目标天体与要提取的标准性质。')
+      }
       setStages((prev) => prev.map((s) => (s.id === ev.stage_id ? { ...s, status: 'running' } : s)))
+      noteCardAppeared(ev.stage_id)
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
     } else if (type === 'stage_completed') {
       activeStagesRef.current.delete(ev.stage_id)  // P0-5：完成即出运行窗口，记最近
@@ -309,6 +400,11 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         }
       }))
       // done 卡只有 completed 事件（main_graph quality_finalize=end 模式）→ 补弹卡
+      // 记录确认目标（understand 转场旁白的「已确认目标 X」数据来源）
+      if (ev.stage_id === 'understand' && ev.target_entity) {
+        understandTargetRef.current = ev.target_entity
+      }
+      noteCardAppeared(ev.stage_id)
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))
     } else if (type === 'step_progress') {
       const loc = locateStep(ev.stage_id, ev.step)
@@ -371,6 +467,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         setStages((prev) => prev.map((s) => (s.id === 'insight' && s.status !== 'completed'
           ? { ...s, status: 'completed' } : s)))
       }
+      noteCardAppeared(targetStage)
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === targetStage)
         ? prev : [...prev, { kind: 'stage', id: targetStage }]))
     } else if (type === 'agent_started' || type === 'agent_completed') {
@@ -417,6 +514,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         return { ...s, agents, substeps, duration, status: s.status === 'waiting' ? 'running' : s.status }
       }))
       // clean/deliver/insight 卡没有 stage_started 事件 → 首个 agent 事件时弹卡
+      noteCardAppeared(targetStage)
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === targetStage) ? prev : [...prev, { kind: 'stage', id: targetStage }]))
     } else if (type === 'clarification') {
       const cl = {
@@ -500,14 +598,23 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       logBufferRef.current.push({ entry, stageId, agentName })
       scheduleLogFlush()
     } else if (type === 'task_completed' || type === 'task_cancelled') {
-      closeStream()
       flushLogsNow()   // P0-9：立即 flush 剩余 log 缓冲（防尾部丢失）
       // P0-5：终态只清运行窗口，保留 lastStageRef/recentAgentsRef——终态收尾
       // 到达的节点日志仍可归属到最后阶段/Agent（此前全部只进全局抽屉）
       activeStagesRef.current.clear()
       activeAgentsRef.current.clear()
       // H-02①③: task_cancelled（澄清超时/用户取消）清理挂起澄清 + 卡片置灰
-      if (type === 'task_cancelled') clearPending()
+      if (type === 'task_cancelled') {
+        closeStream()
+        clearPending()
+      } else {
+        // 不立即关流：LLM 总结（role=ai message）在 task_completed 之后异步补发，
+        // 立即关会丢总结（此前需刷新才见）。等总结 message 到达后关，20s 兜底超时。
+        awaitSummaryRef.current = true
+        setTimeout(() => {
+          if (awaitSummaryRef.current) { awaitSummaryRef.current = false; closeStream() }
+        }, 20000)
+      }
       setTaskDone(true)
       onTaskDone?.()
       // task_completed：final_output 此刻才落盘，insights 不在事件流里 → 重拉 /state hydrate 洞察报告
@@ -517,7 +624,21 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         const tryHydrate = (attempt) => {
           api.getState(taskId).then((snap) => {
             if (taskIdRef.current !== taskId) return
-            if (!hydrateInsights((snap && snap.state) || {}) && attempt < 1) {
+            const state = (snap && snap.state) || {}
+            const insOk = hydrateInsights(state)
+            // 质量卡摘要（quality_report 落库窗口内可能缺失 → 与 insights 同重试；
+            // 评分只在最终 state，事件流不携带）
+            const quality = state?.quality_report?.report_state?.quality
+            const sc = quality?.quality_scoring || {}
+            if (sc.overall_score != null) {
+              const qc = (stagesRef.current || []).find((s) => s.id === 'quality_check')
+              const agentN = Array.isArray(qc?.agents) ? qc.agents.length : 0
+              const parts = []
+              if (agentN) parts.push(`${agentN} 个评估 Agent`)
+              parts.push(`综合 ${Math.round(sc.overall_score * 100)} 分${sc.quality_level ? `（${sc.quality_level}）` : ''}`)
+              setStages((prev) => prev.map((s) => s.id !== 'quality_check' ? s : { ...s, summary: parts.join(' · ') }))
+            }
+            if (!insOk && attempt < 1) {
               setTimeout(() => tryHydrate(attempt + 1), 800)
             }
           }).catch(() => { /* hydrate 失败忽略（洞察缺省走空态） */ })
@@ -537,7 +658,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     } else if (type === 'task_title_ready') {
       onTaskTitle?.(ev)   // L-01：透传完整事件（含 task_id），App 按归属更新列表
     }
-  }, [onTaskDone, onTaskTitle, hydrateInsights])
+  }, [onTaskDone, onTaskTitle, hydrateInsights, noteCardAppeared, pushMessage])
 
   /* ── 打开任务：先拉快照恢复历史，再 SSE 续播 ── */
   const openTask = useCallback(async (taskId) => {
@@ -551,6 +672,8 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     setPending(null)
     setLogs([])
     setInsights(null)
+    setSourceScores(null)
+    awaitSummaryRef.current = false
     pendingRef.current = null
     insightActiveRef.current = false
     statsRef.current = {}   // D6-5：跨任务不复用步骤累积数据
@@ -560,6 +683,9 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     lastStageRef.current = null       // P0-5：跨任务不复用
     recentAgentsRef.current.clear()   // P0-5：跨任务不复用
     logBufferRef.current = []         // P0-9：log 缓冲跨任务不复用
+    cardOrderRef.current = []            // 转场旁白顺序跨任务不复用
+    introDoneRef.current = false         // 开场白跨任务重置
+    understandTargetRef.current = null   // 确认目标跨任务重置
     if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
     esRef.current?.close()
     esRef.current = null
@@ -570,6 +696,14 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       const snap = await api.getState(taskId)
       // H-17：快照乱序返回 → 丢弃过期响应（任务已切换）
       if (taskIdRef.current !== taskId) return
+      // 后端不回显用户提问（message 事件仅最终总结）→ 从快照 task.query 重建 user 气泡，
+      // 否则对话区只有阶段卡片 + 最后一条 AI 总结，用户提问永不显示
+      const q = snap.task && snap.task.query
+      if (q) {
+        const id = nextId()
+        setMessages([{ id, role: 'user', content: q }])
+        setTimeline([{ kind: 'msg', id }])
+      }
       const events = snap.events || []
       events.forEach((e) => applyEvent(e, taskId, true))   // replay=true：重放 clarification 不置 pending
       if (snap.pending_clarification) {
@@ -655,6 +789,9 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     lastStageRef.current = null       // P0-5：跨任务不复用
     recentAgentsRef.current.clear()   // P0-5：跨任务不复用
     logBufferRef.current = []         // P0-9：log 缓冲跨任务不复用
+    cardOrderRef.current = []            // 转场旁白顺序跨任务不复用
+    introDoneRef.current = false         // 开场白跨任务重置
+    understandTargetRef.current = null   // 确认目标跨任务重置
     if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
     esRef.current?.close()
     esRef.current = null
@@ -666,6 +803,8 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     setPending(null)
     setLogs([])
     setInsights(null)
+    setSourceScores(null)
+    awaitSummaryRef.current = false
   }, [])
 
   useEffect(() => {
@@ -731,7 +870,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   useEffect(() => () => esRef.current?.close(), [])
 
   return {
-    messages, stages, timeline, pending, started, taskDone, logs, insights,
+    messages, stages, timeline, pending, started, taskDone, logs, insights, sourceScores,
     submitQuery, submitAnswer,
   }
 }

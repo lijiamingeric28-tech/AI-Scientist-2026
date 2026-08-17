@@ -56,7 +56,7 @@ class QualityScoringAgent:
         source_reports = quality.get("sources", {})
 
         from quality_pipeline.configs import load_yaml
-        from quality_pipeline.tools.assessment.quality_scoring import compute_quality_score
+        from quality_pipeline.tools.assessment.quality_scoring import compute_quality_score, quality_level_for
 
         rules = load_yaml("quality_rules.yaml")
         # ── V2.0 S1: 领域自适应权重 ──
@@ -250,10 +250,25 @@ class QualityScoringAgent:
             volume_factor * 0.4 + agreement_factor * 0.4 + confidence_mult * 0.2, 4
         )
 
+        # 整体等级随平均分判定（2026-08-17：此前取最差源等级 → 与 overall_score
+        # 语义不一致，出现「0.89 分却 fair」困惑）。最差源单独暴露告警，不再拖低整体等级。
+        aggregate_level = quality_level_for(overall_score)
+        weakest_source = None
+        for _sid, _sr in source_reports.items():
+            _s = _sr.get("quality_scoring") or {}
+            _sc = _s.get("overall_score", 0)
+            if weakest_source is None or _sc < weakest_source["score"]:
+                weakest_source = {
+                    "source_id": _sid,
+                    "score": round(float(_sc), 4),
+                    "quality_level": _s.get("quality_level", "poor"),
+                }
+
         quality["quality_scoring"] = {
             "overall_score": overall_score,
             "overall_score_ci": overall_score_ci,  # A8: Bootstrap 95% CI (可为 None)
-            "quality_level": worst_level,
+            "quality_level": aggregate_level,
+            "weakest_source": weakest_source,  # 最差数据源（告警用，不参与等级判定）
             "per_source_scores": {sid: sr.get("quality_scoring", {}).get("overall_score", 0)
                                   for sid, sr in source_reports.items()},
             "source_count": len(source_reports),

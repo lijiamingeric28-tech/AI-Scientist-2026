@@ -452,8 +452,74 @@ function ClarificationHistory({ clarifications }) {
   )
 }
 
+/* 数据源质量分布（洞察卡区块）——每个数据源一条水平质量条，颜色按质量等级
+ *（excellent 绿 / good 青 / fair 蓝 / poor 红），分数右侧标注 + 等级 pill。
+ * 样式对齐全站：状态色变量 + section-label + pill + font-mono 分数。 */
+const QUAL_LEVEL_COLOR = {
+  excellent: 'var(--status-success)',
+  good: 'var(--accent-text)',
+  fair: 'var(--status-progress)',
+  poor: 'var(--status-error)',
+}
+const QUAL_LEVEL_LABEL = { excellent: '优', good: '良', fair: '中', poor: '差' }
+
+function SourceQualityChart({ sourceScores }) {
+  if (!sourceScores || sourceScores.length === 0) return null
+  // 整体分布：按质量等级统计源数量（条形图——比较分类数量，饼图角度不精确）
+  const ORDER = ['excellent', 'good', 'fair', 'poor']
+  const total = sourceScores.length
+  const counts = {}
+  for (const s of sourceScores) counts[s.level] = (counts[s.level] || 0) + 1
+  const max = Math.max(1, ...ORDER.map((l) => counts[l] || 0))
+  const rows = ORDER
+    .filter((l) => counts[l])
+    .map((l) => ({ level: l, count: counts[l], pct: Math.round((counts[l] / total) * 100) }))
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div className="section-label" style={{ marginBottom: 8 }}>数据源质量分布</div>
+      {/* 分布条形：宽度 = 该等级源数量（相对最大），颜色 = 等级状态色 */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {rows.map((r) => {
+          const color = QUAL_LEVEL_COLOR[r.level] || 'var(--content-fg-tertiary)'
+          return (
+            <div key={r.level} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ width: 40, flexShrink: 0, fontSize: 12, fontWeight: 510, color }}>{QUAL_LEVEL_LABEL[r.level] || r.level}</span>
+              <div style={{ flex: 1, height: 10, borderRadius: 4, background: 'var(--surface-border-subtle)', overflow: 'hidden' }}>
+                <div style={{ width: `${(r.count / max) * 100}%`, height: '100%', borderRadius: 4, background: color, transition: 'width .3s ease' }} />
+              </div>
+              <span className="font-mono" style={{ width: 96, flexShrink: 0, fontSize: 11, color: 'var(--content-fg-secondary)', textAlign: 'right' }}>{r.count} 个 · {r.pct}%</span>
+            </div>
+          )
+        })}
+      </div>
+      <div className="hint-dim" style={{ marginTop: 8, fontSize: 11 }}>共 {total} 个数据源，按质量等级统计</div>
+      {/* 明细：各源分数（折叠，hover 见全名） */}
+      <details style={{ marginTop: 6 }}>
+        <summary style={{ cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
+          <Icon.ChevronRight style={{ width: 10, height: 10, flexShrink: 0 }} />
+          查看各源明细
+        </summary>
+        <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 5 }}>
+          {sourceScores.map((s) => {
+            const color = QUAL_LEVEL_COLOR[s.level] || 'var(--content-fg-tertiary)'
+            return (
+              <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span title={s.id} style={{ width: 148, flexShrink: 0, fontSize: 11, color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.id}</span>
+                <div style={{ flex: 1, height: 6, borderRadius: 3, background: 'var(--surface-border-subtle)', overflow: 'hidden' }}>
+                  <div style={{ width: `${Math.round(s.score * 100)}%`, height: '100%', borderRadius: 3, background: color }} />
+                </div>
+                <span className="font-mono" style={{ width: 36, flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)', textAlign: 'right' }}>{s.score.toFixed(2)}</span>
+              </div>
+            )
+          })}
+        </div>
+      </details>
+    </div>
+  )
+}
+
 /* 卡「数据洞察」完成态产出（来自 /state 的 output_state.insights，结构见 hydrateInsights） */
-function InsightOutput({ insights, onOpenInsights }) {
+function InsightOutput({ insights, onOpenInsights, sourceScores }) {
   const fi = Array.isArray(insights.field_insights) ? insights.field_insights.length : 0
   const rel = Array.isArray(insights.cross_field_relationships) ? insights.cross_field_relationships.length : 0
   const grade = insights.usage_recommendations?.overall_grade
@@ -500,11 +566,13 @@ function InsightOutput({ insights, onOpenInsights }) {
           </button>
         )}
       </div>
+      {/* 数据源质量分布图（per_source_scores，颜色按等级状态色） */}
+      <SourceQualityChart sourceScores={sourceScores} />
     </div>
   )
 }
 
-export default function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent }) {
+export default function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent, sourceScores }) {
   const isExpanded = expanded
   const [hover, setHover] = useState(false)
 
@@ -616,7 +684,7 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights, o
 
           {/* 数据洞察卡完成态：综合叙述 + 计数 + 完整报告入口（stage.output 来自 /state） */}
           {stage.status === 'completed' && stage.id === 'insight' && stage.output && (
-            <InsightOutput insights={stage.output} onOpenInsights={onOpenInsights} />
+            <InsightOutput insights={stage.output} onOpenInsights={onOpenInsights} sourceScores={sourceScores} />
           )}
 
           <ClarificationHistory clarifications={stage.clarifications} />

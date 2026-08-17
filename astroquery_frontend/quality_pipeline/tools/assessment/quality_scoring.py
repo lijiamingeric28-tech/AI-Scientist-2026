@@ -41,6 +41,19 @@ def _load_level_thresholds() -> dict:
 _LEVELS = _load_level_thresholds()
 
 
+def quality_level_for(score: float) -> str:
+    """按当前阈值把分数映射到等级（excellent/good/fair/poor）。
+
+    与 compute_quality_score 内部判定同源（_LEVELS），供聚合侧复用——
+    QualityScoringAgent 聚合时此前用「最差源等级」做整体等级，与
+    overall_score（加权平均）语义不一致，现改为随平均分判定。
+    """
+    for level, threshold in sorted(_LEVELS.items(), key=lambda x: -x[1]):
+        if score >= threshold:
+            return level
+    return "poor"
+
+
 def compute_quality_score(
     metrics: dict[str, Any],
     weights: dict[str, float] | None = None,
@@ -88,11 +101,7 @@ def compute_quality_score(
     overall_score = round(max(0.0, min(1.0, overall_score)), 4)
 
     # 确定质量等级
-    quality_level = "poor"
-    for level, threshold in sorted(_LEVELS.items(), key=lambda x: -x[1]):
-        if overall_score >= threshold:
-            quality_level = level
-            break
+    quality_level = quality_level_for(overall_score)
 
     # 评估置信度：基于各维度评分的一致性
     scores_list = list(dimension_scores.values())

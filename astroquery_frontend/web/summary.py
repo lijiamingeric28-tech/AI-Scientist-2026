@@ -59,16 +59,60 @@ def _is_usable_summary(text: str) -> bool:
     return True
 
 
+def _quality_scoring_text(state: Dict[str, Any]) -> str:
+    """从质量管线报告提取可读评分文本。
+
+    实际结构：final_output.quality_report.report_state.quality.quality_scoring
+      = {overall_score, quality_level, per_source_scores, dimension_scores, ...}
+    （此前误读 quality_report.quality_summary.scores → 恒为空 → 总结恒报「无质量评分」）
+    返回空串表示无评分（调用方降级为「无」）。
+    """
+    final = (state or {}).get("final_output") or {}
+    quality = final.get("quality_report") or {}
+    report = (quality.get("report_state") or {}).get("quality") or {}
+    scoring = report.get("quality_scoring") or {}
+    if not isinstance(scoring, dict) or not scoring:
+        return ""
+    level = scoring.get("quality_level")
+    overall = scoring.get("overall_score")
+    dims = scoring.get("dimension_scores") or {}
+    parts = []
+    if overall is not None:
+        try:
+            parts.append(f"综合 {float(overall):.2f}" + (f"（{level}）" if level else ""))
+        except (TypeError, ValueError):
+            if level:
+                parts.append(f"等级 {level}")
+    elif level:
+        parts.append(f"等级 {level}")
+    if isinstance(dims, dict) and dims:
+        dim_parts = []
+        for k, v in dims.items():
+            try:
+                dim_parts.append(f"{k} {float(v):.2f}")
+            except (TypeError, ValueError):
+                continue
+        if dim_parts:
+            parts.append("，".join(dim_parts))
+    # 最差源告警（2026-08-17 新增字段：不参与等级判定，仅提示下游关注）
+    weakest = scoring.get("weakest_source")
+    if isinstance(weakest, dict) and weakest.get("source_id"):
+        try:
+            parts.append(f"最差源 {str(weakest['source_id'])[:24]}"
+                         f"（{weakest.get('quality_level', 'poor')} {float(weakest.get('score', 0)):.2f}）")
+        except (TypeError, ValueError):
+            parts.append(f"最差源 {str(weakest['source_id'])[:24]}")
+    return " · ".join(parts)
+
+
 def generate_final_summary(task_id: str, state: Dict[str, Any]) -> str:
     """卡 7 最终总结（契约 D6-3：阶段级前端拼字段，仅此处走 LLM）。"""
     final = (state or {}).get("final_output") or {}
     records = final.get("records", []) or []
     sources = final.get("sources", []) or []
-    quality = final.get("quality_report") or {}
-    qs = quality.get("quality_summary") or {} if isinstance(quality, dict) else {}
     n_records = len(records)
     n_sources = len(sources)
-    scores = {s.get("dimension", ""): s.get("score") for s in (qs.get("scores") or [])} if isinstance(qs, dict) else {}
+    scores_text = _quality_scoring_text(state)
 
     # M-17: prompt 模板化——用 state.target_entity（或 user_query 兜底），
     # 非 M13 查询不再错误引用硬编码天体名（与 generate_task_title 同模式）
@@ -76,7 +120,7 @@ def generate_final_summary(task_id: str, state: Dict[str, Any]) -> str:
     prompt = (
         f"你是天文数据检索助手。请用简洁的中文总结一次「{target}」数据检索任务的结果。\n"
         f"数据：{n_sources} 个数据源，{n_records} 条记录。\n"
-        f"质量评分：{scores if scores else '无'}。\n"
+        f"质量评分：{scores_text or '无'}。\n"
         f"要求：2-3 句话，突出关键结论（提取了多少数据、质量如何、是否可直接使用），"
         f"结尾提示用户可在右侧面板查看完整结果与输出文件。不要使用 Markdown 标题。"
     )

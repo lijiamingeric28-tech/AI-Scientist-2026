@@ -189,8 +189,9 @@ export function useMockPipeline(task, { onTaskDone, onTaskTitle } = {}) {
     const { type } = ev
 
     if (type === 'message') {
-      setMessages((prev) => [...prev, { id: nextId(), role: ev.role, content: ev.content }])
-      setTimeline((prev) => [...prev, { kind: 'msg', id: prev.length }])
+      const id = nextId()
+      setMessages((prev) => [...prev, { id, role: ev.role, content: ev.content }])
+      setTimeline((prev) => [...prev, { kind: 'msg', id }])
     } else if (type === 'stage_started') {
       setStages((prev) => prev.map((s) => (s.id === ev.stage_id ? { ...s, status: 'running' } : s)))
       setTimeline((prev) => (prev.some((t) => t.kind === 'stage' && t.id === ev.stage_id) ? prev : [...prev, { kind: 'stage', id: ev.stage_id }]))

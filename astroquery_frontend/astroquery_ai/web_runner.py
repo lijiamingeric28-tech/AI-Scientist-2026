@@ -184,7 +184,12 @@ def run_task_streaming(
                 checkpointer=checkpointer, event_cb=_events, should_cancel=should_cancel,
             )
             config = {
-                "configurable": {"thread_id": task_id},
+                # checkpointer 必须与主图共享同一实例（CLI run_pipeline 同款）：
+                # quality 子图编译时 _shared_checkpointer(config) 用它，子图内 HITL
+                # interrupt 才能持久化并上浮到主图 loop（web 模式此前缺该键 →
+                # quality 子图冲突裁决 interrupt 无法上浮 → 降级路径，2026-08-17
+                # 大角星任务 fatal 根因之一）
+                "configurable": {"thread_id": task_id, "checkpointer": checkpointer},
                 "recursion_limit": 50,
             }
             initial: Dict[str, Any] = {
