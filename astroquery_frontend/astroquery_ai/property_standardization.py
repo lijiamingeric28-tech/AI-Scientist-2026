@@ -226,13 +226,36 @@ def _resolve_parent(otype: str) -> Optional[str]:
     return OTYPE_PARENT.get(otype.strip())
 
 
+def _norm_name(cn: str) -> str:
+    """性质中文名归一化（去空白），用作跨库同义去重键。"""
+    return re.sub(r"[\s　]+", "", (cn or "").lower())
+
+
 def _merge_properties(base_props: List[Dict], delta_props: List[Dict]) -> List[Dict]:
-    """合并父类+子类性质：按 property_id 去重，子类覆盖父类同名项"""
+    """合并父类+子类性质，两层去重，子类覆盖父类：
+
+    1. property_id 相同 → 覆盖（原逻辑）
+    2. name_cn 归一化后相同 → 覆盖（跨库同义：父类 cluster_metallicity vs
+       子类 metallicity 这类"仅差前缀/空格"的伪重复，合并后只留子类一条）
+    """
     merged: Dict[str, Dict] = {}
+    by_name: Dict[str, str] = {}
     for p in base_props:
-        merged[p['property_id']] = p
+        merged[p["property_id"]] = p
+        key = _norm_name(p.get("name_cn", ""))
+        if key:
+            by_name[key] = p["property_id"]
     for p in delta_props:
-        merged[p['property_id']] = p  # 子类覆盖
+        pid = p["property_id"]
+        key = _norm_name(p.get("name_cn", ""))
+        if key and key in by_name and by_name[key] != pid:
+            logger.info(
+                f"[RAG] 跨库同义合并: {by_name[key]} → {pid}（name_cn 归一化一致）"
+            )
+            merged.pop(by_name[key], None)
+        merged[pid] = p  # 子类覆盖
+        if key:
+            by_name[key] = pid
     return list(merged.values())
 
 
@@ -380,6 +403,19 @@ def build_selection_prompt(rag: Dict, target_name: str, user_request: str) -> st
    ① 直接回答用户概念（description 为依据）
    ② 与同概念其他入选者同级（无具体化/被具体化关系）
    ③ 与同概念其他入选者物理异构（度量方式或量纲不同）
+   ④ 不与任何已选性质同义（中文名/单位/ucd 主成分相同即视为同义）
+
+## 同义性质识别（重要）
+- 库中可能存在多个 property_id 描述同一物理量：如某量同时出现带
+  "cluster_" 前缀与不带前缀的两个条目，或名称仅差一个"视"字
+  （"距离模数" vs "视距离模数"），中文名、单位、含义实质相同。
+- 识别方法：中文名相同或仅差冗余前缀/修饰词 + 单位相同 +
+  description 指向同一物理量。
+- 处理：视为同一性质，只选其中一个，禁止同时选中同义性质。
+- 选择优先级：① 描述更精确完整（如"积分V星等 Vt"优于"积分星等与绝对星等"）
+  → ② 名称不带冗余前缀/更贴近用户措辞的 → ③ 单位更标准化的。
+- 若两候选物理量相同但颗粒度不同（一个合并、一个拆分为多个），
+  按 Step 3 颗粒度规则选择，并在 reason 中写明为何选该颗粒度。
 
 ## 其他规则
 - 只能从上述性质库中选择，不得臆造 property_id

@@ -46,15 +46,9 @@ class Settings(BaseSettings):
     ads_api_token: str = ""
     unpaywall_email: str = ""
 
-    # ── quality_pipeline：OpenAI 兼容 API（原 llm_config.yaml）──
-    openai_api_key: str = ""
-    openai_base_url: str = ""
-    openai_model: str = "deepseek-v4-flash"
+    # ── quality_pipeline：LLM 调用参数（模型/凭证统一用上方 DashScope/Qwen 配置）──
     llm_timeout: int = 120
     llm_max_retries: int = 3
-
-    # ── scripts/add_units.py：批量补单位 ──
-    deepseek_api_key: str = ""
 
     # ── 通用 ──
     default_research_domain: str = "astrophysics"

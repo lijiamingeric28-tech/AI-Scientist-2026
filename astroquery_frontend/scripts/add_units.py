@@ -3,7 +3,7 @@
 
 用法::
 
-    set DEEPSEEK_API_KEY=sk-xxx
+    set DASHSCOPE_API_KEY=sk-xxx
     python add_units.py                    # 全量补全（跳过已有 unit 的性质）
     python add_units.py --dry-run          # 只生成清单，不写回 JSON
     python add_units.py --concurrency 32   # 调整并发数
@@ -34,8 +34,8 @@ if sys.platform == "win32":
 
 PROJECT_ROOT = Path(__file__).parent.parent
 RAG_DIR = PROJECT_ROOT / "rag_properties"
-MODEL = "deepseek-v4-flash"
-BASE_URL = "https://api.deepseek.com/v1/chat/completions"
+MODEL = "qwen3.7-flash"
+DEFAULT_DASHSCOPE_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 REPORT_PATH = PROJECT_ROOT / "unit_fill_report.json"
 
 # ══════════════════════════════════════════════════════════════
@@ -186,11 +186,12 @@ def parse_units(content: str) -> dict[str, str]:
 async def call_llm(
     client: httpx.AsyncClient,
     api_key: str,
+    base_url: str,
     system_prompt: str,
     user_prompt: str,
     max_retries: int = 4,
 ) -> tuple[str | None, str | None]:
-    """调用 DeepSeek，返回 (content, error)。"""
+    """调用 Qwen（DashScope 百炼兼容模式），返回 (content, error)。"""
     payload = {
         "model": MODEL,
         "messages": [
@@ -208,7 +209,7 @@ async def call_llm(
 
     for attempt in range(1, max_retries + 1):
         try:
-            resp = await client.post(BASE_URL, json=payload, headers=headers)
+            resp = await client.post(base_url, json=payload, headers=headers)
 
             # 限流/服务端错误 → 退避重试
             if resp.status_code in (429, 500, 502, 503, 504):
@@ -237,6 +238,7 @@ async def process_file(
     path: Path,
     client: httpx.AsyncClient,
     api_key: str,
+    base_url: str,
     sem: asyncio.Semaphore,
     force: bool,
     dry_run: bool,
@@ -279,7 +281,7 @@ async def process_file(
 
     async with sem:
         content, err = await call_llm(
-            client, api_key, _SYSTEM_PROMPT,
+            client, api_key, base_url, _SYSTEM_PROMPT,
             build_user_prompt(otype, data.get("name_cn", ""), targets),
         )
 
@@ -335,23 +337,34 @@ async def process_file(
 # 主流程
 # ══════════════════════════════════════════════════════════════
 
-def load_api_key() -> str:
-    """从环境变量或项目根 .env 读取 key。"""
-    key = os.getenv("DEEPSEEK_API_KEY", "").strip()
-    if key:
-        return key
+def _env_or_dotenv(key: str, default: str = "") -> str:
+    """从环境变量或项目根 .env 读取配置值（key 不存在时返回 default）。"""
+    v = os.getenv(key, "").strip()
+    if v:
+        return v
     env_path = PROJECT_ROOT / ".env"
     if env_path.exists():
         for line in env_path.read_text(encoding="utf-8").splitlines():
             line = line.strip()
-            if line.startswith("DEEPSEEK_API_KEY="):
+            if line.startswith(f"{key}="):
                 return line.split("=", 1)[1].strip().strip('"').strip("'")
-    return ""
+    return default
+
+
+def load_api_key() -> str:
+    """读取 DashScope API Key（环境变量或 .env 的 DASHSCOPE_API_KEY）。"""
+    return _env_or_dotenv("DASHSCOPE_API_KEY")
+
+
+def load_base_url() -> str:
+    """读取 DashScope 百炼兼容模式端点，拼出 chat/completions URL。"""
+    base = _env_or_dotenv("DASHSCOPE_BASE_URL", DEFAULT_DASHSCOPE_BASE)
+    return base.rstrip("/") + "/chat/completions"
 
 
 def parse_args():
     p = argparse.ArgumentParser(
-        description="批量为 RAG 性质库补充 standard_unit（DeepSeek 异步并发）",
+        description="批量为 RAG 性质库补充 standard_unit（Qwen·DashScope 异步并发）",
     )
     p.add_argument("--concurrency", type=int, default=16,
                    help="并发请求数（默认 16）")
@@ -369,10 +382,11 @@ def parse_args():
 async def main_async(args) -> int:
     api_key = load_api_key()
     if not api_key:
-        print("错误：未找到 DEEPSEEK_API_KEY")
-        print("  设置环境变量：set DEEPSEEK_API_KEY=sk-xxx")
+        print("错误：未找到 DASHSCOPE_API_KEY")
+        print("  设置环境变量：set DASHSCOPE_API_KEY=sk-xxx")
         print(f"  或写入文件：  {PROJECT_ROOT / '.env'}")
         return 2
+    base_url = load_base_url()
 
     if not RAG_DIR.exists():
         print(f"错误：RAG 目录不存在 {RAG_DIR}")
@@ -402,7 +416,7 @@ async def main_async(args) -> int:
 
     async with httpx.AsyncClient(timeout=args.timeout, limits=limits) as client:
         results = await asyncio.gather(*[
-            process_file(f, client, api_key, sem,
+            process_file(f, client, api_key, base_url, sem,
                          args.force, args.dry_run, progress)
             for f in files
         ])

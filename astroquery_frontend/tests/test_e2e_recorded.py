@@ -50,7 +50,7 @@ my_vcr = vcr.VCR(
 # H-16：E2E 契约断言助手（内容/数值/顺序，防 VCR 错位数据）
 # ══════════════════════════════════════════════════════
 
-REQUIRED_PROPERTY_TERMS = ("距离", "年龄", "金属丰度")
+REQUIRED_PROPERTY_TERMS = ("质量", "金属丰度")
 
 # 图驱动 stage 事件面（与 astroquery_ai/main_graph.py `_NODES` 阶段映射一致）：
 #   clarification/property_std → understand；quality_finalize → done。
@@ -63,7 +63,7 @@ GRAPH_STAGE_COMPLETED = GRAPH_STAGE_STARTED | {"done"}
 def assert_m13_contract(final: dict, events: list) -> None:
     """H-16 锚点：最终结果 + 事件流的五维契约断言（错位数据下必须红）。
 
-    ① target_entity==M13 且 requested_properties 含 距离/年龄/金属丰度；
+    ① target_entity==M13 且 requested_properties 含 质量/金属丰度；
     ② records 非空且每条 field_name/field_value/field_unit 非空；
     ③ 图驱动 7 卡 stage_started 全集 + stage_completed 配对；
     ④ 事件 seq 严格单调递增（乱序/重放/断线续播防线）。
@@ -102,20 +102,20 @@ def assert_m13_contract(final: dict, events: list) -> None:
 @pytest.mark.network
 @my_vcr.use_cassette("m13_query.yaml")
 def test_e2e_m13_query(tmp_path):
-    """真实全流程：M13 的距离、年龄和金属丰度（录制/回放）。"""
+    """真实全流程：M13 的质量和金属丰度（录制/回放）。"""
     store = TaskStore(tmp_path / "e2e.db")
-    task = store.create_task("M13 的距离、年龄和金属丰度")
+    task = store.create_task("M13 的质量和金属丰度")
 
     tbus = EventBus(store)
 
-    answers = iter(["距离、年龄和金属丰度", "y"])  # ask_properties → final_confirm
+    answers = iter(["质量、金属丰度", "y"])  # ask_properties → final_confirm
 
     def get_answer(_tid, payload):
         return next(answers)
 
     result = run_task_streaming(
         task_id=task["task_id"],
-        user_query="M13 的距离、年龄和金属丰度",
+        user_query="M13 的质量和金属丰度",
         extra_pdfs=[],
         bus=tbus,
         get_answer=get_answer,
@@ -131,7 +131,10 @@ def test_e2e_m13_query(tmp_path):
     types = [e["type"] for e in events]
     clar = [e for e in events if e["type"] == "clarification"]
     assert len(clar) >= 1
-    assert "task_completed" in types
+    # P0-1 后 runner 不再发 task_completed（由 executor._finish 发）；
+    # 直接调 run_task_streaming 的终态标志是 done 卡的 stage_completed
+    assert any(e["type"] == "stage_completed" and e["stage_id"] == "done"
+               for e in events)
 
     final = (result.get("final_output") or {})
     records = final.get("records", [])
@@ -173,12 +176,12 @@ def _sample_final(**overrides) -> dict:
     """干净样本：真实 M13 运行形态（target_entity/props/records 与实测一致）。"""
     final = {
         "target_entity": "M13",
-        "requested_properties": ["距离", "年龄", "金属丰度"],
+        "requested_properties": ["质量", "金属丰度"],
         "final_output": {
             "records": [
-                {"field_name": "distance_sun", "field_value": "7107", "field_unit": "pc"},
-                {"field_name": "cluster_age", "field_value": "12.9 Gyr", "field_unit": "Gyr"},
-                {"field_name": "cluster_metallicity", "field_value": "-1.39", "field_unit": "dex"},
+                {"field_name": "mass", "field_value": "4.02e5", "field_unit": "Msun"},
+                {"field_name": "metallicity", "field_value": "-1.39", "field_unit": "dex"},
+                {"field_name": "metallicity", "field_value": "-1.57", "field_unit": "dex"},
             ]
         },
     }
@@ -231,7 +234,7 @@ def test_m13_contract_accepts_valid_data():
     "label, mutate",
     [
         ("target_entity 错位", lambda f, e: f.update(target_entity="M31")),
-        ("requested_properties 缺性质", lambda f, e: f.update(requested_properties=["距离"])),
+        ("requested_properties 缺性质", lambda f, e: f.update(requested_properties=["质量"])),
         ("records 为空", lambda f, e: f["final_output"].update(records=[])),
         ("field_value 为空串", lambda f, e: f["final_output"]["records"][1].update(field_value="   ")),
         ("field_name 缺失", lambda f, e: f["final_output"]["records"][0].pop("field_name")),

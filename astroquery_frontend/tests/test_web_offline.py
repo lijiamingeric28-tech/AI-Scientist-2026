@@ -289,8 +289,8 @@ def test_config_get_never_leaks_plaintext_and_put_writes(tmp_path, monkeypatch, 
     monkeypatch.setattr(m, "_ENV_FILE", env)
     r = client.get("/api/config")
     body = r.json()
-    assert set(body["configured"]) == {"DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL", "OPENAI_API_KEY",
-                                       "OPENAI_BASE_URL", "ADS_API_TOKEN", "UNPAYWALL_EMAIL"}
+    assert set(body["configured"]) == {"DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL",
+                                       "ADS_API_TOKEN", "UNPAYWALL_EMAIL"}
     assert all(isinstance(v, bool) for v in body["configured"].values())  # 无明文
     # H-05④: 缺少来源校验头 → 403（防跨源投毒）；带正确头才允许写
     r_nohead = client.put("/api/config", json={"dashscope_api_key": "sk-secret-123"})

@@ -24,6 +24,7 @@ from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
 from events import configure as configure_emitter
+from astroquery_ai.config import get_settings
 
 from .event_bus import EventBus, EventQueue
 from .executor import Executor
@@ -106,9 +107,11 @@ def _vcr_startup_selftest() -> None:
         _vcrt, _cp = _build_replay_vcr(_CASSETTE_PATH, "none")
         with _vcrt.use_cassette(_cp.name) as _cass:
             from openai import OpenAI
-            _c = OpenAI(api_key="x", base_url="https://api.deepseek.com")
+            _cfg = get_settings()
+            _base = _cfg.dashscope_base_url or "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            _c = OpenAI(api_key="x", base_url=_base)
             _c.chat.completions.create(
-                model="deepseek-v4-flash",
+                model=_cfg.dashscope_model,
                 messages=[{"role": "user", "content": "hi"}],
                 max_tokens=5,
                 timeout=3,  # M-11: 3s 上限，不阻塞启动路径
@@ -550,7 +553,7 @@ def _os_open(path: str) -> None:
 # ══════════════════════════════════════════════════════
 
 _ENV_FILE = ROOT / ".env"
-_ENV_KEYS = ["DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL", "OPENAI_API_KEY", "OPENAI_BASE_URL",
+_ENV_KEYS = ["DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL",
              "ADS_API_TOKEN", "UNPAYWALL_EMAIL"]
 
 
@@ -578,8 +581,6 @@ async def get_config():
 class ConfigBody(BaseModel):
     dashscope_api_key: Optional[str] = None
     dashscope_base_url: Optional[str] = None
-    openai_api_key: Optional[str] = None
-    openai_base_url: Optional[str] = None
     ads_api_token: Optional[str] = None
     unpaywall_email: Optional[str] = None
 
@@ -594,8 +595,6 @@ async def put_config(body: ConfigBody, request: Request):
     mapping = {
         "dashscope_api_key": "DASHSCOPE_API_KEY",
         "dashscope_base_url": "DASHSCOPE_BASE_URL",
-        "openai_api_key": "OPENAI_API_KEY",
-        "openai_base_url": "OPENAI_BASE_URL",
         "ads_api_token": "ADS_API_TOKEN",
         "unpaywall_email": "UNPAYWALL_EMAIL",
     }

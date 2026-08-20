@@ -3,12 +3,12 @@ utils/llm.py
 
 LLM 工厂模块 — 统一管理 LangChain ChatModel 实例。
 
-支持 OpenAI 兼容接口（GPT-4o / DeepSeek / 本地模型等）。
+支持 OpenAI 兼容接口（Qwen 系列 via 阿里云百炼 / 其他兼容服务）。
 配置从统一 Settings（astroquery_ai/config.py，env 优先）读取。
 
 结构化输出策略:
-  1. method="function_calling" → 适用于 DeepSeek 等支持 tool calling 的模型
-  2. method="json_schema"     → 适用于 OpenAI GPT-4o 等支持 response_format 的模型
+  1. method="function_calling" → 适用于支持 tool calling 的模型
+  2. method="json_schema"     → 适用于支持 response_format 的模型
   3. 回退: PydanticOutputParser → 通过 Prompt 要求 JSON + 手动解析 (适用于任何模型)
 """
 
@@ -68,9 +68,9 @@ def _load_config() -> dict:
     if _config_cache is None:
         s = get_settings()
         _config_cache = {
-            "model": s.openai_model,
-            "api_key": s.openai_api_key,
-            "base_url": s.openai_base_url,
+            "model": s.dashscope_model,
+            "api_key": s.dashscope_api_key,
+            "base_url": s.dashscope_base_url,
             "temperature": 0.0,
             "max_tokens": 8096,
             "timeout": s.llm_timeout,
@@ -104,16 +104,16 @@ def get_llm(
 
     config = _load_config()
 
-    api_key = config.get("api_key", "") or os.environ.get("OPENAI_API_KEY", "")
-    base_url = config.get("base_url", "") or os.environ.get("OPENAI_BASE_URL", "")
+    api_key = config.get("api_key", "") or os.environ.get("DASHSCOPE_API_KEY", "")
+    base_url = config.get("base_url", "") or os.environ.get("DASHSCOPE_BASE_URL", "")
 
     if not api_key:
         logger.warning(
-            "LLM API Key 未配置！请在 .env 中设置 OPENAI_API_KEY。"
+            "LLM API Key 未配置！请在 .env 中设置 DASHSCOPE_API_KEY。"
         )
 
     kwargs = {
-        "model": config.get("model", "gpt-4o"),
+        "model": config.get("model", "qwen3.7-flash"),
         "api_key": api_key,
         "temperature": temperature if temperature is not None else config.get("temperature", 0.0),
         "max_tokens": max_tokens or config.get("max_tokens", 4096),

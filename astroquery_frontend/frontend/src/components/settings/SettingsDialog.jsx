@@ -5,25 +5,17 @@ import { useToast } from '@/components/ui/toast'
 import * as api from '@/services/api'
 
 /* 设置对话框（契约第 10 轮：API key 对照 .env.example 全键补齐）
- * 可编辑：DashScope(key+base_url) / 质量管线 OpenAI(key+base_url) / ADS / Unpaywall
+ * 可编辑：DashScope(key+base_url) / ADS / Unpaywall；质量管线复用 DashScope 凭证（全 Qwen）
  * 契约 D10-1/2：PUT /api/config 写回 .env（持久化）；GET 只返回是否配置（无明文）
  */
 
 const GROUPS = [
   {
     id: 'dashscope',
-    name: '意图澄清 / 性质标准化 / VLM 提取（DashScope）',
+    name: 'Qwen 基座模型（DashScope 百炼 · 全系统统一）',
     fields: [
-      { key: 'dashscope_api_key', label: 'DashScope API Key', placeholder: 'sk-…', required: true, note: '子图1 意图澄清 + P1 性质标准化 + 子图3 VLM 提取' },
+      { key: 'dashscope_api_key', label: 'DashScope API Key', placeholder: 'sk-…', required: true, note: '意图澄清 + 性质标准化(P1) + VLM 提取 + 质量管线（评估/清洗/冲突/洞察）共用，模型 qwen3.7-flash' },
       { key: 'dashscope_base_url', label: 'DashScope Base URL', placeholder: 'https://…（留空用官方默认）', required: false, note: '兼容模式端点；留空 = DashScope 官方' },
-    ],
-  },
-  {
-    id: 'quality',
-    name: '质量管线 LLM（OpenAI 兼容）',
-    fields: [
-      { key: 'openai_api_key', label: 'OpenAI / DeepSeek API Key', placeholder: 'sk-…', required: true, note: '质量评估/清洗/冲突/洞察的 LLM 调用（质量阶段必需）' },
-      { key: 'openai_base_url', label: 'Base URL', placeholder: 'https://…（留空用默认）', required: false, note: '如 https://api.deepseek.com' },
     ],
   },
   {
@@ -42,7 +34,7 @@ const CURRENT_MODELS = [
   { label: '性质标准化 (P1)', value: 'qwen3.8-max' },
   { label: 'VLM 提取', value: 'qwen3.7-plus' },
   { label: 'BBox 标注', value: 'qwen3.7-flash' },
-  { label: '质量管线', value: 'deepseek-v4-flash' },
+  { label: '质量管线', value: 'qwen3.7-flash' },
   { label: '研究领域', value: 'astrophysics' },
 ]
 
@@ -50,8 +42,6 @@ const CURRENT_MODELS = [
 const KEY_MAP = {
   dashscope_api_key: 'dashscope_api_key',
   dashscope_base_url: 'dashscope_base_url',
-  openai_api_key: 'openai_api_key',
-  openai_base_url: 'openai_base_url',
   ads_api_token: 'ads_api_token',
   unpaywall_email: 'unpaywall_email',
 }
@@ -205,7 +195,7 @@ export default function SettingsDialog({ open, onClose }) {
           </div>
 
           <div style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', lineHeight: 1.6, padding: '8px 10px', background: 'var(--surface-secondary)', borderRadius: 6 }}>
-            配置保存在本地浏览器（mock）。对接后端后：key 经 PUT /api/config 提交，服务端运行时注入（不回传明文）；DEEPSEEK_API_KEY（scripts 离线工具）与 DEFAULT_RESEARCH_DOMAIN 不在本页配置。
+            配置保存在本地浏览器（mock）。对接后端后：key 经 PUT /api/config 提交，服务端运行时注入（不回传明文）；DEFAULT_RESEARCH_DOMAIN 不在本页配置。
           </div>
         </div>
 
