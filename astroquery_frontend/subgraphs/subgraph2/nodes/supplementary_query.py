@@ -220,6 +220,14 @@ def _llm_judge_table(metadata_text: str, target_entity: str) -> Dict:
 - other_entity: 表主体是其它天体（对比天体、校准源）
 - irrelevant: 与目标天体无关
 
+## 关键判别（务必遵守）
+- **一维扫描表不是 whole_entity**：若表是频率扫描、波长扫描、光谱序列、时间序列、
+  能谱扫描等"某物理量沿一个维度单调变化的一长串测量点"（如 Freq 223~243 GHz 的
+  一系列频率点），无论多少行，都应判为 **sub_structure 或 irrelevant**，绝不可判
+  whole_entity——这类表不是目标天体的整体性质，而是观测过程中的扫描序列。
+- **entity_column 必须准确**：若表里确实有标识天体名称的列（Name/ID/objname 等），
+  务必填出；若整表只有一个天体且无名称列，才填 null。
+
 ## 输出要求（严格 JSON）
 {{
   "table_class": "whole_entity | sub_structure | other_entity | irrelevant",
@@ -498,7 +506,17 @@ def supplementary_query(state: RetrievalState) -> RetrievalState:
                         else:
                             discarded += 1
                 else:
-                    kept_rows = list(table)
+                    # V2.6: entity_column=null 时保守处理——整表仅在行数很少（≤3 行，
+                    # 真·单天体表）才保留；行数多说明可能是扫描表/多天体表，误判为
+                    # whole_entity 且漏判名称列，整表保留会把无关行全当目标天体。
+                    if len(table) <= 3:
+                        kept_rows = list(table)
+                    else:
+                        logger.warning(
+                            f"[Supplementary] {table_id}: entity_column=null 且 {len(table)} 行，"
+                            "疑似扫描表/多天体表，整表丢弃"
+                        )
+                        kept_rows = []
 
                 # 5. 构建 records（只保留有映射的列）
                 # 先构造 source_id（与下面的 source 对齐）

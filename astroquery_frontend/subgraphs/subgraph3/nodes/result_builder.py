@@ -33,6 +33,12 @@ def result_builder(state: ExtractionState) -> ExtractionState:
     entity_type = state.get("entity_type") or "Unknown"
     query_id = state["query_id"]
 
+    # V2.5: VLM 输出白名单强制校验 — field_name 必须在 PropertySpec 内。
+    # 提示词的白名单约束是软约束，VLM 仍可能输出白名单外字段（如 M31 场景
+    # 的 dist_modulus），此处做硬校验，白名单外字段直接丢弃。
+    property_spec = state.get("property_spec", []) or []
+    whitelist = {p.get("property_id") for p in property_spec if isinstance(p, dict)}
+
     logger.info(f"[Result Builder] Query ID: {query_id}")
     logger.info(f"[Result Builder] Building records from {len(raw_extractions)} papers...")
 
@@ -84,6 +90,14 @@ def result_builder(state: ExtractionState) -> ExtractionState:
                     logger.warning(f"[Result Builder]     Dropping record (empty field_name): "
                                    f"{bibcode} - idx {idx}")
                     dropped_bbox += 1
+                    continue
+
+                # V2.5: 白名单强制校验 — field_name 必须在 property_spec 内
+                # (仅当存在白名单时生效；无 property_spec 的降级场景不拦截)
+                if whitelist and fn not in whitelist:
+                    logger.warning(f"[Result Builder]     Dropping record (field_name not in whitelist): "
+                                   f"{bibcode} - {fn!r}")
+                    filtered_records += 1
                     continue
 
                 # 构建记录

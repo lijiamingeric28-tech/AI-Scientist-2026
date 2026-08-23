@@ -68,7 +68,7 @@ def _load_config() -> dict:
     if _config_cache is None:
         s = get_settings()
         _config_cache = {
-            "model": s.dashscope_model,
+            "model": s.dashscope_quality_model or s.dashscope_model,
             "api_key": s.dashscope_api_key,
             "base_url": s.dashscope_base_url,
             "temperature": 0.0,

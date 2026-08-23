@@ -77,12 +77,6 @@
     "vizier_table": "J/A+A/558/A53/catalog",
     "key_column": "MWSC"
   },
-  "ocl": {
-    "pattern": "OCl\\s+([\\d\\.]+)",
-    "name": "Open Clusters (Dias+)",
-    "vizier_table": "B/ocl/clusters",
-    "key_column": "OCl"
-  },
   "pgc": {
     "pattern": "(?:PGC|LEDA)\\s+(\\d+)",
     "name": "HYPERLEDA / PGC",
@@ -107,12 +101,6 @@
     "vizier_table": "VII/110A",
     "key_column": "ACO"
   },
-  "bax": {
-    "pattern": "BAX\\s+([\\d\\.\\+\\-]+)",
-    "name": "BAX X-ray Clusters",
-    "vizier_table": "B/bax/bax",
-    "key_column": "BAX"
-  },
   "mcxc": {
     "pattern": "MCXC\\s+(J[\\d\\+\\-\\.]+)",
     "name": "MCXC X-ray Clusters",
@@ -126,10 +114,10 @@
     "key_column": "PSZ2"
   },
   "nbgg": {
-    "pattern": "NBGG\\s+([\\d\\-]+)",
+    "pattern": "NBGG\\s+([\\d\\s\\-]+)",
     "name": "Nearby Galaxies Groups",
     "vizier_table": "VII/145/groups",
-    "key_column": "NBGG"
+    "key_column": "Group"
   },
   "ghcg": {
     "pattern": "GHCG\\s+(\\d+)",

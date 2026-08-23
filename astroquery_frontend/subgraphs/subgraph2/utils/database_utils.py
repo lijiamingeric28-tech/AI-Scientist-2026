@@ -41,6 +41,15 @@ def extract_catalog_ids(aliases: List[str], catalog_config: Dict) -> Dict[str, L
 
                     catalog_id = match.group(1).strip()
 
+                    # 专家审计修正（V2.4）：
+                    # - ic: NGC2000 表的 Name 列存 "I4756"（大写 I 无空格），而 pattern
+                    #   提取纯数字 4756，直接查会误中 NGC 4756 → 提取后补 "I" 前缀
+                    # - nbgg: 组号列 Group 可能带内部空格（如 "11- 1"）→ 去空白对齐
+                    if cat_key == "ic" and catalog_id.isdigit():
+                        catalog_id = f"I{catalog_id}"
+                    elif cat_key == "nbgg":
+                        catalog_id = catalog_id.replace(" ", "")
+
                     # 去重：同一星表同一 ID 只保留一条。
                     # 同一天体常有多个别名（如 "3C 274" 和 "3C 274.0"），
                     # 不去重会导致对同一星表重复查询、产出重复 records。
@@ -194,7 +203,10 @@ def build_database_records(
 
             # 生成 record_id（格式：REC_source_id_catalog_key_row_columnname）
             # 修复 C1：加入 row_idx 避免重复
-            record_id = f"REC_{source_id}_{id_info['id']}_{row_idx}_{standard_property_id}"
+            # 修复 C2：用原始列名 col_name 而非映射后的 standard_property_id——
+            #   同一行多个列可能映射到同一性质（如 HIP 的 RAICRS/RA* 都→right_ascension），
+            #   若用 standard_property_id 会生成相同 record_id，导致前端 React key 冲突
+            record_id = f"REC_{source_id}_{id_info['id']}_{row_idx}_{col_name}"
 
             # 构建 record（符合下游 schema 要求）
             record = {

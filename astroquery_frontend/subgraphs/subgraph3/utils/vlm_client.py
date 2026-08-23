@@ -70,71 +70,117 @@ def build_extraction_prompt(
 **请严格按照输入图片的顺序标注 page 字段，避免页码幻觉。**
 """
 
+    # V2.7: 输出示例按白名单动态生成——白名单含 dist_modulus 才展示 dist_modulus 示例，
+    # 避免诱导 VLM 输出白名单外的字段（3C 273 dist_modulus 越界根因）。
+    # 用普通字符串拼接（非 f-string），内部 JSON 花括号不需要转义。
+    _distance_example = (
+        '{'
+        '  "page": 4,'
+        '  "reasoning": "原文显示 136.2 pc，与 field_value 逐字符一致；'
+        '该数值描述目标天体整体实际距离，单位 pc，符合 distance。",'
+        '  "field_name": "distance",'
+        '  "field_value": "136.2",'
+        '  "field_unit": "pc",'
+        '  "context_snippet": "the distance to the Pleiades is 136.2 pc...",'
+        '  "measurement_method": "parallax",'
+        '  "condition_tags": ["scope: global", "metric: distance"],'
+        '  "extraction_method": "text",'
+        '  "confidence": 0.98'
+        '}'
+    )
+    _dm_example = (
+        ','
+        '{'
+        '  "page": 7,'
+        '  "reasoning": "原文显示 (m-M)0 = 5.58 ± 0.06 mag 是距离模数（单位 mag），'
+        '与 distance（pc）不同，归入 dist_modulus。",'
+        '  "field_name": "dist_modulus",'
+        '  "field_value": "5.58 ± 0.06",'
+        '  "field_unit": "mag",'
+        '  "context_snippet": "we derive a distance modulus to the cluster of (m-M)0 = 5.58 ± 0.06 mag...",'
+        '  "measurement_method": "photometric distance modulus",'
+        '  "condition_tags": ["scope: global", "metric: distance_modulus"],'
+        '  "extraction_method": "text",'
+        '  "confidence": 0.98'
+        '}'
+    )
+    _has_dm = property_spec and any(p.get("property_id") == "dist_modulus" for p in property_spec)
+    example_entries = (
+        "**输出示例**（仅格式参考）：\n"
+        "```json\n"
+        '{\n  "extractions": [\n'
+        + _distance_example
+        + (_dm_example if _has_dm else "")
+        + '\n  ]\n}\n'
+        "```"
+    )
+
     prompt = f"""你是一个顶尖的天文学文献数据提取专家。我将按顺序向你展示一篇完整论文的所有页面图片。
 {page_mapping_note}
-## [TARGET] 任务目标
+════════════════════════════════════════
+① 提取目标
+════════════════════════════════════════
 从论文中提取关于目标天体 **{target_entity}** 的物理性质数据。
-提取指令：{property_instruction} (请自动识别论文中对应的具体物理指标名称)
+本次允许的 field_name（白名单，只能从这些 property_id 中选）：
+{property_whitelist}
+**field_name 必须是上面列表中的 property_id，不得自由命名、不得臆造。**
 
-## [PIN] 数据来源
-只从正文文本与表格（table）中提取数据；页面中的图片、图表、照片等图形元素一律忽略，不得作为提取来源。
+════════════════════════════════════════
+② 数据来源
+════════════════════════════════════════
+只从正文文本与表格（table）中提取；页面中的图片、图表、照片等图形元素一律忽略，不得作为提取来源。
 
-## [STOP] 核心提取铁律（违反将导致严重错误）
+════════════════════════════════════════
+③ 提取原则
+════════════════════════════════════════
+1. **宏观整体**：只提取【{target_entity}】作为一个整体的物理属性（如整个星系的距离、总质量）；忽略内部子结构/局部区域（球状星团、特定恒星、HII区等）。
+2. **实体排他**：不提取用于对比、校准或背景参考的其他天体数据。
 
-### 1. 锁定"宏观整体"，坚决忽略"微观局部" (降维减负指令)
-- ✅ **提取**：只提取描述【{target_entity}】作为**一个整体（as a whole）**的物理属性（如整个星系的距离、总质量等）。
-- ❌ **忽略**：绝对忽略目标天体内部的具体子结构、特定组成部分或局部区域（如：内部的具体球状星团、特定恒星、HII区等）。
-- [ALERT] **遇到罗列内部子结构数据的部分，请直接跳过，绝对不要提取这些细枝末节！**
+════════════════════════════════════════
+④ 禁止提取（违反即放弃该条）
+════════════════════════════════════════
+遇到以下情况直接放弃：
+1. **公式/关系式/校准式**：如 "MG = 0.35[Fe/H] + 1.2"、函数表达式。
+2. **统计量/计数**：样本数、成员星数、数据点个数（除非该计数本身就是目标量）。
+3. **参考/推导辅助**：理论假设值、参考基准点、归一化常数、拟合参数。
+4. **范围/区间/上下限/百分位**（除非目标性质本身以范围定义，如"质量范围"）。
+5. **多值打包**：一个 field_value 塞多个不相关量（如 "G=12.84, Bp-Rp=0.49"）。
+6. **单位不匹配**：数值单位与白名单该性质的标准单位明显不符时，不归入该字段。
 
-### 2. 严格实体排他
-- 绝不提取用来作为对比、校准或背景参考的其他天体的数据。
+════════════════════════════════════════
+⑤ 单位与字段区分
+════════════════════════════════════════
+- field_unit 必须与实际数值一致。
+- 同概念但表示不同（如 distance=pc 与 dist_modulus=mag）是不同字段，按单位归属，不得混放。
+- 白名单没有对应字段时，遇到该量就放弃，不要硬塞进其他字段。
 
-### 3. 确保数据物理真实性
-- 绝不提取理论假设值、公式拟合用的"参考基准点 (reference value)"、"归一化常数"等非实际测量/推导值。遇到直接丢弃！
+════════════════════════════════════════
+⑥ 提取前自检（reasoning 必填）
+════════════════════════════════════════
+每个提取条目前，在 reasoning 中核对：
+1) 是否明确归属【{target_entity}】？2) 是否为宏观整体属性？3) 是否为实际测量值（非公式/计数/参考）？
+4) 数值与原文逐字符一致（在 reasoning 中原样复述数字后核对）？
+任一不满足 → 放弃该条，不猜测、不修正后照提。
+且 condition_tags 必须包含 "scope: global" 与 "metric: [具体物理量]" 标签。
 
-### 4. 规范命名空间
-- 提取的数据 `condition_tags` 必须包含 `"scope: global"`。
-- 必须通过标签指明具体的物理概念，如 `"metric: [具体物理量名称]"`。
+════════════════════════════════════════
+⑦ 输出 JSON
+════════════════════════════════════════
+{example_entries}
 
-## [BRAIN] 强制思维链与 JSON 输出格式
-
-提取前，请必须先在 `reasoning` 字段中简要核对：1) 是否明确归属目标天体？2) 是否为整体宏观属性？3) 是否为实际测量值？如果不符合，请果断放弃提取！
-并在 `reasoning` 中原样复述你在原文中看到的数字字符串，然后与 `field_value` 的值逐字符核对；若两者不一致，直接放弃这条提取，不要猜测或修正后照提。
-
-**输出示例**（仅作格式参考，非实际要求物理量）：
-```json
-{{
-  "extractions": [
-    {{
-      "page": 4,
-      "reasoning": "原文显示 24.42 ± 0.06 mag，与 field_value 逐字符一致；该数值描述的是目标天体整体的距离模数，并非内部某个子星团，且为实际观测推导值，并非参考基准。符合提取要求。",
-      "field_name": "distance",
-      "field_value": "24.42 ± 0.06",
-      "field_unit": "mag",
-      "context_snippet": "we derive a distance modulus to the galaxy of (m-M)0 = 24.42 ± 0.06 mag...",
-      "measurement_method": "Horizontal branch luminosity",
-      "condition_tags": ["scope: global", "metric: distance_modulus", "HST", "photometric"],
-      "extraction_method": "text",
-      "confidence": 0.98
-    }}
-  ]
-}}
-```
-
-## 字段说明
+字段说明：
 - **page**: 页码（1-based整数，严格对应图片顺序）
-- **reasoning**: [必填] 提取前进行的自我逻辑核对（如判别为微观局部，必须放弃提取）。
-- **field_name**: 响应用户指令的物理量大类（简短英文小写下划线，如 "distance", "metallicity"）
+- **reasoning**: [必填] 提取前自检核对
+- **field_name**: 必须来自①白名单的 property_id
 - **field_value**: 提取的值（保持原文格式，包含不确定性）
-- **field_unit**: 单位（如 "mag", "kpc", "dex"）
+- **field_unit**: 单位（与实际数值一致）
 - **context_snippet**: 提取值周围的原文（约200字符，用于溯源）
 - **measurement_method**: 观测、推导或统计方法
-- **condition_tags**: 必须包含 scope:global 和 metric:xxx 标签
+- **condition_tags**: 必须含 scope:global 和 metric:xxx 标签
 - **extraction_method**: "text" | "table"
 - **confidence**: 提取置信度（0.0-1.0）
 
-## 最后警告
-如果通篇论文全是内部子结构的枯燥表格，或者没有关于整体【{target_entity}】的合格数据，请极其果断地返回 {{"extractions": []}}！
+如果通篇没有关于【{target_entity}】整体的合格数据，请果断返回 {{"extractions": []}}！
 确保输出是合法的纯 JSON 格式。"""
 
     # 提供 num_images 时补充具体页码范围
