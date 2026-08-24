@@ -360,6 +360,27 @@ class Executor:
                     # error 分支已发 task_failed）。
                     self._bus.emit(task_id, "task_completed", summary="任务完成")
 
+        # 2026-08-24: 终态任务 checkpoint 自动清理 — LangGraph 快照仅在运行中
+        # 的 HITL 中断恢复时需要; 任务完成后不再被任何代码读取 (前端历史回放
+        # 走 events 表, 测试回放走 cassettes)。此前从不清理, checkpoints.sqlite
+        # 已涨到 3.1GB 拖慢全后端。只删本任务的 thread_id, 失败仅告警。
+        try:
+            self._cleanup_checkpoints(task_id)
+        except Exception as e:  # noqa: BLE001 — 清理失败不影响任务收尾
+            logging.getLogger("web").warning("[Executor] checkpoint 清理失败 %s: %s", task_id, e)
+
+    def _cleanup_checkpoints(self, thread_id: str) -> None:
+        """删除指定任务的 LangGraph checkpoint 行 (终态后调用)。"""
+        import sqlite3 as _sqlite3
+        con = _sqlite3.connect(self._checkpointer_path, timeout=10)
+        try:
+            cur = con.cursor()
+            for table in ("writes", "checkpoints"):
+                cur.execute(f"DELETE FROM {table} WHERE thread_id = ?", (thread_id,))
+            con.commit()
+        finally:
+            con.close()
+
     # ── resume / cancel ──
     def resume(self, task_id: str, answer: str) -> bool:
         slot = self._slots.get(task_id)

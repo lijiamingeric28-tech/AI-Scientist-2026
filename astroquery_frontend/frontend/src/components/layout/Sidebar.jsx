@@ -31,8 +31,11 @@ const FILTERS = [
   { key: 'error', label: '失败' },
 ]
 
-export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onOpenSettings, onLoadMore, filter, onFilterChange }) {
+export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete }) {
   const [hoveredId, setHoveredId] = useState(null)
+  // 2026-08-24: 批量删除管理模式
+  const [manageMode, setManageMode] = useState(false)
+  const [checked, setChecked] = useState(() => new Set())
 
   // 契约 D8-1：queued 归入"运行中"筛选档
   // H-01: 失败档按 error 匹配，同时兼容旧词表 failed（存量记录防御）
@@ -41,6 +44,20 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
     : filter === 'running'
       ? tasks.filter((t) => t.status === 'running' || t.status === 'queued')
       : tasks.filter((t) => t.status === filter || (filter === 'error' && t.status === 'failed'))
+
+  const toggleCheck = (id) => {
+    setChecked((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const exitManage = () => {
+    setManageMode(false)
+    setChecked(new Set())
+  }
 
   return (
     <aside
@@ -87,18 +104,36 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
         ))}
       </div>
 
-      {/* 历史任务 */}
+      {/* 历史任务（管理模式入口） */}
       <div
         style={{
           padding: '4px 8px 8px',
-          color: 'var(--sidebar-text-secondary)',
-          fontSize: 11,
-          fontWeight: 510,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        历史任务
+        <span
+          style={{
+            color: 'var(--sidebar-text-secondary)',
+            fontSize: 11,
+            fontWeight: 510,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}
+        >
+          历史任务
+        </span>
+        <button
+          onClick={() => (manageMode ? exitManage() : setManageMode(true))}
+          style={{
+            border: 'none', background: 'transparent', cursor: 'pointer',
+            color: manageMode ? 'var(--status-error)' : 'var(--sidebar-text-secondary)',
+            fontSize: 11, padding: '2px 6px', borderRadius: 4,
+          }}
+        >
+          {manageMode ? '退出管理' : '管理'}
+        </button>
       </div>
       <ScrollArea
         className="flex-1 px-2 pb-2"
@@ -117,25 +152,39 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
         ) : (
           filtered.map((task) => {
             const isActive = task.task_id === selectedId  // CR-03: 契约 D8-4 键名 task_id
+            const isChecked = checked.has(task.task_id)
+            const active_ = task.status === 'running' || task.status === 'queued'
             return (
               <div
                 key={task.task_id}
-                onClick={() => onSelect(task.task_id)}
+                onClick={() => (manageMode ? (active_ ? null : toggleCheck(task.task_id)) : onSelect(task.task_id))}
                 onMouseEnter={() => setHoveredId(task.task_id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{
                   padding: '8px 10px',
                   borderRadius: 6,
                   marginBottom: 2,
-                  cursor: 'pointer',
-                  background: isActive
+                  cursor: manageMode ? (active_ ? 'not-allowed' : 'pointer') : 'pointer',
+                  opacity: manageMode && active_ ? 0.5 : 1,
+                  background: isChecked
                     ? 'var(--sidebar-active)'
-                    : hoveredId === task.task_id
-                      ? 'var(--sidebar-hover)'
-                      : 'transparent',
+                    : isActive
+                      ? 'var(--sidebar-active)'
+                      : hoveredId === task.task_id
+                        ? 'var(--sidebar-hover)'
+                        : 'transparent',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {manageMode && (
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      disabled={active_}
+                      onChange={() => toggleCheck(task.task_id)}
+                      style={{ accentColor: 'var(--accent)', flexShrink: 0 }}
+                    />
+                  )}
                   <StatusDot status={task.status} size={6} />
                   <span
                     style={{
@@ -150,6 +199,22 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                   >
                     {task.title}
                   </span>
+                  {!manageMode && !active_ && hoveredId === task.task_id && (
+                    <button
+                      title="清理/删除任务"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onDeleteTask?.(task)
+                      }}
+                      style={{
+                        border: 'none', background: 'transparent', cursor: 'pointer',
+                        color: 'var(--content-fg-tertiary)', padding: 2, flexShrink: 0,
+                        display: 'flex', alignItems: 'center',
+                      }}
+                    >
+                      <Icon.Wrench style={{ width: 13, height: 13 }} />
+                    </button>
+                  )}
                 </div>
                 <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center' }}>
                   {formatRelativeTime(task.created_at)}
@@ -183,12 +248,33 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
           })
         )}
         {/* 无限滚动底部指示（契约 D8-4） */}
-        {filtered.length > 0 && (
+        {filtered.length > 0 && !manageMode && (
           <div style={{ padding: '10px 0 14px', textAlign: 'center', fontSize: 11, color: 'var(--sidebar-text-secondary)' }}>
             {tasks.length < total ? '加载中…' : `共 ${total} 个任务`}
           </div>
         )}
       </ScrollArea>
+
+      {/* 批量删除操作条（管理模式） */}
+      {manageMode && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          padding: '10px 12px', borderTop: '1px solid var(--sidebar-border)',
+        }}>
+          <span style={{ fontSize: 12, color: 'var(--sidebar-text-secondary)', flex: 1 }}>
+            已选 {checked.size} 个
+          </span>
+          <Button variant="ghost" size="sm" onClick={exitManage}>取消</Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            disabled={checked.size === 0}
+            onClick={() => onBatchDelete?.([...checked])}
+          >
+            删除所选
+          </Button>
+        </div>
+      )}
 
       {/* 设置入口 */}
       <div style={{ padding: '12px 16px', borderTop: '1px solid var(--sidebar-border)' }}>

@@ -50,7 +50,7 @@ my_vcr = vcr.VCR(
 # H-16：E2E 契约断言助手（内容/数值/顺序，防 VCR 错位数据）
 # ══════════════════════════════════════════════════════
 
-REQUIRED_PROPERTY_TERMS = ("质量", "金属丰度")
+REQUIRED_PROPERTY_TERMS = ("年龄", "距离", "金属丰度")
 
 # 图驱动 stage 事件面（与 astroquery_ai/main_graph.py `_NODES` 阶段映射一致）：
 #   clarification/property_std → understand；quality_finalize → done。
@@ -60,16 +60,19 @@ GRAPH_STAGE_STARTED = {"understand", "retrieval", "extraction", "quality_check"}
 GRAPH_STAGE_COMPLETED = GRAPH_STAGE_STARTED | {"done"}
 
 
-def assert_m13_contract(final: dict, events: list) -> None:
-    """H-16 锚点：最终结果 + 事件流的五维契约断言（错位数据下必须红）。
+def assert_m45_contract(final: dict, events: list) -> None:
+    """H-16 锚点（2026-08-24 换 M45 代表案例）：最终结果 + 事件流的
+    五维契约断言（错位数据下必须红）。
 
-    ① target_entity==M13 且 requested_properties 含 质量/金属丰度；
+    ① target_entity==M45 且 requested_properties 含 年龄/距离/金属丰度；
     ② records 非空且每条 field_name/field_value/field_unit 非空；
     ③ 图驱动 7 卡 stage_started 全集 + stage_completed 配对；
     ④ 事件 seq 严格单调递增（乱序/重放/断线续播防线）。
     """
     # ① 目标天体与查询性质（错位响应最常见表现：另一论文/另一天体）
-    assert final.get("target_entity") == "M13", \
+    # 注: 测试钩子澄清路径下 SIMBAD 解析为 "M45"（前端真实运行因澄清
+    # 答案差异解析为 "Pleiades"）——契约锚定录制运行自身的解析结果
+    assert final.get("target_entity") == "M45", \
         f"target_entity 错位: {final.get('target_entity')!r}"
     props = final.get("requested_properties") or []
     props_text = " ".join(str(p) for p in props)
@@ -100,22 +103,22 @@ def assert_m13_contract(final: dict, events: list) -> None:
 
 
 @pytest.mark.network
-@my_vcr.use_cassette("m13_query.yaml")
-def test_e2e_m13_query(tmp_path):
-    """真实全流程：M13 的质量和金属丰度（录制/回放）。"""
+@my_vcr.use_cassette("m45_query.yaml")
+def test_e2e_m45_query(tmp_path):
+    """真实全流程：M45 的年龄、距离和金属丰度（录制/回放）。"""
     store = TaskStore(tmp_path / "e2e.db")
-    task = store.create_task("M13 的质量和金属丰度")
+    task = store.create_task("昴星团(M45)的年龄、距离和金属丰度")
 
     tbus = EventBus(store)
 
-    answers = iter(["质量、金属丰度", "y"])  # ask_properties → final_confirm
+    answers = iter(["年龄、距离和金属丰度", "y"])  # ask_properties → final_confirm
 
     def get_answer(_tid, payload):
         return next(answers)
 
     result = run_task_streaming(
         task_id=task["task_id"],
-        user_query="M13 的质量和金属丰度",
+        user_query="昴星团(M45)的年龄、距离和金属丰度",
         extra_pdfs=[],
         bus=tbus,
         get_answer=get_answer,
@@ -125,7 +128,7 @@ def test_e2e_m13_query(tmp_path):
 
     events = store.get_events(task["task_id"])
     # H-16：内容/数值/顺序契约断言（VCR 错位数据下必须红）
-    assert_m13_contract(result, events)
+    assert_m45_contract(result, events)
 
     # 澄清至少一次（ask_properties 或 final_confirm）且终态事件在场
     types = [e["type"] for e in events]
@@ -154,9 +157,9 @@ def test_cassette_contains_no_secrets():
     """H-13：cassette 不得含 authorization 头键或明文 Bearer 密钥。
 
     录制端已配 filter_headers/filter_query_parameters；本测试守护已落盘
-    的 m13_query.yaml（58MB，141 条交互）不含任何密钥痕迹。
+    的 m45_query.yaml 不含任何密钥痕迹。
     """
-    path = CASSETTE_DIR / "m13_query.yaml"
+    path = CASSETTE_DIR / "m45_query.yaml"
     assert path.exists(), "cassette 缺失（录制资产被误删？）"
     bad: list[str] = []
     with path.open(encoding="utf-8") as fh:
@@ -173,15 +176,15 @@ def test_cassette_contains_no_secrets():
 # ══════════════════════════════════════════════════════
 
 def _sample_final(**overrides) -> dict:
-    """干净样本：真实 M13 运行形态（target_entity/props/records 与实测一致）。"""
+    """干净样本：真实 M45 运行形态（target_entity/props/records 与实测一致）。"""
     final = {
-        "target_entity": "M13",
-        "requested_properties": ["质量", "金属丰度"],
+        "target_entity": "M45",
+        "requested_properties": ["年龄", "距离", "金属丰度"],
         "final_output": {
             "records": [
-                {"field_name": "mass", "field_value": "4.02e5", "field_unit": "Msun"},
-                {"field_name": "metallicity", "field_value": "-1.39", "field_unit": "dex"},
-                {"field_name": "metallicity", "field_value": "-1.57", "field_unit": "dex"},
+                {"field_name": "age", "field_value": "125", "field_unit": "Myr"},
+                {"field_name": "distance", "field_value": "135.15", "field_unit": "pc"},
+                {"field_name": "fe_h", "field_value": "0.03", "field_unit": "dex"},
             ]
         },
     }
@@ -225,16 +228,16 @@ def _mutate_seq_out_of_order(final, events):
     _swap_seq(events, 2, 3)
 
 
-def test_m13_contract_accepts_valid_data():
+def test_m45_contract_accepts_valid_data():
     """干净样本通过：E2E 契约对真实形态数据全绿。"""
-    assert_m13_contract(_sample_final(), _sample_events())
+    assert_m45_contract(_sample_final(), _sample_events())
 
 
 @pytest.mark.parametrize(
     "label, mutate",
     [
         ("target_entity 错位", lambda f, e: f.update(target_entity="M31")),
-        ("requested_properties 缺性质", lambda f, e: f.update(requested_properties=["质量"])),
+        ("requested_properties 缺性质", lambda f, e: f.update(requested_properties=["年龄"])),
         ("records 为空", lambda f, e: f["final_output"].update(records=[])),
         ("field_value 为空串", lambda f, e: f["final_output"]["records"][1].update(field_value="   ")),
         ("field_name 缺失", lambda f, e: f["final_output"]["records"][0].pop("field_name")),
@@ -244,9 +247,9 @@ def test_m13_contract_accepts_valid_data():
         ("seq 乱序", _mutate_seq_out_of_order),
     ],
 )
-def test_m13_contract_rejects_mismatched_data(label, mutate):
+def test_m45_contract_rejects_mismatched_data(label, mutate):
     """注入错位数据 → 断言必须失败（H-16 回归锚点）。"""
     final, events = _sample_final(), _sample_events()
     mutate(final, events)
     with pytest.raises(AssertionError):
-        assert_m13_contract(final, events)
+        assert_m45_contract(final, events)

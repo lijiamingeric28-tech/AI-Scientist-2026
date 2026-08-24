@@ -477,6 +477,9 @@ unit_conversions_astrophysics:
     year: 1.0e-9
     years: 1.0e-9
     Ga: 1.0
+    # 2026-08-24: 对数单位配置标记 — "10^x_<内层单位>" 表示 10^val 后
+    # 按内层单位继续换算 (convert_units 通用机制, 无代码特判)
+    "log(yr)": "10^x_yr"
   magnitude:
     mag: 1.0
     magnitudes: 1.0

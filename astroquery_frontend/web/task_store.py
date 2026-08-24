@@ -129,3 +129,26 @@ class TaskStore:
         with self._conn() as conn:
             row = conn.execute("SELECT MAX(seq) AS m FROM events WHERE task_id=?", (task_id,)).fetchone()
         return row["m"] or 0
+
+    # ── 删除（2026-08-24：任务清理功能）──
+    def delete_events(self, task_id: str) -> int:
+        """删除任务的全部事件记录，返回删除行数。"""
+        with self._lock, self._conn() as conn:
+            cur = conn.execute("DELETE FROM events WHERE task_id=?", (task_id,))
+            return int(cur.rowcount)
+
+    def delete_task(self, task_id: str) -> int:
+        """删除任务行（events 不级联，调用方按需先删），返回删除行数。"""
+        with self._lock, self._conn() as conn:
+            cur = conn.execute("DELETE FROM tasks WHERE task_id=?", (task_id,))
+            return int(cur.rowcount)
+
+    def update_orphan_status(self) -> int:
+        """启动纠偏：running/queued 任务重启后已成孤儿（队列为内存态），
+        统一标记为 cancelled，返回受影响行数。"""
+        with self._lock, self._conn() as conn:
+            cur = conn.execute(
+                "UPDATE tasks SET status='cancelled' "
+                "WHERE status IN ('running','queued')"
+            )
+            return int(cur.rowcount)

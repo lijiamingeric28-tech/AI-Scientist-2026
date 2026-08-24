@@ -6,6 +6,7 @@ import * as api from '@/services/api'
 import { STATUS_LABELS, STATUS_COLORS } from '@/components/status'
 import { SourcesList, OutputFiles } from '@/components/results/ResultTabs'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import Markdown from '@/lib/markdown'
 
 /* 右侧详情面板（块 5 定案）：
  * - 宽度 560 默认，可拖拽调宽（400-680）
@@ -592,6 +593,30 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
   const [sources, setSources] = useState([])
   const [exports, setExports] = useState([])
   const [figures, setFigures] = useState([])
+  // 2026-08-24: 图证渐进加载 — 首屏 12 张, 滚动到底自动续载
+  const [figVisible, setFigVisible] = useState(12)
+  const figSentinelRef = useRef(null)
+
+  // 任务切换/图证数据刷新 → 渐进计数复位
+  useEffect(() => {
+    setFigVisible(12)
+  }, [figures])
+
+  // 哨兵可见 → 续载下一批 12 张
+  useEffect(() => {
+    const el = figSentinelRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((en) => en.isIntersecting)) {
+          setFigVisible((n) => n + 12)
+        }
+      },
+      { rootMargin: '120px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [section, figVisible, figures.length])
   const [quality, setQuality] = useState(null)
   const [traces, setTraces] = useState([])
   const [recordCount, setRecordCount] = useState(null)
@@ -840,21 +865,33 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
                 sources.length ? <SourcesList sources={sources} /> : <TabEmpty text="暂无数据源" />
               )}
 
-              {/* ── 图证（双列缩略图 + 灯箱，契约 D9-4） ── */}
+              {/* ── 图证（双列缩略图 + 灯箱 + 渐进加载，契约 D9-4） ── */}
               {section === 'figures' && (
                 figures.length ? (
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                    {figures.map((fig) => (
-                      <div key={fig.id} className="row-item" style={{ padding: 8 }}>
-                        <div onClick={() => setLightbox(fig)} style={{ cursor: 'zoom-in' }}>
-                          <FigureThumb fig={fig} />
+                  <>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                      {figures.slice(0, figVisible).map((fig) => (
+                        <div key={fig.id} className="row-item" style={{ padding: 8 }}>
+                          <div onClick={() => setLightbox(fig)} style={{ cursor: 'zoom-in' }}>
+                            <FigureThumb fig={fig} />
+                          </div>
+                          <div className="hint-dim" style={{ marginTop: 6 }}>
+                            <Markdown>{fig.caption || ''}</Markdown>
+                            <div>第 {fig.page} 页</div>
+                          </div>
                         </div>
-                        <div className="hint-dim" style={{ marginTop: 6 }}>
-                          {fig.caption} · 第 {fig.page} 页
-                        </div>
+                      ))}
+                    </div>
+                    {/* 渐进加载哨兵 + 剩余计数 */}
+                    {figVisible < figures.length ? (
+                      <div
+                        ref={figSentinelRef}
+                        style={{ padding: '14px 0 6px', textAlign: 'center', fontSize: 11, color: 'var(--content-fg-tertiary)' }}
+                      >
+                        已显示 {figVisible} / {figures.length} 张 · 滚动加载更多
                       </div>
-                    ))}
-                  </div>
+                    ) : null}
+                  </>
                 ) : <TabEmpty text="暂无图证" />
               )}
 
@@ -921,8 +958,10 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
             <div style={{ background: 'var(--surface-bg)', borderRadius: 10, padding: 16, maxWidth: '90vw', maxHeight: '90vh', overflow: 'auto' }}>
               <FigureThumb fig={lightbox} size="large" />
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-                <span style={{ fontSize: 13, color: 'var(--content-fg)' }}>{lightbox.caption}</span>
-                <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>点击任意处关闭</span>
+                <div style={{ fontSize: 13, color: 'var(--content-fg)', flex: 1, minWidth: 0 }}>
+                  <Markdown>{lightbox.caption || ''}</Markdown>
+                </div>
+                <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>点击任意处关闭</span>
               </div>
             </div>
           </div>

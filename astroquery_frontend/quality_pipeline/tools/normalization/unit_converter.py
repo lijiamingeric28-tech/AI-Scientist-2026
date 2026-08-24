@@ -3,27 +3,21 @@
 V2.1 修复: 转换因子以 (category, from_unit) 为键, 避免同名单位被覆盖。
 例如 GPa 在 strength 中 ×1000→MPa, 在 hardness 中查表转换, 不再混淆。
 
-V2.3 (2026-08-24) 年龄单位统一:
-  - log(yr) 等对数单位 10^x 还原 (仅 age 类字段, 保护 log(Sun)/logg);
-  - 多类同名单位 (如 yr 在 time/age) 优先选能转换到 target 的类;
-  - 字段名含 age (cluster_age 等) 自动获得 age 类与 Gyr 目标单位兜底;
-  - target_schema 别名 (aliases) 参与标准单位查找。
+V2.4 (2026-08-24 重构, 回退 Aug 23 权威设计):
+  - 标准单位唯一权威 = 调用方注入的 standard_units (PropertySpec/RAG 直通),
+    本模块不再做任何字段名/类别的代码特判;
+  - 对数单位由配置驱动: unit_conversions 条目因子形如 "10^x_yr" 表示
+    10^val 后按内层单位继续换算 (任何领域可用, 无领域专用逻辑);
+  - 多类同名单位 (如 yr 在 time/age) 优先选能转换到 target 的类 (通用消歧)。
 """
-import math
 import re
 from typing import Any
 from ...configs import load_yaml, load_domain_config, load_domain_schema_config, get_research_domain
 from ...utils.logger import get_logger
 logger = get_logger(__name__)
 
-# 对数单位形态: log(yr) / log10(yr) 等 — 10^x 还原内层单位
+# 对数单位形态: log(yr) / log10(yr) 等
 _LOG_UNIT_RE = re.compile(r"^log(?:10)?\(\s*([A-Za-z0-9.*^/ -]+?)\s*\)$")
-
-# 内层为年龄单位的 log(...) 才做 10^x 还原 (log(Sun)/log(cm s**-2) 走常规路径)
-_AGE_INNER_UNITS = {"Gyr", "Myr", "kyr", "yr", "year", "years", "Ga"}
-
-# 年龄类字段名提示 (语义类型缺失时的兜底; "t"/"tau" 过泛不纳入)
-_AGE_FIELD_HINTS = ("logt",)
 
 
 # 语义类型 → category 映射 (用于推断字段属于哪个单位类别)
@@ -113,10 +107,6 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
         n, u = f.get("name"), f.get("standard_unit")
         if n and u:
             std_units[n] = u
-            # V2.3: 别名同享标准单位 (如 t/tau/stellar_age → age 的 Gyr)
-            for alias in f.get("aliases", []) or []:
-                if isinstance(alias, str) and alias and alias not in std_units:
-                    std_units[alias] = u
 
     # 用户指定的目标单位 (V2: 支持 entity-aware key)
     conv_map: dict[str, str] = {}
@@ -162,10 +152,6 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
                 target = entity_conv_map.get((en, fn))
         if target is None:
             target = conv_map.get(fn) or std_units.get(fn)
-        # V2.3: 年龄类字段 (字段名含 age / logt) 无目标单位时兜底为 age 标准单位
-        age_keyword = "age" in str(fn).lower() or str(fn) in _AGE_FIELD_HINTS
-        if target is None and age_keyword:
-            target = std_units.get("age") or "Gyr"
 
         from ...tools._parse_utils import parse_numeric
         nv = parse_numeric(val)
@@ -211,26 +197,23 @@ def convert_units(records: list[dict], unit_conversions: list[dict] | None = Non
                     st = field_semantic[k]
                     break
         inferred_cat = _SEMANTIC_TO_CATEGORY.get(st, "")
-        # V2.3: 语义类型缺失时年龄类字段名兜底为 age 类
-        if not inferred_cat and age_keyword:
-            inferred_cat = "age"
 
-        # V2.3: 对数单位 (log(yr) 等) — 10^x 还原内层单位; 仅 age 类启用,
-        # 保护 abundance 的 log(Sun) 与 surface_gravity 的 log(cm s**-2) 不被误转
+        # V2.4: 对数单位 (log(yr) 等) — 配置驱动: 仅当配置里该单位存在
+        # "10^x_<内层单位>" 因子标记时才做 10^x 还原 (任何领域可声明,
+        # 无领域专用逻辑; 未标记的 log 单位走常规因子路径)
         log_unit = None
         if isinstance(unit, str):
             m = _LOG_UNIT_RE.match(unit.strip())
-            if m and m.group(1) in _AGE_INNER_UNITS:
-                if inferred_cat != "age":
-                    unconv.append({
-                        "record_id": rec.get("record_id"), "field": fn,
-                        "reason": f"log-unit '{unit}' only converted for age fields (category={inferred_cat or 'unknown'})",
-                        "kind": "log_unit_not_supported",
-                    })
-                    continue
-                log_unit = unit
-                nv = 10.0 ** float(nv)
-                unit = m.group(1)
+            if m:
+                marked = any(
+                    isinstance(cat_map.get((cat, unit), {}).get("factor"), str)
+                    and cat_map[(cat, unit)]["factor"].startswith("10^x_")
+                    for cat in unit_categories.get(unit, [])
+                )
+                if marked:
+                    log_unit = unit
+                    nv = 10.0 ** float(nv)
+                    unit = m.group(1)
 
         # Step 2: 在 category 对应的规则中查找
         candidates = unit_categories.get(unit, [])

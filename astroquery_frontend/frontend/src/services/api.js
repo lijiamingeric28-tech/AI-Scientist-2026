@@ -94,6 +94,20 @@ export function retryTask(taskId) {
   return request(`/tasks/${taskId}/retry`, { method: 'POST' })
 }
 
+/* ── 任务删除（2026-08-24：数据清理） ── */
+export function deleteTaskData(taskId, parts) {
+  const q = parts && parts.length ? `?parts=${parts.join(',')}` : ''
+  return request(`/tasks/${taskId}/data${q}`, { method: 'DELETE' })
+}
+
+export function deleteTask(taskId) {
+  return request(`/tasks/${taskId}`, { method: 'DELETE' })
+}
+
+export function batchDeleteTasks(taskIds) {
+  return request('/tasks/batch-delete', { method: 'POST', body: JSON.stringify({ task_ids: taskIds }) })
+}
+
 /* ── 结果（重度数据 HTTP） ── */
 export function getRecords(taskId) {
   return request(`/tasks/${taskId}/records`)

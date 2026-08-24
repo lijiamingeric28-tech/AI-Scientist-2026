@@ -97,7 +97,11 @@ export function RecordsTable({ records, onRowClick }) {
                           color: isVlm ? 'var(--status-progress)' : 'var(--content-fg-secondary)',
                         }}
                       >
-                        {isVlm ? (r.extraction_method === 'vlm_table' ? 'VLM 表格' : 'VLM') : '数据库'}
+                        {isVlm ? (
+                          r.extraction_method === 'vlm_table' ? 'VLM 表格'
+                            : r.extraction_method === 'vlm_text' ? 'VLM 文本'
+                              : 'VLM'
+                        ) : '数据库'}
                       </span>
                     )
                   })()}

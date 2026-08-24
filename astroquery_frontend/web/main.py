@@ -241,6 +241,8 @@ async def get_task(task_id: str):
     if not rec:
         raise HTTPException(404, "任务不存在")
     rec["status"] = _normalize_status(rec["status"])  # H-01
+    # 2026-08-24: 任务行不带 state_json（10MB+，重度数据走 /state 裁剪版）
+    rec.pop("state_json", None)
     return rec
 
 
@@ -253,9 +255,11 @@ async def get_state(task_id: str):
     rec["status"] = _normalize_status(rec["status"])  # H-01
     state = {}
     try:
-        state = json.loads(rec.get("state_json") or "{}")
+        state = _slim_state(json.loads(rec.get("state_json") or "{}"))
     except json.JSONDecodeError:
         pass
+    # 2026-08-24: 任务行不带 state_json（已裁剪进 state 字段）
+    rec.pop("state_json", None)
     events = store.get_events(task_id, 0)
     # D5-4: 挂起的澄清仅当任务 running 且末事件为 clarification 时返回
     #（M-21 锚点②：已被 message/后续事件覆盖的旧澄清不算挂起）
@@ -314,6 +318,120 @@ async def retry_task(task_id: str):
     store.update_task(new_task["task_id"], output_dir=str(task_dir), pdf_paths=json.dumps(moved))
     executor.submit(new_task["task_id"], rec["query"], moved)
     return {"task_id": new_task["task_id"], "status": "queued"}
+
+
+# ══════════════════════════════════════════════════════
+# 任务删除（2026-08-24：数据清理功能）
+# ══════════════════════════════════════════════════════
+
+PAPERS_ROOT = ROOT / "subgraphs" / "data" / "papers"
+_DELETABLE_PARTS = ("pdfs", "figures", "checkpoints", "events")
+
+
+def _task_data_paths(task_id: str) -> Dict[str, Path]:
+    """任务各数据块的磁盘位置（可能不存在）。"""
+    return {
+        "pdfs": PAPERS_ROOT / task_id,
+        "figures": OUTPUT_DIR / "figures" / task_id,
+        "exports": OUTPUT_DIR / task_id[:8],
+        "task_dir": OUTPUT_DIR / task_id,
+    }
+
+
+def _rmtree_if_exists(p: Path) -> bool:
+    if p.is_dir():
+        shutil.rmtree(p, ignore_errors=True)
+        return True
+    return False
+
+
+def _delete_task_data(task_id: str, parts: List[str]) -> Dict[str, Any]:
+    """按 parts 删除任务的数据块（不含任务行本身）。"""
+    paths = _task_data_paths(task_id)
+    removed: Dict[str, bool] = {}
+    for part in parts:
+        if part == "checkpoints":
+            try:
+                import sqlite3 as _sqlite3
+                con = _sqlite3.connect(str(CHECKPOINT_PATH), timeout=10)
+                try:
+                    n = 0
+                    cur = con.cursor()
+                    for table in ("writes", "checkpoints"):
+                        n += cur.execute(f"DELETE FROM {table} WHERE thread_id=?", (task_id,)).rowcount
+                    con.commit()
+                    removed["checkpoints"] = n > 0
+                finally:
+                    con.close()
+            except Exception as e:  # noqa: BLE001
+                logger.warning("[Web] checkpoint 删除失败 %s: %s", task_id, e)
+                removed["checkpoints"] = False
+        elif part == "events":
+            removed["events"] = store.delete_events(task_id) > 0
+        elif part in ("pdfs", "figures", "exports"):
+            removed[part] = _rmtree_if_exists(paths.get(part, Path(".")))
+    return removed
+
+
+@app.delete("/api/tasks/{task_id}/data")
+async def delete_task_data(task_id: str, parts: str = ""):
+    """内容级清理：删除任务的部分数据（pdfs/figures/checkpoints/events）。
+
+    parts 为逗号分隔的可删除块清单；空/未指定时默认全部四块。
+    任务行与结果 state_json 保留（历史任务仍可点开查看结果）。
+    """
+    rec = store.get_task(task_id)
+    if not rec:
+        raise HTTPException(404, "任务不存在")
+    if _normalize_status(rec["status"]) in ("running", "queued"):
+        raise HTTPException(409, "任务运行中，不可清理")
+    wanted = [p.strip() for p in (parts or "").split(",") if p.strip()]
+    if not wanted:
+        wanted = list(_DELETABLE_PARTS)
+    unknown = [p for p in wanted if p not in _DELETABLE_PARTS]
+    if unknown:
+        raise HTTPException(400, f"不支持的清理块: {unknown}（可选: {_DELETABLE_PARTS}）")
+    return {"removed": _delete_task_data(task_id, wanted)}
+
+
+@app.delete("/api/tasks/{task_id}")
+async def delete_task(task_id: str):
+    """整任务删除：任务行 + events + checkpoints + 论文 PDF + 图证 + 导出 + 上传 PDF。"""
+    rec = store.get_task(task_id)
+    if not rec:
+        raise HTTPException(404, "任务不存在")
+    if _normalize_status(rec["status"]) in ("running", "queued"):
+        raise HTTPException(409, "任务运行中，不可删除")
+    removed = _delete_task_data(task_id, ["pdfs", "figures", "checkpoints", "events", "exports"])
+    paths = _task_data_paths(task_id)
+    removed["task_dir"] = _rmtree_if_exists(paths["task_dir"])
+    removed["events"] = store.delete_events(task_id) > 0 or removed.get("events", False)
+    store.delete_task(task_id)
+    return {"deleted": True, "removed": removed}
+
+
+class BatchDeleteBody(BaseModel):
+    task_ids: List[str]
+
+
+@app.post("/api/tasks/batch-delete")
+async def batch_delete_tasks(body: BatchDeleteBody):
+    """批量整任务删除（任务行 + 全部关联数据）。"""
+    results = []
+    for tid in body.task_ids:
+        rec = store.get_task(tid)
+        if not rec:
+            results.append({"task_id": tid, "deleted": False, "reason": "not_found"})
+            continue
+        if _normalize_status(rec["status"]) in ("running", "queued"):
+            results.append({"task_id": tid, "deleted": False, "reason": "active"})
+            continue
+        removed = _delete_task_data(tid, ["pdfs", "figures", "checkpoints", "events", "exports"])
+        _rmtree_if_exists(_task_data_paths(tid)["task_dir"])
+        store.delete_events(tid)
+        store.delete_task(tid)
+        results.append({"task_id": tid, "deleted": True, "removed": removed})
+    return {"results": results}
 
 
 # ══════════════════════════════════════════════════════
@@ -398,6 +516,77 @@ def _load_state(task_id: str) -> Dict[str, Any]:
         return {}
 
 
+# ══════════════════════════════════════════════════════════════
+# 2026-08-24: /state 与 /quality 响应瘦身 — state_json 12MB/任务, 前端
+# 实际只读少量路径。裁剪后 /state 19MB→~1MB, 点开任务秒开。
+# 裁剪只发生在响应层 (落库的 state_json 保持完整, 历史数据零丢失);
+# events 全量保留 (历史流水线回放依赖, 实测仅 0.26MB)。
+# ══════════════════════════════════════════════════════════════
+
+# 前端逐源实际读取的 sources 字段 (其余 ~2MB 明细裁剪)。
+# quality_scoring 供质量分布图 per-source 等级 (缺失会全退化为 poor)
+_QUALITY_SOURCE_KEEP_KEYS = ("title", "record_count", "extraction_quality", "quality_scoring")
+
+
+def _slim_quality_report(qr: Any) -> Any:
+    """裁剪 quality_report: 保留前端消费路径, 剔除重复/大明细字段。"""
+    if not isinstance(qr, dict):
+        return qr
+    out: Dict[str, Any] = {}
+    for key, val in qr.items():
+        if key == "data_state":
+            # 仅保留 data_trace (前端轨迹 Tab 用); input/current_data 是
+            # records 的副本, 前端走 /records 独立接口
+            out[key] = {"data_trace": (val or {}).get("data_trace", [])}
+        elif key == "report_state":
+            rs: Dict[str, Any] = {}
+            q = (val or {}).get("quality") or {}
+            # sources 明细裁剪: 只留标题/记录数/提取质量评分
+            srcs = {}
+            for sid, src in (q.get("sources") or {}).items():
+                if isinstance(src, dict):
+                    srcs[sid] = {k: src.get(k) for k in _QUALITY_SOURCE_KEEP_KEYS}
+            q_out = {k2: v2 for k2, v2 in q.items() if k2 != "sources"}
+            q_out["sources"] = srcs
+            rs["quality"] = q_out
+            rs["conflict"] = (val or {}).get("conflict")
+            # normalization 只留 modifications (工具规划/校验明细前端不读)
+            rs["normalization"] = {
+                "modifications": ((val or {}).get("normalization") or {}).get("modifications")
+            }
+            rs["insights"] = (val or {}).get("insights")
+            out[key] = rs
+        elif key == "output_state":
+            # 去掉 structured_data (~210KB, 导出文件独立走 /exports)
+            out[key] = {k2: v2 for k2, v2 in (val or {}).items()
+                        if k2 != "structured_data"}
+        else:
+            out[key] = val
+    return out
+
+
+def _slim_state(state: Any) -> Any:
+    """裁剪完整 state: 剔除重复大字段与前端已有独立接口的数据。"""
+    if not isinstance(state, dict):
+        return state
+    # 顶层重复/大字段 (前端全部有独立接口或从不读取)
+    _DROP_TOP = (
+        "quality_report",      # final_output.quality_report 的重复副本
+        "figure_evidence",     # /figures
+        "paper_records", "database_results", "paper_results",  # /records /sources
+        "supplementary_sources", "supplementary_records",
+        "conversation_history", "extra_pdfs",
+    )
+    out = {k: v for k, v in state.items() if k not in _DROP_TOP}
+    fo = state.get("final_output") or {}
+    out["final_output"] = {k: v for k, v in fo.items()
+                           if k not in ("records", "figure_evidence")}
+    qr = fo.get("quality_report")
+    if qr is not None:
+        out["final_output"]["quality_report"] = _slim_quality_report(qr)
+    return out
+
+
 @app.get("/api/tasks/{task_id}/result")
 async def get_result(task_id: str):
     state = _load_state(task_id)
@@ -409,12 +598,44 @@ def _safe_name(s: str) -> str:
     return s.replace("/", "_").replace(":", "_").replace(" ", "_")
 
 
+def _final_records(state: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """质量管线修改后的最终记录 (与导出文件同源) — 前端表格/下载一致性。
+
+    管线输出在 quality_report.output_state.structured_data.json.records
+    (数值化/单位统一/溯源字段最全); 无质量管线产出 (取消/失败任务) 时
+    回退 final_output.records (管线输入原始值)。
+    """
+    try:
+        recs = (state.get("final_output") or {}).get("quality_report", {}) \
+            .get("output_state", {}).get("structured_data", {}) \
+            .get("json", {}).get("records")
+        if recs:
+            return recs
+    except Exception:  # noqa: BLE001 — 结构缺失回退原始记录
+        pass
+    return (state.get("final_output") or {}).get("records", [])
+
+
+def _final_sources(state: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """与 _final_records 同口径的最终来源列表。"""
+    try:
+        srcs = (state.get("final_output") or {}).get("quality_report", {}) \
+            .get("output_state", {}).get("structured_data", {}) \
+            .get("json", {}).get("sources")
+        if srcs:
+            return srcs
+    except Exception:  # noqa: BLE001
+        pass
+    return (state.get("final_output") or {}).get("sources", [])
+
+
 @app.get("/api/tasks/{task_id}/records")
 async def get_records(task_id: str):
-    """契约 D7-1 扩展 (2026-08-24): 论文记录附加 page_image_url —
-    指向 bbox 溯源页图 (/static/figures/{task_id}/source_pages/{bibcode}/page_{N}.png),
+    """契约 D7-1 扩展 (2026-08-24): 返回质量管线修改后的最终记录
+    (与导出 grounded_data 同源), 附加 page_image_url — 指向 bbox 溯源页图
+    (/static/figures/{task_id}/source_pages/{bibcode}/page_{N}.png),
     文件不存在时为空串 (前端据此降级为只显示坐标文本)。"""
-    records = (_load_state(task_id).get("final_output") or {}).get("records", [])
+    records = _final_records(_load_state(task_id))
     pages_dir = OUTPUT_DIR / "figures" / task_id / "source_pages"
     out = []
     for rec in records:
@@ -434,7 +655,8 @@ async def get_records(task_id: str):
 
 @app.get("/api/tasks/{task_id}/sources")
 async def get_sources(task_id: str):
-    return (_load_state(task_id).get("final_output") or {}).get("sources", [])
+    # 2026-08-24: 与 /records 同口径 — 返回质量管线修改后的最终来源列表
+    return _final_sources(_load_state(task_id))
 
 
 @app.get("/api/tasks/{task_id}/figures")
@@ -461,11 +683,11 @@ async def get_figures(task_id: str):
 
 @app.get("/api/tasks/{task_id}/quality")
 async def get_quality(task_id: str):
-    """契约 D7-4：质量报告 + 洞察（轻量并入）"""
+    """契约 D7-4：质量报告 + 洞察（轻量并入；2026-08-24 响应裁剪）"""
     state = _load_state(task_id)
     final = state.get("final_output") or {}
     return {
-        "quality_report": final.get("quality_report"),
+        "quality_report": _slim_quality_report(final.get("quality_report")),
         "insights": (state.get("quality_report") or {}).get("insights"),
     }
 
@@ -676,6 +898,14 @@ async def _cleanup_orphans():
                 p.unlink()
         except OSError:
             pass
+    # 2026-08-24: 队列为内存态, 重启后 running/queued 任务永远无法执行 —
+    # 启动时纠偏为 cancelled, 避免卡住任务列表且不可删除
+    try:
+        n = store.update_orphan_status()
+        if n:
+            logger.info("[Web] 启动纠偏: %d 个孤儿 running/queued 任务标记为 cancelled", n)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("[Web] 孤儿任务纠偏失败: %s", e)
 
 
 # M-11: VCR 启动自测移入 startup（import 期零网络/零阻塞/日志可控）

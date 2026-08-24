@@ -10,10 +10,10 @@ V2.3: 并行执行 — 多个 source 的工具执行并发处理。
 """
 from __future__ import annotations
 import datetime
-import re as _re
 import time
 import copy
 import threading
+from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 from quality_pipeline.quality_state import QualityGraphState
@@ -34,25 +34,57 @@ logger = get_logger(__name__)
 # Base Tool 注册表
 _BASE_TOOLS = {}
 
-# 2026-08-24: 年龄单位确定性预统一 — log(yr)/yr/Myr/Gyr → 标准 Gyr
-# (此前依赖 LLM 规划 unit_normalize op, cluster_age 三态单位从未收敛)
-_AGE_UNIT_SET = {"Gyr", "Myr", "kyr", "yr", "year", "years", "Ga", "log(yr)"}
+# 2026-08-24: 可行域护栏 — LLM 生成工具改出的值越界即整工具拒绝。
+# 数据源: quality_rules semantic_types 的 feasible_ranges (关键字匹配字段名),
+# 全部由配置驱动, 代码无领域特判。
+@lru_cache(maxsize=1)
+def _load_feasible_guard() -> list:
+    """加载可行域护栏表: [(keywords, {unit: (lo, hi)}), ...]"""
+    try:
+        from quality_pipeline.configs import load_domain_config
+        cfg = load_domain_config("semantic_types", "semantic_types",
+                                 research_domain="astrophysics")
+    except Exception:  # noqa: BLE001
+        return []
+    out = []
+    for st_name, st in (cfg or {}).items():
+        if not isinstance(st, dict):
+            continue
+        fr = st.get("feasible_ranges") or {}
+        kws = [k for k in (st.get("keywords") or [])
+               if isinstance(k, str) and len(k) >= 3]
+        if not kws or not isinstance(fr, dict):
+            continue
+        ranges = {}
+        for unit, rng in fr.items():
+            if isinstance(rng, (list, tuple)) and len(rng) == 2:
+                try:
+                    ranges[unit] = (float(rng[0]), float(rng[1]))
+                except (TypeError, ValueError):
+                    continue
+        if ranges:
+            out.append((kws, ranges))
+    return out
 
-# 纯标量数值 (预统一只收这类值; "70-100"/"112±5" 等区间/带不确定度写法
-# 保持原样, 交给冲突处理/人工复核 — parse_numeric 会把区间取中点, 不能进换算)
-_PLAIN_NUM_RE = _re.compile(r"^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$")
 
+def _record_out_of_range(rec: dict, guard: list) -> bool:
+    """记录值是否超出其字段语义类型的可行域 (护栏判定)。"""
+    fn = str(rec.get("field_name") or "").lower()
+    unit = rec.get("field_unit") or ""
+    if not fn or not unit:
+        return False
+    try:
+        val = float(rec.get("field_value"))
+    except (TypeError, ValueError):
+        return False
+    for kws, ranges in guard:
+        if any(k.lower() in fn for k in kws):
+            rng = ranges.get(unit)
+            if rng and not (rng[0] <= val <= rng[1]):
+                return True
+            return False  # 命中语义类型后不再匹配其他类型
+    return False
 
-def _is_age_field(fn: str) -> bool:
-    """年龄类字段名判断 (与 unit_converter 的 age 关键字兜底保持一致)。"""
-    return isinstance(fn, str) and ("age" in fn.lower() or fn in ("logt",))
-
-
-def _is_plain_scalar(val) -> bool:
-    """值是否为纯标量 (int/float 或无歧义数字字符串)。"""
-    if isinstance(val, (int, float)):
-        return True
-    return isinstance(val, str) and bool(_PLAIN_NUM_RE.match(val.strip()))
 
 
 def _run_with_timeout(target, args=(), timeout=None) -> dict:
@@ -214,55 +246,6 @@ def _execute_one_source(sid: str, by_src: dict, records: list[dict],
     if not srecs:
         result["total"] = -1  # empty marker
         return result
-
-    # 2026-08-24: 年龄单位确定性预统一 (Layer 0) — 不依赖 LLM 规划的 op。
-    # 只处理年龄类字段 (age/cluster_age/stellar_age/...), 三态单位
-    # (Myr/yr/log(yr)) 统一到 target_schema 标准单位 (Gyr); 其余字段
-    # 维持原"按需转换 + 冲突保留"语义不变。
-    age_recs = [r for r in srecs
-                if isinstance(r, dict)
-                and _is_age_field(r.get("field_name", ""))
-                and r.get("field_unit") in _AGE_UNIT_SET
-                and _is_plain_scalar(r.get("field_value"))]
-    if age_recs:
-        try:
-            _lazy_load_tools()
-            conv_fn = _BASE_TOOLS.get("unit_converter")
-            # 2026-08-24 fix: 显式 to=Gyr (age 类别标准单位) — 不再依赖 ctx 的
-            # standard_units (其可能被性质库单位如 cluster_age→'yr' 覆盖,
-            # M45 实跑预统一被带偏为 yr)
-            age_fields = sorted({str(r.get("field_name", "")) for r in age_recs})
-            conv = conv_fn(
-                age_recs,
-                unit_conversions=[{"field": fn, "to": "Gyr"} for fn in age_fields if fn],
-                standard_units=(ctx or {}).get("standard_units") or {},
-                semantic_types=(ctx or {}).get("semantic_types") or {},
-                target_schema=(ctx or {}).get("target_schema"),
-                research_domain=(ctx or {}).get("research_domain"),
-            )
-            for cl in conv.get("conversion_log", []) or []:
-                if not isinstance(cl, dict):
-                    continue
-                result["base_logs"].append({
-                    "record_id": cl.get("record_id"), "field": cl.get("field"),
-                    "action": "unit_normalize",
-                    "before": str(cl.get("original_value")), "after": str(cl.get("new_value")),
-                    "from": cl.get("from"), "to": cl.get("to"),
-                    "tool": "unit_converter",
-                })
-                result["total"] += 1
-            if conv.get("conversion_log"):
-                result["tool_count"] += 1
-            for uc in conv.get("unconverted", []) or []:
-                if isinstance(uc, dict):
-                    result["errors"].append({
-                        "source_id": sid, "tool": "unit_converter(age)",
-                        "kind": "unconverted_unit",
-                        "error": uc.get("reason", ""),
-                        "record_id": uc.get("record_id"), "field": uc.get("field"),
-                    })
-        except Exception as e:  # noqa: BLE001 — 预统一失败不阻断, 后续 Layer 照常
-            logger.warning("[ToolExec] Age unit pre-pass failed for %s: %s", sid, e)
 
     # V2: collect entities in this source
     entities_seen = set()
@@ -671,6 +654,41 @@ class NormalizationAgent:
                     logger.warning("[ToolExec] Generated '%s': self_check FAILED (%d): %s",
                                    gen.get("tool_name", "?"), len(sc["failed"]),
                                    str(sc["failed"][:2])[:200])
+            # 2026-08-24: 可行域护栏 — 工具把已有数值改成越界值 (如 LLM 生成
+            # 工具盲目 /1000 双换算: 0.118 Gyr→0.0001, 100_myr→1e-07→0) 即
+            # 整工具拒绝回滚。缺失值填充 (before 为 None/空, 填 '0' 等占位)
+            # 属合法清洗, 不受此栏约束。
+            try:
+                guard = _load_feasible_guard()
+                if guard:
+                    data_after = result.get("data") or []
+                    by_id = {r.get("record_id"): r for r in data_after
+                             if isinstance(r, dict)}
+                    for e in (result.get("log") or []):
+                        if not isinstance(e, dict):
+                            continue
+                        before_raw = e.get("before")
+                        if before_raw is None or str(before_raw).strip().lower() in (
+                            "", "none", "null",
+                        ):
+                            continue  # 缺失值填充 — 放行
+                        rid = e.get("record_id")
+                        rec = by_id.get(rid)
+                        if rec is not None and _record_out_of_range(rec, guard):
+                            logger.warning(
+                                "[ToolExec] Generated '%s': 可行域护栏拒绝 (record %s, "
+                                "field=%s, value=%s %s 越界)",
+                                gen.get("tool_name", "?"), rid,
+                                rec.get("field_name"), rec.get("field_value"),
+                                rec.get("field_unit"))
+                            return _fail(
+                                "out_of_range",
+                                f"modified value {rec.get('field_value')} "
+                                f"{rec.get('field_unit')} out of feasible range "
+                                f"for {rec.get('field_name')}",
+                            )
+            except Exception as e:  # noqa: BLE001 — 护栏自身异常不阻断工具
+                logger.warning("[ToolExec] 可行域护栏异常: %s", e)
             try:
                 conf = float(gen.get("confidence") or 0)
             except (TypeError, ValueError):

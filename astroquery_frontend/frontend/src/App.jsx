@@ -8,7 +8,8 @@ import DetailPanel from '@/components/layout/DetailPanel'
 import ChatView from '@/components/chat/ChatView'
 import WorkflowView from '@/components/workflow/WorkflowView'
 import SettingsDialog from '@/components/settings/SettingsDialog'
-import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask } from '@/services/api'
+import DeleteTaskDialog from '@/components/layout/DeleteTaskDialog'
+import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks } from '@/services/api'
 import { usePipeline } from '@/hooks/usePipeline'
 import { useTheme } from '@/hooks/useTheme'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -114,6 +115,40 @@ function AppInner() {
     }
   }
 
+  // 2026-08-24: 任务删除（单个内容级 + 批量整删）
+  const [deleteTarget, setDeleteTarget] = useState(null)  // { mode: 'single'|'batch', task?, taskIds? }
+
+  const handleDeleteRequest = (task) => {
+    setDeleteTarget({ mode: 'single', task })
+  }
+
+  const handleBatchDeleteRequest = (taskIds) => {
+    setDeleteTarget({ mode: 'batch', taskIds, count: taskIds.length })
+  }
+
+  const handleDeleteConfirm = async ({ whole, parts }) => {
+    const target = deleteTarget
+    if (!target) return
+    setDeleteTarget(null)
+    try {
+      if (target.mode === 'batch') {
+        const r = await apiBatchDeleteTasks(target.taskIds)
+        const ok = (r.results || []).filter((x) => x.deleted).length
+        toast(`已删除 ${ok} 个任务`, 'info')
+      } else if (whole) {
+        await apiDeleteTask(target.task.task_id)
+        if (selectedId === target.task.task_id) setSelectedId(null)
+        toast('任务已删除', 'info')
+      } else {
+        await apiDeleteTaskData(target.task.task_id, parts)
+        toast('已清理所选内容', 'info')
+      }
+      await loadTasks(0)
+    } catch (err) {
+      toast(`删除失败：${err.message}`, 'error')
+    }
+  }
+
   // 取消运行中任务（契约 D2-3：POST /tasks/{id}/cancel）
   const handleCancel = async () => {
     if (!selected || cancelling) return
@@ -155,6 +190,16 @@ function AppInner() {
     <div className="theme-transition" style={{ display: 'flex', height: '100vh', width: '100%', overflow: 'hidden' }}>
       {/* 设置对话框 */}
       <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      {/* 任务清理弹窗（单个内容级 / 批量整删） */}
+      {deleteTarget && (
+        <DeleteTaskDialog
+          mode={deleteTarget.mode}
+          task={deleteTarget.task}
+          count={deleteTarget.count}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
       {/* ===== 侧边栏 ===== */}
       {sidebarOpen && (
         <Sidebar
@@ -169,6 +214,8 @@ function AppInner() {
           onLoadMore={handleLoadMore}
           filter={filter}
           onFilterChange={setFilter}
+          onDeleteTask={handleDeleteRequest}
+          onBatchDelete={handleBatchDeleteRequest}
         />
       )}
 

@@ -185,6 +185,14 @@ top-level def, import, return, or class statements.
 7. Set _summary to a one-sentence description of what was done
 8. Use 4-space indentation (no tabs)
 
+=== CRITICAL: UNIT CONVERSION IS FORBIDDEN IN GENERATED CODE ===
+NEVER write code that rewrites field_unit or multiplies/divides field_value
+by unit conversion factors (e.g. Myr->Gyr via /1000, yr->Gyr via /1e9).
+Unit unification is done by the deterministic unit_normalize op with
+config-verified factors — generated code MUST NOT touch field_unit.
+If you believe units need fixing, DO NOT write a tool for it; the unit
+conversion pipeline will handle it.
+
 === HOW TO MODIFY RECORDS ===
   val = _safe_get(rec, "field_name")
   new_val = ...transform val...

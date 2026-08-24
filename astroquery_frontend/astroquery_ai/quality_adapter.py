@@ -35,33 +35,6 @@ logger = logging.getLogger(__name__)
 # context_state 生成
 # ══════════════════════════════════════════════════════════════
 
-def _canonical_std_units() -> Dict[str, str]:
-    """领域 target_schema (schema_mapping.yaml) 的 字段名/别名 → 标准单位。
-
-    2026-08-24: 性质库单位 (如 cluster_age 的 'yr') 与领域 schema 标准单位
-    (age 的 'Gyr') 不一致时, 质量管线以领域 schema 为准 — 否则单位换算
-    目标错位 (M45 实跑: cluster_age 全部被转成 yr 而非标准 Gyr)。
-    """
-    try:
-        from quality_pipeline.configs import load_domain_schema_config
-        # 显式天文领域 (research_domain=None 会落到默认材料域, 拿到错误的标准单位)
-        cfg = load_domain_schema_config(
-            "target_schema",
-            research_domain=get_settings().default_research_domain or "astrophysics",
-        )
-    except Exception:  # pragma: no cover — 配置缺失时回退空表
-        return {}
-    canonical: Dict[str, str] = {}
-    for f in (cfg or {}).get("fields", []) or []:
-        n, u = f.get("name"), f.get("standard_unit")
-        if n and u:
-            canonical[n] = u
-            for alias in f.get("aliases", []) or []:
-                if isinstance(alias, str) and alias and alias not in canonical:
-                    canonical[alias] = u
-    return canonical
-
-
 def generate_target_schema(property_spec: List[Dict]) -> Dict:
     """
     从 PropertySpec 生成 target_schema
@@ -70,21 +43,11 @@ def generate_target_schema(property_spec: List[Dict]) -> Dict:
     每个字段附带 semantic_type（用 RAG 的 category 作为粗粒度语义类，
     子图4 的 unit_converter 靠它做同名单位消歧）。
     """
-    canonical = _canonical_std_units()
     fields = []
     for p in property_spec or []:
-        pid = p.get("property_id", "")
-        # 2026-08-24: 年龄类字段 (cluster_age 等, 领域 schema 无同名/别名条目)
-        # 统一采用 age 的标准单位, 与 unit_converter 的 age 关键字兜底一致
-        if pid in canonical:
-            std_unit = canonical[pid]
-        elif "age" in str(pid).lower() or pid == "logt":
-            std_unit = canonical.get("age") or p.get("unit", "")
-        else:
-            std_unit = p.get("unit", "")
         fields.append({
-            "name": pid,
-            "standard_unit": std_unit,
+            "name": p["property_id"],
+            "standard_unit": p.get("unit", ""),
             "semantic_type": p.get("category", ""),
             "ucd": p.get("ucd", ""),
             "description": p.get("description", ""),
@@ -94,24 +57,9 @@ def generate_target_schema(property_spec: List[Dict]) -> Dict:
 
 
 def generate_standard_units(property_spec: List[Dict]) -> Dict[str, str]:
-    """生成 field_name → standard_unit 映射。
-
-    2026-08-24: 领域 schema 的标准单位优先 (与 generate_target_schema 同口径) —
-    性质库单位仅在领域 schema 无覆盖时兜底, 保证单位换算目标不随性质库漂移。
-    """
-    canonical = _canonical_std_units()
-    out: Dict[str, str] = {}
-    for p in property_spec or []:
-        pid = p.get("property_id", "")
-        if not pid:
-            continue
-        if pid in canonical:
-            out[pid] = canonical[pid]
-        elif "age" in str(pid).lower() or pid == "logt":
-            out[pid] = canonical.get("age") or p.get("unit", "")
-        else:
-            out[pid] = p.get("unit", "")
-    return out
+    """生成 field_name → standard_unit 映射（PropertySpec 直通 — RAG 性质库
+    是标准单位的唯一权威，2026-08-24 回退 Aug 23 设计）。"""
+    return {p["property_id"]: p.get("unit", "") for p in (property_spec or [])}
 
 
 # ══════════════════════════════════════════════════════════════

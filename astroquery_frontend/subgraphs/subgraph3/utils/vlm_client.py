@@ -42,7 +42,7 @@ def build_extraction_prompt(
             name_cn = p.get("name_cn", "")
             unit = p.get("unit", "")
             desc = p.get("description", "")[:80]
-            property_lines.append(f"  - {pid} ({name_cn}), 单位={unit}, {desc}")
+            property_lines.append(f"  - {pid} ({name_cn}), 参考单位={unit}, {desc}")
 
         property_whitelist = "\n".join(property_lines)
         property_instruction = f"""请提取以下标准性质（field_name 必须使用列表中的 property_id）：
@@ -155,6 +155,8 @@ def build_extraction_prompt(
 - field_unit 必须与实际数值一致。
 - 同概念但表示不同（如 distance=pc 与 dist_modulus=mag）是不同字段，按单位归属，不得混放。
 - 白名单没有对应字段时，遇到该量就放弃，不要硬塞进其他字段。
+- **值与单位分离**：field_value 只允许数字、小数点和不确定度符号（±/括号）；任何单位文字、波浪号（~）、范围写法一律不得出现在 field_value 中，单位必须单独写入 field_unit（如 "125 ± 20" + "Myr"；"100_myr"、"~ 120-130 Myr" 均为错误格式）。
+- **禁止换算**：field_value 与 field_unit 必须逐字对应原文写法，原文写什么单位就照抄什么单位（"125 Myr" → "125" + "Myr"），不得换算成 125000000 yr 或 0.125 Gyr，也不得把对数值改写为线性值。
 
 ════════════════════════════════════════
 ⑥ 提取前自检（reasoning 必填）
