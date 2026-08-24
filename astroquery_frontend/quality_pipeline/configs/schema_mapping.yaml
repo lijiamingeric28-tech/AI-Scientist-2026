@@ -475,6 +475,7 @@ unit_conversions_astrophysics:
     kyr: 0.000001
     yr: 1.0e-9
     year: 1.0e-9
+    years: 1.0e-9
     Ga: 1.0
   magnitude:
     mag: 1.0

@@ -359,10 +359,12 @@ semantic_types_astrophysics:
 
   age:
     keywords: ["age", "t", "stellar_age", "tau", "lifetime", "age_gyr"]
-    units: ["Gyr", "Myr", "yr", "years", "Ga"]
+    # 2026-08-24: 纳入 log(yr) (unit_converter 已支持 10^x 还原, 见 V2.3)
+    units: ["Gyr", "Myr", "yr", "years", "Ga", "log(yr)"]
     feasible_ranges:
       "Gyr": [0.0, 13.8]
       "Myr": [0.1, 13800]
+      "log(yr)": [6.0, 10.2]
     unit_category: "age"
     expected_in_study: "optional"
 

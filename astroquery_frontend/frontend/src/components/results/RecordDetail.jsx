@@ -1,7 +1,8 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { fmtPair } from '@/lib/format'
+import SourceImageLightbox from './SourceImageLightbox'
 
 /* 记录详情弹窗（居中玻璃模态，风格对齐 SettingsDialog）：
  * 点击记录表格某行 → 展示该记录的完整数据血缘：
@@ -46,6 +47,88 @@ function Section({ label, children }) {
       <div className="section-label" style={{ marginBottom: 6 }}>{label}</div>
       {children}
     </div>
+  )
+}
+
+/* 溯源定位图缩略图：论文页图 + bbox overlay（normalized_1000 → 百分比定位）。
+ * 样式按定位方式 (provenance.bbox_source) 区分:
+ *   - full_table: 整表宏定位 — 半透明大卡片 + "表格" 徽章 (表格数据轨)
+ *   - vector/vlm_crop: 数值微观定位 — 细红框 (正文数据轨)
+ *   - fallback: 段落兜底 — 虚线框
+ * 点击缩略图 → 全屏图片浏览器 (SourceImageLightbox: 滚轮缩放/拖拽/双击复位)。
+ * 图片加载失败（旧运行无落盘页图）时静默降级为只显示坐标文本。 */
+function BboxSourceImage({ url, bbox, source }) {
+  const [failed, setFailed] = useState(false)
+  const [open, setOpen] = useState(false)
+  if (!url || failed) return null
+  const [x0, y0, x1, y1] = bbox
+  const isTable = source === 'full_table'
+  const isFallback = source === 'fallback'
+  const overlay = isTable ? {
+    border: '2px solid var(--accent)',
+    background: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+    boxShadow: '0 0 0 9999px color-mix(in srgb, var(--overlay) 35%, transparent)',
+  } : isFallback ? {
+    border: '2px dashed var(--content-fg-tertiary)',
+    background: 'transparent',
+  } : {
+    border: '2px solid var(--status-error)',
+    background: 'color-mix(in srgb, var(--status-error) 14%, transparent)',
+  }
+  return (
+    <>
+      <div
+        onClick={() => setOpen(true)}
+        title="点击全屏查看"
+        style={{
+          marginTop: 10, position: 'relative', display: 'inline-block', maxWidth: '100%',
+          background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)', overflow: 'hidden',
+          border: '1px solid var(--surface-border-subtle)', cursor: 'zoom-in',
+        }}
+      >
+        <img
+          src={url}
+          alt="溯源定位图"
+          onError={() => setFailed(true)}
+          style={{ display: 'block', maxWidth: '100%', maxHeight: 340, width: 'auto', height: 'auto' }}
+        />
+        <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+          <div style={{
+            position: 'absolute',
+            left: `${x0 / 10}%`, top: `${y0 / 10}%`,
+            width: `${(x1 - x0) / 10}%`, height: `${(y1 - y0) / 10}%`,
+            boxSizing: 'border-box',
+            ...overlay,
+          }} />
+          {isTable && (
+            <span style={{
+              position: 'absolute', left: `${x0 / 10}%`, top: `calc(${y0 / 10}% - 22px)`,
+              fontSize: 11, padding: '1px 8px', borderRadius: 'var(--radius-pill)',
+              color: 'var(--accent)', background: 'var(--surface-primary)',
+              border: '1px solid var(--accent)', whiteSpace: 'nowrap',
+            }}>
+              表格定位 · 整表
+            </span>
+          )}
+        </div>
+        <span style={{
+          position: 'absolute', right: 6, bottom: 6, fontSize: 10,
+          padding: '1px 7px', borderRadius: 'var(--radius-pill)',
+          color: 'var(--content-fg-secondary)', background: 'var(--surface-primary)',
+          border: '1px solid var(--surface-border-subtle)', pointerEvents: 'none',
+        }}>
+          点击全屏查看
+        </span>
+      </div>
+      {open && (
+        <SourceImageLightbox
+          url={url}
+          bbox={bbox}
+          source={source}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </>
   )
 }
 
@@ -219,6 +302,9 @@ export default function RecordDetailDialog({ record, quality, sources, loading, 
                 }}>
                   {record.context_snippet}
                 </div>
+              )}
+              {!isDb && Array.isArray(prov.bbox) && prov.bbox.length === 4 && record.page_image_url && (
+                <BboxSourceImage url={record.page_image_url} bbox={prov.bbox} source={prov.bbox_source} />
               )}
             </Section>
 

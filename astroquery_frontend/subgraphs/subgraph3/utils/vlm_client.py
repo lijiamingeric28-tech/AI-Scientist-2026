@@ -52,8 +52,10 @@ def build_extraction_prompt(
     elif requested_properties:
         # 降级：无 PropertySpec 时使用用户原始请求
         property_list = "、".join(requested_properties)
+        property_whitelist = property_list
         property_instruction = f"请提取：{property_list} 相关性质"
     else:
+        property_whitelist = "（无白名单约束，按常识提取目标天体宏观性质）"
         property_instruction = "请提取目标天体的所有宏观物理性质"
 
     # 页码防幻觉映射

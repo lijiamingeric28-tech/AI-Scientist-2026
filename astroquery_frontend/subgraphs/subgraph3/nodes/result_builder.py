@@ -1,7 +1,12 @@
 """结果构建节点。"""
 
+from pathlib import Path
 from typing import List, Dict, Optional
 from datetime import datetime
+from PIL import Image
+
+from astroquery_ai.config import PROJECT_ROOT
+
 from ..schemas.state import ExtractionState
 from ..utils.logger import get_logger
 from ..utils.image_cache import image_cache
@@ -9,6 +14,68 @@ from ..config.settings import settings
 
 
 logger = get_logger(__name__)
+
+# 2026-08-24: bbox 溯源页图持久化 — 带 bbox 记录引用的论文页图在临时缓存
+# 清理前落盘, 供前端在论文页上画框展示原始出处
+_SOURCE_PAGES_OUTPUT_ROOT = PROJECT_ROOT / "output" / "figures"
+_SOURCE_PAGES_MAX_WIDTH = 1200  # 页图缩限宽度 (px), 控制体积
+
+
+def _safe_name(s: str) -> str:
+    """文件名安全化（与 figure_extractor 保持一致: 替换 / : 空格）"""
+    return s.replace("/", "_").replace(":", "_").replace(" ", "_")
+
+
+def persist_referenced_pages(state: ExtractionState, paper_records: list) -> int:
+    """把带 bbox 记录引用的 (bibcode, page) 页图持久化到 output/figures。
+
+    目标路径: output/figures/{query_id}/source_pages/{bibcode}/page_{N}.png
+    (与 /static/figures 静态挂载同根, 前端直接可访问; 失败不阻断, 仅记日志)
+    """
+    paper_image_paths = state.get("paper_image_paths", {}) or {}
+    if not paper_image_paths or not paper_records:
+        return 0
+
+    query_id = state.get("query_id", "")
+    refs = set()
+    for rec in paper_records:
+        prov = rec.get("provenance") or {}
+        page = prov.get("page")
+        sid = rec.get("source_id")
+        if page is None or not sid:
+            continue
+        try:
+            refs.add((sid, int(page)))
+        except (TypeError, ValueError):
+            continue
+
+    saved = 0
+    for bibcode, page in sorted(refs):
+        paths = paper_image_paths.get(bibcode) or []
+        if page < 1 or page > len(paths):
+            continue
+        src = Path(paths[page - 1])
+        if not src.exists():
+            logger.warning(f"[Result Builder] Source page missing: {bibcode} p{page}")
+            continue
+        try:
+            with Image.open(src) as img:
+                if img.mode != "RGB":
+                    img = img.convert("RGB")
+                if img.width > _SOURCE_PAGES_MAX_WIDTH:
+                    img = img.resize((
+                        _SOURCE_PAGES_MAX_WIDTH,
+                        int(img.height * _SOURCE_PAGES_MAX_WIDTH / img.width),
+                    ))
+                out_dir = _SOURCE_PAGES_OUTPUT_ROOT / query_id / "source_pages" / _safe_name(bibcode)
+                out_dir.mkdir(parents=True, exist_ok=True)
+                img.save(out_dir / f"page_{page}.png", format="PNG")
+            saved += 1
+        except Exception as e:  # noqa: BLE001 — 单页失败不阻断提取链
+            logger.warning(f"[Result Builder] Persist page failed {bibcode} p{page}: {e}")
+
+    logger.info(f"[Result Builder] Persisted {saved} source page images (bbox tracing)")
+    return saved
 
 
 def result_builder(state: ExtractionState) -> ExtractionState:
@@ -174,6 +241,10 @@ def result_builder(state: ExtractionState) -> ExtractionState:
     if error_log:
         state["error_log"] = error_log
 
+    # 2026-08-24: bbox 溯源页图落盘 — 必须在 H-10 清理临时缓存之前执行
+    # (此前临时页图随清理即丢失, 前端只能看到 bbox 数字坐标)
+    persist_referenced_pages(state, paper_records)
+
     # H-10: 清理本次查询的临时页图 — result_builder 是提取链最后节点，
     # 图片数据已写入 paper_records/figure_evidence，按论文逐一删除缓存目录
     cached_bibcodes = set(raw_extractions.keys()) | set(state.get("paper_image_paths", {}).keys())
@@ -268,7 +339,8 @@ def build_paper_record(
         "provenance": {
             "page": page_int,                            # ✅ integer
             "bbox": bbox_validated,                      # ✅ integer array [xmin, ymin, xmax, ymax]
-            "bbox_coord_system": "normalized_1000"       # ✅ 显式标注坐标系（0-1000 归一化）
+            "bbox_coord_system": "normalized_1000",      # ✅ 显式标注坐标系（0-1000 归一化）
+            "bbox_source": (extraction.get("bbox_source") or ""),  # 2026-08-24: vector/vlm_crop/fallback
         },
         "extraction_method": f"vlm_{extraction_method}", # ✅ string
         "extraction_confidence": float(confidence),      # ✅ float

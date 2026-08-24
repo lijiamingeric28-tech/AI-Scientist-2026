@@ -47,9 +47,9 @@ class Settings(BaseSettings):
     unpaywall_email: str = ""
 
     # ── quality_pipeline：LLM 调用参数（模型/凭证统一用上方 DashScope/Qwen 配置）──
-    # 质量管线专用模型（评估/规范化/冲突/洞察），默认 qwen3.7-plus
-    # （比 flash 更强；为空时回退 dashscope_model）
-    dashscope_quality_model: str = "qwen3.7-plus"
+    # 质量管线专用模型（评估/规范化/冲突/洞察），默认 qwen3.7-flash
+    # （如需更强模型可设 DASHSCOPE_QUALITY_MODEL=qwen3.7-plus；为空时回退 dashscope_model）
+    dashscope_quality_model: str = "qwen3.7-flash"
     llm_timeout: int = 120
     llm_max_retries: int = 3
 

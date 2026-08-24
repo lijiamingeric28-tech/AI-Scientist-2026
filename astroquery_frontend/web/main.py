@@ -404,9 +404,32 @@ async def get_result(task_id: str):
     return state.get("final_output") or {}
 
 
+def _safe_name(s: str) -> str:
+    """文件名安全化（与 subgraph3 result_builder/figure_extractor 同规则）"""
+    return s.replace("/", "_").replace(":", "_").replace(" ", "_")
+
+
 @app.get("/api/tasks/{task_id}/records")
 async def get_records(task_id: str):
-    return (_load_state(task_id).get("final_output") or {}).get("records", [])
+    """契约 D7-1 扩展 (2026-08-24): 论文记录附加 page_image_url —
+    指向 bbox 溯源页图 (/static/figures/{task_id}/source_pages/{bibcode}/page_{N}.png),
+    文件不存在时为空串 (前端据此降级为只显示坐标文本)。"""
+    records = (_load_state(task_id).get("final_output") or {}).get("records", [])
+    pages_dir = OUTPUT_DIR / "figures" / task_id / "source_pages"
+    out = []
+    for rec in records:
+        prov = rec.get("provenance") or {}
+        page = prov.get("page")
+        sid = rec.get("source_id")
+        if isinstance(page, int) and isinstance(sid, str) and sid:
+            img_path = pages_dir / _safe_name(sid) / f"page_{page}.png"
+            rec = dict(rec)  # 不修改状态内的原 dict
+            rec["page_image_url"] = (
+                f"/static/figures/{task_id}/source_pages/{_safe_name(sid)}/page_{page}.png"
+                if img_path.is_file() else ""
+            )
+        out.append(rec)
+    return out
 
 
 @app.get("/api/tasks/{task_id}/sources")

@@ -61,7 +61,55 @@ def build_bbox_prompt(extraction: dict, target_entity: str) -> str:
     field_value = extraction.get("field_value", "")
     field_unit = extraction.get("field_unit", "")
     context_snippet = extraction.get("context_snippet", "")
+    search_hints = extraction.get("search_hints") or []
     full_value = f"{field_value} {field_unit}".strip()
+
+    # 2026-08-24: 表格轨宏定位模式 — 框整张表 (宏观大目标, 非数值级)
+    if extraction.get("grounding_mode") == "table":
+        prompt = f"""你是一个文档版面结构标注专家。请在本页图片中定位一整张**表格**并返回其完整边界框坐标。
+
+## [PIN] 目标定位信息
+- **表格标识**: "{context_snippet[:200]}"
+
+## 定位要求
+1. 找到上述标题/编号对应的**完整表格区域**
+2. 边界框必须包含: 表格标题 (Table N ...)、表头行、全部数据行、以及紧邻表格的底注 (Note/说明文字)
+3. **宁大勿小**: 宁可外扩 3-5%, 也不要把数据行或底注裁掉
+4. 坐标系统: 左上角 (0,0), 右下角 (1000,1000); 格式 [x_min, y_min, x_max, y_max]
+
+## ⚠ 关键要求
+- 只框一个矩形, 覆盖该表格的完整区域
+- 禁止框入其他表格或无关段落
+
+## [SEND] 输出格式（严格 JSON 对象——必须遵守）
+
+**[ALERT] 结构铁律（违反则输出作废）**
+1. 输出必须是**单个 JSON 对象**，以 `{{` 开头、以 `}}` 结尾——**绝对禁止**用数组 `[ ... ]` 包裹，禁止任何外层包装
+2. **禁止** markdown 围栏（```json）、禁止任何解释文字、禁止输出示例
+3. `bbox_2d` 必须是**恰好 4 个整数**的数组，范围 0-1000，且必须满足 x_min < x_max 且 y_min < y_max
+4. `confidence` 必须是 0 到 1 之间的**数字**（不是字符串）
+5. `found` 必须是布尔值 `true` 或 `false`（不是字符串 "true"）
+6. 未找到时 `bbox_2d` 必须是 `null`（不是 `[]`、不是 `[0,0,0,0]`）
+7. 允许且仅允许以下 5 个键，不得添加其他键
+
+**成功定位时——严格按此骨架输出（只填值，不改结构）：**
+```json
+{{"stage1_analysis": "简短定位说明（≤100字）", "bbox_2d": [x_min, y_min, x_max, y_max], "confidence": 0.95, "found": true}}
+```
+
+**未找到时——严格按此骨架输出：**
+```json
+{{"stage1_analysis": "简短说明", "bbox_2d": null, "confidence": 0.0, "found": false, "reason": "未找到目标表格"}}
+```
+
+现在请开始标注。"""
+        return prompt
+
+    # 2026-08-24: 混合定位 Level 2 — 数值可能以等价形态排版
+    hints_note = ""
+    if search_hints:
+        shown = "、".join(str(h) for h in search_hints[:5])
+        hints_note = f"\n- **等价写法提示**: 数值在文中可能写作这些形态之一: {shown}（科学计数/单位换算/负号变体）"
 
     prompt = f"""你是一个精确的文档坐标标注专家。请在图片中定位指定的数据点并返回其边界框坐标。
 
@@ -69,7 +117,7 @@ def build_bbox_prompt(extraction: dict, target_entity: str) -> str:
 - **目标天体**: {target_entity}
 - **物理量类型**: {field_name}
 - **目标数值**: {full_value}
-- **上下文片段**: "{context_snippet[:200]}"
+- **上下文片段**: "{context_snippet[:200]}"{hints_note}
 
 ## [TARGET] 两阶段定位流程
 ### 第一阶段：初步定位（区域识别）
