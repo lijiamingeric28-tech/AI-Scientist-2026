@@ -700,14 +700,26 @@ def analyze_multi_source_variance(
     variance_count = len(variances)
     anomaly_count = len(anomalies)
 
-    if anomaly_count == 0:
+    # 2026-08-27: 风险级从绝对异常数改为**比例**——异常数衡量的公平性：
+    # 字段/源越多，比较对数越多，绝对异常数天然放大（M45 5 字段 26 异常 →
+    # 若字段少则必然 ≤5，反之 26 个绝对数直接 high，同量级数据量不同任务不可比）。
+    # 比例 = 异常数 / 全部来源两两比较对数（含方差组与源数），
+    #   0 → none；<0.10 → low；<0.20 → medium；≥0.20 → high。
+    # 无比较对（单一来源）→ none。
+    pairwise_total = sum(
+        (len(v["source_ids"]) * (len(v["source_ids"]) - 1)) // 2
+        for v in variances
+    )
+    if anomaly_count == 0 or pairwise_total == 0:
         risk_level = "none"
-    elif anomaly_count <= 2:
-        risk_level = "low"
-    elif anomaly_count <= 5:
-        risk_level = "medium"
     else:
-        risk_level = "high"
+        anomaly_ratio = anomaly_count / pairwise_total
+        if anomaly_ratio < 0.10:
+            risk_level = "low"
+        elif anomaly_ratio < 0.20:
+            risk_level = "medium"
+        else:
+            risk_level = "high"
 
     summary_parts = []
     if variance_count > 0:

@@ -94,6 +94,23 @@ export function retryTask(taskId) {
   return request(`/tasks/${taskId}/retry`, { method: 'POST' })
 }
 
+/* 修改任务名（2026-08-27：PUT /tasks/{id}/title） */
+export function updateTaskTitle(taskId, title) {
+  return request(`/tasks/${taskId}/title`, {
+    method: 'PUT',
+    body: JSON.stringify({ title }),
+  })
+}
+
+/* 事件级重放（2026-08-27）：把已完成任务的已落库事件按压缩节奏重新 emit
+ * （后端 web/replayer.py）。返回 {task_id, replay_of, status}。 */
+export function replayTask(taskId, speed = 10) {
+  return request(`/tasks/${taskId}/replay`, {
+    method: 'POST',
+    body: JSON.stringify({ speed }),
+  })
+}
+
 /* ── 任务删除（2026-08-24：数据清理） ── */
 export function deleteTaskData(taskId, parts) {
   const q = parts && parts.length ? `?parts=${parts.join(',')}` : ''

@@ -8,6 +8,7 @@ build_ads_query→ads_search 并行。simbad_* 字段由 adapters 从 P1 的 sim
 import logging
 from langgraph.graph import StateGraph, END, START
 
+from astroquery_ai.config import get_settings
 from .state import RetrievalState
 from .nodes import (
     database_query,
@@ -49,19 +50,23 @@ def create_retrieval_subgraph(checkpointer=None) -> StateGraph:
     graph.add_node("supplementary_query", supplementary_query)
     graph.add_node("result_aggregator", result_aggregator)
 
-    # START → 两路并行
+    # START → 两路并行（P18 消融：PAPER_CHAIN_ENABLED=false 时只走数据库路；
+    # 不要用"空返回 build_ads_query"——ads_search 有仅天体名回退查询，会实际查 ADS）
     graph.add_edge(START, "database_query")
-    graph.add_edge(START, "build_ads_query")
+    if get_settings().paper_chain_enabled:
+        graph.add_edge(START, "build_ads_query")
+
+        # 论文链
+        graph.add_edge("build_ads_query", "ads_search")
+        graph.add_edge("ads_search", "unpaywall_query")
+        graph.add_edge("unpaywall_query", "pdf_download")
+        graph.add_edge("pdf_download", "supplementary_query")
+        graph.add_edge("supplementary_query", "result_aggregator")
+    else:
+        graph.add_edge(START, "result_aggregator")
 
     # 数据库路
     graph.add_edge("database_query", "result_aggregator")
-
-    # 论文链
-    graph.add_edge("build_ads_query", "ads_search")
-    graph.add_edge("ads_search", "unpaywall_query")
-    graph.add_edge("unpaywall_query", "pdf_download")
-    graph.add_edge("pdf_download", "supplementary_query")
-    graph.add_edge("supplementary_query", "result_aggregator")
 
     # 汇合 → 结束
     graph.add_edge("result_aggregator", END)

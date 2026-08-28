@@ -65,7 +65,7 @@ def test_list_tasks_contract_shape_pruned(tmp_path):
     assert "id" not in item                      # CR-03：契约 D8-4 键名，无兼容键
     assert "state_json" not in item              # M-08：列表不携带大字段
     assert "pdf_paths" not in item
-    assert set(item) == {"task_id", "query", "title", "status", "created_at", "completed_at"}
+    assert set(item) == {"task_id", "query", "title", "status", "created_at", "completed_at", "replay_of"}
     # get_task（详情 /state 侧）仍完整返回大字段
     full = store.get_task(t["task_id"])
     assert full["pdf_paths"] == ["/x/a.pdf"]

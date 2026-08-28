@@ -103,9 +103,12 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
                 }
 
                 # Web 埋点：论文提取进度（前端卡 3 步骤①，bibcode）
+                # 2026-08-27: data.phase='extract' —— 与 pdf_converter 的 'convert'
+                # 区分，前端卡 3 ①"论文提取"分段展示（拆分 PDF → VLM 提取）
                 emit_progress(
                     state.get("query_id", ""), "extraction", "paper", "running",
                     progress={"completed": completed, "total": total, "current": bibcode},
+                    data={"phase": "extract"},
                 )
 
                 if result["success"]:
@@ -140,12 +143,14 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
     }
 
     # Web 埋点：提取完成（前端卡 3 步骤①摘要：papers/records 数字）
+    # 2026-08-27: phase='extract' —— 分段行据此标 extracted 待完成（此前完成
+    # 事件无 phase，前端 segments'extract' 恒 running，用户实测"已完成却仍在 VLM 提取"）
     emit_progress(
         state.get("query_id", ""), "extraction", "paper", "completed",
         progress={"completed": total, "total": total, "current": None},
         data={"papers": len(raw_extractions), "records": sum(
             len(v.get("extractions", [])) for v in raw_extractions.values()
-        )},
+        ), "phase": "extract"},
     )
 
     logger.info("[VLM Extractor] Completed!")

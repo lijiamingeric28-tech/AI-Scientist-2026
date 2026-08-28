@@ -20,10 +20,13 @@ error_log 与 add reducer
 不回传子图内部已累积的全量列表，否则 add 会重复累加。
 """
 
+import json
 import logging
 import time
 from datetime import datetime
 from typing import Dict, List, Type
+
+from .config import get_settings
 
 from langchain_core.runnables import RunnableConfig
 from langgraph.errors import GraphInterrupt
@@ -174,6 +177,20 @@ def property_standardization_adapter(state: MainGraphState) -> Dict:
     if "error_log" in result:
         logger.warning("[P1 Adapter] 性质标准化失败，返回错误")
         return result
+
+    # P18 消融实验：P1_SPEC_OVERRIDE 非空时用固定性质集覆盖（与基线一致），
+    # 消除 P1 LLM 性质筛选漂移（如 age vs cluster_age），保证"保持相同数据需求"；
+    # 默认空 = 行为不变
+    override_path = get_settings().p1_spec_override
+    if override_path:
+        try:
+            with open(override_path, encoding="utf-8") as _f:
+                spec = json.load(_f)
+            result = {**result, "property_spec": spec}
+            logger.info("[P1 Adapter] P18 消融：固定性质集 %d 项生效（%s）",
+                        len(spec), override_path)
+        except Exception as exc:
+            logger.error("[P1 Adapter] P1_SPEC_OVERRIDE 读取失败: %s", exc)
 
     logger.info(
         "[P1 Adapter] 完成 main_id=%s otype=%s properties=%d",

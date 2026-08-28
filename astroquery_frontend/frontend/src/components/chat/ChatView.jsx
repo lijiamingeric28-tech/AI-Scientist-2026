@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import Markdown from '@/lib/markdown'
@@ -76,14 +76,22 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
   // 贴底跟随：用户在底部附近才自动滚动，向上翻阅时不被拽回
   const stickToBottomRef = useRef(true)
 
-  const toggleStage = (id) => {
+  // 2026-08-27：useCallback 稳定引用——StageCard 已 memo，onToggle/onOpenAgent/
+  // onOpenInsights 若不稳定（每次 render 新函数），memo 恒失效，高频 setStages
+  // 场景全量重渲（主区滚动卡顿的元凶）
+  const toggleStage = useCallback((id) => {
     setCollapsedIds((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
     })
-  }
+  }, [])
+
+  // 稳定引用（StageCard memo 依赖）：Agent 行点击 → L3 下钻抽屉
+  const handleOpenAgent = useCallback((agent, stage) => {
+    setAgentDrill(stage ? { stage, agent } : null)
+  }, [])
 
   // 工作流视图"在对话中查看" → 展开目标卡并滚动定位
   useEffect(() => {
@@ -108,16 +116,39 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
     stickToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80
   }
 
-  // 贴底跟随滚动：仅在用户位于底部附近时自动滚到底
-  useEffect(() => {
-    if (stickToBottomRef.current && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-    }
-  }, [messages, stages, pending])
-
   /* 运行中 = 任务已启动且未完成；澄清期 = 澄清卡挂起（寒暄除外，寒暄走主栏对话） */
   const running = started && !taskDone
   const clarifying = !!pending && pending.type !== 'greeting'
+
+  // 贴底跟随滚动：仅在用户位于底部附近时自动滚到底
+  // 2026-08-27：滚动性能——每 event 同步写 scrollTop 会强制浏览器同步 layout
+  // 完整子树（卡顿来源）。改为 rAF 合并：一个动画帧内至多一次 scrollTop 赋值，
+  // 且只有内容高度变化（增量 >0）才滚（避免用户上拉回看时被拽回）。
+  // 2026-08-27 v2：运行中（running）**强制跟随**——无论用户滚动位置，每次内容
+  // 更新都滚到底（保证最新阶段/AI 消息/进度条始终可见，真实查询与回放一致）；
+  // 完成瞬间滚一次（看到结果表格）；任务完成后恢复"贴近底部才跟随"（自由回看）。
+  const lastScrollHRef = useRef(0)
+  const wasRunningRef = useRef(false)   // 运行→完成瞬间检测（滚一次到底）
+  useEffect(() => {
+    if (!scrollRef.current) return
+    const el = scrollRef.current
+    // 完成瞬间：上一状态运行中、现在已完成 → 强制滚一次（结果表格/总结入视野）
+    const finishedNow = wasRunningRef.current && !running && taskDone
+    wasRunningRef.current = running
+    const force = running || finishedNow
+    if (!force && !stickToBottomRef.current) return
+    const delta = el.scrollHeight - lastScrollHRef.current
+    // 运行中/完成瞬间：无视高度增量（时间线可能只替换卡片高度不变，但内容更新了）
+    // 非运行中：仅内容真正增长才滚（用户回看不被拽回）
+    if (!force && delta <= 0) return
+    lastScrollHRef.current = el.scrollHeight
+    let raf = 0
+    const tick = () => {
+      if (force || stickToBottomRef.current) el.scrollTop = el.scrollHeight
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [messages, stages, pending, running, taskDone])
 
   const formatSize = (bytes) => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`)
 
@@ -185,9 +216,9 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                       <StageCard
                         stage={stage}
                         expanded={!collapsedIds.has(stage.id)}
-                        onToggle={() => toggleStage(stage.id)}
+                        onToggle={toggleStage}
                         onOpenInsights={onOpenInsights}
-                        onOpenAgent={(agent) => setAgentDrill({ stage, agent })}
+                        onOpenAgent={handleOpenAgent}
                         sourceScores={sourceScores}
                       />
                     </div>

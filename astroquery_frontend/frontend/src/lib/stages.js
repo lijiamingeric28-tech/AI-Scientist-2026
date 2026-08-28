@@ -32,12 +32,42 @@ export const INSIGHT_AGENTS = [
   { id: 'SynthesisAgent', label: '综合叙述' },
 ]
 
-/* insights flow_id → 中文展示名（工作流下钻 / flow 列表用） */
+/* insights flow_id → 中文展示名（工作流下钻 / flow 列表用）。
+ * human_review 为前端虚拟流程（2026-08-27）：后端 HumanReview 是独立节点
+ * （无 flow 事件，只有 HumanReviewAgent 的 agent 事件）——前端按固定三块
+ * 结构展示卡 5：规范化/冲突消解/人工审核（未触发时显示占位“按需被选”）。 */
 export const FLOW_LABELS = {
   normalization: '数据规范化',
   conflict: '冲突消解',
+  human_review: '人工审核',
   export: '数据导出',
   insights: '数据洞察',
+}
+
+/* 卡 5「数据清洗」固定块顺序（人工审核虚拟块恒显示，未触发占位） */
+export const CLEAN_FLOW_BLOCKS = ['normalization', 'conflict', 'human_review']
+
+/* 清洗阶段 Agent → 所属子图 flow_id 的兜底映射（2026-08-27）。
+ * 权威归属来自后端 agent 事件的 flow_id 字段（quality_pipeline/agent_events.py
+ * wrap_agent_node 以 subgraph 参数写入）——真实运行/重放新事件直接可用；
+ * 旧任务（无 flow_id 字段的历史事件）按子图结构的 agent 名单退化为名字匹配：
+ *   normalization 子图：SourceRouter/Planning/Normalization/Validation/Report
+ *   conflict 子图：VarianceAggregation/DifferenceClassification/AnomalyVerification/
+ *     AnnotationConfidence/AnnotationReport
+ *   human_review：HumanReviewAgent
+ *   assessment → 质量检查（不进清洗卡）；deliver 子图 agent 不进清洗卡。 */
+const FLOW_BY_AGENT_NAME = [
+  [/^(SourceRouter|Planning|Normalization|PreNormalization|Validation|Report)/, 'normalization'],
+  [/^(VarianceAggregation|DifferenceClassification|AnomalyVerification|Annotation|Conflict)/, 'conflict'],
+  [/^HumanReview/, 'human_review'],
+]
+const FLOW_AGENT_FALLBACK = 'other'
+
+export function flowIdOfAgent(name) {
+  for (const [re, fid] of FLOW_BY_AGENT_NAME) {
+    if (re.test(name || '')) return fid
+  }
+  return FLOW_AGENT_FALLBACK
 }
 
 /* 卡 1「任务理解」展开：垂直时间线子步骤（对齐后端 step_progress.path） */

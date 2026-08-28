@@ -185,11 +185,37 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
-/* 主题切换平滑过渡（仅背景/边框/文字色） */
+/* 主题切换平滑过渡（仅背景/边框/文字色）。
+ * 2026-08-27：原 `.theme-transition *` 通配符给所有元素注册 0.18s 过渡——滚动时
+ * 视口内数百元素每帧被过渡计算（内容填充/滑动路径），实证主区滑动卡顿主因。
+ * 改为仅 theme-transition 本身（body 上），子元素不再逐个过渡；主题切换由
+ * body 层承担（子元素继承背景色变化，无逐个动画的合成开销）。 */
 body,
-.theme-transition,
-.theme-transition * {
+.theme-transition {
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+/* ============================================================
+ * 滚动性能（2026-08-27）：hover 效果一律走 CSS :hover——
+ * 组件内 onMouseEnter/setHover 会在滑动时（鼠标划过每张卡/每行 Agent）
+ * 触发 React 重渲染，滑动卡顿元凶之二。
+ * ============================================================ */
+
+/* 阶段卡片：状态边框由 inline style 接管（status 动态色），hover 只调 box-shadow */
+.stage-card {
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.stage-card:hover {
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--accent-text) 12%, transparent);
+}
+
+/* Agent 行（StageCard AgentTree / FlowBlocks / StageDetailPanel 通用）：
+ * hover 背景纯 CSS——滑动划过行时不再触发 React re-render */
+.agent-row {
+  transition: background 0.12s;
+}
+.agent-row:hover {
+  background: var(--surface-secondary);
 }
 
 /* Scrollbar styling */
@@ -274,6 +300,10 @@ body,
   margin: 0 auto;
   width: 100%;
 }
+
+/* 2026-08-27：滚动性能——已实验 content-visibility:auto（对历史任务时间线
+ * 高卡片/复杂子树场景反而因进出视口的布局+绘制带来卡顿），撤掉。滚动卡顿的
+ * 真正来源在主内容体积 + 毛玻璃合成，另行处理（见 ChatView rAF 合并 + StageCard memo）。 */
 
 /* 用户消息气泡（中性灰底大圆角，深色文字，不用主色填充） */
 .msg-bubble {

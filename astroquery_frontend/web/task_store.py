@@ -21,7 +21,15 @@ def _now() -> str:
 
 
 # M-08: 列表显式列裁剪（契约 D8-4；state_json/pdf_paths 走 get_task /state）
-_LIST_COLUMNS = "task_id, query, title, status, created_at, completed_at"
+# replay_of: 回放任务指向源任务（事件级重放，2026-08-27；前端徽标/防重用）
+_LIST_COLUMNS = "task_id, query, title, status, created_at, completed_at, replay_of"
+
+
+def _ensure_column(conn: sqlite3.Connection, table: str, name: str, ddl: str) -> None:
+    """幂等迁移：PRAGMA 检查后 ALTER 加列（老库升级用；新库建表 DDL 已带列，走不到）。"""
+    cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})")]
+    if name not in cols:
+        conn.execute(f"ALTER TABLE {table} ADD COLUMN {ddl}")
 
 
 class TaskStore:
@@ -46,24 +54,31 @@ class TaskStore:
                 completed_at TEXT,
                 output_dir TEXT DEFAULT '',
                 pdf_paths TEXT DEFAULT '[]',
-                state_json TEXT DEFAULT '{}'
+                state_json TEXT DEFAULT '{}',
+                replay_of TEXT DEFAULT NULL
             )""")
             conn.execute("""CREATE TABLE IF NOT EXISTS events (
                 seq INTEGER PRIMARY KEY AUTOINCREMENT,
                 task_id TEXT NOT NULL,
-                payload TEXT NOT NULL
+                payload TEXT NOT NULL,
+                ts REAL DEFAULT NULL
             )""")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_events_task ON events(task_id, seq)")
+            # 老库幂等升级（建表 DDL 已带列时 PRAGMA 命中，ALTER 不执行）
+            _ensure_column(conn, "tasks", "replay_of", "replay_of TEXT DEFAULT NULL")
+            _ensure_column(conn, "events", "ts", "ts REAL DEFAULT NULL")
 
     # ── tasks ──
-    def create_task(self, query: str, output_dir: str = "", pdf_paths: Optional[List[str]] = None) -> Dict[str, Any]:
+    def create_task(self, query: str, output_dir: str = "", pdf_paths: Optional[List[str]] = None,
+                    replay_of: Optional[str] = None) -> Dict[str, Any]:
         task_id = str(uuid.uuid4())
         with self._lock, self._conn() as conn:
             conn.execute(
-                "INSERT INTO tasks (task_id, query, status, created_at, output_dir, pdf_paths) VALUES (?,?,?,?,?,?)",
-                (task_id, query, "queued", _now(), output_dir, json.dumps(pdf_paths or [])),
+                "INSERT INTO tasks (task_id, query, status, created_at, output_dir, pdf_paths, replay_of) VALUES (?,?,?,?,?,?,?)",
+                (task_id, query, "queued", _now(), output_dir, json.dumps(pdf_paths or []), replay_of),
             )
-        return {"task_id": task_id, "query": query, "status": "queued", "created_at": _now(), "pdf_paths": pdf_paths or []}
+        return {"task_id": task_id, "query": query, "status": "queued", "created_at": _now(),
+                "pdf_paths": pdf_paths or [], "replay_of": replay_of}
 
     def get_task(self, task_id: str) -> Optional[Dict[str, Any]]:
         with self._conn() as conn:
@@ -109,26 +124,42 @@ class TaskStore:
             conn.execute(f"UPDATE tasks SET {cols} WHERE task_id=?", (*fields.values(), task_id))
 
     # ── events（seq = 自增主键，历史回看契约 D8-3）──
-    def append_event(self, task_id: str, payload: Dict[str, Any]) -> int:
+    def append_event(self, task_id: str, payload: Dict[str, Any], ts: Optional[float] = None) -> int:
         with self._lock, self._conn() as conn:
             cur = conn.execute(
-                "INSERT INTO events (task_id, payload) VALUES (?,?)",
-                (task_id, json.dumps(payload, ensure_ascii=False)),
+                "INSERT INTO events (task_id, payload, ts) VALUES (?,?,?)",
+                (task_id, json.dumps(payload, ensure_ascii=False), ts),
             )
             return int(cur.lastrowid)
 
     def get_events(self, task_id: str, after_seq: int = 0) -> List[Dict[str, Any]]:
         with self._conn() as conn:
             rows = conn.execute(
-                "SELECT seq, payload FROM events WHERE task_id=? AND seq>? ORDER BY seq",
+                "SELECT seq, ts, payload FROM events WHERE task_id=? AND seq>? ORDER BY seq",
                 (task_id, after_seq),
             ).fetchall()
-        return [{"seq": r["seq"], **json.loads(r["payload"])} for r in rows]
+        return [{"seq": r["seq"], "ts": r["ts"], **json.loads(r["payload"])} for r in rows]
 
     def last_seq(self, task_id: str) -> int:
         with self._conn() as conn:
             row = conn.execute("SELECT MAX(seq) AS m FROM events WHERE task_id=?", (task_id,)).fetchone()
         return row["m"] or 0
+
+    # ── 回放（2026-08-27：事件级重放；replay_of 指向源任务）──
+    def active_replay_exists(self, source_id: str) -> bool:
+        """源任务是否存在活跃（queued/running）回放——防重复重放排队。"""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT COUNT(*) FROM tasks WHERE replay_of=? AND status IN ('queued','running')",
+                (source_id,),
+            ).fetchone()
+        return bool(row and row[0] > 0)
+
+    def replay_ids_of(self, source_id: str) -> List[str]:
+        """源任务的全部回放任务 id（删除源时级联用）。"""
+        with self._conn() as conn:
+            rows = conn.execute("SELECT task_id FROM tasks WHERE replay_of=?", (source_id,)).fetchall()
+        return [r["task_id"] for r in rows]
 
     # ── 删除（2026-08-24：任务清理功能）──
     def delete_events(self, task_id: str) -> int:

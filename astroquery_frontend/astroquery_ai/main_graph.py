@@ -203,7 +203,10 @@ def create_main_graph(checkpointer=None, event_cb=None, should_cancel=None):
         "retrieval": ("retrieval", "数据检索", "both", retrieval_node),
         "extraction": ("extraction", "数据提取", "both", extraction_node),
         "skip_extraction": ("extraction", "数据提取", "both", skip_extraction_node),
-        "quality": ("quality_check", "质量检查", "both", quality_node),
+        # 2026-08-27: mode 改 "start" —— quality_check 的 stage_completed 由
+        # quality_pipeline 在 assessment 子图结束即发（graph.py _assessment_wrap），
+        # 而非等整条质量管线（清洗/交付/洞察）跑完（事实：卡 4 观感恒「进行中」）
+        "quality": ("quality_check", "质量检查", "start", quality_node),
         "quality_finalize": ("done", "任务完成", "end", quality_finalize_node),
     }
 

@@ -16,6 +16,7 @@ import asyncio
 import collections
 import logging
 import threading
+import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from .task_store import TaskStore
@@ -94,8 +95,12 @@ class EventBus:
 
     # ── 发布（执行器线程调用；经归属 loop call_soon_threadsafe 投递，线程安全） ──
     def publish(self, task_id: str, event: Dict[str, Any]) -> int:
-        """落库 + 通知订阅者，返回 seq。"""
-        seq = self._store.append_event(task_id, event)
+        """落库 + 通知订阅者，返回 seq。
+
+        ts = 事件落库时刻（time.time()，2026-08-27）——事件级重放的节奏来源：
+        真实运行事件的 ts 间隔 ÷ speed 即重放节奏；旧行 ts=NULL 走类型默认节奏。
+        """
+        seq = self._store.append_event(task_id, event, ts=time.time())
         event = {"seq": seq, **event}
         with self._lock:
             subs = list(self._subscribers.get(task_id, []))

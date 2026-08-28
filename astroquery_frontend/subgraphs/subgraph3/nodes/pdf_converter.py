@@ -75,9 +75,13 @@ def pdf_batch_converter(state: ExtractionState) -> ExtractionState:
             })
 
         # M-13: 每篇转换完成（含失败）即报进度
+        # 2026-08-27: data.phase='convert' —— 前端卡3 步骤①"论文提取"分段展示：
+        # pdf→图片 与 VLM 文本提取各一段（此前两节点共用 step='paper' 跑两遍，
+        # 用户误判"已完成"；旧任务事件无该字段 → 前端按单段降级）
         emit_progress(
             query_id, "extraction", "paper", "running",
             progress={"completed": idx, "total": total, "current": bibcode},
+            data={"phase": "convert"},
         )
 
     # Update state
@@ -89,6 +93,7 @@ def pdf_batch_converter(state: ExtractionState) -> ExtractionState:
     emit_progress(
         query_id, "extraction", "paper", "completed",
         progress={"completed": total, "total": total, "current": None},
+        data={"phase": "convert"},
     )
 
     # Log cache statistics

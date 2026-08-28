@@ -213,6 +213,12 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   // 卡状态迟迟不更新）。缓冲后每 100ms 批量 flush 一次，最终一致。
   const logBufferRef = useRef([])             // [{entry, stageId, agentName}]
   const logTimerRef = useRef(null)
+  // 2026-08-27：quality_check 完成兜底延迟确认定时器——快照重放/流式中
+  //「已见 agents 全完成」不代表评估结束（QualityAssessmentAgent 等后续 agent
+  // 可能尚未开始），立即置 completed 会造成「卡头已完成 + Agent 执行中」的不一致
+  // 状态（用户实测白屏前的失真画面）。延迟 300ms 竞争窗口：期间收到新
+  // agent_started 则作废；窗口到期时仍无运行中 agent 才置 completed。
+  const qcDoneTimerRef = useRef(null)
   // task_completed 后等待 LLM 总结 message（role=ai）到达的标记——到达才关 SSE 流
   const awaitSummaryRef = useRef(false)
   // 转场旁白状态：卡片出现顺序 / 开场白是否已发 / 已确认目标天体
@@ -413,6 +419,12 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       if (ev.data && typeof ev.data === 'object') {
         const byStage = statsRef.current[ev.stage_id] || (statsRef.current[ev.stage_id] = {})
         byStage[ev.step] = { ...(byStage[ev.step] || {}), ...ev.data }
+        // 2026-08-27: 卡3 步骤①"论文提取"分段——pdf_converter('convert') 与
+        // vlm_extractor('extract') 共用 step='paper'，按 phase 落到不同 sub 阶段
+        if (ev.data.phase) {
+          const byStage2 = statsRef.current[ev.stage_id] || (statsRef.current[ev.stage_id] = {})
+          byStage2[`${ev.step}/${ev.data.phase}`] = { ...(byStage2[`${ev.step}/${ev.data.phase}`] || {}), ...ev.data }
+        }
       }
       const patch = { status: ev.status }
       if (ev.progress) patch.progress = { ...ev.progress }
@@ -420,6 +432,27 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         patch.detail = formatStepDetail(ev.stage_id, ev.step, ev.data)   // 数字对象 → 中文文本
         if (Array.isArray(ev.data.failures)) patch.failures = ev.data.failures  // bbox 失败原因
         if (typeof ev.data.substatus === 'string') patch.substatus = ev.data.substatus  // L-10：表级验证进度
+        if (ev.data.phase) patch.phase = ev.data.phase   // 2026-08-27：卡3 ① 论文提取分段（convert/extract）
+      }
+      // 2026-08-27：phase 运行中事件（data 只含 phase）不得覆盖 detail 摘要——
+      // 此前 formatStepDetail 对 {phase} 求值 g('papers')=undefined → 分段期间
+      // 主步骤 detail 被污染为 "undefined 篇论文提取完成…"（用户实测）
+      if (ev.data && ev.data.phase && !('papers' in ev.data) && !('records' in ev.data)) {
+        delete patch.detail
+      }
+      // 2026-08-27: 卡3 步骤①"论文提取"分两段（拆分 PDF / VLM 提取）——
+      // 两节点共用 step='paper'，phase 区分；旧任务无 phase（单段，兼容）
+      if (loc.kind === 'substeps' && loc.id === 'paper') {
+        setStages((prev) => prev.map((s) => s.id !== ev.stage_id ? s : {
+          ...s,
+          substeps: (s.substeps || []).map((st) => {
+            if (st.id !== loc.id) return st
+            const phases = { ...(st.phases || {}) }
+            if (ev.data && ev.data.phase) phases[ev.data.phase] = { ...(phases[ev.data.phase] || {}), ...patch }
+            return { ...st, ...patch, phases }
+          }),
+        }))
+        return
       }
       if (loc.kind === 'groups') {
         setStages((prev) => prev.map((s) => s.id !== ev.stage_id ? s : {
@@ -494,24 +527,61 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       if (type === 'agent_completed' && MODULE_DURATION_STAGES.includes(targetStage) && ev.duration > 0) {
         modDurRef.current[targetStage] = (modDurRef.current[targetStage] || 0) + ev.duration
       }
-      // 后端 agent 事件是流式的（无预置列表）——动态追加
+      // 后端 agent 事件是流式的（无预置列表）——动态追加。
+      // 2026-08-27：agent 唯一键 = agent 名 + flow_id + round（多轮循环同 agent 名
+      // 重复出现——规划/规范化/冲突第 2 轮各自成行；此前按名合并导致轮次信息丢失）
+      const agentKey = `${ev.agent}|${ev.flow_id ?? ''}|${ev.round ?? ''}`
+      // quality_check 兜底取消竞争：新的 agent_started 到达 → 作废待确认的完成
+      if (targetStage === 'quality_check' && type === 'agent_started' && qcDoneTimerRef.current) {
+        clearTimeout(qcDoneTimerRef.current)
+        qcDoneTimerRef.current = null
+      }
+      // 2026-08-27：quality_check 完成延迟确认（**同步层**启动 timer——
+      // 严禁在 setStages updater 内 setTimeout/嵌套 setStages：updater 必须纯函数，
+      // StrictMode 双调会破坏渲染一致性 → 白屏。timer 到点用 functional update
+      // 检查「无 running agent」才置 completed，竞争窗口内新 agent_started 会
+      // clearTimeout 作废。）
+      if (targetStage === 'quality_check' && type === 'agent_completed'
+          && qcDoneTimerRef.current == null) {
+        qcDoneTimerRef.current = setTimeout(() => {
+          qcDoneTimerRef.current = null
+          setStages((prev) => prev.map((st) => {
+            if (st.id !== 'quality_check' || st.status === 'completed') return st
+            const ags = st.agents || []
+            if (!ags.length || ags.some((a) => a.status === 'running')) return st
+            return { ...st, status: 'completed' }
+          }))
+        }, 300)
+      }
       setStages((prev) => prev.map((s) => {
         if (s.id !== targetStage) return s
-        const has = (s.agents || []).some((a) => a.agent === ev.agent)
+        const has = (s.agents || []).some((a) => a.agentKey === agentKey)
         const agents = has
-          ? (s.agents || []).map((a) => a.agent === ev.agent
+          ? (s.agents || []).map((a) => a.agentKey === agentKey
               // M-14：traces 累积而非替换（规范化多轮/回跳场景第 1 轮轨迹不丢）；
               // 按 timestamp+field+after 三元组去重（与 quality_state._merge_dict 策略一致）
               // P0-4：reason 透传（后端 agent_completed 新增字段，L3 下钻结论展示）
               ? { ...a, status, duration: type === 'agent_completed' ? (ev.duration ? fmtDuration(ev.duration) : a.duration) : a.duration, traces: mergeTraces(a.traces, ev.traces), reason: ev.reason != null ? ev.reason : a.reason }
               : a)
-          : [...(s.agents || []), { id: ev.agent, agent: ev.agent, status, duration: type === 'agent_completed' ? fmtDuration(ev.duration) : null, traces: ev.traces || null, reason: type === 'agent_completed' ? (ev.reason || null) : null }]
+          : [...(s.agents || []), {
+              id: agentKey, agent: ev.agent, agentKey, status,
+              flow_id: ev.flow_id, round: ev.round,   // 清洗卡嵌套块归组依据（旧事件 undefined）
+              duration: type === 'agent_completed' ? fmtDuration(ev.duration) : null,
+              traces: ev.traces || null,
+              reason: type === 'agent_completed' ? (ev.reason || null) : null,
+            }]
         // insight 阶段：agent 状态同步到预置 substeps（卡片时间线展示）
         const substeps = Array.isArray(s.substeps) && s.substeps.some((st) => st.id === ev.agent)
           ? s.substeps.map((st) => (st.id === ev.agent ? { ...st, status } : st))
           : s.substeps
         const duration = modDurRef.current[targetStage] != null ? `${modDurRef.current[targetStage].toFixed(1)}s` : s.duration
-        return { ...s, agents, substeps, duration, status: s.status === 'waiting' ? 'running' : s.status }
+        // 2026-08-27：HR→A 重评估——卡已 completed 但启动新评估 agent → 回退 running
+        //（HumanReview 决策后 route_after_human_review 直连 Assessment，重评估中）
+        let st = s
+        if (targetStage === 'quality_check' && type === 'agent_started' && s.status === 'completed') {
+          st = { ...s, status: 'running' }
+        }
+        return { ...st, agents, substeps, duration, status: st.status === 'waiting' ? 'running' : st.status }
       }))
       // clean/deliver/insight 卡没有 stage_started 事件 → 首个 agent 事件时弹卡
       noteCardAppeared(targetStage)
@@ -687,6 +757,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     introDoneRef.current = false         // 开场白跨任务重置
     understandTargetRef.current = null   // 确认目标跨任务重置
     if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
+    if (qcDoneTimerRef.current) { clearTimeout(qcDoneTimerRef.current); qcDoneTimerRef.current = null }  // 2026-08-27
     esRef.current?.close()
     esRef.current = null
     lastSeqRef.current = 0   // CR-02：每次打开任务重置，快照重放确定续播锚点
@@ -793,6 +864,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     introDoneRef.current = false         // 开场白跨任务重置
     understandTargetRef.current = null   // 确认目标跨任务重置
     if (logTimerRef.current) { clearTimeout(logTimerRef.current); logTimerRef.current = null }
+    if (qcDoneTimerRef.current) { clearTimeout(qcDoneTimerRef.current); qcDoneTimerRef.current = null }  // 2026-08-27
     esRef.current?.close()
     esRef.current = null
     setStarted(false)

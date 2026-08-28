@@ -269,8 +269,48 @@ class Executor:
         def should_cancel() -> bool:
             return slot.cancelled
 
+        # 尾随事件（仅回放任务）：task_completed 后同线程顺序补发（ai 总结 message），
+        # 与真实时序同构（message 紧随 task_completed）→ 前端 awaitSummaryRef 命中即关流
+        trailing: List[Dict[str, Any]] = []
         try:
             log_set_task(task_id)
+            # ── 事件级重放分支（2026-08-27）：replay_of 非空 → 不跑 graph/VCR/LLM，
+            # 把源任务已落库事件按压缩节奏重新 emit（web/replayer.run_replay）
+            rec = self._store.get_task(task_id) or {}
+            if rec.get("replay_of"):
+                from .replayer import run_replay
+                # 排队期间参数不落内存：speed/answer_timeout 持久化在初始 state_json
+                meta = {}
+                try:
+                    meta = json.loads(rec.get("state_json") or "{}").get("replay_meta") or {}
+                except Exception:
+                    pass
+                tmo = meta.get("answer_timeout_sec") or CLARIFICATION_TIMEOUT
+
+                def _replay_get_answer(_tid: str, payload: Any) -> Optional[str]:
+                    if not slot.wait(tmo):
+                        self._bus.error(task_id, "clarification",
+                                        "澄清超时（等待回答超时），任务已取消", level="fatal")
+                        self._bus.emit(task_id, "task_cancelled", reason="timeout")
+                        slot.cancel()
+                        return None
+                    ans = slot.answer
+                    slot.reset()
+                    return ans
+
+                out = run_replay(self._bus, self._store, task_id, rec["replay_of"],
+                                 speed=int(meta.get("speed") or 10),
+                                 get_answer=_replay_get_answer, should_cancel=should_cancel)
+                if not out["cancelled"]:
+                    # P1-5：先落源 state_json 再收尾——task_completed 发出时
+                    # /state 已可见最终数据（与真实任务"state_json 落库 → completed"同序）
+                    try:
+                        self._store.update_task(task_id, state_json=out["state_json_text"])
+                    except Exception:
+                        logger.exception("[Executor] replay state copy failed")
+                    trailing.append({"type": "message", "role": "ai",
+                                     "content": out["summary"] or "任务完成"})
+                return  # 终态收尾统一走 finally _finish
             if _CASSETTE_PATH:
                 # H-14: cassette 缺失 + 非显式录制 → fail-fast（不静默降级为真实录制）
                 validate_cassette_config(_CASSETTE_PATH, _CASSETTE_MODE)
@@ -328,7 +368,7 @@ class Executor:
             self._bus.emit(task_id, "task_failed", error=str(exc)[:500])
         finally:
             log_set_task(None)
-            self._finish(task_id)
+            self._finish(task_id, trailing=trailing)
 
     def _gen_title(self, task_id: str, query: str, result: Dict[str, Any]) -> None:
         """异步任务标题摘要（D8-2 task_title_ready；M-12 移出执行器线程）。"""
@@ -342,7 +382,10 @@ class Executor:
         except Exception:
             logger.exception("[Executor] title gen failed")
 
-    def _finish(self, task_id: str) -> None:
+    def _finish(self, task_id: str, trailing: Optional[List[Dict[str, Any]]] = None) -> None:
+        # trailing（2026-08-27 回放）：task_completed 后同线程、锁内顺序补发的
+        # 尾随事件（ai 总结 message）。真实/回放任务共用此出口，禁止在 replayer
+        # 内部再调 _finish——二次调用会把下一任务的 _current 置 None，破坏并发=1。
         with self._lock:
             slot = self._slots.pop(task_id, None)
             self._current = None
@@ -359,6 +402,8 @@ class Executor:
                     # cancelled/error 分支不发（H-08/H-09 已发 task_cancelled，
                     # error 分支已发 task_failed）。
                     self._bus.emit(task_id, "task_completed", summary="任务完成")
+                    for ev in trailing or []:
+                        self._bus.publish(task_id, ev)
 
         # 2026-08-24: 终态任务 checkpoint 自动清理 — LangGraph 快照仅在运行中
         # 的 HITL 中断恢复时需要; 任务完成后不再被任何代码读取 (前端历史回放

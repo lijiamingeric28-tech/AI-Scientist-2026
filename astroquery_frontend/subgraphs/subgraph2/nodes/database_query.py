@@ -15,6 +15,7 @@ from ..utils import (
 )
 from ..utils.column_mapper import map_columns_to_properties
 from ..utils.vizier_client import query_with_fallback
+from astroquery_ai.config import get_settings
 from subgraphs.subgraph1.utils.llm_utils import get_llm_client
 from events import emit_progress, emit  # Web 事件埋点（离线 no-op）
 
@@ -60,6 +61,13 @@ def database_query(state: RetrievalState) -> RetrievalState:
 
         logger.debug("[Database Query] Loading configs...")
         catalog_config = load_catalog_config(str(catalog_config_path))
+        # P18 消融：CATALOG_WHITELIST 限定星表子集（逗号分隔，空=全部）
+        _wl = get_settings().catalog_whitelist
+        if _wl:
+            _keys = {k.strip() for k in _wl.split(",") if k.strip()}
+            catalog_config = {k: v for k, v in catalog_config.items() if k in _keys}
+            logger.info(f"[Database Query] P18 消融：星表白名单 {sorted(_keys)}，"
+                        f"{len(catalog_config)} 个星表参与")
         catalog_metadata = load_catalog_metadata(str(catalog_metadata_path))
         catalog_units_config = load_catalog_units(str(catalog_units_path))
 

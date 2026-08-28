@@ -108,17 +108,78 @@ def _pipeline_exit_wrap(fn):
     """M-13 最小修复: 管线出口（insights → END）补发 clean/deliver 卡
     stage_completed —— clean/deliver 无 stage_started，前端靠 agent 事件/
     stage_completed 弹卡，缺本事件则卡 5/6 永久「进行中…」。
+
+    2026-08-27 时机修正（用户反馈：卡 5/6 全部跑完才显示完成的普遍性问题）：
+    - clean 的 stage_completed 由 _clean_entry_wrap 在**进入 Export 前**发
+      （normalization/conflict/human_review 全部结束 = Dispatch 队列清空转入导出）
+    - deliver 的 stage_completed 由 _deliver_entry_wrap 在**进入 Insights 前**发
+      （export 子图结束即数据交付完成；insights 是增值子流程）
+    - 本 wrap 保留出口兜底（重复事件幂等），但不再承担主要完成信号
     """
     from events import emit as _emit_event
 
     def wrapped(state: QualityGraphState) -> dict[str, Any]:
         result = _call_node(fn, state)
         qid = _qid_of(state)
+        # 出口兜底（前端 stage_completed 幂等，先到的 entry wrap 已置 completed）
         _emit_event(qid, {"type": "stage_completed", "stage_id": "clean",
                           "status": "completed"})
         _emit_event(qid, {"type": "stage_completed", "stage_id": "deliver",
                           "status": "completed"})
         return result
+    return wrapped
+
+
+def _assessment_wrap(fn):
+    """2026-08-27: 质量检查完成时机 —— assessment 子图结束即发
+    stage_completed(quality_check)（main_graph quality 节点改 mode='start'，
+    不再由它等整条管线结束后才发 completed）。
+
+    此前前端卡 4 恒「进行中」直到清洗/交付/洞察全部完成（用户实测观感
+    「明明已完成却显示进行中」）；quality_check 的完成语义 = 评估完毕。
+    """
+    from events import emit as _emit_event
+    import time as _time
+
+    def wrapped(state: QualityGraphState) -> dict[str, Any]:
+        qid = _qid_of(state)
+        t0 = _time.time()
+        result = _call_node(fn, state)
+        _emit_event(qid, {"type": "stage_completed", "stage_id": "quality_check",
+                          "status": "completed",
+                          "duration": round(_time.time() - t0, 2)})
+        return result
+    return wrapped
+
+
+def _clean_entry_wrap(fn):
+    """2026-08-27: clean 完成时机 = 清洗子图（规范化/冲突/人工审核）全部结束、
+    进入 Export **前** —— Dispatch/loop 队列清空转入导出即清洗完毕（而非等
+    export 子图本身跑完才显示清洗完成；此前 clean 的 stage_completed 只在管线
+    出口补发，卡 5 观感恒「进行中」直到交付/洞察全部跑完，与卡 4 同根问题）。
+    """
+    from events import emit as _emit_event
+
+    def wrapped(state: QualityGraphState) -> dict[str, Any]:
+        qid = _qid_of(state)
+        _emit_event(qid, {"type": "stage_completed", "stage_id": "clean",
+                          "status": "completed"})
+        return _call_node(fn, state)
+    return wrapped
+
+
+def _deliver_entry_wrap(fn):
+    """2026-08-27: deliver 完成时机 = export 子图结束、进入 Insights **前**
+    （数据导出完成即交付；insights 为增值子流程，其完成由前端 insights flow
+    completed 独立推导）。此前 deliver 只随管线出口补发，观感同样延迟。
+    """
+    from events import emit as _emit_event
+
+    def wrapped(state: QualityGraphState) -> dict[str, Any]:
+        qid = _qid_of(state)
+        _emit_event(qid, {"type": "stage_completed", "stage_id": "deliver",
+                          "status": "completed"})
+        return _call_node(fn, state)
     return wrapped
 
 
@@ -140,7 +201,9 @@ def human_review_node(state: QualityGraphState) -> dict[str, Any]:
 
     def _agent_ev(qid: str, status: str, **extra) -> None:
         ev = {"type": f"agent_{status}", "stage_id": "clean",
-              "agent": "HumanReviewAgent"}
+              "agent": "HumanReviewAgent",
+              "flow_id": "human_review",  # 2026-08-27：前端人工审核块归组依据
+              "round": _flow_round(state)}
         ev.update(extra)
         _emit_event(qid, ev)
 
@@ -219,11 +282,13 @@ def build_quality_graph() -> StateGraph[QualityGraphState]:
     graph: StateGraph[QualityGraphState] = StateGraph(QualityGraphState)
 
     # 节点（M-13: 阶段子图包 flow 事件 — 卡5/6 动态流转 + 轮次分组）
-    graph.add_node(NODE_ASSESSMENT, build_assessment_graph().compile())
+    # 2026-08-27: assessment 包 _assessment_wrap — 评估结束即发 quality_check
+    # completed（main_graph quality 节点 mode 改 'start'，见 astroquery_ai/main_graph.py）
+    graph.add_node(NODE_ASSESSMENT, _assessment_wrap(build_assessment_graph().compile()))
     graph.add_node(NODE_NORMALIZATION, _flow_wrap("normalization", "clean", build_normalization_graph().compile()))
     graph.add_node(NODE_CONFLICT, _flow_wrap("conflict", "clean", build_conflict_graph().compile()))
-    graph.add_node(NODE_EXPORT, _flow_wrap("export", "deliver", build_export_graph().compile()))
-    graph.add_node(NODE_INSIGHTS, _pipeline_exit_wrap(_flow_wrap("insights", "deliver", build_insights_graph().compile())))  # V3.4
+    graph.add_node(NODE_EXPORT, _clean_entry_wrap(_flow_wrap("export", "deliver", build_export_graph().compile())))
+    graph.add_node(NODE_INSIGHTS, _pipeline_exit_wrap(_deliver_entry_wrap(_flow_wrap("insights", "deliver", build_insights_graph().compile()))))  # V3.4
     graph.add_node(NODE_LOOP, loop_controller_node)
     graph.add_node(NODE_HUMAN_REVIEW, human_review_node)
     graph.add_node(NODE_DISPATCH, dispatch_node)

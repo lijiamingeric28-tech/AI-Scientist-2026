@@ -297,6 +297,24 @@ async def cancel_task(task_id: str):
     return {"ok": True}
 
 
+class TaskTitleBody(BaseModel):
+    title: str
+
+
+@app.put("/api/tasks/{task_id}/title")
+async def update_task_title(task_id: str, body: TaskTitleBody):
+    """手动修改任务名（2026-08-27）。任务不存在 404；空/超长 400。"""
+    if not store.get_task(task_id):
+        raise HTTPException(404, "任务不存在")
+    title = body.title.strip()
+    if not title:
+        raise HTTPException(400, "任务名不能为空")
+    if len(title) > 100:
+        raise HTTPException(400, "任务名超长（上限 100 字符）")
+    store.update_task(task_id, title=title)
+    return {"task_id": task_id, "title": title}
+
+
 @app.post("/api/tasks/{task_id}/retry")
 async def retry_task(task_id: str):
     """契约 D2-4：同 query 重建任务（新 task_id，历史保留）"""
@@ -318,6 +336,71 @@ async def retry_task(task_id: str):
     store.update_task(new_task["task_id"], output_dir=str(task_dir), pdf_paths=json.dumps(moved))
     executor.submit(new_task["task_id"], rec["query"], moved)
     return {"task_id": new_task["task_id"], "status": "queued"}
+
+
+# ══════════════════════════════════════════════════════
+# 事件级重放（2026-08-27：演示回放机制，见 web/replayer.py）
+# ══════════════════════════════════════════════════════
+
+def _resolve_source_task(task_id: str) -> str:
+    """回放任务 → 源任务 id（结果类端点专用）。
+
+    仅用于重度数据端点（/records /sources /figures /quality /exports /result
+    /export /open-*）——回放任务的结果与文件全部映射到源任务（零拷贝）。
+    /state、/events、/events/history、/tasks/{id} 一律字面 id（P0-4）：
+    前端 openTask 以 /state 快照 lastSeq 开 SSE 续播，映射会令 after_seq 大于
+    回放任务全部实时 seq → 事件全部被当作旧事件丢弃 → 实时流黑屏。
+    """
+    rec = store.get_task(task_id)
+    if not rec:
+        raise HTTPException(404, "任务不存在")
+    src = rec.get("replay_of")
+    return src if (src and store.get_task(src)) else task_id
+
+
+class ReplayBody(BaseModel):
+    speed: int = 10  # 压缩倍率：事件间隔 = 源真实间隔 / speed
+    answer_timeout_sec: Optional[float] = None  # 澄清等待超时（默认 15 分钟）
+
+
+@app.post("/api/tasks/{task_id}/replay")
+async def replay_task(task_id: str, body: ReplayBody):
+    """创建回放任务：把源任务已落库事件按压缩节奏重新 emit（演示回放）。
+
+    404 源不存在；409 源运行中/未完成（v1 仅允许 completed 源——cancelled/error
+    源无终态事件可供重放收尾，SSE 会永久悬挂）/无事件/已有活跃回放。
+    """
+    rec = store.get_task(task_id)
+    if not rec:
+        raise HTTPException(404, "任务不存在")
+    status = _normalize_status(rec["status"])
+    if status in ("running", "queued"):
+        raise HTTPException(409, "任务运行中，不可重放")
+    if status != "completed":
+        raise HTTPException(409, "仅成功完成的任务可重放")
+    # 嵌套重放扁平化：回放"回放任务"时以最上游源为 replay_of
+    base = rec["replay_of"] or task_id
+    if not store.get_events(base, 0):
+        raise HTTPException(409, "源任务无事件，不可重放")
+    if store.active_replay_exists(base):
+        raise HTTPException(409, "该任务已有回放进行中")
+    speed = max(1, min(body.speed, 100))
+    # P1-7：speed/answer_timeout 持久化在初始 state_json（回放任务可能被并发=1
+    # 排队，启动时内存参数已丢失）；replay_meta 在结束时被源 state_json 覆盖
+    new_task = store.create_task(
+        query=f"回放：{rec['query']}"[:MAX_QUERY_LEN],
+        output_dir="", pdf_paths=[], replay_of=base,
+    )
+    store.update_task(
+        new_task["task_id"],
+        title=f"重放 · {rec.get('title') or rec['query'][:40]}",
+        state_json=json.dumps({
+            "replay_meta": {"speed": speed, "answer_timeout_sec": body.answer_timeout_sec,
+                            "of": base},
+        }, ensure_ascii=False),
+    )
+    executor.submit(new_task["task_id"], new_task["query"], [])
+    return {"task_id": new_task["task_id"], "replay_of": base, "status": "queued"}
 
 
 # ══════════════════════════════════════════════════════
@@ -396,12 +479,21 @@ async def delete_task_data(task_id: str, parts: str = ""):
 
 @app.delete("/api/tasks/{task_id}")
 async def delete_task(task_id: str):
-    """整任务删除：任务行 + events + checkpoints + 论文 PDF + 图证 + 导出 + 上传 PDF。"""
+    """整任务删除：任务行 + events + checkpoints + 论文 PDF + 图证 + 导出 + 上传 PDF。
+
+    2026-08-27：源任务存在活跃回放 → 409（回放线程执行期间源 events/行不可删）；
+    否则级联删除其全部回放任务（行 + events，回放任务无独立文件目录）。
+    """
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
     if _normalize_status(rec["status"]) in ("running", "queued"):
         raise HTTPException(409, "任务运行中，不可删除")
+    if store.active_replay_exists(task_id):
+        raise HTTPException(409, "存在运行中的回放，请先处理回放任务")
+    for rid in store.replay_ids_of(task_id):  # 级联删除回放（行 + events）
+        store.delete_events(rid)
+        store.delete_task(rid)
     removed = _delete_task_data(task_id, ["pdfs", "figures", "checkpoints", "events", "exports"])
     paths = _task_data_paths(task_id)
     removed["task_dir"] = _rmtree_if_exists(paths["task_dir"])
@@ -426,6 +518,12 @@ async def batch_delete_tasks(body: BatchDeleteBody):
         if _normalize_status(rec["status"]) in ("running", "queued"):
             results.append({"task_id": tid, "deleted": False, "reason": "active"})
             continue
+        if store.active_replay_exists(tid):  # 2026-08-27：活跃回放保护
+            results.append({"task_id": tid, "deleted": False, "reason": "active_replay"})
+            continue
+        for rid in store.replay_ids_of(tid):  # 级联删除回放（行 + events）
+            store.delete_events(rid)
+            store.delete_task(rid)
         removed = _delete_task_data(tid, ["pdfs", "figures", "checkpoints", "events", "exports"])
         _rmtree_if_exists(_task_data_paths(tid)["task_dir"])
         store.delete_events(tid)
@@ -589,6 +687,7 @@ def _slim_state(state: Any) -> Any:
 
 @app.get("/api/tasks/{task_id}/result")
 async def get_result(task_id: str):
+    task_id = _resolve_source_task(task_id)  # 回放任务 → 源任务
     state = _load_state(task_id)
     return state.get("final_output") or {}
 
@@ -634,7 +733,9 @@ async def get_records(task_id: str):
     """契约 D7-1 扩展 (2026-08-24): 返回质量管线修改后的最终记录
     (与导出 grounded_data 同源), 附加 page_image_url — 指向 bbox 溯源页图
     (/static/figures/{task_id}/source_pages/{bibcode}/page_{N}.png),
-    文件不存在时为空串 (前端据此降级为只显示坐标文本)。"""
+    文件不存在时为空串 (前端据此降级为只显示坐标文本)。
+    2026-08-27: 回放任务 → 源任务 (page_image_url 指向源 task_id 的落盘图)。"""
+    task_id = _resolve_source_task(task_id)
     records = _final_records(_load_state(task_id))
     pages_dir = OUTPUT_DIR / "figures" / task_id / "source_pages"
     out = []
@@ -656,12 +757,15 @@ async def get_records(task_id: str):
 @app.get("/api/tasks/{task_id}/sources")
 async def get_sources(task_id: str):
     # 2026-08-24: 与 /records 同口径 — 返回质量管线修改后的最终来源列表
+    # 2026-08-27: 回放任务 → 源任务
+    task_id = _resolve_source_task(task_id)
     return _final_sources(_load_state(task_id))
 
 
 @app.get("/api/tasks/{task_id}/figures")
 async def get_figures(task_id: str):
     """契约 D7-3：图证元数据（image_url 指向静态路由）"""
+    task_id = _resolve_source_task(task_id)  # 回放任务 → 源任务（图文件在源目录）
     state = _load_state(task_id)
     figures = state.get("final_output", {}).get("figure_evidence", [])
     out = []
@@ -684,6 +788,7 @@ async def get_figures(task_id: str):
 @app.get("/api/tasks/{task_id}/quality")
 async def get_quality(task_id: str):
     """契约 D7-4：质量报告 + 洞察（轻量并入；2026-08-24 响应裁剪）"""
+    task_id = _resolve_source_task(task_id)  # 回放任务 → 源任务
     state = _load_state(task_id)
     final = state.get("final_output") or {}
     return {
@@ -694,7 +799,9 @@ async def get_quality(task_id: str):
 
 @app.get("/api/tasks/{task_id}/exports")
 async def get_exports(task_id: str):
-    """契约 D9-2：输出文件元数据（stat 本地文件，无下载语义）"""
+    """契约 D9-2：输出文件元数据（stat 本地文件，无下载语义）
+    2026-08-27: 回放任务 → 源任务（导出文件在源目录）"""
+    task_id = _resolve_source_task(task_id)
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
@@ -738,7 +845,9 @@ def _export_desc(name: str) -> str:
 
 @app.get("/api/tasks/{task_id}/export/{file_name}")
 async def export_file(task_id: str, file_name: str):
-    """浏览器直接打开/保存（路径白名单校验，防目录穿越，D9-3 安全）"""
+    """浏览器直接打开/保存（路径白名单校验，防目录穿越，D9-3 安全）
+    2026-08-27: 回放任务 → 源任务（导出文件在源目录）"""
+    task_id = _resolve_source_task(task_id)
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
@@ -753,6 +862,7 @@ async def export_file(task_id: str, file_name: str):
 
 @app.post("/api/tasks/{task_id}/open-output")
 async def open_output(task_id: str):
+    task_id = _resolve_source_task(task_id)  # 回放任务 → 源任务（打开源导出目录）
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
@@ -768,6 +878,7 @@ async def open_output(task_id: str):
 
 @app.post("/api/tasks/{task_id}/open-file")
 async def open_file(task_id: str, body: Dict[str, str]):
+    task_id = _resolve_source_task(task_id)  # 回放任务 → 源任务（文件在源目录）
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")

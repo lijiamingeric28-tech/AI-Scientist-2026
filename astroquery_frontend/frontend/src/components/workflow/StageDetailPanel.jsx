@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
-import { FLOW_LABELS } from '@/lib/stages'
 import LogLine from '@/components/log/LogLine'
+import FlowBlocks from './FlowBlocks'
 
 /* 工作流下钻面板（三级）：
  *   L1 阶段流程图（WorkflowView）→ 点击阶段节点
@@ -83,20 +83,18 @@ function Section({ label, count, children }) {
 
 /* L2：Agent 行（可点击进入 L3） */
 function AgentRow({ agent, onOpen }) {
-  const [hover, setHover] = useState(false)
   const traceCount = Array.isArray(agent.traces) ? agent.traces.length : 0
   const logCount = Array.isArray(agent.logs) ? agent.logs.length : 0
   return (
     <div
       onClick={onOpen}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      className="agent-row"   // 2026-08-27：hover 背景 CSS 化（滑动无 setState）
       style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '9px 12px', borderRadius: 'var(--radius-md)',
         border: '1px solid var(--surface-border-subtle)',
-        background: hover ? 'var(--surface-secondary)' : 'var(--surface-bg)',
-        cursor: 'pointer', marginBottom: 6, transition: 'background .12s',
+        background: 'var(--surface-bg)',
+        cursor: 'pointer', marginBottom: 6,
       }}
     >
       <StatusDot status={agent.status} size={7} />
@@ -369,32 +367,15 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
                   </Section>
                 ))}
 
-                {/* flow 轮次 */}
+                {/* flow 轮次 + Agent 明细（2026-08-27：嵌套块结构，共享 FlowBlocks） */}
                 {flows.length > 0 && (
                   <Section label="流程轮次" count={flows.length}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                      {flows.map((f) => (
-                        <div key={f.key} className="row-item" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px' }}>
-                          <StatusDot status={f.status} size={7} />
-                          <span style={{ fontSize: 13, color: 'var(--content-fg)', fontWeight: 510 }}>
-                            {FLOW_LABELS[f.flowId] || f.flowId}
-                          </span>
-                          <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>第 {f.round} 轮</span>
-                          <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
-                            {STAGE_STATUS_LABELS[f.status] || f.status}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    <FlowBlocks flows={flows} stageId={stage.id} agents={agents} onOpenAgent={(a) => setAgentKey(a.id || a.agent)} />
                   </Section>
                 )}
-
-                {/* Agent 列表 → L3 */}
-                {agents.length > 0 && (
+                {flows.length === 0 && agents.length > 0 && (
                   <Section label="Agent 明细" count={agents.length}>
-                    {agents.map((a) => (
-                      <AgentRow key={a.id || a.agent} agent={a} onOpen={() => setAgentKey(a.id || a.agent)} />
-                    ))}
+                    {agents.map((a) => <AgentRow key={a.id || a.agent} agent={a} onOpen={() => setAgentKey(a.id || a.agent)} />)}
                     <div className="hint-dim" style={{ marginTop: 4 }}>
                       点击 Agent 查看其执行日志（检查器 / LLM / 工具调用）与数据修改轨迹。
                     </div>

@@ -86,6 +86,11 @@ def quality_node(state: MainGraphState, config: RunnableConfig = None) -> Dict:
         logger.warning("[Quality Adapter] 无数据（final_output 为空），跳过质量管线")
         return {"quality_report": {"skipped": True, "reason": "empty_final_output"}}
 
+    if not get_settings().quality_pipeline_enabled:
+        logger.info("[Quality Adapter] P18 消融：质量管线已禁用 "
+                    "(QUALITY_PIPELINE_ENABLED=false)，records 保持提取原样")
+        return {"quality_report": {"skipped": True, "reason": "ablation_disabled"}}
+
     try:
         # 延迟导入子图4（避免循环依赖 + 让包迁移独立可测）
         from quality_pipeline.quality_state import make_initial_state

@@ -673,7 +673,7 @@ def test_executor_task_completed_after_persist_before_slow_summary(tmp_path, mon
 
     def slow_summary(task_id, state):
         summary_started.set()
-        time.sleep(0.3)  # 模拟 LLM 慢/悬挂
+        time.sleep(2.0)  # 模拟 LLM 慢/悬挂（2s：全量高负载下 0.3s 窗口会被轮询错过）
         summary_done.set()
         return "慢总结完成"
 
@@ -686,7 +686,7 @@ def test_executor_task_completed_after_persist_before_slow_summary(tmp_path, mon
                   summary_fn=slow_summary)
     try:
         ex.submit(t["task_id"], "q", [])
-        assert summary_started.wait(2), "总结未开始"
+        assert summary_started.wait(5), "总结未开始"
         # 慢总结仍阻塞：task_completed 已到（_finish 不等待总结）、ai 消息未到
         deadline = time.time() + 10
         while time.time() < deadline:
@@ -701,7 +701,7 @@ def test_executor_task_completed_after_persist_before_slow_summary(tmp_path, mon
         assert rec and rec["status"] == "completed", "task_completed 应先于 status 落库？"
         assert not any(e["type"] == "message" and e["role"] == "ai"
                        for e in store.get_events(t["task_id"]))
-        assert summary_done.wait(3)
+        assert summary_done.wait(5)
         # 轮询等 ai 消息落库（总结线程在 summary_done 之后才发消息，需短轮询）
         deadline = time.time() + 3
         while time.time() < deadline:
@@ -1804,3 +1804,392 @@ def test_open_file_rejects_path_separator(client, monkeypatch):
     assert r.status_code == 404
     r2 = client.post(f"/api/tasks/{t['task_id']}/open-file", json={"name": "a/b.csv"})
     assert r2.status_code == 404
+
+
+# ══════════════════════════════════════════════════════
+# 事件级重放（2026-08-27：web/replayer.py + executor 分流）
+# ══════════════════════════════════════════════════════
+
+_SUMMARY_TEXT = "任务完成总结：共提取 10 条记录。"
+
+
+def _make_source_task(store, with_clarification=False):
+    """构造一个 completed 源任务：带 ts 的完整事件序列 + state_json。"""
+    src = store.create_task("M45 的距离")
+    src_id = src["task_id"]
+    evs = [
+        {"type": "stage_started", "stage_id": "understand", "name": "任务理解"},
+        {"type": "step_progress", "stage_id": "understand", "step": "confirm", "status": "completed"},
+    ]
+    if with_clarification:
+        evs.append({"type": "clarification", "cl_type": "final_confirm", "stage_id": "understand",
+                    "title": "确认查询", "question": "请确认目标天体", "fields": [{"label": "目标", "value": "M45"}]})
+        evs.append({"type": "clarification_answered", "answer": "y"})  # 重放应跳过（live resume 重新落库）
+    evs += [
+        {"type": "stage_completed", "stage_id": "understand", "duration": 5.0, "status": "completed"},
+        {"type": "stage_started", "stage_id": "retrieval", "name": "数据检索"},
+        {"type": "step_progress", "stage_id": "retrieval", "step": "database/match", "status": "completed",
+         "data": {"matched_catalogs": 3, "total_queries": 4}},
+        {"type": "agent_started", "stage_id": "quality_check", "agent": "ProfilingAgent"},
+        {"type": "agent_completed", "stage_id": "quality_check", "agent": "ProfilingAgent",
+         "duration": 1.2, "reason": "8 tools"},
+        {"type": "flow_started", "stage_id": "clean", "flow_id": "normalization", "round": 1},
+        {"type": "flow_completed", "stage_id": "clean", "flow_id": "normalization", "round": 1},
+        {"type": "stage_completed", "stage_id": "done", "duration": 0, "status": "completed"},
+        {"type": "message", "role": "ai", "content": _SUMMARY_TEXT},
+        {"type": "task_completed", "summary": "任务完成"},
+        {"type": "task_title_ready", "task_id": src_id, "title": "M45 查询"},
+    ]
+    for i, ev in enumerate(evs):
+        store.append_event(src_id, ev, ts=1000.0 + i * 0.05)  # 全部带 ts（模拟新真实任务）
+    store.update_task(src_id, status="completed", state_json=json.dumps({
+        "target_entity": "M45",
+        "final_output": {
+            "records": [{"record_id": "r1", "entity_name": "M45", "field_name": "age",
+                         "field_value": "100", "field_unit": "Myr"}],
+            "sources": [], "figure_evidence": [],
+        },
+    }))
+    return src_id
+
+
+def _wait_status(store, task_id, statuses, timeout=15):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        st = store.get_task(task_id)["status"]
+        if st in statuses:
+            return st
+        time.sleep(0.05)
+    raise AssertionError(f"task {task_id[:8]} 未在 {timeout}s 内到达 {statuses}（当前 {store.get_task(task_id)['status']}）")
+
+
+def _wait_replay_completed(store, rid, timeout=30):
+    """等回放任务稳定完成：status=completed **且** task_completed/尾随 message 均已落库。
+
+    _finish 内 status 落库 → emit task_completed → publish message 之间存在落库间隙，
+    只轮询 status 可能恰在间隙中读到 completed（全量高负载下必现）。以尾部 message
+    （回放正常完成的最后落库事件）作为完成标志，消除竞态窗口。
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        rec = store.get_task(rid)
+        evs = store.get_events(rid, 0)
+        if rec and rec["status"] == "completed" and evs and evs[-1]["type"] == "message":
+            return
+        time.sleep(0.05)
+    raise AssertionError(f"replay {rid[:8]} 未稳定完成（status={store.get_task(rid)['status']}）")
+
+
+def test_replay_migration_idempotent(tmp_path):
+    """老 schema 库初始化两遍无错；tasks.replay_of / events.ts 列迁移齐全。"""
+    import sqlite3 as _s
+    db = tmp_path / "old.db"
+    con = _s.connect(db)
+    con.execute("""CREATE TABLE tasks (
+        task_id TEXT PRIMARY KEY, query TEXT NOT NULL, title TEXT DEFAULT '',
+        status TEXT NOT NULL DEFAULT 'queued', created_at TEXT NOT NULL,
+        completed_at TEXT, output_dir TEXT DEFAULT '', pdf_paths TEXT DEFAULT '[]',
+        state_json TEXT DEFAULT '{}')""")
+    con.execute("CREATE TABLE events (seq INTEGER PRIMARY KEY AUTOINCREMENT, task_id TEXT NOT NULL, payload TEXT NOT NULL)")
+    con.commit()
+    con.close()
+
+    TaskStore(db)  # 第一次初始化（触发迁移）
+    TaskStore(db)  # 第二次（幂等）
+    cols = {r[1] for r in _s.connect(db).execute("PRAGMA table_info(tasks)")}
+    assert "replay_of" in cols
+    ecols = {r[1] for r in _s.connect(db).execute("PRAGMA table_info(events)")}
+    assert "ts" in ecols
+    # 新库直接建全（不依赖 ALTER）
+    store2 = TaskStore(tmp_path / "new.db")
+    assert store2.create_task("q", replay_of="src-id")["replay_of"] == "src-id"
+
+
+def test_replay_interval_between_clamp_and_defaults():
+    from web.replayer import interval_between
+    # 无 ts → 类型默认
+    assert interval_between(None, None, "log", 10) == 0.04
+    assert interval_between(1.0, None, "stage_started", 10) == 0.15
+    assert interval_between(None, 1.0, "unknown_type", 10) == 0.15
+    # 有 ts → 除速 + 下界钳制（2026-08-27：上限取消，长停顿真实等比）
+    assert interval_between(0, 0.1, "stage_started", 10) == 0.02   # 下界钳制（0.01 → 0.02）
+    assert interval_between(0, 30000, "stage_started", 1) == 30000.0  # 无上限（真实等比）
+    assert interval_between(0, 60, "stage_started", 10) == 6.0     # 60ms/10 → 无上限
+    assert interval_between(0, 0.6, "stage_started", 1) == 0.6     # 正常除速
+
+
+def test_replay_endpoint_guards(client):
+    """404 + 409 守卫：不存在 / 非终态 / 非 completed / 空事件 / 已有活跃回放。"""
+    from web import main as m
+    # 404
+    assert client.post("/api/tasks/nope/replay", json={}).status_code == 404
+    # queued 源
+    q = m.store.create_task("q1")
+    assert client.post(f"/api/tasks/{q['task_id']}/replay", json={}).status_code == 409
+    # error 源（v1 仅允许 completed）
+    e = m.store.create_task("q2")
+    m.store.update_task(e["task_id"], status="error")
+    assert client.post(f"/api/tasks/{e['task_id']}/replay", json={}).status_code == 409
+    # completed 但无事件
+    c = m.store.create_task("q3")
+    m.store.update_task(c["task_id"], status="completed")
+    assert client.post(f"/api/tasks/{c['task_id']}/replay", json={}).status_code == 409
+    # 已有活跃回放（人为造一行 queued 回放）→ 409
+    src = _make_source_task(m.store)
+    m.store.create_task("回放：q", replay_of=src)
+    assert client.post(f"/api/tasks/{src}/replay", json={}).status_code == 409
+
+
+def test_replay_run_event_order_and_tail(client):
+    """回放任务事件序列：跳过生命周期/澄清回答/源 message；唯一 task_completed
+    后紧跟 message(ai, 源总结)；源 events 不变。"""
+    from web import main as m
+    src = _make_source_task(m.store)
+    src_events = m.store.get_events(src, 0)
+    r = client.post(f"/api/tasks/{src}/replay", json={"speed": 100})
+    assert r.status_code == 200
+    rid = r.json()["task_id"]
+    assert r.json()["replay_of"] == src
+    _wait_replay_completed(m.store, rid)
+
+    evs = m.store.get_events(rid, 0)
+    types = [e["type"] for e in evs]
+    # 回放任务自身生命周期允许：task_started（executor 正常发出）；其余源跳过类不得残留
+    assert types.count("task_started") == 1
+    for t in ("task_queued", "task_title_ready", "task_cancelled", "task_failed",
+              "clarification_answered"):
+        assert t not in types
+    assert types.count("task_completed") == 1
+    assert types.count("message") == 1
+    # message(ai 总结) 紧随 task_completed（真实时序同构 → 前端 awaitSummary 关流）
+    assert evs[-2]["type"] == "task_completed"
+    assert evs[-1]["type"] == "message" and evs[-1]["role"] == "ai"
+    assert evs[-1]["content"] == _SUMMARY_TEXT
+    # 源 events 未被修改
+    assert m.store.get_events(src, 0) == src_events
+    # 回放任务行：replay_of + state_json 已拷贝为源最终 state
+    rec = m.store.get_task(rid)
+    assert rec["replay_of"] == src and rec["status"] == "completed"
+    assert json.loads(rec["state_json"]).get("target_entity") == "M45"
+
+
+def test_replay_payload_no_stale_seq(client):
+    """直连 run_replay：payload 剥离 seq/ts/task_id；行级 ts 落库；type 集合=源（剔除跳过类）。"""
+    import sqlite3 as _s
+    from web import main as m
+    from web.replayer import run_replay
+    src = _make_source_task(m.store)
+    t = m.store.create_task("回放：q", replay_of=src)
+    out = run_replay(m.bus, m.store, t["task_id"], src, speed=100,
+                     sleep=lambda d: None)  # 即时睡眠
+    assert out["cancelled"] is False
+    assert json.loads(out["state_json_text"])["target_entity"] == "M45"
+    con = _s.connect(str(m.DB_PATH))
+    rows = con.execute(
+        "SELECT payload, ts FROM events WHERE task_id=?", (t["task_id"],)).fetchall()
+    assert rows, "回放任务无事件"
+    expected = {e["type"] for e in m.store.get_events(src, 0)
+                if e["type"] not in {"task_queued", "task_started", "task_completed",
+                                     "task_cancelled", "task_failed", "task_title_ready",
+                                     "clarification_answered", "message"}}
+    actual = set()
+    for payload_text, ts in rows:
+        p = json.loads(payload_text)
+        assert "seq" not in p, "payload 残留旧 seq（会覆盖 EventBus 注入的新 seq）"
+        assert "ts" not in p and "task_id" not in p
+        assert ts is not None, "行级 ts 未落库"
+        actual.add(p["type"])
+    assert actual == expected
+    con.close()
+
+
+def test_replay_clarification_waits_and_resume(client):
+    """澄清事件真实等待：resume 前后续事件不落库；/state pending_clarification 非空；
+    resume 后继续直至 completed。"""
+    from web import main as m
+    src = _make_source_task(m.store, with_clarification=True)
+    r = client.post(f"/api/tasks/{src}/replay", json={"speed": 100})
+    rid = r.json()["task_id"]
+    # 等澄清事件落地
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        evs = m.store.get_events(rid, 0)
+        if evs and evs[-1]["type"] == "clarification":
+            break
+        time.sleep(0.05)
+    else:
+        raise AssertionError("澄清事件未到达")
+    # 澄清等待期间：澄清必须是末事件（get_answer 阻塞 → 源后续事件不得落库）
+    assert [e["type"] for e in evs][-1] == "clarification"
+    # /state 挂起判定（slot waiting + 末事件 clarification + running）
+    snap = client.get(f"/api/tasks/{rid}/state").json()
+    assert snap["pending_clarification"] is not None
+    assert snap["pending_clarification"]["cl_type"] == "final_confirm"
+    # resume → 继续 → completed
+    assert client.post(f"/api/tasks/{rid}/resume", json={"answer": "y"}).status_code == 200
+    _wait_replay_completed(m.store, rid)
+    types = [e["type"] for e in m.store.get_events(rid, 0)]
+    # 源事件中的 clarification_answered 被跳过；resume 时 executor 落一条新 answered
+    assert types.count("clarification_answered") == 1
+    assert types[-2] == "task_completed" and types[-1] == "message"
+
+
+def test_replay_clarification_timeout_cancels(client, monkeypatch):
+    """澄清等待超时 → fatal error + task_cancelled + cancelled；无 task_completed。"""
+    from web import main as m
+    monkeypatch.setattr("web.executor.CLARIFICATION_TIMEOUT", 0.3)
+    src = _make_source_task(m.store, with_clarification=True)
+    r = client.post(f"/api/tasks/{src}/replay", json={"speed": 100})
+    rid = r.json()["task_id"]
+    _wait_status(m.store, rid, {"cancelled"})
+    types = [e["type"] for e in m.store.get_events(rid, 0)]
+    assert "task_cancelled" in types
+    assert "task_completed" not in types
+    errs = [e for e in m.store.get_events(rid, 0) if e["type"] == "error"]
+    assert any(e.get("level") == "fatal" for e in errs)
+    # 取消后 state_json 未被源 state 覆盖（保留 replay_meta）
+    assert "replay_meta" in json.loads(m.store.get_task(rid)["state_json"])
+
+
+def test_replay_cancel_midway(client):
+    """回放中途取消 → cancelled、无 task_completed、无 message 补发。"""
+    from web import main as m
+    src = m.store.create_task("M45 的距离")["task_id"]
+    for i in range(50):  # 50 条 log × 0.1s(ts) / speed=1 → 总时长 ~5s，足够中途取消
+        m.store.append_event(src, {"type": "log", "node": "main_graph", "level": "INFO",
+                                   "message": f"log {i}"}, ts=1000.0 + i * 0.1)
+    m.store.update_task(src, status="completed", state_json="{}")
+    r = client.post(f"/api/tasks/{src}/replay", json={"speed": 1})
+    rid = r.json()["task_id"]
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        if len(m.store.get_events(rid, 0)) >= 3:
+            break
+        time.sleep(0.05)
+    assert client.post(f"/api/tasks/{rid}/cancel").status_code == 200
+    _wait_status(m.store, rid, {"cancelled"})
+    types = [e["type"] for e in m.store.get_events(rid, 0)]
+    assert "task_completed" not in types
+    assert "message" not in types
+    # 取消后可再次重放
+    r2 = client.post(f"/api/tasks/{src}/replay", json={"speed": 100})
+    assert r2.status_code == 200
+
+
+def test_replay_state_copy_and_endpoint_mapping(client):
+    """回放完成后数据端点映射到源：/records /quality /result 一致；/figures 指向源 id；
+    /exports 走源目录；/state 与 /events 是回放自己的。"""
+    from web import main as m
+    src = m.store.create_task("M45 的距离")["task_id"]
+    src_state = {
+        "target_entity": "M45",
+        "final_output": {
+            "records": [{"record_id": "r1", "entity_name": "M45", "field_name": "age",
+                         "field_value": "100", "field_unit": "Myr"}],
+            "quality_report": {
+                "output_state": {"structured_data": {"json": {
+                    "records": [{"record_id": "r1", "entity_name": "M45", "field_name": "age",
+                                 "field_value": "100", "field_unit": "Myr", "provenance": {}}],
+                    "sources": [],
+                }}},
+                "report_state": {"quality": {"quality_scoring": {"overall_score": 0.9}}},
+            },
+            "figure_evidence": [{"figure_id": "f1", "source_id": "s1", "page": 3,
+                                 "bbox": [1, 2, 3, 4], "caption": "c",
+                                 "image_path": f"figures/{src}/a_p3_f1.png"}],
+        },
+    }
+    m.store.update_task(src, status="completed", state_json=json.dumps(src_state))
+    # 源结果/导出/图证文件
+    (m.OUTPUT_DIR / src[:8]).mkdir(parents=True, exist_ok=True)
+    (m.OUTPUT_DIR / src[:8] / "data.csv").write_text("a,b\n")
+    (m.OUTPUT_DIR / "figures" / src).mkdir(parents=True, exist_ok=True)
+    (m.OUTPUT_DIR / "figures" / src / "a_p3_f1.png").write_bytes(b"png")
+    for ev in [{"type": "stage_started", "stage_id": "understand", "name": "任务理解"},
+               {"type": "stage_completed", "stage_id": "understand", "duration": 1.0, "status": "completed"},
+               {"type": "stage_completed", "stage_id": "done", "duration": 0, "status": "completed"},
+               {"type": "message", "role": "ai", "content": _SUMMARY_TEXT},
+               {"type": "task_completed", "summary": "任务完成"}]:
+        m.store.append_event(src, ev, ts=time.time())
+    r = client.post(f"/api/tasks/{src}/replay", json={"speed": 100})
+    rid = r.json()["task_id"]
+    _wait_replay_completed(m.store, rid)
+    # /records（质量管线记录）、/quality、/result 与源一致
+    assert client.get(f"/api/tasks/{rid}/records").json() == client.get(f"/api/tasks/{src}/records").json()
+    assert client.get(f"/api/tasks/{rid}/quality").json() == client.get(f"/api/tasks/{src}/quality").json()
+    assert client.get(f"/api/tasks/{rid}/result").json()["records"][0]["record_id"] == "r1"
+    # /figures image_url 前缀为源 id（静态路由文件在源目录）
+    figs = client.get(f"/api/tasks/{rid}/figures").json()
+    assert figs[0]["image_url"].startswith(f"/static/figures/{src}/")
+    # /exports 走源导出目录
+    exps = client.get(f"/api/tasks/{rid}/exports").json()
+    assert any(f["name"] == "data.csv" for f in exps)
+    assert client.get(f"/api/tasks/{rid}/export/data.csv").status_code == 200
+    # /state 是回放自己的事件（数量 ≠ 源），state 与源一致
+    snap = client.get(f"/api/tasks/{rid}/state").json()
+    assert snap["task"]["replay_of"] == src
+    assert len(snap["events"]) < len(m.store.get_events(src, 0)) or snap["events"]
+    assert snap["state"]["target_entity"] == "M45"
+    # /events/history 仅回放事件
+    hist = client.get(f"/api/tasks/{rid}/events/history").json()["events"]
+    assert all(e["seq"] in {x["seq"] for x in m.store.get_events(rid, 0)} for e in hist)
+
+
+def test_replay_of_replay_flattens(client):
+    """嵌套重放扁平化：重放一个回放任务 → replay_of 指向最上游源。"""
+    from web import main as m
+    src = _make_source_task(m.store)
+    r1 = client.post(f"/api/tasks/{src}/replay", json={"speed": 100}).json()
+    _wait_replay_completed(m.store, r1["task_id"])
+    r2 = client.post(f"/api/tasks/{r1['task_id']}/replay", json={"speed": 100}).json()
+    assert r2["replay_of"] == src
+    assert m.store.get_task(r2["task_id"])["replay_of"] == src
+    # 等 r2 完成再结束——遗留的 daemon 回放线程在全量高负载下会饿死后续测试
+    _wait_replay_completed(m.store, r2["task_id"])
+
+
+def test_delete_source_cascades_replays(client):
+    """整删/批删源 → 级联删除回放行 + events。"""
+    from web import main as m
+    src = _make_source_task(m.store)
+    rid = client.post(f"/api/tasks/{src}/replay", json={"speed": 100}).json()["task_id"]
+    _wait_replay_completed(m.store, rid)
+    assert m.store.get_task(rid) is not None
+    assert client.delete(f"/api/tasks/{src}").status_code == 200
+    assert m.store.get_task(rid) is None
+    assert m.store.get_events(rid, 0) == []
+    # 批删
+    src2 = _make_source_task(m.store)
+    rid2 = client.post(f"/api/tasks/{src2}/replay", json={"speed": 100}).json()["task_id"]
+    _wait_status(m.store, rid2, {"completed"})
+    br = client.post("/api/tasks/batch-delete", json={"task_ids": [src2]}).json()
+    assert br["results"][0]["deleted"] is True
+    assert m.store.get_task(rid2) is None
+
+
+def test_delete_source_blocked_by_active_replay(client):
+    """源存在活跃（queued/running）回放 → 单删 409 / 批删 reason=active_replay。"""
+    from web import main as m
+    src = _make_source_task(m.store)
+    m.store.create_task("回放：q", replay_of=src)  # 人为造活跃回放行（queued）
+    assert client.delete(f"/api/tasks/{src}").status_code == 409
+    br = client.post("/api/tasks/batch-delete", json={"task_ids": [src]}).json()
+    assert br["results"][0]["deleted"] is False
+    assert br["results"][0]["reason"] == "active_replay"
+
+
+def test_update_task_title(client):
+    """手动改名（2026-08-27）：PUT /tasks/{id}/title —— 404/400/成功 + 列表联动。"""
+    from web import main as m
+    t = m.store.create_task("原始查询")
+    # 404
+    assert client.put("/api/tasks/nope/title", json={"title": "x"}).status_code == 404
+    # 400 空/超长
+    assert client.put(f"/api/tasks/{t['task_id']}/title", json={"title": "  "}).status_code == 400
+    assert client.put(f"/api/tasks/{t['task_id']}/title", json={"title": "x" * 101}).status_code == 400
+    # 成功
+    r = client.put(f"/api/tasks/{t['task_id']}/title", json={"title": " 自定义任务名 "})
+    assert r.status_code == 200 and r.json()["title"] == "自定义任务名"
+    # 落库 + 详情可见
+    assert m.store.get_task(t["task_id"])["title"] == "自定义任务名"
+    assert client.get(f"/api/tasks/{t['task_id']}").json()["title"] == "自定义任务名"

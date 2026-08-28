@@ -163,6 +163,7 @@ frontend/
 | POST `/api/tasks/{id}/resume` | HITL 回答（非挂起期 409） | `resumeTask` |
 | POST `/api/tasks/{id}/cancel` | 取消（终态/非中断态语义已修复） | `cancelTask` |
 | POST `/api/tasks/{id}/retry` | 同 query 重建（新 task_id） | `retryTask` |
+| POST `/api/tasks/{id}/replay` | 事件级重放（2026-08-27）：body `{speed=10, answer_timeout_sec?}` → 回放任务 `{task_id, replay_of}` | `replayTask` |
 | GET `/api/tasks/{id}/records` `sources` `figures` `quality` `exports` | 重度数据（右侧面板 Tab + 主区记录表） | `getRecords` 等 |
 | GET `/api/tasks/{id}/events?after_seq=N` | SSE 流（也可 HTTP 拉事件数组） | `openEventStream` |
 | POST `/api/tasks/{id}/open-output` `open-file` | 本地打开输出目录/文件（D9-3） | `openFile` |
@@ -242,7 +243,59 @@ python -m pytest tests/             # addopts 已排除 network，380+ 测试
 
 ---
 
-## 11A. 验收后新增前端能力（2026-08-13，纯前端迭代，后端零改动）
+## 11B. 事件级重放（2026-08-27，演示回放机制，前端零解析改动）
+
+**背景**：演示需要"完整重演一次真实查询全过程（时间压缩）"。VCR cassette 重跑
+（LLM_CASSETTE）本质是"重新生成"行为——VLM 宽松匹配 + 顺序消费导致级联错位，
+已废弃用于演示（旧 VCR 路径保留不动，回归测试仍覆盖）。
+
+**原理**：真实运行的每个 SSE 事件已完整落库（events 表）。演示 = 新建"回放任务"，
+后端把源任务已落库事件按压缩节奏**重新 emit 一遍**——走既有 EventBus/SSE 通道，
+行为逐事件一致（就是真实事件本身），零错位可能。
+
+### 数据流
+
+```
+侧边栏已完成任务悬停 → 点"重放" → POST /api/tasks/{src}/replay {speed: 10}
+  → 创建回放任务（replay_of=src、title="重放 · …"、state_json={replay_meta}）→ 排队执行
+  → executor 按 replay_of 分流 → web/replayer.run_replay：
+      读源 events → 逐事件 emit（跳过生命周期/澄清回答/源 message）
+      节奏 = max(源 ts 间隔 / speed, 20ms)（2026-08-27：上限取消，长停顿真实等比；
+      下限 20ms 防连发 log 段 SSE 洪泛丢事件）；老任务 ts=NULL → 类型默认
+      （log/step_progress 40ms，其余 150ms）；澄清事件真实等待用户回答
+  → 序列完 → 写源 state_json 到回放任务行 → _finish 发 task_completed
+    → 尾随 message(ai, 源总结原文)（与真实时序同构 → awaitSummaryRef 立即关流）
+```
+
+### 关键机制与约定（改代码必读）
+
+1. **回放任务就是普通任务**：前端列表/打开/澄清/取消/结果全走既有路径，零改动。
+   仅侧边栏有"回放"徽标（`task.replay_of`）与悬停"重放"按钮（completed 态显示）。
+2. **数据端点映射**：`/records /sources /figures /quality /exports /result
+   /export/{f} /open-output /open-file` 对回放任务自动映射到源任务（`_resolve_source_task`，
+   main.py）——records/quality/洞察与源一致，图证 URL 指向源 task_id 目录（零拷贝）。
+   **`/state /events /events/history /tasks/{id}` 一律字面 id**（前端 openTask 以快照
+   lastSeq 续播 SSE，映射会导致 after_seq 大于实时 seq 而黑屏）。
+3. **事件序列与真实同构**：源生命周期事件（task_queued/started/title_ready/completed/
+   cancelled/failed）与源 `clarification_answered` 不转发；源 `message` 不即时转发，
+   其 ai 总结原文在回放任务自身 task_completed 之后补发（`_finish` 的 trailing 参数）。
+4. **澄清真实等待**：重放到澄清事件时挂起（复用 _AnswerSlot + POST resume），
+   超时默认 15 分钟（可经 replay body `answer_timeout_sec` 覆盖，持久化于
+   `state_json.replay_meta`——排队期间参数不落内存）。
+5. **事件 payload 无元数据键**：重放剥离 seq/ts/task_id（EventBus.publish 注入新 seq，
+   残留旧 seq 会覆盖导致前端 seq 幂等去重崩溃）。
+6. **守卫**：源必须 completed（error/cancelled 无终态事件可供收尾，v1 收紧）；同一
+   源同时仅一个活跃回放（409）；删除源时活跃回放 → 409，否则级联删回放行+events；
+   嵌套重放（重放一个回放）扁平化为最上游源。
+7. **events 表新增 `ts REAL` 列**（EventBus.publish 落 time.time()）：新真实任务的
+   事件带真实时间戳 → 重放节奏精确压缩；老任务 ts=NULL → 类型默认节奏。
+
+### 节奏说明
+
+- 新任务（有 ts）：相邻间隔 = clamp(Δts / speed, 20ms, 1500ms)——真实 30 分钟 →
+  演示约 1-3 分钟（speed 10-20）。
+- 老任务（无 ts）：log/step_progress 40ms、其余 150ms——1053 事件 ≈ 60-90 秒。
+- 总时长下界 ≈ 20ms × 事件数（前端渲染节流）；澄清等待不计入压缩。
 
 ### 工作流视图与三级下钻（WorkflowView / StageDetailPanel）
 

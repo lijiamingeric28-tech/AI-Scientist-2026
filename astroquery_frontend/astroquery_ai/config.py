@@ -53,6 +53,12 @@ class Settings(BaseSettings):
     llm_timeout: int = 120
     llm_max_retries: int = 3
 
+    # ── P18 消融实验开关（默认全开 = 线上行为不变；仅对照实验临时关闭）──
+    quality_pipeline_enabled: bool = True   # env: QUALITY_PIPELINE_ENABLED
+    paper_chain_enabled: bool = True        # env: PAPER_CHAIN_ENABLED
+    catalog_whitelist: str = ""             # env: CATALOG_WHITELIST，逗号分隔星表 key，空=全部
+    p1_spec_override: str = ""              # env: P1_SPEC_OVERRIDE，固定 P1 性质集 JSON 路径（消融防漂移）
+
     # ── 通用 ──
     default_research_domain: str = "astrophysics"
 

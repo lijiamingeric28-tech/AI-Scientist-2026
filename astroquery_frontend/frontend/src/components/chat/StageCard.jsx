@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
 import Markdown from '@/lib/markdown'
-import { FLOW_LABELS } from '@/lib/stages'
+import FlowBlocks from '@/components/workflow/FlowBlocks'
+import { FLOW_LABELS } from '@/lib/stages'   // 2026-08-27：卡头 statusText（runningFlow 显示"第 N 轮"）仍用——此前删 FlowNodes 时误删 import 导致 ReferenceError 白屏
 import { cleanCliQuestion, fmtPair, fmtRaDec } from '@/lib/format'
 
 /* 阶段卡片（设计文档 5.2 E7）：未展开 = 单行卡（状态点 + 阶段名 + 摘要）；
@@ -42,6 +43,30 @@ function Substeps({ substeps }) {
                 total={ss.progress.total}
                 done={ss.status === 'completed'}
               />
+            )}
+
+            {/* 2026-08-27: 卡3 步骤①"论文提取"分段——pdf→图片(convert) 与
+                VLM 提取(extract) 两阶段，各有进度；全部完成才整行标"已完成"。
+                旧任务事件无 phase（phases 空）→ 不渲染分段，保持单段原样。 */}
+            {ss.phases && Object.keys(ss.phases).length > 0 && (
+              <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 10, borderLeft: '1.5px solid var(--surface-border)' }}>
+                {['convert', 'extract'].map((ph) => {
+                  const p = ss.phases[ph]
+                  if (!p) return null
+                  const label = ph === 'convert' ? '拆分 PDF' : 'VLM 提取'
+                  return (
+                    <div key={ph} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <StatusDot status={p.status === 'completed' ? 'completed' : p.status === 'running' ? 'running' : 'waiting'} size={6} />
+                      <span style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>{label}</span>
+                      {p.status === 'completed'
+                        ? <span className="font-mono" style={{ fontSize: 11, color: 'var(--status-success)' }}>完成 {p.progress?.total ?? ''}</span>
+                        : p.progress?.current
+                          ? <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>第 {Math.min(p.progress.completed + 1, p.progress.total)}/{p.progress.total} — {p.progress.current}</span>
+                          : <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>待开始</span>}
+                    </div>
+                  )
+                })}
+              </div>
             )}
 
             {/* 完成摘要 */}
@@ -145,6 +170,16 @@ function UnderstandOutput({ output }) {
   )
 }
 
+/* 步 id → 单位词（2026-08-27：卡 2 进度条文案按步类型区分——
+ * 此前恒显示"星表"/"检索星表"，论文/补充材料的进度全部错配） */
+const STEP_UNIT = {
+  'database/match': '星表',
+  'paper/search': '论文组',
+  'paper/download': '篇论文',
+  'supplementary/find': '篇文献',
+  'supplementary/summary': '张表',
+}
+
 /* 进度条（卡 2 专用）：label 为左侧文字（进行中如"检索第 X/N 个星表 — Gaia DR3"），
  * done 时整条绿色并显示完成文案 */
 function ProgressBar({ label, completed, total, done, doneLabel }) {
@@ -212,18 +247,16 @@ function Traces({ traces }) {
 function AgentRow({ agent, onOpen }) {
   const traceCount = Array.isArray(agent.traces) ? agent.traces.length : 0
   const logCount = Array.isArray(agent.logs) ? agent.logs.length : 0
-  const [hover, setHover] = useState(false)
   return (
     <div
       onClick={onOpen}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      className="agent-row"   // 2026-08-27：hover 背景 CSS 化（滑动无 setState）
       style={{
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '6px 10px', borderRadius: 'var(--radius-md)',
         border: '1px solid var(--surface-border-subtle)',
-        background: hover ? 'var(--surface-secondary)' : 'var(--surface-bg)',
-        cursor: 'pointer', marginBottom: 4, transition: 'background .12s',
+        background: 'var(--surface-bg)',
+        cursor: 'pointer', marginBottom: 4,
       }}
     >
       <StatusDot status={agent.status} size={6} />
@@ -255,54 +288,17 @@ function AgentTree({ agents, onOpenAgent }) {
   return (
     <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       {agents.map((a) => (
-        <AgentRow key={a.id || a.agent} agent={a} onOpen={() => onOpenAgent(a)} />
-      ))}
-      <div className="hint-dim" style={{ marginTop: 2, fontSize: 11 }}>
-        点击 Agent 查看其执行日志与数据修改轨迹
-      </div>
-    </div>
-  )
-}
-
-/* 卡 5 动态流转序列：流转节点（规范化/冲突消解 × 轮次）→ AgentTree */
-/* P1-4：流转轮次时间线行（圆点 + 流程名 + 第 N 轮 + 状态 pill；与步骤表达一致）。
- * node 结构来自 usePipeline flow 事件：{ key, flowId, round, status } */
-const FLOW_STATUS_LABELS = { completed: '已完成', running: '执行中', waiting: '等待中' }
-
-function FlowNodes({ flow }) {
-  if (!flow || flow.length === 0) return null
-  return (
-    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div className="hint-dim" style={{ fontSize: 11 }}>流程轮次</div>
-      {flow.map((node) => (
-        <div key={node.id || node.key} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <StatusDot status={node.status} size={7} />
-          <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>
-            {FLOW_LABELS[node.flowId] || node.flowId || node.name}
-          </span>
-          <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>第 {node.round} 轮</span>
-          {node.note && (
-            <span style={{ fontSize: 10.5, color: 'var(--content-fg-secondary)', background: 'var(--surface-secondary)', padding: '1px 8px', borderRadius: 'var(--radius-pill)' }}>
-              {node.note}
-            </span>
-          )}
-          <span style={{ flex: 1 }} />
-          <span
-            style={{
-              fontSize: 11, fontWeight: 510,
-              color: node.status === 'completed' ? 'var(--status-success)'
-                : node.status === 'running' ? 'var(--status-progress)'
-                : 'var(--content-fg-tertiary)',
-            }}
-          >
-            {FLOW_STATUS_LABELS[node.status] || node.status}
-          </span>
-        </div>
+        <AgentRow key={a.id || a.agent} agent={a} onOpen={() => onOpenAgent(a, stage)} />
       ))}
     </div>
   )
 }
 
+/* 卡 5 动态流转序列：嵌套结构（2026-08-27 重构）——
+ * 每个轮次块（数据规范化 第 N 轮 / 冲突消解 第 N 轮 / 人工审核）为容器，
+ * 其下挂属于该块的 Agent（flow 上下文的权威归属来自后端：
+ * agent 事件 flow_id + round 字段；旧任务无该字段时按子图 Agent 名单名字兜底）。
+ * 未触发的块（无 flow 事件且无对应 agent）显示「未触发，按需被选」而非「等待中」。
 /* 卡 2 三路分组：每组标题 + 子步骤（状态点 + 标签 + 详情/进度条） */
 function GroupSteps({ groups }) {
   return (
@@ -347,15 +343,19 @@ function GroupSteps({ groups }) {
                     <ProgressBar
                       label={
                         step.progress.current
-                          ? `检索第 ${step.progress.completed + 1}/${step.progress.total} 个${step.progress.labelKind === 'paper' ? '' : '星表'} — ${step.progress.current}`
-                          : step.progress.labelKind === 'paper'
-                            ? '正在下载 PDF…'
-                            : '正在检索星表…'
+                          ? `处理第 ${step.progress.completed + 1}/${step.progress.total}${STEP_UNIT[step.id]} — ${step.progress.current}`
+                          : step.id === 'paper'
+                            ? '正在检索论文'
+                            : step.id === 'supplementary'
+                              ? '正在定位补充材料'
+                              : '正在检索星表'
                       }
                       doneLabel={
-                        step.progress.labelKind === 'paper'
-                          ? '下载完成'
-                          : '检索完成'
+                        step.id === 'paper'
+                          ? '检索完成'
+                          : step.id === 'supplementary'
+                            ? '定位完成'
+                            : '检索完成'
                       }
                       completed={step.progress.completed}
                       total={step.progress.total}
@@ -572,9 +572,13 @@ function InsightOutput({ insights, onOpenInsights, sourceScores }) {
   )
 }
 
-export default function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent, sourceScores }) {
+/* 2026-08-27：memo——stage 引用不变时跳过重渲染。usePipeline 每 100ms 批量
+ * setStages（log flush），timeline 8 卡不做 memo 会全量重渲（主区滚动卡顿元凶）。
+ * stage 对象引用只在所属卡变化时改变（map 返回原对象），配合 ChatView 稳定的
+ * onToggle/onOpenAgent/onOpenInsights 引用即可生效。 */
+const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent, sourceScores }) {
   const isExpanded = expanded
-  const [hover, setHover] = useState(false)
+  // 2026-08-27：hover 已 CSS 化（.stage-card:hover）——滑动时不再触发 React 重渲染
 
   // 2026-08-14：运行中卡头显示具体子流程进度（替代笼统"进行中…"）——
   // clean/deliver/insight 优先显示当前 flow 轮次（如"规范化 第 2 轮"），
@@ -605,20 +609,17 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights, o
   return (
     <div
       data-component="stage-card"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      className="stage-card"
       style={{
         background: 'var(--surface-bg)',
-        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : hover ? 'var(--accent-border)' : 'var(--surface-border)'}`,
+        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : 'var(--surface-border)'}`,
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
-        boxShadow: hover ? '0 2px 12px color-mix(in srgb, var(--accent-text) 12%, transparent)' : 'var(--shadow-card)',
-        transition: 'box-shadow .15s, border-color .15s',
       }}
     >
       {/* 头部：未展开态 = 单行卡（状态信息由状态点承载，不加彩色左边框） */}
       <div
-        onClick={onToggle}
+        onClick={() => onToggle(stage.id)}   // 2026-08-27: 传 id 使 ChatView 的 toggleStage 引用可稳定（memo 依赖）
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -664,14 +665,9 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights, o
           {stage.substeps ? (
             <Substeps substeps={stage.substeps} />
           ) : Array.isArray(stage.flows) && stage.flows.length ? (
-            /* 2026-08-13：字段名修正 stage.flow → stage.flows（usePipeline 写入复数，
-               FlowNodes 从未渲染）；流转轮次 + Agent 明细并列展示 */
-            <>
-              <FlowNodes flow={stage.flows} />
-              {Array.isArray(stage.agents) && stage.agents.length > 0 && (
-                <AgentTree agents={stage.agents} onOpenAgent={onOpenAgent} />
-              )}
-            </>
+            /* 2026-08-13：字段名修正 stage.flow → stage.flows（usePipeline 写入复数）；
+               2026-08-27：嵌套块结构——轮次块内挂所属 Agent（FlowBlocks 共享组件） */
+            <FlowBlocks flows={stage.flows} stageId={stage.id} agents={stage.agents} onOpenAgent={(a) => onOpenAgent(a, stage)} />
           ) : stage.agents ? (
             <AgentTree agents={stage.agents} onOpenAgent={onOpenAgent} />
           ) : stage.groups ? (
@@ -704,4 +700,5 @@ export default function StageCard({ stage, expanded, onToggle, onOpenInsights, o
       )}
     </div>
   )
-}
+})
+export default StageCard

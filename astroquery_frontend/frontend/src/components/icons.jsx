@@ -19,10 +19,12 @@ export const Icon = {
   Sparkle: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M8 2l1.5 4L14 7.5 9.5 9 8 14 6.5 9 2 7.5l4.5-1.5z" /></svg>,
   Menu: (p) => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><path d="M2 4h12M2 8h12M2 12h12" /></svg>,
   Refresh: (p) => <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13.5 8a5.5 5.5 0 11-1.6-3.9M13.5 1.5v3h-3" /></svg>,
+  Play: (p) => <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" stroke="none" {...p}><path d="M3 1.8l7 4.2-7 4.2z" /></svg>,
   Sun: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><circle cx="8" cy="8" r="3" /><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M12.6 3.4l-1 1M4.4 11.6l-1 1" /></svg>,
   Moon: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13.5 9.5A5.5 5.5 0 016.5 2.5a5.5 5.5 0 107 7z" /></svg>,
   BarChart: (p) => <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><path d="M2.5 12V7M7 12V2.5M11.5 12V9" /></svg>,
   Stop: (p) => <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" {...p}><circle cx="7" cy="7" r="5.5" /><rect x="5" y="5" width="4" height="4" rx="0.8" fill="currentColor" stroke="none" /></svg>,
   Minus: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><path d="M3 8h10" /></svg>,
   Maximize: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6 2H2v4M10 2h4v4M6 14H2v-4M10 14h4v-4" /></svg>,
+  Edit: (p) => <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M11 2l3 3L5.5 13.5 1.5 14l.5-4z" /></svg>,
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { StatusBadge } from '@/components/status'
@@ -7,9 +7,9 @@ import Sidebar from '@/components/layout/Sidebar'
 import DetailPanel from '@/components/layout/DetailPanel'
 import ChatView from '@/components/chat/ChatView'
 import WorkflowView from '@/components/workflow/WorkflowView'
-import SettingsDialog from '@/components/settings/SettingsDialog'
+import SettingsDialog, { loadReplaySpeed } from '@/components/settings/SettingsDialog'
 import DeleteTaskDialog from '@/components/layout/DeleteTaskDialog'
-import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks } from '@/services/api'
+import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks, replayTask as apiReplayTask, updateTaskTitle as apiUpdateTaskTitle } from '@/services/api'
 import { usePipeline } from '@/hooks/usePipeline'
 import { useTheme } from '@/hooks/useTheme'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -25,7 +25,8 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 function AppInner() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [detailOpen, setDetailOpen] = useState(true)
+  // 2026-08-27：右侧详情面板默认收起（用户反馈初始三栏拥挤）；点击工具栏按钮展开
+  const [detailOpen, setDetailOpen] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
   const [filter, setFilter] = useState('all')
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -112,6 +113,46 @@ function AppInner() {
       setSelectedId(r.task_id)
     } catch (err) {
       toast(`重试失败：${err.message}`, 'error')
+    }
+  }
+
+  // 2026-08-27: 修改任务名（工具栏内联编辑）
+  const [editingTitle, setEditingTitle] = useState(false)
+  const [titleDraft, setTitleDraft] = useState('')
+  const titleInputRef = useRef(null)
+  const startEditTitle = () => {
+    if (!selected) return
+    setTitleDraft(selected.title || selected.query || '')
+    setEditingTitle(true)
+  }
+  const commitTitle = async () => {
+    const draft = titleDraft.trim()
+    setEditingTitle(false)
+    if (!selected || !draft || draft === selected.title) return
+    try {
+      const r = await apiUpdateTaskTitle(selected.task_id, draft)
+      setTasks((prev) => prev.map((t) => (t.task_id === r.task_id ? { ...t, title: r.title } : t)))
+      toast('任务名已更新', 'success')
+    } catch (err) {
+      toast(`改名失败：${err.message}`, 'error')
+    }
+  }
+
+  // 2026-08-27: 事件级重放（演示）——创建回放任务并选中；in-flight 防重（双击不排队两个）。
+  // 速度取自设置页滑块（localStorage，默认 10x）
+  const replayingRef = useRef(new Set())
+  const handleReplay = async (id) => {
+    if (replayingRef.current.has(id)) return
+    replayingRef.current.add(id)
+    try {
+      const r = await apiReplayTask(id, loadReplaySpeed())
+      toast('已创建回放任务', 'info')
+      await loadTasks(0)
+      setSelectedId(r.task_id)
+    } catch (err) {
+      toast(`重放失败：${err.message}`, 'error')
+    } finally {
+      replayingRef.current.delete(id)
     }
   }
 
@@ -210,6 +251,7 @@ function AppInner() {
           onNew={handleNew}
           onCollapse={() => setSidebarOpen(false)}
           onRetry={handleRetry}
+          onReplay={handleReplay}
           onOpenSettings={() => setSettingsOpen(true)}
           onLoadMore={handleLoadMore}
           filter={filter}
@@ -240,10 +282,43 @@ function AppInner() {
             </Button>
           )}
           {/* P1-8：minWidth:0 让 ellipsis 真正生效（flex 子项默认 min-width:auto，
-              长标题会把状态徽标/视图切换按钮挤出工具栏） */}
-          <h1 title={selected ? selected.title : undefined} style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)', flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {selected ? selected.title : '新建任务'}
-          </h1>
+              长标题会把状态徽标/视图切换按钮挤出工具栏）。
+              2026-08-27：点击铅笔内联改名（Enter 保存 / Esc 取消 / 失焦取消） */}
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+            {editingTitle ? (
+              <input
+                ref={titleInputRef}
+                autoFocus
+                value={titleDraft}
+                onChange={(e) => setTitleDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') commitTitle()
+                  else if (e.key === 'Escape') setEditingTitle(false)
+                }}
+                onBlur={() => setEditingTitle(false)}
+                style={{
+                  fontSize: 15, fontWeight: 510, color: 'var(--content-fg)',
+                  background: 'var(--surface-secondary)', border: '1px solid var(--accent)',
+                  borderRadius: 6, padding: '3px 10px', outline: 'none', width: '100%',
+                }}
+              />
+            ) : (
+              <>
+                <h1 title={selected ? `${selected.title}（点击铅笔改名）` : undefined} style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)', flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {selected ? selected.title : '新建任务'}
+                </h1>
+                {selected && (
+                  <button
+                    onClick={startEditTitle}
+                    title="修改任务名"
+                    style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--content-fg-tertiary)', padding: 3, display: 'flex', flexShrink: 0 }}
+                  >
+                    <Icon.Edit style={{ width: 12, height: 12 }} />
+                  </button>
+                )}
+              </>
+            )}
+          </div>
           {selected && <StatusBadge status={selected.status} />}
           {/* 取消任务：仅活跃任务（排队/运行/挂起）显示 */}
           {selected && ['queued', 'running', 'pending'].includes(selected.status) && (

@@ -54,9 +54,9 @@ export function RecordsTable({ records, onRowClick }) {
         </span>
       </div>
 
-      {/* 表格 */}
-      <div style={{ border: '1px solid var(--surface-border)', borderRadius: 8, overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+      {/* 表格（2026-08-27：窄面板/主区宽度变化时横向滚动而非截断内容） */}
+      <div style={{ border: '1px solid var(--surface-border)', borderRadius: 8, overflowX: 'auto' }}>
+        <table style={{ width: '100%', minWidth: 760, borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr style={{ background: 'var(--surface-secondary)' }}>
               {['实体', '性质', '值', '单位', '来源', '提取方式'].map((h) => (
@@ -157,8 +157,10 @@ export function SourcesList({ sources }) {
         {filtered.map((s) => (
           <div key={s.source_id} style={{ border: '1px solid var(--surface-border-subtle)', borderRadius: 8, padding: '10px 14px', background: 'var(--surface-bg)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>{s.title}</span>
-              <span style={{ marginLeft: 'auto', fontSize: 11, padding: '1px 8px', borderRadius: 4, background: 'var(--surface-secondary)', color: 'var(--content-fg-secondary)' }}>
+              <span style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={s.title}>
+                {s.title}
+              </span>
+              <span style={{ flexShrink: 0, fontSize: 11, padding: '1px 8px', borderRadius: 4, background: 'var(--surface-secondary)', color: 'var(--content-fg-secondary)' }}>
                 {typeLabel[s.source_type] || s.source_type}
               </span>
             </div>

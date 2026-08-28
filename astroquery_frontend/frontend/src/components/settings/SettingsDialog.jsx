@@ -46,10 +46,22 @@ const KEY_MAP = {
   unpaywall_email: 'unpaywall_email',
 }
 
+/* 回放速度（2026-08-27）：localStorage 持久化，默认 10x（1-100）。
+ * 注意：仅带真实时间戳的新任务按 ts/倍速压缩；历史任务（ts=NULL）走固定节奏。 */
+export const REPLAY_SPEED_KEY = 'astro_replay_speed'
+export function loadReplaySpeed() {
+  const n = Number(localStorage.getItem(REPLAY_SPEED_KEY))
+  return Number.isFinite(n) && n >= 1 && n <= 100 ? n : 10
+}
+export function saveReplaySpeed(v) {
+  localStorage.setItem(REPLAY_SPEED_KEY, String(Math.max(1, Math.min(100, Math.round(v)))))
+}
+
 export default function SettingsDialog({ open, onClose }) {
   // values: 已配置的键 → ''（后端不回传明文，只表示"已配置"，D10-2）
   const [configuredKeys, setConfiguredKeys] = useState([])
   const [values, setValues] = useState({})
+  const [replaySpeed, setReplaySpeed] = useState(loadReplaySpeed)
   const { toast } = useToast()
 
   // 打开时拉取配置状态（GET /api/config：只返回是否配置，无明文）
@@ -85,6 +97,7 @@ export default function SettingsDialog({ open, onClose }) {
       const v = (values[f.key] || '').trim()
       if (v) body[f.key] = v
     }
+    saveReplaySpeed(replaySpeed)   // 2026-08-27：回放速度本地持久化（点击"保存"时落盘）
     try {
       await api.putConfig(body)
       toast('配置已保存（写回 .env）', 'success')
@@ -174,6 +187,28 @@ export default function SettingsDialog({ open, onClose }) {
                   <span className="font-mono" style={{ color: 'var(--content-fg)' }}>{m.value}</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* 回放速度（2026-08-27：演示事件级回放的压缩倍率，仅本地设置） */}
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 510, color: 'var(--accent-text)', marginBottom: 8 }}>回放速度</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <input
+                type="range"
+                min="1"
+                max="100"
+                step="1"
+                value={replaySpeed}
+                onChange={(e) => setReplaySpeed(Number(e.target.value))}
+                style={{ flex: 1, accentColor: 'var(--accent)' }}
+              />
+              <span className="font-mono" style={{ fontSize: 14, fontWeight: 590, color: 'var(--content-fg)', width: 52, textAlign: 'right' }}>
+                {replaySpeed}x
+              </span>
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', lineHeight: 1.6, marginTop: 6 }}>
+              新任务（带时间戳）：按真实间隔 ÷ {replaySpeed} 压缩；历史任务：固定节奏（不受倍速影响）。保存后生效。
             </div>
           </div>
 

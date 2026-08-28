@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
+
+/* 左栏宽度（可拖拽 200-400px，默认 240；2026-08-27 布局减负） */
+const SIDEBAR_MIN_W = 200
+const SIDEBAR_MAX_W = 400
 
 /* 相对时间格式化（契约 D7：created_at → "10 分钟前"） */
 function formatRelativeTime(iso) {
@@ -31,11 +35,30 @@ const FILTERS = [
   { key: 'error', label: '失败' },
 ]
 
-export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete }) {
+export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onReplay, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete }) {
   const [hoveredId, setHoveredId] = useState(null)
   // 2026-08-24: 批量删除管理模式
   const [manageMode, setManageMode] = useState(false)
   const [checked, setChecked] = useState(() => new Set())
+  // 2026-08-27: 左栏可拖拽调宽（200-400px）；默认 320（用户反馈 300 仍略窄，再宽一点点）
+  const [width, setWidth] = useState(320)
+  const dragRef = useRef(null)
+
+  const startDrag = (e) => {
+    dragRef.current = { startX: e.clientX, startW: width }
+    const onMove = (ev) => {
+      if (!dragRef.current) return
+      const next = Math.min(SIDEBAR_MAX_W, Math.max(SIDEBAR_MIN_W, dragRef.current.startW + (ev.clientX - dragRef.current.startX)))
+      setWidth(next)
+    }
+    const onUp = () => {
+      dragRef.current = null
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+  }
 
   // 契约 D8-1：queued 归入"运行中"筛选档
   // H-01: 失败档按 error 匹配，同时兼容旧词表 failed（存量记录防御）
@@ -63,13 +86,23 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
     <aside
       className="glass"
       style={{
-        width: 240,
-        minWidth: 240,
+        width,
+        minWidth: width,
         borderRight: '1px solid var(--glass-border)',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* 拖拽手柄：右缘 5px（宽屏才需要；窄屏 <1024 已由 App 自动折叠） */}
+      <div
+        onMouseDown={startDrag}
+        style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0, width: 5,
+          cursor: 'col-resize', zIndex: 10, background: 'transparent',
+        }}
+        title="拖动调整宽度"
+      />
       {/* 新建任务 + 收起 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '16px 12px 12px 16px' }}>
         <Button variant="sidebar" className="flex-1 justify-start gap-2 text-sm font-normal" onClick={onNew}>
@@ -199,7 +232,27 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                   >
                     {task.title}
                   </span>
-                  {!manageMode && !active_ && hoveredId === task.task_id && (
+                  {/* 2026-08-27：回放任务徽标（replay_of 指向源任务） */}
+                  {task.replay_of && (
+                    <span
+                      style={{
+                        fontSize: 10, padding: '0 6px', borderRadius: 'var(--radius-pill)',
+                        background: 'var(--accent-light)', color: 'var(--accent-text)',
+                        flexShrink: 0, fontWeight: 510,
+                      }}
+                    >
+                      回放
+                    </span>
+                  )}
+                </div>
+                {/* 2026-08-27：操作按钮（重试/重放/清理）统一移到此行、紧挨时间——
+                    「时间 + 操作」一组视觉，第一行只保留标题（用户反馈：旧版
+                    按钮散在标题行/行末，根本看不见） */}
+                <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  {formatRelativeTime(task.created_at)}
+                  <span style={{ flex: 1 }} />
+                  {/* 清理/删除入口 */}
+                  {!manageMode && !active_ && (
                     <button
                       title="清理/删除任务"
                       onClick={(e) => {
@@ -215,18 +268,14 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                       <Icon.Wrench style={{ width: 13, height: 13 }} />
                     </button>
                   )}
-                </div>
-                <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center' }}>
-                  {formatRelativeTime(task.created_at)}
-                  {/* 失败任务：悬停显示重试（块 7 定案；H-01 兼容旧词表 failed） */}
-                  {(task.status === 'error' || task.status === 'failed') && hoveredId === task.task_id && (
+                  {/* 失败任务：重试（块 7 定案；H-01 兼容旧词表 failed） */}
+                  {(task.status === 'error' || task.status === 'failed') && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
                         onRetry(task.task_id)
                       }}
                       style={{
-                        marginLeft: 'auto',
                         border: 'none',
                         background: 'var(--status-error-bg)',
                         color: 'var(--status-error)',
@@ -240,6 +289,31 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                       }}
                     >
                       <Icon.Refresh style={{ width: 10, height: 10 }} />重试
+                    </button>
+                  )}
+                  {/* 已完成任务：重放（2026-08-27 事件级回放；与重试互斥不共存） */}
+                  {task.status === 'completed' && (
+                    <button
+                      title="重放此任务（按压缩节奏重演历史事件）"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onReplay?.(task.task_id)
+                      }}
+                      style={{
+                        border: 'none',
+                        background: 'var(--accent)',
+                        color: 'var(--accent-on)',
+                        fontSize: 11,
+                        padding: '1px 8px',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Icon.Play style={{ width: 9, height: 9 }} />重放
                     </button>
                   )}
                 </div>

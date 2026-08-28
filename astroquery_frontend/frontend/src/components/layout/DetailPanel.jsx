@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
@@ -18,14 +19,14 @@ import Markdown from '@/lib/markdown'
 const MIN_W = 400
 const MAX_W = 680
 
-/* 图证缩略图：有 image_url 走真实图（契约 D7-3），否则 SVG 占位 */
-function FigureThumb({ fig, size = 'thumb' }) {
-  const w = size === 'thumb' ? '100%' : 560
-  const h = size === 'thumb' ? 120 : 364
+/* 图证缩略图：有 image_url 走真实图（契约 D7-3），否则 SVG 占位。
+ * 2026-08-27：缩略图只放图（点击 → FigureLightboxModal 全屏模态），
+ * caption 由调用方节流展示（一行）。 */
+function FigureThumb({ fig, height = 110 }) {
   const b = fig.bbox || fig.bbox_2d
   if (fig.image_url) {
     return (
-      <div style={{ position: 'relative', width: w, height: h, background: 'var(--surface-secondary)', borderRadius: 6, overflow: 'hidden' }}>
+      <div style={{ position: 'relative', width: '100%', height, background: 'var(--surface-secondary)', borderRadius: 6, overflow: 'hidden' }}>
         <img src={fig.image_url} alt={fig.caption || ''} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         {b && (
           <div style={{
@@ -39,11 +40,11 @@ function FigureThumb({ fig, size = 'thumb' }) {
     )
   }
   return (
-    <svg width="100%" height={h} viewBox="0 0 200 130" preserveAspectRatio="none" style={{ display: 'block', borderRadius: 6 }}>
+    <svg width="100%" height={height} viewBox="0 0 200 130" preserveAspectRatio="none" style={{ display: 'block', borderRadius: 6 }}>
       <defs>
         <linearGradient id={`bg-${fig.id}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={`hsl(${fig.hue}, 45%, 88%)`} />
-          <stop offset="100%" stopColor={`hsl(${fig.hue}, 55%, 72%)`} />
+          <stop offset="0%" stopColor={`hsl(${fig.hue ?? 0}, 45%, 88%)`} />
+          <stop offset="100%" stopColor={`hsl(${fig.hue ?? 0}, 55%, 72%)`} />
         </linearGradient>
       </defs>
       <rect width="200" height="130" fill={`url(#bg-${fig.id})`} />
@@ -60,11 +61,82 @@ function FigureThumb({ fig, size = 'thumb' }) {
   )
 }
 
+/* 图证全屏模态（2026-08-27：样式对齐 RecordDetailDialog 记录详情弹窗）：
+ * 上方大图（自适应 contain）+ 下方 Markdown 渲染图注 + 来源（第 N 页 · source_id）。
+ * Esc / 遮罩关闭。
+ * 注意：must use createPortal —— DetailPanel 的 aside 带 .glass（backdrop-filter），
+ * 会创建 position:fixed 的 containing block，普通渲染的模态会被卡在面板内（实测踩坑）。 */
+function FigureLightboxModal({ fig, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  return createPortal(
+    <div
+      onClick={onClose}
+      className="animate-fade-in"
+      style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="glass animate-drawer-in"
+        data-component="figure-lightbox"
+        style={{
+          width: 920, maxWidth: '94vw', maxHeight: '90vh',
+          display: 'flex', flexDirection: 'column',
+          background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-modal)',
+          overflow: 'hidden',
+        }}
+      >
+        {/* 头部：标题 + 来源 + 关闭（对齐记录详情头部） */}
+        <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+          <span style={{ fontSize: 14, fontWeight: 510, color: 'var(--content-fg)' }}>
+            图证详情{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
+          </span>
+          {fig.source_id && (
+            <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{fig.source_id}</span>
+          )}
+          <span style={{ flex: 1 }} />
+          <Button variant="ghost" size="icon" onClick={onClose}><Icon.Close /></Button>
+        </div>
+        {/* 大图区：objectFit contain 撑满剩余高度 */}
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-secondary)', padding: 14 }}>
+          {fig.image_url ? (
+            <img src={fig.image_url} alt={fig.caption || ''} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+          ) : (
+            <span className="hint-dim">该图证无图像文件</span>
+          )}
+        </div>
+        {/* 图注 + 来源（Markdown 渲染，对齐记录详情上下文摘录样式） */}
+        {fig.caption && (
+          <div style={{ padding: '12px 18px 14px', borderTop: '1px solid var(--surface-border)', flexShrink: 0 }}>
+            <div style={{
+              padding: '10px 14px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
+              borderLeft: '3px solid var(--accent)', fontSize: 12.5, lineHeight: 1.7,
+              color: 'var(--content-fg-secondary)',
+            }}>
+              <Markdown>{fig.caption}</Markdown>
+            </div>
+            {fig.source_id && (
+              <div className="font-mono hint-dim" style={{ marginTop: 8, fontSize: 11 }}>来源：{fig.source_id}</div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
 /* 骨架屏（加载期占位） */
 function PanelSkeleton() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8 }}>
         {[0, 1, 2, 3].map((i) => <div key={i} className="skeleton" style={{ height: 58 }} />)}
       </div>
       <div className="skeleton" style={{ height: 14, width: '40%' }} />
@@ -337,12 +409,16 @@ function QualityReport({ qState, conflictReport }) {
               const src = srcMap[sid] || {}
               return (
                 <div key={sid} className="row-item">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
-                    <span className="font-mono" style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg)' }}>{sid}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <span className="font-mono" style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '38%', minWidth: 0 }}>
+                      {sid}
+                    </span>
+                    {/* 2026-08-27：长标题不再固定 maxWidth 46%（窄面板溢出截断），
+                       改 flex 弹性收敛——宽则展开、窄则 ellipsis */}
                     {src.title && (
-                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '46%' }}>{src.title}</span>
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>{src.title}</span>
                     )}
-                    <span className="font-mono" style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 510, color: scoreColor(score) }}>
+                    <span className="font-mono" style={{ flexShrink: 0, fontSize: 12, fontWeight: 510, color: scoreColor(score) }}>
                       {typeof score === 'number' ? score.toFixed(3) : '—'}
                     </span>
                   </div>
@@ -543,8 +619,8 @@ function ExecutionReport({ workflowState, procStats }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-      {/* 计数卡 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+      {/* 计数卡（2026-08-27：auto-fit minmax——窄面板 400px 下 1fr 1fr 会撑破网格，卡片换行堆叠） */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
         {stats.map(([label, value, color]) => (
           <div key={label} className="kpi-card" style={{ padding: '10px 12px' }}>
             <div className="kpi-label" style={{ marginBottom: 4 }}>{label}</div>
@@ -561,13 +637,13 @@ function ExecutionReport({ workflowState, procStats }) {
             {history.map((h, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline', padding: '6px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
                 <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(h.timestamp)}</span>
-                <span className="font-mono" style={{ flexShrink: 0, fontSize: 12, fontWeight: 510, color: 'var(--content-fg)' }}>{h.agent || '—'}</span>
+                <span className="font-mono" style={{ flexShrink: 0, fontSize: 12, fontWeight: 510, color: 'var(--content-fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '42%', minWidth: 0 }}>{h.agent || '—'}</span>
                 {h.stage && (
                   <span style={{ flexShrink: 0, fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
                     {h.stage}
                   </span>
                 )}
-                <span style={{ flex: 1, fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{h.reason || ''}</span>
+                <span style={{ flex: 1, minWidth: 0, fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{h.reason || ''}</span>
                 {typeof h.duration === 'number' && (
                   <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-secondary)' }}>{fmtElapsed(h.duration)}</span>
                 )}
@@ -583,7 +659,9 @@ function ExecutionReport({ workflowState, procStats }) {
 }
 
 export default function DetailPanel({ open, onClose, task, pipeline, requestedTab }) {
-  const [width, setWidth] = useState(560)
+  // 2026-08-27：默认宽度改为 400（原为 560）——用户指定展开后的默认宽度
+  // 即此前的最小宽度（MIN_W），三栏更均衡
+  const [width, setWidth] = useState(400)
   const [section, setSection] = useState('overview')
   const [lightbox, setLightbox] = useState(null)
   const dragRef = useRef(null)
@@ -798,7 +876,7 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
               {/* ── 概览 ── */}
               {section === 'overview' && (
                 <div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8, marginBottom: 16 }}>
                     {[
                       ['数据源', sources.length, 'var(--content-fg)'],
                       ['记录', recordCount ?? '—', 'var(--content-fg)'],
@@ -865,19 +943,36 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
                 sources.length ? <SourcesList sources={sources} /> : <TabEmpty text="暂无数据源" />
               )}
 
-              {/* ── 图证（双列缩略图 + 灯箱 + 渐进加载，契约 D9-4） ── */}
+              {/* ── 图证（双列缩略图 + 全屏模态 + 渐进加载，契约 D9-4）
+                  2026-08-27：缩略图只放图 + 一行图注；点击 → 全屏模态（对齐记录详情） ── */}
               {section === 'figures' && (
                 figures.length ? (
                   <>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 10 }}>
                       {figures.slice(0, figVisible).map((fig) => (
                         <div key={fig.id} className="row-item" style={{ padding: 8 }}>
-                          <div onClick={() => setLightbox(fig)} style={{ cursor: 'zoom-in' }}>
-                            <FigureThumb fig={fig} />
+                          <div
+                            onClick={() => setLightbox(fig)}
+                            style={{ cursor: 'zoom-in', position: 'relative' }}
+                            title="点击查看大图"
+                          >
+                            <FigureThumb fig={fig} height={110} />
+                            <span style={{
+                              position: 'absolute', right: 6, bottom: 6, fontSize: 10,
+                              padding: '1px 7px', borderRadius: 'var(--radius-pill)',
+                              color: 'var(--content-fg-secondary)', background: 'var(--surface-primary)',
+                              border: '1px solid var(--surface-border-subtle)', pointerEvents: 'none',
+                            }}>
+                              {fig.page != null ? `第 ${fig.page} 页` : ''}
+                            </span>
                           </div>
-                          <div className="hint-dim" style={{ marginTop: 6 }}>
-                            <Markdown>{fig.caption || ''}</Markdown>
-                            <div>第 {fig.page} 页</div>
+                          {/* 一行图注（完整内容在弹出模态中渲染） */}
+                          <div style={{
+                            marginTop: 6, fontSize: 11.5, lineHeight: 1.5, color: 'var(--content-fg-secondary)',
+                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                            fontStyle: 'italic',
+                          }} title={fig.caption || ''}>
+                            {fig.caption || '无图注'}
                           </div>
                         </div>
                       ))}
@@ -940,32 +1035,8 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
           )}
         </ScrollArea>
 
-        {/* 灯箱 */}
-        {lightbox && (
-          <div
-            onClick={() => setLightbox(null)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'var(--overlay)',
-              zIndex: 100,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'zoom-out',
-            }}
-          >
-            <div style={{ background: 'var(--surface-bg)', borderRadius: 10, padding: 16, maxWidth: '90vw', maxHeight: '90vh', overflow: 'auto' }}>
-              <FigureThumb fig={lightbox} size="large" />
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-                <div style={{ fontSize: 13, color: 'var(--content-fg)', flex: 1, minWidth: 0 }}>
-                  <Markdown>{lightbox.caption || ''}</Markdown>
-                </div>
-                <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>点击任意处关闭</span>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* 图证全屏模态（2026-08-27：对齐记录详情样式） */}
+        {lightbox && <FigureLightboxModal fig={lightbox} onClose={() => setLightbox(null)} />}
       </aside>
     </>
   )
