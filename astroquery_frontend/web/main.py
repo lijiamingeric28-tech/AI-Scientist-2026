@@ -36,16 +36,26 @@ logger = logging.getLogger("web")
 # ── 路径配置 ──
 ROOT = Path(__file__).resolve().parent.parent
 WEB_DIR = Path(__file__).resolve().parent
-DATA_DIR = WEB_DIR / "data"
+# 绿色免安装包：ASTROQUERY_DATA_DIR 外置可写数据目录（output/web/papers 全部重定向到
+# 包外 data/，避免写入打包只读区）；未设置时保持源码目录行为（开发环境零影响）
+_DATA_OVERRIDE = os.environ.get("ASTROQUERY_DATA_DIR")
+if _DATA_OVERRIDE:
+    _BASE = Path(_DATA_OVERRIDE)
+    DATA_DIR = _BASE / "web"
+    OUTPUT_DIR = _BASE / "output"
+else:
+    DATA_DIR = WEB_DIR / "data"
+    OUTPUT_DIR = ROOT / "output"
 UPLOAD_DIR = DATA_DIR / "uploads"
 DB_PATH = DATA_DIR / "tasks.db"
 CHECKPOINT_PATH = DATA_DIR / "checkpoints.sqlite"
-OUTPUT_DIR = ROOT / "output"
 MAX_UPLOAD_BYTES = 50 * 1024 * 1024  # D4-1: 50MB 统一口径
 MAX_QUERY_LEN = 500  # D4-5
 
 for d in (DATA_DIR, UPLOAD_DIR, OUTPUT_DIR):
     d.mkdir(parents=True, exist_ok=True)
+# 图证静态目录：绿色包首次运行 data/ 为空，必须预创建（StaticFiles 挂载要求目录存在）
+(OUTPUT_DIR / "figures").mkdir(parents=True, exist_ok=True)
 
 
 # ── 核心单例 ──
@@ -407,7 +417,8 @@ async def replay_task(task_id: str, body: ReplayBody):
 # 任务删除（2026-08-24：数据清理功能）
 # ══════════════════════════════════════════════════════
 
-PAPERS_ROOT = ROOT / "subgraphs" / "data" / "papers"
+PAPERS_ROOT = (Path(os.environ["ASTROQUERY_DATA_DIR"]) / "papers"
+               if os.environ.get("ASTROQUERY_DATA_DIR") else ROOT / "subgraphs" / "data" / "papers")
 _DELETABLE_PARTS = ("pdfs", "figures", "checkpoints", "events")
 
 
@@ -908,7 +919,8 @@ def _os_open(path: str) -> None:
 # 配置（契约 D10：GET 只返回是否配置；PUT 写回 .env）
 # ══════════════════════════════════════════════════════
 
-_ENV_FILE = ROOT / ".env"
+_ENV_FILE = (Path(os.environ["ASTROQUERY_DATA_DIR"]) / ".env"
+             if os.environ.get("ASTROQUERY_DATA_DIR") else ROOT / ".env")
 _ENV_KEYS = ["DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL",
              "ADS_API_TOKEN", "UNPAYWALL_EMAIL"]
 
@@ -993,7 +1005,7 @@ app.mount("/static/figures", StaticFiles(directory=str(OUTPUT_DIR / "figures")),
 
 # M-20①: 单进程交付——挂载前端构建产物（dist），'/api' 与 '/static/figures'
 # 已先行注册优先匹配；dist 不存在（未 build）时跳过，仅 API 模式运行
-_FRONTEND_DIST = ROOT / "frontend" / "dist"
+_FRONTEND_DIST = Path(os.environ.get("ASTROQUERY_FRONTEND_DIR") or (ROOT / "frontend" / "dist"))
 if _FRONTEND_DIST.is_dir():
     app.mount("/", StaticFiles(directory=str(_FRONTEND_DIST), html=True), name="frontend")
 

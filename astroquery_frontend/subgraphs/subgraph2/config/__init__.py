@@ -88,6 +88,14 @@ class Config:
             p = Path(value)
             return str(p if p.is_absolute() else (PACKAGE_ROOT / p).resolve())
 
+        # 绿色免安装包：ASTROQUERY_DATA_DIR 外置论文下载目录（写入可写区）
+        import os as _os
+        _override = _os.environ.get("ASTROQUERY_DATA_DIR")
+        if _override:
+            _OUTPUT["data_dir"] = str(Path(_override))
+            _OUTPUT["papers_dir"] = str(Path(_override) / "papers")
+            return
+
         for key in ("data_dir", "papers_dir"):
             if key in _OUTPUT:
                 _OUTPUT[key] = to_abs(_OUTPUT[key])

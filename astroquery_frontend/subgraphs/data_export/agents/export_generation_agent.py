@@ -14,7 +14,9 @@ from quality_pipeline.utils.logger import get_logger
 logger = get_logger(__name__)
 
 # 默认输出目录
-_DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "output")
+_DEFAULT_OUTPUT_DIR = (os.path.join(os.environ["ASTROQUERY_DATA_DIR"], "output")
+                       if os.environ.get("ASTROQUERY_DATA_DIR")
+                       else os.path.join(os.path.dirname(__file__), "..", "..", "..", "output"))
 
 
 class StructuredExportGenerationAgent:
