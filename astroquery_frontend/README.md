@@ -41,10 +41,12 @@ astroquery_final/
 ├── quality_pipeline/         # 质量管线主图 + 共享设施（configs/models/tools/utils）
 ├── subgraphs/                # 9 个子图（subgraph1/2/3 + data_assessment/normalization/conflict/export/insights/human_review）
 ├── rag_properties/           # RAG 性质库（~100 个 otype，含标准单位）
-├── scripts/                  # 工具脚本（KB 覆盖率报告、catalog schema 生成等）
-├── tests/                    # pytest 测试（全 mock 离线，270 个）
-├── docs/                     # 设计文档 / OPTIMIZATION_STATUS / AUDIT_REPORT
-└── .env                      # API Keys（ADS/Unpaywall/DashScope/DeepSeek）
+├── web/                      # FastAPI 后端（任务管理/SSE 实时事件/回放）+ sqlite
+├── frontend/                 # React + Vite 前端（7 阶段卡片、溯源查看、质量报告）
+├── scripts/                  # 工具脚本（KB 覆盖率、P18 对照实验等）
+├── tests/                    # pytest 测试（全 mock 离线）
+├── docs/                     # 申报技术报告 / FRONTEND_INTEGRATION / shots
+└── .env                      # API Keys（ADS/Unpaywall/阿里云百炼 Qwen）
 ```
 
 ## 运行
@@ -59,23 +61,28 @@ python -m astroquery_ai "M31 的距离和金属丰度"
 
 # 或交互模式
 python -m astroquery_ai
+
+# Web 应用（前端需先 npm run build 到 frontend/dist）
+python -m web.main        # http://127.0.0.1:8000
 ```
 
 ## 测试与门禁
 
 ```bash
-python -m pytest tests/ -m "not network"   # 270 个测试，全 mock 离线（EXIT=0）
+python -m pytest tests/ -m "not network"   # 全 mock 离线
 python -m pytest tests/                    # 含网络冒烟（需真实 API Keys）
 python -m ruff check .                     # 全库 lint
 ```
 
-依赖：`pip install -e .`（H-15：pyproject.toml 已声明全部运行时依赖，含 Web 层 fastapi/uvicorn/sse-starlette/langgraph-checkpoint-sqlite；vcrpy 在 dev extra）或 `pip install -r astroquery_ai/requirements.txt`（另需 astroquery、ads、dotenv 等）
+依赖：`pip install -e .`（pyproject.toml 已声明全部运行时依赖，含 Web 层 fastapi/uvicorn/sse-starlette/langgraph-checkpoint-sqlite；vcrpy 在 dev extra）
 
-## 审计与质量状态（2026-08-10）
+## 关键实验开关（P18 消融对照，默认关闭不影响线上行为）
 
-- **13 单元全库审计**（逻辑/接口/契约）：90 发现 → 85 确认（5 推翻），80 条问题去重合并后**全部修复**，详见 `docs/AUDIT_REPORT.md`
-- **修复记录**：`docs/OPTIMIZATION_STATUS.md`（C1/H1-H5/M1-M9/L1-L4 + A1-A14 + P0 系列 + 审计 80 条）
-- **知识库**：`quality_pipeline/data/insight_knowledge/astrophysics/` 294 条（7 文件，hypothetical_queries 100% 覆盖）
+- `QUALITY_PIPELINE_ENABLED`（质量管线开关）、`PAPER_CHAIN_ENABLED`（论文检索链）、`CATALOG_WHITELIST`（星表白名单）、`P1_SPEC_OVERRIDE`（固定 P1 性质集）——详见 `docs/申报技术报告.md` P18
+
+## 知识库
+
+- `quality_pipeline/data/insight_knowledge/astrophysics/` 294 条（7 文件，hypothetical_queries 100% 覆盖）
 
 ## 关键设计
 
