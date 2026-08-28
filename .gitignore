@@ -231,3 +231,6 @@ astroquery_frontend/.claude/
 astroquery_frontend/.env
 astroquery_frontend/*.log
 astroquery_frontend/__pycache__/
+
+# ── 误伤豁免：astroquery_frontend 的 PyInstaller spec 必须提交 ──
+!astroquery_frontend/packaging/*.spec
