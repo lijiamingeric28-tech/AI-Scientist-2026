@@ -215,3 +215,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ── astroquery_frontend 运行产物（子项目级，2026-08-28 加入）──
+astroquery_frontend/output/
+astroquery_frontend/web/data/
+astroquery_frontend/subgraphs/data/
+astroquery_frontend/tests/cassettes/
+astroquery_frontend/frontend/dist/
+astroquery_frontend/frontend/node_modules/
+astroquery_frontend/build_venv/
+astroquery_frontend/build/
+astroquery_frontend/dist/
+astroquery_frontend/data/
+astroquery_frontend/.claude/
+astroquery_frontend/.env
+astroquery_frontend/*.log
+astroquery_frontend/__pycache__/

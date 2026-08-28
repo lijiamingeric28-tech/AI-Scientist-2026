@@ -1,43 +1,41 @@
-# ── 密钥 ──
-.env
+# ─────────── 密钥与配置模板 ───────────
+.env                        # 本地 API Keys（.env.example 保留提交）
 
-# ── 运行生成物 ──
-output/
-astroquery_ai/data/
-tests/cassettes/
-web/data/
-frontend/dist/
+# ─────────── 运行生成物 ───────────
+output/                     # 查询导出产物（quality_summary/grounded_data 等）
+quality_pipeline/output/
+web/data/                   # 任务库 sqlite + checkpoints + uploads
+subgraphs/data/             # 论文 PDF 下载目录（单查询可达数 GB）
+frontend/dist/              # 前端构建产物（npm run build 生成）
 frontend/node_modules/
-# 论文 PDF 下载目录（子图2 运行生成，2026-08-11 加入防误上传）
-subgraphs/data/
+tests/cassettes/            # VCR 录制（E2E 回放，体积大走 Release）
+data/                       # 绿色包运行时数据目录
 *.log
 
-# ── 缓存 ──
-*.py[cod]
+# ─────────── 缓存 ───────────
 __pycache__/
-.mypy_cache/
+*.py[cod]
 .pytest_cache/
 .ruff_cache/
-*.bak
+.mypy_cache/
 column_mapping_cache.json
 table_meta_cache.json
+*.bak
 
-# ── IDE ──
+# ─────────── 打包 ───────────
+build_venv/                 # 打包用独立 venv（可重建）
+build/                      # PyInstaller 中间产物
+dist/                       # PyInstaller 产物（绿色包，走 Release）
+*.egg-info/
+packaging/__pycache__/
+
+# ─────────── IDE / 编辑器 ───────────
 .idea/
 .vscode/
+.venv/
+Thumbs.db
+Desktop.ini
+.DS_Store
 
-# ── 打包产物 ──
-*.egg-info/
-
-# ── 下游质量管线导出 ──
-quality_pipeline/output/
-
-# ── Claude Code 本地配置（不提交）──
-.claude/
-
-# ── 打包 ──
-build_venv/
-build/
-dist/
-packaging/__pycache__/
-data/
+# ─────────── Claude Code 本地配置 ───────────
+.claude/                    # 本地个人配置不提交（团队共享配置可去掉本行）
