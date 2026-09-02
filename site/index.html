@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AstroQuery AI · 用自然语言问天</title>
+<meta name="description" content="AstroQuery AI —— 2026 挑战杯 · 阿里云 AI 科研助手：输入自然语言，自动完成天文检索、VLM 多模态提取与 8 项质量评估，输出可追溯的结构化黄金数据。" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<style>
+  :root {
+    --deep: #020513;
+    --deep-2: #0a0f2e;
+    --panel: rgba(255, 255, 255, 0.045);
+    --panel-border: rgba(255, 255, 255, 0.10);
+    --text: #eaeaf2;
+    --text-dim: #8a8ea8;
+    --accent: #10a37f;
+    --accent-soft: rgba(16, 163, 127, 0.16);
+    --violet: #8b5cf6;
+    --violet-soft: rgba(139, 92, 246, 0.18);
+    --mono: ui-monospace, Consolas, "JetBrains Mono", monospace;
+    --serif: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    color: var(--text);
+    background:
+      radial-gradient(1200px 700px at 85% -10%, rgba(139, 92, 246, 0.20), transparent 60%),
+      radial-gradient(1000px 620px at 8% 4%, rgba(16, 163, 127, 0.14), transparent 60%),
+      linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 42%, var(--deep) 100%);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(16, 163, 127, 0.4); }
+
+  /* ── 布局 ── */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+  section { padding: 88px 0; }
+  .section-head { text-align: center; margin-bottom: 48px; }
+  .eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.22em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-head h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+  .section-head p { color: var(--text-dim); margin-top: 10px; font-size: 15px; }
+
+  /* ── HERO ── */
+  .hero { position: relative; min-height: 90vh; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+  .hero::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 420px;
+    background: radial-gradient(760px 300px at 50% 100%, rgba(139, 92, 246, 0.14), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-logo { width: 104px; height: 104px; margin: 0 auto 28px; border-radius: 26px; box-shadow: 0 10px 44px rgba(139, 92, 246, 0.35); }
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 66px); font-weight: 800; letter-spacing: 0.06em; line-height: 1.1;
+    background: linear-gradient(94deg, #ffffff 12%, #b9a7ff 52%, #38d7b9 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero .tagline { font-size: 19px; color: var(--text-dim); margin: 18px auto 8px; max-width: 640px; }
+  .hero .sub { font-size: 13.5px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-bottom: 36px; }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 34px; position: relative; z-index: 1; }
+  .cta {
+    padding: 13px 30px; border-radius: 999px; font-size: 15px; font-weight: 600; text-decoration: none;
+    border: 1px solid var(--panel-border); color: var(--text); transition: transform .16s, box-shadow .16s;
+  }
+  .cta.primary { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 8px 30px rgba(16, 163, 127, 0.38); }
+  .cta:hover { transform: translateY(-2px); }
+  .cta.primary:hover { box-shadow: 0 12px 38px rgba(16, 163, 127, 0.5); }
+  .badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+  .badge {
+    font-size: 12px; padding: 5px 13px; border-radius: 999px;
+    background: var(--panel); border: 1px solid var(--panel-border); color: var(--text-dim); font-family: var(--mono);
+  }
+  .badge b { color: var(--text); font-weight: 600; }
+  .hero-banner { margin-top: 64px; border-radius: 18px; overflow: hidden; border: 1px solid var(--panel-border); box-shadow: 0 30px 90px rgba(2, 5, 19, 0.8); }
+  .hero-banner img { display: block; width: 100%; height: auto; }
+
+  /* ── 演示 ── */
+  .demo-card {
+    max-width: 980px; margin: 0 auto; border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--panel-border); background: var(--panel);
+    box-shadow: 0 24px 70px rgba(2, 5, 19, 0.6);
+  }
+  .demo-card img { display: block; width: 100%; height: auto; }
+  .demo-caption { text-align: center; color: var(--text-dim); font-size: 14px; margin-top: 16px; }
+
+  /* ── 卡片网格 ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .grid-6 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px; }
+  .card {
+    padding: 26px 24px; border-radius: 16px; background: var(--panel);
+    border: 1px solid var(--panel-border); transition: transform .18s, border-color .18s, background .18s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(16, 163, 127, 0.5); background: rgba(255,255,255,.07); }
+  .card .ico { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px; }
+  .card h3 { font-size: 17px; font-weight: 650; margin-bottom: 8px; }
+  .card p { color: var(--text-dim); font-size: 14px; }
+  .ico.green { background: var(--accent-soft); }
+  .ico.violet { background: var(--violet-soft); }
+
+  /* ── 架构流 ── */
+  .flow { display: flex; flex-direction: column; gap: 10px; align-items: center; max-width: 860px; margin: 0 auto; }
+  .flowbox {
+    width: min(100%, 720px); padding: 16px 22px; border-radius: 14px; text-align: center;
+    background: var(--panel); border: 1px solid var(--panel-border);
+  }
+  .flowbox b { color: var(--text); }
+  .flowbox small { display: block; color: var(--text-dim); font-size: 12.5px; }
+  .flowbox.hl { border-color: rgba(16, 163, 127, 0.55); background: var(--accent-soft); }
+  .flowbox.vl { border-color: rgba(139, 92, 246, 0.55); background: var(--violet-soft); }
+  .flow-arrow { color: var(--text-dim); font-size: 18px; line-height: 1; }
+  .flow-split {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; width: 100%;
+  }
+  .flow-split .flowbox { width: 100%; }
+
+  /* ── 代码块 ── */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px; }
+  .step { padding: 22px; border-radius: 16px; background: var(--panel); border: 1px solid var(--panel-border); }
+  .step .num {
+    width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 12px;
+  }
+  .step h3 { font-size: 15px; margin-bottom: 8px; }
+  .step code { font-family: var(--mono); font-size: 12.5px; color: var(--accent); word-break: break-word; }
+  pre {
+    background: #05070f; border: 1px solid var(--panel-border); border-radius: 12px;
+    padding: 16px 18px; overflow-x: auto; margin: 0;
+  }
+  pre code { font-family: var(--mono); font-size: 13px; color: #b6c2ff; display: block; line-height: 1.7; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 12px 14px; border-bottom: 1px solid var(--panel-border); text-align: left; }
+  th { color: var(--text-dim); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+  td { color: var(--text); }
+  td code { font-family: var(--mono); font-size: 12.5px; color: var(--accent); }
+
+  /* ── 社交证明 ── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+  .stat { padding: 24px 16px; text-align: center; border-radius: 16px; background: var(--panel); border: 1px solid var(--panel-border); }
+  .stat b { display: block; font-size: 34px; font-weight: 800; font-family: var(--mono); color: var(--accent); }
+  .stat span { color: var(--text-dim); font-size: 13.5px; }
+
+  /* ── Footer ── */
+  footer {
+    padding: 64px 0 46px; text-align: center; border-top: 1px solid var(--panel-border);
+    background: rgba(2, 5, 19, 0.75);
+  }
+  footer img { width: 52px; height: 52px; margin-bottom: 14px; }
+  footer .slogan { letter-spacing: 0.3em; font-size: 12px; color: var(--accent); text-transform: uppercase; margin: 8px 0; }
+  footer p { color: var(--text-dim); font-size: 13px; }
+  footer a { color: var(--text); text-decoration: none; font-weight: 600; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <img class="hero-logo" src="assets/logo.png" alt="AstroQuery AI Logo" />
+    <h1>ASTROQUERY&nbsp;AI</h1>
+    <p class="tagline">用自然语言问天 —— 从文献检索、多模态提取到质量赋值，一套 Agent 流水线直达「结构化黄金数据」。</p>
+    <p class="sub">EXPLORE · ANALYZE · EVOLVE</p>
+    <div class="cta-row">
+      <a class="cta primary" href="#quickstart">🚀 快速开始</a>
+      <a class="cta" href="#demo">📺 看演示</a>
+      <a class="cta" href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026" target="_blank" rel="noopener">⭐ GitHub 源码</a>
+    </div>
+    <div class="badges">
+      <span class="badge"><b>Python 3.10</b></span>
+      <span class="badge"><b>LangGraph</b> 编排引擎</span>
+      <span class="badge"><b>FastAPI</b> 实时后端</span>
+      <span class="badge"><b>React 19</b></span>
+      <span class="badge"><b>Qwen-VLM</b> 多模态提取</span>
+      <span class="badge"><b>370</b> tests passed</span>
+      <span class="badge"><b>WebView2</b> 桌面内置引擎</span>
+    </div>
+    <div class="hero-banner">
+      <img src="assets/readme_title.png" alt="AstroQuery AI 星空横幅" loading="lazy" />
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ 演示 ═══════════ -->
+<section id="demo">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">live demo</div>
+      <h2>一次查询的完整旅程</h2>
+      <p>任务提交 → SSE 实时流 → 冲突质检 → 质量雷达 → 可溯源记录表格</p>
+    </div>
+    <div class="demo-card">
+      <img src="assets/export-1788355820917-light.gif" alt="AstroQuery AI 演示" loading="lazy" />
+    </div>
+    <p class="demo-caption">「毕星团年龄、距离与金属丰度查询」—— 27 个数据源 · 152 条记录 · 6 维质量雷达</p>
+  </div>
+</section>
+
+<!-- ═══════════ 问题 ═══════════ -->
+<section id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">the problem</div>
+      <h2>科研数据整合的三重困境</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="ico violet">🌌</div>
+        <h3>异构来源</h3>
+        <p>星表（VizieR）、论文（ADS）、补充材料（CDS）字段命名、单位、精度各不相同，人工对齐要反复试错。</p>
+      </div>
+      <div class="card">
+        <div class="ico violet">📜</div>
+        <h3>人工誊抄</h3>
+        <p>论文中的数值埋在 PDF 图谱与表格里，研究者必须逐篇阅读、誊抄、核对——上百篇文献，动辄数周。</p>
+      </div>
+      <div class="card">
+        <div class="ico violet">🕳️</div>
+        <h3>质量不可信</h3>
+        <p>拿到一行数据后无法回答：是否被清洗过？清洗依据是什么？跨来源数值冲突该信谁？</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 特性 ═══════════ -->
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">why astroquery</div>
+      <h2>为什么是 AstroQuery AI</h2>
+    </div>
+    <div class="grid-6">
+      <div class="card">
+        <div class="ico green">🧬</div>
+        <h3>PropertySpec 系统中枢</h3>
+        <p>SIMBAD/otype + RAG 性质库 → 字段白名单 + 标准单位表，三路提取路径归一。</p>
+      </div>
+      <div class="card">
+        <div class="ico green">🛰️</div>
+        <h3>三路并行检索</h3>
+        <p>27 个 VizieR 星表（LLM 列名归一）+ ADS 论文 + Unpaywall PDF + CDS 补充材料。</p>
+      </div>
+      <div class="card">
+        <div class="ico green">👁️</div>
+        <h3>VLM 多模态提取</h3>
+        <p>PDF → 页图 + bbox 精定位 → Qwen-VLM 批量提取，图证逐条可溯源。</p>
+      </div>
+      <div class="card">
+        <div class="ico green">🧰</div>
+        <h3>三层动态工具</h3>
+        <p>LLM 在 AST 白名单沙箱内动态生成清洗函数：dry-run → 自检 → 8s 超时 → 修复循环。</p>
+      </div>
+      <div class="card">
+        <div class="ico green">📐</div>
+        <h3>Cohen's d 统计冲突</h3>
+        <p>效应量替代相对差异法（含 95% CI）——组内方差小时传统方法漏报，这里不会。</p>
+      </div>
+      <div class="card">
+        <div class="ico green">📡</div>
+        <h3>6 维质量雷达</h3>
+        <p>完整性/一致性/格式规范/来源可信度/冲突风险/提取质量加权评分 + 置信度校准。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 架构 ═══════════ -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">architecture</div>
+      <h2>Agent 流水线总览</h2>
+      <p>自然语言 → 结构数据，全链路可追溯</p>
+    </div>
+    <div class="flow">
+      <div class="flowbox" style="width:min(100%,540px)"><b>🧑‍💻 自然语言查询</b><small>如「M31 的距离和金属丰度」</small></div>
+      <div class="flow-arrow">▼</div>
+      <div class="flowbox" style="width:min(100%,540px)"><b>意图澄清 · 子图 1</b><small>结构化拆解 + HITL 澄清卡</small></div>
+      <div class="flow-arrow">▼</div>
+      <div class="flowbox hl" style="width:min(100%,540px)"><b>性质标准化 P1</b><small>SIMBAD · otype · RAG 性质库 → PropertySpec 白名单 + 标准单位</small></div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-split">
+        <div class="flowbox"><b>📊 VizieR 27 星表</b><small>LLM 列名归一</small></div>
+        <div class="flowbox"><b>📄 ADS 论文检索</b><small>RAG 标准名查询串 → Unpaywall PDF</small></div>
+        <div class="flowbox"><b>📚 CDS J/ 补充材料</b></div>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flowbox" style="width:min(100%,540px)"><b>提取 · 子图 3 · Qwen-VLM</b><small>PDF → 页图/bbox → 多模态批量提取（Prompt 注入 PropertySpec）</small></div>
+      <div class="flow-arrow">▼</div>
+      <div class="flowbox hl" style="width:min(100%,540px)"><b>质量管线 · Assessment → Normalization ⇄ Conflict → Export</b><small>8 项检查 · Cohen's d · 决策矩阵 · 人工复核（HITL）· Insights</small></div>
+      <div class="flow-arrow">▼</div>
+      <div class="flowbox vl" style="width:min(100%,540px)"><b>🧱 结构化输出</b><small>JSON / CSV / 溯源链 / 质量摘要 + 6 维雷达报告</small></div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-split">
+        <div class="flowbox"><b>🖥️ Web 界面</b><small>React · SSE 实时 · 事件回放</small></div>
+        <div class="flowbox"><b>🪟 桌面引擎</b><small>pywebview · WebView2 内置窗口</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 快速开始 ═══════════ -->
+<section id="quickstart">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">quickstart</div>
+      <h2>3 条命令跑起来</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>安装</h3>
+        <code>pip install -e .</code>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>配置 API Key</h3>
+        <code>AstroQuery_AI/.env</code><br /><small style="color:var(--text-dim)">DASHSCOPE_API_KEY（必填）· ADS_API_TOKEN · UNPAYWALL_EMAIL（可选）</small>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>启动</h3>
+        <code>python -m astroquery_ai "M31 的距离和金属丰度"</code><br /><small style="color:var(--text-dim)">或 <code>python -m web.desktop</code> 打开内置窗口</small>
+      </div>
+    </div>
+    <pre><code># CLI（一条查询跑全流程）
+python -m astroquery_ai "M31 的距离和金属丰度"
+
+# Web 界面（浏览器 / 内置引擎窗口）
+python -m web.main        # http://127.0.0.1:8000
+python -m web.desktop     # 桌面窗口（WebView2）
+
+# 测试（370 项全 mock 离线）
+python -m pytest tests/ -m "not network"</code></pre>
+  </div>
+</section>
+
+<!-- ═══════════ 质量矩阵 ═══════════ -->
+<section id="quality">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">quality routing</div>
+      <h2>质检决策矩阵</h2>
+      <p>Quality × Repair Cost → Export / Normalize / Conflict / HumanReview</p>
+    </div>
+    <div class="demo-card" style="padding: 8px 18px; background: transparent;">
+      <table>
+        <thead><tr><th></th><th>Excellent</th><th>Good</th><th>Fair</th><th>Poor</th></tr></thead>
+        <tbody>
+          <tr><th style="color:var(--text)">Low 修复成本</th><td>Export</td><td>Export</td><td>Normalization</td><td>Normalization</td></tr>
+          <tr><th style="color:var(--text)">Medium</th><td>Export</td><td>Normalization</td><td>Normalization</td><td>Conflict</td></tr>
+          <tr><th style="color:var(--text)">High</th><td>Normalization</td><td>Conflict</td><td>Conflict</td><td><b style="color:var(--status,#ef4146)">Human Review</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 社交证明 ═══════════ -->
+<section id="stats" style="padding-top: 24px;">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>370</b><span>离线测试全绿</span></div>
+      <div class="stat"><b>27</b><span>VizieR 星表</span></div>
+      <div class="stat"><b>9</b><span>可编排子图</span></div>
+      <div class="stat"><b>6</b><span>质量评分维度</span></div>
+      <div class="stat"><b>2026</b><span>挑战杯 · 阿里云 AI 科研助手</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="wrap">
+    <img src="assets/logo.png" alt="AstroQuery AI" loading="lazy" />
+    <div class="slogan">Explore · Analyze · Evolve</div>
+    <p><a href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026" target="_blank" rel="noopener">github.com/lijiamingeric28-tech/AI-Scientist-2026</a></p>
+    <p style="margin-top:6px">2026 挑战杯 · 阿里云 AI 科研助手 — 让每一行科学数据都值得信赖 ✦</p>
+  </div>
+</footer>
+
+</body>
+</html>

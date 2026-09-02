@@ -164,7 +164,7 @@ venv.bak/
 .ropeproject
 
 # mkdocs documentation
-/site
+# /site  # mkdocs 模板预设；AstroQuery 落地页源码目录需提交
 
 # mypy
 .mypy_cache/
@@ -217,20 +217,24 @@ __marimo__/
 .streamlit/secrets.toml
 
 # ── astroquery_frontend 运行产物（子项目级，2026-08-28 加入）──
-astroquery_frontend/output/
-astroquery_frontend/web/data/
-astroquery_frontend/subgraphs/data/
-astroquery_frontend/tests/cassettes/
-astroquery_frontend/frontend/dist/
-astroquery_frontend/frontend/node_modules/
-astroquery_frontend/build_venv/
-astroquery_frontend/build/
-astroquery_frontend/dist/
-astroquery_frontend/data/
-astroquery_frontend/.claude/
-astroquery_frontend/.env
-astroquery_frontend/*.log
-astroquery_frontend/__pycache__/
+AstroQuery_AI/output/
+AstroQuery_AI/web/data/
+AstroQuery_AI/subgraphs/data/
+AstroQuery_AI/tests/cassettes/
+AstroQuery_AI/frontend/dist/
+AstroQuery_AI/frontend/node_modules/
+AstroQuery_AI/build_venv/
+AstroQuery_AI/build/
+AstroQuery_AI/dist/
+AstroQuery_AI/data/
+AstroQuery_AI/.claude/
+AstroQuery_AI/.env
+AstroQuery_AI/*.log
+AstroQuery_AI/__pycache__/
 
 # ── 误伤豁免：astroquery_frontend 的 PyInstaller spec 必须提交 ──
-!astroquery_frontend/packaging/*.spec
+!AstroQuery_AI/packaging/*.spec
+
+CLAUDE.md
+.claude/
+_site/

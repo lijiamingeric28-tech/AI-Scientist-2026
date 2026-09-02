@@ -1,0 +1,47 @@
+# GitHub Pages 部署：纯静态落地页（site/ + assets/ 组装为站点根）
+# 站点 URL：https://lijiamingeric28-tech.github.io/AI-Scientist-2026/
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "assets/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # 组装站点根：site/* 为页面，assets/ 图片/logo/gif 同层拷贝
+      - name: Assemble site root
+        run: |
+          mkdir -p _site/assets
+          cp -r site/* _site/
+          cp assets/logo.png assets/readme_title.png _site/assets/
+          cp assets/export-1788355820917-light.gif _site/assets/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
