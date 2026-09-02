@@ -765,6 +765,64 @@ async def get_records(task_id: str):
     return out
 
 
+@app.delete("/api/tasks/{task_id}/records/{record_id}")
+async def delete_record(task_id: str, record_id: str):
+    """记录级删除（2026-09-02 用户重设计）：从任务最终记录中移除一条。
+
+    永久删除（不可逆）——从 state_json 的最终记录来源中移除该 record_id：
+      1. quality_report.output_state.structured_data.json.records（管线输出主来源）
+      2. final_output.records（管线输入原始值，保持两处一致）
+    删除后写回 state_json。仅 completed 任务可删；运行中任务 409。
+    """
+    # 回放任务 → 源任务（回放引用源任务的记录）
+    task_id = _resolve_source_task(task_id)
+    rec = store.get_task(task_id)
+    if not rec:
+        raise HTTPException(404, "任务不存在")
+    if _normalize_status(rec["status"]) in ("running", "queued"):
+        raise HTTPException(409, "任务运行中，不可删除记录")
+
+    try:
+        state = json.loads(rec.get("state_json") or "{}")
+    except Exception:
+        raise HTTPException(500, "任务状态解析失败")
+
+    def _remove(records: List[Dict[str, Any]]) -> Optional[List[Dict[str, Any]]]:
+        if not isinstance(records, list):
+            return records
+        new = [r for r in records if r.get("record_id") != record_id]
+        return new if len(new) != len(records) else records
+
+    removed_any = False
+    fo = state.get("final_output")
+    if isinstance(fo, dict):
+        # 1. 管线输出主来源（structured_data.json.records）
+        qr = fo.get("quality_report") or {}
+        op = qr.get("output_state") or {}
+        sd = op.get("structured_data") or {}
+        js = sd.get("json") or {}
+        if isinstance(js, dict):
+            before = js.get("records")
+            after = _remove(before) if isinstance(before, list) else before
+            if isinstance(before, list) and len(after) != len(before):
+                js["records"] = after
+                removed_any = True
+        # 2. final_output.records（管线输入原始值，保持两处一致）
+        recs = fo.get("records")
+        if isinstance(recs, list):
+            after2 = _remove(recs)
+            if len(after2) != len(recs):
+                fo["records"] = after2
+                removed_any = True
+
+    if not removed_any:
+        raise HTTPException(404, f"记录不存在: {record_id}")
+
+    store.update_task(task_id, state_json=json.dumps(state, ensure_ascii=False, default=str))
+    records = _final_records(state)
+    return {"deleted": True, "record_id": record_id, "remaining": len(records)}
+
+
 @app.get("/api/tasks/{task_id}/sources")
 async def get_sources(task_id: str):
     # 2026-08-24: 与 /records 同口径 — 返回质量管线修改后的最终来源列表

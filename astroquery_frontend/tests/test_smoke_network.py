@@ -33,9 +33,21 @@ def mock_hr_interrupt(monkeypatch):
         mod = importlib.import_module(f"subgraphs.subgraph1.nodes.{mod_name}")
         monkeypatch.setattr(mod, "interrupt", lambda *a, **k: "y")
     # 质量管线的 HumanReview 也走 interrupt() HITL —— 真实数据可能被路由 A→E/C→E,
-    # smoke 测试自动选 [3] 取消(保留状态), 快速通过人工环节验证链路
+    # smoke 测试自动答批量裁决（逐项保留）→ next 提交裁决, 快速通过人工环节验证链路
+    # 2026-09-02: 批量协议 batch interrupt 收 JSON, next 收 "1"
     hr = importlib.import_module("subgraphs.data_human_review.human_review_agent")
-    monkeypatch.setattr(hr, "interrupt", lambda *a, **k: "3")
+
+    def _hr_fake(payload):
+        t = payload.get("type", "")
+        if t == "human_review_batch":
+            import json as _json
+            verdicts = {}
+            for c in payload.get("conflicts", []):
+                verdicts[c["conflict_d"]] = {"action": "retain_both"}
+            return _json.dumps({"verdicts": verdicts})
+        return "1"  # human_review_next → 提交裁决
+
+    monkeypatch.setattr(hr, "interrupt", _hr_fake)
 
 
 def test_smoke_m31_full_pipeline(mock_hr_interrupt):

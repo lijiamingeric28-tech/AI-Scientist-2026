@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { cleanCliQuestion } from '@/lib/format'
+import HumanReviewPanel from './HumanReviewPanel'
 
 /* HITL 澄清卡（结构化渲染版）
  *
@@ -30,6 +31,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
   }
 
   const isConfirm = payload.type === 'final_confirm'
+  const isBatch = payload.type === 'human_review_batch'
 
   return (
     <div
@@ -95,8 +97,14 @@ export default function ClarificationCard({ payload, onSubmit }) {
           </div>
         )}
 
-        {/* final_confirm：结构化字段 */}
-        {isConfirm && payload.fields && (
+        {/* 2026-09-02: 人工审核批量面板（忠实于冲突数据的 markdown + 逐项 1-5 选项卡 + 可选理由） */}
+        {isBatch ? (
+          <HumanReviewPanel payload={payload} onSubmit={submit} />
+        ) : (
+          <>
+        {/* final_confirm：结构化字段；human_review 系列 fields（历史任务重放）也可渲染——
+            2026-09-02 fix：原 isConfirm gate 挡住 human_review_verdict 的冲突字段 */}
+        {payload.fields && payload.fields.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 }}>
             {payload.fields.map((f) => (
               <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -172,6 +180,8 @@ export default function ClarificationCard({ payload, onSubmit }) {
               <Icon.Send />
             </Button>
           </div>
+        )}
+          </>
         )}
 
         {/* 后端原文（可回溯；P1-7：套引用块样式，不再裸 pre-wrap 平铺） */}

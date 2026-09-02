@@ -60,16 +60,33 @@ def _validate_output(schema: Type[BaseModel], data: Dict, node: str) -> Dict:
     return data
 
 
-def _shared_checkpointer(config: RunnableConfig = None):
-    """从主图 config 取共享 checkpointer（HITL 中断持久化用）。
+# 2026-09-02 fix（SN 2011fe HITL 降级根因）：web 模式下主图 invoke 的
+# config 到达节点时，configurable["checkpointer"] 自定义键在 LangGraph
+# checkpoint 序列化链路中被剥离（含 SqliteSaver 对象的 configurable 无法
+# 落盘），节点侧 _shared_checkpointer(config) 恒为 None → 质量管线
+# human_review 的 GraphInterrupt 走降级分支，整条质量管线静默跳过
+# （实证：M87/LMC/SN 2011fe 三任务 quality_report={skipped:true}）。
+# 修复：进程级全局兜底，web_runner 在任务执行期设置共享实例、退出清理。
+_SHARED_CHECKPOINTER_FALLBACK = None
 
-    Phase 4c: 主图 run_pipeline 把 MemorySaver 实例放入
-    config["configurable"]["checkpointer"]，子图用同一实例编译，
-    使方式B 子图内的 interrupt 能与主图共享 thread 状态。
+
+def set_shared_checkpointer(checkpointer) -> None:
+    """web_runner 任务执行期注入进程级共享 checkpointer（与主图同实例）。"""
+    global _SHARED_CHECKPOINTER_FALLBACK
+    _SHARED_CHECKPOINTER_FALLBACK = checkpointer
+
+
+def _shared_checkpointer(config: RunnableConfig = None):
+    """取共享 checkpointer（HITL 中断持久化用）。
+
+    1. 优先 config["configurable"]["checkpointer"]（CLI Phase 4c 约定）
+    2. 回退进程级全局（web 模式：config 链在 checkpoint 序列化中丢键）
     """
-    if not config:
-        return None
-    return (config.get("configurable") or {}).get("checkpointer")
+    if config:
+        cp = (config.get("configurable") or {}).get("checkpointer")
+        if cp is not None:
+            return cp
+    return _SHARED_CHECKPOINTER_FALLBACK
 
 
 def _err(node: str, exc: Exception) -> Dict:
@@ -405,6 +422,10 @@ def extraction_node(state: MainGraphState, config: RunnableConfig = None) -> Dic
     except GraphInterrupt:
         raise  # Phase 4c: HITL 中断重新抛出
     except Exception as exc:
+        # 2026-09-02 fix: 取消信号不得被吞（此前 vlm_extractor 的 _CancelledError
+        # 落入 except Exception → 子图继续跑完剩余论文）。按类名判断，避免循环导入。
+        if type(exc).__name__ == "_CancelledError":
+            raise
         logger.exception("[Node 3] 子图执行失败")
         return {
             "paper_records": [],

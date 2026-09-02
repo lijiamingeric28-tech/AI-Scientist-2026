@@ -436,7 +436,8 @@ class Executor:
         if ok:
             # P1-8：回答落库为事件（此前答案只在内存 slot，历史任务快照重放
             # 时澄清记录恒显示"未回答"——前端消费 clarification_answered 回填）
-            self._bus.emit(task_id, "clarification_answered", answer=str(answer)[:200])
+            # 2026-09-02: 批量裁决 JSON 超长，截断放宽到 4096（槽内传递不受影响）
+            self._bus.emit(task_id, "clarification_answered", answer=str(answer)[:4096])
         return ok
 
     def is_waiting_clarification(self, task_id: str) -> bool:

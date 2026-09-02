@@ -57,12 +57,16 @@ def test_web_runner_clarification_question_fallback_and_options():
 
 
 def test_human_review_agent_interrupts_carry_question(monkeypatch):
-    """6 个 human_review interrupt 全部带 question 键（去分隔符指引）+ options。"""
+    """2026-09-02 批量协议：2 次 interrupt（batch + next），batch 带 conflicts/markdown/逐项 options。"""
+    import json as _json
     import subgraphs.data_human_review.human_review_agent as hra
     from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
 
     payloads = []
-    answers = iter(["1", "42", "test reason", "1"])  # verdict → custom_value → reason → next
+    answers = iter([
+        _json.dumps({"verdicts": {"CF-001": {"action": "retain_both", "reason": "论文A更权威"}}}),
+        "1",  # next → 提交裁决
+    ])
 
     def fake_interrupt(payload):
         payloads.append(payload)
@@ -86,14 +90,21 @@ def test_human_review_agent_interrupts_carry_question(monkeypatch):
     result = HumanReviewAgent().run(state)
     assert result["workflow_state"]["route_decision"] == "Normalization"
 
-    assert len(payloads) == 4, payloads
-    by_type = {p["type"]: p for p in payloads}
-    for p in payloads:
-        assert p.get("question"), f"{p['type']} 缺 question 键"
-    assert "请选择裁决方式" in by_type["human_review_verdict"]["question"]
-    assert "请输入理由" in by_type["human_review_reason"]["question"]
-    assert by_type["human_review_next"]["options"] == ["1", "2", "3"]
-    assert "提交裁决" in by_type["human_review_next"]["question"]
+    assert len(payloads) == 2, payloads
+    batch = payloads[0]
+    nxt = payloads[1]
+    assert batch["type"] == "human_review_batch"
+    assert batch["count"] == 1
+    assert batch["conflicts"][0]["conflict_d"] == "CF-001"
+    assert batch["conflicts"][0]["markdown"], "冲突 markdown 缺失"
+    assert batch["conflicts"][0]["options"] == ["1", "2", "3", "4", "5"]
+    assert batch["summary_markdown"]
+    assert nxt["type"] == "human_review_next"
+    assert nxt["options"] == ["1", "2", "3"]
+
+    # 决策理由进入 _decisions_to_actions 的动作 reason（下游溯源）
+    actions = result.get("report_state", {}).get("conflict", {}).get("resolution_report", {}).get("resolution_plan", {}).get("actions_to_normalize", [])
+    assert actions and "理由: 论文A更权威" in actions[0]["reason"], actions
 
 
 def test_final_confirm_modify_interrupt_carries_question(monkeypatch):
@@ -260,3 +271,163 @@ def test_human_review_node_interrupt_propagates(monkeypatch, ev_events):
     types = [e["type"] for e in ev_events]
     assert types.count("agent_started") == 1
     assert "agent_completed" not in types
+
+
+# ══════════════════════════════════════════════════════════
+# 2026-09-02 批量裁决协议测试（_parse_batch_answer / 校验 / 降级）
+# ══════════════════════════════════════════════════════════
+
+def _mk_conflicts():
+    return [
+        {"conflict_d": "CF-001", "field_name": "distance", "entity_name": "M31",
+         "source_a": {"source_id": "SRC_A", "value": 770, "unit": "pc", "records": [
+             {"record_id": "r1"}, {"record_id": "r2"}]},
+         "source_b": {"source_id": "SRC_B", "value": 700, "unit": "pc"}},
+        {"conflict_d": "CF-002", "field_name": "", "entity_name": "",  # QHR 类
+         "source_a": {"source_id": "SRC_C", "value": 0.45, "unit": ""}},
+    ]
+
+
+def test_parse_batch_answer_json():
+    """JSON verdicts → decisions（adopt 值由后端回填、record_ids 作用域）。"""
+    import json as _json
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    agent = HumanReviewAgent()
+    conflicts = _mk_conflicts()
+    ans = _json.dumps({"verdicts": {
+        "CF-001": {"action": "adopt_source_a", "reason": "论文A更权威"},
+        "CF-002": {"action": "skip"},
+    }})
+    decisions, invalid = agent._parse_batch_answer(ans, conflicts)
+    assert invalid == []
+    assert decisions["CF-001"]["action"] == "adopt_source_a"
+    assert decisions["CF-001"]["selected_value"] == 770  # 后端从 source_a 回填
+    assert decisions["CF-001"]["record_ids"] == ["r1", "r2"]
+    assert decisions["CF-001"]["reason"] == "论文A更权威"
+    assert decisions["CF-002"]["action"] == "skip"
+
+
+def test_parse_batch_answer_cli_shorthand():
+    """CLI 速记：CF-001:2 / CF-001:3:770 / CF-001:2|理由 / 逗号多项。"""
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    agent = HumanReviewAgent()
+    conflicts = _mk_conflicts()
+    decisions, invalid = agent._parse_batch_answer("CF-001:2", conflicts)
+    assert invalid == []
+    assert decisions["CF-001"]["action"] == "adopt_source_b"
+
+    decisions, invalid = agent._parse_batch_answer("CF-001:3:770", conflicts)
+    assert decisions["CF-001"]["action"] == "custom_value"
+    assert decisions["CF-001"]["selected_value"] == 770
+
+    decisions, invalid = agent._parse_batch_answer("CF-001:2|理由文本", conflicts)
+    assert decisions["CF-001"]["action"] == "adopt_source_b"
+    assert decisions["CF-001"]["reason"] == "理由文本"
+
+    decisions, invalid = agent._parse_batch_answer("CF-001:4,CF-002:5", conflicts)
+    assert invalid == []
+    assert decisions["CF-001"]["action"] == "retain_both"
+    assert decisions["CF-002"]["action"] == "skip"
+
+
+def test_batch_qhr_restricts_options():
+    """QHR 项（无 field/entity）仅 4/5 合法；adopt/custom → invalid。
+    CF-001 未裁决也 invalid（JSON 通道强制全裁决）。"""
+    import json as _json
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    agent = HumanReviewAgent()
+    conflicts = _mk_conflicts()
+    ans = _json.dumps({"verdicts": {"CF-002": {"action": "adopt_source_a"}}})
+    decisions, invalid = agent._parse_batch_answer(ans, conflicts)
+    # CF-002 adopt 无效 + CF-001 未裁决
+    assert "CF-002" in invalid
+    assert "CF-001" in invalid
+    assert "CF-002" not in decisions
+
+
+def test_batch_unresolved_marks_invalid():
+    """未裁决项不得静默跳过——invalid 列表含之，前端/后端强制逐项。"""
+    import json as _json
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    agent = HumanReviewAgent()
+    conflicts = _mk_conflicts()
+    ans = _json.dumps({"verdicts": {"CF-001": {"action": "retain_both"}}})
+    decisions, invalid = agent._parse_batch_answer(ans, conflicts)
+    assert invalid == ["CF-002"]
+
+
+def test_batch_invalid_answer_requeues_with_error():
+    """首答无效 → 第二次 interrupt payload 带 error 键、conflicts 与首次一致。"""
+    import json as _json
+    import subgraphs.data_human_review.human_review_agent as hra
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    conflicts = _mk_conflicts()
+    payloads = []
+    answers = iter([
+        _json.dumps({"verdicts": {"CF-001": {"action": "adopt_source_a"}}}),  # CF-002 未裁决 → invalid
+        _json.dumps({"verdicts": {"CF-001": {"action": "retain_both"}, "CF-002": {"action": "skip"}}}),
+    ])
+
+    def fake_interrupt(payload):
+        payloads.append(payload)
+        return next(answers)
+
+    import pytest
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr(hra, "interrupt", fake_interrupt)
+    try:
+        decisions = HumanReviewAgent()._interact_batch(conflicts)
+    finally:
+        monkeypatch.undo()
+    assert len(payloads) == 2
+    assert "error" in payloads[1]
+    assert payloads[0]["conflicts"] == payloads[1]["conflicts"]  # 重试 payload 逐字节稳定
+    assert decisions["CF-001"]["action"] == "retain_both"
+    assert decisions["CF-002"]["action"] == "skip"
+
+
+def test_batch_three_invalid_falls_back_all_skip():
+    """3 次无效 → 全部 skip 降级（数据原样交付）。"""
+    import json as _json
+    import subgraphs.data_human_review.human_review_agent as hra
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    conflicts = _mk_conflicts()
+    payloads = []
+
+    def fake_interrupt(payload):
+        payloads.append(payload)
+        return "garbage"  # 恒无效
+
+    import pytest
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr(hra, "interrupt", fake_interrupt)
+    try:
+        decisions = HumanReviewAgent()._interact_batch(conflicts)
+    finally:
+        monkeypatch.undo()
+    assert len(payloads) == 3
+    assert decisions["CF-001"]["action"] == "skip"
+    assert decisions["CF-002"]["action"] == "skip"
+    assert "自动降级" in decisions["CF-001"]["reason"]
+
+
+def test_batch_reason_propagates_to_actions():
+    """带理由裁决 → actions[0].reason 含"理由:"后缀；无理由 → 无后缀。"""
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    agent = HumanReviewAgent()
+    conflicts = _mk_conflicts()
+    decisions, _ = agent._parse_batch_answer(
+        '{"verdicts": {"CF-001": {"action": "adopt_source_a", "reason": "权威来源"}}}', conflicts)
+    actions = agent._decisions_to_actions(decisions)
+    assert "理由: 权威来源" in actions[0]["reason"], actions
+
+    decisions2, _ = agent._parse_batch_answer('{"verdicts": {"CF-001": {"action": "retain_both"}}}', conflicts)
+    actions2 = agent._decisions_to_actions(decisions2)
+    assert " 理由: " not in actions2[0]["reason"], actions2

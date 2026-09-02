@@ -13,6 +13,7 @@ human_review_agent.py — Human Review Agent (V1.0)
 from __future__ import annotations
 
 import datetime
+import os
 import sys
 from typing import Any
 
@@ -26,6 +27,9 @@ logger = get_logger(__name__)
 _SEP = "=" * 80
 _SEP2 = "-" * 80
 _SEP3 = "-" * 60
+
+# 2026-09-02: 批量裁决协议开关（回滚通道——置 "0" 走旧逐条循环，无需 git revert）
+_BATCH_ENABLED = os.environ.get("HUMAN_REVIEW_BATCH_ENABLED", "1") != "0"
 
 
 def _build_human_review_support(state: dict) -> dict:
@@ -90,42 +94,16 @@ class HumanReviewAgent:
             logger.warning("[HumanReview] No pending conflicts → Export")
             return self._no_conflicts_result(state)
 
-        # ── Step 3: 命令行交互 ──
-        print(f"\n{_SEP}")
-        print(f"  HUMAN REVIEW — {len(conflicts)} 个冲突需要人工裁决")
-        print(f"{_SEP}")
-
-        quality = rs.get("quality", {}) or {}
-        # V3.5 fix: conflict 可能为 None (dispatch 清理后) — 空值保护
-        conflict_state = rs.get("conflict") or {}
-        resolution_report = conflict_state.get("resolution_report") or {}
-        auto_resolved = resolution_report.get("metadata", {}).get("auto_resolved", 0)
-        total = resolution_report.get("metadata", {}).get("total_conflicts", 0)
-        print(f"\n  摘要: {auto_resolved}/{total} 冲突已自动解决, {len(conflicts)} 个需要人工判断")
-        fields = list(set(c.get("field_name", "?") for c in conflicts))
-        print(f"  涉及字段: {', '.join(fields)}")
-        print()
-
-        decisions = {}
-        for i, c in enumerate(conflicts):
-            cid = c.get("conflict_d", f"CF-{i+1:03d}")
-            print(f"\n  {_SEP2}")
-            self._print_conflict(c, i + 1, len(conflicts))
-            print(f"  {_SEP2}")
-
-            choice = self._get_user_choice(c)
-            reason = self._get_user_reason()
-            # V3.2: 携带冲突详情, 供 _decisions_to_actions 生成可执行动作
-            decisions[cid] = {
-                **choice, "reason": reason, "conflict_d": cid,
-                "source_id": (c.get("source_a") or {}).get("source_id", ""),
-                "field_name": c.get("field_name", ""),
-                "entity_name": c.get("entity_name", ""),
-                "record_ids": [r.get("record_id") for r in
-                               (c.get("source_a") or {}).get("records", [])]
-                               if isinstance((c.get("source_a") or {}).get("records"), list)
-                               else [],
-            }
+        # ── Step 3: 人工裁决（2026-09-02 批量协议：单次 interrupt 承载全部冲突）──
+        if _BATCH_ENABLED:
+            try:
+                decisions = self._interact_batch(conflicts)
+            except Exception:
+                # 批量构建/渲染异常 → 降级 legacy 逐条（不阻塞流程）
+                logger.exception("[HumanReview] 批量交互失败，降级逐条")
+                decisions = self._run_legacy_interaction(conflicts, rs)
+        else:
+            decisions = self._run_legacy_interaction(conflicts, rs)
 
         # ── Step 4: 确认汇总 ──
         print(f"\n{_SEP}")
@@ -147,11 +125,11 @@ class HumanReviewAgent:
         _hr_text = (f"\n  {_SEP3}\n  请选择下一步:\n"
                     f"    [1] 提交裁决 → Normalization 执行修改 (E→B)\n"
                     f"    [2] 无法判断 → 送回 Assessment 重新评估 (E→A)\n"
-                    f"    [3] 取消 (保留状态)\n  {_SEP3}\n  请输入选项 [1-3]: ")
+                    f"    [3] 取消 → 放弃人工审核, 数据原样交付\n  {_SEP3}\n  请输入选项 [1-3]: ")
         # H-10: Web 端 HITL 指引 — question 键（取指引文本去分隔符）
         _hr_question = ("请选择下一步：[1] 提交裁决（Normalization 执行修改 E→B） "
                         "[2] 无法判断（送回 Assessment 重新评估 E→A） "
-                        "[3] 取消（保留状态）")
+                        "[3] 取消（放弃人工审核，数据原样交付）")
         next_step = interrupt({"type": "human_review_next", "text": _hr_text,
                                "question": _hr_question, "options": ["1", "2", "3"]})
         if next_step is None:
@@ -159,12 +137,27 @@ class HumanReviewAgent:
         next_step = str(next_step).strip()
 
         if next_step == "3":
-            print("  X 已取消。保留当前状态，下次可恢复。")  # V3.5: ASCII 安全
+            # 2026-09-02 fix: 取消 = 放弃本轮人工审核、继续交付（数据原样导出，不标注差异）。
+            # 旧语义"保留状态待恢复"会因 pending["HumanReview"] 未清而整批重审死循环；
+            # 任务级中止仍走 web executor 的 cancel 按钮，不经过本节点。
+            print("  X 已取消。放弃人工审核，数据原样交付。")
+            _pending = dict(wf.get("pending_sources") or {})
+            _pending["HumanReview"] = []
             return {
                 "workflow_state": {
-                    "execution_status": "HumanReview",
+                    "execution_status": "Success",
+                    "route_decision": "Export",
                     "current_node": "human_review",
-                    "__human_review_needed__": True,
+                    "phase": "human_review",
+                    "pending_sources": _pending,
+                    "__human_review_needed__": False,
+                    "workflow_history": [{
+                        "agent": "HumanReview", "stage": "Cancelled",
+                        "status": "Success",
+                        "timestamp": datetime.datetime.now().isoformat(),
+                        "duration": 0.0,
+                        "reason": "Human cancelled review → Export (data as-is)",
+                    }],
                 },
             }
         elif next_step == "2":
@@ -175,10 +168,12 @@ class HumanReviewAgent:
             print("  → 提交裁决到 Normalization 执行修改 (E→B)")
 
         # ── Step 5: 写入决策 ──
+        # 2026-09-02: reviewer_notes 聚合非空理由（不再硬编码 ""）
+        _notes = "; ".join(f"{cid}: {d.get('reason')}" for cid, d in decisions.items() if d.get("reason"))
         decision_record = {
             "decisions": decisions,
             "route_decision": target_route,
-            "reviewer_notes": "",
+            "reviewer_notes": _notes,
             "reviewed_at": datetime.datetime.now().isoformat(),
         }
 
@@ -224,10 +219,17 @@ class HumanReviewAgent:
         return ret
 
     def _decisions_to_actions(self, decisions: dict) -> list[dict]:
-        """将人工决策转换为 NormalizationAction 列表 (V3.2)。"""
+        """将人工决策转换为 NormalizationAction 列表 (V3.2)。
+
+        2026-09-02: 用户理由打通下游——三处 reason 基础模板追加 `理由: {r}` 后缀，
+        理由流经 actions[].reason → source_plan → data_trace/_annotation → 导出溯源。
+        """
         actions = []
         for cid, d in decisions.items():
             action = d.get("action", "skip")
+            # 用户理由后缀（无理由 → 仅基础模板）
+            _r = d.get("reason") or ""
+            _suffix = f" 理由: {_r[:200]}" if _r else ""
             if action in ("adopt_source_a", "adopt_source_b", "custom_value"):
                 # C-01 fix: 生成 human_replace 前强制校验作用域 (record_ids + field_name 非空),
                 # 空作用域 (如 QHR 质量类审核项) 会导致整 source 全部记录被单值覆盖 → 降级 annotate
@@ -244,7 +246,7 @@ class HumanReviewAgent:
                         "field_name": field_name,
                         "entity_name": d.get("entity_name", ""),
                         "action": "annotate",
-                        "reason": f"Human decision [{cid}]: {action} degraded to annotate (missing scope)",
+                        "reason": f"Human decision [{cid}]: {action} degraded to annotate (missing scope){_suffix}",
                     })
                     continue
                 # 需要写回目标值 → Normalization 执行替换
@@ -258,7 +260,7 @@ class HumanReviewAgent:
                     "entity_name": d.get("entity_name", ""),
                     "new_value": d.get("selected_value"),
                     "action": "human_replace",
-                    "reason": f"Human decision [{cid}]: {action}",
+                    "reason": f"Human decision [{cid}]: {action}{_suffix}",
                 })
             elif action == "retain_both":
                 actions.append({
@@ -267,10 +269,309 @@ class HumanReviewAgent:
                     "field_name": d.get("field_name", ""),
                     "entity_name": d.get("entity_name", ""),
                     "action": "annotate",
-                    "reason": f"Human decision [{cid}]: retain both values",
+                    "reason": f"Human decision [{cid}]: retain both values{_suffix}",
                 })
             # skip → 无动作
         return actions
+
+    # ── 2026-09-02 批量裁决协议 ──
+
+    def _run_legacy_interaction(self, conflicts: list[dict], rs: dict) -> dict:
+        """旧逐条交互（回滚通道）：每冲突 _get_user_choice + _get_user_reason。
+        HUMAN_REVIEW_BATCH_ENABLED=0 时启用。deprecated: 仅回滚/单测用。"""
+        decisions = {}
+        for i, c in enumerate(conflicts):
+            cid = c.get("conflict_d", f"CF-{i+1:03d}")
+            print(f"\n  {_SEP2}")
+            self._print_conflict(c, i + 1, len(conflicts))
+            print(f"  {_SEP2}")
+            choice = self._get_user_choice(c)
+            reason = self._get_user_reason()
+            decisions[cid] = {
+                **choice,
+                "reason": reason, "conflict_d": cid,
+                "source_id": (c.get("source_a") or {}).get("source_id", ""),
+                "field_name": c.get("field_name", ""),
+                "entity_name": c.get("entity_name", ""),
+                "record_ids": [r.get("record_id") for r in
+                               (c.get("source_a") or {}).get("records", [])]
+                               if isinstance((c.get("source_a") or {}).get("records"), list)
+                               else [],
+            }
+        return decisions
+
+    def _interact_batch(self, conflicts: list[dict]) -> dict:
+        """单次批量 interrupt + 解析 + 重问（≤3 次）→ decisions dict。
+
+        强制逐项裁决（用户决策：无"全部保留/全部跳过"批量按钮）；
+        每项由后端判断给出 1-5 选项（QHR 项仅 4/5）。
+        decisions 形状与逐条版完全一致（record_ids/source_id 等由后端回填）。
+        """
+        payload = self._build_batch_payload(conflicts)
+        invalid = []
+        for attempt in range(3):
+            attempt_payload = dict(payload)
+            if invalid:
+                attempt_payload["error"] = f"以下项裁决无效: {', '.join(invalid)}，请重新提交（第 {attempt+1}/3 次）"
+            raw = interrupt(attempt_payload)
+            decisions, invalid = self._parse_batch_answer(raw, conflicts)
+            if not invalid:
+                return decisions
+            print(f"  无效项: {invalid}，请重新输入（{attempt+1}/3）")
+        # 3 次无效 → 未落定项按 skip 落定（批量失败兜底，数据原样交付）
+        return self._default_decisions(conflicts, "skip", "批量跳过（3 次无效输入自动降级）")
+
+    def _build_batch_payload(self, conflicts: list[dict]) -> dict:
+        """批量 interrupt payload：text 给 CLI，conflicts[].markdown+结构字段给 Web。
+
+        纯函数（conflicts 来自 _extract_pending 的确定读取）——interrupt 重试重放
+        依赖 payload 逐字节稳定，禁止全局/可变状态。
+        """
+        n = len(conflicts)
+        return {
+            "type": "human_review_batch",
+            "title": f"人工审核（{n} 个冲突）",
+            "question": f"请对 {n} 个冲突逐一进行人工裁决：每项需选择裁决方式（1-5），并可选填理由。",
+            "text": self._render_batch_text(conflicts),
+            "count": n,
+            "summary_markdown": self._render_summary_markdown(conflicts),
+            "conflicts": [
+                {
+                    "conflict_d": c.get("conflict_d", f"CF-{i+1:03d}"),
+                    "field_name": c.get("field_name", ""),
+                    "entity_name": c.get("entity_name", ""),
+                    "reason": (c.get("reason") or "")[:300],
+                    "markdown": self._render_conflict_markdown(c, i + 1, n),
+                    "source_a": self._slim_source(c.get("source_a")),
+                    "source_b": self._slim_source(c.get("source_b")),
+                    "cohens_d": c.get("cohens_d") or 0,
+                    "effect_size": c.get("effect_size", ""),
+                    "options": self._conflict_options(c),
+                }
+                for i, c in enumerate(conflicts)
+            ],
+        }
+
+    @staticmethod
+    def _slim_source(src) -> dict:
+        """精简 source 字典（仅 id/value/unit/reliability，控 checkpoint 体积）。"""
+        if not isinstance(src, dict):
+            return {}
+        return {k: src.get(k) for k in ("source_id", "value", "unit", "reliability") if src.get(k) is not None or k == "source_id"}
+
+    def _conflict_options(self, c: dict) -> list[str]:
+        """逐项合法选项（C-01 防护与 _get_user_choice 行 480-481 一致）：
+        QHR 类（无 field/entity）仅 retain_both/skip；否则 1-5 全量。"""
+        if not c.get("field_name") and not c.get("entity_name"):
+            return ["4", "5"]
+        return ["1", "2", "3", "4", "5"]
+
+    def _render_summary_markdown(self, conflicts: list[dict]) -> str:
+        """整批 markdown 汇总（前端顶部展示）。"""
+        n = len(conflicts)
+        fields = sorted({c.get("field_name") for c in conflicts if c.get("field_name")})
+        lines = [f"### 人工审核 · {n} 个冲突"]
+        if fields:
+            lines.append(f"**涉及字段**：{'、'.join(fields)}")
+        lines.append("请逐项裁决：每项选择裁决方式（1-5），可选填理由。")
+        return "\n\n".join(lines)
+
+    def _render_conflict_markdown(self, c: dict, idx: int, total: int) -> str:
+        """单条冲突 markdown（字段/实体/原因/Source 对照/Cohen's d/推理链/风险）。"""
+        cid = c.get("conflict_d", f"CF-{idx:03d}")
+        fld = c.get("field_name") or "（质量类审核项）"
+        ent = c.get("entity_name") or ""
+        lines = [f"**冲突 {idx}/{total}：`{cid}`** 字段 `{fld}`" + (f" · 实体 `{ent}`" if ent else "")]
+        if c.get("reason"):
+            lines.append(f"\n**原因**：{c.get('reason')[:300]}")
+        # Source 对照表
+        sa, sb = c.get("source_a") or {}, c.get("source_b") or {}
+        if sa or sb:
+            rows = ["|  | Source A | Source B |", "|---|---|---|"]
+            def _cell(src):
+                if not isinstance(src, dict):
+                    return "-"
+                v = f"{src.get('value','?')} {src.get('unit','')}".strip()
+                return f"{v}<br><sub>{src.get('source_id','?')}</sub>"
+            rows.append(f"| 值 | {_cell(sa)} | {_cell(sb)} |")
+            lines.append("\n" + "\n".join(rows))
+        if c.get("cohens_d"):
+            lines.append(f"\n**Cohen's d**：{c.get('cohens_d'):.2f}" + (f"（{c.get('effect_size')}）" if c.get("effect_size") else ""))
+        chain = c.get("reasoning_chain") or []
+        if chain:
+            steps = chain[:5]
+            lines.append("\n**推理链**：" + "；".join(f"({i+1}) {str(s)[:100]}" for i, s in enumerate(steps)))
+        if c.get("risk_assessment"):
+            lines.append(f"\n**风险**：{str(c.get('risk_assessment'))[:150]}")
+        return "\n".join(lines)
+
+    def _render_batch_text(self, conflicts: list[dict]) -> str:
+        """CLI 完整提示文本：逐条冲突块 + 输入协议（逐项，无批量速记）。"""
+        n = len(conflicts)
+        out = [f"{_SEP}", f"  HUMAN REVIEW — {n} 个冲突需要人工裁决", f"{_SEP}"]
+        for i, c in enumerate(conflicts, 1):
+            cid = c.get("conflict_d", f"CF-{i:03d}")
+            out.append(f"\n  [冲突 {i}/{n}] {cid} {c.get('field_name','?')} {c.get('entity_name','')}")
+            out.append(f"    原因: {(c.get('reason') or '')[:120]}")
+            sa, sb = c.get("source_a") or {}, c.get("source_b") or {}
+            if sa or sb:
+                out.append(f"    A={sa.get('value','?')}{sa.get('unit','')} B={sb.get('value','?')}{sb.get('unit','')}")
+            opts = self._conflict_options(c)
+            out.append(f"    选项: {'/'.join(opts)}")
+        out.append(f"\n  {_SEP}")
+        out.append("  输入协议（逐项裁决，无批量速记）：")
+        out.append("    CF-001:2            采用 Source B")
+        out.append("    CF-001:3:770        自定义值 770")
+        out.append("    CF-001:2|理由文本    裁决 + 可选理由")
+        out.append("    CF-001:4,CF-002:5   多项逗号分隔")
+        out.append("    JSON            也可粘贴 {\"verdicts\":{...}}")
+        out.append(f"  {_SEP}")
+        return "\n".join(out)
+
+    def _parse_batch_answer(self, raw, conflicts: list[dict]) -> tuple[dict, list[str]]:
+        """解析批量答案 → (decisions, invalid_ids)。
+
+        Web 面板恒发 JSON 字符串；CLI 速记同解析器（决策：CLI/Web 统一）。
+        返回的 decisions 形状与逐条版一致（154-164 行原样字段，作用域由后端回填）。
+        """
+        decisions = {}
+        invalid = []
+        is_json_channel = False
+        if raw is None:
+            raw = ""
+        raw = str(raw).strip()
+        # 1) JSON 通道
+        if raw.startswith("{"):
+            is_json_channel = True
+            try:
+                import json as _json
+                data = _json.loads(raw)
+                verdicts = data.get("verdicts", {}) if isinstance(data, dict) else {}
+                for cid, v in verdicts.items():
+                    if not isinstance(v, dict):
+                        invalid.append(str(cid)); continue
+                    action = str(v.get("action", ""))
+                    c = self._find_conflict(conflicts, cid)
+                    if c is None:
+                        invalid.append(str(cid)); continue
+                    opts = self._conflict_options(c)
+                    if action not in ("adopt_source_a", "adopt_source_b", "custom_value", "retain_both", "skip"):
+                        invalid.append(str(cid)); continue
+                    key = {"adopt_source_a": "1", "adopt_source_b": "2", "custom_value": "3",
+                           "retain_both": "4", "skip": "5"}[action]
+                    if key not in opts:
+                        invalid.append(str(cid)); continue
+                    val = None
+                    if action == "custom_value":
+                        val = v.get("selected_value")
+                        if val is None or val == "":
+                            invalid.append(str(cid)); continue
+                    elif action in ("adopt_source_a", "adopt_source_b"):
+                        # 后端权威读取，不信任前端传值
+                        val = (c.get("source_a") or {}).get("value") if action == "adopt_source_a" else (c.get("source_b") or {}).get("value")
+                    decisions[str(cid)] = self._build_decision(c, action=action, selected_value=val,
+                                                               reason=str(v.get("reason") or ""))
+                # JSON 通道未裁决项强制 invalid（Web 面板必选校验兜底）
+                for c in conflicts:
+                    cid = c.get("conflict_d", "?")
+                    if cid not in decisions:
+                        invalid.append(str(cid))
+                return decisions, invalid
+            except Exception:
+                invalid.append("JSON 解析失败")
+                # JSON 解析失败不继续走速记（防歧义）——除非整个 raw 是 JSON
+                return decisions, invalid
+        # 2) CLI 速记通道
+        for token in raw.split(","):
+            token = token.strip()
+            if not token:
+                continue
+            # 裸 1-5 且单冲突批次（legacy 兼容——旧 in-flight 任务与 CLI 直觉）
+            if token in ("1", "2", "3", "4", "5") and len(conflicts) == 1:
+                c = conflicts[0]
+                cid = c.get("conflict_d", "CF-001")
+                key = token
+                _val_part = ""
+                _reason = ""
+            elif ":" in token:
+                cid, _, rest = token.partition(":")
+                c = self._find_conflict(conflicts, cid)
+                if c is None:
+                    invalid.append(token); continue
+                # rest 形如 "2" / "3:770" / "2|理由"
+                _key_part = rest.split("|")[0].strip()
+                key = _key_part.split(":")[0].strip()          # 自定义值前缀：3:770 → 3
+                _val_part = _key_part.split(":", 1)[1] if ":" in _key_part else ""
+                _reason = rest.split("|", 1)[1].strip() if "|" in rest else ""
+                val_seg = ""
+            else:
+                invalid.append(token); continue
+            opts = self._conflict_options(c)
+            if key not in opts:
+                invalid.append(token); continue
+            action = {"1": "adopt_source_a", "2": "adopt_source_b", "3": "custom_value",
+                      "4": "retain_both", "5": "skip"}[key]
+            val = None
+            if action == "custom_value":
+                val = self._coerce_value(_val_part) if _val_part else None
+                if val is None:
+                    invalid.append(token); continue
+            elif action in ("adopt_source_a", "adopt_source_b"):
+                val = (c.get("source_a") or {}).get("value") if action == "adopt_source_a" else (c.get("source_b") or {}).get("value")
+            decisions[str(cid)] = self._build_decision(c, action=action, selected_value=val, reason=_reason)
+        # CLI 速记通道宽容：未列项默认 skip（不阻塞；Web JSON 通道由前端必选校验兜底，
+        # 后端对 JSON 未覆盖项仍判 invalid——两者行为按通道区分）
+        if is_json_channel:
+            for c in conflicts:
+                cid = c.get("conflict_d", "?")
+                if cid not in decisions:
+                    invalid.append(str(cid))
+        else:
+            for c in conflicts:
+                cid = c.get("conflict_d", "?")
+                if cid not in decisions:
+                    decisions[str(cid)] = self._build_decision(c, action="skip", selected_value=None, reason="")
+        return decisions, invalid
+
+    @staticmethod
+    def _find_conflict(conflicts, cid) -> dict:
+        for c in conflicts:
+            if c.get("conflict_d") == str(cid):
+                return c
+        return None
+
+    @staticmethod
+    def _coerce_value(s: str):
+        """值类型推断（复用 _get_user_choice 行 539 逻辑）：含 ./e → float，可 int → int，否则 str。"""
+        s = str(s or "").strip()
+        if not s:
+            return None
+        try:
+            if "." in s or "e" in s.lower():
+                return float(s)
+            return int(s)
+        except ValueError:
+            return s
+
+    def _build_decision(self, c: dict, action: str, selected_value, reason: str) -> dict:
+        """构造规范 decision 条目（与逐条版 154-164 字段一致，作用域由后端可信回填）。"""
+        return {
+            "action": action,
+            "selected_value": selected_value,
+            "reason": reason,
+            "conflict_d": c.get("conflict_d", "?"),
+            "source_id": (c.get("source_a") or {}).get("source_id", ""),
+            "field_name": c.get("field_name", ""),
+            "entity_name": c.get("entity_name", ""),
+            "record_ids": [r.get("record_id") for r in (c.get("source_a") or {}).get("records", [])]
+                           if isinstance((c.get("source_a") or {}).get("records"), list)
+                           else [],
+        }
+
+    def _default_decisions(self, conflicts: list[dict], action: str, reason: str) -> dict:
+        """全部按 action 落定（含默认 reason）。"""
+        return {c.get("conflict_d", f"CF-{i+1:03d}"): self._build_decision(c, action=action, selected_value=None, reason=reason)
+                for i, c in enumerate(conflicts)}
 
     # ── Helpers ──
 
@@ -451,11 +752,33 @@ class HumanReviewAgent:
         print(f"  {_SEP3}")
 
         # H-10: question 键带裁决方式列表（Web 端人工审核指引）
+        # 2026-09-02: 附带冲突详情（source_a/b 的值），前端输入框不再"不知在给谁裁决"
+        _detail = ""
+        if isinstance(sa, dict) and sa.get("value") is not None:
+            _detail += f"A=`{sa.get('value')}`{sa.get('unit','')}"
+        if isinstance(sb, dict) and sb.get("value") is not None:
+            _detail += f" B=`{sb.get('value')}`{sb.get('unit','')}"
         verdict_question = "请选择裁决方式：" + " / ".join(
             f"[{k}] {lbl}" for k, _action, lbl in options)
+        if _detail:
+            verdict_question += f"（{_detail}）"
+        # 2026-09-02: structured fields——前端澄清卡渲染"需要裁决的数据"对比
+        _fields = []
+        if c.get("field_name"):
+            _fields.append({"label": "冲突字段", "value": c.get("field_name")})
+        if c.get("entity_name"):
+            _fields.append({"label": "实体", "value": c.get("entity_name")})
+        if isinstance(sa, dict):
+            _fields.append({"label": "Source A", "value": f"{sa.get('value','?')} {sa.get('unit','')}".strip()})
+        if isinstance(sb, dict):
+            _fields.append({"label": "Source B", "value": f"{sb.get('value','?')} {sb.get('unit','')}".strip()})
+        _cd = c.get("cohens_d") or 0
+        if _cd:
+            _fields.append({"label": "Cohen's d", "value": f"{float(_cd):.2f}"})
         for _ in range(3):
             choice = interrupt({"type": "human_review_verdict", "text": "  请输入选项 [1-5]: ",
                                 "question": verdict_question,
+                                "fields": _fields,
                                 "options": [o[0] for o in options]})
             if choice is None:
                 choice = ""

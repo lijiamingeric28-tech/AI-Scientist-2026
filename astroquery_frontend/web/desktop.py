@@ -30,15 +30,46 @@ def _pick_port(start: int) -> int:
     raise RuntimeError(f"{start}-{start + 10} 端口区间均被占用，请释放端口或设置 ASTROQUERY_PORT")
 
 
-def _apply_window_icon(window, ico_path: str) -> None:
-    """窗口标题栏/任务栏图标（WinForms 后端：window.native 是 System.Windows.Forms.Form，
-    经 pythonnet 设 .Icon）。纯装饰——任何失败静默跳过，不阻塞窗口。
-    2026-09-01: pywebview 无 create_window(icon=)，这是唯一入口。"""
+def _set_app_user_model_id() -> None:
+    """任务栏图标根因（2026-09-02）：winforms 下 window.native.Icon 只影响标题栏，
+    任务栏按钮在未绑定 AppUserModelID 时恒回落进程 exe 图标（python.exe）。
+    SetCurrentProcessExplicitAppUserModelID 绑定后任务栏取窗口图标。"""
     try:
-        from System.Drawing import Icon as _WinIcon  # pythonnet
-        window.native.Icon = _WinIcon(ico_path)
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("AstroQueryAI")
     except Exception:  # noqa: BLE001
         pass
+
+
+def _apply_taskbar_icon(window, ico_path: str) -> None:
+    """任务栏大图标（2026-09-02 fix L2）：webview.start(icon=) 只影响标题栏/小图标，
+    Windows 任务栏按钮跟随 WM_SETICON(ICON_BIG)。loaded 回调内显式发送。
+    前置 clr.AddReference 保证 System.Drawing 已加载（此前静默失败根因）。"""
+    try:
+        import clr
+        clr.AddReference("System.Drawing")
+        from System.Drawing import Icon as _WinIcon
+        import ctypes
+        import sys
+        native = window.native
+        print(f"[icon-debug] native={type(native).__name__}", flush=True)
+        hwnd_attr = getattr(native, "Handle", None)
+        print(f"[icon-debug] Handle attr={hwnd_attr}", flush=True)
+        if hwnd_attr is None:
+            return
+        hwnd = int(hwnd_attr.ToInt64()) if hasattr(hwnd_attr, "ToInt64") else int(hwnd_attr)
+        print(f"[icon-debug] hwnd={hwnd} isIcon={bool(ctypes.windll.user32.IsIconic(hwnd))}", flush=True)
+        icon = _WinIcon(ico_path)
+        hicon = int(icon.Handle.ToInt64()) if hasattr(icon.Handle, "ToInt64") else int(icon.Handle)
+        print(f"[icon-debug] hicon={hicon}", flush=True)
+        WM_SETICON = 0x0080
+        ICON_BIG = 1
+        ICON_SMALL = 0
+        r1 = ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, ICON_BIG, hicon)
+        r2 = ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, ICON_SMALL, hicon)
+        print(f"[icon-debug] SendMessage big={r1} small={r2}", flush=True)
+    except Exception as e:  # noqa: BLE001
+        print(f"[icon-debug] FAIL: {type(e).__name__}: {e}", flush=True)
 
 
 def run_embedded(host: str = HOST, port: int | None = None) -> None:
@@ -50,6 +81,9 @@ def run_embedded(host: str = HOST, port: int | None = None) -> None:
         raise SystemExit("pywebview 未安装：pip install pywebview（或重新安装项目依赖）") from _exc
 
     from .main import app as fastapi_app  # 复用现有装配（含 frontend/dist 静态挂载）
+
+    # 任务栏图标绑定（须在窗口创建前设置）
+    _set_app_user_model_id()
 
     if port is None:
         env_port = os.environ.get("ASTROQUERY_PORT", "")
@@ -74,14 +108,19 @@ def run_embedded(host: str = HOST, port: int | None = None) -> None:
         width=WINDOW_SIZE[0], height=WINDOW_SIZE[1],
         min_size=WINDOW_MIN,
     )
-    # 窗口图标：项目根 icon.ico（多尺寸，icon.svg 派生；loaded 后 native 窗体已就绪）
+    # 窗口/任务栏图标：webview.start(icon=) 官方入口（2026-09-02 fix——
+    # 此前 loaded 回调 hack 在 pythonnet 未预加载 System.Drawing 时静默失败，
+    # 任务栏仍显示 python.exe 图标；start() 在窗口创建前应用，任务栏正确）
     root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     _ico = os.path.join(root_dir, "icon.ico")
+    _start_kwargs = {}
     if os.path.isfile(_ico):
-        window.events.loaded += lambda: _apply_window_icon(window, _ico)
+        _start_kwargs["icon"] = _ico
+        # 任务栏大图标（WM_SETICON）：start(icon=) 只覆盖标题栏小图标
+        window.events.loaded += lambda: _apply_taskbar_icon(window, _ico)
     # 窗口关闭 → 停服务（线程 is daemon，但显式置位避免 uvicorn 在关闭竞态中继续收请求）
     window.events.closed += lambda: setattr(server, "should_exit", True)
-    webview.start()
+    webview.start(**_start_kwargs)
     server.should_exit = True
 
 

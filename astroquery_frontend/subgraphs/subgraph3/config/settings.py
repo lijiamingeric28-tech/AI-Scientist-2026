@@ -116,3 +116,20 @@ class Settings:
 
 # 全局配置实例
 settings = Settings()
+
+# ── 2026-09-02: cancel 信号槽（修复"取消任务后台继续跑"）──
+# web_runner 任务执行期注册 should_cancel 回调；vlm_extractor 的 as_completed
+# 循环每个 future 完成时检查，取消即抛终止。executor 串行复用线程——
+# 任务级注册/清除保证不串台（不在 dataclass 字段内，避免影响既有测试）。
+_SHOULD_CANCEL: callable | None = None
+
+
+def set_should_cancel(fn) -> None:
+    """注册取消检查回调（任务级，web_runner 设置；None 清除）。"""
+    global _SHOULD_CANCEL
+    _SHOULD_CANCEL = fn
+
+
+def get_should_cancel():
+    """取取消检查回调（无则 None——不检查）。"""
+    return _SHOULD_CANCEL

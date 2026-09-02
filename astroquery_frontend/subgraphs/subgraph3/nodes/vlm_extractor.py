@@ -9,7 +9,7 @@ from ..schemas.state import ExtractionState
 from ..utils.logger import get_logger
 from ..utils.vlm_client import call_qwen_vlm, build_extraction_prompt
 from ..utils.image_cache import image_cache
-from ..config.settings import settings
+from ..config.settings import settings, get_should_cancel
 
 
 logger = get_logger(__name__)
@@ -87,6 +87,13 @@ def vlm_batch_extractor(state: ExtractionState) -> ExtractionState:
         futures = {executor.submit(process_single_paper_vlm, task): task for task in tasks}
 
         for future in as_completed(futures):
+            # 2026-09-02: cancel 检查（每个 future 完成时）——用户取消任务后
+            # 剩余论文不再继续提取（此前 cancel 后线程跑完剩余批次，烧 API）
+            _cancel_fn = get_should_cancel()
+            if _cancel_fn and _cancel_fn():
+                from astroquery_ai.main_graph import _CancelledError
+                raise _CancelledError()
+
             task = futures[future]
             bibcode = task["bibcode"]
 

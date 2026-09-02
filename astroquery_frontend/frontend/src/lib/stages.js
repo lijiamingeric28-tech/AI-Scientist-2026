@@ -157,4 +157,22 @@ export const CLARIFICATION_QUICK_BUTTONS = {
     { label: '修改 (m)', value: 'm' },
     { label: '取消 (n)', value: 'n' },
   ],
+  /* 2026-09-02：人工审核（质量管线 HITL）可点击选项卡——
+     按后端 interrupt 的 options 字段生成（verdict [1-5] / next [1-3]）*/
+  human_review_verdict: [
+    { label: '采用 Source A (1)', value: '1' },
+    { label: '采用 Source B (2)', value: '2' },
+    { label: '自定义值 (3)', value: '3' },
+    { label: '保留两者 (4)', value: '4' },
+    { label: '跳过-保留原样 (5)', value: '5' },
+  ],
+  human_review_next: [
+    { label: '提交裁决-执行修改 (1)', value: '1' },
+    { label: '送回重新评估 (2)', value: '2' },
+    { label: '取消-保留状态 (3)', value: '3' },
+  ],
+  human_review_custom_value: [],
+  human_review_reason: [],
+  /* 2026-09-02: 批量面板自绘选项卡，无静态快捷按钮 */
+  human_review_batch: [],
 }

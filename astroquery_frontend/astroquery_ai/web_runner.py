@@ -23,6 +23,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.types import Command
 
 from .main_graph import create_main_graph, _CancelledError
+from .adapters import set_shared_checkpointer
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,8 @@ _CLAR_TITLES = {
     "human_review_verdict": "冲突审查",
     "human_review_custom_value": "自定义值",
     "human_review_reason": "修改理由",
+    # 2026-09-02: 批量裁决协议（单次 interrupt 承载全部冲突）
+    "human_review_batch": "人工审核",
 }
 
 # interrupt type → 前端所属阶段卡（澄清卡定位渲染，契约补充字段）
@@ -63,6 +66,8 @@ _CLAR_STAGES = {
     "human_review_verdict": "clean",
     "human_review_custom_value": "clean",
     "human_review_reason": "clean",
+    # 2026-09-02: 批量裁决协议归位数据清洗卡（漏配会渲染到 understand 卡）
+    "human_review_batch": "clean",
 }
 
 
@@ -141,6 +146,13 @@ def _clarification_payload(raw: Any) -> Dict[str, Any]:
         ev["error"] = raw["error"]
     if raw.get("options"):  # H-10: human_review 候选选项透传（前端快捷按钮）
         ev["options"] = raw["options"]
+    # 2026-09-02: human_review_batch 批量协议透传（前端 HumanReviewPanel 消费）
+    if raw.get("count"):
+        ev["count"] = raw["count"]
+    if raw.get("summary_markdown"):
+        ev["summary_markdown"] = raw["summary_markdown"]
+    if raw.get("conflicts"):
+        ev["conflicts"] = raw["conflicts"]
     return ev
 
 
@@ -180,34 +192,54 @@ def run_task_streaming(
 
     try:
         with SqliteSaver.from_conn_string(checkpointer_path) as checkpointer:
-            app = create_main_graph(
-                checkpointer=checkpointer, event_cb=_events, should_cancel=should_cancel,
-            )
-            config = {
-                # checkpointer 必须与主图共享同一实例（CLI run_pipeline 同款）：
-                # quality 子图编译时 _shared_checkpointer(config) 用它，子图内 HITL
-                # interrupt 才能持久化并上浮到主图 loop（web 模式此前缺该键 →
-                # quality 子图冲突裁决 interrupt 无法上浮 → 降级路径，2026-08-17
-                # 大角星任务 fatal 根因之一）
-                "configurable": {"thread_id": task_id, "checkpointer": checkpointer},
-                "recursion_limit": 50,
-            }
-            initial: Dict[str, Any] = {
-                "user_query": user_query,
-                "query_id": task_id,
-                "extra_pdfs": list(extra_pdfs),
-                "error_log": [],
-            }
-            result = app.invoke(initial, config)
-            while isinstance(result, dict) and result.get("__interrupt__"):
-                payloads = result["__interrupt__"]
-                if not isinstance(payloads, list):
-                    payloads = [payloads]
-                for p in payloads:
-                    answer = _answer_handler(p)
-                    result = app.invoke(Command(resume=answer), config)
-                    if isinstance(result, dict) and not result.get("__interrupt__"):
-                        break
+            # 2026-09-02 fix：进程级共享 checkpointer 兜底（config 链的
+            # configurable 自定义键在 checkpoint 序列化中被剥离，节点侧
+            # 取不到 → 质量管线 HITL 被静默降级；见 adapters._shared_checkpointer）
+            set_shared_checkpointer(checkpointer)
+            # 2026-09-02 fix: 子图3 取消信号注册（vlm_extractor 循环检查——
+            # 取消任务后剩余论文不再继续提取，见 subgraph3/config/settings）
+            try:
+                from subgraphs.subgraph3.config.settings import set_should_cancel as _set_sc
+                _set_sc(lambda: should_cancel() if should_cancel else False)
+            except Exception:
+                pass
+            try:
+                app = create_main_graph(
+                    checkpointer=checkpointer, event_cb=_events, should_cancel=should_cancel,
+                )
+                config = {
+                    # checkpointer 必须与主图共享同一实例（CLI run_pipeline 同款）：
+                    # quality 子图编译时 _shared_checkpointer(config) 用它，子图内 HITL
+                    # interrupt 才能持久化并上浮到主图 loop（web 模式此前缺该键 →
+                    # quality 子图冲突裁决 interrupt 无法上浮 → 降级路径，2026-08-17
+                    # 大角星任务 fatal 根因之一）
+                    "configurable": {"thread_id": task_id, "checkpointer": checkpointer},
+                    "recursion_limit": 50,
+                }
+                initial: Dict[str, Any] = {
+                    "user_query": user_query,
+                    "query_id": task_id,
+                    "extra_pdfs": list(extra_pdfs),
+                    "error_log": [],
+                }
+                result = app.invoke(initial, config)
+                while isinstance(result, dict) and result.get("__interrupt__"):
+                    payloads = result["__interrupt__"]
+                    if not isinstance(payloads, list):
+                        payloads = [payloads]
+                    for p in payloads:
+                        answer = _answer_handler(p)
+                        result = app.invoke(Command(resume=answer), config)
+                        if isinstance(result, dict) and not result.get("__interrupt__"):
+                            break
+            finally:
+                # 任务级清理：executor 串行复用线程，防止 fallback 串到下一任务
+                set_shared_checkpointer(None)
+                try:
+                    from subgraphs.subgraph3.config.settings import set_should_cancel as _sc2
+                    _sc2(None)
+                except Exception:
+                    pass
     except _CancelledError:
         logger.info("[Runner] task %s cancelled", task_id)
         return result

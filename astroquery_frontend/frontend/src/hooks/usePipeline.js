@@ -590,7 +590,22 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       const cl = {
         type: ev.cl_type, title: ev.title, fields: ev.fields,
         question: ev.question, error: ev.error,
-        quickButtons: CLARIFICATION_QUICK_BUTTONS[ev.cl_type] || [],  // 契约 D5-1/2：final_confirm 按钮
+        // 2026-09-02：后端 options 权威（本次合法裁决项）→ 从静态映射取标签做选项卡；
+        // 无 options 时全量静态映射（final_confirm 等）；
+        // human_review_batch 短路 —— 面板自己绘制选项卡，防"选项 4/选项 5"兜底芯片
+        quickButtons: ev.cl_type === 'human_review_batch' ? [] : (() => {
+          const all = CLARIFICATION_QUICK_BUTTONS[ev.cl_type] || []
+          if (Array.isArray(ev.options) && ev.options.length) {
+            const ok = new Set(ev.options)
+            const pick = all.filter((b) => ok.has(b.value))
+            return pick.length ? pick : ev.options.map((o) => ({ label: `选项 ${o}`, value: o }))
+          }
+          return all
+        })(),
+        // 2026-09-02: 批量协议透传（HumanReviewPanel 消费）
+        conflicts: ev.conflicts,
+        summary_markdown: ev.summary_markdown,
+        count: ev.count,
       }
       // CR-02：快照重放中的 clarification 不置 pending（已答/已过事件不得重弹；
       // 挂起状态由 snap.pending_clarification 精确恢复，live 流正常置 pending）
@@ -781,7 +796,19 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         const pc = snap.pending_clarification
         const cl = {
           ...pc, stageId: pc.stage_id,
-          quickButtons: CLARIFICATION_QUICK_BUTTONS[pc.cl_type] || [],
+          // 2026-09-02：options 权威 → 选项卡（标签取静态映射）；无则静态映射；batch 短路
+          quickButtons: pc.cl_type === 'human_review_batch' ? [] : (() => {
+            const all = CLARIFICATION_QUICK_BUTTONS[pc.cl_type] || []
+            if (Array.isArray(pc.options) && pc.options.length) {
+              const ok = new Set(pc.options)
+              const pick = all.filter((b) => ok.has(b.value))
+              return pick.length ? pick : pc.options.map((o) => ({ label: `选项 ${o}`, value: o }))
+            }
+            return all
+          })(),
+          conflicts: pc.conflicts,
+          summary_markdown: pc.summary_markdown,
+          count: pc.count,
         }
         setPending(cl)
         pendingRef.current = cl
