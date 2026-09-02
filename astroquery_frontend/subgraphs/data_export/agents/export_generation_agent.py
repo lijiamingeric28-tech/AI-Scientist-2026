@@ -13,10 +13,8 @@ from quality_pipeline.quality_state import QualityGraphState
 from quality_pipeline.utils.logger import get_logger
 logger = get_logger(__name__)
 
-# 默认输出目录
-_DEFAULT_OUTPUT_DIR = (os.path.join(os.environ["ASTROQUERY_DATA_DIR"], "output")
-                       if os.environ.get("ASTROQUERY_DATA_DIR")
-                       else os.path.join(os.path.dirname(__file__), "..", "..", "..", "output"))
+# 默认输出目录（2026-09-02：绿色包外置机制移除，固定相对包根）
+_DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "output")
 
 
 class StructuredExportGenerationAgent:

@@ -1,0 +1,1426 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026MNRAS.550g1147K",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stag1147",
+      "title": "Disruption of a giant: spectroscopic identification of members in the periphery and tidal tails of ω Centauri",
+      "authors": [
+        "Kuzma, P. B.",
+        "Ferguson, A. M. N.",
+        "Varri, A. L.",
+        "Bianchini, P."
+      ],
+      "year": 2026,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2026MNRAS.550g1147K.pdf",
+      "retrieval_priority": 0.4107535596596248,
+      "abstract": "<inline-formula> <tex-math>$\\omega$</tex-math> </inline-formula> Centauri (<inline-formula><tex-math>$\\omega$</tex-math></inline-formula> Cen, NGC 5139) is one of the most enigmatic globular clusters in the Milky Way, with the recent detection of tidal tails adding further to its complexity. We report the results of a spectroscopic study of stars in the outer regions of <inline-formula><tex-math>$\\omega$</tex-math></inline-formula> Cen, which provides an improved characterization of the cluster periphery and confirms the existence of tidal tails. Our targets, which lie in six VLT/FLAMES fields sampling six degrees across the sky, are selected using a Bayesian inference technique. We confirm 157 members of <inline-formula><tex-math>$\\omega$</tex-math></inline-formula> Cen based on line-of-sight velocity and [Fe/H] measurements, indicating an overall success rate of 93 per cent. We trace stars along the tidal tails to a cluster-centric radius of 3.2 deg, identifying five members in the debris and additional lower-probability candidates. The analysis of the kinematics and metallicities of the new members provides evidence of continuity in these properties from the bound component of the progenitor cluster into its tidal debris. We find that the metallicities of stars in the peripheral regions and tidal tails of <inline-formula><tex-math>$\\omega$</tex-math></inline-formula> Cen are broadly consistent with those in the Fimbulthul stream to which the cluster has been previously linked. Our study provides a glimpse of the promise of new and forthcoming wide-field multi-object spectrographs for advancing understanding of tidal structures around Milky Way globular clusters.",
+      "keywords": [
+        "stars: abundances",
+        "stars: kinematics and dynamics",
+        "globular clusters: general",
+        "globular clusters: individual: (NGC 5139)",
+        "Galaxy: halo",
+        "Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 55
+    },
+    {
+      "source_id": "2025A&A...693A.155P",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202450264",
+      "title": "Abundance ties: Nephele and the globular cluster population accreted with ω Cen: Based on APOGEE DR17 and Gaia EDR3",
+      "authors": [
+        "Pagnini, G.",
+        "Di Matteo, P.",
+        "Haywood, M.",
+        "Mastrobuono-Battisti, A.",
+        "Renaud, F.",
+        "Mondelin, M.",
+        "Agertz, O.",
+        "Bianchini, P.",
+        "Casamiquela, L.",
+        "Khoperskov, S.",
+        "Ryde, N."
+      ],
+      "year": 2025,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2025A&A...693A.155P.pdf",
+      "retrieval_priority": 0.39564793539415255,
+      "abstract": "Context. The peculiar Galactic globular cluster ω Centauri (NGC 5139) has drawn attention for its unique features, such as an unusually high stellar mass compared to other Galactic globular clusters and a broad distribution of chemical elements. These features have led to the hypothesis that ω Centauri might be the nuclear remnant of an ancient dwarf galaxy accreted by the Milky Way, potentially bringing along its own globular cluster system. Aims. In this work, we adopt an innovative approach by examining the individual chemical abundances of Galactic globular clusters to identify shared patterns with ω Centauri. Methods. Applying Gaussian mixture models to globular cluster stars, whose membership is based on the analysis of the Gaia EDR3 release, and whose chemical abundances have been obtained from APOGEE DR17, we depart from traditional kinematic-based procedures and search for globular clusters that are chemically compatible with ω Centauri in an eight-dimensional space defined by [Fe/H], α-elements such as [Mg/Fe], [Si/Fe], and [Ca/Fe], light+odd-Z elements such as [C/Fe], [Al/Fe], and [K/Fe], and an iron-peak element as [Mn/Fe]. With this approach, clusters that are chemically compatible with ω Centauri are clusters whose chemical patterns are contained in the abundance domain defined by ω Centauri stars. Results. Our analysis leads to the identification of six globular clusters ─ NGC 6752, NGC 6656, NGC 6809, NGC 6273, NGC 6205, and NGC 6254 ─ that exhibit strong chemical similarities with ω Centauri, and that have metallicities that coincide with those of the two known peaks (primary and secondary) of ω Centauri's metallicity distribution. They all exhibit non-null intrinsic [Fe/H] dispersions, ranging between 0.07 and 0.12 dex, unless the ASPCAP uncertainties had been severely underestimated, and three of them have statistically significant skewed [Fe/H] distributions. Furthermore, the chemical patterns of these clusters lead to the exclusion that they were formed in progenitor galaxies with chemical enrichment histories similar to those of the Large and Small Magellanic Clouds, Sagittarius, and Fornax. Once placed in kinematic spaces such as the energy ─ angular momentum plane, these clusters result scatter across an extended region, which is predicted by N-body simulations if their common progenitor was sufficiently massive compared to the Milky Way. Conclusions. Our novel approach suggests a common origin for NGC 6752, NGC 6656, NGC 6809, NGC 6273, NGC 6205, NGC 6254, and ω Centauri, indicating that Nephele, as we propose to call the progenitor in which all these clusters formed, played a substantial role in the Galaxy's history. The finding that a set of globular clusters can be associated with ω Centauri reinforces the hypothesis that this system is the remnant of a galaxy, and not simply an unusual globular cluster. This study also shows that the spectroscopic data at our disposal have reached the quality needed to compare chemical patterns of stellar systems, to reveal their common origins or exclude their association with specific progenitor galaxies.",
+      "keywords": [
+        "Galaxy: abundances",
+        "Galaxy: formation",
+        "globular clusters: general",
+        "Galaxy: kinematics and dynamics",
+        "globular clusters: individual: omega Centauri (NGC 5139)",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 33
+    },
+    {
+      "source_id": "2025A&A...701A.169S",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202555452",
+      "title": "JWST imaging of omega Centauri: I. Luminosity and mass functions of its main-sequence populations",
+      "authors": [
+        "Scalco, M.",
+        "Gerasimov, R.",
+        "Bedin, L. R.",
+        "Vesperini, E.",
+        "Nardiello, D.",
+        "Libralato, M.",
+        "Burgasser, A.",
+        "Griggio, M.",
+        "Bellini, A.",
+        "Anderson, J.",
+        "Salaris, M.",
+        "Apai, D.",
+        "Häberle, M."
+      ],
+      "year": 2025,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2025A&A...701A.169S.pdf",
+      "retrieval_priority": 0.45500086430918507,
+      "abstract": "This paper presents the first study of the most massive globular cluster in the Milky Way, omega Centauri (or ω Cen, also known as NGC 5139), employing recently acquired JWST deep images. By combining these data with archival Hubble Space Telescope (HST) images, we derived proper motions for a significant portion of the JWST field. Our analysis of the colour-magnitude diagram (CMD) reveals two prominent sequences extending from a magnitude of m<SUB>F322W2</SUB> ∼ 17.5 to the bottom of the main sequence (MS). These sequences correspond to the two main stellar populations of omega Centauri: the bMS (He-rich) and rMS (He-normal) populations. The two sequences intersect at the MS knee (m<SUB>F322W2</SUB> ∼ 19.5) and change positions for fainter magnitudes, with the bMS luminosity function (LF) ending at least ∼0.5 magnitudes brighter than the rMS LF. Our comparison with theoretical isochrones shows that the colour spread in the CMD is primarily driven by variations in the helium abundance above the MS knee, while below the MS knee the broader colour distribution is mainly influenced by variations in oxygen and carbon abundances, in combination with metallicity differences. We find that a single-population broken power-law mass function (MF) provides the best fit to the data. The MF exhibits a break around 0.2 M<SUB>⊙</SUB>, with a steep slope above the break and a flatter slope below it. Finally, we identified a third group of stars (named gMS) along the MS located between the two primary ones and conducted a detailed analysis of the LFs and MFs for these three stellar populations. The LFs of these sequences show similar trends, with the rMS being the most populated and the bMS the least. The MFs display distinct power-law slopes: the rMS is well fitted by a single power law, while the gMS and the bMS are characterised by MFs steeper than that of the rMS for masses larger than 0.2 M<SUB>⊙</SUB> and flatter MFs for smaller masses. The flattening around ∼0.2 M<SUB>⊙</SUB> for the gMS and the bMS might be a real feature of the MFs of these populations or due to uncertainties in the adopted mass-luminosity relationship. The variation in the slope of the MFs of the gMS and bMS contributes to the steepening (flattening) of the combined MF for masses higher (lower) than 0.2 M<SUB>⊙</SUB>.",
+      "keywords": [
+        "proper motions",
+        "stars: luminosity function",
+        "mass function",
+        "globular clusters: individual: NGC 5139",
+        "Astrophysics of Galaxies",
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 24
+    },
+    {
+      "source_id": "2021MNRAS.507.1127K",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stab2280",
+      "title": "Detecting globular cluster tidal extensions with Bayesian inference - I. Analysis of ω Centauri with Gaia EDR3",
+      "authors": [
+        "Kuzma, P. B.",
+        "Ferguson, A. M. N.",
+        "Peñarrubia, J."
+      ],
+      "year": 2021,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2021MNRAS.507.1127K.pdf",
+      "retrieval_priority": 0.36076120379632787,
+      "abstract": "The peripheral regions of globular clusters (GCs) are extremely challenging to study due to their low surface brightness nature and the dominance of Milky Way contaminant populations along their sightlines. We have developed a probabilistic approach to this problem through utilizing a mixture model in spatial and proper motion space that separately models the cluster, extra-tidal, and contaminant stellar populations. We demonstrate the efficacy of our method through application to Gaia third early data release photometry and astrometry in the direction of NGC 5139 (ω Centauri, hereafter ω Cen), a highly challenging target on account of its Galactic latitude (b ≍ 15<SUP>○</SUP>) and low proper motion contrast with the surrounding field. We recover the spectacular tidal extensions, spanning the 10<SUP>○</SUP> on the sky explored here, seen in earlier work and quantify the star count profile and ellipticity of the system out to a cluster-centric radius of 4<SUP>○</SUP>. We show that both RR Lyrae and blue horizontal branch stars consistent with belonging to ω Cen are found in the tidal tails, and calculate that these extensions contain at least ≍0.1 per cent of the total stellar mass in the system. Our high-probability members provide prime targets for future spectroscopic studies of ω Cen out to unprecedented radii.",
+      "keywords": [
+        "methods: statistical",
+        "stars: kinematics and dynamics",
+        "globular clusters: general",
+        "globular clusters: individual: NGC 5139",
+        "Galaxy: halo",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2020AJ....159..254J",
+      "source_type": "paper",
+      "doi": "10.3847/1538-3881/ab8819",
+      "title": "The Most Metal-poor Stars in Omega Centauri (NGC 5139)",
+      "authors": [
+        "Johnson, Christian I.",
+        "Dupree, Andrea K.",
+        "Mateo, Mario",
+        "Bailey, John I., III",
+        "Olszewski, Edward W.",
+        "Walker, Matthew G."
+      ],
+      "year": 2020,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2020AJ....159..254J.pdf",
+      "retrieval_priority": 0.3658606773167242,
+      "abstract": "The most massive and complex globular clusters in the Galaxy are thought to have originated as the nuclear cores of now tidally disrupted dwarf galaxies, but the connection between globular clusters and dwarf galaxies is tenuous with the M54/Sagittarius system representing the only unambiguous link. The globular cluster Omega Centauri (ω Cen) is more massive and chemically diverse than M 54, and is thought to have been the nuclear star cluster of either the Sequoia or Gaia-Enceladus galaxy. Local Group dwarf galaxies with masses equivalent to these systems often host significant populations of very metal-poor stars ([Fe/H] &lt; -2.5), and one might expect to find such objects in ω Cen. Using high-resolution spectra from Magellan-M2FS, we detected 11 stars in a targeted sample of 395 that have [Fe/H] ranging from -2.30 to -2.52. These are the most metal-poor stars discovered in the cluster, and are five times more metal-poor than ω Cen's dominant population. However, these stars are not so metal-poor as to be unambiguously linked to a dwarf galaxy origin. The cluster's metal-poor tail appears to contain two populations near [Fe/H] ∼ -2.1 and -2.4, which are very centrally concentrated but do not exhibit any peculiar kinematic signatures. Several possible origins for these stars are discussed. <SUP>∗</SUP> This paper includes data gathered with the 6.5 m Magellan Telescopes located at Las Campanas Observatory, Chile.",
+      "keywords": [
+        "Globular star clusters",
+        "Population II stars",
+        "Chemical abundances",
+        "Metallicity",
+        "656",
+        "1284",
+        "224",
+        "1031",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 32
+    },
+    {
+      "source_id": "2019ApJ...881..104M",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ab2e76",
+      "title": "Chemical Compositions of Field and Globular Cluster RR Lyrae Stars. II. ω Centauri",
+      "authors": [
+        "Magurno, D.",
+        "Sneden, C.",
+        "Bono, G.",
+        "Braga, V. F.",
+        "Mateo, M.",
+        "Persson, S. E.",
+        "Preston, G.",
+        "Thévenin, F.",
+        "da Silva, R.",
+        "Dall'Ora, M.",
+        "Fabrizio, M.",
+        "Ferraro, I.",
+        "Fiorentino, G.",
+        "Iannicola, G.",
+        "Inno, L.",
+        "Marengo, M.",
+        "Marinoni, S.",
+        "Marrese, P. M.",
+        "Martínez-Vázquez, C. E.",
+        "Matsunaga, N.",
+        "Monelli, M.",
+        "Neeley, J. R.",
+        "Nonino, M.",
+        "Walker, A. R."
+      ],
+      "year": 2019,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2019ApJ...881..104M.pdf",
+      "retrieval_priority": 0.39531406203286845,
+      "abstract": "We present a detailed spectroscopic analysis of RR Lyrae (RRL) variables in the globular cluster NGC 5139 (ω Cen). We collected optical (4580-5330 Å), high-resolution (R ∼ 34,000), high signal-to-noise ratio (∼200) spectra for 113 RRLs with the multifiber spectrograph M2FS at the Magellan/Clay Telescope at Las Campanas Observatory. We also analyzed high-resolution (R ∼ 26,000) spectra for 122 RRLs collected with FLAMES/GIRAFFE at the Very Large Telescope, available in the ESO archive. The current sample doubles the literature abundances of cluster and field RRLs in the Milky Way based on high-resolution spectra. Equivalent-width measurements were used to estimate atmospheric parameters, iron, and abundance ratios for α (Mg, Ca, Ti), iron peak (Sc, Cr, Ni, Zn), and s-process (Y) elements. We confirm that ω Cen is a complex cluster, characterized by a large spread in the iron content: -2.58 ≤ [Fe/H] ≤ -0.85. We estimated the average cluster abundance as &lt; [{Fe}/{{H}}]&gt; =-1.80+/- 0.03, with σ = 0.33 dex. Our findings also suggest that two different RRL populations coexist in the cluster. The former is more metal-poor ([Fe/H] ≲ - 1.5), with almost solar abundance of Y. The latter is less numerous, more metal-rich, and yttrium enhanced ([Y/Fe] ≳ 0.4). This peculiar bimodal enrichment only shows up in the s-process element, and it is not observed among lighter elements, whose [X/Fe] ratios are typical for Galactic globular clusters. <P />This paper includes data gathered with the 6.5 m Magellan Telescopes located at Las Campanas Observatory, Chile.",
+      "keywords": [
+        "globular clusters: individual: NGC 5139",
+        "stars: abundances",
+        "stars: variables: RR Lyrae",
+        "techniques: spectroscopic",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 48
+    },
+    {
+      "source_id": "2019MNRAS.482.4713Z",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/sty1508",
+      "title": "The effect of stellar-mass black holes on the central kinematics of ω Cen: a cautionary tale for IMBH interpretations",
+      "authors": [
+        "Zocchi, Alice",
+        "Gieles, Mark",
+        "Hénault-Brunet, Vincent"
+      ],
+      "year": 2019,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2019MNRAS.482.4713Z.pdf",
+      "retrieval_priority": 0.45449347858856115,
+      "abstract": "The search for intermediate-mass black holes (IMBHs) in the centre of globular clusters is often based on the observation of a central cusp in the surface brightness profile and a rise towards the centre in the velocity dispersion profiles. Similar signatures, however, could result from other effects, that need to be taken into account in order to determine the presence (or the absence) of an IMBH in these stellar systems. Following our previous exploration of the role of radial anisotropy in shaping these observational signatures, we analyse here the effects produced by the presence of a population of centrally concentrated stellar-mass black holes. We fit dynamical models to ω Cen data, and we show that models with {∼ } 5{ per cent} of their mass in black holes (consistent with {∼ } 100{ per cent} retention fraction after natal kicks) can reproduce the data. When simultaneously considering both radial anisotropy and mass segregation, the best-fit model includes a smaller population of remnants, and a less extreme degree of anisotropy with respect to the models that include only one of these features. These results underline that before conclusions about putative IMBHs can be made, the effects of stellar-mass black holes and radial anisotropy need to be properly accounted for.",
+      "keywords": [
+        "methods: numerical",
+        "stars: kinematics and dynamics",
+        "globular clusters: general",
+        "globular clusters: individual: ω",
+        "Centauri (NGC 5139)",
+        "galaxies: star clusters: general",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2014ApJ...782...49S",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/782/1/49",
+      "title": "Blue Straggler Star Populations in Globular Clusters. I. Dynamical Properties of Blue Straggler Stars in NGC 3201, NGC 6218, and ω Centauri",
+      "authors": [
+        "Simunovic, Mirko",
+        "Puzia, Thomas H."
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2014ApJ...782...49S.pdf",
+      "retrieval_priority": 0.3447002113353898,
+      "abstract": "We present the first dynamical study of blue straggler stars (BSSs) in three Galactic globular clusters, NGC 3201, NGC 5139 (ω Cen), and NGC 6218, based on medium-resolution spectroscopy (R ≈ 10, 000) obtained with the Inamori-Magellan Areal Camera &amp; Spectrograph mounted at the 6.5 m Baade Magellan telescope. Our BSS candidate selection technique uses HST/ACS and ESO/WFI photometric data out to &gt;4.5 r<SUB>c</SUB> . We use radial velocity measurements to discard non-members and achieve a success rate of ~93%, which yields a sample of 116 confirmed BSSs. Using the penalized pixel-fitting method (pPXF), we measure the vsin (i) values of the sample BSSs and find their distribution functions peaked at slow velocities with a long tail toward fast velocities in each globular cluster. About 90% of the BSS population in NGC 3201 and NGC 6218 exhibits values in the range 10-50 km s<SUP>-1</SUP>, while about 80% of the BSSs in ω Cen show vsin (i) values between 20 and 70 km s<SUP>-1</SUP>. We find that the BSSs in NGC 3201 and NGC 6218 that show vsin (i) &gt; 50 km s<SUP>-1</SUP> are all found in the central cluster regions, inside a projected 2r<SUB>c</SUB> , of their parent clusters. We find a similar result in ω Cen for BSSs with vsin (i) &gt; 70 km s<SUP>-1</SUP>, which are all, except for two, concentrated inside 2r<SUB>c</SUB> . In all globular clusters, we find rapidly rotating BSSs that have relatively high differential radial velocities that likely put them on hyperbolic orbits, suggestive of strong dynamical interactions in the past. Based on stellar spin-down and dynamical crossing timescales, we estimate that all the observed rapidly rotating BSSs are likely to form in their central cluster regions no longer than ~300 Myr ago and may be subsequently ejected from their host globular clusters. Using dereddened V - I colors of our photometric selection, we show that blue BSSs in ω Cen with (V - I)<SUB>0</SUB> &lt;~ 0.25 mag show a significantly increased vsin (i) dispersion compared with their red counterparts and all other BSSs in our sample, therefore strongly implying that fast-rotating BSSs in ω Cen are preferentially bluer, i.e., more massive. This may indicate that this particular blue BSS population was formed in a unique formation event and/or through a unique mechanism.",
+      "keywords": [
+        "globular clusters: individual: NGC 3201 NGC 5139 NGC 6218",
+        "stars: kinematics and dynamics",
+        "stars: rotation",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 16
+    },
+    {
+      "source_id": "2014ApJ...797..115B",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/797/2/115",
+      "title": "Hubble Space Telescope Proper Motion (HSTPROMO) Catalogs of Galactic Globular Clusters. I. Sample Selection, Data Reduction, and NGC 7078 Results",
+      "authors": [
+        "Bellini, A.",
+        "Anderson, J.",
+        "van der Marel, R. P.",
+        "Watkins, L. L.",
+        "King, I. R.",
+        "Bianchini, P.",
+        "Chanamé, J.",
+        "Chandar, R.",
+        "Cool, A. M.",
+        "Ferraro, F. R.",
+        "Ford, H.",
+        "Massari, D."
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2014ApJ...797..115B.pdf",
+      "retrieval_priority": 0.4031736127269715,
+      "abstract": "We present the first study of high-precision internal proper motions (PMs) in a large sample of globular clusters, based on Hubble Space Telescope (HST) data obtained over the past decade with the ACS/WFC, ACS/HRC, and WFC3/UVIS instruments. We determine PMs for over 1.3 million stars in the central regions of 22 clusters, with a median number of ~60,000 stars per cluster. These PMs have the potential to significantly advance our understanding of the internal kinematics of globular clusters by extending past line-of-sight (LOS) velocity measurements to two- or three-dimensional velocities, lower stellar masses, and larger sample sizes. We describe the reduction pipeline that we developed to derive homogeneous PMs from the very heterogeneous archival data. We demonstrate the quality of the measurements through extensive Monte Carlo simulations. We also discuss the PM errors introduced by various systematic effects and the techniques that we have developed to correct or remove them to the extent possible. We provide in electronic form the catalog for NGC 7078 (M 15), which consists of 77,837 stars in the central 2.'4. We validate the catalog by comparison with existing PM measurements and LOS velocities and use it to study the dependence of the velocity dispersion on radius, stellar magnitude (or mass) along the main sequence, and direction in the plane of the sky (radial or tangential). Subsequent papers in this series will explore a range of applications in globular-cluster science and will also present the PM catalogs for the other sample clusters. <P />Based on proprietary and archival observations with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by AURA, Inc., under NASA contract NAS 5-26555.",
+      "keywords": [
+        "globular clusters: individual: NGC 104 (47 Tuc NGC 288 NGC 362 NGC 1851 NGC 2808 NGC 5139 (ω Cen NGC 5904 (M 5 NGC 5927 NGC 6266 (M 62 NGC 6341 (M 92 NGC 6362 NGC 6388 NGC 6397 NGC 6441 NGC 6535 NGC 6624 NGC 6656 (M 22 ) NGC 6681 (M 70) NGC 6715 (M 54) NGC 6752 NGC 7078 (M 15) NGC 7099 (M 30)",
+        "proper motions",
+        "stars: kinematics and dynamics",
+        "stars: Population II",
+        "techniques: photometric",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Instrumentation and Methods for Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 15
+    },
+    {
+      "source_id": "2013ApJ...773L..31H",
+      "source_type": "paper",
+      "doi": "10.1088/2041-8205/773/2/L31",
+      "title": "A Deep Chandra X-Ray Limit on the Putative IMBH in Omega Centauri",
+      "authors": [
+        "Haggard, Daryl",
+        "Cool, Adrienne M.",
+        "Heinke, Craig O.",
+        "van der Marel, Roeland",
+        "Cohn, Haldan N.",
+        "Lugger, Phyllis M.",
+        "Anderson, Jay"
+      ],
+      "year": 2013,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2013ApJ...773L..31H.pdf",
+      "retrieval_priority": 0.32186682512946097,
+      "abstract": "We report a sensitive X-ray search for the proposed intermediate-mass black hole (IMBH) in the massive Galactic cluster, ω Centauri (NGC 5139). Combining Chandra X-ray Observatory data from Cycles 1 and 13, we obtain a deep (~291 ks) exposure of the central regions of the cluster. We find no evidence for an X-ray point source near any of the cluster's proposed dynamical centers, and place an upper limit on the X-ray flux from a central source of f <SUB>X</SUB>(0.5-7.0 keV) &lt;=5.0 × 10<SUP>-16</SUP> erg cm<SUP>-2</SUP> s<SUP>-1</SUP>, after correcting for absorption. This corresponds to an unabsorbed X-ray luminosity of L <SUB>X</SUB>(0.5-7.0 keV) &lt;=1.6 × 10<SUP>30</SUP> erg s<SUP>-1</SUP>, for a cluster distance of 5.2 kpc, Galactic column density N <SUB>H</SUB> = 1.2 × 10<SUP>21</SUP> cm<SUP>-2</SUP>, and power-law spectrum with Γ = 2.3. If a ~10<SUP>4</SUP> {\\cal M}_{\\odot } IMBH resides in the cluster's core, as suggested by some stellar dynamical studies, its Eddington luminosity would be L <SUB>Edd</SUB> ~10<SUP>42</SUP> erg s<SUP>-1</SUP>. The new X-ray limit would then establish an Eddington ratio of L <SUB>X</SUB>/L <SUB>Edd</SUB> lsim 10<SUP>-12</SUP>, a factor of ~10 lower than even the quiescent state of our Galaxy's notoriously inefficient supermassive black hole Sgr A*, and imply accretion efficiencies as low as η lsim 10<SUP>-6</SUP>-10<SUP>-8</SUP>. This study leaves open three possibilities: either ω Cen does not harbor an IMBH or, if an IMBH does exist, it must experience very little or very inefficient accretion.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "black hole physics",
+        "globular clusters: individual: NGC 5139",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 37
+    },
+    {
+      "source_id": "2013ApJ...763..126C",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/763/2/126",
+      "title": "HST/ACS Imaging of Omega Centauri: Optical Counterparts of Chandra X-Ray Sources",
+      "authors": [
+        "Cool, Adrienne M.",
+        "Haggard, Daryl",
+        "Arias, Tersi",
+        "Brochmann, Michelle",
+        "Dorfman, Jason",
+        "Gafford, April",
+        "White, Vivian",
+        "Anderson, Jay"
+      ],
+      "year": 2013,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2013ApJ...763..126C.pdf",
+      "retrieval_priority": 0.3168403398237937,
+      "abstract": "We present results of a search for optical counterparts of X-ray sources in and toward the globular cluster Omega Centauri (NGC 5139) using the Advanced Camera for Surveys (ACS) on the Hubble Space Telescope. The ACS data consist of a mosaic of Wide Field Channel images obtained using F625W, F435W, and F658N filters; with nine pointings we cover the central ~10' × 10' of the cluster and encompass 109 known Chandra sources. We find promising optical counterparts for 59 of the sources, ~40 of which are likely to be associated with the cluster. These include 27 candidate cataclysmic variables (CVs), 24 of which are reported here for the first time. Fourteen of the CV candidates are very faint, with absolute magnitudes in the range M <SUB>625</SUB> =10.4-12.6, making them comparable in brightness to field CVs near the period minimum discovered in the Sloan Digital Sky Survey. Additional optical counterparts include three BY Dra candidates, a possible blue straggler, and a previously reported quiescent low-mass X-ray binary. We also identify 3 foreground stars and 11 probable active galactic nuclei. Finally, we report the discovery of a group of seven stars whose X-ray properties are suggestive of magnetically active binaries, and whose optical counterparts lie on or very near the metal-rich anomalous giant and subgiant branches in ω Cen. If the apparent association between these seven stars and the RGB/SGB-a stars is real, then the frequency of X-ray sources in this metal-rich population is enhanced by a factor of at least five relative to the other giant and subgiant populations in the cluster. If these stars are not members of the metal-rich population, then they bring the total number of red stragglers (also known as sub-subgiants) that have been identified in ω to Cen 20, the largest number yet known in any globular cluster.",
+      "keywords": [
+        "binaries: close",
+        "globular clusters: individual: NGC 5139",
+        "Hertzsprung-Russell and C-M diagrams",
+        "novae",
+        "cataclysmic variables",
+        "white dwarfs",
+        "X-rays: binaries",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 38
+    },
+    {
+      "source_id": "2013ApJ...772...67B",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/772/1/67",
+      "title": "Rotating Globular Clusters",
+      "authors": [
+        "Bianchini, P.",
+        "Varri, A. L.",
+        "Bertin, G.",
+        "Zocchi, A."
+      ],
+      "year": 2013,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2013ApJ...772...67B.pdf",
+      "retrieval_priority": 0.3648917391702181,
+      "abstract": "Internal rotation is thought to play a major role in the dynamics of some globular clusters. However, in only a few cases has internal rotation been studied by the quantitative application of realistic and physically justified global models. Here, we present a dynamical analysis of the photometry and three-dimensional kinematics of ω Cen, 47 Tuc, and M15, by means of a recently introduced family of self-consistent axisymmetric rotating models. The three clusters, characterized by different relaxation conditions, show evidence of differential rotation and deviations from sphericity. The combination of line-of-sight velocities and proper motions allows us to determine their internal dynamics, predict their morphology, and estimate their dynamical distance. The well-relaxed cluster 47 Tuc is interpreted very well by our model; internal rotation is found to explain the observed morphology. For M15, we provide a global model in good agreement with the data, including the central behavior of the rotation profile and the shape of the ellipticity profile. For the partially relaxed cluster ω Cen, the selected model reproduces the complex three-dimensional kinematics; in particular, the observed anisotropy profile, characterized by a transition from isotropy to weakly radial anisotropy and then to tangential anisotropy in the outer parts. The discrepancy found for the steep central gradient in the observed line-of-sight velocity dispersion profile and for the ellipticity profile is ascribed to the condition of only partial relaxation of this cluster and the interplay between rotation and radial anisotropy.",
+      "keywords": [
+        "globular clusters: general",
+        "globular clusters: individual: NGC 104: 47 Tuc) NGC 5139 (ω Cen) NGC 7078 (M15",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 20
+    },
+    {
+      "source_id": "2012AJ....144....5K",
+      "source_type": "paper",
+      "doi": "10.1088/0004-6256/144/1/5",
+      "title": "Hubble Space Telescope Observations of an Outer Field in Omega Centauri: A Definitive Helium Abundance",
+      "authors": [
+        "King, I. R.",
+        "Bedin, L. R.",
+        "Cassisi, S.",
+        "Milone, A. P.",
+        "Bellini, A.",
+        "Piotto, G.",
+        "Anderson, J.",
+        "Pietrinferni, A.",
+        "Cordier, D."
+      ],
+      "year": 2012,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2012AJ....144....5K.pdf",
+      "retrieval_priority": 0.3421636852702521,
+      "abstract": "We revisit the problem of the split main sequence (MS) of the globular cluster ω Centauri, and report the results of two-epoch Hubble Space Telescope observations of an outer field, for which proper motions give us a pure sample of cluster members, and an improved separation of the two branches of the MS. Using a new set of stellar models covering a grid of values of helium and metallicity, we find that the best possible estimate of the helium abundance of the bluer branch of the MS is Y = 0.39 ± 0.02. For the cluster center, we apply new techniques to old observations: we use indices of photometric quality to select a high-quality sample of stars, which we also correct for differential reddening. We then superpose the color-magnitude diagram of the outer field on that of the cluster center, and suggest a connection of the bluer branch of the MS with one of the more prominent among the many sequences in the subgiant region. We also report a group of undoubted cluster members that are well to the red of the lower MS. <P />Based on observations with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by AURA, Inc., under NASA contract NAS 5-26555.",
+      "keywords": [
+        "globular clusters: individual: NGC 5139",
+        "Hertzsprung-Russell and C-M diagram",
+        "proper motions",
+        "stars: abundances",
+        "stars: Population II",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 58
+    },
+    {
+      "source_id": "2011A&A...534A..29D",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201117630",
+      "title": "Chemical enrichment mechanisms in ω Centauri: clues from neutron-capture elements",
+      "authors": [
+        "D'Orazi, V.",
+        "Gratton, R. G.",
+        "Pancino, E.",
+        "Bragaglia, A.",
+        "Carretta, E.",
+        "Lucatello, S.",
+        "Sneden, C."
+      ],
+      "year": 2011,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2011A&A...534A..29D.pdf",
+      "retrieval_priority": 0.34843113167681555,
+      "abstract": "Context. In the complex picture of multiple stellar populations in globular clusters (GCs), a special role is played by NGC 5139 (ω Centauri). At variance with the majority of GCs, ω Cen exhibits significant star-to-star variations in metallicity and in relative neutron-capture element abundance ratios with respect to Fe, along with split evolutionary sequences as revealed from colour-magnitude diagrams. Combining information from photometry and spectroscopy, several studies suggested that an age spread of several Gyr has to be invoked to explain (at least partially) some of the observed features. However, a comprehensive understanding of the formation, evolution and chemical enrichment processes is still not at hand. <BR /> Aims: Relatively metal-rich ω Cen stars display neutron-capture abundance distributions dominated by contributions from the s-process, but it is not clear what roles have been played by the so-called main and weaks-process components in generating these abundances. To gain better insight into this question we derived lead (Pb) abundances for several ω Cen cluster members, because this element can only be produced by the mains-process. <BR /> Methods: We analysed high-resolution UVES@VLT spectra of a sample of twelve red-giant branch stars, deriving abundances of Pb and also of Y, Zr, La, Ce, Eu, and the C+N+O sum. Spectral synthesis was applied to all features, taking into account isotopic shifts and/or hyperfine structure as needed. <BR /> Results: We measured for the first time the Pb content in ω Cen, discovering a clear hint for a Pb production occurring at [Fe/H] &gt; -1.7 dex. Our data suggest that the role of the weak component in the production of s-process elements is negligible. Moreover, evidence gathered from the abundances of other elements indicates that the main component occurring in this GC is peculiar and shifted towards higher mass polluters than the standard one. <P />Based on data obtained with the ESO UVES spectrograph during the observing programmes 165.L-0263 and 67.D-0245.",
+      "keywords": [
+        "stars: abundances",
+        "stars: Population II",
+        "globular clusters: individual:ωCentauri (NGC 5139)",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 52
+    },
+    {
+      "source_id": "2010ApJ...722.1373J",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/722/2/1373",
+      "title": "Chemical Abundances for 855 Giants in the Globular Cluster Omega Centauri (NGC 5139)",
+      "authors": [
+        "Johnson, Christian I.",
+        "Pilachowski, Catherine A."
+      ],
+      "year": 2010,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2010ApJ...722.1373J.pdf",
+      "retrieval_priority": 0.46169093351080925,
+      "abstract": "We present elemental abundances for 855 red giant branch (RGB) stars in the globular cluster Omega Centauri (ω Cen) from spectra obtained with the Blanco 4 m telescope and Hydra multifiber spectrograph. The sample includes nearly all RGB stars brighter than V = 13.5 and spans ω Cen's full metallicity range. The heavy α elements (Si, Ca, and Ti) are generally enhanced by ~+0.3 dex and exhibit a metallicity-dependent morphology that may be attributed to mass and metallicity-dependent Type II supernova (SN) yields. The heavy α and Fe-peak abundances suggest minimal contributions from Type Ia SNe. The light elements (O, Na, and Al) exhibit &gt;0.5 dex abundance dispersions at all metallicities, and a majority of stars with [Fe/H]&gt; - 1.6 have [O/Fe], [Na/Fe], and [Al/Fe] abundances similar to those in monometallic globular clusters, as well as O-Na, O-Al anticorrelations and the Na-Al correlation in all but the most metal-rich stars. A combination of pollution from intermediate-mass asymptotic giant branch stars and in situ mixing may explain the light element abundance patterns. A large fraction (27%) of ω Cen stars are O-poor ([O/Fe] &lt; 0) and are preferentially located within 5'-10' of the cluster center. The O-poor giants are spatially similar, located in the same metallicity range, and are present in nearly equal proportions to blue main-sequence stars. This suggests that the O-poor giants and blue main-sequence stars may share a common origin. [La/Fe] increases sharply at [Fe/H] &gt;~ -1.6, and the [La/Eu] ratios indicate that the increase is due to almost pure s-process production.",
+      "keywords": [
+        "globular clusters: general",
+        "globular clusters: individual: Omega Centauri",
+        "stars: abundances",
+        "stars: Population II",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 7
+    },
+    {
+      "source_id": "2010A&A...520A..95C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201014924",
+      "title": "Detailed abundances of a large sample of giant stars in M 54 and in the Sagittarius nucleus",
+      "authors": [
+        "Carretta, E.",
+        "Bragaglia, A.",
+        "Gratton, R. G.",
+        "Lucatello, S.",
+        "Bellazzini, M.",
+        "Catanzaro, G.",
+        "Leone, F.",
+        "Momany, Y.",
+        "Piotto, G.",
+        "D'Orazi, V."
+      ],
+      "year": 2010,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2010A&A...520A..95C.pdf",
+      "retrieval_priority": 0.4070089265584605,
+      "abstract": "Homogeneous abundances of light elements, α-elements, and Fe-group elements from high-resolution FLAMES spectra are presented for 76 red giant stars in NGC 6715 (M 54), a massive globular cluster (GC) lying in the nucleus of the Sagittarius dwarf galaxy. We also derived detailed abundances for 27 red giants belonging to the Sgr nucleus. Our abundances measure the intrinsic metallicity dispersion (~0.19 dex, rms scatter) of M 54, with the bulk of stars peaking at [Fe/H] ~ -1.6 and a long tail extending to higher metallicities, similar to ω Cen. The spread in these probable nuclear star clusters exceeds those of most GCs: these massive clusters are located in a region intermediate between normal GCs and dwarf galaxies. The GC M 54 exibits a Na-O anticorrelation, a typical signature of GCs, which is instead absent for the Sgr nucleus. The light elements (Mg, Al, Si) participating in the high temperature Mg-Al cycle show that the entire pattern of (anti)correlations produced by proton-capture reactions in H-burning is clearly different between the most metal-rich and most metal-poor components in the two most massive GCs in the Galaxy, confirming early results based on the Na-O anticorrelation. As in ω Cen, stars affected by most extreme processing, i.e. showing the signature of more massive polluters, are those of the metal-rich component. These observations can be understood if the burst of star formation giving birth to the metal-rich component was delayed by as much as 10-30 Myr with respect to the metal-poor one. The evolution of these massive GCs can be easily reconciled in the general scenario for the formation of GCs sketched previously by ourselves, taking into account that ω Cen may have already incorporated the surrounding nucleus of its progenitor and lost the remainder of the hosting galaxy while the two are still observable as distinct components in M 54 and the surrounding field. <P />Based on observations collected at ESO telescopes under programme 081.D-286.Appendix is only available in electronic form at <A href=\"http://www.aanda.org\">http://www.aanda.org</A>Tables 2, 3, and 5-7 are only available in electronic form at the CDS via anonymous ftp to cdsarc.u-strasbg.fr (130.79.128.5) or via <A href=\"http://cdsweb.u-strasbg.fr/viz-bin/qcat?J/A+A/520/A95\">http://cdsweb.u-strasbg.fr/viz-bin/qcat?J/A+A/520/A95</A>",
+      "keywords": [
+        "stars: abundances",
+        "stars: atmospheres",
+        "stars: Population II",
+        "globular clusters: individual: NGC 6715 (M 54)",
+        "globular clusters: individual: NGC 5139 (ω Cen)",
+        "globular clusters: general",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 50
+    },
+    {
+      "source_id": "2009ApJ...698.2048J",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/698/2/2048",
+      "title": "A Large Sample Study of Red Giants in the Globular Cluster Omega Centauri (NGC 5139)",
+      "authors": [
+        "Johnson, Christian I.",
+        "Pilachowski, Catherine A.",
+        "Michael Rich, R.",
+        "Fulbright, Jon P."
+      ],
+      "year": 2009,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2009ApJ...698.2048J.pdf",
+      "retrieval_priority": 0.43237363560709724,
+      "abstract": "We present abundances of several light, α, Fe-peak, and neutron-capture elements for 66 red giant branch (RGB) stars in the Galactic globular cluster Omega Centauri (ω Cen). Our observations lie in the range 12.0 &lt; V &lt; 13.5 and focus on the intermediate and metal-rich RGBs. Abundances were determined using equivalent width measurements and spectrum synthesis analyses of moderate resolution (R ≈ 18,000) spectra obtained with the Blanco 4 m telescope and Hydra multifiber spectrograph. Combining these data with previous work, we find that there are at least four peaks in the metallicity distribution function at [Fe/H] = -1.75, -1.45, -1.05, and -0.75, which correspond to about 55%, 30%, 10%, and 5% of our sample, respectively. Additionally, the most metal-rich stars are the most centrally located. Na and Al are correlated despite exhibiting star-to-star dispersions of more than a factor of 10, but the distribution of those elements appears to be metallicity dependent and are divided at [Fe/H] ≈-1.2. About 40%-50% of stars with [Fe/H] &lt;-1.2 have Na and Al abundances consistent with production solely in Type II supernovae and match observations of disk and halo stars at comparable metallicity. The remaining metal-poor stars are enhanced in Na and Al compared to their disk and halo counterparts and are mostly consistent with predicted yields from &gt;5 M <SUB>sun</SUB> asymptotic giant branch (AGB) stars. At [Fe/H] &gt; - 1.2, more than 75% of the stars are Na/Al enhanced and may have formed almost exclusively from AGB ejecta. Most of these stars are enhanced in Na by at least 0.2 dex for a given Al abundance than would be expected based on \"normal\" globular cluster values. All stars in our sample are α-rich with lang[Ca/Fe]rang = +0.36 (σ = 0.09) and lang[Ti/Fe]rang = +0.23 (σ = 0.14). The Fe-peak elements give solar-scaled abundances and similarly small dispersions with lang[Sc/Fe]rang = +0.09 (σ = 0.15) and lang[Ni/Fe]rang = -0.04 (σ = 0.09). Europium does not vary extensively as a function of metallicity and has lang[Eu/Fe]rang = +0.19 (σ = 0.23). However, [La/Fe] varies from about -0.4 to +2 and stars with [Fe/H] gsim-1.5 have [La/Eu] values indicating domination by the s-process. A quarter of our sample have [La/Eu] &gt;= +1 and may be the result of mass transfer in a binary system. We conclude that the metal-rich population must be at least 1-2 Gyr younger than the metal-poor stars, owing to the long timescales needed for strong s-process enrichment and the development of a large contingent of mass transfer binaries.",
+      "keywords": [
+        "globular clusters: general",
+        "globular clusters: individual: omega Centauri NGC 5139",
+        "stars: abundances",
+        "stars: Population II",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2008ApJ...681.1505J",
+      "source_type": "paper",
+      "doi": "10.1086/588634",
+      "title": "Fe and Al Abundances for 180 Red Giants in the Globular Cluster Omega Centauri (NGC 5139)",
+      "authors": [
+        "Johnson, Christian I.",
+        "Pilachowski, Catherine A.",
+        "Simmerer, Jennifer",
+        "Schwenk, Dustin"
+      ],
+      "year": 2008,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2008ApJ...681.1505J.pdf",
+      "retrieval_priority": 0.42006279067077285,
+      "abstract": "We present radial velocities and Fe and Al abundances for 180 red giant branch (RGB) stars in the Galactic globular cluster Omega Centauri (ω Cen). The majority of our data lie in the range 11.0 &lt; V &lt; 13.5, which covers the RGB from about 1 mag above the horizontal branch to the RGB tip. The selection procedures are biased toward preferentially observing the more metal-poor and luminous stars of ω Cen. Abundances were determined using equivalent width measurements and spectrum synthesis analyses of moderate resolution spectra (R ≈ 13,000) obtained with the Blanco 4 m telescope and Hydra multifiber spectrograph. Our results are in agreement with previous studies as we find at least four different metallicity populations with [ Fe/H ] = - 1.75, -1.45, -1.05, and -0.75, with a full range of -2.20lesssim [ Fe/H ] lesssim - 0.70. [Al/Fe] ratios exhibit large star-to-star scatter for all populations, with the more than 1.0 dex range of [Al/Fe] decreasing for stars more metal-rich than [ Fe/H ] ~ - 1.4. The minimum [Al/Fe] abundance observed for all metallicity populations is [ Al/Fe ] ~ + 0.15. The maximum abundance of log epsilon (Al) is reached for stars with [ Fe/H ] ~ - 1.4 and does not increase further with stellar metallicity. We interpret these results as evidence for Type II SNe providing the minimum [Al/Fe] ratio and a mass spectrum of intermediate-mass asymptotic giant branch stars causing the majority of the [Al/Fe] scatter. These results seem to fit in the adopted scheme that star formation occurred in ω Cen over &gt;1 Gyr.",
+      "keywords": [
+        "globular clusters: general",
+        "globular clusters: individual: ω Centauri NGC 5139",
+        "stars: abundances",
+        "stars: Population II",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2006MNRAS.368.1749T",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2006.10257.x",
+      "title": "A non-LTE abundance analysis of the post-AGB star ROA5701",
+      "authors": [
+        "Thompson, H. M. A.",
+        "Keenan, F. P.",
+        "Dufton, P. L.",
+        "Ryans, R. S. I.",
+        "Smoker, J. V."
+      ],
+      "year": 2006,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2006MNRAS.368.1749T.pdf",
+      "retrieval_priority": 0.3221980993528363,
+      "abstract": "An analysis of high-resolution Anglo-Australian Telescope (AAT)/University College London Échelle Spectrograph (UCLÉS) optical spectra for the ultraviolet (UV)-bright star ROA5701 in the globular cluster ω Cen (NGC5139) is performed, using non-local thermodynamic equilibrium (non-LTE) model atmospheres to estimate stellar atmospheric parameters and chemical composition. Abundances are derived for C, N, O, Mg, Si and S, and compared with those found previously by Moehler et al. We find a general metal underabundance relative to young B-type stars, consistent with the average metallicity of the cluster. Our results indicate that ROA5701 has not undergone a gas-dust separation scenario as previously suggested. However, its abundance pattern does imply that ROA5701 has evolved off the asymptotic giant branch (AGB) prior to the onset of the third dredge-up.",
+      "keywords": [
+        "stars: abundances",
+        "stars: AGB and post-AGB",
+        "stars: early-type",
+        "stars: individual: Cl*",
+        "NGC5139 WOR1957",
+        "globular clusters: individual: NGC5139",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 54
+    },
+    {
+      "source_id": "2006A&A...445..503R",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20053059",
+      "title": "Radial velocities in the globular cluster ω Centauri",
+      "authors": [
+        "Reijns, R. A.",
+        "Seitzer, P.",
+        "Arnold, R.",
+        "Freeman, K. C.",
+        "Ingerson, T.",
+        "van den Bosch, R. C. E.",
+        "van de Ven, G.",
+        "de Zeeuw, P. T."
+      ],
+      "year": 2006,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2006A&A...445..503R.pdf",
+      "retrieval_priority": 0.35208229108021594,
+      "abstract": "We have used the ARGUS multi-object spectrometer at the CTIO 4 m Blanco telescope to obtain 2756 radial velocity measurements for 1966 individual stars in the globular cluster ω Centauri brighter than blue photographic magnitude of about 16.5. Of these, 1589 stars are cluster members. A comparison with two independent radial velocity studies, carried out by Suntzeff &amp; Kraft and by Mayor et al., demonstrates that the median error of our measurements is below 2 km s<SUP>-1</SUP> for the stars brighter than B-magnitude 15, which constitute the bulk of the sample. The observed velocity dispersion decreases from about 15 km s<SUP>-1</SUP> in the inner few arcmin to about 6 km s<SUP>-1</SUP> at a radius of 25'. The cluster shows significant rotation, with a maximum amplitude of about 6 km s<SUP>-1</SUP> in the radial zone between 6' and 10'. In a companion paper by van de Ven et al., we correct these radial velocities for the perspective rotation caused by the space motion of the cluster, and combine them with the internal proper motions of nearly 8000 cluster members measured by van Leeuwen et al., to construct a detailed dynamical model of ω Centauri and to measure its distance.",
+      "keywords": [
+        "radial velocities",
+        "Galaxy: globular clusters: individual: NGC 5139",
+        "Galaxy: kinematics and dynamics",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:central OR abs:velocity OR abs:dispersion OR abs:\"central velocity dispersion\" OR abs:\"velocity dispersion\")",
+      "search_rank": 9
+    },
+    {
+      "source_id": "2005ApJ...621..777P",
+      "source_type": "paper",
+      "doi": "10.1086/427796",
+      "title": "Metallicities on the Double Main Sequence of ω Centauri Imply Large Helium Enhancement",
+      "authors": [
+        "Piotto, Giampaolo",
+        "Villanova, Sandro",
+        "Bedin, Luigi R.",
+        "Gratton, Raffaele",
+        "Cassisi, Santi",
+        "Momany, Yazan",
+        "Recio-Blanco, Alejandra",
+        "Lucatello, Sara",
+        "Anderson, Jay",
+        "King, Ivan R.",
+        "Pietrinferni, Adriano",
+        "Carraro, Giovanni"
+      ],
+      "year": 2005,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2005ApJ...621..777P.pdf",
+      "retrieval_priority": 0.46104085605070655,
+      "abstract": "Having shown in a recent paper that the main sequence of ω Centauri is split into two distinct branches, we now present spectroscopic results showing that the bluer sequence is less metal-poor. We have carefully combined VLT's GIRAFFE spectra of 17 stars on each side of the split into a single spectrum for each branch, with adequate signal-to-noise ratio, to show clearly that the stars of the blue main sequence are less metal-poor by 0.3 dex than those of the dominant red one. From an analysis of the individual spectra, we could not detect any abundance spread among the blue main-sequence stars, whereas the red main-sequence stars show a 0.2 dex spread in metallicity. We use stellar structure models to show that only greatly enhanced helium can explain the color difference between the two main sequences, and we discuss ways in which this enhancement could have arisen. <P />Based on observations with the ESO Very Large Telescope + FLAMES at the Paranal Observatory, Chile, under DDT program 272.D-5065.",
+      "keywords": [
+        "Galaxy: Abundances",
+        "Galaxy: Globular Clusters: Individual: NGC Number: NGC 5139",
+        "Stars: Hertzsprung-Russell Diagram",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 51
+    },
+    {
+      "source_id": "2002ApJ...579..832S",
+      "source_type": "paper",
+      "doi": "10.1086/342921",
+      "title": "Carbon Isotopic Abundances in the Red Giants of ω Centauri (NGC 5139)",
+      "authors": [
+        "Smith, Verne V.",
+        "Terndrup, Donald M.",
+        "Suntzeff, Nicholas B."
+      ],
+      "year": 2002,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\2002ApJ...579..832S.pdf",
+      "retrieval_priority": 0.35845824380702096,
+      "abstract": "<SUP>12</SUP>C and <SUP>13</SUP>C abundances have been measured in 11 bright giant members of the globular cluster ω Centauri via observations of the first-overtone CO bands near 2.3 μm. The stars in this sample were selected to span a substantial fraction of the range of iron abundances found in this cluster. In addition, the sample covers a range of [O/Fe], [Na/Fe], and [Al/Fe] abundance ratios derived in previous studies. In all ω Cen giants the <SUP>12</SUP>C/<SUP>13</SUP> C abundance ratio is found to be quite low, indicating deep mixing in these red giants. The mean value for the entire sample is &lt;<SUP>12</SUP>C/<SUP>13</SUP>C&gt;=4.3+/-0.4 (σ=1.3), with nine stars equal, within the errors, to the equilibrium ratio <SUP>12</SUP>C/<SUP>13</SUP>C=3.5 and two stars having slightly higher values. There is no correlation between the <SUP>12</SUP>C/<SUP>13</SUP> C and the abundance of iron. In addition, no correlation of <SUP>12</SUP>C/<SUP>13</SUP>C with [<SUP>12</SUP>C/Fe] is found (all giants are deeply mixed), although the derived abundances of [<SUP>12</SUP>C/Fe] show a positive correlation with [O/Fe] and an anticorrelation with [Na/Fe] (with the oxygen and sodium abundances taken from previous studies in the literature). A comparison of the isotopic carbon ratios in ω Cen with those from other globular clusters (M4, M71, NGC 6752, and 47 Tuc) and with literature oxygen abundances, may reveal a slight trend of decreasing <SUP>12</SUP>C/<SUP>13</SUP>C ratios with decreasing [O/Fe] in the entire globular cluster sample of red giants. A comparison between <SUP>12</SUP>C/<SUP>13</SUP>C and both [Na/Fe] and [Al/Fe], however, reveals no trend.",
+      "keywords": [
+        "Galaxy: Globular Clusters: Individual: Name: ω Centauri",
+        "Nuclear Reactions",
+        "Nucleosynthesis",
+        "Abundances",
+        "Stars: Abundances",
+        "Stars: Late-Type",
+        "Stars: Population II",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:metallicity OR abs:\"[Fe/H]\")",
+      "search_rank": 45
+    },
+    {
+      "source_id": "1999AJ....117..303D",
+      "source_type": "paper",
+      "doi": "10.1086/300680",
+      "title": "The Luminosity Function of omega Centauri",
+      "authors": [
+        "de Marchi, Guido"
+      ],
+      "year": 1999,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\da7eff2b-45e4-4898-a49d-78a4fe3731f6\\1999AJ....117..303D.pdf",
+      "retrieval_priority": 0.30815668624982606,
+      "abstract": "Deep Hubble Space Telescope (HST) Wide Field Planetary Camera 2 observations of the stellar population in the globular cluster omega Cen (NGC 5139) have been used to measure the luminosity function of main-sequence stars at the low-mass end. Two fields have been investigated, located ~4.6′ and ~7', respectively, away from the cluster center or near the half-light radius of this cluster (r_hl~=4.8′). The color-magnitude diagrams derived from these data show the cluster main sequence extending to the detection limit at I~=24. Information on both color and magnitude is used to build the luminosity functions of main-sequence stars in these fields, and the two independent determinations are found to agree very well with each other within the observational uncertainty. Both functions show a peak in the stellar distribution around M_I~=9, followed by a drop at fainter magnitudes well before photometric incompleteness becomes significant, as is typical of other globular clusters observed with the HST. This result is at variance with previous claims that the luminosity function of omega Cen stays flat at low masses but is in excellent agreement with recent Near Infrared Camera and Multi-Object Spectrograph observations.",
+      "keywords": [
+        "GALAXY: GLOBULAR CLUSTERS: GENERAL",
+        "GLOBULAR CLUSTERS: INDIVIDUAL (NGC 5139",
+        "NGC 6397)",
+        "STARS: LUMINOSITY FUNCTION",
+        "MASS FUNCTION",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 5139\" OR abs:\"NGC 5139\") AND (abs:mass OR abs:\"total mass\")",
+      "search_rank": 29
+    },
+    {
+      "source_id": "SRC_DB_MWSC",
+      "source_type": "database",
+      "title": "Milky Way Global Survey of Star Clusters (MWSC)",
+      "vizier_table_id": "J/A+A/558/A53/catalog",
+      "description": "银河系星团全局巡天星表，提供了一套具有高度均一性参数的疏散星团和球状星团的全面列表。",
+      "reference_paper": "Kharchenko, N. V., et al. 2013, A&A, 558, A53",
+      "bibcode": "2013A&A...558A..53K",
+      "research_methodology": "基于2MASS与PPMXL数据利用空间分布与测光参数进行的自动化星团证认及参数拟合",
+      "observation_facility": "Compilation (2MASS, PPMXL)",
+      "waveband": "Optical and Near-Infrared",
+      "research_content": "3006个银河系星团的精确中心坐标、视半径、距离、年龄、星际红化、平均自行及成员星概率信息。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1999AJ....117..303D_NGC_5139_mass_0",
+      "source_id": "1999AJ....117..303D",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "3.9 10^6",
+      "field_unit": "Msun",
+      "trace_id": "doc21_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          304,
+          168,
+          321,
+          189
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "With a total mass of ~ 3.9 10^6 M_sun (Meylan 1987), omega Cen (NGC 5139) is the most massive globular cluster (GC) in the Galaxy.",
+      "measurement_method": "literature reference (Meylan 1987)",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2002ApJ...579..832S_NGC_5139_metallicity_0",
+      "source_id": "2002ApJ...579..832S",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-2.0 to -1.8",
+      "field_unit": "dex",
+      "trace_id": "doc3_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          690,
+          193,
+          719,
+          212
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "In ω Cen the distribution of [Fe/H] has a floor near -2.0 to -1.8, presumably representing the initial metallicity of the gas out of which the cluster was formed",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...621..777P_NGC_5139_metallicity_0",
+      "source_id": "2005ApJ...621..777P",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-1.57",
+      "field_unit": "dex",
+      "trace_id": "doc27_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          627,
+          738,
+          668,
+          758
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The results are shown in Fig. 2 (middle and lower panels); the best values are [M/H] = -1.57 for the rMS, and [M/H] = -1.26 for the bMS.",
+      "measurement_method": "spectral synthesis fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...621..777P_NGC_5139_metallicity_1",
+      "source_id": "2005ApJ...621..777P",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-1.26",
+      "field_unit": "dex",
+      "trace_id": "doc27_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          152,
+          758,
+          192,
+          778
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The results are shown in Fig. 2 (middle and lower panels); the best values are [M/H] = -1.57 for the rMS, and [M/H] = -1.26 for the bMS.",
+      "measurement_method": "spectral synthesis fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2006A&A...445..503R_NGC_5139_central_velocity_dispersion_0",
+      "source_id": "2006A&A...445..503R",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "central_velocity_dispersion",
+      "field_value": 15,
+      "field_unit": "km/s",
+      "trace_id": "doc1_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          555,
+          444,
+          576,
+          461
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The observed velocity dispersion decreases from about 15 km s^-1 in the inner few arcmin to about 6 km s^-1 at a radius of 25'.",
+      "measurement_method": "radial velocity measurements",
+      "condition_tags": [
+        "scope: global",
+        "metric: central_velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2006A&A...445..503R_NGC_5139_central_velocity_dispersion_1",
+      "source_id": "2006A&A...445..503R",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "central_velocity_dispersion",
+      "field_value": 15,
+      "field_unit": "km/s",
+      "trace_id": "doc1_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          530,
+          749,
+          553,
+          767
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The contours of constant velocity dispersion are elongated, and range from 15 km s^-1 in the centre to 8 km s^-1 at 10'.",
+      "measurement_method": "radial velocity measurements",
+      "condition_tags": [
+        "scope: global",
+        "metric: central_velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2006MNRAS.368.1749T_NGC_5139_metallicity_0",
+      "source_id": "2006MNRAS.368.1749T",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-1.6",
+      "field_unit": "dex",
+      "trace_id": "doc29_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          350,
+          404,
+          375,
+          420
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The metal-poor ω Cen is known to have (at least) three stellar populations, with metallicities: [Fe/H] ~ -1.6, corresponding to the metal poor population containing the bulk of the stars...",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...681.1505J_NGC_5139_mass_0",
+      "source_id": "2008ApJ...681.1505J",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "2-7x10^6",
+      "field_unit": "Msun",
+      "trace_id": "doc11_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          426,
+          273,
+          442,
+          294
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Although ω Cen is the most massive Galactic globular cluster, with an estimated mass of ~2-7×10^6 M_⊙ (Richer et al. 1991; Meylan et al. 1995; van de Ven et al. 2006)",
+      "measurement_method": "literature review",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...698.2048J_NGC_5139_mass_0",
+      "source_id": "2009ApJ...698.2048J",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "2-7e6",
+      "field_unit": "Msun",
+      "trace_id": "doc7_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          492,
+          768,
+          508,
+          788
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "While ω Cen has an estimated mass of ~2–7×10^6 M_⊙ (Richer et al. 1991; Meylan et al. 1995; van de Ven et al. 2006), it does not appear to have a particularly deep potential well...",
+      "measurement_method": "literature review",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2010A&A...520A..95C_NGC_5139_metallicity_0",
+      "source_id": "2010A&A...520A..95C",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-1.6",
+      "field_unit": "dex",
+      "trace_id": "doc14_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          469,
+          489,
+          484,
+          508
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Our abundances assess the intrinsic metallicity dispersion (~ 0.19 dex, rms scatter) of M 54, with the bulk of stars peaking at [Fe/H]~ -1.6 and a long tail extending to higher metallicities, similar to ω Cen.",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2011A&A...534A..29D_NGC_5139_metallicity_0",
+      "source_id": "2011A&A...534A..29D",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": 10,
+      "field_unit": "factor",
+      "trace_id": "doc18_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          394,
+          717,
+          418,
+          738
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "At the same time, spectroscopic surveys revealed variations in [Fe/H] up to a factor of ~ 10 and a steep trend with Fe of n-capture elements La and Ba",
+      "measurement_method": "spectroscopic surveys",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2012AJ....144....5K_NGC_5139_metallicity_0",
+      "source_id": "2012AJ....144....5K",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": -1.62,
+      "field_unit": "dex",
+      "trace_id": "doc28_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          525,
+          668,
+          565,
+          688
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We computed stellar models for [Fe/H] = -1.62 and -1.32, to represent the rMS and bMS respectively",
+      "measurement_method": "spectroscopic",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2013ApJ...763..126C_NGC_5139_mass_0",
+      "source_id": "2013ApJ...763..126C",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "3 x 10^6",
+      "field_unit": "Msun",
+      "trace_id": "doc9_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          395,
+          146,
+          407,
+          159
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Regardless of its origins, the sheer number of binaries that omega Cen is likely to harbor by virtue of its enormous mass (~3 x 10^6 M_sun; Meylan 2002) provides an opportunity...",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2013ApJ...763..126C_NGC_5139_metallicity_1",
+      "source_id": "2013ApJ...763..126C",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-1.7",
+      "field_unit": "dex",
+      "trace_id": "doc9_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          807,
+          690,
+          835,
+          708
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Eight of the candidates we have identified lie redward of and/or below the giant and subgiant branches formed by the dominant population in the cluster (the most metal-poor population, with [Fe/H] = -1.7; 'group A' in the nomenclature of Villanova et al. 2007).",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2013ApJ...772...67B_NGC_5139_central_velocity_dispersion_0",
+      "source_id": "2013ApJ...772...67B",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "central_velocity_dispersion",
+      "field_value": 17.31,
+      "field_unit": "km/s",
+      "trace_id": "doc16_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          79,
+          83,
+          922,
+          722
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: Kinematic quantities used to identify the dimensionless parameters of a model. ... GC: ω Cen ... σ0 (1): 17.31 ± 1.72",
+      "measurement_method": "kinematic data",
+      "condition_tags": [
+        "scope: global",
+        "metric: central_velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2013ApJ...773L..31H_NGC_5139_mass_0",
+      "source_id": "2013ApJ...773L..31H",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": 3000000.0,
+      "field_unit": "M_sun",
+      "trace_id": "doc30_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1: ω Cen Reference Parameters & X-ray Detection Limits ... Mass | 3 × 10^6 M_sun | 1",
+      "measurement_method": "dynamical studies",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...782...49S_NGC_5139_central_velocity_dispersion_0",
+      "source_id": "2014ApJ...782...49S",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "central_velocity_dispersion",
+      "field_value": 16.8,
+      "field_unit": "km/s",
+      "trace_id": "doc13_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          689,
+          703,
+          724,
+          721
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "This is qualitatively consistent with the central velocity dispersions reported in Harris (1996), i.e. σ₀ = 5.0 (NGC 3201), 16.8 (NGC 5139), and 4.5 km s⁻¹ (NGC 6218).",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: central_velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...797..115B_NGC_5139_central_velocity_dispersion_0",
+      "source_id": "2014ApJ...797..115B",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "central_velocity_dispersion",
+      "field_value": 16.8,
+      "field_unit": "km/s",
+      "trace_id": "doc6_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          79,
+          72,
+          922,
+          711
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1: GLOBULAR CLUSTERS AND THEIR PARAMETERS ... NGC 5139 (ω Cen) ... σ_V,los (km s^-1) 16.8 ± 0.3",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: central_velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2019ApJ...881..104M_NGC_5139_metallicity_0",
+      "source_id": "2019ApJ...881..104M",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": -1.8,
+      "field_unit": "dex",
+      "trace_id": "doc12_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          236,
+          81,
+          765,
+          440
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 6. Iron abundances for the considered samples of ω Cen RRLs... ω Cen ... [Fe/H]_tot -1.80 ± 0.03",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2019MNRAS.482.4713Z_NGC_5139_central_velocity_dispersion_0",
+      "source_id": "2019MNRAS.482.4713Z",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "central_velocity_dispersion",
+      "field_value": 3.01,
+      "field_unit": "km/s",
+      "trace_id": "doc25_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          67,
+          123,
+          918,
+          368
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Comparison with literature... this work... 3.01 +0.45 -0.39",
+      "measurement_method": "dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: central_velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2020AJ....159..254J_NGC_5139_mass_0",
+      "source_id": "2020AJ....159..254J",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc19_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          245,
+          270,
+          268,
+          288
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.9,
+      "context_snippet": "The metallicity distribution function of the Sequoia galaxy, proposed by Myeong et al. (2019) as the progenitor system for ω Cen, is not currently well-constrained, but several estimates indicate that it likely had a mass in excess of 10^7 M_⊙",
+      "measurement_method": "dynamical models",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2025A&A...693A.155P_NGC_5139_mass_0",
+      "source_id": "2025A&A...693A.155P",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "3.5 ± 0.03 × 10^6",
+      "field_unit": "Msun",
+      "trace_id": "doc17_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          269,
+          811,
+          297,
+          827
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Its total stellar mass, estimated to be 3.5 ± 0.03 × 10^6 M☉ (Baumgardt & Hilker 2018) is 10 times greater than the mean stellar mass of all known Galactic globular clusters...",
+      "measurement_method": "dynamical modeling (Baumgardt & Hilker 2018)",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2025A&A...701A.169S_NGC_5139_mass_0",
+      "source_id": "2025A&A...701A.169S",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "mass",
+      "field_value": "4_x_10^6",
+      "field_unit": "Msun",
+      "trace_id": "doc8_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          116,
+          57,
+          131,
+          74
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "...and most massive (~ 4 x 10^6 Msun Giersz & Heggie 2003; D'Souza & Rix 2013) GC in the Milky Way.",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2026MNRAS.550g1147K_NGC_5139_metallicity_0",
+      "source_id": "2026MNRAS.550g1147K",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": "-1.45",
+      "field_unit": "dex",
+      "trace_id": "doc24_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          898,
+          584,
+          924,
+          601
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Not only does the cluster have a broad [Fe/H] spread, ranging from -0.5 dex down to -2.4 dex (e.g., Norris & Da Costa 1995; Bedin et al. 2004; Simpson & Cottrell 2013; Villanova et al. 2014; Johnson et al. 2020)",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_MWSC_2120_0_[Fe/H]",
+      "source_id": "SRC_DB_MWSC",
+      "entity_type": "GlC",
+      "entity_name": "NGC 5139",
+      "field_name": "metallicity",
+      "field_value": -1.445,
+      "field_unit": "log(Sun)",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/558/A53/catalog",
+        "key_column": "MWSC",
+        "key_value": "2120",
+        "raw_column": "[Fe/H]",
+        "raw_unit": "log(Sun)",
+        "row_index": 0
+      }
+    }
+  ]
+}

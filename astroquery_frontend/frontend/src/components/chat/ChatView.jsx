@@ -9,6 +9,9 @@ import ResultTabs from '@/components/results/ResultTabs'
 import LogDrawer from '@/components/log/LogDrawer'
 import StageDetailPanel from '@/components/workflow/StageDetailPanel'
 import { useToast } from '@/components/ui/toast'
+import SampleGallery from './SampleGallery'
+// 演示样例画廊清单（scripts/rebuild_sample_pack.py 生成：质量分/计数与结果端点同源）
+import SAMPLE_MANIFEST from '@/data/samples.json'
 
 /* 对话视图（块 3 定案）：
  * - 消息流 / 阶段卡片 / HITL 澄清 / 输入栏（块 6）
@@ -70,11 +73,15 @@ function fmtDuration(sec) {
   return m > 0 ? `${m}m ${s}s` : `${s}s`
 }
 
-export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleLog, focusStage, onOpenInsights }) {
+export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleLog, focusStage, onOpenInsights,
+  mode = 'user', samplesExpanded = false, onOpenSample, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, logs, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const { toast } = useToast()
+  // 2026-09-02：演示样例本体（source=sample 且非回放副本）——记录只读；
+  // 回放副本与普通任务保留全部编辑能力
+  const sampleLocked = !!task && task.source === 'sample' && !task.replay_of
   // 卡片默认展开，用户手动收起才收起（collapsed 记录用户收起过的卡）。
   // P1-8：done 卡无展开内容（完成摘要已在卡头）→ 默认折叠
   const [collapsedIds, setCollapsedIds] = useState(() => new Set(['done']))
@@ -239,7 +246,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                      LLM 总结已由 usePipeline 排到 done entry 之前（数据洞察卡与表格之间） */
                   stage.status === 'completed' && (
                     <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
-                      <ResultTabs taskId={task?.task_id} status={task?.status} />
+                      <ResultTabs taskId={task?.task_id} status={task?.status} readOnly={sampleLocked} />
                     </div>
                   )
                 ) : (
@@ -270,88 +277,140 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
             <ClarificationCard payload={pending} onSubmit={submitAnswer} />
           )}
 
-          {/* 空状态：无任务或时间线为空 → 引导 + 示例提问（点击填入输入框） */}
+          {/* 空状态：无任务或时间线为空 → 演示样例画廊 / 引导 + 示例提问 */}
           {!started && timeline.length === 0 && (
-            <div className="empty-state" style={{ paddingTop: 72, gap: 10 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--surface-bg)', border: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', marginBottom: 4 }}>
-                <Icon.Sparkle style={{ width: 18, height: 18 }} />
+            task ? (
+              /* 有选中任务但时间线未起（排队/事件未流到）→ 准备中 */
+              <div className="empty-state" style={{ paddingTop: 72, gap: 10 }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--surface-bg)', border: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', marginBottom: 4 }}>
+                  <Icon.Sparkle style={{ width: 18, height: 18 }} />
+                </div>
+                <div style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)' }}>任务准备中…</div>
+                <div style={{ maxWidth: 420, lineHeight: 1.6 }}>
+                  描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
+                </div>
               </div>
-              <div style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)' }}>
-                {task ? '任务准备中…' : '开始一次天文数据提取'}
+            ) : mode === 'sample' ? (
+              /* 演示样例模式：默认空白（折叠态只露侧栏置顶 3 条）；点「展开全部」才显画廊 */
+              samplesExpanded && (
+                <div style={{ padding: '24px 4px 8px' }}>
+                  <SampleGallery
+                    samples={SAMPLE_MANIFEST.samples || []}
+                    onOpen={onOpenSample}
+                    onReplay={onReplaySample}
+                    onSwitchToUser={onSwitchToUser}
+                  />
+                </div>
+              )
+            ) : (
+              <div className="empty-state" style={{ paddingTop: 72, gap: 10 }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--surface-bg)', border: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', marginBottom: 4 }}>
+                  <Icon.Sparkle style={{ width: 18, height: 18 }} />
+                </div>
+                <div style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)' }}>开始一次天文数据提取</div>
+                <div style={{ maxWidth: 420, lineHeight: 1.6 }}>
+                  描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+                  {EXAMPLE_PROMPTS.map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setInput(p)}
+                      className="filter-chip"
+                      style={{ borderRadius: 8, padding: '7px 14px' }}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div style={{ maxWidth: 420, lineHeight: 1.6 }}>
-                描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
-                {EXAMPLE_PROMPTS.map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setInput(p)}
-                    className="filter-chip"
-                    style={{ borderRadius: 8, padding: '7px 14px' }}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </div>
+            )
           )}
         </div>
       </div>
 
-      {/* 输入栏（块 6 定案：附件 chips / 状态禁用；玻璃输入舱） */}
-      <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
-        <div className="chat-column">
-          <div
-            className="composer"
-            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 6px 6px 16px', opacity: running || clarifying ? 0.6 : 1 }}
-          >
-            {/* 用户重设计：左图标 + 大圆角输入舱 + 圆形绿色发送钮 */}
-            <Icon.Sparkle style={{ width: 15, height: 15, color: 'var(--accent-text)', flexShrink: 0 }} />
-            <textarea
-              rows={1}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault()
-                  handleSubmit()
-                }
-              }}
-              disabled={running || clarifying}
-              placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '查询数据、筛选记录或继续分析…'}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                // 一行布局：上下对称 padding，文字与星标/发送钮同轴垂直居中
-                padding: '9px 4px 9px',
-                fontSize: 14,
-                lineHeight: 1.5,
-                color: 'var(--content-fg)',
-                minHeight: 21,
-                ...((running || clarifying) ? { cursor: 'not-allowed' } : {}),
-              }}
-            />
-            <button
-              onClick={handleSubmit}
-              disabled={!input.trim() || running || clarifying}
-              title="发送"
-              style={{
-                width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
-                border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: running || clarifying ? 'var(--surface-secondary)' : !input.trim() ? 'var(--surface-secondary)' : 'var(--accent)',
-                color: running || clarifying ? 'var(--content-fg-tertiary)' : !input.trim() ? 'var(--content-fg-tertiary)' : 'var(--accent-on)',
-                transition: 'background .15s, color .15s',
-              }}
+      {/* 输入栏（块 6 定案：附件 chips / 状态禁用；玻璃输入舱）
+          2026-09-02：演示样例模式 → 禁发提示条（防误触发起真实计费查询） */}
+      {mode === 'sample' ? (
+        <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
+          <div className="chat-column">
+            <div
+              className="composer"
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 16px' }}
             >
-              <Icon.Send />
-            </button>
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
-            AI Scientist 可能产生误差，请核实关键信息
+              <Icon.Sparkle style={{ width: 15, height: 15, color: 'var(--accent-text)', flexShrink: 0 }} />
+              <span style={{ flex: 1, fontSize: 12.5, color: 'var(--content-fg-secondary)', lineHeight: 1.5 }}>
+                演示样例模式仅供浏览与回放——重演的是已内嵌的真实运行过程，不消耗查询额度。
+              </span>
+              <button
+                onClick={onSwitchToUser}
+                title="切回『我的查询』发起新的真实查询"
+                style={{
+                  border: '1px solid color-mix(in srgb, var(--accent) 45%, transparent)',
+                  background: 'var(--accent-light)', color: 'var(--accent-text)',
+                  fontSize: 12, fontWeight: 500, padding: '5px 12px', borderRadius: 'var(--radius-pill)',
+                  cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap',
+                }}
+              >
+                发起真实查询
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
+          <div className="chat-column">
+            <div
+              className="composer"
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 6px 6px 16px', opacity: running || clarifying ? 0.6 : 1 }}
+            >
+              {/* 用户重设计：左图标 + 大圆角输入舱 + 圆形绿色发送钮 */}
+              <Icon.Sparkle style={{ width: 15, height: 15, color: 'var(--accent-text)', flexShrink: 0 }} />
+              <textarea
+                rows={1}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSubmit()
+                  }
+                }}
+                disabled={running || clarifying}
+                placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '查询数据、筛选记录或继续分析…'}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  // 一行布局：上下对称 padding，文字与星标/发送钮同轴垂直居中
+                  padding: '9px 4px 9px',
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  color: 'var(--content-fg)',
+                  minHeight: 21,
+                  ...((running || clarifying) ? { cursor: 'not-allowed' } : {}),
+                }}
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={!input.trim() || running || clarifying}
+                title="发送"
+                style={{
+                  width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+                  border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: running || clarifying ? 'var(--surface-secondary)' : !input.trim() ? 'var(--surface-secondary)' : 'var(--accent)',
+                  color: running || clarifying ? 'var(--content-fg-tertiary)' : !input.trim() ? 'var(--content-fg-tertiary)' : 'var(--accent-on)',
+                  transition: 'background .15s, color .15s',
+                }}
+              >
+                <Icon.Send />
+              </button>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
+              AI Scientist 可能产生误差，请核实关键信息
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 底部日志抽屉（块 7，真实事件流日志） */}
       <LogDrawer open={logOpen} onClose={onToggleLog} liveLogs={logs} />

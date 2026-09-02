@@ -1,0 +1,708 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2021A&A...651A..41C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202040197",
+      "title": "Tempestuous life beyond R<SUB>500</SUB>: X-ray view on the Coma cluster with SRG/eROSITA. I. X-ray morphology, recent merger, and radio halo connection",
+      "authors": [
+        "Churazov, E.",
+        "Khabibullin, I.",
+        "Lyskova, N.",
+        "Sunyaev, R.",
+        "Bykov, A. M."
+      ],
+      "year": 2021,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2021A&A...651A..41C.pdf",
+      "retrieval_priority": 0.6751261770646115,
+      "abstract": "This is the first paper in a series of studies of the Coma cluster using the SRG/eROSITA X-ray data obtained in the course of the calibration and performance verification observations. The data cover a ~3° × 3° area around the cluster with a typical exposure time of more than 20 ks. The stability of the instrumental background and operation of the SRG observatory in the scanning mode provided us with an excellent data set for studies of the diffuse emission up to a distance of ~1.5R<SUB>200</SUB> from the Coma center. In this study, we discuss the rich morphology revealed by the X-ray observations (also in combination with the SZ data) and argue that the most salient features can be naturally explained by a recent (ongoing) merger with the NGC 4839 group. In particular, we identify a faint X-ray bridge connecting the group with the cluster, which is convincing proof that NGC 4839 has already crossed the main cluster. The gas in the Coma core went through two shocks, first through the shock driven by NGC 4839 during its first passage through the cluster some gigayear ago and, more recently, through the \"mini-accretion shock\" associated with the gas settling back to quasi-hydrostatic equilibrium in the core. After passing through the primary shock, the gas should spend much of the time in a rarefaction region, where radiative losses of electrons are small, until the gas is compressed again by the mini-accretion shock. Unlike \"runway\" merger shocks, the mini-accretion shock does not feature a rarefaction region downstream and, therefore, the radio emission can survive longer. Such a two-stage process might explain the formation of the radio halo in the Coma cluster.",
+      "keywords": [
+        "galaxies: clusters: general",
+        "galaxies: clusters: individual: Abell 1656",
+        "galaxies: clusters: intracluster medium",
+        "X-rays: galaxies: clusters",
+        "radiation mechanisms: non-thermal",
+        "shock waves",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:xray OR abs:temperature OR abs:kt OR abs:\"x-ray\" OR abs:kT)",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2018AJ....156..224J",
+      "source_type": "paper",
+      "doi": "10.3847/1538-3881/aae522",
+      "title": "The Gemini/Hubble Space Telescope Galaxy Cluster Project: Stellar Populations in the Low-redshift Reference Cluster Galaxies",
+      "authors": [
+        "Jørgensen, Inger",
+        "Chiboucas, Kristin",
+        "Webb, Kristi",
+        "Woodrum, Charity"
+      ],
+      "year": 2018,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2018AJ....156..224J.pdf",
+      "retrieval_priority": 0.4425458886339402,
+      "abstract": "In order to study stellar populations and galaxy structures at intermediate and high redshift (z = 0.2-2.0) and link these properties to those of low-redshift galaxies, there is a need for well-defined local reference samples. Especially for galaxies in massive clusters, such samples are often limited to the Coma cluster galaxies. We present consistently calibrated velocity dispersions and absorption-line indices for galaxies in the central 2 R <SUB>500</SUB> × 2 R <SUB>500</SUB> of four massive clusters at z &lt; 0.1: Abell 426/Perseus, Abell 1656/Coma, Abell 2029, and Abell 2142. The measurements are based on data from the Gemini Observatory, McDonald Observatory, and Sloan Digital Sky Survey. For bulge-dominated galaxies, the samples are 95% complete in Perseus and Coma and 74% complete in A2029 and A2142, to a limit of M <SUB>B,abs</SUB> ≤ -18.5 mag. The data serve as the local reference for our studies of galaxy populations in the higher-redshift clusters that are part of the Gemini/HST Galaxy Cluster Project (GCP). We establish the scaling relations between line indices and velocity dispersions as a reference for the GCP. We derive stellar population parameters, ages, metallicities [M/H], and abundance ratios from line indices, both averaged in bins of velocity dispersion and from individual measurements for galaxies in Perseus and Coma. The zero points of relations between the stellar population parameters and the velocity dispersions limit the allowed cluster-to-cluster variation of the four clusters to ±0.08 dex in age, ±0.06 dex in [M/H], ±0.07 dex in [CN/Fe], and ±0.03 dex in [Mg/Fe].",
+      "keywords": [
+        "galaxies: clusters: individual: Abell 1656&amp;Coma",
+        "Abell 426&amp;Perseus",
+        "Abell 2029",
+        "Abell 2142",
+        "galaxies: evolution",
+        "galaxies: stellar content",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:velocity dispersion OR abs:speed dispersion)",
+      "search_rank": 1
+    },
+    {
+      "source_id": "2013PASJ...65...10M",
+      "source_type": "paper",
+      "doi": "10.1093/pasj/65.1.10",
+      "title": "Distribution of Si, Fe, and Ni in the Intracluster Medium of the Coma Cluster",
+      "authors": [
+        "Matsushita, Kyoko",
+        "Sato, Takuya",
+        "Sakuma, Eri",
+        "Sato, Kosuke"
+      ],
+      "year": 2013,
+      "journal": "Publications of the Astronomical Society of Japan",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2013PASJ...65...10M.pdf",
+      "retrieval_priority": 0.3876650501443052,
+      "abstract": "We studied the distributions of Si, Fe, and Ni in the intracluster medium (ICM) of the Coma cluster, one of the largest clusters in the nearby universe, using XMM-Newton data up to 0.5 r<SUB>180</SUB> and Suzaku data of the central region up to 0.16 r<SUB>180</SUB>. Using the flux ratios of the Lyα line of H-like Si and the 7.8 keV line blend to the Kα line of He-like Fe, the abundance ratios of Si to Fe and Ni to Fe of the ICM were derived using APEC model v2.0.1. The Si / Fe ratio in the ICM of the Coma cluster shows no radial gradient. The emission-weighted averages of the Si / Fe ratio in the ICM within 0.0-0.2 r<SUB>180</SUB>, 0.2-0.5 r<SUB>180</SUB>, and 0.0-0.5 r<SUB>180</SUB> are 0.97±0.11, 1.05±0.36, and 0.99±0.13, respectively, in solar units using the solar abundance table by Lodders (2003, ApJ, 591, 1220). These values are close to those of smaller clusters and groups of galaxies. Using the Suzaku data of the central region, the derived Ni/Fe ratio of the ICM is 0.6-1.5 in solar units, according to the same solar abundance table. The systematic difference in the derived abundance ratios by different plasma codes are about 10%. Therefore, for the ICM in the Coma cluster, the abundance pattern of Si, Fe, and Ni is consistent with the same mixture of the yields of supernova (SN) II and SN Ia in our Galaxy. Within 0.5 r<SUB>180</SUB>, the cumulative iron mass-to-light ratio increases with radius, and its radial profile is similar to those of relaxed smaller clusters with cD galaxies at their center. Using the observed Si/Fe ratio, the cumulative metal mass-to-light ratios at 0.5r<SUB>180</SUB> are compared with theoretical expectations.",
+      "keywords": [
+        "galaxies: clusters:individual (Abell 1656",
+        "the Coma cluster)",
+        "X-rays: galaxies",
+        "X-rays: intracluster medium",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:xray OR abs:temperature OR abs:kt OR abs:\"x-ray\" OR abs:kT)",
+      "search_rank": 9
+    },
+    {
+      "source_id": "2013ApJ...763L...3F",
+      "source_type": "paper",
+      "doi": "10.1088/2041-8205/763/1/L3",
+      "title": "The Planck Sunyaev-Zel'dovich versus the X-Ray View of the Coma Cluster",
+      "authors": [
+        "Fusco-Femiano, R.",
+        "Lapi, A.",
+        "Cavaliere, A."
+      ],
+      "year": 2013,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2013ApJ...763L...3F.pdf",
+      "retrieval_priority": 0.6245121212121212,
+      "abstract": "The Planck collaboration has recently published precise and resolved measurements of the Sunyaev-Zel'dovich (SZ) effect in Abell 1656 (the Coma cluster of galaxies), thus directly gauging the electron pressure profile in the intracluster plasma. On the other hand, such a quantity may be also derived from combining the density and temperature provided by X-ray observations of the thermal bremsstrahlung radiation emitted by the plasma. We find a model-independent tension between the SZ and the X-ray pressure, with the SZ one being definitely lower by 15%-20%. We propose that such a challenging tension can be resolved in terms of an additional, non-thermal support to the gravitational equilibrium of the intracluster plasma. This can be straightforwardly included in our Supermodel, so as to fit in detail the Planck SZ profile while being consistent with the X-ray observables. Possible origins of the non-thermal component include cosmic-ray protons, ongoing turbulence, and relativistic electrons; given the existing observational constraints on the first two options, here we focus on the third. For this to be effective, we find that the electron population must include not only an energetic tail accelerated to γ &gt;~ 10<SUP>3</SUP> responsible for the Coma radiohalo, but also many more, lower energy electrons. The electron acceleration is to be started by merging events similar to those that provided the very high central entropy of the thermal intracluster plasma in Coma.",
+      "keywords": [
+        "cosmic background radiation",
+        "galaxies: clusters: individual: Abell 1656",
+        "X-rays: galaxies: clusters",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:xray OR abs:temperature OR abs:kt OR abs:\"x-ray\" OR abs:kT)",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2008MNRAS.386..715T",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2008.13132.x",
+      "title": "The stellar population histories of early-type galaxies - III. The Coma cluster",
+      "authors": [
+        "Trager, S. C.",
+        "Faber, S. M.",
+        "Dressler, Alan"
+      ],
+      "year": 2008,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2008MNRAS.386..715T.pdf",
+      "retrieval_priority": 0.3616823583325409,
+      "abstract": "We present stellar population parameters of 12 elliptical and S0 galaxies in the Coma cluster around and including the cD galaxy NGC 4874, based on spectra obtained using the Low Resolution Imaging Spectrograph on the Keck II Telescope. Our data are among the most precise and accurate absorption-line strengths yet obtained for cluster galaxies, allowing us to examine in detail the zero-point and scatter in the stellar population properties of Coma cluster early-type galaxies (ETGs). Recent observations of red sequence galaxies in the high-redshift Universe and generic hierarchical galaxy formation models lead to the following expectations for the stellar populations of local ETGs. (1) In all environments, bigger ETGs should have older stellar populations than smaller ETGs ('downsizing'); (2) ETGs at fixed stellar mass form stars earlier and thus should have older stellar population ages in the highest density environments than those in lower density environments and (3) the most massive ETGs in the densest environments should have a small spread in stellar population ages. We find the following surprising results using our sample. (1) Our ETGs have single-stellar-population-equivalent (SSP-equivalent) ages of on average 5-8 Gyr with the models used here, with the oldest galaxies having SSP-equivalent ages of ≲10-Gyr old. This average age is identical to the mean age of field ETGs. (2) The ETGs in our sample span a large range in velocity dispersion (mass) but are consistent with being drawn from a population with a single age. Specifically, 10 of the 12 ETGs in our sample are consistent within their formal errors of having the same SSP-equivalent age, 5.2 ± 0.2 Gyr, over a factor of more than 750 in mass. We therefore find no evidence for downsizing of the stellar populations of ETGs in the core of the Coma cluster. We confirm the lack of a trend of SSP-equivalent age with mass in the core of the Coma cluster from all other samples of Coma cluster ETG absorption-line strengths available in the literature, but we do find from the largest samples that the dispersion in age increases with decreasing mass. These conclusions stand in stark contrast to the expectations from observations of high-redshift red sequence galaxies and model predictions. We suggest that Coma cluster ETGs may have formed the majority of their mass at high redshifts but suffered small but detectable star formation events at z≍ 0.1-0.3. In this case, previous detections of 'downsizing' from stellar populations of local ETGs may not reflect the same downsizing seen in look-back studies of RSGs, as the young ages of the local ETGs represent only a small fraction of their total masses.",
+      "keywords": [
+        "galaxies: clusters: individual: Coma (= Abell 1656)",
+        "galaxies: elliptical and lenticular",
+        "cD",
+        "galaxies: evolution",
+        "galaxies: stellar content",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:velocity dispersion OR abs:speed dispersion)",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2002A&A...383..367S",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20011613",
+      "title": "Far-infrared emission from intracluster dust in Abell clusters",
+      "authors": [
+        "Stickel, M.",
+        "Klaas, U.",
+        "Lemke, D.",
+        "Mattila, K."
+      ],
+      "year": 2002,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2002A&A...383..367S.pdf",
+      "retrieval_priority": 0.39739062928374136,
+      "abstract": "The ISOPHOT instrument aboard ISO has been used to observe extended FIR emission of six Abell clusters. Strip scanning measurements with crossing position angles centered on the clusters were carried out at 120 μ m and 180 μ m. The raw profiles of the I<SUB>120 μ m</SUB>/I<SUB>180 μ m</SUB> surface brightness ratio including zodiacal light show a bump towards Abell 1656 (Coma), dips towards Abell 262 and Abell 2670, and are without clear structure towards Abell 400, Abell 496, and Abell 4038. After subtraction of the zodiacal light, the bump towards Abell 1656 is still present, while the dips towards Abell 262 and Abell 2670 are no longer noticable. This indicates a localized excess of emitting material outside the Galaxy towards Abell 1656 with properties different from the galactic foreground cirrus, while the behavior in Abell 262 and Abell 2670 can be reconciled with galactic cirrus structures localized on the line-of-sight to these clusters. The excess of ≈0.2 MJy/sr seen at 120 μ m towards Abell 1656 (Coma) is interpreted as being due to thermal emission from intracluster dust distributed in the hot X-ray emitting intracluster medium. The integrated excess flux within the central region of 10 arcmin--15 arcmin diameter is ≈2.8 Jy. Since the dust temperature is poorly constrained, only a rough estimate of the associated dust mass of M<SUB>D</SUB> ≈ 10<SUP>7</SUP> M<SUB>solar</SUB> can be derived. The associated visual extinction is negligible (A<SUB>V</SUB> &lt;&lt; 0.1 mag) and much smaller than claimed from optical observations. No evidence is found for intracluster dust in the other five clusters observed. The absence of any signature for intracluster dust in five clusters and the rather low inferred dust mass in Abell 1656 indicates that intracluster dust is likely not responsible for the excess X-ray absorption seen in cooling flow clusters. These observations thereby represent a further unsuccessful attempt in detecting the presumed final stage of the cooling flow material, in accord with quite a number of previous studies in other wavelengths regions. Finally, the observed dimming of the high-redshift supernovae is unlikely be attributable to extinction caused by dust in the intracluster or even a presumed intercluster medium. Based on observations with ISO, an ESA project with instruments funded by ESA Member States (especially the PI countries: France, Germany, The Netherlands and the UK) and with the participation of ISAS and NASA.",
+      "keywords": [
+        "GALAXIES: CLUSTERS: GENERAL",
+        "GALAXIES: CLUSTERS: INDIVIDUAL: ABELL 262",
+        "ABELL 1656",
+        "ABELL 2670",
+        "INTERGALACTIC MEDIUM",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:xray OR abs:temperature OR abs:kt OR abs:\"x-ray\" OR abs:kT)",
+      "search_rank": 6
+    },
+    {
+      "source_id": "2002ApJ...574L.119D",
+      "source_type": "paper",
+      "doi": "10.1086/342418",
+      "title": "MITO Measurements of the Sunyaev-Zeldovich Effect in the Coma Cluster of Galaxies",
+      "authors": [
+        "De Petris, Marco",
+        "D'Alba, Livia",
+        "Lamagna, Luca",
+        "Melchiorri, Francesco",
+        "Orlando, Angiola",
+        "Palladino, Emilia",
+        "Rephaeli, Yoel",
+        "Colafrancesco, Sergio",
+        "Kreysa, Ernst",
+        "Signore, Monique"
+      ],
+      "year": 2002,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\2002ApJ...574L.119D.pdf",
+      "retrieval_priority": 0.32611817874786975,
+      "abstract": "We have measured the Sunyaev-Zeldovich (SZ) effect toward the Coma Cluster (A1656) with the Millimetre and Infrared Testagrigia Observatory experiment, a 2.6 m telescope equipped with a four-channel 17' (FWHM) photometer. Measurements at frequency bands 143+/-15, 214+/-15, 272+/-16, and 353+/-13 GHz were made during 120 drift scans of Coma. We describe the observations and data analysis that involved extraction of the SZ signal by employing a spatial and spectral decorrelation scheme to remove a dominant atmospheric component. The deduced values of the thermal SZ effect in the first three bands are ∆T<SUB>0</SUB>=-179+/-38, -33+/-81, and 170+/-35 μK in the cluster center. The corresponding optical depth, τ=(4.1+/-0.9)×10<SUP>-3</SUP>, is consistent (within errors) with both the value from a previous low-frequency SZ measurement and the value predicted from the X-ray-deduced gas parameters.",
+      "keywords": [
+        "Cosmology: Cosmic Microwave Background",
+        "Cosmology: Observations",
+        "Galaxies: Clusters: Individual: Name: Abell 1656",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:xray OR abs:temperature OR abs:kt OR abs:\"x-ray\" OR abs:kT)",
+      "search_rank": 14
+    },
+    {
+      "source_id": "1999ApJ...514..607A",
+      "source_type": "paper",
+      "doi": "10.1086/306985",
+      "title": "On the Extreme-Ultraviolet Emission from Galaxy Clusters",
+      "authors": [
+        "Arabadjis, John S.",
+        "Bregman, Joel N."
+      ],
+      "year": 1999,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\0eab300f-2ce4-4b43-bb6a-8b4d3ae58183\\1999ApJ...514..607A.pdf",
+      "retrieval_priority": 0.27608673409601187,
+      "abstract": "An extremely soft X-ray excess throughout galaxy clusters has been claimed as a new feature of these systems, with important physical implications. We have reexamined this feature in the five clusters for which it has been discussed, using the most recent X-ray absorption cross sections, X-ray data processing techniques, and a consistent set of H I data. For the Virgo cluster, we find that the spectrum can be fitted with a single-temperature thermal plasma and an X-ray absorption column that is not significantly different than the Galactic H I column. The results for Abell 1367, Abell 1656 (Coma), Abell 1795, and Abell 2199 are similar in that the difference between the X-ray absorption column and the Galactic H I column is less than 3 σ for He/H=0.09, and for He/H=0.10 only one cluster location leads to a Galactic H I column more than 3 σ above the X-ray absorption column (Coma, with one location with a 3.6 σ difference). We conclude that there is no strong evidence for the extremely soft X-ray excess in galaxy clusters.",
+      "keywords": [
+        "GALAXIES: CLUSTERS: GENERAL",
+        "RADIATION MECHANISMS: NONTHERMAL",
+        "Galaxies: Clusters: General",
+        "Radiation Mechanisms: Nonthermal",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Abell 1656\" OR abs:\"Abell 1656\") AND (abs:xray OR abs:temperature OR abs:kt OR abs:\"x-ray\" OR abs:kT)",
+      "search_rank": 15
+    },
+    {
+      "source_id": "SRC_DB_MCXC",
+      "source_type": "database",
+      "title": "Meta-Catalogue of X-ray Detected Clusters of Galaxies (MCXC)",
+      "vizier_table_id": "J/A+A/534/A109/mcxc",
+      "description": "X射线星系团元星表，基于ROSAT全天巡天和其他偶然发现星表的均一化合并，提供了标准化的X射线星系团物理量。",
+      "reference_paper": "Piffaretti, R., et al. 2011, A&A, 534, A109",
+      "bibcode": "2011A&A...534A.109P",
+      "research_methodology": "基于已发表X射线星表交叉合并并利用统一模型重新计算总质量和光度",
+      "observation_facility": "Compilation (primarily ROSAT data)",
+      "waveband": "X-ray (0.1 - 2.4 keV band)",
+      "research_content": "1743个X射线星系团的坐标、红移、标准化总质量估计(M500)、X射线光度(L500)及特征半径(R500)。"
+    },
+    {
+      "source_id": "SRC_DB_PSZ2",
+      "source_type": "database",
+      "title": "Planck Sunyaev-Zeldovich Cluster Catalogue (PSZ2)",
+      "vizier_table_id": "J/A+A/594/A27",
+      "description": "普朗克卫星基于苏尼亚耶夫-泽尔多维奇(SZ)效应发布的第二版全天星系团星表，是宇宙学质量函数的关键样本。",
+      "reference_paper": "Planck Collaboration, Ade, P. A. R., et al. 2016, A&A, 594, A27",
+      "bibcode": "2016A&A...594A..27P",
+      "research_methodology": "全天微波/毫米波多频扫描，利用SZ效应频谱特征与盲寻算法进行成分提取",
+      "observation_facility": "Planck Space Observatory",
+      "waveband": "Microwave and Submillimeter",
+      "research_content": "1653个SZ效应探测星系团（及候选者）的坐标、信噪比、SZ信号强度参数(Y500)、质量估计(M500)以及多波段证认状态。"
+    },
+    {
+      "source_id": "SRC_SUPPL_J_AJ_156_224",
+      "source_type": "supplementary",
+      "title": "The Gemini/Hubble Space Telescope Galaxy Cluster Project: Stellar Populations in the Low-redshift Reference Cluster Galaxies"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1999ApJ...514..607A_Abell_1656_xray_temperature_kt_0",
+      "source_id": "1999ApJ...514..607A",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": "8.0",
+      "field_unit": "keV",
+      "trace_id": "doc5_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          300,
+          370,
+          715,
+          680
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. The five clusters in the sample. ... A1656 58.16 +88.01 8.0 0.0231",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "2002A&A...383..367S_Abell_1656_xray_temperature_kt_0",
+      "source_id": "2002A&A...383..367S",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": "8.3, 7.3",
+      "field_unit": "keV",
+      "trace_id": "doc12_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          65,
+          107,
+          906,
+          750
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Physical Properties of Observed Clusters ... Abell 1656 (Coma) ... Temperature [keV] ... 8.3 [1] ... 7.3 [2]",
+      "measurement_method": "X-ray spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "2002ApJ...574L.119D_Abell_1656_xray_temperature_kt_0",
+      "source_id": "2002ApJ...574L.119D",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": 8.2,
+      "field_unit": "keV",
+      "trace_id": "doc7_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          284,
+          632,
+          377,
+          650
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The most recent high spectral and spatial resolution measurements with the XMM/EPIC experiment are best fit by kT=8.2±0.1 keV (at 90% confidence level) in the central 10' region (Arnaud et al. 2001).",
+      "measurement_method": "X-ray spectral fitting (XMM/EPIC)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "2008MNRAS.386..715T_Abell_1656_velocity_dispersion_0",
+      "source_id": "2008MNRAS.386..715T",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "velocity_dispersion",
+      "field_value": 7007,
+      "field_unit": "km/s",
+      "trace_id": "doc6_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          616,
+          658,
+          652,
+          675
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Twelve ETGs with -22 ≲ M_b_J ≲ -16 (assuming a cluster velocity of c_zhel = 7007 km s^-1, Hudson et al. 2001, and H_0 = 72 km s^-1 Mpc^-1, Freedman et al. 2001) were observed",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2013ApJ...763L...3F_Abell_1656_xray_temperature_kt_0",
+      "source_id": "2013ApJ...763L...3F",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": 5,
+      "field_unit": "keV",
+      "trace_id": "doc10_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          763,
+          704,
+          811,
+          721
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.9,
+      "context_snippet": "...strong accretion shocks standing at the virial boundary with Mach numbers M ~ 10 that produce outer temperatures k_B T_R ~ 5 keV.",
+      "measurement_method": "Supermodel fit / theoretical derivation",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "2013PASJ...65...10M_Abell_1656_xray_temperature_kt_0",
+      "source_id": "2013PASJ...65...10M",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": "7.8",
+      "field_unit": "keV",
+      "trace_id": "doc11_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          615,
+          642,
+          675,
+          659
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The virial radius of the Coma cluster, r180 = 1.95 h100^-1 sqrt(k<T>/10 keV) Mpc (Evrard et al. 1996; Markevitch et al. 1998), is 2.5 Mpc for the average temperature k<T>=7.8 keV.",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "2018AJ....156..224J_Abell_1656_velocity_dispersion_0",
+      "source_id": "2018AJ....156..224J",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "velocity_dispersion",
+      "field_value": "1154 +56 -56",
+      "field_unit": "km/s",
+      "trace_id": "doc8_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          108,
+          81,
+          892,
+          311
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Cluster Properties and Parent Samples ... Coma/Abell 1656 ... 1154 +56 -56 ... km s^-1",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_dispersion"
+      ]
+    },
+    {
+      "record_id": "2021A&A...651A..41C_Abell_1656_xray_temperature_kt_0",
+      "source_id": "2021A&A...651A..41C",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": 9.0,
+      "field_unit": "keV",
+      "trace_id": "doc9_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          76,
+          746,
+          92,
+          762
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Overall, the recovered temperature map agrees well with the X-ray measurements of the projected temperature, which show ~ 8 - 10 keV in the core (e.g., a temperature map in Sanders et al. 2013; Lyskova et al. 2019).",
+      "measurement_method": "X-ray spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "2021A&A...651A..41C_Abell_1656_xray_temperature_kt_1",
+      "source_id": "2021A&A...651A..41C",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "xray_temperature_kt",
+      "field_value": 15,
+      "field_unit": "keV",
+      "trace_id": "doc9_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          381,
+          785,
+          438,
+          801
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "To the North from the core, the temperature increases to ~ 15 keV. This is slightly higher than typically found in X-ray data, although a tentative presence of a 'hot spot' on the North was reported earlier",
+      "measurement_method": "X-ray spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_temperature_kt"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_MCXC_J1259.7+2756_0_M500",
+      "source_id": "SRC_DB_MCXC",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": 4.2846,
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/534/A109/mcxc",
+        "key_column": "MCXC",
+        "key_value": "J1259.7+2756",
+        "raw_column": "M500",
+        "raw_unit": "1e+14solMass",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_0_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "3.9624109999999999",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_1_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "5.1223910000000004",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 1
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_2_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "5.297053",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 2
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_3_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "6.3335619999999997",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 3
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_5_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "2.8352970000000002",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 5
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_6_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "3.5104009999999999",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 6
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_7_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "4.4111320000000003",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 7
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_PSZ2_G057.80+88.00_8_MSZ",
+      "source_id": "SRC_DB_PSZ2",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "mass_m500",
+      "field_value": "5.7360170000000004",
+      "field_unit": "1e+14solMass",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/594/A27",
+        "key_column": "PSZ2",
+        "key_value": "G057.80+88.00",
+        "raw_column": "MSZ",
+        "raw_unit": "1e+14solMass",
+        "row_index": 8
+      }
+    },
+    {
+      "record_id": "REC_SRC_SUPPL_J_AJ_156_224_2018AJ....156..224J_0_velocity_dispersion",
+      "source_id": "SRC_SUPPL_J_AJ_156_224",
+      "entity_type": "ClG",
+      "entity_name": "Abell 1656",
+      "field_name": "velocity_dispersion",
+      "field_value": 1154,
+      "field_unit": "km / s",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "supplement",
+        "db_table": "J/AJ/156/224",
+        "key_column": "Cluster",
+        "key_value": "Coma",
+        "raw_column": "sigma",
+        "raw_unit": "km / s",
+        "standard_unit": "km/s",
+        "row_index": 0,
+        "parent_bibcode": "2018AJ....156..224J",
+        "matched_alias": "alias_match"
+      }
+    }
+  ]
+}

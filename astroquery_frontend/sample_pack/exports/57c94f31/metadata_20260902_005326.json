@@ -1,0 +1,242 @@
+{
+  "field_definitions": {
+    "abs_mag": {
+      "standard_unit": "mag",
+      "semantic_type": "apparent_magnitude",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The absolute magnitude measures the intrinsic brightness of an astronomical object as it would appear from a standard distance of 10 parsecs, expressed in magnitudes (mag)."
+    },
+    "redshift": {
+      "standard_unit": null,
+      "semantic_type": "redshift",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Redshift quantifies the fractional change in the wavelength of electromagnetic radiation from a celestial object due to cosmic expansion or relative motion, reported as a dimensionless value."
+    }
+  },
+  "source_summary": {
+    "total_sources": 13,
+    "sources_exported": 13,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "2019ApJ...879...75H",
+        "title": "Jet-driven Galaxy-scale Gas Outflows in the Hyperluminous Quasar 3C 273",
+        "year": 2019,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2004MNRAS.349...57P",
+        "title": "XMM-Newton observations of 3C 273",
+        "year": 2004,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020A&A...634A.106A",
+        "title": "Hot WHIM counterparts of FUV O VI absorbers: Evidence in the line-of-sight towards quasar 3C 273",
+        "year": 2020,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019ApJ...880..155L",
+        "title": "Search for Intra-day Optical Variability in γ-Ray-loud Blazars S5 0716+714 and 3C 273",
+        "year": 2019,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010MNRAS.405.1736W",
+        "title": "The low-redshift Lyα forest towards 3C 273",
+        "year": 2010,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2000ApJ...544L..95Y",
+        "title": "A Broad Fe Kα Emission Line in the X-Ray Spectrum of the Quasar 3C 273",
+        "year": 2000,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014ApJ...785L..24F",
+        "title": "High Resolution X-Ray Spectroscopy of the Local Hot Gas along the 3C 273 Sightline",
+        "year": 2014,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003ApJ...586L..49F",
+        "title": "Chandra Detection of Local O VII Heα Absorption along the Sight Line toward 3C 273",
+        "year": 2003,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015MNRAS.452.1303P",
+        "title": "Constraints of flat spectrum radio quasars in the hadronic model: the case of 3C 273",
+        "year": 2015,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006ASPC..360...41G",
+        "title": "Optical Variability of the Three Brightest Nearby Quasars",
+        "year": 2006,
+        "journal": "AGN Variability from X-Rays to Radio Waves",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1995ApJ...450..486B",
+        "title": "Hubble Space Telescope Images of Nearby Luminous Quasars. II. Results for Eight Quasars and Tests of the Detection Sensitivity",
+        "year": 1995,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1997ApJ...488L..19T",
+        "title": "Discovery of a Luminous Quasar in the Nearby Universe",
+        "year": 1997,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1998MNRAS.294L...7H",
+        "title": "Discovery of radio-loud quasars with z=4.72 and z=4.010",
+        "year": 1998,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 13,
+      "overall_quality": "excellent",
+      "total_issues": 13
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 9,
+      "by_layer": {
+        "base": 9,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors_count": 11,
+      "errors": [
+        {
+          "source": "2006ASPC..360...41G",
+          "tool": "numeric_convert",
+          "kind": "out_of_range",
+          "error": "modified value -26.6 mag out of feasible range for abs_mag"
+        },
+        {
+          "source": "1998MNRAS.294L...7H",
+          "tool": "numeric_convert_abs_mag",
+          "kind": "out_of_range",
+          "error": "modified value -26.7 mag out of feasible range for abs_mag"
+        },
+        {
+          "source": "1995ApJ...450..486B",
+          "tool": "numeric_convert",
+          "kind": "out_of_range",
+          "error": "modified value -25.7 mag out of feasible range for abs_mag"
+        },
+        {
+          "source": "2004MNRAS.349...57P",
+          "tool": "mark_missing_unit",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2019ApJ...880..155L",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2019ApJ...879...75H",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2020A&A...634A.106A",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2014ApJ...785L..24F",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2003ApJ...586L..49F",
+          "tool": "fill_missing_redshift_unit",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2000ApJ...544L..95Y",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2010MNRAS.405.1736W",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-02T00:53:12.958217",
+    "run_id": "57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

@@ -25,7 +25,9 @@ def _now() -> str:
 # 2026-09-01: 列表轻量统计列 record_count/source_count（侧边栏「N 条记录 · M 个来源」）
 # ——完成任务落库时在 update_task 解析一次写入，列表纯列 SELECT（不触碰大 state_json）；
 # 取数与 /records、/sources 端点同源优先链（quality structured_data 优先）。
-_LIST_COLUMNS = "task_id, query, title, status, created_at, completed_at, replay_of, record_count, source_count"
+# 2026-09-02: source 列（'user'|'sample'）——内嵌演示样例与用户真实查询隔离；
+# 列表/回放任务按归属过滤（side：我的查询/演示样例切换）。
+_LIST_COLUMNS = "task_id, query, title, status, created_at, completed_at, replay_of, record_count, source_count, source"
 
 
 def _ensure_column(conn: sqlite3.Connection, table: str, name: str, ddl: str) -> None:
@@ -60,7 +62,8 @@ class TaskStore:
                 state_json TEXT DEFAULT '{}',
                 replay_of TEXT DEFAULT NULL,
                 record_count INTEGER DEFAULT 0,
-                source_count INTEGER DEFAULT 0
+                source_count INTEGER DEFAULT 0,
+                source TEXT DEFAULT 'user'
             )""")
             conn.execute("""CREATE TABLE IF NOT EXISTS events (
                 seq INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,19 +76,20 @@ class TaskStore:
             _ensure_column(conn, "tasks", "replay_of", "replay_of TEXT DEFAULT NULL")
             _ensure_column(conn, "tasks", "record_count", "record_count INTEGER DEFAULT 0")
             _ensure_column(conn, "tasks", "source_count", "source_count INTEGER DEFAULT 0")
+            _ensure_column(conn, "tasks", "source", "source TEXT DEFAULT 'user'")
             _ensure_column(conn, "events", "ts", "ts REAL DEFAULT NULL")
 
     # ── tasks ──
     def create_task(self, query: str, output_dir: str = "", pdf_paths: Optional[List[str]] = None,
-                    replay_of: Optional[str] = None) -> Dict[str, Any]:
+                    replay_of: Optional[str] = None, source: str = "user") -> Dict[str, Any]:
         task_id = str(uuid.uuid4())
         with self._lock, self._conn() as conn:
             conn.execute(
-                "INSERT INTO tasks (task_id, query, status, created_at, output_dir, pdf_paths, replay_of) VALUES (?,?,?,?,?,?,?)",
-                (task_id, query, "queued", _now(), output_dir, json.dumps(pdf_paths or []), replay_of),
+                "INSERT INTO tasks (task_id, query, status, created_at, output_dir, pdf_paths, replay_of, source) VALUES (?,?,?,?,?,?,?,?)",
+                (task_id, query, "queued", _now(), output_dir, json.dumps(pdf_paths or []), replay_of, source),
             )
         return {"task_id": task_id, "query": query, "status": "queued", "created_at": _now(),
-                "pdf_paths": pdf_paths or [], "replay_of": replay_of}
+                "pdf_paths": pdf_paths or [], "replay_of": replay_of, "source": source}
 
     def get_task(self, task_id: str) -> Optional[Dict[str, Any]]:
         with self._conn() as conn:
@@ -99,28 +103,29 @@ class TaskStore:
             d["pdf_paths"] = []
         return d
 
-    def list_tasks(self, limit: int = 50, offset: int = 0, status: Optional[str] = None) -> Dict[str, Any]:
+    def list_tasks(self, limit: int = 50, offset: int = 0, status: Optional[str] = None,
+                   source: Optional[str] = None) -> Dict[str, Any]:
         # M-08: 契约 D8-4 显式列裁剪——不取 state_json/pdf_paths（单任务数百 KB，
         # 整行 SELECT 使 limit=50 列表响应膨胀 ~20-25MB；详情侧走 get_task /state）
         # H-01: 失败词表别名——status='error' 同时匹配旧词表 'failed'（存量记录归一）
+        # 2026-09-02: source 归属过滤（我的查询=user / 演示样例=sample；None=不筛）
         statuses = ["error", "failed"] if status == "error" else ([status] if status else [])
-        marks = ",".join("?" * len(statuses))
+        clauses: List[str] = []
+        args: List[Any] = []
+        if statuses:
+            marks = ",".join("?" * len(statuses))
+            clauses.append(f"status IN ({marks})")
+            args.extend(statuses)
+        if source in ("user", "sample"):
+            clauses.append("source=?")
+            args.append(source)
+        where = f"WHERE {' AND '.join(clauses)}" if clauses else ""
         with self._conn() as conn:
-            if statuses:
-                rows = conn.execute(
-                    f"SELECT {_LIST_COLUMNS} FROM tasks WHERE status IN ({marks}) "
-                    "ORDER BY created_at DESC LIMIT ? OFFSET ?",
-                    (*statuses, limit, offset),
-                ).fetchall()
-                total = conn.execute(
-                    f"SELECT COUNT(*) FROM tasks WHERE status IN ({marks})", statuses
-                ).fetchone()[0]
-            else:
-                rows = conn.execute(
-                    f"SELECT {_LIST_COLUMNS} FROM tasks ORDER BY created_at DESC LIMIT ? OFFSET ?",
-                    (limit, offset),
-                ).fetchall()
-                total = conn.execute("SELECT COUNT(*) FROM tasks").fetchone()[0]
+            rows = conn.execute(
+                f"SELECT {_LIST_COLUMNS} FROM tasks {where} ORDER BY created_at DESC LIMIT ? OFFSET ?",
+                (*args, limit, offset),
+            ).fetchall()
+            total = conn.execute(f"SELECT COUNT(*) FROM tasks {where}", args).fetchone()[0]
         return {"items": [dict(r) for r in rows], "total": total}
 
     def update_task(self, task_id: str, **fields: Any) -> None:
@@ -187,6 +192,35 @@ class TaskStore:
         with self._conn() as conn:
             rows = conn.execute("SELECT task_id FROM tasks WHERE replay_of=?", (source_id,)).fetchall()
         return [r["task_id"] for r in rows]
+
+    # ── 样例包恢复（2026-09-02：演示样例启动导入专用，幂等由调用方保证）──
+    def restore_task(self, task_id: str, query: str, *, title: str = "",
+                     status: str = "completed", created_at: Optional[str] = None,
+                     completed_at: Optional[str] = None, output_dir: str = "",
+                     pdf_paths: Optional[List[str]] = None, state_json: str = "{}",
+                     replay_of: Optional[str] = None, record_count: int = 0,
+                     source_count: int = 0, source: str = "sample") -> None:
+        """整行恢复（样例包任务）：全字段插入，task_id 冲突时抛错（调用方先查重）。"""
+        with self._lock, self._conn() as conn:
+            conn.execute(
+                "INSERT INTO tasks (task_id, query, title, status, created_at, completed_at, "
+                "output_dir, pdf_paths, state_json, replay_of, record_count, source_count, source) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (task_id, query, title, status, created_at or _now(), completed_at, output_dir,
+                 json.dumps(pdf_paths or [], ensure_ascii=False), state_json, replay_of,
+                 int(record_count or 0), int(source_count or 0), source),
+            )
+
+    def restore_events(self, task_id: str, events: List[Any]) -> int:
+        """批量恢复事件（样例包）：[(ts 或 None, payload JSON 文本), ...]，返回恢复条数。"""
+        if not events:
+            return 0
+        with self._lock, self._conn() as conn:
+            conn.executemany(
+                "INSERT INTO events (task_id, payload, ts) VALUES (?,?,?)",
+                [(task_id, payload, ts) for ts, payload in events],
+            )
+        return len(events)
 
     # ── 删除（2026-08-24：任务清理功能）──
     def delete_events(self, task_id: str) -> int:

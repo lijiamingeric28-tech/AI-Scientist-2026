@@ -1,0 +1,151 @@
+{
+  "data_lineage": {
+    "input": {
+      "sources": 22,
+      "records": 34,
+      "grounded_data_version": "2.0.0",
+      "received_at": "2026-09-02T01:03:02.049661+00:00"
+    },
+    "processing": [
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.491,
+        "reason": "8 tools, 34 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 71.866,
+        "reason": "22 sources (parallel), 13 issues, 0 anomalies, 5 variance groups"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 0.992,
+        "reason": "22 sources, overall=0.93 (good)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.238,
+        "reason": "22 sources, distribution={'Normalization': 22}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=22 Conflict=0 Export=0 Human=0"
+      },
+      {
+        "stage": "SourceRouter",
+        "agent": "SourceRouterAgent",
+        "status": "Success",
+        "duration_s": 0.011,
+        "reason": "22 to normalize, 0 skipped"
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 149.644,
+        "reason": "22 sources planned (method=llm_enhanced)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 1.307,
+        "reason": "6 mods (PARALLEL, base=4 adapted=0 generated=2)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Retry",
+        "duration_s": 0.035,
+        "reason": "Valid=False, conflicts=0, route="
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 59.624,
+        "reason": "22 sources planned (method=llm_enhanced)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.712,
+        "reason": "5 mods (PARALLEL, base=2 adapted=0 generated=3)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Retry",
+        "duration_s": 0.029,
+        "reason": "Valid=False, conflicts=0, route="
+      },
+      {
+        "stage": "Report",
+        "agent": "ReportAgent",
+        "status": "Success",
+        "duration_s": 0.01,
+        "reason": "Completed_With_Issues"
+      },
+      {
+        "stage": "LoopCheck",
+        "agent": "LoopController",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Iteration 1/8 → next=Export"
+      },
+      {
+        "stage": "DataOrganization",
+        "agent": "DataOrganizationAgent",
+        "status": "Success",
+        "duration_s": 0.016,
+        "reason": "Organized 34 records (3 standard + 0 extra fields)"
+      },
+      {
+        "stage": "SchemaFormatting",
+        "agent": "SchemaFormattingAgent",
+        "status": "Success",
+        "duration_s": 0.062,
+        "reason": "Exported 34 rows × 4 cols, 8 format issues"
+      },
+      {
+        "stage": "MetadataGeneration",
+        "agent": "MetadataGenerationAgent",
+        "status": "Success",
+        "duration_s": 10.495,
+        "reason": "Generated 3 field definitions (LLM=True)"
+      }
+    ],
+    "output": {
+      "sources": 22,
+      "records": 34,
+      "standard_compliant": true,
+      "generated_at": "2026-09-02T01:07:58.954993+00:00"
+    }
+  },
+  "trace_completeness": {
+    "records_with_trace": 6,
+    "records_with_modification_trace": 4,
+    "records_without_trace": 0,
+    "modified_count": 4,
+    "unmodified_count": 30,
+    "deleted_count": 0,
+    "records_with_trace_id": 33,
+    "paper_records_missing_trace_id": 0,
+    "database_records": 1,
+    "db_provenance_complete": 1
+  },
+  "modified_count": 4,
+  "decision_count": 17
+}

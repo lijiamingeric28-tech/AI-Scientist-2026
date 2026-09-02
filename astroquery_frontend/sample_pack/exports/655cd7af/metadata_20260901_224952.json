@@ -1,0 +1,310 @@
+{
+  "field_definitions": {
+    "compact_object_mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the mass of a compact stellar remnant, such as a neutron star or black hole, expressed in units of solar masses (Msun)."
+    },
+    "orbital_period": {
+      "standard_unit": "d",
+      "semantic_type": "orbital_period",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the time required for a celestial body to complete one full orbit around its companion, measured in days (d)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 28,
+    "sources_exported": 28,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "2012ApJ...747..111W",
+        "title": "Understanding Compact Object Formation and Natal Kicks. III. The Case of Cygnus X-1",
+        "year": 2012,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2007MNRAS.375..793S",
+        "title": "Jet radio emission in Cygnus X-1 and its orbital modulation",
+        "year": 2007,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025A&A...701A.115K",
+        "title": "Variability of X-ray polarization of Cyg X-1",
+        "year": 2025,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008Ap&SS.315..335I",
+        "title": "On the orbital and physical parameters of the HDE 226868/Cygnus X-1 binary system",
+        "year": 2008,
+        "journal": "Astrophysics and Space Science",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011ApJ...742...84O",
+        "title": "The Mass of the Black Hole in Cygnus X-1",
+        "year": 2011,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010ApJ...710..197B",
+        "title": "X-ray Variations at the Orbital Period from Cygnus X-1 IN the High/Soft State",
+        "year": 2010,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011ApJ...742...85G",
+        "title": "The Extreme Spin of the Black Hole in Cygnus X-1",
+        "year": 2011,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026MNRAS.545f2232O",
+        "title": "X-ray reverberation black hole mass and distance estimates of Cygnus X-1",
+        "year": 2026,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006MNRAS.368.1025L",
+        "title": "Periodic long-term X-ray and radio variability of Cygnus X-1",
+        "year": 2006,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999A&A...343..861B",
+        "title": "An improved orbital ephemeris for Cygnus X-1",
+        "year": 1999,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 7,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015A&A...576A.117G",
+        "title": "Long term variability of Cygnus X-1. VII. Orbital variability of the focussed wind in Cyg X-1/HDE 226868 system",
+        "year": 2015,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011MNRAS.412.1985Z",
+        "title": "The doubling of the superorbital period of Cyg X-1",
+        "year": 2011,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024A&A...691A..78L",
+        "title": "Characterisation of the stellar wind in Cyg X-1 via modelling of colour-colour diagrams",
+        "year": 2024,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...665L..51A",
+        "title": "Very High Energy Gamma-Ray Radiation from the Stellar Mass Black Hole Binary Cygnus X-1",
+        "year": 2007,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011ApJ...736...63R",
+        "title": "A Multiwavelength Study of Cygnus X-1: The First Mid-infrared Spectroscopic Detection of Compact Jets",
+        "year": 2011,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1998MNRAS.301..285L",
+        "title": "The orbital period of HDE 226868/Cyg X-1",
+        "year": 1998,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023A&A...678A..58K",
+        "title": "Peering into the tilted heart of Cyg X-1 with high-precision optical polarimetry",
+        "year": 2023,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025A&A...696A.237F",
+        "title": "A hidden quasi-periodic oscillation in Cygnus X-1 revealed by NICER",
+        "year": 2025,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015A&A...584A..95P",
+        "title": "Lepto-hadronic model for the broadband emission of Cygnus X-1",
+        "year": 2015,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024A&A...687A.284K",
+        "title": "Long term variability of Cygnus X-1. VIII. A spectral-timing look at low energies with NICER",
+        "year": 2024,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1997ApJ...477L..95Z",
+        "title": "The 1996 Soft State Transition of Cygnus X-1",
+        "year": 1997,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2012MNRAS.419.3194R",
+        "title": "A weak compact jet in a soft state of Cygnus X-1",
+        "year": 2012,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...663..445S",
+        "title": "Determination of Black Hole Mass in Cygnus X-1 by Scaling of Spectral Index-QPO Frequency Correlation",
+        "year": 2007,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008AJ....136..631Y",
+        "title": "Optical Spectroscopic Observations of Cyg X-1 = HDE 226868",
+        "year": 2008,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017PASJ...69...52S",
+        "title": "Orbital modulations of X-ray light curves of Cygnus X-1 in its low/hard and high/soft states",
+        "year": 2017,
+        "journal": "Publications of the Astronomical Society of Japan",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999MNRAS.309.1063B",
+        "title": "Orbital, precessional and flaring variability of Cygnus X-1",
+        "year": 1999,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007A&A...464..437B",
+        "title": "Very high energy gamma-ray production inside the massive binary system Cyg X-1/HDE 226868",
+        "year": 2007,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999MNRAS.302L...1P",
+        "title": "Orbital modulation and longer term variability in the radio emission from Cygnus X-1",
+        "year": 1999,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 28,
+      "overall_quality": "excellent",
+      "total_issues": 37
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 26,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 26
+      },
+      "errors_count": 0,
+      "errors": []
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T22:49:44.679284",
+    "run_id": "655cd7af-b54c-4978-9a4b-874f258f89fe",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

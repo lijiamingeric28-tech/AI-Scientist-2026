@@ -13,6 +13,7 @@ import logging
 import os
 import shutil
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -36,16 +37,9 @@ logger = logging.getLogger("web")
 # ── 路径配置 ──
 ROOT = Path(__file__).resolve().parent.parent
 WEB_DIR = Path(__file__).resolve().parent
-# 绿色免安装包：ASTROQUERY_DATA_DIR 外置可写数据目录（output/web/papers 全部重定向到
-# 包外 data/，避免写入打包只读区）；未设置时保持源码目录行为（开发环境零影响）
-_DATA_OVERRIDE = os.environ.get("ASTROQUERY_DATA_DIR")
-if _DATA_OVERRIDE:
-    _BASE = Path(_DATA_OVERRIDE)
-    DATA_DIR = _BASE / "web"
-    OUTPUT_DIR = _BASE / "output"
-else:
-    DATA_DIR = WEB_DIR / "data"
-    OUTPUT_DIR = ROOT / "output"
+# 2026-09-02：绿色包外置数据目录机制已移除——数据固定源码布局
+DATA_DIR = WEB_DIR / "data"
+OUTPUT_DIR = ROOT / "output"
 UPLOAD_DIR = DATA_DIR / "uploads"
 DB_PATH = DATA_DIR / "tasks.db"
 CHECKPOINT_PATH = DATA_DIR / "checkpoints.sqlite"
@@ -130,7 +124,22 @@ def _vcr_startup_selftest() -> None:
     except Exception as _exc:
         logger.warning("[Web] VCR 启动自测失败（回放诊断，不影响启动）: %s", _exc)
 
-app = FastAPI(title="AstroQuery AI Web", version="2.0.0")
+@asynccontextmanager
+async def _lifespan(_app: FastAPI):
+    # 演示样例包启动导入（2026-09-02，幂等）：全新 clone/评委机 tasks.db 为空时
+    # 把 sample_pack/catalog.db 的任务行+事件与缺失文件装进运行环境——此后回放/
+    # 浏览与真实任务完全同构。AQ_SKIP_SAMPLE_IMPORT=1 跳过（测试/CI 用）。
+    if os.environ.get("AQ_SKIP_SAMPLE_IMPORT") != "1":
+        try:
+            from .sample_pack import import_sample_pack, find_pack_root
+            _pack = find_pack_root(ROOT / "sample_pack")
+            import_sample_pack(store, OUTPUT_DIR, _pack)
+        except Exception:  # noqa: BLE001 —— 样例导入失败仅告警，不阻断服务
+            logger.exception("[Web] 样例包启动导入失败（跳过，服务继续）")
+    yield
+
+
+app = FastAPI(title="AstroQuery AI Web", version="2.0.0", lifespan=_lifespan)
 # H-05①: CORS 白名单（本地开发端口），禁用 *——任意网页不再能跨源读取
 # 任务数据 / 调用 API（含无认证的 PUT /api/config 投毒）
 app.add_middleware(
@@ -237,9 +246,12 @@ async def create_task(body: TaskCreateBody):
 
 
 @app.get("/api/tasks")
-async def list_tasks(limit: int = 50, offset: int = 0, status: Optional[str] = None):
+async def list_tasks(limit: int = 50, offset: int = 0, status: Optional[str] = None,
+                     source: Optional[str] = None):
     limit = min(max(limit, 1), 200)  # D8-4: 强制 limit/offset
-    data = store.list_tasks(limit=limit, offset=max(offset, 0), status=status)
+    if source not in (None, "user", "sample"):
+        raise HTTPException(400, "source 仅支持 user/sample")
+    data = store.list_tasks(limit=limit, offset=max(offset, 0), status=status, source=source)
     for item in data["items"]:  # H-01: 存量 failed 记录归一为 error
         item["status"] = _normalize_status(item["status"])
     return data
@@ -368,6 +380,16 @@ def _resolve_source_task(task_id: str) -> str:
     return src if (src and store.get_task(src)) else task_id
 
 
+_SAMPLE_GUARD_MSG = "演示样例仅供浏览、回放与改名，不支持删除或编辑"
+
+
+def _is_sample_origin(rec: Optional[Dict[str, Any]]) -> bool:
+    """样例本体（source=sample 且非回放副本）——只读+回放+改名。
+
+    回放副本（replay_of 非空，source=sample）是样例的派生演示产物，可自由删除。"""
+    return bool(rec) and (rec.get("source") or "user") == "sample" and not rec.get("replay_of")
+
+
 class ReplayBody(BaseModel):
     speed: int = 10  # 压缩倍率：事件间隔 = 源真实间隔 / speed
     answer_timeout_sec: Optional[float] = None  # 澄清等待超时（默认 15 分钟）
@@ -400,6 +422,7 @@ async def replay_task(task_id: str, body: ReplayBody):
     new_task = store.create_task(
         query=f"回放：{rec['query']}"[:MAX_QUERY_LEN],
         output_dir="", pdf_paths=[], replay_of=base,
+        source=rec.get("source") or "user",  # 2026-09-02：回放继承源归属（样例→样例）
     )
     store.update_task(
         new_task["task_id"],
@@ -417,8 +440,7 @@ async def replay_task(task_id: str, body: ReplayBody):
 # 任务删除（2026-08-24：数据清理功能）
 # ══════════════════════════════════════════════════════
 
-PAPERS_ROOT = (Path(os.environ["ASTROQUERY_DATA_DIR"]) / "papers"
-               if os.environ.get("ASTROQUERY_DATA_DIR") else ROOT / "subgraphs" / "data" / "papers")
+PAPERS_ROOT = ROOT / "subgraphs" / "data" / "papers"
 _DELETABLE_PARTS = ("pdfs", "figures", "checkpoints", "events")
 
 
@@ -477,6 +499,8 @@ async def delete_task_data(task_id: str, parts: str = ""):
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
+    if _is_sample_origin(rec):
+        raise HTTPException(403, _SAMPLE_GUARD_MSG)
     if _normalize_status(rec["status"]) in ("running", "queued"):
         raise HTTPException(409, "任务运行中，不可清理")
     wanted = [p.strip() for p in (parts or "").split(",") if p.strip()]
@@ -498,6 +522,8 @@ async def delete_task(task_id: str):
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
+    if _is_sample_origin(rec):
+        raise HTTPException(403, _SAMPLE_GUARD_MSG)
     if _normalize_status(rec["status"]) in ("running", "queued"):
         raise HTTPException(409, "任务运行中，不可删除")
     if store.active_replay_exists(task_id):
@@ -525,6 +551,9 @@ async def batch_delete_tasks(body: BatchDeleteBody):
         rec = store.get_task(tid)
         if not rec:
             results.append({"task_id": tid, "deleted": False, "reason": "not_found"})
+            continue
+        if _is_sample_origin(rec):  # 2026-09-02：样例本体跳过（回放副本可删）
+            results.append({"task_id": tid, "deleted": False, "reason": "sample"})
             continue
         if _normalize_status(rec["status"]) in ("running", "queued"):
             results.append({"task_id": tid, "deleted": False, "reason": "active"})
@@ -755,12 +784,19 @@ async def get_records(task_id: str):
         page = prov.get("page")
         sid = rec.get("source_id")
         if isinstance(page, int) and isinstance(sid, str) and sid:
-            img_path = pages_dir / _safe_name(sid) / f"page_{page}.png"
+            # 2026-09-02：样例包图证为 WebP（压缩）；本机真实任务为原始 PNG——
+            # 按实际落盘扩展名返回，前端无需感知格式差异
+            sub = pages_dir / _safe_name(sid)
             rec = dict(rec)  # 不修改状态内的原 dict
-            rec["page_image_url"] = (
-                f"/static/figures/{task_id}/source_pages/{_safe_name(sid)}/page_{page}.png"
-                if img_path.is_file() else ""
-            )
+            for ext in ("webp", "png"):
+                img_path = sub / f"page_{page}.{ext}"
+                if img_path.is_file():
+                    rec["page_image_url"] = (
+                        f"/static/figures/{task_id}/source_pages/{_safe_name(sid)}/page_{page}.{ext}"
+                    )
+                    break
+            else:
+                rec["page_image_url"] = ""
         out.append(rec)
     return out
 
@@ -779,6 +815,8 @@ async def delete_record(task_id: str, record_id: str):
     rec = store.get_task(task_id)
     if not rec:
         raise HTTPException(404, "任务不存在")
+    if _is_sample_origin(rec):
+        raise HTTPException(403, _SAMPLE_GUARD_MSG)
     if _normalize_status(rec["status"]) in ("running", "queued"):
         raise HTTPException(409, "任务运行中，不可删除记录")
 
@@ -977,8 +1015,7 @@ def _os_open(path: str) -> None:
 # 配置（契约 D10：GET 只返回是否配置；PUT 写回 .env）
 # ══════════════════════════════════════════════════════
 
-_ENV_FILE = (Path(os.environ["ASTROQUERY_DATA_DIR"]) / ".env"
-             if os.environ.get("ASTROQUERY_DATA_DIR") else ROOT / ".env")
+_ENV_FILE = ROOT / ".env"
 _ENV_KEYS = ["DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL",
              "ADS_API_TOKEN", "UNPAYWALL_EMAIL"]
 
@@ -1063,7 +1100,7 @@ app.mount("/static/figures", StaticFiles(directory=str(OUTPUT_DIR / "figures")),
 
 # M-20①: 单进程交付——挂载前端构建产物（dist），'/api' 与 '/static/figures'
 # 已先行注册优先匹配；dist 不存在（未 build）时跳过，仅 API 模式运行
-_FRONTEND_DIST = Path(os.environ.get("ASTROQUERY_FRONTEND_DIR") or (ROOT / "frontend" / "dist"))
+_FRONTEND_DIST = ROOT / "frontend" / "dist"
 if _FRONTEND_DIST.is_dir():
     app.mount("/", StaticFiles(directory=str(_FRONTEND_DIST), html=True), name="frontend")
 

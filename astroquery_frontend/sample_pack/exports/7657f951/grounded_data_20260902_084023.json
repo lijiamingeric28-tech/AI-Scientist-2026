@@ -1,0 +1,2315 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026FrASS..1336938R",
+      "source_type": "paper",
+      "doi": "10.3389/fspas.2026.1736938",
+      "title": "Planet formation constraints from exoplanet population synthesis and simulation based inference",
+      "authors": [
+        "Ran, Jason",
+        "Kama, Mihkel",
+        "Sommerville-Thomas, Anna"
+      ],
+      "year": 2026,
+      "journal": "Frontiers in Astronomy and Space Sciences",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2026FrASS..1336938R.pdf",
+      "retrieval_priority": 0.31204861969435066,
+      "abstract": "This work introduces a statistical framework to obtain Bayesian constraints on planet formation parameters, which offers a probabilistic interpretation of uncertainties and degeneracies contained within planet formation models. The model likelihood, or the probability distribution of observations conditioned on a set of formation parameters, is intractable for planet formation theories due to the high degrees of complexity involved. Furthermore, traditional likelihood estimation techniques scale poorly high to dimensional parameter spaces, and begin to require an excessive number of samples. Instead, this work utilizes neural density estimation to directly learn the posterior distribution. This is a data driven simulation-based inference approach based on simulations from an exoplanet population synthesis model. This work focuses on understanding the degeneracies found within the parameters of disk mass, disk radius, MHD-wind parameters, mid-plane temperature, and planet birth location. The information within these degeneracies are captured in posterior distributions conditioned on observables of planet mass, orbital period, and atmospheric C/O ratio. As a realized demonstration, inference is performed on the hot Jupiter HD 209458b. The inferred posterior distribution is re-sampled as parameter inputs for the population synthesis model to re-simulate formation tracks of HD 209458b. These tracks reveal two distinct scenarios where the planet formation begins either side of the <inline-formula> <mml:math> <mml:mrow> <mml:msub> <mml:mrow> <mml:mtext>CO</mml:mtext> </mml:mrow> <mml:mrow> <mml:mn>2</mml:mn> </mml:mrow> </mml:msub> </mml:mrow> </mml:math> </inline-formula> ice line. This highlights the ability to both infer formation parameters, and study the interactions between physical processes involved in planet formation.",
+      "keywords": [
+        "exoplanet astronomy",
+        "exoplanet population synthesis",
+        "machine learning",
+        "neural density estimation",
+        "planet formation",
+        "protoplanetary disc",
+        "simulation based inference",
+        "statistical inference"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 16
+    },
+    {
+      "source_id": "2024ApJ...963L...5X",
+      "source_type": "paper",
+      "doi": "10.3847/2041-8213/ad2682",
+      "title": "JWST Transmission Spectroscopy of HD 209458b: A Supersolar Metallicity, a Very Low C/O, and No Evidence of CH<SUB>4</SUB>, HCN, or C<SUB>2</SUB>H<SUB>2</SUB>",
+      "authors": [
+        "Xue, Qiao",
+        "Bean, Jacob L.",
+        "Zhang, Michael",
+        "Welbanks, Luis",
+        "Lunine, Jonathan",
+        "August, Prune"
+      ],
+      "year": 2024,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2024ApJ...963L...5X.pdf",
+      "retrieval_priority": 0.6041380744095972,
+      "abstract": "We present the transmission spectrum of the original transiting hot Jupiter HD 209458b from 2.3 to 5.1 μm as observed with the NIRCam instrument on the James Webb Space Telescope (JWST). Previous studies of HD 209458b's atmosphere have given conflicting results on the abundance of H<SUB>2</SUB>O and the presence of carbon- and nitrogen-bearing species, which have significant ramifications on the inferences of the planet's metallicity (M/H) and carbon-to-oxygen (C/O) ratio. We detect strong features of H<SUB>2</SUB>O and CO<SUB>2</SUB> in the JWST transmission spectrum, which when interpreted using a retrieval that assumes thermochemical equilibrium and fractional gray cloud opacity yields ${3}_{-1}^{+4}$ × solar metallicity and C/O = ${0.11}_{-0.06}^{+0.12}$ . The derived metallicity is consistent with the atmospheric metallicity─planet mass trend observed in solar gas giants. The low C/O ratio suggests that this planet has undergone significant contamination by evaporating planetesimals while migrating inward. We are also able to place upper limits on the abundances of CH<SUB>4</SUB>, C<SUB>2</SUB>H<SUB>2</SUB>, and HCN of log( ${\\chi }_{{\\mathrm{CH}}_{4}}$ ) = −5.6, log( ${\\chi }_{{{\\rm{C}}}_{2}{{\\rm{H}}}_{2}}$ ) = −5.7, and log( ${\\chi }_{\\mathrm{HCN}}$ ) = −5.1, which are in tension with the recent claim of a detection of these species using ground-based cross-correlation spectroscopy. We find that HD 209458b has a weaker CO<SUB>2</SUB> feature size than WASP-39b when comparing their scale-height-normalized transmission spectra. On the other hand, the size of HD 209458b's H<SUB>2</SUB>O feature is stronger, thus reinforcing the low C/O inference.",
+      "keywords": [
+        "Exoplanet atmospheres",
+        "Exoplanet atmospheric composition",
+        "Exoplanet atmospheric structure",
+        "487",
+        "2021",
+        "2310",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 29
+    },
+    {
+      "source_id": "2023ApJ...953..166X",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ace43f",
+      "title": "The Mass Fractionation of Helium in the Escaping Atmosphere of HD 209458b",
+      "authors": [
+        "Xing, Lei",
+        "Yan, Dongdong",
+        "Guo, Jianheng"
+      ],
+      "year": 2023,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2023ApJ...953..166X.pdf",
+      "retrieval_priority": 0.5752983197853807,
+      "abstract": "The absorption signals of metastable He in HD 209458b and several other exoplanets can be explained via an escaping atmosphere model with a subsolar He/H ratio. The low abundance of helium can be a result of planet formation if there is a small amount of helium in their primordial atmosphere. However, another possibility is that the low He/H ratio is caused by the process of mass fractionation of helium in the atmosphere. In order to investigate the effect of fractionation in the hydrogen-helium atmosphere, we developed a self-consistent multi-fluid 1D hydrodynamic model based on the well-known open-source MHD code PLUTO. Our simulations show that a lower He/H ratio can be produced spontaneously in the multi-fluid model. We further modeled the transmission spectra of He 10830 lines for HD 209458b in a broad parameter space. The transmission spectrum of the observation can be fitted in the condition of 1.80 times the X-ray and extreme-ultraviolet flux of the quiet Sun. Meanwhile, the ratio of the escaping flux of helium to hydrogen, F <SUB>He</SUB>/F <SUB>H</SUB>, is 0.039. Our results indicate that the mass fractionation of helium to hydrogen can naturally interpret the low He/H ratio required by the observation. Thus, in the escaping atmosphere of HD 209458b, decreasing the abundance of helium in the atmosphere is not needed even if its He abundance is similar to that of the Sun. The simulation presented in this work hints that in the escaping atmosphere, mass fractionation can also occur on other exoplanets, which needs to be explored further. *Revised Manuscript on 2022 June 7",
+      "keywords": [
+        "Exoplanet atmospheres",
+        "Hydrodynamical simulations",
+        "Radiative transfer simulations",
+        "487",
+        "767",
+        "1967",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 30
+    },
+    {
+      "source_id": "2022MNRAS.517.1724D",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stac112",
+      "title": "Effects of charge exchange on the evaporative wind of HD 209458b",
+      "authors": [
+        "Debrecht, Alex",
+        "Carroll-Nellenback, Jonathan",
+        "Frank, Adam",
+        "Blackman, Eric G.",
+        "Fossati, Luca",
+        "Murray-Clay, Ruth",
+        "McCann, John"
+      ],
+      "year": 2022,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2022MNRAS.517.1724D.pdf",
+      "retrieval_priority": 0.6106789212539272,
+      "abstract": "The role of charge exchange in shaping exoplanet photoevaporation remains a topic of contention. Exchange of electrons between stellar wind protons from the exoplanet's host star and neutral hydrogen from the planet's wind has been proposed as a mechanism to create 'energetic neutral atoms' (ENAs), which could explain the high absorption line velocities observed in systems where mass-loss is occurring. In this paper, we present results from three-dimensional hydrodynamic simulations of the mass-loss of a planet similar to HD 209458b. We self-consistently launch a planetary wind by calculating the ionization and heating resulting from incident high-energy radiation, inject a stellar wind into the simulation, and allow electron exchange between the stellar and planetary winds. We predict the potential production of ENAs by the wind-wind interaction analytically, and then present the results of our simulations, which confirm the analytic limits. Within the limits of our hydrodynamic simulation, we find that charge exchange with the stellar wind properties examined here is unable to explain the absorption observed at high Doppler velocities.",
+      "keywords": [
+        "hydrodynamics",
+        "planets and satellites: atmospheres",
+        "planets and satellites: individual: HD 209458b",
+        "planet-star interactions",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 27
+    },
+    {
+      "source_id": "2022A&A...664A..56S",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202142728",
+      "title": "Exploring the deep atmospheres of HD 209458b and WASP-43b using a non-gray general circulation model",
+      "authors": [
+        "Schneider, Aaron David",
+        "Carone, Ludmila",
+        "Decin, Leen",
+        "Jørgensen, Uffe Gråe",
+        "Mollière, Paul",
+        "Baeyens, Robin",
+        "Kiefer, Sven",
+        "Helling, Christiane"
+      ],
+      "year": 2022,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2022A&A...664A..56S.pdf",
+      "retrieval_priority": 0.43837001442436985,
+      "abstract": "Simulations with a 3D general circulation model (GCM) suggest that one potential driver behind the observed radius inflation in hot Jupiters may be the downward advection of energy from the highly irradiated photosphere into the deeper layers. Here, we compare dynamical heat transport within the non-inflated hot Jupiter WASP-43b and the canonical inflated hot Jupiter HD 209458b, with similar effective temperatures. We investigate to what extent the radiatively driven heating and cooling in the photosphere (at pressures smaller than 1 bar) influence the deeper temperature profile (at pressures between 1 to 700 bar). Our simulations with the new non-gray 3D radiation-hydrodynamical model expeRT/MITgcm show that the deep temperature profile of WASP-43b is associated with a relatively cold adiabat. The deep layers of HD 209458b, however, do not converge and remain nearly unchanged regardless of whether a cold or a hot initial state is used. Furthermore, we show that different flow structures in the deep atmospheric layers arise. There, we find that WASP-43b exhibits a deep equatorial jet, driven by the relatively fast tidally locked rotation of this planet (0.81 days), as compared to HD 209458b (3.47 days). However, by comparing simulations with different rotation periods, we find that the resulting flow structures only marginally influence the temperature evolution in the deep atmosphere, which is almost completely dominated by radiative heating and cooling. Furthermore, we find that the evolution of deeper layers can influence the 3D temperature structure in the photosphere of WASP-43b. Thus, dayside emission spectra of WASP-43b may shed more light onto the dynamical processes occurring at greater depths.",
+      "keywords": [
+        "radiation: dynamics",
+        "radiative transfer",
+        "scattering",
+        "planets and satellites: atmospheres-planets",
+        "satellites: gaseous planets",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 58
+    },
+    {
+      "source_id": "2020MNRAS.493.1292D",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/staa351",
+      "title": "Effects of radiation pressure on the evaporative wind of HD 209458b",
+      "authors": [
+        "Debrecht, Alex",
+        "Carroll-Nellenback, Jonathan",
+        "Frank, Adam",
+        "Blackman, Eric G.",
+        "Fossati, Luca",
+        "McCann, John",
+        "Murray-Clay, Ruth"
+      ],
+      "year": 2020,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2020MNRAS.493.1292D.pdf",
+      "retrieval_priority": 0.637322575811641,
+      "abstract": "The role of radiation pressure in shaping exoplanet photoevaporation remains a topic of contention. Radiation pressure from the exoplanet's host star has been proposed as a mechanism to drive the escaping atmosphere into a 'cometary' tail and explain the high velocities observed in systems where mass-loss is occurring. In this paper, we present results from high-resolution 3D hydrodynamic simulations of a planet similar to HD 209458b. We self-consistently launch a wind flowing outwards from the planet by calculating the ionization and heating resulting from incident high-energy radiation, and account for radiation pressure. We first present a simplified calculation, setting a limit on the Lyman-α flux required to drive the photoevaporated planetary material to larger radii and line-of-sight velocities. We then present the results of our simulations, which confirm the limits determined by our analytic calculation. We thus demonstrate that, within the limits of our hydrodynamic simulation and for the Lyman-α fluxes expected for HD 209458, radiation pressure is unlikely to significantly affect photoevaporative winds or to explain the high velocities at which wind material is observed, though further possibilities remain to be investigated.",
+      "keywords": [
+        "hydrodynamics",
+        "planets and satellites: atmospheres",
+        "planets and satellites: individual: HD 209458b",
+        "planet-star interactions",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 24
+    },
+    {
+      "source_id": "2020A&A...635A.206C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201937221",
+      "title": "Is there Na I in the atmosphere of HD 209458b?. Effect of the centre-to-limb variation and Rossiter-McLaughlin effect in transmission spectroscopy studies",
+      "authors": [
+        "Casasayas-Barris, N.",
+        "Pallé, E.",
+        "Yan, F.",
+        "Chen, G.",
+        "Luque, R.",
+        "Stangret, M.",
+        "Nagel, E.",
+        "Zechmeister, M.",
+        "Oshagh, M.",
+        "Sanz-Forcada, J.",
+        "Nortmann, L.",
+        "Alonso-Floriano, F. J.",
+        "Amado, P. J.",
+        "Caballero, J. A.",
+        "Czesla, S.",
+        "Khalafinejad, S.",
+        "López-Puertas, M.",
+        "López-Santiago, J.",
+        "Molaverdikhani, K.",
+        "Montes, D.",
+        "Quirrenbach, A.",
+        "Reiners, A.",
+        "Ribas, I.",
+        "Sánchez-López, A.",
+        "Zapatero Osorio, M. R."
+      ],
+      "year": 2020,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2020A&A...635A.206C.pdf",
+      "retrieval_priority": 0.5317803205271574,
+      "abstract": "HD 209458b was the first transiting planet discovered, and the first for which an atmosphere, in particular Na I, was detected. With time, it has become one of the most frequently studied planets, with a large diversity of atmospheric studies using low- and high-resolution spectroscopy. Here, we present transit spectroscopy observations of HD 209458b using the HARPS-N and CARMENES spectrographs. We fit the Rossiter-McLaughlin effect by combining radial velocity data from both instruments (nine transits in total), measuring a projected spin-orbit angle of - 1.6 ± 0.3 deg. We also present the analysis of high-resolution transmission spectroscopy around the Na I region at 590 nm, using a total of five transit observations. In contrast to previous studies where atmospheric Na I absorption is detected, we find that for all of the nights, whether individually or combined, the transmission spectra can be explained by the combination of the centre-to-limb variation and the Rossiter-McLaughlin effect. This is also observed in the time-evolution maps and transmission light curves, but at lower signal-to-noise ratio. Other strong lines such as Hα, Ca II IRT, the Mg I triplet region, and K I D1 are analysed, and are also consistent with the modelled effects, without considering any contribution from the exoplanet atmosphere. Thus, the transmission spectrum reveals no detectable Na I absorption in HD 209458b. We discuss how previous pioneering studies of this benchmark object may have overlooked these effects. While for some star-planet systems these effects are small, for other planetary atmospheres the results reported in the literature may require revision.",
+      "keywords": [
+        "planetary systems",
+        "planets and satellites: individual: HD 209458b",
+        "planets and satellites: atmospheres",
+        "methods: observational",
+        "techniques: spectroscopic",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 48
+    },
+    {
+      "source_id": "2020AJ....159..225K",
+      "source_type": "paper",
+      "doi": "10.3847/1538-3881/ab83f4",
+      "title": "Smaller than Expected Bright-spot Offsets in Spitzer Phase Curves of the Hot Jupiter Qatar-1b",
+      "authors": [
+        "Keating, Dylan",
+        "Stevenson, Kevin B.",
+        "Cowan, Nicolas B.",
+        "Rauscher, Emily",
+        "Bean, Jacob L.",
+        "Bell, Taylor",
+        "Dang, Lisa",
+        "Deming, Drake",
+        "Désert, Jean-Michel",
+        "Feng, Y. Katherina",
+        "Fortney, Jonathan J.",
+        "Kataria, Tiffany",
+        "Kempton, Eliza M.-R.",
+        "Lewis, Nikole",
+        "Line, Michael R.",
+        "Mansfield, Megan",
+        "May, Erin",
+        "Morley, Caroline",
+        "Showman, Adam P."
+      ],
+      "year": 2020,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2020AJ....159..225K.pdf",
+      "retrieval_priority": 0.2827888367306535,
+      "abstract": "We present Spitzer full-orbit thermal phase curves of the hot Jupiter Qatar-1b, a planet with the same equilibrium temperature -- and intermediate surface gravity and orbital period -- as the well-studied planets HD 209458b and WASP-43b. We measure secondary eclipse depths of 0.21 ± 0.02% at 3.6 μm and 0.30 ± 0.02% at 4.5 μm, corresponding to dayside brightness temperatures of ${1542}_{-31}^{+32} K and ${1557}_{-36}^{+35} K, respectively, consistent with a vertically isothermal dayside. The respective nightside brightness temperatures are ${1117}_{-71}^{+76} and ${1167}_{-74}^{+69} K, in line with a trend that hot Jupiters all have similar nightside temperatures. We infer a Bond albedo of ${0.12}_{-0.16}^{+0.14} and a moderate day-night heat recirculation efficiency, similar to HD 209458b. General circulation models for HD 209458b and WASP-43b predict that their bright spots should be shifted east of the substellar point by tens of degrees, and these predictions were previously confirmed with Spitzer full-orbit phase curve observations. The phase curves of Qatar-1b are likewise expected to exhibit eastward offsets. Instead, the observed phase curves are consistent with no offset: 11° ± 7° at 3.6 μm and -4° ± 7° at 4.5 μm. The discrepancy in circulation patterns between these three otherwise similar planets points to the importance of secondary parameters like rotation rate and surface gravity, and the presence or absence of clouds, in determining atmospheric conditions on hot Jupiters.",
+      "keywords": [
+        "Extrasolar gaseous giant planets",
+        "Light curves",
+        "Hot Jupiters",
+        "Exoplanet atmospheres",
+        "509",
+        "918",
+        "753",
+        "487",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2020MNRAS.491.3435S",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stz3211",
+      "title": "Three-dimensional modelling of absorption by various species for hot Jupiter HD 209458b",
+      "authors": [
+        "Shaikhislamov, I. F.",
+        "Khodachenko, M. L.",
+        "Lammer, H.",
+        "Berezutsky, A. G.",
+        "Miroshnichenko, I. B.",
+        "Rumenskikh, M. S."
+      ],
+      "year": 2020,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2020MNRAS.491.3435S.pdf",
+      "retrieval_priority": 0.5315096642952953,
+      "abstract": "The absorption of stellar radiation observed at transits of HD 209458b in resonant lines of O I and C II has not yet been satisfactorily modelled. In our previous two-dimensional (2D) simulations, we have shown that the hydrogen-dominated upper atmosphere of HD 209458b, heated by extreme ultraviolet radiation, expands supersonically beyond the Roche lobe and drags heavier species along with it. Assuming solar abundances, O I and C II particles accelerated by tidal forces to velocities up to 50 km s^{-1} should produce the absorption due to Doppler resonance at the level of 6-10 per cent, consistent with the observations. Since the 2D geometry does not take into account the Coriolis force in a planet reference frame, the question remains to what extent the spiralling of escaping planetary material and actually achieved velocity may influence the conclusions made on the basis of 2D modelling. In this paper, we apply for the first time in studies of HD 209458b a global 3D hydrodynamic multifluid model. The results confirm our previous findings that the velocity of the planetary flow is sufficiently high to match the widths of O I and C II resonant lines. To match the absorption in those lines, including H I, with observations, the mass-loss rate of HD 209458b should be about 2.5×10^{11} g s^{-1}, which is 3.5 times larger than that revealed by the 2D model. The other novel finding is that matching of the absorption measured in Mg II and S III lines requires at least 10 times lower abundances of these elements than the solar values.",
+      "keywords": [
+        "hydrodynamics",
+        "plasmas",
+        "planets and satellites: atmospheres",
+        "planets and satellites: individual: exoplanets",
+        "planets and satellites: physical evolution",
+        "planet-star interactions",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Physics - Plasma Physics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2018ApJ...863L..11H",
+      "source_type": "paper",
+      "doi": "10.3847/2041-8213/aac49d",
+      "title": "Evidence for Multiple Molecular Species in the Hot Jupiter HD 209458b",
+      "authors": [
+        "Hawker, George A.",
+        "Madhusudhan, Nikku",
+        "Cabot, Samuel H. C.",
+        "Gandhi, Siddharth"
+      ],
+      "year": 2018,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2018ApJ...863L..11H.pdf",
+      "retrieval_priority": 0.43010973485211557,
+      "abstract": "Molecular species in planetary atmospheres provide key insights into their atmospheric processes and formation conditions. In recent years, high-resolution Doppler spectroscopy in the near-infrared has allowed detections of H<SUB>2</SUB>O and CO in the atmospheres of several hot Jupiters. This method involves monitoring the spectral lines of the planetary thermal emission Doppler-shifted due to the radial velocity of the planet over its orbit. However, aside from CO and H<SUB>2</SUB>O, which are the primary oxygen- and carbon-bearing species in hot H<SUB>2</SUB>-rich atmospheres, little else is known about the molecular compositions of hot Jupiters. Several recent studies have suggested the importance and detectability of nitrogen-bearing species in such atmospheres. In this Letter, we confirm potential detections of CO and H<SUB>2</SUB>O in the hot Jupiter HD 209458b using high-resolution spectroscopy. We also report a cross-correlation peak with a signal-to-noise ratio of 4.7 from a search for HCN. The results are obtained using high-resolution phase-resolved spectroscopy with the Very Large Telescope CRyogenic high-resolution InfraRed Echelle Spectrograph (VLT CRIRES) and standard analysis methods reported in the literature. A more robust treatment of telluric contamination and other residuals would improve confidence and enable unambiguous molecular detections. The presence of HCN could provide constraints on the C/O ratio of HD 209458b and its potential origins.",
+      "keywords": [
+        "methods: data analysis",
+        "planets and satellites: atmospheres",
+        "techniques: spectroscopic",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 57
+    },
+    {
+      "source_id": "2018MNRAS.479.3115V",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/sty1544",
+      "title": "Magnetized winds and their influence in the escaping upper atmosphere of HD 209458b",
+      "authors": [
+        "Villarreal D'Angelo, Carolina",
+        "Esquivel, Alejandro",
+        "Schneiter, Matías",
+        "Sgró, Mario Agustín"
+      ],
+      "year": 2018,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2018MNRAS.479.3115V.pdf",
+      "retrieval_priority": 0.6597963094128877,
+      "abstract": "Lyman α observations during an exoplanet transit have proved to be very useful to study the interaction between the stellar wind and the planetary atmosphere. They have been extensively used to constrain planetary system parameters that are not directly observed, such as the planetary mass-loss rate. In this way, Ly α observations can be a powerful tool to infer the existence of a planetary magnetic field, since it is expected that the latter will affect the escaping planetary material. To explore the effect that magnetic fields have on the Ly α absorption of HD 209458b, we run a set of 3D MHD simulations including dipolar magnetic fields for the planet and the star. We assume values for the surface magnetic field at the poles of the planet in the range of [0-5] G, and from 1 to 5 G at the poles of the star. Our models also include collisional and photo-ionization, radiative recombination, and an approximation for the radiation pressure. Our results show that the magnetic field of the planet and the star change the shape of the Ly α absorption profile, since it controls the extent of the planetary magnetosphere and the amount of neutral material inside it. The model that best reproduces the absorption observed in HD 209458b (with canonical values for the stellar wind parameters) corresponds to a dipole planetary field of ≲ 1 G at the poles.",
+      "keywords": [
+        "MHD",
+        "methods: numerical",
+        "planets and satellites: general",
+        "planet-star interactions",
+        "planets and satellites: individual: HD 209458b",
+        "stars: winds",
+        "outflows",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 22
+    },
+    {
+      "source_id": "2017A&A...608A..75C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201731129",
+      "title": "Effect of stellar flares on the upper atmospheres of HD 189733b and HD 209458b",
+      "authors": [
+        "Chadney, J. M.",
+        "Koskinen, T. T.",
+        "Galand, M.",
+        "Unruh, Y. C.",
+        "Sanz-Forcada, J."
+      ],
+      "year": 2017,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2017A&A...608A..75C.pdf",
+      "retrieval_priority": 0.6151872126797154,
+      "abstract": "Stellar flares are a frequent occurrence on young low-mass stars around which many detected exoplanets orbit. Flares are energetic, impulsive events, and their impact on exoplanetary atmospheres needs to be taken into account when interpreting transit observations. We have developed a model to describe the upper atmosphere of extrasolar giant planets (EGPs) orbiting flaring stars. The model simulates thermal escape from the upper atmospheres of close-in EGPs. Ionisation by solar radiation and electron impact is included and photo-chemical and diffusive transport processes are simulated. This model is used to study the effect of stellar flares from the solar-like G star <ASTROBJ>HD 209458</ASTROBJ> and the young K star <ASTROBJ>HD 189733</ASTROBJ> on their respective planets, <ASTROBJ>HD 209458b</ASTROBJ> and <ASTROBJ>HD 189733b</ASTROBJ>. The <ASTROBJ>Sun</ASTROBJ> is used as a proxy for HD 209458, and <ASTROBJ>∊ Eridani</ASTROBJ>, as a proxy for HD 189733. A hypothetical HD 209458b-like planet orbiting the very active M star <ASTROBJ>AU Microscopii</ASTROBJ> is also simulated. We find that the neutral upper atmosphere of EGPs is not significantly affected by typical flares on HD 209458 and HD 189733. Therefore, stellar flares alone would not cause large enough changes in planetary mass loss to explain the variations in HD 189733b transit depth seen in previous studies, although we show that it may be possible that an extreme stellar proton event could result in the required mass loss. Our simulations do however reveal an enhancement in electron number density in the ionosphere of these planets, the peak of which is located in the layer where stellar X-rays are absorbed. Electron densities are found to reach 2.2 to 3.5 times pre-flare levels and enhanced electron densities last from about 3 to 10 h after the onset of the flare, depending on the composition of the ionospheric layer. The strength of the flare and the width of its spectral energy distribution affect the range of altitudes in the ionosphere that see enhancements in ionisation. A large broadband continuum component in the XUV portion of the flaring spectrum in very young flare stars, such as AU Mic, results in a broad range of altitudes affected in planets orbiting this star. Indeed, as well as the X-ray absorption layer, the layer in which EUV photons are absorbed is also strongly enhanced.",
+      "keywords": [
+        "planets and satellites: atmospheres",
+        "planets and satellites: individual: HD 189733b",
+        "ultraviolet: stars",
+        "planets and satellites: individual: HD 209458b",
+        "stars: flare",
+        "X-rays: stars",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 25
+    },
+    {
+      "source_id": "2017ApJ...844...94K",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aa7b75",
+      "title": "Structure and Evolution of Internally Heated Hot Jupiters",
+      "authors": [
+        "Komacek, Thaddeus D.",
+        "Youdin, Andrew N."
+      ],
+      "year": 2017,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2017ApJ...844...94K.pdf",
+      "retrieval_priority": 0.4152854893312212,
+      "abstract": "Hot Jupiters receive strong stellar irradiation, producing equilibrium temperatures of 1000{--}2500 {{K}}. Incoming irradiation directly heats just their thin outer layer, down to pressures of ∼0.1 bars. In standard irradiated evolution models of hot Jupiters, predicted transit radii are too small. Previous studies have shown that deeper heating—at a small fraction of the heating rate from irradiation—can explain observed radii. Here we present a suite of evolution models for HD 209458b, where we systematically vary both the depth and intensity of internal heating, without specifying the uncertain heating mechanism(s). Our models start with a hot, high-entropy planet whose radius decreases as the convective interior cools. The applied heating suppresses this cooling. We find that very shallow heating—at pressures of 1{--}10 {bars}—does not significantly suppress cooling, unless the total heating rate is ≳ 10 % of the incident stellar power. Deeper heating, at 100 bars, requires heating at only 1% of the stellar irradiation to explain the observed transit radius of 1.4{R}<SUB>{Jup</SUB>} after 5 Gyr of cooling. In general, more intense and deeper heating results in larger hot-Jupiter radii. Surprisingly, we find that heat deposited at {10}<SUP>4</SUP> {bars}—which is exterior to ≈ 99 % of the planet’s mass—suppresses planetary cooling as effectively as heating at the center. In summary, we find that relatively shallow heating is required to explain the radii of most hot Jupiters, provided that this heat is applied early and persists throughout their evolution.",
+      "keywords": [
+        "methods: numerical",
+        "planets and satellites: atmospheres",
+        "planets and satellites: gaseous planets",
+        "planets and satellites: individual: HD 209458b",
+        "planets and satellites: interiors",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 60
+    },
+    {
+      "source_id": "2016MNRAS.457.1666S",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stw076",
+      "title": "Photoionization of planetary winds: case study HD 209458b",
+      "authors": [
+        "Schneiter, E. M.",
+        "Esquivel, A.",
+        "Villarreal D'Angelo, C. S.",
+        "Velázquez, P. F.",
+        "Raga, A. C.",
+        "Costa, A."
+      ],
+      "year": 2016,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2016MNRAS.457.1666S.pdf",
+      "retrieval_priority": 0.6426916035015693,
+      "abstract": "Close-in hot Jupiters are exposed to a tremendous photon flux that ionizes the neutral escaping material from the planet leaving an observable imprint that makes them an interesting laboratory for testing theoretical models. In this work, we present 3D hydrodynamic simulations with radiation transfer calculations of a close-in exoplanet in a blow-off state. We calculate the Ly α absorption and compare it with observations of HD 209458b and previous simplified model results. Our results show that the hydrodynamic interaction together with a proper calculation of the photoionization process are able to reproduce the main features of the observed Ly α absorption, in particular at the blue-shifted wings of the line. We found that the ionizing stellar flux produce an almost linear effect on the amount of absorption in the wake. Varying the planetary mass-loss rate and the radiation flux, we were able to reproduce the 10 per cent absorption observed at -100 km s<SUP>-1</SUP>.",
+      "keywords": [
+        "hydrodynamics",
+        "radiation mechanisms: general",
+        "methods: numerical",
+        "planets and satellites: individual: HD 209458b",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 23
+    },
+    {
+      "source_id": "2014A&A...565A.105B",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201323064",
+      "title": "Modeling magnesium escape from HD 209458b atmosphere",
+      "authors": [
+        "Bourrier, V.",
+        "Lecavelier des Etangs, A.",
+        "Vidal-Madjar, A."
+      ],
+      "year": 2014,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2014A&A...565A.105B.pdf",
+      "retrieval_priority": 0.4555206700706851,
+      "abstract": "Transit observations in the Mg i line of HD 209458b revealed signatures of neutral magnesium escaping the upper atmosphere of the planet, while no atmospheric absorption was found in the Mg ii doublet. Here we present a 3D particle model of the dynamics of neutral and ionized magnesium populations, coupled with an analytical modeling of the atmosphere below the exobase. Theoretical Mg i absorption line profiles are directly compared with the absorption observed in the blue wing of the line during the planet transit. Observations are well-fitted with an escape rate of neutral magnesium Ṁ<SUB>Mg<SUP>0</SUP></SUB> = 2.9 <SUB>-0.9</SUB><SUP>+0.5</SUP>× 10<SUP>7</SUP> g s<SUP>-1</SUP>, an exobase close to the Roche lobe (R<SUB>exo</SUB> = 3 <SUB>-0.9</SUB><SUP>+1.3</SUP> R<SUB>p</SUB>, where R<SUB>p</SUB> is the planet radius) and a planetary wind velocity at the exobase v<SUB>pl - wind</SUB> = 25 km s<SUP>-1</SUP>. The observed velocities of the planet-escaping magnesium up to -60 km s<SUP>-1</SUP> are well explained by radiation pressure acceleration, provided that UV-photoionization be compensated for by electron recombination up to ~ 13 R<SUB>p</SUB>. If the exobase properties are constrained to values given by theoretical models of the deeper atmosphere (R<SUB>exo</SUB> = 2 R<SUB>p</SUB> and v<SUB>pl - wind</SUB> = 10 km s<SUP>-1</SUP>), the best fit to the observations is found at a similar electron density and escape rate within 2σ. In all cases, the mean temperature of the atmosphere below the exobase must be higher than ~6100 K. Simulations predict a redward expansion of the absorption profile from the beginning to the end of the transit. The spatial and spectral structure of the extended atmosphere is the result of complex interactions between radiation pressure, planetary gravity, and self-shielding, and can be probed through the analysis of transit absorption profiles in the Mg i line.",
+      "keywords": [
+        "planets and satellites: atmospheres",
+        "stars: individual: HD 209458",
+        "methods: numerical",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 52
+    },
+    {
+      "source_id": "2014ApJ...790...79R",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/790/1/79",
+      "title": "The Atmospheric Circulation and Observable Properties of Non-synchronously Rotating Hot Jupiters",
+      "authors": [
+        "Rauscher, Emily",
+        "Kempton, Eliza M. R."
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2014ApJ...790...79R.pdf",
+      "retrieval_priority": 0.28882006336581306,
+      "abstract": "We study the feasibility of observationally constraining the rotation rate of hot Jupiters, planets that are typically assumed to have been tidally locked into synchronous rotation. We use a three-dimensional General Circulation Model to solve for the atmospheric structure of two hot Jupiters (HD 189733b and HD 209458b), assuming rotation periods that are 0.5, 1, or 2 times their orbital periods (2.2 and 3.3 days, respectively), including the effect of variable stellar heating. We compare two observable properties: (1) the spatial variation of flux emitted by the planet, measurable in orbital phase curves, and (2) the net Doppler shift in transmission spectra of the atmosphere, which is tantalizingly close to being measurable in high-resolution transit spectra. Although we find little difference between the observable properties of the synchronous and non-synchronous models of HD 189733b, we see significant differences when we compare the models of HD 209458b. In particular, the slowly rotating model of HD 209458b has an atmospheric circulation pattern characterized by westward flow and an orbital phase curve that peaks after secondary eclipse (in contrast to all of our other models), while the quickly rotating model has a net Doppler shift that is more strongly blueshifted than the other models. Our results demonstrate that the combined use of these two techniques may be a fruitful way to constrain the rotation rate of some planets and motivate future work on this topic.",
+      "keywords": [
+        "hydrodynamics",
+        "planets and satellites: atmospheres",
+        "planets and satellites: gaseous planets",
+        "radiative transfer",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 9
+    },
+    {
+      "source_id": "2013ApJ...764..103R",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/764/1/103",
+      "title": "Three-dimensional Atmospheric Circulation Models of HD 189733b and HD 209458b with Consistent Magnetic Drag and Ohmic Dissipation",
+      "authors": [
+        "Rauscher, Emily",
+        "Menou, Kristen"
+      ],
+      "year": 2013,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2013ApJ...764..103R.pdf",
+      "retrieval_priority": 0.6103746602573722,
+      "abstract": "We present the first three-dimensional circulation models for extrasolar gas giant atmospheres with geometrically and energetically consistent treatments of magnetic drag and ohmic dissipation. Atmospheric resistivities are continuously updated and calculated directly from the flow structure, strongly coupling the magnetic effects with the circulation pattern. We model the hot Jupiters HD 189733b (T <SUB>eq</SUB> ≈ 1200 K) and HD 209458b (T <SUB>eq</SUB> ≈ 1500 K) and test planetary magnetic field strengths from 0 to 30 G. We find that even at B = 3 G the atmospheric structure and circulation of HD 209458b are strongly influenced by magnetic effects, while the cooler HD 189733b remains largely unaffected, even in the case of B = 30 G and super-solar metallicities. Our models of HD 209458b indicate that magnetic effects can substantially slow down atmospheric winds, change circulation and temperature patterns, and alter observable properties. These models establish that longitudinal and latitudinal hot spot offsets, day-night flux contrasts, and planetary radius inflation are interrelated diagnostics of the magnetic induction process occurring in the atmospheres of hot Jupiters and other similarly forced exoplanets. Most of the ohmic heating occurs high in the atmosphere and on the dayside of the planet, while the heating at depth is strongly dependent on the internal heat flux assumed for the planet, with more heating when the deep atmosphere is hot. We compare the ohmic power at depth in our models, and estimates of the ohmic dissipation in the bulk interior (from general scaling laws), to evolutionary models that constrain the amount of heating necessary to explain the inflated radius of HD 209458b. Our results suggest that deep ohmic heating can successfully inflate the radius of HD 209458b for planetary magnetic field strengths of B &gt;= 3-10 G.",
+      "keywords": [
+        "hydrodynamics",
+        "magnetic fields",
+        "methods: numerical",
+        "planets and satellites: individual: HD 189733b HD 209458b",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 41
+    },
+    {
+      "source_id": "2010OAJ.....3..167I",
+      "source_type": "paper",
+      "doi": "10.2174/1874381101003010167",
+      "title": "Constraining the Kehagias-Sfetsos Solution of the Ho!ava-Lifshitz Modified Gravity with Extrasolar Planets",
+      "authors": [
+        "Iorio, Lorenzo",
+        "Ruggiero, Matteo Luca"
+      ],
+      "year": 2010,
+      "journal": "The Open Astronomy Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2010OAJ.....3..167I.pdf",
+      "retrieval_priority": 0.230944573898561,
+      "abstract": "We consider the Kehagias-Sfetsos (KS) solution in the Ho!ava-Lifshitz gravity that is the analog of the general relativistic Schwarzschild black hole. In the weak-field and slow-motion approximation, we, first, work out the correction to the third Kepler law of a test particle induced by such a solution. Then, we compare it to the phenomenologically determined orbital period of the transiting extrasolar planet HD209458b \"Osiris\" to preliminarily obtain an order-ofmagnitude lower bound on the KS dimensionless parameter ω0 ≥2265; 1.4 \" 10-18. As suggestions for further analyses, the entire data set of HD209458b should be re-processed by explicitly modeling KS gravity as well, and one or more dedicated solve-for parameter(s) should be estimated.",
+      "keywords": [
+        "General Relativity and Quantum Cosmology",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "High Energy Physics - Phenomenology",
+        "Physics - Space Physics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 20
+    },
+    {
+      "source_id": "2010ApJ...717.1291L",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/717/2/1291",
+      "title": "Observations of Mass Loss from the Transiting Exoplanet HD 209458b",
+      "authors": [
+        "Linsky, Jeffrey L.",
+        "Yang, Hao",
+        "France, Kevin",
+        "Froning, Cynthia S.",
+        "Green, James C.",
+        "Stocke, John T.",
+        "Osterman, Steven N."
+      ],
+      "year": 2010,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2010ApJ...717.1291L.pdf",
+      "retrieval_priority": 0.7011111111111111,
+      "abstract": "Using the new Cosmic Origins Spectrograph on the Hubble Space Telescope, we obtained moderate-resolution, high signal/noise ultraviolet spectra of HD 209458 and its exoplanet HD 209458b during transit, both orbital quadratures, and secondary eclipse. We compare transit spectra with spectra obtained at non-transit phases to identify spectral features due to the exoplanet's expanding atmosphere. We find that the mean flux decreased by 7.8% ± 1.3% for the C II 1334.5323 Å and 1335.6854 Å lines and by 8.2% ± 1.4% for the Si III 1206.500 Å line during transit compared to non-transit times in the velocity interval -50 to +50 km s<SUP>-1</SUP>. Comparison of the C II and Si III line depths and transit/non-transit line ratios shows deeper absorption features near -10 and +15 km s<SUP>-1</SUP> and less certain features near -40 and +30-70 km s<SUP>-1</SUP>, but future observations are needed to verify this first detection of velocity structure in the expanding atmosphere of an exoplanet. Our results for the C II lines and the non-detection of Si IV 1394.76 Å absorption are in agreement with Vidal-Madjar et al., but we find absorption during transit in the Si III line contrary to the earlier result. The 8% ± 1% obscuration of the star during transit is far larger than the 1.5% obscuration by the exoplanet's disk. Absorption during transit at velocities between -50 and +50 km s<SUP>-1</SUP> in the C II and Si III lines requires high-velocity ion absorbers. Assuming hydrodynamic model values for the gas temperature and outflow velocity at the limb of the outflow as seen in the C II lines, we find mass-loss rates in the range (8-40)×10<SUP>10</SUP> g s<SUP>-1</SUP>. These rates assume that the carbon abundance is solar, which is not the case for the giant planets in the solar system. Our mass-loss rate estimate is consistent with theoretical hydrodynamic models that include metals in the outflowing gas. <P />Based on observations made with the NASA/ESA Hubble Space Telescope, obtained from the Data Archive at the Space Telescope Science Institute. STScI is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555. These observations are associated with the HST GTO program 11534.",
+      "keywords": [
+        "planets and satellites: atmospheres",
+        "planets and satellites: individual: HD 209458b",
+        "planets and satellites: physical evolution",
+        "stars: individual: HD 209458",
+        "ultraviolet: stars",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 21
+    },
+    {
+      "source_id": "2010Natur.465.1049S",
+      "source_type": "paper",
+      "doi": "10.1038/nature09111",
+      "title": "The orbital motion, absolute mass and high-altitude winds of exoplanet HD209458b",
+      "authors": [
+        "Snellen, Ignas A. G.",
+        "de Kok, Remco J.",
+        "de Mooij, Ernst J. W.",
+        "Albrecht, Simon"
+      ],
+      "year": 2010,
+      "journal": "Nature",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2010Natur.465.1049S.pdf",
+      "retrieval_priority": 0.6692618873076109,
+      "abstract": "For extrasolar planets discovered using the radial velocity method, the spectral characterization of the host star leads to a mass estimate of the star and subsequently of the orbiting planet. If the orbital velocity of the planet could be determined, the masses of both star and planet could be calculated using Newton's law of gravity, just as in the case of stellar double-line eclipsing binaries. Here we report high-dispersion ground-based spectroscopy of a transit of the extrasolar planet HD209458b. We see a significant wavelength shift in absorption lines from carbon monoxide in the planet's atmosphere, which we conclude arises from a change in the radial component of the planet's orbital velocity. The masses of the star and planet are 1.00+/-0.22M<SUB>Sun</SUB> and 0.64+/-0.09M<SUB>Jup</SUB> respectively. A blueshift of the carbon monoxide signal of approximately 2kms<SUP>-1</SUP> with respect to the systemic velocity of the host star suggests the presence of a strong wind flowing from the irradiated dayside to the non-irradiated nightside of the planet within the 0.01-0.1mbar atmospheric pressure range probed by these observations. The strength of the carbon monoxide signal suggests a carbon monoxide mixing ratio of (1-3)×10<SUP>-3</SUP> in this planet's upper atmosphere.",
+      "keywords": [
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 38
+    },
+    {
+      "source_id": "2008ApJ...682..586M",
+      "source_type": "paper",
+      "doi": "10.1086/587446",
+      "title": "MOST Space-based Photometry of the Transiting Exoplanet System HD 209458: Transit Timing to Search for Additional Planets",
+      "authors": [
+        "Miller-Ricci, Eliza",
+        "Rowe, Jason F.",
+        "Sasselov, Dimitar",
+        "Matthews, Jaymie M.",
+        "Guenther, David B.",
+        "Kuschnig, Rainer",
+        "Moffat, Anthony F. J.",
+        "Rucinski, Slavek M.",
+        "Walker, Gordon A. H.",
+        "Weiss, Werner W."
+      ],
+      "year": 2008,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2008ApJ...682..586M.pdf",
+      "retrieval_priority": 0.23036373951768518,
+      "abstract": "We report on the measurement of transit times for the HD 209458 planetary system from photometry obtained with the MOST (Microvariability and Oscillations of Stars) space telescope. Deviations from a constant orbital period can indicate the presence of additional planets in the system that are yet undetected, potentially with masses approaching an Earth mass. The MOST data sets of HD 209458 from 2004 and 2005 represent unprecedented time coverage with nearly continuous observations spanning 14 and 43 days and monitoring three transits and 12 consecutive transits, respectively. The transit times that we obtain show no variations on three scales: (1) no long-term change in P since before 2004 at 25 ms level, (2) no trend in transit timings during the 2005 run, and (3) no individual transit timing deviations above 80 s level. Together with previously published transit times from Agol &amp; Steffen, this allows us to place limits on the presence of additional close-in planets in the system, in some cases down to below an Earth mass. This result, along with previous radial velocity work, now eliminates the possibility that a perturbing planet could be responsible for the additional heat source needed to explain HD 209458b's anomalous low density.",
+      "keywords": [
+        "methods: data analysis",
+        "planetary systems",
+        "stars: individual: HD 209458",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 17
+    },
+    {
+      "source_id": "2008A&A...485..865L",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:200809704",
+      "title": "Rayleigh scattering by H<SUB>2</SUB> in the extrasolar planet HD 209458b",
+      "authors": [
+        "Lecavelier Des Etangs, A.",
+        "Vidal-Madjar, A.",
+        "Désert, J.-M.",
+        "Sing, D."
+      ],
+      "year": 2008,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2008A&A...485..865L.pdf",
+      "retrieval_priority": 0.48881315670251535,
+      "abstract": "Transiting planets, such as HD 209458b, offer a unique opportunity to scrutinize the planetary atmospheric content. Although molecular hydrogen is expected to be the main atmospheric constituent, H2 remains uncovered because of the lack of strong transition from near-ultraviolet to near-infrared. Here we analyse the absorption spectrum of HD 209458b obtained by Sing et al. (2008a, ApJ, submitted) which provides a measurement of the absorption depth in the 3000-6200 Å wavelength range. We show that the rise in absorption depth at short wavelengths can be interpreted as Rayleigh scattering within the atmosphere of HD 209458b. Since Rayleigh scattering traces the entire atmosphere, this detection enables a direct determination of the pressure-altitude relationship, which is required to determine the absolute fraction of other elements such as sodium. At the zero altitude defined by the absorption depth of 1.453%, which corresponds to a planetary radius of 0.1205 times the stellar radius, we find a pressure of 33 ± 5 mbar. Using the variation of the Rayleigh scattering cross-section as a function of wavelength, we determine the temperature to be 2200 ± 260 K at 33 mbar pressure.",
+      "keywords": [
+        "stars: planetary systems",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 49
+    },
+    {
+      "source_id": "2007ApJ...671L..61B",
+      "source_type": "paper",
+      "doi": "10.1086/524706",
+      "title": "Exoplanet HD 209458b: Inflated Hydrogen Atmosphere but No Sign of Evaporation",
+      "authors": [
+        "Ben-Jaffel, Lotfi"
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2007ApJ...671L..61B.pdf",
+      "retrieval_priority": 0.5184171175713027,
+      "abstract": "Many extrasolar planets orbit closely to their parent star. Their existence raises the fundamental problem of loss and gain in their mass. For exoplanet HD 209458b, reports on an unusually extended hydrogen corona and a hot layer in the lower atmosphere seem to support the scenario of atmospheric inflation by the strong stellar irradiation. However, difficulties in reconciling evaporation models with observations call for a reassessment of the problem. Here we use HST archive data to report a new absorption rate of ~8.9% +/- 2.1% by atomic hydrogen during the HD 209458b transit and show that no sign of evaporation could be detected for the exoplanet. We also report evidence of time variability in the HD 209458 Lyα flux, a variability that was not accounted for in previous studies, which corrupted their diagnostics. Mass-loss rates thus far proposed in the literature in the range 5×(10<SUP>10</SUP>-10<SUP>11</SUP>) g s<SUP>-1</SUP> must induce a spectral signature in the Lyα line profile of HD 209458 that cannot be found in the present analysis. Either an unknown compensation effect is hiding the expected spectral feature or else the mass-loss rate of neutrals from HD 209458 is modest.",
+      "keywords": [
+        "Line: Profiles",
+        "Stars: Planetary Systems",
+        "Stars: Individual: Henry Draper Number: HD 209458",
+        "Techniques: Spectroscopic",
+        "Ultraviolet: Stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2007ApJ...668L.171B",
+      "source_type": "paper",
+      "doi": "10.1086/522834",
+      "title": "Theoretical Spectral Models of the Planet HD 209458b with a Thermal Inversion and Water Emission Bands",
+      "authors": [
+        "Burrows, A.",
+        "Hubeny, I.",
+        "Budaj, J.",
+        "Knutson, H. A.",
+        "Charbonneau, D."
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2007ApJ...668L.171B.pdf",
+      "retrieval_priority": 0.45720683313745836,
+      "abstract": "We find that a theoretical fit to all the HD 209458b data at secondary eclipse requires that the day-side atmosphere of HD 209458b have a thermal inversion and a stratosphere. This inversion is caused by the capture of optical stellar flux by an absorber of uncertain origin that resides at altitude. One consequence of stratospheric heating and temperature inversion is the flipping of water absorption features into emission features from the near- to the mid-infrared, and we see evidence of such a water emission feature in the recent HD 209458b IRAC data of Knutson et al. In addition, an upper-atmosphere optical absorber may help explain both the weaker-than-expected Na D feature seen in transit and the fact that the transit radius at 24 μm is smaller than the corresponding radius in the optical. Moreover, it may be a factor in why HD 209458b's optical transit radius is as large as it is. We speculate on the nature of this absorber and the planets whose atmospheres may, or may not, be affected by its presence.",
+      "keywords": [
+        "Stars: Planetary Systems",
+        "Planets and Satellites: General",
+        "Stars: Individual: Henry Draper Number: HD 209458",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 54
+    },
+    {
+      "source_id": "2007ApJ...655..564K",
+      "source_type": "paper",
+      "doi": "10.1086/510111",
+      "title": "Using Stellar Limb-Darkening to Refine the Properties of HD 209458b",
+      "authors": [
+        "Knutson, Heather A.",
+        "Charbonneau, David",
+        "Noyes, Robert W.",
+        "Brown, Timothy M.",
+        "Gilliland, Ronald L."
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2007ApJ...655..564K.pdf",
+      "retrieval_priority": 0.48991255085021634,
+      "abstract": "We use multiband photometry to refine estimates for the planetary radius and orbital inclination of the transiting planet system HD 209458. We gathered 1066 spectra over four distinct transits with the STIS spectrometer on the Hubble Space Telescope using two gratings with a resolution R=1500 and a combined wavelength range of 290-1030 nm. We divide the spectra into 10 spectrophotometric bandpasses, five for each grating, of equal wavelength span within each grating, and fit a transit curve over all bandpasses simultaneously. In our fit we use theoretical values for the stellar limb-darkening to further constrain the planetary radius. We find that the radius of HD 209458b is (1.320+/-0.025)R<SUB>Jup</SUB>, which is a factor of 2 more precise than current estimates. We also obtain improved estimates for the orbital period P and time of center of transit T<SUB>C</SUB>. Although in principle the photon-limited precision of the STIS data should allow us to measure the timing of individual transits to a precision of 2-7 s, we find that uncertainties in the stellar limb-darkening coefficients and residual noise in the data degrade these measurements to a typical precision of +/-14 s. Within this level of error, we find no significant variations in the timing of the eight events examined in this work.",
+      "keywords": [
+        "Stars: Binaries: Eclipsing",
+        "Stars: Planetary Systems",
+        "Stars: Individual: Henry Draper Number: HD 209458",
+        "Techniques: Photometric",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2006ApJ...649.1043R",
+      "source_type": "paper",
+      "doi": "10.1086/506503",
+      "title": "A Spitzer Infrared Radius for the Transiting Extrasolar Planet HD 209458b",
+      "authors": [
+        "Richardson, L. Jeremy",
+        "Harrington, Joseph",
+        "Seager, Sara",
+        "Deming, Drake"
+      ],
+      "year": 2006,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2006ApJ...649.1043R.pdf",
+      "retrieval_priority": 0.4553546830909502,
+      "abstract": "We have measured the infrared transit of the extrasolar planet HD 209458b using the Spitzer Space Telescope. We observed two primary eclipse events (one partial and one complete transit) using the 24 μm array of the Multiband Imaging Photometer for Spitzer (MIPS). We analyzed a total of 2392 individual images (10 s integrations) of the planetary system, recorded before, during, and after transit. We performed optimal photometry on the images and used the local zodiacal light as a short-term flux reference. At this long wavelength, the transit curve has a simple boxlike shape, allowing robust solutions for the stellar and planetary radii independent of stellar limb darkening, which is negligible at 24 μm. We derive a stellar radius of R<SUB>*</SUB>=(1.06+/-0.07) R<SUB>solar</SUB>, a planetary radius of R<SUB>p</SUB>=(1.26+/-0.08)R<SUB>J</SUB>, and a stellar mass of 1.17 M<SUB>solar</SUB>. Within the errors, our results agree with the measurements at visible wavelengths. The 24 μm radius of the planet therefore does not differ significantly compared to the visible result. We point out the potential for deriving extrasolar transiting planet radii to high accuracy using transit photometry at slightly shorter IR wavelengths where greater photometric precision is possible. <P />This work is based on observations made with the Spitzer Space Telescope, which is operated by the Jet Propulsion Laboratory, California Institute of Technology, under a contract with NASA. Support for this work was provided by NASA.",
+      "keywords": [
+        "Eclipses",
+        "Infrared: General",
+        "Stars: Individual: Henry Draper Number: HD 209458",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 40
+    },
+    {
+      "source_id": "2006NewA...11..490I",
+      "source_type": "paper",
+      "doi": "10.1016/j.newast.2005.12.001",
+      "title": "Are we far from testing general relativity with the transitting extrasolar planet HD 209458b ‘Osiris’?",
+      "authors": [
+        "Iorio, L."
+      ],
+      "year": 2006,
+      "journal": "New Astronomy",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2006NewA...11..490I.pdf",
+      "retrieval_priority": 0.3887349590102208,
+      "abstract": "In this paper, we investigate the possibility of measuring the general relativistic gravitoelectric correction P<SUP>(GE)</SUP> to the orbital period P of the transitting exoplanet HD 209458b 'Osiris'. It turns out that the predicted magnitude of such an effect is ∼0.1 s, while the most recent determinations of the orbital period of HD 209458b with the photometric transit method are accurate to ∼0.01 s. It turns out that the major limiting factor is the error in the measurement of the projected semiamplitude of the star's radial velocity K<SUB>M</SUB>. Indeed, it affects the determination of the mass m of the planet which, in turn, induces a systematic error in the Keplerian period P<SUP>(0)</SUP> of ∼8 s. However, the present situation may change if future 1-2 orders of magnitude improvements in the Doppler spectroscopy technique will occur.",
+      "keywords": [
+        "04.80.Cc",
+        "04.80.Cc",
+        "Experimental tests of gravitational theories",
+        "General Relativity and Quantum Cosmology",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2005ApJ...624..372K",
+      "source_type": "paper",
+      "doi": "10.1086/429127",
+      "title": "A Transiting Extrasolar Giant Planet around the Star OGLE-TR-10",
+      "authors": [
+        "Konacki, Maciej",
+        "Torres, Guillermo",
+        "Sasselov, Dimitar D.",
+        "Jha, Saurabh"
+      ],
+      "year": 2005,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2005ApJ...624..372K.pdf",
+      "retrieval_priority": 0.24732856264116404,
+      "abstract": "We report a transiting extrasolar giant planet around the star OGLE-TR-10 (orbitalperiod=3.1 days), which was uncovered as a candidate by the OGLE team in their photometric survey toward the Galactic center. We observed OGLE-TR-10 spectroscopically over a period of 2 yr (2002-2004), using the HIRES instrument with an iodine cell on the Keck I telescope, and measured small radial velocity variations that are consistent with the presence of a planetary companion. This confirms the earlier identification of OGLE-TR-10b by our team and also recently by Bouchy and coworkers as a possible planet. In addition, in this paper we are able to rule out a blend scenario as an alternative explanation. From an analysis combining all available radial velocity measurements with the OGLE light curve, we find that OGLE-TR-10b has a mass of 0.57+/-0.12M<SUB>J</SUB> and a radius of 1.24+/-0.09R<SUB>J</SUB>. These parameters bear close resemblance to those of the first known transiting extrasolar planet, HD 209458b.",
+      "keywords": [
+        "Line: Profiles",
+        "Stars: Planetary Systems",
+        "Stars: Evolution",
+        "Stars: Individual: Alphanumeric: OGLE-TR-10",
+        "Techniques: Radial Velocities",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 13
+    },
+    {
+      "source_id": "2005A&A...436..719I",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20048344",
+      "title": "A time-dependent radiative model of HD 209458b",
+      "authors": [
+        "Iro, N.",
+        "Bézard, B.",
+        "Guillot, T."
+      ],
+      "year": 2005,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2005A&A...436..719I.pdf",
+      "retrieval_priority": 0.5244722014759502,
+      "abstract": "We present a time-dependent radiative model of the atmosphere of HD 209458b and investigate its thermal structure and chemical composition. In a first step, the stellar heating profile and radiative timescales were calculated under planet-averaged insolation conditions. We find that 99.99% of the incoming stellar flux has been absorbed before reaching the 7 bar level. Stellar photons cannot therefore penetrate deeply enough to explain the large radius of the planet. We derive a radiative time constant which increases with depth and reaches about 8 h at 0.1 bar and 2.3 days at 1 bar. Time-dependent temperature profiles were also calculated, in the limit of a zonal wind that is independent of height (i.e. solid-body rotation) and constant absorption coefficients. We predict day-night variations of the effective temperature of ~600 K, for an equatorial rotation rate of 1 km s<SUP>-1</SUP>, in good agreement with the predictions by Showmann &amp; Guillot (2002). This rotation rate yields day-to-night temperature variations in excess of 600 K above the 0.1-bar level. These variations rapidly decrease with depth below the 1-bar level and become negligible below the ~5-bar level for rotation rates of at least 0.5 km s<SUP>-1</SUP>. At high altitudes (mbar pressures or less), the night temperatures are low enough to allow sodium to condense into Na2S. Synthetic transit spectra of the visible Na doublet show a much weaker sodium absorption on the morning limb than on the evening limb. The calculated dimming of the sodium feature during planetary transites agrees with the value reported by Charbonneau et al. (2002).",
+      "keywords": [
+        "planets and satellites: general",
+        "planets and satellites: individual: HD 209458b",
+        "radiative transfer",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 45
+    },
+    {
+      "source_id": "2005ApJ...629L..45C",
+      "source_type": "paper",
+      "doi": "10.1086/444354",
+      "title": "Dynamic Meteorology at the Photosphere of HD 209458b",
+      "authors": [
+        "Cooper, Curtis S.",
+        "Showman, Adam P."
+      ],
+      "year": 2005,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2005ApJ...629L..45C.pdf",
+      "retrieval_priority": 0.5904719574780304,
+      "abstract": "We calculate the meteorology of the close-in transiting extrasolar planet HD 209458b using a global, three-dimensional atmospheric circulation model. Dynamics are driven by perpetual irradiation of one hemisphere of this tidally locked planet. The simulation predicts global temperature contrasts of ~500 K at the photosphere and the development of a steady superrotating jet. The jet extends from the equator to midlatitudes and from the top model layer at 1 mbar down to 10 bar at the base of the heated region. Wind velocities near the equator exceed 4 km s<SUP>-1</SUP> at 300 mbar. The hottest regions of the atmosphere are blown downstream from the substellar point by ~60° of longitude. We predict from these results a factor of ~2 ratio between the maximum and minimum observed radiation from the planet over a full orbital period, with peak infrared emission preceding the time of the secondary eclipse by ~14 hr.",
+      "keywords": [
+        "Atmospheric Effects",
+        "Planets and Satellites: General",
+        "Planets and Satellites: Individual: HD 209458b",
+        "Methods: Numerical",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 1
+    },
+    {
+      "source_id": "2005ApJ...632.1157W",
+      "source_type": "paper",
+      "doi": "10.1086/433176",
+      "title": "System Parameters of the Transiting Extrasolar Planet HD 209458b",
+      "authors": [
+        "Wittenmyer, Robert A.",
+        "Welsh, William F.",
+        "Orosz, Jerome A.",
+        "Schultz, A. B.",
+        "Kinzel, W.",
+        "Kochte, M.",
+        "Bruhweiler, F.",
+        "Bennum, D.",
+        "Henry, Gregory W.",
+        "Marcy, G. W.",
+        "Fischer, D. A.",
+        "Butler, R. P.",
+        "Vogt, S. S."
+      ],
+      "year": 2005,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2005ApJ...632.1157W.pdf",
+      "retrieval_priority": 0.4634137784317291,
+      "abstract": "We derive improved system parameters for the HD 209458 system using a model that simultaneously fits both photometric transit and radial velocity observations. The photometry consists of previous Hubble Space Telescope STIS and FGS observations, 12 I-band transits observed between 2001 and 2003 with the Mount Laguna Observatory 1 m telescope, and six Strömgren b+y transits observed between 2001 and 2004 with two of the Automatic Photometric Telescopes at Fairborn Observatory. The radial velocities were derived from Keck HIRES observations. The model properly treats the orbital dynamics of the system and thus yields robust and physically self-consistent solutions. Our set of system parameters agrees with previously published results, although with improved accuracy. For example, applying robust limits on the stellar mass of 0.93-1.20 M<SUB>solar</SUB>, we find 1.26R<SUB>J</SUB>&lt;R<SUB>planet</SUB>&lt;1.42R<SUB>J</SUB> and 0.59M<SUB>J</SUB>&lt;M<SUB>planet</SUB>&lt;0.70M<SUB>J</SUB>. We can reduce the uncertainty of these estimates by including a stellar mass-radius relation constraint, yielding R<SUB>planet</SUB>=(1.35+/-0.07)R<SUB>J</SUB> and M<SUB>planet</SUB>=(0.66+/-0.04)M<SUB>J</SUB>. Our results verify that the planetary radius is 10%-20% larger than predicted by irradiated planet evolution models, confirming the need for an additional mechanism to slow the evolutionary contraction of the planet. A revised ephemeris is derived, T<SUB>0</SUB>=2,452,854.82545+3.52474554E (HJD), which now contains an uncertainty in the period of 0.016 s and should facilitate future searches for planetary satellites and other bodies in the HD 209458 system.",
+      "keywords": [
+        "Stars: Planetary Systems",
+        "Stars: Individual: Henry Draper Number: HD 209458",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:planetary mass OR abs:planet mass)",
+      "search_rank": 39
+    },
+    {
+      "source_id": "2004ApJ...613L.153A",
+      "source_type": "paper",
+      "doi": "10.1086/425256",
+      "title": "TrES-1: The Transiting Planet of a Bright K0 V Star",
+      "authors": [
+        "Alonso, Roi",
+        "Brown, Timothy M.",
+        "Torres, Guillermo",
+        "Latham, David W.",
+        "Sozzetti, Alessandro",
+        "Mandushev, Georgi",
+        "Belmonte, Juan A.",
+        "Charbonneau, David",
+        "Deeg, Hans J.",
+        "Dunham, Edward W.",
+        "O'Donovan, Francis T.",
+        "Stefanik, Robert P."
+      ],
+      "year": 2004,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2004ApJ...613L.153A.pdf",
+      "retrieval_priority": 0.4038496082938251,
+      "abstract": "We report the detection of a transiting Jupiter-sized planet orbiting a relatively bright (V=11.79) K0 V star. We detected the transit light-curve signature in the course of the TrES multisite transiting planet survey and confirmed the planetary nature of the companion via multicolor photometry and precise radial velocity measurements. We designate the planet TrES-1 its inferred mass is (0.75+/-0.07)M<SUB>Jup</SUB>, its radius is 1.08<SUP>+0.18</SUP><SUB>-0.04</SUB>R<SUB>Jup</SUB>, and its orbital period is 3.030065+/-0.000008 days. This planet has an orbital period similar to that of HD 209458b but about twice as long as those of the OGLE transiting planets. Its mass is indistinguishable from that of HD 209458b, but its radius is significantly smaller and fits the theoretical models without the need for an additional source of heat deep in the atmosphere, as has been invoked by some investigators for HD 209458b.",
+      "keywords": [
+        "Stars: Binaries: Eclipsing",
+        "Stars: Planetary Systems",
+        "Stars: Individual: Alphanumeric: GSC 02652-01324",
+        "Techniques: Photometric",
+        "Techniques: Radial Velocities",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 8
+    },
+    {
+      "source_id": "2003ApJ...594..545B",
+      "source_type": "paper",
+      "doi": "10.1086/376897",
+      "title": "A Theory for the Radius of the Transiting Giant Planet HD 209458b",
+      "authors": [
+        "Burrows, Adam",
+        "Sudarsky, D.",
+        "Hubbard, W. B."
+      ],
+      "year": 2003,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2003ApJ...594..545B.pdf",
+      "retrieval_priority": 0.5316562370043216,
+      "abstract": "Using a full frequency-dependent atmosphere code that can incorporate irradiation by a central primary star, we calculate self-consistent boundary conditions for the evolution of the radius of the transiting planet HD 209458b. Using a well-tested extrasolar giant planet evolutionary code, we then calculate the behavior of this planet's radius with age. The measured radius is in fact a transit radius that resides high in HD 209458b's inflated atmosphere. Using our derived atmospheric and interior structures, we find that irradiation plus the proper interpretation of the transit radius can yield a theoretical radius that is within the measured error bars. We conclude that if HD 209458b's true transit radius is at the lower end of the measured range, an extra source of core heating power is not necessary to explain the transit observations.",
+      "keywords": [
+        "Stars: Planetary Systems",
+        "Planets and Satellites: General",
+        "Stars: Individual: Henry Draper Number: HD 209458",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 42
+    },
+    {
+      "source_id": "2003ApJ...588..545B",
+      "source_type": "paper",
+      "doi": "10.1086/373893",
+      "title": "Measuring the Oblateness and Rotation of Transiting Extrasolar Giant Planets",
+      "authors": [
+        "Barnes, Jason W.",
+        "Fortney, Jonathan J."
+      ],
+      "year": 2003,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2003ApJ...588..545B.pdf",
+      "retrieval_priority": 0.3875466428213962,
+      "abstract": "We investigate the prospects for characterizing extrasolar giant planets by measuring planetary oblateness from transit photometry and inferring planetary rotational periods. The rotation rates of planets in the solar system vary widely, reflecting the planets' diverse formational and evolutionary histories. A measured oblateness, assumed composition, and equation of state yields a rotation rate from the Darwin-Radau relation. The light curve of a transiting oblate planet should differ significantly from that of a spherical one with the same cross-sectional area under identical stellar and orbital conditions. However, if the stellar and orbital parameters are not known a priori, fitting for them allows changes in the stellar radius, planetary radius, impact parameter, and stellar limb-darkening parameters to mimic the transit signature of an oblate planet, diminishing the oblateness signature. Thus, even if HD 209458b had an oblateness of 0.1 instead of our predicted 0.003, it would introduce a detectable departure from a model spherical light curve at the level of only one part in 10<SUP>5</SUP>. Planets with nonzero obliquity break this degeneracy because their ingress light curve is asymmetric relative to that from egress and their best-case detectability is of order 10<SUP>-4</SUP>. However, the measured rotation rate for these objects is nonunique due to degeneracy between obliquity and oblateness and the unknown component of obliquity along the line of sight. Detectability of oblateness is maximized for planets transiting near an impact parameter of 0.7, regardless of obliquity. Future measurements of oblateness will be challenging because the signal is near the photometric limits of current hardware and inherent stellar noise levels.",
+      "keywords": [
+        "Occultations",
+        "Stars: Planetary Systems",
+        "Planets and Satellites: General",
+        "Planets and Satellites: Individual: HD 209458b",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:\"planetary radius\" OR abs:\"planet radius\" OR abs:\"exoplanet radius\" OR abs:Rp OR abs:radius)",
+      "search_rank": 59
+    },
+    {
+      "source_id": "2003ApJ...592..555B",
+      "source_type": "paper",
+      "doi": "10.1086/375565",
+      "title": "On the Radii of Extrasolar Giant Planets",
+      "authors": [
+        "Bodenheimer, Peter",
+        "Laughlin, Gregory",
+        "Lin, Douglas N. C."
+      ],
+      "year": 2003,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2003ApJ...592..555B.pdf",
+      "retrieval_priority": 0.30382119761725024,
+      "abstract": "We have computed evolutionary models for extrasolar planets that range in mass from 0.1M<SUB>J</SUB> to 3.0M<SUB>J</SUB> and that range in equilibrium temperature from 113 to 2000 K. We present four sequences of models, designed to show the structural effects of a solid (20 M<SUB>⊕</SUB>) core and of internal heating due to the conversion of kinetic to thermal energy at pressures of tens of bars. The model radii at ages of 4-5 Gyr are intended for future comparisons with radii derived from observations of transiting extrasolar planets. To provide such comparisons, we expect that of order 10 transiting planets with orbital periods less than 200 days can be detected around bright (V&lt;10-11) main-sequence stars, for which accurate well-sampled radial velocity (RV) measurements can also be readily accumulated. Through these observations, structural properties of the planets will be derivable, particularly for low-mass, high-temperature planets. Implications regarding the transiting companion to OGLE-TR-56 recently announced by Konacki et al. are discussed. With regard to the transiting planet HD 209458b, we find, in accordance with other recent calculations, that models without internal heating predict a radius that is ~0.3R<SUB>J</SUB> smaller than the observed radius. Two resolutions have been proposed for this discrepancy. Guillot &amp; Showman hypothesize that deposition of kinetic wind energy at pressures of tens of bars is responsible for heating the planet and maintaining its large size. Our models confirm that dissipation of the type proposed by Guillot &amp; Showman can indeed produce a large radius for HD 209458b. Bodenheimer, Lin, &amp; Mardling suggest that HD 209458b owes its large size to dissipation of energy arising from ongoing tidal circularization of the planetary orbit. This mechanism requires the presence of an additional planetary companion to continuously force the eccentricity. We show that residual scatter in the current RV data set for HD 209458b is consistent with the presence of an as-of-yet undetected second companion and that further RV monitoring of HD 209458 is indicated. Tidal circularization theory also can provide constraints on planetary radii. Extrasolar giant planets with periods of order 7 days should be actively circularizing. We find that the observed eccentricities of e~0.14 for both HD 217107b (P=6.276 days; Msini=1.80M<SUB>J</SUB>) and HD 68988b (P=7.125 days, Msini=1.29M<SUB>J</SUB>) likely indicate either relatively small planetary radii for these objects (R~1.1R<SUB>J</SUB>) or tidal quality factors in the neighborhood of Q<SUB>P</SUB>~10<SUP>7</SUP>. For these two planets, it will be difficult to differentiate the contribution from tidal and kinetic heating. But the radius of HD 168746b (P=6.403 days, Msini=0.23M<SUB>J</SUB>) is sensitive to whether the planet's interior is heated by tidal dissipation or kinetic heating. The tidal circularization timescale of this planet is shorter than the age of its host star, but we show that within the observational uncertainties, the published RV data can also be fitted with a circular orbit for this planet. As more RV planets with periods of order 1 week are discovered, Q<SUB>P</SUB>(T<SUB>eq,</SUB>M<SUB>P</SUB>) and R<SUB>P</SUB>(T<SUB>eq</SUB>,M<SUB>P</SUB>) will become better determined.",
+      "keywords": [
+        "Stars: Planetary Systems",
+        "Planets and Satellites: General",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 10
+    },
+    {
+      "source_id": "2003ApJ...596.1327S",
+      "source_type": "paper",
+      "doi": "10.1086/378145",
+      "title": "The New Transiting Planet OGLE-TR-56b: Orbit and Atmosphere",
+      "authors": [
+        "Sasselov, Dimitar D."
+      ],
+      "year": 2003,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7657f951-c182-4b39-a0ad-b6f8f11d3094\\2003ApJ...596.1327S.pdf",
+      "retrieval_priority": 0.2364220413779934,
+      "abstract": "Motivated by the identification of the very close-in extrasolar giant planet OGLE-TR-56b (P=1.2 days, a=0.023 AU, M<SUB>p</SUB>=0.9M<SUB>J</SUB>), we explore implications of its existence for problems of tidal dissipation, planet migration, and atmospheric stability. The small orbit of OGLE-TR-56b makes the planet an interesting test particle case for tidal dissipation in stellar convection zones. We show that it favors prescriptions of suppressed convective eddy viscosity. Precise timing of the transits of OGLE-TR-56b might place interesting constraints on stellar convection theory if orbital period change is detected in the near future. Another interesting issue related to the new planet is the origin of its close orbit; OGLE-TR-56b may be a survivor of Roche lobe overflow mass loss. Living in such close proximity to its parent star, OGLE-TR-56b should have temperatures in the dayside hemisphere reaching 1900 K, and we find that only few condensates could form clouds, if at all, under those conditions-mostly Al<SUB>2</SUB>O<SUB>3</SUB> and Fe(s). We explore the issue of atmosphere evaporation and find that the planet's atmosphere is stable over its lifetime. The large size of the planet (R<SUB>p</SUB>=1.3+/-0.15R<SUB>J</SUB>) might also require additional energy, similar to HD 209458b.",
+      "keywords": [
+        "Convection",
+        "Stars: Planetary Systems",
+        "stars: individual (OGLE-TR-56)- Stars: Interiors",
+        "Stellar Dynamics",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"HD 209458b\" OR abs:\"HD 209458b\") AND (abs:orbperiod OR abs:orbitalperiod OR abs:\"orbital period\" OR abs:\"orbit period\")",
+      "search_rank": 14
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2003ApJ...588..545B_HD_209458b_pl_radius_0",
+      "source_id": "2003ApJ...588..545B",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.347,
+      "field_unit": "R_Jup",
+      "trace_id": "doc36_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          102,
+          700,
+          146,
+          718
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Precise Hubble Space Telescope measurements of HD209458b's transit lightcurve revealed the radius (1.347 ± 0.060 R_Jup) and orbital inclination...",
+      "measurement_method": "transit photometry (HST)",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2003ApJ...592..555B_HD_209458b_orb_period_0",
+      "source_id": "2003ApJ...592..555B",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.524754,
+      "field_unit": "d",
+      "trace_id": "doc40_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          673,
+          390,
+          755,
+          409
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Welsh et al. (2003) report a period P = 3.5247542 ± 4.4 × 10^-6 HJD and a transit midpoint Tc = 2452223.89617 ± 8.6 × 10^-5 HJD.",
+      "measurement_method": "transit photometry and RV fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital period"
+      ]
+    },
+    {
+      "record_id": "2003ApJ...594..545B_HD_209458b_pl_radius_0",
+      "source_id": "2003ApJ...594..545B",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.4,
+      "field_unit": "R_J",
+      "trace_id": "doc13_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          72,
+          753,
+          108,
+          770
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "From these data they derive a radius for HD 209458b of 1.40±0.17 R_J , where the error bars are one-sigma and R_J = 7.149 × 10^9 cm.",
+      "measurement_method": "transit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2003ApJ...596.1327S_HD_209458b_orb_period_0",
+      "source_id": "2003ApJ...596.1327S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.5,
+      "field_unit": "d",
+      "trace_id": "doc33_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          603,
+          287,
+          619,
+          307
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.85,
+      "context_snippet": "Starting with 51 Peg (Mayor & Queloz 1995), these now number 13 and show a curious 'pile-up' at a ~ 0.04AU (or P = 3 - 4^d). ... the more typical orbit of HD 209458b (at 0.045 AU).",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2005A&A...436..719I_HD_209458b_pl_radius_0",
+      "source_id": "2005A&A...436..719I",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.35,
+      "field_unit": "R_jup",
+      "trace_id": "doc29_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The acceleration of gravity was set to g = 9.7 m s^-2 corresponding to a radius of 1.35 Jupiter radius and a mass of 0.7 time that of Jupiter (Mazeh et al. 2000).",
+      "measurement_method": "model",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...624..372K_HD_209458b_orb_period_0",
+      "source_id": "2005ApJ...624..372K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.1,
+      "field_unit": "days",
+      "trace_id": "doc32_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          619,
+          626,
+          695,
+          646
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "OGLE-TR-10b is very similar to HD 209458b (Brown et al. 2001) in terms of its orbital and physical parameters. In particular, its orbital period (3.1 days) places it in the “hot Jupiter” category",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...629L..45C_HD_209458b_orb_period_0",
+      "source_id": "2005ApJ...629L..45C",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.5257,
+      "field_unit": "days",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          397,
+          404,
+          485,
+          426
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The transiting planet HD 209458b orbits very closely (0.046 AU) to its parent star with a period of 3.5257 days (Charbonneau et al. 2000; Henry et al. 2000).",
+      "measurement_method": "transit depth measurements",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...632.1157W_HD_209458b_pl_mass_0",
+      "source_id": "2005ApJ...632.1157W",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": "0.66",
+      "field_unit": "M_Jup",
+      "trace_id": "doc38_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          647,
+          495,
+          688,
+          516
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We can reduce the uncertainty on these estimates by including a stellar mass-radius relation constraint, yielding R_planet=1.35±0.07 R_Jup and M_planet=0.66±0.04 M_Jup.",
+      "measurement_method": "simultaneous fit of photometric transit and radial velocity observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...632.1157W_HD_209458b_pl_mass_1",
+      "source_id": "2005ApJ...632.1157W",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": "0.66",
+      "field_unit": "M_Jup",
+      "trace_id": "doc38_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          695,
+          717,
+          735,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "By applying the mass-radius relation of Cody & Sasselov (2002), we reduce the uncertainty: R_planet=1.35 ±0.07 R_Jup, M_planet=0.66 ±0.04 M_Jup.",
+      "measurement_method": "simultaneous fit of photometric transit and radial velocity observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...632.1157W_HD_209458b_pl_mass_2",
+      "source_id": "2005ApJ...632.1157W",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": "0.657",
+      "field_unit": "M_Jup",
+      "trace_id": "doc38_p23",
+      "provenance": {
+        "page": 23,
+        "bbox": [
+          314,
+          494,
+          685,
+          800
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 4. HD 209458 System Parameters ... M_star (M_sun) ... 1.09 ... M_planet (M_Jup) ... 0.657",
+      "measurement_method": "model fit (ELC code)",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...649.1043R_HD_209458b_pl_radius_0",
+      "source_id": "2006ApJ...649.1043R",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.26,
+      "field_unit": "R_jup",
+      "trace_id": "doc22_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          235,
+          217,
+          276,
+          237
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We derive a stellar radius of R* = 1.06 ± 0.07 R_sun, a planetary radius of Rp = 1.26 ± 0.08 RJ, and a stellar mass of 1.17 M_sun.",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...649.1043R_HD_209458b_pl_radius_1",
+      "source_id": "2006ApJ...649.1043R",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.26,
+      "field_unit": "R_jup",
+      "trace_id": "doc22_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          114,
+          637,
+          154,
+          657
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "On this basis, we derive the stellar mass to be M = 1.171 M_sun, with R* = 1.06 ± 0.07 R_sun and Rp = 1.26 ± 0.08 RJ.",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...649.1043R_HD_209458b_pl_radius_2",
+      "source_id": "2006ApJ...649.1043R",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.265,
+      "field_unit": "R_jup",
+      "trace_id": "doc22_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          174,
+          424,
+          816,
+          586
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Derived physical parameters for the two minimization techniques. ... Planetary Radius (RJ) 1.265 1.265 0.085",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2006NewA...11..490I_HD_209458b_orb_period_0",
+      "source_id": "2006NewA...11..490I",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.524746,
+      "field_unit": "days",
+      "trace_id": "doc34_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          460,
+          758,
+          551,
+          777
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The quoted value in (Wittenmyer et al. 2005) is P(obs)_(Wittenmyer et al.) = 3.52474554 ± 1.8 × 10^-7 days. (9)",
+      "measurement_method": "photometric transit and Doppler spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_orb_period_2",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.524749,
+      "field_unit": "d",
+      "trace_id": "doc17_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          333,
+          727,
+          432,
+          747
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We derive a period of 3.52474859 ± 0.00000038 days (±0.033 s) for the planet and initial transit epoch T_C = 2452826.628521 ± 0.000087 HJD (±7.5 s).",
+      "measurement_method": "transit timing",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_orb_period_4",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.524749,
+      "field_unit": "d",
+      "trace_id": "doc17_p18",
+      "provenance": {
+        "page": 18,
+        "bbox": [
+          532,
+          383,
+          764,
+          404
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Using a combination of STIS data spanning four transits in 2000 and four transits in 2003, we find that P = 3.52474859 ± 0.00000038 days (±0.033 s)",
+      "measurement_method": "transit timing",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_orb_period_6",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.524749,
+      "field_unit": "d",
+      "trace_id": "doc17_p30",
+      "provenance": {
+        "page": 30,
+        "bbox": [
+          252,
+          453,
+          747,
+          560
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 7. Ephemeris from this work and previous works. ... This Work ... 3.52474859 ± 0.00000038",
+      "measurement_method": "transit timing",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_pl_radius_0",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.32,
+      "field_unit": "R_jup",
+      "trace_id": "doc17_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          670,
+          773,
+          720,
+          793
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We find that the radius of HD 209458b is 1.320 ± 0.025 R_jup, which is a factor of two more precise than current estimates.",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_pl_radius_1",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.32,
+      "field_unit": "R_jup",
+      "trace_id": "doc17_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          301,
+          586,
+          352,
+          606
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Minimizing this function, we find that the best-fit value for the radius of the planet is 1.320 ± 0.025 R_jup, with an orbital inclination of 86.929 ± 0.010.",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_pl_radius_3",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.32,
+      "field_unit": "R_jup",
+      "trace_id": "doc17_p18",
+      "provenance": {
+        "page": 18,
+        "bbox": [
+          133,
+          233,
+          184,
+          253
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We find that the radius of HD 209458b is 1.320 ± 0.025 R_jup, a factor of two more precise than previous measurements.",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...655..564K_HD_209458b_pl_radius_5",
+      "source_id": "2007ApJ...655..564K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": "1.320 +0.024 -0.025",
+      "field_unit": "R_jup",
+      "trace_id": "doc17_p29",
+      "provenance": {
+        "page": 29,
+        "bbox": [
+          168,
+          132,
+          831,
+          299
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 4. Comparison between best-fit values and results from previous works ... This Work ... 1.320 +0.024 -0.025",
+      "measurement_method": "transit photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...668L.171B_HD_209458b_pl_radius_0",
+      "source_id": "2007ApJ...668L.171B",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.32,
+      "field_unit": "R_J",
+      "trace_id": "doc21_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          627,
+          891,
+          663,
+          909
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "...the transit radius measured by Richardson et al. (2006) at 24 μm (1.26±0.08 R_J) is smaller than the corresponding radius in the optical (1.32±0.025 R_J; Knutson et al. 2007a).",
+      "measurement_method": "transit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2008A&A...485..865L_HD_209458b_pl_radius_0",
+      "source_id": "2008A&A...485..865L",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.29,
+      "field_unit": "R_jup",
+      "trace_id": "doc27_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          205,
+          738,
+          241,
+          755
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Consequently, the radius of HD 209458b at 1 bar is determined to be about 1.29 Jupiter radius, slightly lower than previously assumed.",
+      "measurement_method": "transit spectroscopy (Rayleigh scattering)",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...682..586M_HD_209458b_orb_period_0",
+      "source_id": "2008ApJ...682..586M",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.524748,
+      "field_unit": "days",
+      "trace_id": "doc42_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          248,
+          310,
+          744,
+          709
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Orbital and Physical Parameters for HD 209458 ... P [days] 3.52474832 ± 0.00000029",
+      "measurement_method": "transit timing fit",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...717.1291L_HD_209458b_pl_mass_0",
+      "source_id": "2010ApJ...717.1291L",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.64,
+      "field_unit": "M_jup",
+      "trace_id": "doc18_p24",
+      "provenance": {
+        "page": 24,
+        "bbox": [
+          280,
+          303,
+          720,
+          710
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Properties of HD 209458 and HD 209458b ... M_planet/M_Jup 0.64 ± 0.06",
+      "measurement_method": "photometric transit observations and radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2010Natur.465.1049S_HD_209458b_pl_mass_0",
+      "source_id": "2010Natur.465.1049S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.64,
+      "field_unit": "M_jup",
+      "trace_id": "doc19_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          726,
+          589,
+          768,
+          610
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "These observations result in a mass determination of the star and planet of 1.00±0.22 M_sun and 0.64±0.09 M_jup respectively.",
+      "measurement_method": "high dispersion ground-based spectroscopy / radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2010Natur.465.1049S_HD_209458b_pl_mass_1",
+      "source_id": "2010Natur.465.1049S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.64,
+      "field_unit": "M_jup",
+      "trace_id": "doc19_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          760,
+          442,
+          802,
+          463
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "the mass of the planet to be M_2 = 0.64 ± 0.09 M_jup at an orbital distance of a = 0.045 ± 0.003 AU",
+      "measurement_method": "high dispersion ground-based spectroscopy / radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2010Natur.465.1049S_HD_209458b_pl_mass_2",
+      "source_id": "2010Natur.465.1049S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.64,
+      "field_unit": "M_jup",
+      "trace_id": "doc19_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          682,
+          249,
+          724,
+          269
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "allowing the masses of both objects to be determined to be m_1=1.00±0.22 M_sun and m_2=0.64±0.09 M_jup (1σ) using solely Newton's law of gravitation.",
+      "measurement_method": "high dispersion ground-based spectroscopy / radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2010OAJ.....3..167I_HD_209458b_orb_period_0",
+      "source_id": "2010OAJ.....3..167I",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": "3.524746",
+      "field_unit": "d",
+      "trace_id": "doc35_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          364,
+          366,
+          455,
+          385
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In the present case, the system's parameters entering the Keplerian period i.e. the relative semimajor axis a, the mass M_star of the host star and the mass m_p of the planet, can be determined independently of the third Kepler law itself, so that it is meaningful to compare the photometrically measured orbital period P_b = 3.524746 d [55] to the computed Keplerian one P^Kep;",
+      "measurement_method": "photometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2013ApJ...764..103R_HD_209458b_pl_radius_0",
+      "source_id": "2013ApJ...764..103R",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 100000000.0,
+      "field_unit": "m",
+      "trace_id": "doc20_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          144,
+          318,
+          854,
+          701
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Model parameters used ... Radius of the planet, R_p ... HD 209458b: 1 x 10^8 m",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2014A&A...565A.105B_HD_209458b_pl_radius_0",
+      "source_id": "2014A&A...565A.105B",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.38,
+      "field_unit": "R_jup",
+      "trace_id": "doc14_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          82,
+          309,
+          950,
+          905
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 2. Physical parameters for HD 209458b, and numerical parameters with fixed values for all simulations. ... Planet radius R_p 1.380 R_jup",
+      "measurement_method": "transit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...790...79R_HD_209458b_orb_period_0",
+      "source_id": "2014ApJ...790...79R",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": "3.3",
+      "field_unit": "day",
+      "trace_id": "doc26_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          144,
+          344,
+          854,
+          676
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Model parameters used ... HD 209458b ... Corresponding period, P_orb ... 3.3 ... day_",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2016MNRAS.457.1666S_HD_209458b_pl_mass_0",
+      "source_id": "2016MNRAS.457.1666S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.67,
+      "field_unit": "M_Jup",
+      "trace_id": "doc5_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          67,
+          123,
+          475,
+          370
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Stellar and planetary winds parameters employed in simulations ... Planetary parameters ... Mass M_P 0.67 M_Jup",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2017A&A...608A..75C_HD_209458b_pl_mass_0",
+      "source_id": "2017A&A...608A..75C",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.69,
+      "field_unit": "M_J",
+      "trace_id": "doc8_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          58,
+          63,
+          941,
+          447
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Physical parameters of planets HD 209458b and HD 189733b and their host stars. ... HD 209458 | 0.69^1 | 1.36^1 | 0.047^1 | 1.12^1 | 1.20^2 | G0 | 4.0^3",
+      "measurement_method": "table",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...844...94K_HD_209458b_pl_radius_0",
+      "source_id": "2017ApJ...844...94K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.35,
+      "field_unit": "R_Jup",
+      "trace_id": "doc41_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          673,
+          239,
+          708,
+          256
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "For comparison, the present-day transit radius of HD 209458b is ≈ 1.35 R_Jup. We evolve the initial model with external irradiation and internal heating, as described below.",
+      "measurement_method": "transit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2018ApJ...863L..11H_HD_209458b_pl_radius_0",
+      "source_id": "2018ApJ...863L..11H",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.38,
+      "field_unit": "R_J",
+      "trace_id": "doc23_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          767,
+          542,
+          802,
+          560
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The hot Jupiter HD 209458b is one of the most favorable targets for atmospheric characterization. The planet orbits a bright (V=7.65) sun-like (G0V) star in a 3.5 day period and has mass 0.69±0.017 M_J and radius 1.38±0.018 R_J (Knutson et al. 2007).",
+      "measurement_method": "transit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.479.3115V_HD_209458b_pl_mass_0",
+      "source_id": "2018MNRAS.479.3115V",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.67,
+      "field_unit": "M_J",
+      "trace_id": "doc16_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          81,
+          123,
+          917,
+          757
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Stellar and planetary winds parameters employed in the simulations for the system HD 2019458 ... Planetary parameters ... Mass [M_J] M_p 0.67",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2020A&A...635A.206C_HD_209458b_pl_radius_0",
+      "source_id": "2020A&A...635A.206C",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.359,
+      "field_unit": "R_jup",
+      "trace_id": "doc15_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          82,
+          64,
+          941,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: Physical and orbital parameters of the HD 209458 system from previous studies ... Planet radius^a R_p [R_Jup] 1.359^{+0.016}_{-0.019}",
+      "measurement_method": "transit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2020AJ....159..225K_HD_209458b_orb_period_0",
+      "source_id": "2020AJ....159..225K",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "field_value": 3.52,
+      "field_unit": "d",
+      "trace_id": "doc37_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          90,
+          81,
+          910,
+          230
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Summary of planetary properties for HD 209458b... Planet Name | Equilibrium Temperature (K) | Period (Days) ... HD 209458b | 1412 ± 64 | 3.52",
+      "measurement_method": "table",
+      "condition_tags": [
+        "scope: global",
+        "metric: orb_period"
+      ]
+    },
+    {
+      "record_id": "2020MNRAS.491.3435S_HD_209458b_pl_mass_0",
+      "source_id": "2020MNRAS.491.3435S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.71,
+      "field_unit": "M_jup",
+      "trace_id": "doc12_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          702,
+          170,
+          742,
+          189
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The modeled HD209458 system consists of a planet with mass Mp=0.71MJ and radius Rp =1.38RJ orbiting at a distance of D=0.047 a.u. around a solar-type G-star...",
+      "measurement_method": "modeling parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2020MNRAS.493.1292D_HD_209458b_pl_mass_0",
+      "source_id": "2020MNRAS.493.1292D",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.73,
+      "field_unit": "M_jup",
+      "trace_id": "doc30_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          67,
+          123,
+          808,
+          317
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Run parameters ... Planet Mass $M_p (M_J)$ 0.73",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2020MNRAS.493.1292D_HD_209458b_pl_radius_1",
+      "source_id": "2020MNRAS.493.1292D",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.529,
+      "field_unit": "R_jup",
+      "trace_id": "doc30_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          67,
+          123,
+          808,
+          317
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Run parameters ... Planet Radius $R_p (R_J)$ 1.529",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2022A&A...664A..56S_HD_209458b_pl_radius_0",
+      "source_id": "2022A&A...664A..56S",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "field_value": 1.38,
+      "field_unit": "R_jup",
+      "trace_id": "doc24_p19",
+      "provenance": {
+        "page": 19,
+        "bbox": [
+          0,
+          47,
+          1000,
+          97
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table C.1: Parameters ... Parameter: R_p, Meaning: planetary radius, HD 209458b: 1.38 R_jup",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_radius"
+      ]
+    },
+    {
+      "record_id": "2022MNRAS.517.1724D_HD_209458b_pl_mass_0",
+      "source_id": "2022MNRAS.517.1724D",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.73,
+      "field_unit": "M_J",
+      "trace_id": "doc10_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          67,
+          123,
+          937,
+          353
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Run parameters ... Planet Mass $M_p (M_J)$ 0.73",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    },
+    {
+      "record_id": "2023ApJ...953..166X_HD_209458b_pl_mass_0",
+      "source_id": "2023ApJ...953..166X",
+      "entity_type": "Pl",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "field_value": 0.69,
+      "field_unit": "M_J",
+      "trace_id": "doc4_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          386,
+          529,
+          422,
+          547
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The parameters of HD 209458 system are set as follows: the mass of the planet is 0.69 M_J, the radius 1.36 R_J, the mass of the star 1.119 M_sun...",
+      "measurement_method": "model settings",
+      "condition_tags": [
+        "scope: global",
+        "metric: pl_mass"
+      ]
+    }
+  ]
+}

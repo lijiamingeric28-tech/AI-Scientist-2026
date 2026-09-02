@@ -1,0 +1,2309 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026A&A...708A.216R",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202556963",
+      "title": "Cepheid Metallicity in the Leavitt Law (C─MetaLL) survey: IX. Metallicity dependence of period-Wesenheit relations based on a homogeneous spectroscopic sample",
+      "authors": [
+        "Ripepi, V.",
+        "Trentin, E.",
+        "Catanzaro, G.",
+        "Marconi, M.",
+        "Bhardwaj, A.",
+        "Clementini, G.",
+        "Cusano, F.",
+        "De Somma, G.",
+        "Molinaro, R.",
+        "Sicignano, T.",
+        "Storm, J."
+      ],
+      "year": 2026,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2026A&A...708A.216R.pdf",
+      "retrieval_priority": 0.4868580448707588,
+      "abstract": "Context. The C-MetaLL project has provided homogeneous spectroscopic abundances of 290 Classical Cepheids (DCEPs) for which we have the intensity-averaged magnitudes in multiple optical and NIR bands, periods, pulsation modes, and Gaia parallaxes corrected for individual zero-point (ZP) biases. Aims. Our goal is to derive updated period─Wesenheit─metallicity (PWZ) relations using the largest and most homogeneous metallicity sample ever used for such analyses, covering a range of −1.3 &lt; [Fe/H] &lt; +0.3 dex, and to assess the metallicity dependence of these relations. Methods. We computed several optical and NIR Wesenheit magnitudes adopting both Cardelli et al. (1989, ApJ, 345, 245) and Fitzpatrick (1999, PASP, 111, 63) reddening laws, and transformed Johnson-Cousins Wesenheit magnitudes into their HST equivalents using empirical relations. Using 275 DCEPs with reliable parallaxes, we applied a robust photometric parallax technique, which simultaneously fits all parameters ─ including the global ZP counter-correction to Gaia parallaxes ─ and handles outliers via a Cauchy likelihood to account for the sample's excess variance. Results. We find a stronger metallicity dependence (γ ≍ −0.5 mag/dex in optical, −0.4 mag/dex in NIR) than recent literature reports. Gaia parallax ZP counter-correction (ϵ) varies moderately across bands, with an average value of ∼10 μas, aligning with previous determinations. Applying our PWZ relations to ∼4500 LMC Cepheids yields distances generally consistent within 1σ with geometric estimates. The choice of reddening law has a small impact, while using only fundamental-mode pulsators significantly increases the uncertainties. Including α element corrections increases |γ| and reduces ϵ. However, we find 1σ consistency γ values with the literature, particularly for the Wesenheit magnitude in the HST bands, by restricting the sample to brighter (i.e. closer) objects, or by including only pulsators with −0.7 &lt; [Fe/H] &lt; 0.2 dex. Our results hint at a large γ or a non-linear dependence on metallicity of DCEP luminosities at the metal-poor end, which is difficult to quantify with the precision of parallaxes of the present dataset.",
+      "keywords": [
+        "stars: abundances",
+        "stars: distances",
+        "stars: fundamental parameters",
+        "stars: variables: Cepheids",
+        "distance scale",
+        "Solar and Stellar Astrophysics",
+        "Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 48
+    },
+    {
+      "source_id": "2026arXiv260702439E",
+      "source_type": "paper",
+      "doi": "10.48550/arXiv.2607.02439",
+      "title": "Native-Opacity Sensitivity of a Fixed Delta Cephei MESA-RSP Pulsation Model",
+      "authors": [
+        "Elahi, Zuhoor",
+        "Sirola, Christopher",
+        "Gull, Wafa"
+      ],
+      "year": 2026,
+      "journal": "arXiv e-prints",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2026arXiv260702439E.pdf",
+      "retrieval_priority": 0.5096321822032165,
+      "abstract": "Radiative opacity is one of the central microphysical inputs controlling the thermal response of Cepheid envelopes and the driving or damping of radial pulsations. We present a controlled opacity-sensitivity experiment for a fixed delta Cephei nonlinear radial pulsation model computed with the MESA Radial Stellar Pulsation module. The stellar and pulsation parameters are held fixed at M = 5.0 solar masses , Teff = 6050 K, L = 2360 solar luminosities , X = 0.73, Z = 0.007, and RSP_alfam = 0.425, while the high-temperature opacity source is varied among native MESA opacity configurations: OPAL-A09, OP-A09, and OPLIB-AGSS09. The low-temperature opacity prefix, C/O-dependent opacity prefix, and all other RSP parameters are kept fixed so that the comparison isolates the effect of the adopted high-temperature opacity table. Verification integrations were performed at 20, 100, and 300 pulsation cycles, followed by photo-restarted continuations to 500 cycles. At 500 cycles, OPAL-A09 gives the closest period agreement, PRSP = 5.366986 d, only about 39 s longer than Pobs = 5.366531 d. OP-A09 gives the largest amplitude-growth diagnostics, with Delta Mag = 0.037307 and Delta R = 0.293677, corresponding to increases of 42.5% and 43.9% relative to OPAL-A09. OPLIB-AGSS09 gives a systematically longer period, P_RSP = 5.403926 d, with more modest amplitude-growth changes. The same ordering is reflected in the MESA history-column diagnostic rsp_GREKM, defined by the MESA defaults as the fractional growth of kinetic energy per pulsation period. These results show that native opacity choice measurably affects period matching, pulsation growth diagnostics, and nonlinear amplitude growth in this fixed δ Cephei model. However, the tested opacity choices do not by themselves resolve the known observed-amplitude discrepancy.",
+      "keywords": [
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 18
+    },
+    {
+      "source_id": "2025ApJ...981..179W",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/adb39d",
+      "title": "Milky Way Classical Cepheid Distances from Calibrated Infrared Period─Luminosity─Metallicity Relations",
+      "authors": [
+        "Wang, Huajian",
+        "Chen, Xiaodian"
+      ],
+      "year": 2025,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2025ApJ...981..179W.pdf",
+      "retrieval_priority": 0.399131191877208,
+      "abstract": "Classical Cepheids (DCEPs) serve as fundamental standard candles for measuring cosmic distances and investigating the structure and evolution of the Milky Way disk. However, accurate distance estimation faces challenges due to severe extinction, particularly toward the Galactic center. Although the Gaia Wesenheit magnitude reduces extinction effects, its reliance on a constant optical extinction law introduces significant uncertainties in regions of heavy obscuration. Infrared period─luminosity relations, combined with 3D extinction maps, offer an alternative, but these maps become unreliable beyond approximately 5 kpc. In this work, we calibrate the period─luminosity─metallicity (PLZ) relations for DCEPs across three near-infrared bands (J, H, K<SUB>S</SUB>) and four mid-infrared bands (W1, W2, [3.6], and [4.5]). This includes the first calibration of the W1 and W2 bands. To correct for extinction, we employ the infrared multi-passband optimal distance method and the BP─RP method, which complement and validate each other. These homogeneous PLZ relations, combined with reliable extinction corrections, yield the most accurate Galactic DCEP distances to date, covering 3452 DCEPs with an average relative distance error of 3.1%.",
+      "keywords": [
+        "Cepheid variable stars",
+        "Cepheid distance",
+        "218",
+        "217",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 59
+    },
+    {
+      "source_id": "2024A&A...690A.246T",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202450376",
+      "title": "Cepheid Metallicity in the Leavitt Law (C-MetaLL) survey: VI. Radial abundance gradients of 29 chemical species in the Milky Way disc",
+      "authors": [
+        "Trentin, E.",
+        "Catanzaro, G.",
+        "Ripepi, V.",
+        "Alonso-Santiago, J.",
+        "Molinaro, R.",
+        "Storm, J.",
+        "De Somma, G.",
+        "Marconi, M.",
+        "Bhardwaj, A.",
+        "Gatto, M.",
+        "Musella, I.",
+        "Testa, V."
+      ],
+      "year": 2024,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2024A&A...690A.246T.pdf",
+      "retrieval_priority": 0.48480988633933025,
+      "abstract": "Context. Classical Cepheids (DCEPs) are crucial for calibrating the extragalactic distance ladder, ultimately enabling the determination of the Hubble constant through the period-luminosity (PL) and period-Wesenheit (PW) relations that they exhibit. Hence, it is vital to understand how the PL and PW relations depend on metallicity. This is the purpose of the C-MetaLL survey, within which this work is situated. The DCEPs are also very important tracers of the young populations placed along the Galactic disc. Aims. We aim to enlarge the sample of DCEPs with accurate abundances from high-resolution spectroscopy. In particular, our goal is to extend the range of measured metallicities towards the metal-poor regime to better cover the parameter space. To this end, we observed objects in a wide range of Galactocentric radii, allowing us to study in detail the abundance gradients present in the Galactic disc. Methods. We present the results of the analysis of 331 spectra obtained for 180 individual DCEPs with a variety of high-resolution spectrographs. For each target, we derived accurate atmospheric parameters, radial velocities, and abundances for up to 29 different species. The iron abundances range between 0.5 and −1 dex with a rather homogeneous distribution in metallicity. Results. The sample presented in this paper was complemented with that already published in the context of the C-MetaLL survey, resulting in a total of 292 pulsators whose spectra have been analysed in a homogeneous way. These data were used to study the abundance gradients of the Galactic disc in a range of Galactocentric radii (R<SUB>GC</SUB>) spanning the range of 5─20 kpc. Conclusions. For most of the elements, we have found a clear negative gradient, with a slope of −0.064 ± 0.003 dex kpc<SUP>−1</SUP> for [Fe/H] case. Through a qualitative fit with the Galactic spiral arms, we show how our farthest targets (R<SUB>GC</SUB> &gt; 10 kpc) trace both the Outer and Outer Scutum-Centaurus arms. The homogeneity of the sample will be of pivotal importance for the study of the metallicity dependence of the DCEP PL relations.",
+      "keywords": [
+        "stars: abundances",
+        "stars: distances",
+        "stars: fundamental parameters",
+        "stars: variables: Cepheids",
+        "Galaxy: disk",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 46
+    },
+    {
+      "source_id": "2024A&A...682L..21C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202449160",
+      "title": "OGLE-GD-CEP-0516: The most metal-poor lithium-rich Galactic Cepheid",
+      "authors": [
+        "Catanzaro, G.",
+        "Ripepi, V.",
+        "Salaris, M.",
+        "Trentin, E."
+      ],
+      "year": 2024,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2024A&A...682L..21C.pdf",
+      "retrieval_priority": 0.3842269467474517,
+      "abstract": "Context. Classical Cepheids (DCEPs) are important astrophysical objects not only as standard candles for the determination of the cosmic distance ladder but also as a test-bed for stellar evolution theory thanks to the connection between their pulsation (periods, amplitudes) and stellar (luminosity, mass, effective temperature, metallicity) parameters. <BR /> Aims: We aim to elucidate the nature of the Galactic DCEP OGLE-GD-CEP-0516 and other DCEPs showing an enhanced abundance of lithium in their atmospheres. <BR /> Methods: We collected high-resolution spectra for OGLE-GD-CEP-0516 with UVES at VLT. Accurate stellar parameters, such as effective temperature, gravity, micro- and macro-turbulence, radial velocity, and metal abundances, were measured for this star using spectral synthesis techniques based on the LTE plane-parallel atmospheric model. <BR /> Results: We find a chemical pattern, with most elements being under-abundant compared with the Sun; that is [Fe/H] = ‒0.54 ± 0.16 dex, [C/H] = ‒0.45 ± 0.05 dex, or [Mg/H] = ‒0.40 ± 0.16 dex, among others. In particular, we measured a lithium abundance of A(Li) = 3.06 ± 0.10 dex for OGLE-GD-CEP-0516, which makes this object the sixth Li-rich object to be identified among the Milky Way DCEPs. <BR /> Conclusions: Our results favour the scenario in which the six Galactic Li-rich DCEPs are crossing the instability strip for the first time having had slowly rotating progenitors during their main sequence phase. This study explores the link between lithium abundance and the pulsation period in classical Cepheids. We find that brighter Cepheids, indicative of higher mass, show enhanced lithium abundance, contrary to predictions from evolutionary models considering rotation. Additionally, our analysis of lithium abundance versus [Fe/H] reveals a lack of significant correlation, contradicting expectations from galactic chemical evolution (GCE) models. <P />Based on observations European Southern Observatory programs P105.20MX.001.",
+      "keywords": [
+        "stars: abundances",
+        "stars: fundamental parameters",
+        "stars: individual: OGLE-GD-CEP-0516",
+        "stars: variables: Cepheids"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 60
+    },
+    {
+      "source_id": "2024AJ....168...34W",
+      "source_type": "paper",
+      "doi": "10.3847/1538-3881/ad50d3",
+      "title": "Search for Classical Cepheids in Galactic Open Clusters and Calibration of the Period─Wesenheit─Metallicity Relation in the Gaia Bands",
+      "authors": [
+        "Wang, Huajian",
+        "Xu, Ye",
+        "Lin, Zehao",
+        "Hao, Chaojie",
+        "Liu, Dejian",
+        "Li, Yingjie"
+      ],
+      "year": 2024,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2024AJ....168...34W.pdf",
+      "retrieval_priority": 0.4180027993321327,
+      "abstract": "It is beneficial to calibrate the period─Wesenheit─metallicity relation (PWZR) of Delta Cephei stars (DCEPs), i.e., classical Cepheids, using accurate parallaxes of associated open clusters (OCs) from Gaia data release 3 (DR3). To this aim, we obtain a total of 43 OC─DCEPs (including 33 fundamental mode, 9 first overtone mode, and 1 multimode DCEPs) and calibrate the PWZR as <inline-formula> </inline-formula> + (−0.285 ± 0.064)[Fe/H]. The concurrently obtained residual parallax offset in OCs, zp = −4 ± 5 μas, demonstrates the adequacy of the parallax corrections within the magnitude range of OC member stars. By comparing the field DCEPs' DR3 parallaxes with their photometric parallaxes derived by our PWZR, we estimated the residual parallax offset in field DCEPs as zp = −15 ± 3 μas. Using our PWZR, we estimate the distance modulus of the Large Magellanic Cloud to be 18.482 ± 0.040 mag, which aligns well with the most accurate published value obtained through geometric methods.",
+      "keywords": [
+        "Cepheid variable stars",
+        "Cepheid distance",
+        "Open star clusters",
+        "218",
+        "217",
+        "1160",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 53
+    },
+    {
+      "source_id": "2024A&A...684L...9N",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202449600",
+      "title": "The orbital parameters of the δ Cep inner binary system determined using 2019 HARPS-N spectroscopic data",
+      "authors": [
+        "Nardetto, N.",
+        "Hocdé, V.",
+        "Kervella, P.",
+        "Gallenne, A.",
+        "Gieren, W.",
+        "Graczyk, D.",
+        "Merand, A.",
+        "Rainer, M.",
+        "Storm, J.",
+        "Pietrzyński, G.",
+        "Pilecki, B.",
+        "Poretti, E.",
+        "Bailleul, M.",
+        "Bras, G.",
+        "Afanasiev, A."
+      ],
+      "year": 2024,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2024A&A...684L...9N.pdf",
+      "retrieval_priority": 0.5874169784065615,
+      "abstract": "Context. An inner companion has recently been discovered orbiting the prototype of classical Cepheids, δ Cep, whose orbital parameters are still not fully constrained. <BR /> Aims: We collected new precise radial velocity measurements of δ Cep in 2019 using the HARPS-N spectrograph mounted at the Telescopio Nazionale Galileo. Using these radial velocity measurements, we aimed to improve the orbital parameters of the system. <BR /> Methods: We considered a template available in the literature as a reference for the radial velocity curve of the pulsation of the star. We then calculated the residuals between our global dataset (composed of the new 2019 observations plus data from the literature) and the template as a function of the pulsation phase and the barycentric Julian date. This provides the orbital velocity of the Cepheid component. Using a Bayesian tool, we derived the orbital parameters of the system. <BR /> Results: Considering priors based on already published Gaia constraints, we find for the orbital period a maximum a posteriori probability of P<SUB>orb</SUB> = 9.32<SUB>‒0.04</SUB><SUP>+0.03</SUP> years (uncertainties correspond to the 95% highest density probability interval), and we obtain an eccentricity e = 0.71<SUB>‒0.02</SUB><SUP>+0.02</SUP>, a semimajor axis a = 0.029<SUB>‒0.003</SUB><SUP>+0.002</SUP> arcsec, and a center-of-mass velocity V<SUB>0</SUB> = ‒17.28<SUB>‒0.08</SUB><SUP>+0.08</SUP> km s<SUP>‒1</SUP>, among other parameters. <BR /> Conclusions: In this short analysis we derive the orbital parameters of the δ Cep inner binary system and provide a cleaned radial velocity curve of the pulsation of the star, which will be used to study its Baade-Wesselink projection factor in a future publication.",
+      "keywords": [
+        "binaries : close",
+        "binaries: spectroscopic",
+        "stars: oscillations",
+        "stars: individual: δ Cep",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 7
+    },
+    {
+      "source_id": "2023MNRAS.520.4154M",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stad440",
+      "title": "Cepheid metallicity in the Leavitt law (C-MetaLL) survey - III. Simultaneous derivation of the Gaia parallax offset and period-luminosity-metallicity coefficients",
+      "authors": [
+        "Molinaro, R.",
+        "Ripepi, V.",
+        "Marconi, M.",
+        "Romaniello, M.",
+        "Catanzaro, G.",
+        "Cusano, F.",
+        "De Somma, G.",
+        "Musella, I.",
+        "Storm, J.",
+        "Trentin, E."
+      ],
+      "year": 2023,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2023MNRAS.520.4154M.pdf",
+      "retrieval_priority": 0.4618491366493568,
+      "abstract": "Classical Cepheids (DCEPs) are the most important standard candles in the extra-galactic distance scale thanks to the period-luminosity ($\\rm PL$), period-luminosity-colour ($\\rm PLC$), and period-Wesenheit ($\\rm PW$) relations that hold for these objects. The advent of the Gaia mission, and in particular the Early Data Release 3 (EDR3), provided accurate parallaxes to calibrate these relations. In order to fully exploit Gaia measurements, the zero point (ZP) of Gaia parallaxes should be determined with an accuracy of a few $\\rm \\mu as$. The individual ZP corrections provided by the Gaia team depend on the magnitude and the position on the sky of the target. In this paper, we use an implicit method that relies on the Cepheid $\\rm PL$ and $\\rm PW$ relations to evaluate the ensemble Gaia parallax zero point. The best inferred estimation of the offset value needed to additionally correct (after the Gaia team correction) the Gaia parallaxes of the present DCEP sample amounts to $\\rm -22\\pm 4\\, \\mu as$. This value is in agreement with the most recent literature values and confirms that the correction proposed by the Gaia team overcorrected the parallaxes. As a further application of our results, we derive an estimate of the Large Magellanic Cloud distance ($\\rm \\mu _0=18.49\\pm 0.06\\, mag$) in very good agreement with the currently accepted value obtained through geometric methods.",
+      "keywords": [
+        "stars: distances",
+        "stars: variables: cepheids",
+        "(cosmology:) distance scale",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2020A&A...642A.230R",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202038714",
+      "title": "Period-luminosity-metallicity relation of classical Cepheids",
+      "authors": [
+        "Ripepi, V.",
+        "Catanzaro, G.",
+        "Molinaro, R.",
+        "Marconi, M.",
+        "Clementini, G.",
+        "Cusano, F.",
+        "De Somma, G.",
+        "Leccia, S.",
+        "Musella, I.",
+        "Testa, V."
+      ],
+      "year": 2020,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2020A&A...642A.230R.pdf",
+      "retrieval_priority": 0.44313987487343004,
+      "abstract": "Context. Classical Cepheids (DCEPs) are the most important primary indicators for the extragalactic distance scale. Establishing the dependence on metallicity of their period-luminosity and period-Wesenheit (PL and PW) relations has deep consequences for the estimate of the Hubble constant (H<SUB>0</SUB>). <BR /> Aims: We investigate the dependence on metal abundance ([Fe/H]) of the PL and PW relations for Galactic DCEPs. <BR /> Methods: We combined proprietary and literature photometric and spectroscopic data, gathering a total sample of 413 Galactic DCEPs (372 fundamental mode, DCEP_F, and 41 first-overtone, DCEP_1O) and constructed new metallicity-dependent PL and PW relations in the near-infrared adopting the astrometry-based luminosity. <BR /> Results: We find indications that the slopes of the PL(K<SUB>S</SUB>) and PW(J, K<SUB>S</SUB>) relations for Galactic DCEPs might depend on metallicity on the basis of the comparison with the Large Magellanic Cloud relationships. Therefore we used a generalized form of the PL and PW relations to simultaneously take the metallicity dependence of the slope and intercept of these relations into account. <BR /> Conclusions: We calculated PL and PW relations that for the first time explicitly include a metallicity dependence of the slope and intercept terms. The quality of the available data is insufficient, however, and we cannot yet present conclusive results, but they are relevant from a methodological point of view. The new relations are linked to the geometric measurement of the distance to the Large Magellanic Cloud and allowed us to estimate a Gaia DR2 parallax zero-point offset ∆ϖ = 0.0615 ± 0.004 mas from the dataset of DCEPs used in this work. <P />Based on observations made with the Italian Telescopio Nazionale Galileo (TNG) operated by the Fundación Galileo Galilei (FGG) of the Istituto Nazionale di Astrofisica (INAF) at the Observatorio del Roque de los Muchachos (La Palma, Canary Islands, Spain).",
+      "keywords": [
+        "stars: variables: Cepheids",
+        "stars: distances",
+        "distance scale",
+        "stars: abundances",
+        "stars: fundamental parameters",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 49
+    },
+    {
+      "source_id": "2017A&A...597A..73N",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201629400",
+      "title": "HARPS-N high spectral resolution observations of Cepheids I. The Baade-Wesselink projection factor of δ Cep revisited",
+      "authors": [
+        "Nardetto, N.",
+        "Poretti, E.",
+        "Rainer, M.",
+        "Fokin, A.",
+        "Mathias, P.",
+        "Anderson, R. I.",
+        "Gallenne, A.",
+        "Gieren, W.",
+        "Graczyk, D.",
+        "Kervella, P.",
+        "Mérand, A.",
+        "Mourard, D.",
+        "Neilson, H.",
+        "Pietrzynski, G.",
+        "Pilecki, B.",
+        "Storm, J."
+      ],
+      "year": 2017,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2017A&A...597A..73N.pdf",
+      "retrieval_priority": 0.504216651320302,
+      "abstract": "Context. The projection factor p is the key quantity used in the Baade-Wesselink (BW) method for distance determination; it converts radial velocities into pulsation velocities. Several methods are used to determine p, such as geometrical and hydrodynamical models or the inverse BW approach when the distance is known. <BR /> Aims: We analyze new HARPS-N spectra of δ Cep to measure its cycle-averaged atmospheric velocity gradient in order to better constrain the projection factor. <BR /> Methods: We first apply the inverse BW method to derive p directly from observations. The projection factor can be divided into three subconcepts: (1) a geometrical effect (p<SUB>0</SUB>); (2) the velocity gradient within the atmosphere (f<SUB>grad</SUB>); and (3) the relative motion of the optical pulsating photosphere with respect to the corresponding mass elements (f<SUB>o-g</SUB>). We then measure the f<SUB>grad</SUB> value of δ Cep for the first time. <BR /> Results: When the HARPS-N mean cross-correlated line-profiles are fitted with a Gaussian profile, the projection factor is p<SUB>cc-g</SUB> = 1.239 ± 0.034(stat.) ± 0.023(syst.). When we consider the different amplitudes of the radial velocity curves that are associated with 17 selected spectral lines, we measure projection factors ranging from 1.273 to 1.329. We find a relation between f<SUB>grad</SUB> and the line depth measured when the Cepheid is at minimum radius. This relation is consistent with that obtained from our best hydrodynamical model of δ Cep and with our projection factor decomposition. Using the observational values of p and f<SUB>grad</SUB> found for the 17 spectral lines, we derive a semi-theoretical value of f<SUB>o-g</SUB>. We alternatively obtain f<SUB>o-g</SUB> = 0.975 ± 0.002 or 1.006 ± 0.002 assuming models using radiative transfer in plane-parallel or spherically symmetric geometries, respectively. <BR /> Conclusions: The new HARPS-N observations of δ Cep are consistent with our decomposition of the projection factor. The next step will be to measure p<SUB>0</SUB> directly from the next generation of visible interferometers. With these values in hand, it will be possible to derive f<SUB>o-g</SUB> directly from observations. <P />Table A.1 is also available at the CDS via anonymous ftp to <A href=\"http://cdsarc.u-strasbg.fr\">http://cdsarc.u-strasbg.fr</A> (<A href=\"http://130.79.128.5\">http://130.79.128.5</A>) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/597/A73\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/597/A73</A>",
+      "keywords": [
+        "stars: oscillations",
+        "techniques: spectroscopic",
+        "stars: individual: delta Cep",
+        "stars: distances",
+        "stars: atmospheres",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 13
+    },
+    {
+      "source_id": "2017ApJ...838...67E",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aa6159",
+      "title": "The Secret Lives of Cepheids: δ Cep—The Prototype of a New Class of Pulsating X-Ray Variable Stars",
+      "authors": [
+        "Engle, Scott G.",
+        "Guinan, Edward F.",
+        "Harper, Graham M.",
+        "Cuntz, Manfred",
+        "Remage Evans, Nancy",
+        "Neilson, Hilding R.",
+        "Fawzy, Diaa E."
+      ],
+      "year": 2017,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2017ApJ...838...67E.pdf",
+      "retrieval_priority": 0.587593751145425,
+      "abstract": "From our Secret Lives of Cepheids program, the prototype Classical Cepheid, δ Cep, is found to be an X-ray source with periodic pulsation-modulated X-ray variations. This finding complements our earlier reported phase-dependent FUV-UV emissions of the star that increase ∼10-20 times with highest fluxes at ∼ 0.90{--}0.95φ , just prior to maximum brightness. Previously δ Cep was found as potentially X-ray variable, using XMM-Newton observations. Additional phase-constrained data were secured with Chandra near X-ray emission peak, to determine if the emission and variability were pulsation-phase-specific to δ Cep and not transient or due to a possible coronally active, cool companion. The Chandra data were combined with prior XMM-Newton observations, and were found to very closely match the previously observed X-ray behavior. From the combined data set, a ∼4 increase in X-ray flux is measured, reaching a peak {L}<SUB>{{X</SUB>}} = 1.7 × 10<SUP>29</SUP> erg s<SUP>-1</SUP> near 0.45ϕ. The precise X-ray flux phasing with the star’s pulsation indicates that the emissions arise from the Cepheid and not from a companion. However, it is puzzling that the maximum X-ray flux occurs ∼0.5ϕ (∼3 days) later than the FUV-UV maximum. There are several other potential Cepheid X-ray detections with properties similar to δ Cep, and comparable X-ray variability is indicated for two other Cepheids: β Dor and V473 Lyr. X-ray generating mechanisms in δ Cep and other Cepheids are discussed. If additional Cepheids are confirmed to show phased X-ray variations, then δ Cep will be the prototype of a new class of pulsation-induced X-ray variables.",
+      "keywords": [
+        "stars: activity",
+        "stars: atmospheres",
+        "stars: individual: δ Cep",
+        "stars: variables: Cepheids",
+        "ultraviolet: stars",
+        "X-rays: stars",
+        "stars: magnetic field",
+        "shock waves",
+        "stars: chromospheres",
+        "stars: coronae",
+        "stars: oscillations",
+        "stars: variables: RR Lyrae",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2016MNRAS.461.1451G",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stw1375",
+      "title": "Multiplicity of Galactic Cepheids from long-baseline interferometry - III. Sub-percent limits on the relative brightness of a close companion of δ Cephei",
+      "authors": [
+        "Gallenne, A.",
+        "Mérand, A.",
+        "Kervella, P.",
+        "Monnier, J. D.",
+        "Schaefer, G. H.",
+        "Roettenbacher, R. M.",
+        "Gieren, W.",
+        "Pietrzyński, G.",
+        "McAlister, H.",
+        "ten Brummelaar, T.",
+        "Sturmann, J.",
+        "Sturmann, L.",
+        "Turner, N.",
+        "Anderson, R. I."
+      ],
+      "year": 2016,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2016MNRAS.461.1451G.pdf",
+      "retrieval_priority": 0.3741984244251026,
+      "abstract": "We report new CHARA/Michigan InfraRed Combiner interferometric observations of the Cepheid archetype δ Cep, which aimed at detecting the newly discovered spectroscopic companion. We reached a maximum dynamic range ∆H = 6.4, 5.8 and 5.2 mag, respectively, within the relative distance to the Cepheid r &lt; 25 mas, 25 &lt; r &lt; 50 mas and 50 &lt; r &lt; 100 mas. Our observations did not show strong evidence of a companion. We have a marginal detection at 3σ with a flux ratio of 0.21 per cent, but nothing convincing as we found other possible probable locations. We ruled out the presence of companion with a spectral type earlier than F0V, A1V and B9V, respectively for the previously cited ranges r. From our estimated sensitivity limits and the Cepheid light curve, we derived lower limit magnitudes in the H band for this possible companion to be H<SUB>comp</SUB> &gt; 9.15, 8.31 and 7.77 mag, respectively, for r &lt; 25 mas, 25 &lt; r &lt; 50 mas and 50 &lt; r &lt; 100 mas. We also found that to be consistent with the predicted orbital period (Anderson et al.), the companion has to be located at a projected separation &lt;24 mas with a spectral type later than an F0V star.",
+      "keywords": [
+        "techniques: high angular resolution",
+        "techniques: interferometric",
+        "binaries: close",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Instrumentation and Methods for Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 39
+    },
+    {
+      "source_id": "2015A&A...584A..80M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201525954",
+      "title": "Cepheid distances from the SpectroPhoto-Interferometry of Pulsating Stars (SPIPS). Application to the prototypes δ Cephei and η Aquilae",
+      "authors": [
+        "Mérand, A.",
+        "Kervella, P.",
+        "Breitfelder, J.",
+        "Gallenne, A.",
+        "Coudé du Foresto, V.",
+        "ten Brummelaar, T. A.",
+        "McAlister, H. A.",
+        "Ridgway, S.",
+        "Sturmann, L.",
+        "Sturmann, J.",
+        "Turner, N. H."
+      ],
+      "year": 2015,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2015A&A...584A..80M.pdf",
+      "retrieval_priority": 0.48005361243215616,
+      "abstract": "Context. The parallax of pulsation, and its implementations such as the Baade-Wesselink method and the infrared surface brightness technique, is an elegant method to determine distances of pulsating stars in a quasi-geometrical way. However, these classical implementations in general only use a subset of the available observational data. <BR /> Aims: Freedman &amp; Madore (2010, ApJ, 719, 335) suggested a more physical approach in the implementation of the parallax of pulsation in order to treat all available data. We present a global and model-based parallax-of-pulsation method that enables including any type of observational data in a consistent model fit, the SpectroPhoto-Interferometric modeling of Pulsating Stars (SPIPS). <BR /> Methods: We implemented a simple model consisting of a pulsating sphere with a varying effective temperature and a combination of atmospheric model grids to globally fit radial velocities, spectroscopic data, and interferometric angular diameters. We also parametrized (and adjusted) the reddening and the contribution of the circumstellar envelopes in the near-infrared photometric and interferometric measurements. <BR /> Results: We show the successful application of the method to two stars: δ Cep and η Aql. The agreement of all data fitted by a single model confirms the validity of the method. Derived parameters are compatible with publish values, but with a higher level of confidence. <BR /> Conclusions: The SPIPS algorithm combines all the available observables (radial velocimetry, interferometry, and photometry) to estimate the physical parameters of the star (ratio distance/p-factor, T<SUB>eff</SUB>, presence of infrared excess, color excess, etc). The statistical precision is improved (compared to other methods) thanks to the large number of data taken into account, the accuracy is improved by using consistent physical modeling and the reliability of the derived parameters is strengthened thanks to the redundancy in the data. <P />FITS data files for each star are only available at the CDS via anonymous ftp to <A href=\"http://cdsarc.u-strasbg.fr\">http://cdsarc.u-strasbg.fr</A> (ftp://130.79.128.5) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/584/A80\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/584/A80</A>",
+      "keywords": [
+        "techniques: interferometric",
+        "stars: variables: Cepheids",
+        "stars: distances",
+        "circumstellar matter",
+        "methods: observational",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 15
+    },
+    {
+      "source_id": "2015ApJ...804..144A",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/804/2/144",
+      "title": "Revealing δ Cephei's Secret Companion and Intriguing Past",
+      "authors": [
+        "Anderson, R. I.",
+        "Sahlmann, J.",
+        "Holl, B.",
+        "Eyer, L.",
+        "Palaversa, L.",
+        "Mowlavi, N.",
+        "Süveges, M.",
+        "Roelens, M."
+      ],
+      "year": 2015,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2015ApJ...804..144A.pdf",
+      "retrieval_priority": 0.6422322580645161,
+      "abstract": "Classical Cepheid variable stars are crucial calibrators of the cosmic distance scale thanks to a relation between their pulsation periods and luminosities. Their archetype, δ Cephei, is an important calibrator for this relation. In this paper, we show that δ Cephei is a spectroscopic binary based on newly obtained high-precision radial velocities. We combine these new data with literature data to determine the orbit, which has period 2201 days, semi-amplitude 1.5 km s<SUP>-1</SUP>, and high eccentricity (e = 0.647). We re-analyze Hipparcos intermediate astrometric data to measure δ Cephei's parallax (\\varpi =4.09+/- 0.16 mas) and find tentative evidence for an orbital signature, although we cannot claim detection. We estimate that Gaia will fully determine the astrometric orbit. Using the available information from spectroscopy, velocimetry, astrometry, and Geneva stellar evolution models ({{M}<SUB>δ Cep</SUB>}∼ 5.0-5.25 {{M}<SUB>☉ </SUB>}), we constrain the companion mass to within 0.2 {{M}<SUB>☉ </SUB>}\\lt {{M}<SUB>2</SUB>}\\lt 1.2. We discuss the potential of ongoing and previous interactions between the companion and δ Cephei near pericenter passage, informing reported observations of circumstellar material and bow shock. The orbit may have undergone significant changes due to a Kozai-Lidov mechanism driven by the outer (visual and astrometric) companion HD 213307. Our discovery of δ Cephei's nature as a spectroscopic binary exposes a hidden companion and reveals a rich and dynamical history of the archetype of classical Cepheid variables.",
+      "keywords": [
+        "binaries: general",
+        "binaries: spectroscopic",
+        "stars: distances",
+        "stars: individual: δ Cephei &amp; HD 213306 &amp; HIP 110991",
+        "stars: oscillations",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 1
+    },
+    {
+      "source_id": "2014ApJ...794...80E",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/794/1/80",
+      "title": "The Secret Lives of Cepheids: Evolutionary Changes and Pulsation-induced Shock Heating in the Prototype Classical Cepheid δ Cep",
+      "authors": [
+        "Engle, Scott G.",
+        "Guinan, Edward F.",
+        "Harper, Graham M.",
+        "Neilson, Hilding R.",
+        "Remage Evans, Nancy"
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2014ApJ...794...80E.pdf",
+      "retrieval_priority": 0.6092393038699916,
+      "abstract": "Over the past decade, the Secret Lives of Cepheids (SLiC) program has been carried out at Villanova University to study aspects and behaviors of classical Cepheids that are still not well understood. In this, the first of several planned papers on program Cepheids, we report the current results for δ Cep, the Cepheid prototype. Ongoing photometry has been obtained to search for changes in the pulsation period, light-curve morphology, and amplitude. Combining our photometry with the times of maximum light compilation by Berdnikov et al. returns a small period change of dP/dt ≈-0.1006 ± 0.0002 s yr<SUP>-1</SUP>. There is also evidence for a gradual light amplitude increase of ~0.011 mag (V band) and ~0.012 mag (B band) per decade over the last ~50 years. In addition, Hubble Space Telescope (HST) Cosmic Origins Spectrograph (COS) UV spectrophotometry and XMM-Newton X-ray data were carried out to investigate the high-temperature plasmas present above the Cepheid photospheres. In total, from the five visits (eight exposures) with XMM-Newton, δ Cep is found to be a soft X-ray source (L <SUB>X</SUB> (0.3-2 keV) ≈4.5-13 × 10<SUP>28</SUP> erg s<SUP>-1</SUP>) with peak flux at kT = 0.6-0.9 keV. The X-ray activity is found to vary, possibly in phase with the stellar pulsations. From 2010-2013, nine observations of δ Cep were carried out with HST-COS. The UV emissions are also variable and well phased with the stellar pulsations. Maximum UV line emissions occur near, or slightly before, maximum optical light, varying by as much as 20 times. This variability shows that pulsation-induced shock heating plays a significant role in Cepheid atmospheres, possibly in addition to a quiescent, magnetic heating. The results of this study show Cepheid atmospheres to be rather complex and dynamic. <P />Based on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555. These observations are associated with programs #11726, #12302, and #13019. This work is also based on observations obtained with XMM-Newton, an ESA science mission with instruments and contributions directly funded by ESA Member States and the USA (NASA).",
+      "keywords": [
+        "stars: chromospheres",
+        "stars: coronae",
+        "stars: variables: Cepheids",
+        "ultraviolet: stars",
+        "X-rays: stars",
+        "stars: individual: delta Cep beta Dor Polaris SU Cas l Car HD 213307 xi1 cma",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2013IAUS..289..134N",
+      "source_type": "paper",
+      "doi": "10.1017/S1743921312021254",
+      "title": "Wesenheit function for Galactic Cepheids: Application to the projection factors",
+      "authors": [
+        "Ngeow, Chow-Choong",
+        "Neilson, Hilding",
+        "Nardetto, Nicolas",
+        "Marengo, Massimo"
+      ],
+      "year": 2013,
+      "journal": "Advancing the Physics of Cosmic Distances",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2013IAUS..289..134N.pdf",
+      "retrieval_priority": 0.38043379500679353,
+      "abstract": "Galactic Cepheids are necessary tools for calibrating the period-luminosity relation, but distances to individual Galactic Cepheids are difficult to measure precisely and their application is limited to a small number of techniques, such as direct parallax measurements, main-sequence fitting to open clusters that host Cepheids, and Baade-Wesselink (BW)-type methods. Here, we re-examine the application of Wesenheit functions in determining distances to more than 300 Galactic Cepheids by taking advantage of the fact that the Wesenheit function is extinction-free by definition. Wesenheit distances are used to calibrate the projection (p) factor for Galactic Cepheids that also have BW distances. Based on ~ 70 Cepheids, we find that the period-p-factor relation may exhibit a nonlinear trend with a considerable scatter. We found discrepant p factors for δ Cephei in the literature. This may be due to inconsistent measurements of its angular diameter using different empirical techniques. We discuss the reason for the inconsistency in angular-diameter measurements and offer a possible remedy.",
+      "keywords": [
+        "Cepheids",
+        "stars: distances",
+        "distance scale",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 36
+    },
+    {
+      "source_id": "2012ApJ...747..145M",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/747/2/145",
+      "title": "New Evidence Supporting Cluster Membership for the Keystone Calibrator Delta Cephei",
+      "authors": [
+        "Majaess, D.",
+        "Turner, D.",
+        "Gieren, W."
+      ],
+      "year": 2012,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2012ApJ...747..145M.pdf",
+      "retrieval_priority": 0.42015301173826175,
+      "abstract": "New and existing UBVJHK<SUB>s</SUB> , spectroscopic, NOMAD, Hubble Space Telescope, and revised Hipparcos observations are employed to determine properties for δ Cep and its host star cluster. The multi-faceted approach ensured that uncertainties were mitigated (σ/d ~ 2%). The following fundamental parameters were inferred for δ Cep: E(B - V) = 0.073 ± 0.018(σ), log τ = 7.9 ± 0.1, and d=272\\,+/-\\, 3(\\sigma _{\\bar{x}})\\, +/-\\, 5 (\\sigma) pc. The cluster exhibits a turnoff near B6 (M <SUB>*</SUB>/M <SUB>☉</SUB> ~ 5), and the brightest host cluster members are the supergiants ζ Cep (K1.5Ib) and δ Cep. To within the uncertainties, the two stars share common astrometric parameters (π, μ<SUB>α</SUB>, μ<SUB>δ</SUB>, RV ~ -17 km s<SUP>-1</SUP>) and are tied to bluer members via the evolutionary track implied by the cluster's UBVJHK<SUB>s</SUB> color-color and color-magnitude diagrams. The cluster's existence is bolstered by the absence of an early-type sequence in color-magnitude diagrams for comparison fields. NOMAD data provided a means to identify potential cluster members (n ~ 30) and double the existing sample. That number could increase with forthcoming precise proper motions (DASCH) for fainter main-sequence stars associated with classical Cepheids (e.g., δ Cep), which may invariably foster efforts to strengthen the Galactic Cepheid calibration and reduce uncertainties tied to H <SUB>0</SUB>.",
+      "keywords": [
+        "Hertzsprung-Russell and C-M diagrams",
+        "open clusters and associations: general",
+        "stars: distances",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 29
+    },
+    {
+      "source_id": "2012ApJ...744...53M",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/744/1/53",
+      "title": "New Evidence for Mass Loss from δ Cephei from H I 21 cm Line Observations",
+      "authors": [
+        "Matthews, L. D.",
+        "Marengo, M.",
+        "Evans, N. R.",
+        "Bono, G."
+      ],
+      "year": 2012,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2012ApJ...744...53M.pdf",
+      "retrieval_priority": 0.5524466096711224,
+      "abstract": "Recently published Spitzer Space Telescope observations of the classical Cepheid archetype δ Cephei revealed an extended dusty nebula surrounding this star and its hot companion HD 213307. At far-infrared wavelengths, the emission resembles a bow shock aligned with the direction of space motion of the star, indicating that δ Cephei is undergoing mass loss through a stellar wind. Here we report H I 21 cm line observations with the Very Large Array (VLA) to search for neutral atomic hydrogen associated with this wind. Our VLA data reveal a spatially extended H I nebula (~13' or 1 pc across) surrounding the position of δ Cephei. The nebula has a head-tail morphology, consistent with circumstellar ejecta shaped by the interaction between a stellar wind and the interstellar medium (ISM). We directly measure a mass of circumstellar atomic hydrogen M_H I ≈ 0.07 M_{☉}, although the total H I mass may be larger, depending on the fraction of circumstellar material that is hidden by Galactic contamination within our band or that is present on angular scales too large to be detected by the VLA. It appears that the bulk of the circumstellar gas has originated directly from the star, although it may be augmented by material swept from the surrounding ISM. The H I data are consistent with a stellar wind with an outflow velocity V <SUB>o</SUB> = 35.6 ± 1.2 km s<SUP>-1</SUP> and a mass-loss rate of {\\dot{M}}≈ (1.0+/- 0.8)× 10^{-6} M_{☉} yr<SUP>-1</SUP>. We have computed theoretical evolutionary tracks that include mass loss across the instability strip and show that a mass-loss rate of this magnitude, sustained over the preceding Cepheid lifetime of δ Cephei, could be sufficient to resolve a significant fraction of the discrepancy between the pulsation and evolutionary masses for this star.",
+      "keywords": [
+        "circumstellar matter",
+        "radio lines: stars",
+        "stars: individual: δ Cephei",
+        "stars: mass-loss",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 6
+    },
+    {
+      "source_id": "2010ApJ...725.2392M",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/725/2/2392",
+      "title": "An Infrared Nebula Associated with δ Cephei: Evidence of Mass Loss?",
+      "authors": [
+        "Marengo, M.",
+        "Evans, N. R.",
+        "Barmby, P.",
+        "Matthews, L. D.",
+        "Bono, G.",
+        "Welch, D. L.",
+        "Romaniello, M.",
+        "Huelsman, D.",
+        "Su, K. Y. L.",
+        "Fazio, G. G."
+      ],
+      "year": 2010,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2010ApJ...725.2392M.pdf",
+      "retrieval_priority": 0.5361181199854347,
+      "abstract": "We present the discovery of an infrared nebula around the Cepheid prototype δ Cephei and its hot companion HD 213307. Large-scale (~2.1 × 10<SUP>4</SUP> AU) nebulosity is detected at 5.8, 8.0, 24, and 70 μm. Surrounding the two stars, the 5.8 and 8.0 μm emission is largely attributable to polycyclic aromatic hydrocarbon emission swept from the interstellar medium by a wind originating from δ Cephei and/or its companion. Stochastically heated small dust grains are the most likely source of the 24 and 70 μm extended emission. The 70 μm emission, in particular, resembles a bow shock aligned in the direction of the proper motion of δ Cephei. This discovery supports the hypothesis that δ Cephei may be currently losing mass, at a rate in the range of ≈5 × 10<SUP>-9</SUP> to 6 × 10<SUP>-8</SUP> M <SUB>sun</SUB> yr<SUP>-1</SUP>.",
+      "keywords": [
+        "infrared: stars",
+        "stars: individual: delta Cephei",
+        "stars: mass-loss",
+        "stars: variables: Cepheids",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:metallicity OR abs:\"[fe/h]\" OR abs:\"fe/h\" OR abs:\"[m/h]\" OR abs:\"m/h\")",
+      "search_rank": 44
+    },
+    {
+      "source_id": "2008ApJ...674L..93N",
+      "source_type": "paper",
+      "doi": "10.1086/526518",
+      "title": "Theoretical Fits of the δ Cephei Light, Radius, and Radial Velocity Curves",
+      "authors": [
+        "Natale, Giovanni",
+        "Marconi, Marcella",
+        "Bono, Giuseppe"
+      ],
+      "year": 2008,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2008ApJ...674L..93N.pdf",
+      "retrieval_priority": 0.4781876973965269,
+      "abstract": "We present a theoretical investigation of the light, radius, and radial velocity variations of the prototype δ Cephei. We find that the best-fit model accounts for luminosity and velocity amplitudes with an accuracy better than 0.8 σ, and for the radius amplitude with an accuracy of 1.7 σ. The chemical composition of this model suggests a decrease in both helium (0.26 vs. 0.28) and metal (0.01 vs. 0.02) content in the solar neighborhood. Moreover, distance determinations based on the fit of light curves agree at the 0.8 σ level with the trigonometric parallax measured by the Hubble Space Telescope (HST). On the other hand, distance determinations based on angular diameter variations, which are independent of interstellar extinction and of the p-factor value, indicate an increase of the order of 5% in the HST parallax.",
+      "keywords": [
+        "Cepheids",
+        "stars: distances",
+        "stars: evolution",
+        "stars: oscillations",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 28
+    },
+    {
+      "source_id": "2007AJ....133.1810B",
+      "source_type": "paper",
+      "doi": "10.1086/511980",
+      "title": "Hubble Space Telescope Fine Guidance Sensor Parallaxes of Galactic Cepheid Variable Stars: Period-Luminosity Relations",
+      "authors": [
+        "Benedict, G. Fritz",
+        "McArthur, Barbara E.",
+        "Feast, Michael W.",
+        "Barnes, Thomas G.",
+        "Harrison, Thomas E.",
+        "Patterson, Richard J.",
+        "Menzies, John W.",
+        "Bean, Jacob L.",
+        "Freedman, Wendy L."
+      ],
+      "year": 2007,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2007AJ....133.1810B.pdf",
+      "retrieval_priority": 0.4452951911633918,
+      "abstract": "We present new absolute trigonometric parallaxes and relative proper motions for nine Galactic Cepheid variable stars: ell Car, ζ Gem, β Dor, W Sgr, X Sgr, Y Sgr, FF Aql, T Vul, and RT Aur. We obtain these results with astrometric data from Fine Guidance Sensor 1r, a white-light interferometer on the Hubble Space Telescope. We find absolute parallaxes in milliarcseconds: ell Car, 2.01 ± 0.20 mas; ζ Gem, 2.78 ± 0.18 mas; β Dor, 3.14 ± 0.16 mas; W Sgr, 2.28 ± 0.20 mas; X Sgr, 3.00 ± 0.18 mas; Y Sgr, 2.13 ± 0.29 mas; FF Aql, 2.81 ± 0.18 mas; T Vul, 1.90 ± 0.23 mas; and RT Aur, 2.40 ± 0.19 mas; average σ<SUB>π</SUB>/π = 8%. Two stars (FF Aql and W Sgr) required the inclusion of binary astrometric perturbations, providing Cepheid mass estimates. With these parallaxes we compute absolute magnitudes in V, I, K, and Wesenheit W<SUB>VI</SUB> bandpasses, corrected for interstellar extinction and Lutz-Kelker-Hanson bias. Adding our previous absolute magnitude determination for δ Cep, we construct period-luminosity relations (PLRs) for 10 Galactic Cepheids. We compare our new PLRs with those adopted by several recent investigations, including the Freedman and Sandage H<SUB>0</SUB> projects. Adopting our PLR would tend to increase the Sandage H<SUB>0</SUB> value, but leave the Freedman H<SUB>0</SUB> unchanged. Comparing our Galactic Cepheid PLR with those derived from LMC Cepheids, we find the slopes for K and W<SUB>VI</SUB> to be identical in the two galaxies within their respective errors. Our data lead to a W<SUB>VI</SUB> distance modulus for the LMC m - M = 18.50 ± 0.03, uncorrected for any metallicity effects. Applying recently derived metallicity corrections yields a corrected LMC distance modulus of (m - M)<SUB>0</SUB> = 18.40 ± 0.05. Comparing our PLR to solar-metallicity Cepheids in NGC 4258 results in a distance modulus 29.28 ± 0.08 that agrees with one derived from maser studies. <P />Based on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS5-26555.",
+      "keywords": [
+        "astrometry",
+        "Cepheids",
+        "distance scale",
+        "galaxies: individual: Large Magellanic Cloud: NGC 4258",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 38
+    },
+    {
+      "source_id": "2006MmSAI..77..299G",
+      "source_type": "paper",
+      "doi": "10.48550/arXiv.astro-ph/0508581",
+      "title": "Using delta  Cep stars to study northern dwarf irregular galaxies of the Local Group .",
+      "authors": [
+        "Gössl, C. A.",
+        "Snigula, J.",
+        "Hopp, U."
+      ],
+      "year": 2006,
+      "journal": "Memorie della Societa Astronomica Italiana",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2006MmSAI..77..299G.pdf",
+      "retrieval_priority": 0.34253533894495486,
+      "abstract": "Dwarf galaxies in the Local Group provide a unique astrophysical laboratory. Despite their proximity some of these systems still lack a reliable distance determination as well as studies of their stellar content and star formation history. We present first results of our survey of variable stars in a sample of six Local Group dwarf irregular galaxies. We describe observational strategies and data reduction, and discuss the lightcurves of newly found and rediscovered delta Cep stars in DDO 216, Leo A and GR8. Based on these data, we present newly derived independent Cepheid distances. Other variable stars found in our survey are discussed in a related article of this volume (Snigula et al.).",
+      "keywords": [
+        "Galaxies: distances",
+        "Galaxies: dwarf",
+        "Galaxies: individual: Leo A",
+        "Galaxies: individual: DDO 216",
+        "Galaxies: individual: GR8",
+        "Cepheids",
+        "Local Group",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 37
+    },
+    {
+      "source_id": "2005astro.ph..6695A",
+      "source_type": "paper",
+      "doi": "10.48550/arXiv.astro-ph/0506695",
+      "title": "The projection factor of delta Cephei A calibration of the Baade-Wesselink method using the CHARA Array",
+      "authors": [
+        "Antoine, Mérand",
+        "Kervella, Pierre",
+        "Coude Du Foresto, Vincent",
+        "Ridgway, Stephen T.",
+        "Aufdenberg, Jason P.",
+        "Ten Brummelaar, Theo A.",
+        "Berger, David H.",
+        "Sturmann, Judit",
+        "Sturmann, Laszlo",
+        "Turner, Nils H.",
+        "Mcalister, Harold A."
+      ],
+      "year": 2005,
+      "journal": "arXiv e-prints",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2005astro.ph..6695A.pdf",
+      "retrieval_priority": 0.38151714025630906,
+      "abstract": "Cepheids play a key role in astronomy as standard candles for measuring intergalactic distances. Their distance is usually inferred from the Period-Luminosity relationship, calibrated using the semi-empirical Baade-Wesselink method. Using this method, the distance is known to a multiplicative factor, called the projection factor. Presently, this factor is computed using numerical models - it has hitherto never been measured directly. Based on our new interferometric measurements obtained with the CHARA Array and the already published parallax, we present a geometrical measurement of the projection factor of a Cepheid, delta Cep. The value we determined, p = 1.27$\\pm$0.06, confirms the generally adopted value of p = 1.36 within 1.5 sigmas. Our value is in line with recent theoretical predictions of Nardetto et al. (2004).",
+      "keywords": [
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 32
+    },
+    {
+      "source_id": "2002AJ....124.1695B",
+      "source_type": "paper",
+      "doi": "10.1086/342014",
+      "title": "Astrometry with the Hubble Space Telescope: A Parallax of the Fundamental Distance Calibrator δ Cephei",
+      "authors": [
+        "Benedict, G. Fritz",
+        "McArthur, B. E.",
+        "Fredrick, L. W.",
+        "Harrison, T. E.",
+        "Slesnick, C. L.",
+        "Rhee, J.",
+        "Patterson, R. J.",
+        "Skrutskie, M. F.",
+        "Franz, O. G.",
+        "Wasserman, L. H.",
+        "Jefferys, W. H.",
+        "Nelan, E.",
+        "van Altena, W.",
+        "Shelus, P. J.",
+        "Hemenway, P. D.",
+        "Duncombe, R. L.",
+        "Story, D.",
+        "Whipple, A. L.",
+        "Bradley, A. J."
+      ],
+      "year": 2002,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2002AJ....124.1695B.pdf",
+      "retrieval_priority": 0.5558654654560959,
+      "abstract": "We present an absolute parallax and relative proper motion for the fundamental distance scale calibrator δ Cep. We obtain these with astrometric data from FGS 3, a white-light interferometer on the Hubble Space Telescope (HST). Utilizing spectrophotometric estimates of the absolute parallaxes of our astrometric reference stars and constraining δ Cep and reference star HD 213307 to belong to the same association (Cep OB6), we find π<SUB>abs</SUB>=3.66+/-0.15 mas. The larger than typical astrometric residuals for the nearby astrometric reference star HD 213307 are found to satisfy Keplerian motion with P=1.07 +/- 0.02 yr, a perturbation and period that could be due to an F0 V companion ~7 mas distant from and ~4 mag fainter than the primary. Spectral classifications and VRIJHKT<SUB>2</SUB>M and DDO51 photometry of the astrometric reference frame surrounding δ Cep indicate that field extinction is high and variable along this line of sight. However the extinction suffered by the reference star nearest (in angular separation and distance) to δ Cep, HD 213307, is lower and nearly the same as for δ Cep. Correcting for color differences, we find &lt;A<SUB>V</SUB>&gt;=0.23+/-0.03 for δ Cep and hence an absolute magnitude M<SUB>V</SUB>=-3.47+/-0.10. Adopting an average V magnitude, &lt;V&gt;=15.03+/-0.03, for Cepheids with logP=0.73 in the large Magellanic Cloud (LMC) from Udalski et al., we find a V-band distance modulus for the LMC, m-M=18.50+/-0.13, or 18.58+/-0.15, where the latter value results from a highly uncertain metallicity correction. These agree with our previous RR Lyr HST parallax-based determination of the distance modulus of the LMC. Based on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555.",
+      "keywords": [
+        "Astrometry",
+        "Cosmology: Distance Scale",
+        "Galaxies: Magellanic Clouds",
+        "Stars: Distances",
+        "Stars: Individual: Constellation Name: δ Cephei",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2002AJ....123.3380N",
+      "source_type": "paper",
+      "doi": "10.1086/340567",
+      "title": "Calibration of the Barnes-Evans Relation Using Interferometric Observations of Cepheids",
+      "authors": [
+        "Nordgren, Tyler E.",
+        "Lane, B. F.",
+        "Hindsley, R. B.",
+        "Kervella, P."
+      ],
+      "year": 2002,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2002AJ....123.3380N.pdf",
+      "retrieval_priority": 0.3823368077152075,
+      "abstract": "Direct diameter observations of Cepheid variables are used to calibrate the Barnes-Evans Cepheid surface brightness relation. Fifty-nine separate Cepheid diameter measurements from four different optical interferometers are used to calculate surface brightnesses as a function of magnitude and color. The linear fit to Cepheid surface brightness versus color is in excellent agreement with functions in the literature found using interferometric observations of nonvariable giant and supergiant stars. Using these relations, the distance is calculated to δ Cephei, for which an independent distance is known from trigonometric parallax. The distance from the relation in this paper differs from that derived by the previously published relation by 4% but is still marginally within the combined errors. Both distances are well within the errors of the distance derived from trigonometric parallax.",
+      "keywords": [
+        "Stars: Variables: Cepheids",
+        "Stars: Fundamental Parameters",
+        "Stars: Individual: Constellation Name: η Aquilae",
+        "Stars: Individual: Constellation Name: δ Cephei",
+        "Stars: Individual: Constellation Name: ζ Geminorum",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:parallax OR abs:distance OR abs:\"PL relation distance\" OR abs:\"period-luminosity relation distance\")",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2001AJ....121..476A",
+      "source_type": "paper",
+      "doi": "10.1086/318007",
+      "title": "Diameters of δ Cephei and η Aquilae Measured with the Navy Prototype Optical Interferometer",
+      "authors": [
+        "Armstrong, J. T.",
+        "Nordgren, Tyler E.",
+        "Germain, M. E.",
+        "Hajian, Arsen R.",
+        "Hindsley, R. B.",
+        "Hummel, C. A.",
+        "Mozurkewich, D.",
+        "Thessin, R. N."
+      ],
+      "year": 2001,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4875820b-6779-43d4-b1f9-a3d298054d2d\\2001AJ....121..476A.pdf",
+      "retrieval_priority": 0.48656983918472313,
+      "abstract": "We have measured the diameters of the Cepheid variables δ Cephei (18 nights) and η Aquilae (11 nights) with the Navy Prototype Optical Interferometer. The primary results of these observations are the mean angular diameters &lt;θ<SUB>LD</SUB>&gt; of these Cepheids: 1.520+/-0.014 milliseconds of arc (mas) for δ Cep and 1.69+/-0.04 mas for η Aql. We also report limb-darkened diameters for the check stars in this program: for β Lac, θ<SUB>LD</SUB>=1.909+/-0.011 mas and for 12 Aql, θ<SUB>LD</SUB>=2.418+/-0.010 mas. When combined with radius estimates from period-radius relations in the literature, the Cepheid angular diameters suggest distances slightly smaller than, but still consistent with, the Hipparcos distances. Pulsations are weakly detected at a level of ~1.5 to 2 σ for both Cepheids.",
+      "keywords": [
+        "Stars: Variables: Cepheids",
+        "stars: individual (δ Cephei)",
+        "Stars: Individual: Constellation Name: η Aquilae",
+        "stars: individual (β Lacertae)",
+        "stars: individual (12 Aquilae)",
+        "Techniques: Interferometric",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"delta Cephei\" OR abs:\"delta Cephei\") AND (abs:\"light curve period\" OR abs:\"pulsation period\" OR abs:period OR abs:pulsation)",
+      "search_rank": 9
+    },
+    {
+      "source_id": "SRC_DB_HR",
+      "source_type": "database",
+      "title": "Bright Star Catalogue (HR)",
+      "vizier_table_id": "V/50/catalog",
+      "description": "亮星星表（原称 Yale Catalogue of Bright Stars）收录了北半球和南半球最亮的约9110颗恒星，是天文学中最常用的亮星参考表。",
+      "reference_paper": "Hoffleit, D., & Warren, W. H. 1995, Yale University Observatory",
+      "bibcode": "1995yCat.5050....0H",
+      "research_methodology": "汇集多个历史星表与光谱分类数据的综合整理",
+      "observation_facility": "Yale University Observatory (汇编)",
+      "waveband": "Optical",
+      "research_content": "约9110颗亮星(视星等亮于约6.5等)的坐标、V星等、B-V颜色和光谱型。"
+    },
+    {
+      "source_id": "SRC_DB_GAIA_DR2",
+      "source_type": "database",
+      "title": "Gaia Data Release 2 (Gaia DR2)",
+      "vizier_table_id": "I/345/gaia2",
+      "description": "盖亚(Gaia)任务的第二次数据发布，为天文学带来了革命性的改变，包含近17亿颗恒星的高精度五参数天体测量和三波段测光数据。",
+      "reference_paper": "Gaia Collaboration, Brown, A. G. A., et al. 2018, A&A, 616, A1",
+      "bibcode": "2018A&A...616A...1G",
+      "research_methodology": "空间高精度天体测量和多波段测光",
+      "observation_facility": "Gaia Space Observatory (ESA)",
+      "waveband": "Optical (G, BP, RP bands)",
+      "research_content": "16.9亿个天体的位置和G波段星等，13.3亿天体的高精度视差和自行，1.6亿天体的有效温度，以及约720万颗恒星的径向速度。"
+    },
+    {
+      "source_id": "SRC_DB_GAIA_DR3",
+      "source_type": "database",
+      "title": "Gaia Data Release 3 (Gaia DR3)",
+      "vizier_table_id": "I/355/gaiadr3",
+      "description": "欧洲航天局(ESA)盖亚(Gaia)空间任务的第三次数据发布，提供约18亿颗天体迄今最高精度的天体测量、测光、光谱数据及天体物理参数。",
+      "reference_paper": "Gaia Collaboration, Vallenari, A., et al. 2023, A&A, 674, A1",
+      "bibcode": "2023A&A...674A...1G",
+      "research_methodology": "空间高精度天体测量、多波段测光和无缝分光巡天",
+      "observation_facility": "Gaia Space Observatory (ESA)",
+      "waveband": "Optical (330 - 1050 nm, G, BP, RP bands)",
+      "research_content": "包含近18亿个天体的位置、视差、自行和G/BP/RP波段测光数据，以及数千万天体的径向速度、化学丰度、天体物理参数，包括变星、双星及太阳系天体目录。"
+    },
+    {
+      "source_id": "SRC_DB_TIC",
+      "source_type": "database",
+      "title": "TESS Input Catalog (TIC)",
+      "vizier_table_id": "IV/38/tic",
+      "description": "凌星系外行星巡天卫星(TESS)的输入星表，综合了多项巡天数据，用于为TESS任务挑选观测目标并提供先验的恒星物理参数。",
+      "reference_paper": "Stassun, K. G., et al. 2019, AJ, 158, 138",
+      "bibcode": "2019AJ....158..138S",
+      "research_methodology": "多星表交叉匹配与天体物理参数的统计学推断",
+      "observation_facility": "Compilation (Gaia, 2MASS, ALLWISE, etc.)",
+      "waveband": "Optical to Near-Infrared (TESS band ~600-1000 nm + reference bands)",
+      "research_content": "包含数十亿个点源的坐标、自行、估计的TESS星等，及数千万恒星的有效温度、半径、质量、表面重力等物理参数。"
+    },
+    {
+      "source_id": "SRC_DB_HIPPARCOS",
+      "source_type": "database",
+      "title": "The Hipparcos and Tycho Catalogues",
+      "vizier_table_id": "I/239/hip_main",
+      "description": "依巴谷(Hipparcos)卫星星表，天体测量学的历史性里程碑，首次在太空中实现了极高精度的全天恒星视差和自行测量。",
+      "reference_paper": "ESA, 1997, ESA Special Publication, Vol. 1200",
+      "bibcode": "1997ESASP1200.....E",
+      "research_methodology": "空间高精度天体测量及双视场光电探测",
+      "observation_facility": "Hipparcos Satellite (ESA)",
+      "waveband": "Optical (Hp band, Tycho V/B bands)",
+      "research_content": "118,218颗恒星的高精度天球坐标、三角视差（毫角秒级）、自行，以及精确的Hp波段光度数据和变星信息。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2001AJ....121..476A_delta_Cephei_distance_2",
+      "source_id": "2001AJ....121..476A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "254 ± 30",
+      "field_unit": "pc",
+      "trace_id": "doc8_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          224,
+          489,
+          319,
+          508
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Such a mean radius, combined with our mean angular diameter of 1.52 ± 0.014 mas, yields a distance D of 254 ± 30 pc, a distance modulus (m − M) of 7.02 ± 0.26, and an absolute magnitude ⟨M_V⟩ = −3.38 ± 0.26.",
+      "measurement_method": "angular diameter and P-R relation",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2001AJ....121..476A_delta_Cephei_parallax_1",
+      "source_id": "2001AJ....121..476A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.32 ± 0.58",
+      "field_unit": "mas",
+      "trace_id": "doc8_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          758,
+          730,
+          885,
+          749
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Trigonometric parallax uncertainties for even the nearest Cepheids are large: the Hipparcos parallaxes π_Hip are 3.32 ± 0.58 mas for δ Cep and 2.78 ± 0.91 mas for η Aql (ESA 1997).",
+      "measurement_method": "trigonometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2001AJ....121..476A_delta_Cephei_pulsation_period_0",
+      "source_id": "2001AJ....121..476A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366316",
+      "field_unit": "d",
+      "trace_id": "doc8_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          356,
+          399,
+          448,
+          418
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We report here on measurements of δ Cep (P = 5.366316 d; Moffett & Barnes 1985) and η Aql (P = 7.176726 d; Szabados 1991) with the Navy Prototype Optical Interferometer (NPOI).",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2002AJ....123.3380N_delta_Cephei_distance_0",
+      "source_id": "2002AJ....123.3380N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "278+48−36",
+      "field_unit": "pc",
+      "trace_id": "doc21_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          642,
+          612,
+          677,
+          632
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The trigonometric parallax distance of δ Cephei as calculated from the Hipparcos parallax and USNO parallax is 278+48−36 pc (Nordgren et al. 2000) which is consistent with both.",
+      "measurement_method": "trigonometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2002AJ....123.3380N_delta_Cephei_distance_1",
+      "source_id": "2002AJ....123.3380N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "272 ± 6",
+      "field_unit": "pc",
+      "trace_id": "doc21_p22",
+      "provenance": {
+        "page": 22,
+        "bbox": [
+          362,
+          323,
+          637,
+          711
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Distances to δ Cephei ... Mean 272 ± 6",
+      "measurement_method": "surface brightness relation (Barnes-Evans)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2002AJ....123.3380N_delta_Cephei_distance_2",
+      "source_id": "2002AJ....123.3380N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "262 ± 5",
+      "field_unit": "pc",
+      "trace_id": "doc21_p22",
+      "provenance": {
+        "page": 22,
+        "bbox": [
+          362,
+          323,
+          637,
+          711
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Distances to δ Cephei ... Mean ... 262 ± 5",
+      "measurement_method": "surface brightness relation (Fouqué & Gieren 1997)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2002AJ....124.1695B_delta_Cephei_parallax_1",
+      "source_id": "2002AJ....124.1695B",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.66 ± 0.15",
+      "field_unit": "mas",
+      "trace_id": "doc7_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          506,
+          565,
+          542,
+          583
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "We obtain for delta Cep an absolute parallax, pi_abs = 3.66 ± 0.15 mas, and for DC-2, pi_abs = 3.65 ± 0.15.",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2002AJ....124.1695B_delta_Cephei_parallax_2",
+      "source_id": "2002AJ....124.1695B",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.66 ± 0.15",
+      "field_unit": "mas",
+      "trace_id": "doc7_p26",
+      "provenance": {
+        "page": 26,
+        "bbox": [
+          119,
+          283,
+          888,
+          770
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 8. Final delta Cep and HD 213307 (DC-2) Absolute Parallax and Relative Proper Motion Compared to Previous Results ... HST Absolute Parallax ... 3.66 ± 0.15",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2002AJ....124.1695B_delta_Cephei_pulsation_period_0",
+      "source_id": "2002AJ....124.1695B",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366316",
+      "field_unit": "d",
+      "trace_id": "doc7_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          114,
+          515,
+          197,
+          533
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "a phase (based on P = 5.366316 days), and a B-V estimated by comparison with the UBV photometry of Barnes et al. (1997).",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2005astro.ph..6695A_delta_Cephei_distance_1",
+      "source_id": "2005astro.ph..6695A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "274 ± 11",
+      "field_unit": "pc",
+      "trace_id": "doc18_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          433,
+          673,
+          464,
+          694
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Assuming a distance of 274 ± 11 pc (Benedict et al. 2002), this leads to a linear radius of 43.3 ± 1.7 solar radii.",
+      "measurement_method": "trigonometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005astro.ph..6695A_delta_Cephei_pulsation_period_0",
+      "source_id": "2005astro.ph..6695A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366316",
+      "field_unit": "d",
+      "trace_id": "doc18_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          144,
+          854,
+          159,
+          876
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The pulsation phase was computed using the following period and reference epoch (Moffett & Barnes 1985): P = 5.366316 d, T0 = 2 453 674.144 (Julian date)",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2007AJ....133.1810B_delta_Cephei_pulsation_period_0",
+      "source_id": "2007AJ....133.1810B",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": 5.36627,
+      "field_unit": "d",
+      "trace_id": "doc16_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          230,
+          90,
+          760,
+          292
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 2 TARGET CEPHEID APPARENT PROPERTIES ... $δ$ Cep 5.36627 0.7297 3.960 3.204 2.310 0.657 0.092 0.23 0.03",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...674L..93N_delta_Cephei_distance_0",
+      "source_id": "2008ApJ...674L..93N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": 273,
+      "field_unit": "pc",
+      "trace_id": "doc14_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          324,
+          217,
+          360,
+          237
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We selected this object because accurate measurements of light, radius, velocity curves, and of the p-factor are available and its geometric distance is known with an accuracy of 4% (273+11-12 Benedict et al. 2002).",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...674L..93N_delta_Cephei_distance_2",
+      "source_id": "2008ApJ...674L..93N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": 274,
+      "field_unit": "pc",
+      "trace_id": "doc14_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          198,
+          165,
+          801,
+          301
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Direct and derived observables of delta Cephei. ... mu^a ... 274 ± 11",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...674L..93N_delta_Cephei_pulsation_period_1",
+      "source_id": "2008ApJ...674L..93N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.3663",
+      "field_unit": "d",
+      "trace_id": "doc14_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          343,
+          257,
+          420,
+          277
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We selected the fundamental models with periods within 2% of the observed period (P=5.3663 days, Fernie 1995) and pulsationally unstable according to the analytical relations for the instability strip boundaries provided by Bono et al. (2000).",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...725.2392M_delta_Cephei_distance_1",
+      "source_id": "2010ApJ...725.2392M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "0.273±0.011",
+      "field_unit": "kpc",
+      "trace_id": "doc25_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          737,
+          397,
+          787,
+          417
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "With a distance of 0.273±0.011 kpc (Benedict et al. 2002) and a fundamental mode period of 5.37 d, δ Cephei is the second nearest Cepheid to the Solar System",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...725.2392M_delta_Cephei_pulsation_period_0",
+      "source_id": "2010ApJ...725.2392M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.37",
+      "field_unit": "d",
+      "trace_id": "doc25_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          615,
+          417,
+          675,
+          437
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "With a distance of 0.273±0.011 kpc (Benedict et al. 2002) and a fundamental mode period of 5.37 d, δ Cephei is the second nearest Cepheid to the Solar System",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...744...53M_delta_Cephei_distance_1",
+      "source_id": "2012ApJ...744...53M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": 273,
+      "field_unit": "pc",
+      "trace_id": "doc24_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          257,
+          246,
+          742,
+          771
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Coordinates and Stellar Properties of δ Cephei ... Distance (pc) 273±0.011",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...744...53M_delta_Cephei_pulsation_period_0",
+      "source_id": "2012ApJ...744...53M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366341",
+      "field_unit": "d",
+      "trace_id": "doc24_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          257,
+          246,
+          742,
+          771
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Coordinates and Stellar Properties of δ Cephei ... Pulsation period (days) 5.366341",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...747..145M_delta_Cephei_distance_1",
+      "source_id": "2012ApJ...747..145M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "272 ± 3(sigma_x) ± 5(sigma)",
+      "field_unit": "pc",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          513,
+          332,
+          544,
+          349
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The following fundamental parameters were inferred for delta Cep: E(B-V) = 0.073 ± 0.018(sigma), log tau = 7.9 ± 0.1, and d = 272 ± 3(sigma_x) ± 5(sigma) pc.",
+      "measurement_method": "astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...747..145M_delta_Cephei_distance_2",
+      "source_id": "2012ApJ...747..145M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "272 ± 3(sigma_x) ± 5(sigma)",
+      "field_unit": "pc",
+      "trace_id": "doc5_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          111,
+          346,
+          142,
+          364
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Assigning equal weight to each method, the mean of the four distances for delta Cep is: d = 272 ± 3(sigma_x) ± 5(sigma) pc. That result agrees with the Storm et al. (2011) determination from the infrared surface brightness technique (IRSB, Fouque & Gieren 1997).",
+      "measurement_method": "astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...747..145M_delta_Cephei_parallax_0",
+      "source_id": "2012ApJ...747..145M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.77 ± 0.16",
+      "field_unit": "mas",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          299,
+          1000,
+          352
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The following fundamental parameters were inferred for delta Cep: E(B-V) = 0.073 ± 0.018(sigma), log tau = 7.9 ± 0.1, and d = 272 ± 3(sigma_x) ± 5(sigma) pc. The cluster exhibits a turnoff near B6 (M_*/M_sun ~ 5), and the brightest host cluster members are the supergiants zeta Cep (K1.5Ib) and delta Cep. To within the uncertainties, the two stars share common astrometric parameters (pi, mu_alpha, mu_delta, RV ~ -17 km/s)",
+      "measurement_method": "astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...794...80E_delta_Cephei_distance_0",
+      "source_id": "2014ApJ...794...80E",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "273 ± 11",
+      "field_unit": "pc",
+      "trace_id": "doc17_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          456,
+          536,
+          492,
+          556
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "δ Cep is an important calibrator for the Period-Luminosity Law because it has one of the most precisely determined distances (d = 273 ± 11 pc from HST Fine Guidance Sensor (FGS) parallax determination) for a Cepheid",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...794...80E_delta_Cephei_distance_1",
+      "source_id": "2014ApJ...794...80E",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "273 ± 11",
+      "field_unit": "pc",
+      "trace_id": "doc17_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          268,
+          254,
+          731,
+          764
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Relevant Stellar Properties of δ Cep. ... Distance (pc) 273 ± 11^4",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2015A&A...584A..80M_delta_Cephei_distance_1",
+      "source_id": "2015A&A...584A..80M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "274",
+      "field_unit": "pc",
+      "trace_id": "doc19_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          58,
+          63,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Parameters of the δ Cep fit... distance (pc) 274 [fixed]",
+      "measurement_method": "SPIPS model fit (fixed)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2015A&A...584A..80M_delta_Cephei_metallicity_Fe_H_2",
+      "source_id": "2015A&A...584A..80M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "metallicity_Fe_H",
+      "field_value": "0.06",
+      "field_unit": "dex",
+      "trace_id": "doc19_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          58,
+          63,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Parameters of the δ Cep fit... metallicity [Fe/H] 0.06",
+      "measurement_method": "adopted value",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity_Fe_H"
+      ]
+    },
+    {
+      "record_id": "2015A&A...584A..80M_delta_Cephei_pulsation_period_0",
+      "source_id": "2015A&A...584A..80M",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.3662906 ± 0.0000061",
+      "field_unit": "d",
+      "trace_id": "doc19_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          58,
+          63,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Parameters of the δ Cep fit... period (days) 5.3662906 ± 0.0000061",
+      "measurement_method": "SPIPS model fit",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...804..144A_delta_Cephei_distance_3",
+      "source_id": "2015ApJ...804..144A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "244 ± 10",
+      "field_unit": "pc",
+      "trace_id": "doc11_p23",
+      "provenance": {
+        "page": 23,
+        "bbox": [
+          401,
+          393,
+          436,
+          413
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We re-analyze Hipparcos intermediate astrometric data (cf. Sects. 4.1.1) and obtain the parallax ϖ = 4.09 ± 0.16 mas (d = 244 ± 10 pc) using a 5-parameter (single star) model.",
+      "measurement_method": "Hipparcos intermediate astrometric data",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...804..144A_delta_Cephei_parallax_1",
+      "source_id": "2015ApJ...804..144A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "4.09 ± 0.16",
+      "field_unit": "mas",
+      "trace_id": "doc11_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          531,
+          671,
+          669,
+          691
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We re-analyze Hipparcos intermediate astrometric data to measure δ Cephei’s parallax (ϖ = 4.09 ± 0.16 mas) and find tentative evidence for an orbital signature",
+      "measurement_method": "Hipparcos intermediate astrometric data",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...804..144A_delta_Cephei_parallax_2",
+      "source_id": "2015ApJ...804..144A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "4.09 ± 0.16",
+      "field_unit": "mas",
+      "trace_id": "doc11_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          652,
+          624,
+          788,
+          644
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We then repeated the 5-parameter fit to 89 measurements and obtained a better fit (Fig. 8, right panel; χ2_red = 0.65, RMS(O−C) = 0.81 mas), as well as smaller parallax: ϖ_5parm = 4.09 ± 0.16 mas.",
+      "measurement_method": "Hipparcos intermediate astrometric data",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...804..144A_delta_Cephei_pulsation_period_0",
+      "source_id": "2015ApJ...804..144A",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "2201",
+      "field_unit": "d",
+      "trace_id": "doc11_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          482,
+          630,
+          541,
+          651
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We combine these new data with literature data to determine the orbit, which has period 2201 days, semi-amplitude 1.5 km s−1, and high eccentricity (e = 0.647).",
+      "measurement_method": "radial velocities",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2016MNRAS.461.1451G_delta_Cephei_parallax_1",
+      "source_id": "2016MNRAS.461.1451G",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.66 ± 0.15",
+      "field_unit": "mas",
+      "trace_id": "doc22_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          209,
+          452,
+          319,
+          468
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "i.e. the parallax π = 3.66 ± 0.15 mas (Benedict et al. 2002), an average effective temperature Teff = 5900 ± 100 K...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2016MNRAS.461.1451G_delta_Cephei_pulsation_period_0",
+      "source_id": "2016MNRAS.461.1451G",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.37",
+      "field_unit": "d",
+      "trace_id": "doc22_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          575,
+          799,
+          620,
+          814
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "This 5.37 days pulsating star, which is also the second nearest Cepheid, has been extensively studied...",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2017A&A...597A..73N_delta_Cephei_distance_1",
+      "source_id": "2017A&A...597A..73N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": 274,
+      "field_unit": "pc",
+      "trace_id": "doc9_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          194,
+          666,
+          226,
+          684
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The projection factor is then fit, where the distance of delta Cep is known with 4% uncertainty from the HST parallax (d = 274 ± 11 pc; Benedict et al. 2002).",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017A&A...597A..73N_delta_Cephei_distance_2",
+      "source_id": "2017A&A...597A..73N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": 272,
+      "field_unit": "pc",
+      "trace_id": "doc9_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          627,
+          812,
+          807,
+          828
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "while d is fixed to d = 272 ± 3(stat.) ± 5(syst.) pc (Majaess et al. 2012).",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017A&A...597A..73N_delta_Cephei_pulsation_period_0",
+      "source_id": "2017A&A...597A..73N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366208",
+      "field_unit": "d",
+      "trace_id": "doc9_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          91,
+          99,
+          155,
+          115
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For the values of the projection factor derived from a published period projection factor relation, we consistently use a period of P = 5.366208 days (Engle et al. 2014).",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...838...67E_delta_Cephei_distance_1",
+      "source_id": "2017ApJ...838...67E",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": 273,
+      "field_unit": "pc",
+      "trace_id": "doc4_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          804,
+          816,
+          857,
+          834
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In 1785, delta Cep (<V> = +3.89 mag; d = 273 pc; F5 Ib - G1 Ib; P_pulsation = 5.366 days) was discovered as a periodic variable star by (Goodricke 1786).",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...838...67E_delta_Cephei_pulsation_period_0",
+      "source_id": "2017ApJ...838...67E",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": 5.366,
+      "field_unit": "d",
+      "trace_id": "doc4_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          708,
+          831,
+          768,
+          849
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In 1785, delta Cep (<V> = +3.89 mag; d = 273 pc; F5 Ib - G1 Ib; P_pulsation = 5.366 days) was discovered as a periodic variable star by (Goodricke 1786).",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2024A&A...684L...9N_delta_Cephei_parallax_1",
+      "source_id": "2024A&A...684L...9N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": 3.5551,
+      "field_unit": "mas",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          538,
+          810,
+          688,
+          827
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The parallax from Gaia DR3, π = 3.5551 ± 0.1475 mas (Gaia Collaboration et al. 2023), has a renormalized unit weight error of 2.7, indicating that it is not reliable.",
+      "measurement_method": "Gaia DR3",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2024A&A...684L...9N_delta_Cephei_pulsation_period_0",
+      "source_id": "2024A&A...684L...9N",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.3663671",
+      "field_unit": "d",
+      "trace_id": "doc28_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          567,
+          746,
+          660,
+          762
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We thus used the ephemeris from Csörnyei et al. (2022) to calculate the pulsation phase for each individual observation: T_0 = 2412028.256 d, P_puls = 5.3663671 d, and dP/dt = -1.05379 × 10^-6 days yr^-1.",
+      "measurement_method": "ephemeris",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2026arXiv260702439E_delta_Cephei_pulsation_period_0",
+      "source_id": "2026arXiv260702439E",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366531",
+      "field_unit": "d",
+      "trace_id": "doc26_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          484,
+          532,
+          571,
+          551
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The AAVSO Johnson-V Fourier-template study provides the observed light-curve morphology and amplitude scale... P_obs = 5.366531 d",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "2026arXiv260702439E_delta_Cephei_pulsation_period_1",
+      "source_id": "2026arXiv260702439E",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.366531",
+      "field_unit": "d",
+      "trace_id": "doc26_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          173,
+          99,
+          827,
+          284
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1: Fixed MESA-RSP parameters used in the opacity-sensitivity calculations. ... Observed period used for comparison | P_obs = 5.366531 d",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: pulsation_period"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR2_2200153454723522432_0_[Fe/H]temp",
+      "source_id": "SRC_DB_GAIA_DR2",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "metallicity_Fe_H",
+      "field_value": "0",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/345/gaia2",
+        "key_column": "Source",
+        "key_value": "2200153454723522432",
+        "raw_column": "[Fe/H]temp",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR2_2200153454723522432_0_Plx",
+      "source_id": "SRC_DB_GAIA_DR2",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "-1.1717",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/345/gaia2",
+        "key_column": "Source",
+        "key_value": "2200153454723522432",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_2200153454733285248_0_Dist",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "320.85750000000002",
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "2200153454733285248",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_2200153454733285248_0_[Fe/H]",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "metallicity_Fe_H",
+      "field_value": "-0.129",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "2200153454733285248",
+        "raw_column": "[Fe/H]",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_2200153454733285248_0_Plx",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.5550999999999999",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "2200153454733285248",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_110991_0_Plx",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "3.3199999332427979",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "110991",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_110991_0_Period",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "pulsation_period",
+      "field_value": "5.369999885559082",
+      "field_unit": "d",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "110991",
+        "raw_column": "Period",
+        "raw_unit": "d",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HR_8571_0_Parallax",
+      "source_id": "SRC_DB_HR",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "0.010999999940395355",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "V/50/catalog",
+        "key_column": "HR",
+        "key_value": "8571",
+        "raw_column": "Parallax",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_415741355_0_Dist",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "distance",
+      "field_value": "4352.2700000000004",
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "415741355",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_415741355_0_[M/H]",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "m_h",
+      "field_value": "-0.024799999999999999",
+      "field_unit": "log(Sun)",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "415741355",
+        "raw_column": "[M/H]",
+        "raw_unit": "log(Sun)",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_415741355_0_Plx",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "cC*",
+      "entity_name": "delta Cephei",
+      "field_name": "parallax",
+      "field_value": "-1.1717",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "415741355",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+﻿source_id,mass_m500,mass_m500_unit,velocity_dispersion,velocity_dispersion_unit,xray_temperature_kt,xray_temperature_kt_unit
+2021A&A...651A..41C,,,,,15,keV
+2018AJ....156..224J,,,1154 +56 -56,km/s,,
+2013PASJ...65...10M,,,,,7.8,keV
+2013ApJ...763L...3F,,,,,5,keV
+2008MNRAS.386..715T,,,7007,km/s,,
+2002A&A...383..367S,,,,,"8.3, 7.3",keV
+2002ApJ...574L.119D,,,,,8.2,keV
+1999ApJ...514..607A,,,,,8.0,keV
+SRC_DB_MCXC,4.284599781036377,1e+14solMass,,,,
+SRC_DB_PSZ2,5.7360170000000004,1e+14solMass,,,,
+SRC_SUPPL_J_AJ_156_224,,,1154,km / s,,

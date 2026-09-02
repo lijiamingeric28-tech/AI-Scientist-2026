@@ -3,10 +3,20 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
+// 演示样例清单（置顶 3 条与画廊顺序同源；scripts/rebuild_sample_pack.py 生成）
+import SAMPLE_MANIFEST from '@/data/samples.json'
 
 /* 左栏宽度（可拖拽 200-400px，默认 240；2026-08-27 布局减负） */
 const SIDEBAR_MIN_W = 200
 const SIDEBAR_MAX_W = 400
+
+/* 标题字符串截断（2026-09-02）：默认宽度 305px 下纯 flex ellipsis 要等到 ~19 字
+ * 才折叠，右侧「回放」徽标/控件被挤出裁切。更早截断到 16 字（含省略号），
+ * 徽标有完整空间；CSS ellipsis 仍作兜底（窄屏/拖宽时双保险）。 */
+function fitTitle(t) {
+  if (!t) return ''
+  return t.length > 16 ? `${t.slice(0, 16)}…` : t
+}
 
 /* 相对时间格式化（契约 D7：created_at → "10 分钟前"） */
 function formatRelativeTime(iso) {
@@ -35,7 +45,13 @@ const FILTERS = [
   { key: 'error', label: '失败' },
 ]
 
-export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onReplay, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete }) {
+// 2026-09-02：我的查询 / 演示样例 双模式（侧栏顶部切换条）
+const MODES = [
+  { key: 'user', label: '我的查询', title: '用户真实查询（含回放产生的任务）' },
+  { key: 'sample', label: '演示样例', title: '内嵌精选样例：浏览真实过程或回放' },
+]
+
+export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onReplay, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete, mode = 'user', onModeChange, samplesExpanded = false, onToggleSamples }) {
   const [hoveredId, setHoveredId] = useState(null)
   // 2026-08-24: 批量删除管理模式
   const [manageMode, setManageMode] = useState(false)
@@ -63,11 +79,14 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
 
   // 契约 D8-1：queued 归入"运行中"筛选档
   // H-01: 失败档按 error 匹配，同时兼容旧词表 failed（存量记录防御）
-  const filtered = filter === 'all'
+  // 2026-09-02：演示样例模式忽略状态筛选（全部 completed；筛选值是『我的查询』残留）
+  const filtered = mode === 'sample'
     ? tasks
-    : filter === 'running'
-      ? tasks.filter((t) => t.status === 'running' || t.status === 'queued')
-      : tasks.filter((t) => t.status === filter || (filter === 'error' && t.status === 'failed'))
+    : filter === 'all'
+      ? tasks
+      : filter === 'running'
+        ? tasks.filter((t) => t.status === 'running' || t.status === 'queued')
+        : tasks.filter((t) => t.status === filter || (filter === 'error' && t.status === 'failed'))
 
   const toggleCheck = (id) => {
     setChecked((prev) => {
@@ -81,6 +100,45 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
   const exitManage = () => {
     setManageMode(false)
     setChecked(new Set())
+  }
+
+  /* ── 演示样例列表结构（2026-09-02 用户定稿）─────────────────────
+   * 折叠默认：置顶 3 条（M45 09-01 旗舰 / 参宿四 / M87，与画廊名一一对应）
+   * 展开后：17 条本体按画廊定稿序；回放副本独立小节常驻底部（可选中可删）
+   * 本体行 = manifest 顺序对齐（不再按 created_at 混排） */
+  const SAMPLE_PINS = ['昴星团 M45（09-01 版）', '参宿四', 'M87']
+  const manifestMeta = new Map()   // task_id → {index, name}
+  ;(SAMPLE_MANIFEST.samples || []).forEach((s, i) => manifestMeta.set(s.task_id, { index: i, name: s.name }))
+  const pinRanks = new Map()
+  SAMPLE_PINS.forEach((nm, i) => {
+    for (const [id, meta] of manifestMeta) {
+      if (meta.name === nm && !pinRanks.has(id)) { pinRanks.set(id, i); break }
+    }
+  })
+  const byManifest = (a, b) => (manifestMeta.get(a.task_id)?.index ?? 999) - (manifestMeta.get(b.task_id)?.index ?? 999)
+  const byPin = (a, b) => (pinRanks.get(a.task_id) ?? 99) - (pinRanks.get(b.task_id) ?? 99)
+
+  /* 2026-09-02 v2（用户重设计）：左侧恒为「置顶 3 条 + 展开/收起按钮 + 回放副本」，
+   * 展开只作用右侧主区画廊——左侧不列出全部 17 条 */
+  const displayRows = []
+  if (mode === 'sample') {
+    const bodies = []
+    const copies = []
+    filtered.forEach((t) => (t.replay_of ? copies : bodies).push(t))
+    bodies.sort(byManifest)
+    copies.sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+    const visible = bodies.filter((t) => pinRanks.has(t.task_id)).sort(byPin)
+    if (visible.length) {
+      displayRows.push({ hdr: '置顶样例' })
+      visible.forEach((t) => displayRows.push({ task: t }))
+    }
+    displayRows.push({ expand: true })  // 「展开全部 / 收起画廊」（原提示语位置）
+    if (copies.length) {
+      displayRows.push({ hdr: `回放副本 (${copies.length})` })
+      copies.forEach((t) => displayRows.push({ task: t }))
+    }
+  } else {
+    filtered.forEach((t) => displayRows.push({ task: t }))
   }
 
   return (
@@ -104,13 +162,14 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
         }}
         title="拖动调整宽度"
       />
-      {/* 新建任务 + 收起 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '16px 12px 12px 16px' }}>
+      {/* 新建任务 + 收起（演示样例模式：按钮变“回到全部样例”，点按清空选中回画廊） */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '16px 12px 8px 16px' }}>
         {/* 2026-09-02 用户截图样式：白底卡片 + 外围绿色描边悬浮（光晕阴影）效果 */}
         <Button
           variant="sidebar"
           className="flex-1 justify-start gap-2 text-sm"
           onClick={onNew}
+          title={mode === 'sample' ? '回到样例画廊' : '清空选中、聚焦输入框，开始新查询'}
           style={{
             background: 'var(--glass-bg)',
             color: 'var(--content-fg)',
@@ -121,20 +180,25 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
               '0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent), 0 2px 8px color-mix(in srgb, var(--accent) 16%, transparent)',
           }}
         >
-          <Icon.Plus style={{ color: 'var(--accent)' }} />
-          <span>新建提取任务</span>
+          {mode === 'sample' ? (
+            <Icon.Sparkle style={{ color: 'var(--accent)', width: 14, height: 14 }} />
+          ) : (
+            <Icon.Plus style={{ color: 'var(--accent)' }} />
+          )}
+          <span>{mode === 'sample' ? '回到全部样例' : '新建提取任务'}</span>
         </Button>
         <Button variant="ghost" size="icon" onClick={onCollapse} title="收起侧边栏">
           <Icon.ChevronLeft />
         </Button>
       </div>
 
-      {/* 状态筛选 */}
+      {/* 2026-09-02：我的查询 / 演示样例 分段切换条 */}
       <div style={{ display: 'flex', gap: 2, padding: '0 12px 8px' }}>
-        {FILTERS.map((f) => (
+        {MODES.map((m) => (
           <button
-            key={f.key}
-            onClick={() => onFilterChange(f.key)}
+            key={m.key}
+            onClick={() => onModeChange?.(m.key)}
+            title={m.title}
             style={{
               flex: 1,
               padding: '5px 0',
@@ -142,18 +206,43 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
               borderRadius: 6,
               border: 'none',
               cursor: 'pointer',
-              // 用户重设计：选中筛选 chip 淡绿底绿字
-              background: filter === f.key ? 'var(--accent-light)' : 'transparent',
-              color: filter === f.key ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
-              fontWeight: filter === f.key ? 510 : 400,
+              background: mode === m.key ? 'var(--accent-light)' : 'transparent',
+              color: mode === m.key ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
+              fontWeight: mode === m.key ? 510 : 400,
             }}
           >
-            {f.label}
+            {m.label}
           </button>
         ))}
       </div>
 
-      {/* 历史任务（管理模式入口） */}
+      {/* 状态筛选（仅我的查询模式；样例全部为已完成任务，筛选无意义） */}
+      {mode === 'user' && (
+        <div style={{ display: 'flex', gap: 2, padding: '0 12px 8px' }}>
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => onFilterChange(f.key)}
+              style={{
+                flex: 1,
+                padding: '5px 0',
+                fontSize: 12,
+                borderRadius: 6,
+                border: 'none',
+                cursor: 'pointer',
+                // 用户重设计：选中筛选 chip 淡绿底绿字
+                background: filter === f.key ? 'var(--accent-light)' : 'transparent',
+                color: filter === f.key ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
+                fontWeight: filter === f.key ? 510 : 400,
+              }}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* 任务区标题（演示样例模式：标题+说明，无管理模式） */}
       <div
         style={{
           padding: '4px 8px 8px',
@@ -171,18 +260,20 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
             textTransform: 'uppercase',
           }}
         >
-          历史任务
+          {mode === 'sample' ? '演示样例' : '历史任务'}
         </span>
-        <button
-          onClick={() => (manageMode ? exitManage() : setManageMode(true))}
-          style={{
-            border: 'none', background: 'transparent', cursor: 'pointer',
-            color: manageMode ? 'var(--status-error)' : 'var(--sidebar-text-secondary)',
-            fontSize: 11, padding: '2px 6px', borderRadius: 4,
-          }}
-        >
-          {manageMode ? '退出管理' : '管理'}
-        </button>
+        {mode === 'user' && (
+          <button
+            onClick={() => (manageMode ? exitManage() : setManageMode(true))}
+            style={{
+              border: 'none', background: 'transparent', cursor: 'pointer',
+              color: manageMode ? 'var(--status-error)' : 'var(--sidebar-text-secondary)',
+              fontSize: 11, padding: '2px 6px', borderRadius: 4,
+            }}
+          >
+            {manageMode ? '退出管理' : '管理'}
+          </button>
+        )}
       </div>
       <ScrollArea
         className="flex-1 px-2 pb-2"
@@ -194,15 +285,66 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
           }
         }}
       >
-        {filtered.length === 0 ? (
-          <div style={{ padding: '16px 10px', color: 'var(--sidebar-text-secondary)', fontSize: 12, textAlign: 'center' }}>
-            无符合条件的任务
+        {displayRows.length === 0 ? (
+          <div style={{ padding: '16px 10px', color: 'var(--sidebar-text-secondary)', fontSize: 12, textAlign: 'center', lineHeight: 1.7 }}>
+            {mode === 'sample'
+              ? '暂无演示样例\n（启动服务时自动从 sample_pack/ 导入）'
+              : '无符合条件的任务'}
           </div>
         ) : (
-          filtered.map((task) => {
+          displayRows.map((item) => {
+            // 小节头（置顶样例 / 回放副本 (N)）
+            if (item.hdr) {
+              return (
+                <div
+                  key={`h-${item.hdr}`}
+                  style={{
+                    padding: '9px 10px 3px',
+                    fontSize: 10.5,
+                    color: 'var(--content-fg-tertiary)',
+                    letterSpacing: '0.05em',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {item.hdr}
+                </div>
+              )
+            }
+            // 展开/收起按钮（置顶 3 条之后；只控制右侧主区画廊）
+            if (item.expand) {
+              return (
+                <button
+                  key="expand-samples"
+                  onClick={onToggleSamples}
+                  title={samplesExpanded ? '收起画廊' : '展开全部 17 条样例（主区显示画廊）'}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    margin: '6px 0 2px',
+                    padding: '7px 12px',
+                    fontSize: 11,
+                    fontWeight: 510,
+                    borderRadius: 8,
+                    border: '1px solid color-mix(in srgb, var(--accent) 45%, transparent)',
+                    background: samplesExpanded ? 'var(--accent-light)' : 'transparent',
+                    color: samplesExpanded ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                  }}
+                >
+                  {samplesExpanded ? '收起画廊' : '展开全部'}
+                </button>
+              )
+            }
+            const task = item.task
             const isActive = task.task_id === selectedId  // CR-03: 契约 D8-4 键名 task_id
             const isChecked = checked.has(task.task_id)
             const active_ = task.status === 'running' || task.status === 'queued'
+            // 2026-09-02：样例本体（source=sample 且非回放副本）只读——隐藏清理/删除入口；
+            // 回放副本（replay_of 非空）是派生演示产物，保留全部管理能力
+            const lockedSample = task.source === 'sample' && !task.replay_of
             return (
               <div
                 key={task.task_id}
@@ -247,9 +389,10 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       flex: 1,
+                      minWidth: 0,
                     }}
                   >
-                    {task.title}
+                    {fitTitle(task.title)}
                   </span>
                   {/* 2026-08-27：回放任务徽标（replay_of 指向源任务） */}
                   {task.replay_of && (
@@ -277,8 +420,8 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                 <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
                   {formatRelativeTime(task.created_at)}
                   <span style={{ flex: 1 }} />
-                  {/* 清理/删除入口 */}
-                  {!manageMode && !active_ && (
+                  {/* 清理/删除入口（样例本体只读，不渲染） */}
+                  {!manageMode && !active_ && !lockedSample && (
                     <button
                       title="清理/删除任务"
                       onClick={(e) => {

@@ -48,9 +48,11 @@ export function createTask(query) {
   })
 }
 
-export function listTasks(limit = 50, offset = 0, status) {
+export function listTasks(limit = 50, offset = 0, status, source) {
   const q = new URLSearchParams({ limit, offset })
   if (status) q.set('status', status)
+  // 2026-09-02：source 归属过滤（user=我的查询 / sample=演示样例）
+  if (source) q.set('source', source)
   return request(`/tasks?${q}`)
 }
 

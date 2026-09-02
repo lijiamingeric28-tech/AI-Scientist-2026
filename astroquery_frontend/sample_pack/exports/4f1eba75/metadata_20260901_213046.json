@@ -1,0 +1,176 @@
+{
+  "field_definitions": {
+    "component_mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the mass of an individual stellar component within a system, expressed in solar masses (Msun)."
+    },
+    "orbital_period": {
+      "standard_unit": "d",
+      "semantic_type": "orbital_period",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the time required for a celestial body to complete one full orbit around its primary companion, expressed in days (d)."
+    },
+    "velocity_semi_amplitude": {
+      "standard_unit": "km/s",
+      "semantic_type": "planet_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the maximum line-of-sight velocity variation of a star caused by an orbiting companion, recorded in kilometers per second (km/s)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 8,
+    "sources_exported": 8,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_HR",
+        "title": "Bright Star Catalogue (HR)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009ApJ...700.1349T",
+        "title": "Binary Orbit, Physical Properties, and Evolutionary State of Capella (α Aurigae)",
+        "year": 2009,
+        "journal": "The Astrophysical Journal",
+        "record_count": 10,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2011A&A...531A..89W",
+        "title": "The spectroscopic orbit of Capella revisited",
+        "year": 2011,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015ApJ...807...26T",
+        "title": "Capella (α Aurigae) Revisited: New Binary Orbit, Physical Properties, and Evolutionary State",
+        "year": 2015,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023A&A...676A..19M",
+        "title": "An insight into Capella (α Aurigae): From the extent of core overshoot to its evolutionary history",
+        "year": 2023,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013A&A...560A.113H",
+        "title": "FIRST, a fibered aperture masking instrument. II. Spectroscopy of the Capella binary system at the diffraction limit",
+        "year": 2013,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006ApJ...644L.117I",
+        "title": "Chandra/HETGS Observations of the Capella System: The Primary as a Dominating X-Ray Source",
+        "year": 2006,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023MNRAS.522L..66B",
+        "title": "A detailed analysis of X-ray emission-line velocities of Capella from over 20 yr of Chandra/HETG spectroscopy",
+        "year": 2023,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 8,
+      "overall_quality": "excellent",
+      "total_issues": 14
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 1,
+      "by_layer": {
+        "base": 1,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors_count": 6,
+      "errors": [
+        {
+          "source": "2011A&A...531A..89W",
+          "tool": "strip_uncertainty_notation",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2006ApJ...644L.117I",
+          "tool": "split_dual_velocity",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2023A&A...676A..19M",
+          "tool": "strip_uncertainty_suffix",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2015ApJ...807...26T",
+          "tool": "strip_uncertainty_field_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "SRC_DB_HR",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2013A&A...560A.113H",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T21:30:33.929409",
+    "run_id": "4f1eba75-8241-439e-a722-410997b5c064",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

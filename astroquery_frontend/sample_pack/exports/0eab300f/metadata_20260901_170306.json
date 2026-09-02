@@ -1,0 +1,169 @@
+{
+  "field_definitions": {
+    "mass_m500": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the mass enclosed within a spherical region defined by an overdensity threshold of 500 times the critical cosmic density, expressed in solar masses (Msun)."
+    },
+    "velocity_dispersion": {
+      "standard_unit": "km/s",
+      "semantic_type": "radial_velocity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the root-mean-square spread of line-of-sight velocities within a gravitationally bound system, reported in kilometers per second (km/s)."
+    },
+    "xray_temperature_kt": {
+      "standard_unit": "keV",
+      "semantic_type": "effective_temperature",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the characteristic thermal energy of hot astrophysical plasma derived from X-ray emission spectra, given in kilo-electronvolts (keV)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 11,
+    "sources_exported": 11,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_MCXC",
+        "title": "Meta-Catalogue of X-ray Detected Clusters of Galaxies (MCXC)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_PSZ2",
+        "title": "Planck Sunyaev-Zeldovich Cluster Catalogue (PSZ2)",
+        "year": null,
+        "journal": "",
+        "record_count": 8,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013ApJ...763L...3F",
+        "title": "The Planck Sunyaev-Zel'dovich versus the X-Ray View of the Coma Cluster",
+        "year": 2013,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2021A&A...651A..41C",
+        "title": "Tempestuous life beyond R<SUB>500</SUB>: X-ray view on the Coma cluster with SRG/eROSITA. I. X-ray morphology, recent merger, and radio halo connection",
+        "year": 2021,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018AJ....156..224J",
+        "title": "The Gemini/Hubble Space Telescope Galaxy Cluster Project: Stellar Populations in the Low-redshift Reference Cluster Galaxies",
+        "year": 2018,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2002A&A...383..367S",
+        "title": "Far-infrared emission from intracluster dust in Abell clusters",
+        "year": 2002,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013PASJ...65...10M",
+        "title": "Distribution of Si, Fe, and Ni in the Intracluster Medium of the Coma Cluster",
+        "year": 2013,
+        "journal": "Publications of the Astronomical Society of Japan",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008MNRAS.386..715T",
+        "title": "The stellar population histories of early-type galaxies - III. The Coma cluster",
+        "year": 2008,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2002ApJ...574L.119D",
+        "title": "MITO Measurements of the Sunyaev-Zeldovich Effect in the Coma Cluster of Galaxies",
+        "year": 2002,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999ApJ...514..607A",
+        "title": "On the Extreme-Ultraviolet Emission from Galaxy Clusters",
+        "year": 1999,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_SUPPL_J_AJ_156_224",
+        "title": "The Gemini/Hubble Space Telescope Galaxy Cluster Project: Stellar Populations in the Low-redshift Reference Cluster Galaxies",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "fair",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 11,
+      "overall_quality": "excellent",
+      "total_issues": 16
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 7,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 7
+      },
+      "errors_count": 0,
+      "errors": []
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 4,
+      "auto_resolved": 1,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T17:02:52.940022",
+    "run_id": "0eab300f-2ce4-4b43-bb6a-8b4d3ae58183",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

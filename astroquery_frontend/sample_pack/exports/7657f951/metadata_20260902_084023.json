@@ -1,0 +1,394 @@
+{
+  "field_definitions": {
+    "orb_period": {
+      "standard_unit": "d",
+      "semantic_type": "orbital_period",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The orbital period measures the time required for a celestial body to complete one full revolution around its host star, expressed in days (d)."
+    },
+    "pl_mass": {
+      "standard_unit": "M_jup",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The planetary mass quantifies the total gravitational mass of the detected exoplanet, reported in units of Jupiter masses (M_jup)."
+    },
+    "pl_radius": {
+      "standard_unit": "R_jup",
+      "semantic_type": "stellar_radius",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The planetary radius indicates the physical size or equatorial extent of the exoplanet, measured in units of Jupiter radii (R_jup)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 36,
+    "sources_exported": 36,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "2020MNRAS.493.1292D",
+        "title": "Effects of radiation pressure on the evaporative wind of HD 209458b",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006ApJ...649.1043R",
+        "title": "A Spitzer Infrared Radius for the Transiting Extrasolar Planet HD 209458b",
+        "year": 2006,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...655..564K",
+        "title": "Using Stellar Limb-Darkening to Refine the Properties of HD 209458b",
+        "year": 2007,
+        "journal": "The Astrophysical Journal",
+        "record_count": 7,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010ApJ...717.1291L",
+        "title": "Observations of Mass Loss from the Transiting Exoplanet HD 209458b",
+        "year": 2010,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018MNRAS.479.3115V",
+        "title": "Magnetized winds and their influence in the escaping upper atmosphere of HD 209458b",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016MNRAS.457.1666S",
+        "title": "Photoionization of planetary winds: case study HD 209458b",
+        "year": 2016,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017A&A...608A..75C",
+        "title": "Effect of stellar flares on the upper atmospheres of HD 189733b and HD 209458b",
+        "year": 2017,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013ApJ...764..103R",
+        "title": "Three-dimensional Atmospheric Circulation Models of HD 189733b and HD 209458b with Consistent Magnetic Drag and Ohmic Dissipation",
+        "year": 2013,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022MNRAS.517.1724D",
+        "title": "Effects of charge exchange on the evaporative wind of HD 209458b",
+        "year": 2022,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005ApJ...629L..45C",
+        "title": "Dynamic Meteorology at the Photosphere of HD 209458b",
+        "year": 2005,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024ApJ...963L...5X",
+        "title": "JWST Transmission Spectroscopy of HD 209458b: A Supersolar Metallicity, a Very Low C/O, and No Evidence of CH<SUB>4</SUB>, HCN, or C<SUB>2</SUB>H<SUB>2</SUB>",
+        "year": 2024,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003ApJ...594..545B",
+        "title": "A Theory for the Radius of the Transiting Giant Planet HD 209458b",
+        "year": 2003,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023ApJ...953..166X",
+        "title": "The Mass Fractionation of Helium in the Escaping Atmosphere of HD 209458b",
+        "year": 2023,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...671L..61B",
+        "title": "Exoplanet HD 209458b: Inflated Hydrogen Atmosphere but No Sign of Evaporation",
+        "year": 2007,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005A&A...436..719I",
+        "title": "A time-dependent radiative model of HD 209458b",
+        "year": 2005,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020MNRAS.491.3435S",
+        "title": "Three-dimensional modelling of absorption by various species for hot Jupiter HD 209458b",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020A&A...635A.206C",
+        "title": "Is there Na I in the atmosphere of HD 209458b?. Effect of the centre-to-limb variation and Rossiter-McLaughlin effect in transmission spectroscopy studies",
+        "year": 2020,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008A&A...485..865L",
+        "title": "Rayleigh scattering by H<SUB>2</SUB> in the extrasolar planet HD 209458b",
+        "year": 2008,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010Natur.465.1049S",
+        "title": "The orbital motion, absolute mass and high-altitude winds of exoplanet HD209458b",
+        "year": 2010,
+        "journal": "Nature",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005ApJ...632.1157W",
+        "title": "System Parameters of the Transiting Extrasolar Planet HD 209458b",
+        "year": 2005,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014A&A...565A.105B",
+        "title": "Modeling magnesium escape from HD 209458b atmosphere",
+        "year": 2014,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...668L.171B",
+        "title": "Theoretical Spectral Models of the Planet HD 209458b with a Thermal Inversion and Water Emission Bands",
+        "year": 2007,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006NewA...11..490I",
+        "title": "Are we far from testing general relativity with the transitting extrasolar planet HD 209458b ‘Osiris’?",
+        "year": 2006,
+        "journal": "New Astronomy",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018ApJ...863L..11H",
+        "title": "Evidence for Multiple Molecular Species in the Hot Jupiter HD 209458b",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022A&A...664A..56S",
+        "title": "Exploring the deep atmospheres of HD 209458b and WASP-43b using a non-gray general circulation model",
+        "year": 2022,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003ApJ...588..545B",
+        "title": "Measuring the Oblateness and Rotation of Transiting Extrasolar Giant Planets",
+        "year": 2003,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017ApJ...844...94K",
+        "title": "Structure and Evolution of Internally Heated Hot Jupiters",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2004ApJ...613L.153A",
+        "title": "TrES-1: The Transiting Planet of a Bright K0 V Star",
+        "year": 2004,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014ApJ...790...79R",
+        "title": "The Atmospheric Circulation and Observable Properties of Non-synchronously Rotating Hot Jupiters",
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003ApJ...592..555B",
+        "title": "On the Radii of Extrasolar Giant Planets",
+        "year": 2003,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020AJ....159..225K",
+        "title": "Smaller than Expected Bright-spot Offsets in Spitzer Phase Curves of the Hot Jupiter Qatar-1b",
+        "year": 2020,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005ApJ...624..372K",
+        "title": "A Transiting Extrasolar Giant Planet around the Star OGLE-TR-10",
+        "year": 2005,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003ApJ...596.1327S",
+        "title": "The New Transiting Planet OGLE-TR-56b: Orbit and Atmosphere",
+        "year": 2003,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026FrASS..1336938R",
+        "title": "Planet formation constraints from exoplanet population synthesis and simulation based inference",
+        "year": 2026,
+        "journal": "Frontiers in Astronomy and Space Sciences",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008ApJ...682..586M",
+        "title": "MOST Space-based Photometry of the Transiting Exoplanet System HD 209458: Transit Timing to Search for Additional Planets",
+        "year": 2008,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010OAJ.....3..167I",
+        "title": "Constraining the Kehagias-Sfetsos Solution of the Ho!ava-Lifshitz Modified Gravity with Extrasolar Planets",
+        "year": 2010,
+        "journal": "The Open Astronomy Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 36,
+      "overall_quality": "good",
+      "total_issues": 55
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 41,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 41
+      },
+      "errors_count": 0,
+      "errors": []
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 5,
+      "auto_resolved": 2,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-02T08:40:12.763766",
+    "run_id": "7657f951-c182-4b39-a0ad-b6f8f11d3094",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

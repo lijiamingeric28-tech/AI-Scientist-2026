@@ -1,0 +1,232 @@
+{
+  "field_definitions": {
+    "distance": {
+      "standard_unit": "pc",
+      "semantic_type": "distance",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the line-of-sight distance to the astronomical object from the observer, expressed in parsecs (pc)."
+    },
+    "parallax": {
+      "standard_unit": "mas",
+      "semantic_type": "parallax",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the apparent angular shift in the object's position caused by Earth's orbital motion, measured in milliarcseconds (mas)."
+    },
+    "pm_dec": {
+      "standard_unit": "arcsec/yr",
+      "semantic_type": "proper_motion_dec",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the annual angular rate of change in the object's celestial declination, measured in arcseconds per year (arcsec/yr)."
+    },
+    "pm_ra": {
+      "standard_unit": "arcsec/yr",
+      "semantic_type": "proper_motion_ra",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the annual angular rate of change in the object's celestial right ascension, measured in arcseconds per year (arcsec/yr)."
+    },
+    "pm_total": {
+      "standard_unit": "arcsec/yr",
+      "semantic_type": "proper_motion_ra",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the combined magnitude of the object's transverse angular velocity across the celestial sphere, measured in arcseconds per year (arcsec/yr)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 16,
+    "sources_exported": 16,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_TIC",
+        "title": "TESS Input Catalog (TIC)",
+        "year": null,
+        "journal": "",
+        "record_count": 8,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HIPPARCOS",
+        "title": "The Hipparcos and Tycho Catalogues",
+        "year": null,
+        "journal": "",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_GAIA_DR3",
+        "title": "Gaia Data Release 3 (Gaia DR3)",
+        "year": null,
+        "journal": "",
+        "record_count": 5,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_GAIA_DR2",
+        "title": "Gaia Data Release 2 (Gaia DR2)",
+        "year": null,
+        "journal": "",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_ALLWISE",
+        "title": "AllWISE Data Release",
+        "year": null,
+        "journal": "",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2019MNRAS.487.1653B",
+        "title": "Directly testing gravity with Proxima Centauri",
+        "year": 2019,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017ApJ...850L...6A",
+        "title": "ALMA Discovery of Dust Belts around Proxima Centauri",
+        "year": 2017,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2001ApJ...547L..49W",
+        "title": "Observational Estimates for the Mass-Loss Rates of α Centauri and Proxima Centauri Using Hubble Space Telescope Lyα Spectra",
+        "year": 2001,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003PASA...20..257S",
+        "title": "Long-duration Coherent Radio Emission from the dMe Star Proxima Centauri",
+        "year": 2003,
+        "journal": "Publications of the Astronomical Society of Australia",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016Natur.536..437A",
+        "title": "A terrestrial planet candidate in a temperate orbit around Proxima Centauri",
+        "year": 2016,
+        "journal": "Nature",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014ApJ...782...89S",
+        "title": "Microlensing Events by Proxima Centauri in 2014 and 2016: Opportunities for Mass Determination and Possible Planet Detection",
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "1999AJ....118.1086B",
+        "title": "Interferometric Astrometry of Proxima Centauri and Barnard's Star Using HUBBLE SPACE TELESCOPE Fine Guidance Sensor 3: Detection Limits for Substellar Companions",
+        "year": 1999,
+        "journal": "The Astronomical Journal",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018MNRAS.480.2660B",
+        "title": "Testing gravity with wide binary stars like α Centauri",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026A&A...706A.112L",
+        "title": "Astrometric Reconnaissance of Exoplanetary Systems (ARES): I. Methodology validation with HST point-source images of Proxima Centauri",
+        "year": 2026,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 5,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2014AJ....148...91L",
+        "title": "The Solar Neighborhood. XXXIV. a Search for Planets Orbiting Nearby M Dwarfs Using Astrometry",
+        "year": 2014,
+        "journal": "The Astronomical Journal",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025AJ....170...22L",
+        "title": "A Demonstration of Interstellar Navigation Using New Horizons",
+        "year": 2025,
+        "journal": "The Astronomical Journal",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 16,
+      "overall_quality": "good",
+      "total_issues": 93
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 30,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 30
+      },
+      "errors_count": 0,
+      "errors": []
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 27,
+      "auto_resolved": 22,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T21:05:43.654118",
+    "run_id": "d888fd23-f980-4f3b-a1ec-91fcc13f1a3d",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

@@ -1,0 +1,395 @@
+{
+  "field_definitions": {
+    "stellar_mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the total mass of a star expressed in solar masses (Msun), representing its gravitational influence and evolutionary state."
+    },
+    "stellar_radius": {
+      "standard_unit": "Rsun",
+      "semantic_type": "stellar_radius",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the physical size or radius of a star given in solar radii (Rsun), indicating its spatial extent from the center to the visible surface."
+    },
+    "teff": {
+      "standard_unit": "K",
+      "semantic_type": "effective_temperature",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the effective temperature of a star's photosphere measured in Kelvin (K), characterizing the blackbody temperature required to emit its observed luminosity."
+    }
+  },
+  "source_summary": {
+    "total_sources": 34,
+    "sources_exported": 34,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_TIC",
+        "title": "TESS Input Catalog (TIC)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023MNRAS.526.2765S",
+        "title": "The evolutionary stage of Betelgeuse inferred from its pulsation periods",
+        "year": 2023,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 8,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016A&A...588A.130M",
+        "title": "The close circumstellar environment of Betelgeuse. IV. VLTI/PIONIER interferometric monitoring of the photosphere",
+        "year": 2016,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011ApJ...740...24R",
+        "title": "The Non-uniform, Dynamic Atmosphere of Betelgeuse Observed at Mid-infrared Wavelengths",
+        "year": 2011,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007A&A...474..599P",
+        "title": "The molecular and dusty composition of Betelgeuse's inner circumstellar environment",
+        "year": 2007,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2012A&A...548A.113D",
+        "title": "The enigmatic nature of the circumstellar envelope and bow shock surrounding Betelgeuse as revealed by Herschel. I. Evidence of clumps, multiple arcs, and a linear bar-like structure",
+        "year": 2012,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015A&A...580A.101O",
+        "title": "Temporal evolution of the size and temperature of Betelgeuse's extended atmosphere",
+        "year": 2015,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010A&A...515A..12C",
+        "title": "Radiative hydrodynamics simulations of red supergiant stars. II. Simulations of convection on Betelgeuse match interferometric observations",
+        "year": 2010,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011A&A...531A.117K",
+        "title": "The close circumstellar environment of Betelgeuse. II. Diffraction-limited spectro-imaging from 7.76 to 19.50 μm with VLT/VISIR",
+        "year": 2011,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023A&A...675A..46C",
+        "title": "The dusty circumstellar environment of Betelgeuse during the Great Dimming as seen by VLTI/MATISSE",
+        "year": 2023,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022ApJ...936...18D",
+        "title": "The Great Dimming of Betelgeuse: A Surface Mass Ejection and Its Consequences",
+        "year": 2022,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026ApJ...998...50D",
+        "title": "Betelgeuse: Detection of the Expanding Wake of the Companion Star",
+        "year": 2026,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009A&A...508..923H",
+        "title": "Imaging the spotty surface of <ASTROBJ>Betelgeuse</ASTROBJ> in the H band",
+        "year": 2009,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025Galax..13...50D",
+        "title": "Betelgeuse, the Prototypical Red Supergiant",
+        "year": 2025,
+        "journal": "Galaxies",
+        "record_count": 6,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016ApJ...819....7D",
+        "title": "Evolutionary Tracks for Betelgeuse",
+        "year": 2016,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024A&A...685A.124J",
+        "title": "The Great Dimming of Betelgeuse: The photosphere as revealed by tomography over the past 15 yr",
+        "year": 2024,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009AJ....137.3558S",
+        "title": "Red Supergiants as Potential Type IIn Supernova Progenitors: Spatially Resolved 4.6 μm CO Emission Around VY CMa and Betelgeuse",
+        "year": 2009,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017A&A...602L..10O",
+        "title": "The inhomogeneous submillimeter atmosphere of Betelgeuse",
+        "year": 2017,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020ApJ...899...68D",
+        "title": "Spatially Resolved Ultraviolet Spectroscopy of the Great Dimming of Betelgeuse",
+        "year": 2020,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025ApJ...978...50M",
+        "title": "Radial Velocity and Astrometric Evidence for a Close Companion to Betelgeuse",
+        "year": 2025,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018A&A...609A..67K",
+        "title": "The close circumstellar environment of Betelgeuse. V. Rotation velocity and molecular envelope properties from ALMA",
+        "year": 2018,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022MNRAS.516..693N",
+        "title": "Colour evolution of Betelgeuse and Antares over two millennia, derived from historical records, as a new constraint on mass and age",
+        "year": 2022,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017MNRAS.465.2654W",
+        "title": "The Betelgeuse Project: constraints from rotation",
+        "year": 2017,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023NewA...9901962J",
+        "title": "Analysis of photometric and spectroscopic variability of red supergiant Betelgeuse",
+        "year": 2023,
+        "journal": "New Astronomy",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020ApJ...891L..37L",
+        "title": "Betelgeuse Just Is Not That Cool: Effective Temperature Alone Cannot Explain the Recent Dimming of Betelgeuse",
+        "year": 2020,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014A&A...572A..17M",
+        "title": "Properties of the CO and H<SUB>2</SUB>O MOLsphere of the red supergiant Betelgeuse from VLTI/AMBER observations",
+        "year": 2014,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010A&A...516L...2A",
+        "title": "The magnetic field of Betelgeuse: a local dynamo from giant convection cells?",
+        "year": 2010,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024MNRAS.527L..88D",
+        "title": "Images of Betelgeuse with VLTI/MATISSE across the Great Dimming",
+        "year": 2024,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019A&A...628A.101H",
+        "title": "The inner dust shell of Betelgeuse detected by polarimetric aperture-masking interferometry",
+        "year": 2019,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018A&A...615A.116M",
+        "title": "Evolution of the magnetic field of Betelgeuse from 2009-2017",
+        "year": 2018,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016A&A...591A.119A",
+        "title": "Discovery of a complex linearly polarized spectrum of Betelgeuse dominated by depolarization of the continuum",
+        "year": 2016,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009A&A...504..115K",
+        "title": "The close circumstellar environment of Betelgeuse. Adaptive optics spectro-imaging in the near-IR with VLT/NACO",
+        "year": 2009,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016A&A...585A..28K",
+        "title": "The close circumstellar environment of Betelgeuse. III. SPHERE/ZIMPOL imaging polarimetry in the visible",
+        "year": 2016,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011A&A...529A.163O",
+        "title": "Imaging the dynamical atmosphere of the red supergiant Betelgeuse in the CO first overtone lines with VLTI/AMBER",
+        "year": 2011,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 34,
+      "overall_quality": "excellent",
+      "total_issues": 39
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 37,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 37
+      },
+      "errors_count": 3,
+      "errors": [
+        {
+          "source": "2023MNRAS.526.2765S",
+          "tool": "unit_converter",
+          "kind": "unconverted_unit",
+          "error": "no conversion rule for unit 'log K' in categories []"
+        },
+        {
+          "source": "2023MNRAS.526.2765S",
+          "tool": "unit_converter",
+          "kind": "unconverted_unit",
+          "error": "no conversion rule for unit 'log K' in categories []"
+        },
+        {
+          "source": "2016ApJ...819....7D",
+          "tool": "clean_latex_uncertainty",
+          "kind": "self_check_failed",
+          "error": "self_check mismatch: [{'assert': 'sample_prediction', 'field': 'field_value', 'message': \"after mismatch for 2016ApJ...819....7D_Betelgeuse_stellar_mass_0: predicted '20', actual '20^_'\"}] (LLM review"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 7,
+      "auto_resolved": 4,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T11:35:55.838641",
+    "run_id": "e2f0e2a2-61e9-4d40-b42d-1f5d655821ec",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

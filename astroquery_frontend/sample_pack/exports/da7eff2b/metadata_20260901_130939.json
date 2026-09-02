@@ -1,0 +1,353 @@
+{
+  "field_definitions": {
+    "central_velocity_dispersion": {
+      "standard_unit": "km/s",
+      "semantic_type": "radial_velocity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the spread of stellar or gas radial velocities around the systemic velocity in the central region of a galaxy, reported in kilometers per second (km/s)."
+    },
+    "mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the total gravitational mass of the astronomical object, expressed in units of solar mass (Msun)."
+    },
+    "metallicity": {
+      "standard_unit": "dex",
+      "semantic_type": "metallicity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the logarithmic ratio of heavy element abundance to hydrogen relative to the solar value, given in dex."
+    }
+  },
+  "source_summary": {
+    "total_sources": 24,
+    "sources_exported": 24,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_MWSC",
+        "title": "Milky Way Global Survey of Star Clusters (MWSC)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009ApJ...698.2048J",
+        "title": "A Large Sample Study of Red Giants in the Globular Cluster Omega Centauri (NGC 5139)",
+        "year": 2009,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008ApJ...681.1505J",
+        "title": "Fe and Al Abundances for 180 Red Giants in the Globular Cluster Omega Centauri (NGC 5139)",
+        "year": 2008,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010ApJ...722.1373J",
+        "title": "Chemical Abundances for 855 Giants in the Globular Cluster Omega Centauri (NGC 5139)",
+        "year": 2010,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025A&A...701A.169S",
+        "title": "JWST imaging of omega Centauri: I. Luminosity and mass functions of its main-sequence populations",
+        "year": 2025,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020AJ....159..254J",
+        "title": "The Most Metal-poor Stars in Omega Centauri (NGC 5139)",
+        "year": 2020,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025A&A...693A.155P",
+        "title": "Abundance ties: Nephele and the globular cluster population accreted with ω Cen: Based on APOGEE DR17 and Gaia EDR3",
+        "year": 2025,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013ApJ...763..126C",
+        "title": "HST/ACS Imaging of Omega Centauri: Optical Counterparts of Chandra X-Ray Sources",
+        "year": 2013,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019MNRAS.482.4713Z",
+        "title": "The effect of stellar-mass black holes on the central kinematics of ω Cen: a cautionary tale for IMBH interpretations",
+        "year": 2019,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2002ApJ...579..832S",
+        "title": "Carbon Isotopic Abundances in the Red Giants of ω Centauri (NGC 5139)",
+        "year": 2002,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019ApJ...881..104M",
+        "title": "Chemical Compositions of Field and Globular Cluster RR Lyrae Stars. II. ω Centauri",
+        "year": 2019,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006A&A...445..503R",
+        "title": "Radial velocities in the globular cluster ω Centauri",
+        "year": 2006,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010A&A...520A..95C",
+        "title": "Detailed abundances of a large sample of giant stars in M 54 and in the Sagittarius nucleus",
+        "year": 2010,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005ApJ...621..777P",
+        "title": "Metallicities on the Double Main Sequence of ω Centauri Imply Large Helium Enhancement",
+        "year": 2005,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011A&A...534A..29D",
+        "title": "Chemical enrichment mechanisms in ω Centauri: clues from neutron-capture elements",
+        "year": 2011,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006MNRAS.368.1749T",
+        "title": "A non-LTE abundance analysis of the post-AGB star ROA5701",
+        "year": 2006,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014ApJ...797..115B",
+        "title": "Hubble Space Telescope Proper Motion (HSTPROMO) Catalogs of Galactic Globular Clusters. I. Sample Selection, Data Reduction, and NGC 7078 Results",
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999AJ....117..303D",
+        "title": "The Luminosity Function of omega Centauri",
+        "year": 1999,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014ApJ...782...49S",
+        "title": "Blue Straggler Star Populations in Globular Clusters. I. Dynamical Properties of Blue Straggler Stars in NGC 3201, NGC 6218, and ω Centauri",
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026MNRAS.550g1147K",
+        "title": "Disruption of a giant: spectroscopic identification of members in the periphery and tidal tails of ω Centauri",
+        "year": 2026,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013ApJ...772...67B",
+        "title": "Rotating Globular Clusters",
+        "year": 2013,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2012AJ....144....5K",
+        "title": "Hubble Space Telescope Observations of an Outer Field in Omega Centauri: A Definitive Helium Abundance",
+        "year": 2012,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2021MNRAS.507.1127K",
+        "title": "Detecting globular cluster tidal extensions with Bayesian inference - I. Analysis of ω Centauri with Gaia EDR3",
+        "year": 2021,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013ApJ...773L..31H",
+        "title": "A Deep Chandra X-Ray Limit on the Putative IMBH in Omega Centauri",
+        "year": 2013,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 24,
+      "overall_quality": "excellent",
+      "total_issues": 22
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 15,
+      "by_layer": {
+        "base": 2,
+        "adapted": 0,
+        "generated": 13
+      },
+      "errors_count": 11,
+      "errors": [
+        {
+          "source": "1999AJ....117..303D",
+          "tool": "fix_scientific_notation",
+          "kind": "out_of_range",
+          "error": "modified value 3900000.0 Msun out of feasible range for mass"
+        },
+        {
+          "source": "2008ApJ...681.1505J",
+          "tool": "parse_mass_range_to_lower_bound",
+          "kind": "out_of_range",
+          "error": "modified value 2000000.0 Msun out of feasible range for mass"
+        },
+        {
+          "source": "2020AJ....159..254J",
+          "tool": "parse_power_notation",
+          "kind": "out_of_range",
+          "error": "modified value 10000000.0 Msun out of feasible range for mass"
+        },
+        {
+          "source": "2026MNRAS.550g1147K",
+          "tool": "normalize_extraction_confidence",
+          "kind": "noop",
+          "error": "dry-run made zero modifications while sample has target issue"
+        },
+        {
+          "source": "2025A&A...701A.169S",
+          "tool": "strip_prefix_and_normalize_sci_notation",
+          "kind": "noop",
+          "error": "dry-run made zero modifications while sample has target issue"
+        },
+        {
+          "source": "2025A&A...701A.169S",
+          "tool": "clean_mass_scientific_notation",
+          "kind": "noop",
+          "error": "dry-run made zero modifications while sample has target issue"
+        },
+        {
+          "source": "2025A&A...693A.155P",
+          "tool": "parse_uncertainty_scientific",
+          "kind": "self_check_failed",
+          "error": "self_check mismatch: [{'assert': 'all_numeric', 'field': 'field_value', 'message': 'assertion failed at index 0'}] (LLM review: 该输出不仅丢失了原始不确定性数据（± 0.03），还保留了含空格的字母导致无法通过数值断言，属于解析与数据保留逻辑缺陷而非单纯的格式差异。"
+        },
+        {
+          "source": "2025A&A...693A.155P",
+          "tool": "parse_uncertainty_scientific",
+          "kind": "self_check_failed",
+          "error": "self_check mismatch: [{'assert': 'sample_prediction', 'field': 'field_value', 'message': 'after mismatch for 2025A&A...693A.155P_NGC_5139_mass_0: predicted 3500000.0, actual 3.5'}] (LLM review: 工具未能正确"
+        },
+        {
+          "source": "2009ApJ...698.2048J",
+          "tool": "strip_uncertainty_prefix",
+          "kind": "noop",
+          "error": "dry-run made zero modifications while sample has target issue"
+        },
+        {
+          "source": "2008ApJ...681.1505J",
+          "tool": "?",
+          "kind": "parse_error",
+          "error": "empty LLM response"
+        },
+        {
+          "source": "2008ApJ...681.1505J",
+          "tool": "parse_range_to_numeric",
+          "kind": "dry_run_failed",
+          "error": "name 'rec' is not defined"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 5,
+      "auto_resolved": 2,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T13:09:28.252128",
+    "run_id": "da7eff2b-45e4-4898-a49d-78a4fe3731f6",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

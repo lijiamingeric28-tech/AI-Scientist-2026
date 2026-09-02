@@ -42,6 +42,10 @@ function AppInner() {
   const [offset, setOffset] = useState(0)
   const [loadingMore, setLoadingMore] = useState(false)
   const [cancelling, setCancelling] = useState(false)  // 取消任务请求进行中
+  // 2026-09-02：侧栏双模式 —— user=我的查询（真实任务）/ sample=演示样例（内嵌样例）
+  const [mode, setMode] = useState('user')
+  // 演示样例折叠态：默认置顶 3 条（主区空白）；展开 → 全部 17 + 主区画廊
+  const [samplesExpanded, setSamplesExpanded] = useState(false)
   const { toast } = useToast()
   const { theme, toggleTheme } = useTheme()
   const isNarrow = useMediaQuery('(max-width: 1023px)')
@@ -54,13 +58,21 @@ function AppInner() {
     else setSidebarOpen(true)
   }, [isNarrow])
 
+  // 2026-09-02：模式/筛选切换竞态（"切换后记录混在一起，刷新才好"根因）——
+  // 序号守卫：仅最新一次请求可写列表/统计，过期响应（旧模式后到）静默丢弃
+  const loadSeqRef = useRef(0)
   const loadTasks = async (o = 0, append = false) => {
+    const seq = ++loadSeqRef.current
+    // 演示样例模式忽略『我的查询』遗留的状态筛选（服务端同样不带 status）
+    const status = mode === 'user' && filter !== 'all' ? filter : undefined
     try {
-      const data = await apiListTasks(50, o, filter === 'all' ? undefined : filter)
+      const data = await apiListTasks(50, o, status, mode)
+      if (seq !== loadSeqRef.current) return
       setTasks((prev) => (append ? [...prev, ...data.items] : data.items))
       setTotal(data.total)
       setOffset(o + data.items.length)
     } catch (err) {
+      if (seq !== loadSeqRef.current) return
       toast(`任务列表加载失败：${err.message}`, 'error')
     }
   }
@@ -68,7 +80,14 @@ function AppInner() {
   useEffect(() => {
     loadTasks(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter])
+  }, [filter, mode])
+
+  // 2026-09-02：模式切换（我的查询 ↔ 演示样例）——清空选中，回各模式空态
+  const handleModeChange = (m) => {
+    if (m === mode) return
+    setMode(m)
+    setSelectedId(null)
+  }
 
   const handleLoadMore = async () => {
     if (loadingMore || offset >= total) return
@@ -258,6 +277,10 @@ function AppInner() {
           onFilterChange={setFilter}
           onDeleteTask={handleDeleteRequest}
           onBatchDelete={handleBatchDeleteRequest}
+          mode={mode}
+          onModeChange={handleModeChange}
+          samplesExpanded={samplesExpanded}
+          onToggleSamples={() => setSamplesExpanded((v) => !v)}
         />
       )}
 
@@ -279,6 +302,25 @@ function AppInner() {
           {!sidebarOpen && (
             <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)}>
               <Icon.Menu />
+            </Button>
+          )}
+          {/* 演示样例模式选中条目后：显眼返回画廊（侧栏顶钮「回到全部样例」不易发现） */}
+          {mode === 'sample' && selected && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleNew}
+              title="返回画廊（清空选中）"
+              style={{
+                color: 'var(--accent-text)',
+                borderColor: 'color-mix(in srgb, var(--accent) 55%, transparent)',
+                gap: 5,
+                flexShrink: 0,
+                fontWeight: 500,
+              }}
+            >
+              <Icon.ChevronLeft style={{ width: 13, height: 13 }} />
+              返回画廊
             </Button>
           )}
           {/* P1-8：minWidth:0 让 ellipsis 真正生效（flex 子项默认 min-width:auto，
@@ -305,7 +347,7 @@ function AppInner() {
             ) : (
               <>
                 <h1 title={selected ? `${selected.title}（点击铅笔改名）` : undefined} style={{ fontSize: 15, fontWeight: 510, color: 'var(--content-fg)', flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {selected ? selected.title : '新建任务'}
+                  {selected ? selected.title : (mode === 'sample' ? '演示样例' : '新建任务')}
                 </h1>
                 {selected && (
                   <button
@@ -379,6 +421,11 @@ function AppInner() {
               onToggleLog={() => setLogOpen(!logOpen)}
               focusStage={focusStage}
               onOpenInsights={handleOpenInsights}
+              mode={mode}
+              samplesExpanded={samplesExpanded}
+              onOpenSample={handleSelect}
+              onReplaySample={handleReplay}
+              onSwitchToUser={() => handleModeChange('user')}
             />
           </div>
         ) : (

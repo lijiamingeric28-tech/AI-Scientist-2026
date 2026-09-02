@@ -4,7 +4,7 @@
 - 端口：ASTROQUERY_PORT 指定优先，否则从 8000 起自动找空闲端口（避免与已开服务撞）
 - 生命周期：窗口关闭 → uvicorn 一并退出（不留残留进程）
 - 运行：python -m web.desktop
-- pywebview 采用惰性导入：浏览器模式（packaging/launcher.py 默认）与测试环境不依赖它
+- pywebview 采用惰性导入：浏览器模式（直接用浏览器访问服务端口）与测试环境不依赖它
 """
 from __future__ import annotations
 
@@ -73,7 +73,7 @@ def _apply_taskbar_icon(window, ico_path: str) -> None:
 
 
 def run_embedded(host: str = HOST, port: int | None = None) -> None:
-    """核心启动：服务线程 + 桌面窗口（可在 launcher/PyInstaller 中复用）。
+    """核心启动：服务线程 + 桌面窗口。
     port=None → ASTROQUERY_PORT → 自动找空闲。"""
     try:
         import webview  # 惰性：非桌面流程不依赖 pywebview

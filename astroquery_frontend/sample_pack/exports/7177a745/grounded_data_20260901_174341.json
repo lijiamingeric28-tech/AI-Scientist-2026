@@ -1,0 +1,707 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026MNRAS.547ag413R",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stag413",
+      "title": "Halo photometry and asteroseismology for 98 of the brightest stars observed by TESS",
+      "authors": [
+        "Rudrasingam, Jonatan",
+        "Bedding, Timothy R.",
+        "Pope, Benjamin J. S.",
+        "Pedersen, May Gade",
+        "Lund, Mikkel N.",
+        "White, Timothy R.",
+        "Hey, Daniel"
+      ],
+      "year": 2026,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2026MNRAS.547ag413R.pdf",
+      "retrieval_priority": 0.40381199022892134,
+      "abstract": "The Transiting Exoplanet Survey Satellite (TESS) mission has facilitated studies of asteroseismology, eclipsing binaries, and transits in many stars. However, the brightest stars saturate TESS, yet they are the most amenable to photon-hungry high-resolution studies and have long observational histories. In this work, we adapted the halo photometry used in K2 to extract light curves from the unsaturated halo pixels of the star's point spread function. We used this method to extract light curves for 98 of the brightest stars observed by TESS in Sectors 1─93. These bright stars include 15 red giants, 5 <inline-formula><tex-math>$\\delta$</tex-math></inline-formula> Scuti variables, 8 stochastic low-frequency variables, 8 eclipsing binaries, and 46 other variables. We measured <inline-formula><tex-math>$\\nu _{\\rm max}$</tex-math></inline-formula> for 13 red giants using PYMON and <inline-formula><tex-math>$\\Delta \\nu$</tex-math></inline-formula> for one of them, <inline-formula><tex-math>$\\beta$</tex-math></inline-formula> Gem (Pollux). For five of them, this represents the first time that oscillations were detected. We derived their stellar masses using the measured <inline-formula><tex-math>$\\nu _{\\rm max}$</tex-math></inline-formula> and previous interferometric and radiometric angular diameters. We also discovered <inline-formula><tex-math>$\\delta$</tex-math></inline-formula> Scuti and <inline-formula><tex-math>$\\gamma$</tex-math></inline-formula> Doradus variability in <inline-formula><tex-math>$\\alpha$</tex-math></inline-formula> Cep, possible asteroseismic binary signatures in <inline-formula><tex-math>$\\epsilon$</tex-math></inline-formula> Car, and a new eclipsing binary, <inline-formula><tex-math>$\\gamma$</tex-math></inline-formula> And. Furthermore, we identified 18 stars in our sample that will be observed by the future PLAnetary Transits and Oscillations of stars (PLATO) mission, and 69 stars that have Stellar Observations Network Group (SONG) observations, including some simultaneous with TESS. The light curves are publicly available on the Mikulski Archive for Space Telescopes.",
+      "keywords": [
+        "asteroseismology",
+        "techniques: photometric",
+        "binaries: eclipsing",
+        "stars: oscillations",
+        "stars: variables: general",
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 9
+    },
+    {
+      "source_id": "2021A&A...646A.130A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202039573",
+      "title": "Pollux: A weak dynamo-driven dipolar magnetic field and implications for its probable planet",
+      "authors": [
+        "Aurière, M.",
+        "Petit, P.",
+        "Mathias, P.",
+        "Konstantinova-Antova, R.",
+        "Charbonnel, C.",
+        "Donati, J.-F.",
+        "Espagnet, O.",
+        "Folsom, C. P.",
+        "Roudier, T.",
+        "Wade, G. A."
+      ],
+      "year": 2021,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2021A&A...646A.130A.pdf",
+      "retrieval_priority": 0.6459974877031274,
+      "abstract": "Context. Pollux is considered as an archetype of a giant star hosting a planet since its radial velocity (RV) presents very stable sinusoidal variations with a period of about 590 d. We then discovered a weak magnetic field at its surface using spectropolarimetry, questioning the planetary hypothesis. <BR /> Aims: We followed up our investigations on Pollux to characterize its magnetic field and to infer the effects of magnetic activity on the RV variations. <BR /> Methods: We first used ESPaDOnS at CFHT and then Narval at TBL to obtain Stokes I and Stokes V spectra of Pollux to study their variations for a duration of 4.25 years, that is, for more than two periods of the RV variations. We used the least-squares deconvolution profiles to measure the longitudinal magnetic field and to perform a Zeeman Doppler imaging (ZDI) investigation. <BR /> Results: The longitudinal magnetic field of Pollux is found to vary with a sinusoidal behavior and a period similar to that of the RV variations. From the ZDI investigation a rotation period of Pollux is determined to be equal to 660 ± 15 days and possibly different than the period of variations of the RV. As to the magnetic topology, the poloidal component is dominant and almost purely dipolar with an inclination of 10.5° of the dipole with respect to the rotation axis. The mean strength of the surface magnetic field is 0.44 G. Pollux is found approximately as active as the Sun observed as a star and this activity could induce moderate RV variations. <BR /> Conclusions: As to the origin of the magnetic field of Pollux, we favor the hypothesis that it is maintained through contemporaneous dynamo action. Pollux appears as the representative of a class of slowly rotating and weakly magnetic G-K red giants. To explain the sinusoidal RV variations of Pollux, two scenarios are proposed. If the RV period is different from the rotation period, the observed periodic RV variations are due to the hosted planet and the contribution of Pollux magnetic activity is not significantly detected. In the peculiar case in which the two periods are equal, we cannot discard the possibility that the activity of Pollux could explain the total RV variations and that the planet hypothesis would appear unnecessary. In any case magnetic activity could contribute significantly to RV variations in some intermediate mass G-K red giants hosting planets, particularly those with small amplitude RV variations. <P />Based on observations obtained at the Télescope Bernard Lyot (TBL) at Observatoire du Pic du Midi, CNRS/INSU and Université de Toulouse, France, and the Canada-France-Hawaii Telescope (CFHT), which is operated by the National Research Council of Canada, CNRS/INSU and the University of Hawaii.",
+      "keywords": [
+        "stars: late-type",
+        "stars: individual: Pollux",
+        "stars: magnetic field",
+        "stars: rotation",
+        "planets and satellites: general",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2017A&A...599A..47O",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201629550",
+      "title": "Detection of thermal radio emission from a single coronal giant",
+      "authors": [
+        "O'Gorman, E.",
+        "Harper, G. M.",
+        "Vlemmings, W."
+      ],
+      "year": 2017,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2017A&A...599A..47O.pdf",
+      "retrieval_priority": 0.48396715600586826,
+      "abstract": "We report the detection of thermal continuum radio emission from the K0 III coronal giant Pollux (β Gem) with the Karl G. Jansky Very Large Array (VLA). The star was detected at 21 and 9 GHz with flux density values of 150 ± 21 and 43 ± 8 μJy, respectively. We also place a 3σ<SUB>rms</SUB> upper limit of 23 μJy for the flux density at 3 GHz. We find the stellar disk-averaged brightness temperatures to be approximately 9500, 15 000, and &lt;71 000 K, at 21, 9, and 3 GHz, respectively, which are consistent with the values of the quiet Sun. The emission is most likely dominated by optically thick thermal emission from an upper chromosphere at 21 and 9 GHz. We discuss other possible additional sources of emission at all frequencies and show that there may also be a small contribution from gyroresonance emission above active regions, coronal free-free emission and free-free emission from an optically thin stellar wind, particularly at the lower frequencies. We constrain the maximum mass-loss rate from Pollux to be less than 3.7 × 10<SUP>-11</SUP>M<SUB>☉</SUB> yr<SUP>-1</SUP> (assuming a wind terminal velocity of 215 km s<SUP>-1</SUP>), which is about an order of magnitude smaller than previous constraints for coronal giants and is in agreement with existing predictions for the mass-loss rate of Pollux. These are the first detections of thermal radio emission from a single (I.e., non-binary) coronal giant and demonstrate that low activity coronal giants like Pollux have atmospheres at radio frequencies akin to the quiet Sun.",
+      "keywords": [
+        "stars: atmospheres",
+        "radio continuum: stars",
+        "stars: chromospheres",
+        "stars: coronae",
+        "stars: evolution",
+        "stars: mass-loss",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 6
+    },
+    {
+      "source_id": "2015A&A...574A..90A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201424579",
+      "title": "The magnetic fields at the surface of active single G-K giants",
+      "authors": [
+        "Aurière, M.",
+        "Konstantinova-Antova, R.",
+        "Charbonnel, C.",
+        "Wade, G. A.",
+        "Tsvetkova, S.",
+        "Petit, P.",
+        "Dintrans, B.",
+        "Drake, N. A.",
+        "Decressin, T.",
+        "Lagarde, N.",
+        "Donati, J.-F.",
+        "Roudier, T.",
+        "Lignières, F.",
+        "Schröder, K.-P.",
+        "Landstreet, J. D.",
+        "Lèbre, A.",
+        "Weiss, W. W.",
+        "Zahn, J.-P."
+      ],
+      "year": 2015,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2015A&A...574A..90A.pdf",
+      "retrieval_priority": 0.34505681340391686,
+      "abstract": "<BR /> Aims: We investigate the magnetic field at the surface of 48 red giants selected as promising for detection of Stokes V Zeeman signatures in their spectral lines. In our sample, 24 stars are identified from the literature as presenting moderate to strong signs of magnetic activity. An additional 7 stars are identified as those in which thermohaline mixing appears not to have occured, which could be due to hosting a strong magnetic field. Finally, we observed 17 additional very bright stars which enable a sensitive search to be performed with the spectropolarimetric technique. <BR /> Methods: We use the spectropolarimeters Narval and ESPaDOnS to detect circular polarization within the photospheric absorption lines of our targets. We treat the spectropolarimetric data using the least-squares deconvolution method to create high signal-to-noise ratio mean Stokes V profiles. We also measure the classical S-index activity indicator for the Ca ii H&amp;K lines, and the stellar radial velocity. To infer the evolutionary status of our giants and to interpret our results, we use state-of-the-art stellar evolutionary models with predictions of convective turnover times. <BR /> Results: We unambiguously detect magnetic fields via Zeeman signatures in 29 of the 48 red giants in our sample. Zeeman signatures are found in all but one of the 24 red giants exhibiting signs of activity, as well as 6 out of 17 bright giant stars. However no detections were obtained in the 7 thermohaline deviant giants. The majority of the magnetically detected giants are either in the first dredge up phase or at the beginning of core He burning, i.e. phases when the convective turnover time is at a maximum: this corresponds to a \"magnetic strip\" for red giants in the Hertzsprung-Russell diagram. A close study of the 16 giants with known rotational periods shows that the measured magnetic field strength is tightly correlated with the rotational properties, namely to the rotational period and to the Rossby number Ro. Our results show that the magnetic fields of these giants are produced by a dynamo, possibly of α-ω origin since Ro is in general smaller than unity. Four stars for which the magnetic field is measured to be outstandingly strong with respect to that expected from the rotational period/magnetic field relation or their evolutionary status are interpreted as being probable descendants of magnetic Ap stars. In addition to the weak-field giant Pollux, 4 bright giants (Aldebaran, Alphard, Arcturus, η Psc) are detected with magnetic field strength at the sub-Gauss level. Besides Arcturus, these stars were not considered to be active giants before this study and are very similar in other respects to ordinary giants, with S-index indicating consistency with basal chromospheric flux. <P />Tables 6-8 are available in electronic form at <A href=\"http://www.aanda.org/10.1051/0004-6361/201424579/olm\">http://www.aanda.org</A>Based on observations obtained at the Télescope Bernard Lyot (TBL) at Observatoire du Pic du Midi, CNRS/INSU and Université de Toulouse, France, and at the Canada-France-Hawaii Telescope (CFHT) which is operated by the National Research Council of Canada, CNRS/INSU and the University of Hawaii.",
+      "keywords": [
+        "stars: magnetic field",
+        "stars: late-type",
+        "stars: evolution",
+        "stars: rotation",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:radius OR abs:\"stellar radius\" OR abs:\"star radius\")",
+      "search_rank": 28
+    },
+    {
+      "source_id": "2010A&A...516A..13P",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200913932",
+      "title": "POLLUX: a database of synthetic stellar spectra",
+      "authors": [
+        "Palacios, A.",
+        "Gebran, M.",
+        "Josselin, E.",
+        "Martins, F.",
+        "Plez, B.",
+        "Belmas, M.",
+        "Lèbre, A."
+      ],
+      "year": 2010,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2010A&A...516A..13P.pdf",
+      "retrieval_priority": 0.5921496082437097,
+      "abstract": "<BR /> Aims: Synthetic spectra are needed to determine fundamental stellar and wind parameters of all types of stars. They are also used for the construction of theoretical spectral libraries helpful for stellar population synthesis. Therefore, a database of theoretical spectra is required to allow rapid and quantitative comparisons to spectroscopic data. We provide such a database offering an unprecedented coverage of the entire Hertzsprung-Russell diagram. <BR /> Methods: We present the POLLUX database of synthetic stellar spectra. For objects with T<SUB>eff</SUB> ≤ 6000 K, MARCS atmosphere models are computed and the program TURBOSPECTRUM provides the synthetic spectra. ATLAS12 models are computed for stars with 7000 K ≤ T<SUB>eff</SUB> ≤ 15 000 K. SYNSPEC gives the corresponding spectra. Finally, the code CMFGEN provides atmosphere models for the hottest stars (T<SUB>eff</SUB> &gt; 25 000 K). Their spectra are computed with CMF_FLUX. Both high resolution (R &gt; 150 000) optical spectra in the range 3000 to 12 000 Å and spectral energy distributions extending from the UV to near-IR ranges are presented. These spectra cover the HR diagram at solar metallicity. <BR /> Results: We propose a wide variety of synthetic spectra for various types of stars in a format that is compliant with the Virtual Observatory standards. A user-friendly web interface allows an easy selection of spectra and data retrieval. Upcoming developments will include an extension to a large range of metallicities and to the near-IR high resolution spectra, as well as a better coverage of the HR diagram, with the inclusion of models for Wolf-Rayet stars and large datasets for cool stars. The POLLUX database is accessible at &lt;ext-link ext-link-type=\"uri\" xlink:href=\"http://pollux.graal.univ-montp2.fr/\"&gt;http://pollux.graal.univ-montp2.fr/&lt;/ext-link&gt; and through the Virtual Observatory. <P />Copy of database is only available in electronic form at the CDS via anonymous ftp to cdsarc.u-strasbg.fr (130.79.128.5) or via <A href=\"http://cdsweb.u-strasbg.fr/cgi-bin/qcat?J/A+A/516/A13\">http://cdsweb.u-strasbg.fr/cgi-bin/qcat?J/A+A/516/A13</A>",
+      "keywords": [
+        "astronomical databases: miscellaneous",
+        "stars: general",
+        "techniques: spectroscopic",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 42
+    },
+    {
+      "source_id": "2009A&A...504..231A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200912050",
+      "title": "Discovery of a weak magnetic field in the photosphere of the single giant Pollux",
+      "authors": [
+        "Aurière, M.",
+        "Wade, G. A.",
+        "Konstantinova-Antova, R.",
+        "Charbonnel, C.",
+        "Catala, C.",
+        "Weiss, W. W.",
+        "Roudier, T.",
+        "Petit, P.",
+        "Donati, J.-F.",
+        "Alecian, E.",
+        "Cabanac, R.",
+        "van Eck, S.",
+        "Folsom, C. P.",
+        "Power, J."
+      ],
+      "year": 2009,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2009A&A...504..231A.pdf",
+      "retrieval_priority": 0.4888537471424391,
+      "abstract": "Aims: We observe the nearby, weakly-active single giant, Pollux, in order to directly study and infer the nature of its magnetic field. <BR />Methods: We used the new generation spectropolarimeters ESPaDOnS and NARVAL to observe and detect circular polarization within the photospheric absorption lines of Pollux. Our observations span 18 months from 2007-2009. We treated the spectropolarimetric data using the Least-Squares Deconvolution method to create high signal-to-noise ratio mean Stokes V profiles. We also measured the classical activity indicator S-index for the Ca ii H and K lines, and the stellar radial velocity (RV). <BR />Results: We have unambiguously detected a weak Stokes V signal in the spectral lines of Pollux, and measured the related surface-averaged longitudinal magnetic field B_l. The longitudinal field averaged over the span of the observations is below one gauss. Our data suggest variations of the longitudinal magnetic field, but no significant variation of the S-index. We observe variations of RV which are qualitatively consistent with the published ephemeris for a proposed exoplanet orbiting Pollux. The observed variations of B<SUB>l</SUB> appear to mimic those of RV, but additional data for this relationship to be established. Using evolutionary models including the effects of rotation, we derive the mass of Pollux and we discuss its evolutionary status and the origin of its magnetic field. <BR />Conclusions: This work presents the first direct detection of the magnetic field of Pollux, and demonstrates that ESPaDOnS and NARVAL are capable of obtaining sub-G measurements of the surface-averaged longitudinal magnetic field of giant stars, and of directly studying the relationships between magnetic activity, stellar evolution and planet hosting of these stars. <P />Based on observations obtained at the Canada-France-Hawaii Telescope (CFHT) which is operated by the National Research Council of Canada, CNRS/INSU and the University of Hawaii, and the Télescope Bernard Lyot (TBL) at Observatoire du Pic du Midi, CNRS/INSU and Université de Toulouse, France.",
+      "keywords": [
+        "stars: magnetic fields",
+        "stars: late-type",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2006ApJ...652..661R",
+      "source_type": "paper",
+      "doi": "10.1086/507516",
+      "title": "Precise Radial Velocities of Giant Stars. II. Pollux and Its Planetary Companion",
+      "authors": [
+        "Reffert, Sabine",
+        "Quirrenbach, Andreas",
+        "Mitchell, David S.",
+        "Albrecht, Simon",
+        "Hekker, Saskia",
+        "Fischer, Debra A.",
+        "Marcy, Geoffrey W.",
+        "Butler, R. Paul"
+      ],
+      "year": 2006,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\7177a745-0ad0-47a3-a1f6-06da8a395c2c\\2006ApJ...652..661R.pdf",
+      "retrieval_priority": 0.6222,
+      "abstract": "It has long been speculated that the observed periodic radial velocity pattern for the K giant Pollux might be explained in terms of an orbiting planetary companion. We have collected 80 high-resolution spectra for Pollux at Lick Observatory yielding precise radial velocities with a mean error of 3.8 m s<SUP>-1</SUP>, providing the most comprehensive and precise data set available for this star. Our data confirm the periodicity previously seen in the radial velocities. We derive a period of 589.7+/-3.5 days and, assuming a primary mass of 1.86 M<SUB>solar</SUB>, a minimum companion mass of 2.9+/-0.3M<SUB>Jup</SUB>, consistent with earlier determinations. No evidence for any periodicities is visible in our analysis of the shapes of the spectral lines via the bisector method, so we conclude that evidence is accumulating and compelling for a planet around Pollux. However, some final doubt remains about this interpretation, because nonradial pulsations that might be present in giant stars could in principle also explain the observed radial velocities, while the accompanying bisector variations might be too small to be detectable with current data.",
+      "keywords": [
+        "Line: Profiles",
+        "Stars: Planetary Systems",
+        "stars: individual (Pollux)",
+        "Stars: Oscillations",
+        "Techniques: Radial Velocities",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Pollux\" OR abs:\"Pollux\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 1
+    },
+    {
+      "source_id": "SRC_DB_HR",
+      "source_type": "database",
+      "title": "Bright Star Catalogue (HR)",
+      "vizier_table_id": "V/50/catalog",
+      "description": "亮星星表（原称 Yale Catalogue of Bright Stars）收录了北半球和南半球最亮的约9110颗恒星，是天文学中最常用的亮星参考表。",
+      "reference_paper": "Hoffleit, D., & Warren, W. H. 1995, Yale University Observatory",
+      "bibcode": "1995yCat.5050....0H",
+      "research_methodology": "汇集多个历史星表与光谱分类数据的综合整理",
+      "observation_facility": "Yale University Observatory (汇编)",
+      "waveband": "Optical",
+      "research_content": "约9110颗亮星(视星等亮于约6.5等)的坐标、V星等、B-V颜色和光谱型。"
+    },
+    {
+      "source_id": "SRC_DB_HD",
+      "source_type": "database",
+      "title": "Henry Draper Catalogue (HD)",
+      "vizier_table_id": "III/135A/catalog",
+      "description": "亨利·德雷伯星表是天文学中最经典的恒星光谱分类星表，奠定了哈佛光谱分类系统（OBAFGKM）的基础。",
+      "reference_paper": "Cannon, A. J., & Pickering, E. C. 1918-1924, Annals of Harvard College Observatory, Vol. 91-99",
+      "bibcode": "1918AnHar..91....1C",
+      "research_methodology": "物端棱镜照相摄谱及基于底片的人工视觉光谱分类",
+      "observation_facility": "Harvard College Observatory",
+      "waveband": "Optical (Photographic and Visual bands)",
+      "research_content": "包含超过225,300颗恒星的位置(1900历元)、照相星等、目视星等以及最重要的HD一维恒星光谱型分类。"
+    },
+    {
+      "source_id": "SRC_DB_TIC",
+      "source_type": "database",
+      "title": "TESS Input Catalog (TIC)",
+      "vizier_table_id": "IV/38/tic",
+      "description": "凌星系外行星巡天卫星(TESS)的输入星表，综合了多项巡天数据，用于为TESS任务挑选观测目标并提供先验的恒星物理参数。",
+      "reference_paper": "Stassun, K. G., et al. 2019, AJ, 158, 138",
+      "bibcode": "2019AJ....158..138S",
+      "research_methodology": "多星表交叉匹配与天体物理参数的统计学推断",
+      "observation_facility": "Compilation (Gaia, 2MASS, ALLWISE, etc.)",
+      "waveband": "Optical to Near-Infrared (TESS band ~600-1000 nm + reference bands)",
+      "research_content": "包含数十亿个点源的坐标、自行、估计的TESS星等，及数千万恒星的有效温度、半径、质量、表面重力等物理参数。"
+    },
+    {
+      "source_id": "SRC_DB_HIPPARCOS",
+      "source_type": "database",
+      "title": "The Hipparcos and Tycho Catalogues",
+      "vizier_table_id": "I/239/hip_main",
+      "description": "依巴谷(Hipparcos)卫星星表，天体测量学的历史性里程碑，首次在太空中实现了极高精度的全天恒星视差和自行测量。",
+      "reference_paper": "ESA, 1997, ESA Special Publication, Vol. 1200",
+      "bibcode": "1997ESASP1200.....E",
+      "research_methodology": "空间高精度天体测量及双视场光电探测",
+      "observation_facility": "Hipparcos Satellite (ESA)",
+      "waveband": "Optical (Hp band, Tycho V/B bands)",
+      "research_content": "118,218颗恒星的高精度天球坐标、三角视差（毫角秒级）、自行，以及精确的Hp波段光度数据和变星信息。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2006ApJ...652..661R_Pollux_mass_0",
+      "source_id": "2006ApJ...652..661R",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "mass",
+      "field_value": 1.86,
+      "field_unit": "Msun",
+      "trace_id": "doc20_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          600,
+          651,
+          635,
+          668
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The minimum companion mass derived from our orbital fit is 2.9 M_Jup assuming a stellar mass for Pollux of 1.86 M_sun.",
+      "measurement_method": "derived from color-magnitude diagram and evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2009A&A...504..231A_Pollux_mass_1",
+      "source_id": "2009A&A...504..231A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "mass",
+      "field_value": "2.31",
+      "field_unit": "Msun",
+      "trace_id": "doc24_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          65,
+          71,
+          924,
+          709
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Physical parameters of Pollux from the literature ... Takeda 2008 ... Mass M_sun 2.31",
+      "measurement_method": "literature compilation",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2009A&A...504..231A_Pollux_radius_0",
+      "source_id": "2009A&A...504..231A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "radius",
+      "field_value": 8.8,
+      "field_unit": "Rsun",
+      "trace_id": "doc24_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          521,
+          833,
+          548,
+          851
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "the radius of 8.8 ± 0.1 R_sun determined from the interferometric angular diameter of Nordgren et al. (2001) evaluated at the Hipparcos distance.",
+      "measurement_method": "interferometric angular diameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: radius"
+      ]
+    },
+    {
+      "record_id": "2009A&A...504..231A_Pollux_teff_2",
+      "source_id": "2009A&A...504..231A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "teff",
+      "field_value": "4904",
+      "field_unit": "K",
+      "trace_id": "doc24_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          65,
+          71,
+          924,
+          709
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Physical parameters of Pollux from the literature ... Takeda 2008 ... Teff 4904",
+      "measurement_method": "literature compilation",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2015A&A...574A..90A_Pollux_radius_0",
+      "source_id": "2015A&A...574A..90A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "radius",
+      "field_value": 9.3,
+      "field_unit": "Rsun",
+      "trace_id": "doc18_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          67,
+          66,
+          950,
+          703
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Properties of Red Giants Stars in the sample... 62509 Pollux 1.16 K0 III 4842 2.9 -0.07 1.64 9.3 2.8 590 5 DD",
+      "measurement_method": "Stefan-Boltzmann law",
+      "condition_tags": [
+        "scope: global",
+        "metric: radius"
+      ]
+    },
+    {
+      "record_id": "2017A&A...599A..47O_Pollux_mass_0",
+      "source_id": "2017A&A...599A..47O",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "mass",
+      "field_value": 1.91,
+      "field_unit": "Msun",
+      "trace_id": "doc12_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          61,
+          942,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Basic stellar properties of Pollux (β Gem) ... Mass M* ... 1.91 ± 0.09 M_sun",
+      "measurement_method": "calculated",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2021A&A...646A.130A_Pollux_mass_2",
+      "source_id": "2021A&A...646A.130A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "mass",
+      "field_value": "1.7",
+      "field_unit": "Msun",
+      "trace_id": "doc23_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          0,
+          689,
+          1000,
+          734
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Notes. Numbers from the 3 first references are used in Sect. 3 and Sect. 6. The quantity m2 sin i is given for a mass of Pollux of 1.7 M_sun as used in these 3 references.",
+      "measurement_method": "literature reference / evolutionary models",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2021A&A...646A.130A_Pollux_radius_3",
+      "source_id": "2021A&A...646A.130A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "radius",
+      "field_value": "8.8",
+      "field_unit": "Rsun",
+      "trace_id": "doc23_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          466,
+          759,
+          493,
+          775
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Taking into account the Prot of 660 d, i=50°, a radius of 8.8 R_sun (Nordgren et al. 2001 and Hipparcos parallax) and within the solid rotation hypothesis",
+      "measurement_method": "parallax and angular diameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: radius"
+      ]
+    },
+    {
+      "record_id": "2021A&A...646A.130A_Pollux_spectral_type_4",
+      "source_id": "2021A&A...646A.130A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "spectral_type",
+      "field_value": "K0III",
+      "field_unit": "",
+      "trace_id": "doc23_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          424,
+          687,
+          468,
+          704
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Pollux (β Geminorum, HD 62509) is a well-studied K0III giant neighbor of the Sun",
+      "measurement_method": "spectral classification",
+      "condition_tags": [
+        "scope: global",
+        "metric: spectral_type"
+      ]
+    },
+    {
+      "record_id": "2021A&A...646A.130A_Pollux_teff_0",
+      "source_id": "2021A&A...646A.130A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "teff",
+      "field_value": "5000",
+      "field_unit": "K",
+      "trace_id": "doc23_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          613,
+          113,
+          630
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We used a solar abundance line mask calculated from ATLAS9 models (Kurucz 1993), for an effective temperature of 5000 K, log g = 3.0, and a microturbulence of 2.0 km s−1, which is consistent with the physical parameters of Pollux",
+      "measurement_method": "spectral line mask fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2021A&A...646A.130A_Pollux_teff_1",
+      "source_id": "2021A&A...646A.130A",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "teff",
+      "field_value": "5000",
+      "field_unit": "K",
+      "trace_id": "doc23_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          613,
+          113,
+          630
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We used a solar abundance line mask calculated from ATLAS9 models (Kurucz 1993), for an effective temperature of 5000 K, log g = 3.0",
+      "measurement_method": "spectral analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2026MNRAS.547ag413R_Pollux_mass_0",
+      "source_id": "2026MNRAS.547ag413R",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "mass",
+      "field_value": 2.09,
+      "field_unit": "M_sun",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          67,
+          626,
+          866,
+          861
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. List of 13 RGs with v_max determined by pyMON. ... β Gem | 89.25 ± 3.57 | 4796.0 ± 10 | 8.92 ± 0.37 | 2.09 ± 0.26 | Baines et al. (2025) | Hatzes & Zechmeister (2007)",
+      "measurement_method": "asteroseismology (pyMON)",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_HD_62509_0_SpT",
+      "source_id": "SRC_DB_HD",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "spectral_type",
+      "field_value": "K0",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "III/135A/catalog",
+        "key_column": "HD",
+        "key_value": "62509",
+        "raw_column": "SpT",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_37826_0_SpType",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "spectral_type",
+      "field_value": "K0IIIvar",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "37826",
+        "raw_column": "SpType",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HR_2990_0_SpType",
+      "source_id": "SRC_DB_HR",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "spectral_type",
+      "field_value": "K0IIIb",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "V/50/catalog",
+        "key_column": "HR",
+        "key_value": "2990",
+        "raw_column": "SpType",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_423088367_0_Teff",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Pollux",
+      "field_name": "teff",
+      "field_value": 4892.6,
+      "field_unit": "K",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "423088367",
+        "raw_column": "Teff",
+        "raw_unit": "K",
+        "row_index": 0
+      }
+    }
+  ]
+}

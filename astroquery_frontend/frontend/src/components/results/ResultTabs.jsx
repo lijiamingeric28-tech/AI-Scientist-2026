@@ -150,7 +150,9 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
                   <MethodBadge method={r.extraction_method} />
                 </td>
                 <td style={{ ...tdStyle, width: 32, color: 'var(--content-fg-tertiary)', textAlign: 'center' }}>
-                  {/* 操作列：… 点击弹出下拉菜单（查看详情 / 删除）；菜单关闭即收起（2026-09-02） */}
+                  {/* 操作列：… 点击弹出下拉菜单（查看详情 / 删除）；菜单关闭即收起（2026-09-02）
+                      readOnly（样例本体）不渲染入口——记录只读 */}
+                  {onDeleteRecord && (
                   <div style={{ position: 'relative', display: 'inline-block' }}>
                     <button
                       onClick={(e) => { e.stopPropagation(); setMenuFor(menuFor === r.record_id ? null : r.record_id) }}
@@ -177,6 +179,7 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
                       </div>
                     )}
                   </div>
+                  )}
                 </td>
               </tr>
             ))}
@@ -356,7 +359,9 @@ export function OutputFiles({ files, taskId }) {
 
 /* 主区记录表格容器（契约 D7-1：主区只放表格，全宽；数据走 HTTP 接口）
  * 点击行 → 记录详情弹窗：血缘数据（quality/sources）首次点开时惰性加载并缓存 */
-export default function ResultTabs({ taskId, status }) {
+export default function ResultTabs({ taskId, status, readOnly = false }) {
+  // readOnly（2026-09-02）：演示样例本体——记录级删除不可用（后端 403 守卫，
+  // 此处隐藏操作入口；回放副本与普通任务不受限）
   const { toast } = useToast()
   const [records, setRecords] = useState(null)
   const [detail, setDetail] = useState(null)          // 当前查看的记录
@@ -472,7 +477,7 @@ export default function ResultTabs({ taskId, status }) {
             <span style={{ fontSize: 'var(--fs-sm)' }}>本次任务未产生记录</span>
           </div>
         ) : (
-          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={setDeleteTarget} />
+          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={readOnly ? undefined : setDeleteTarget} />
         )}
       </div>
 

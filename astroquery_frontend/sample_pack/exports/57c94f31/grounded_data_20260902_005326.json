@@ -1,0 +1,808 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2020A&A...634A.106A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201935846",
+      "title": "Hot WHIM counterparts of FUV O VI absorbers: Evidence in the line-of-sight towards quasar 3C 273",
+      "authors": [
+        "Ahoranta, Jussi",
+        "Nevalainen, Jukka",
+        "Wijers, Nastasha",
+        "Finoguenov, Alexis",
+        "Bonamente, Massimiliano",
+        "Tempel, Elmo",
+        "Tilton, Evan",
+        "Schaye, Joop",
+        "Kaastra, Jelle",
+        "Gozaliasl, Ghassem"
+      ],
+      "year": 2020,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2020A&A...634A.106A.pdf",
+      "retrieval_priority": 0.5977985158640537,
+      "abstract": "<BR /> Aims: We explore the high spectral resolution X-ray data towards the quasar 3C 273 to search for signals of hot (∼10<SUP>6-7</SUP> K) X-ray-absorbing gas co-located with two established intergalactic far-ultraviolet (FUV) O VI absorbers. <BR /> Methods: We analyze the soft X-ray band grating data of all XMM-Newton and Chandra instruments to search for the hot phase absorption lines at the FUV predicted redshifts. The viability of potential line detections is examined by adopting the constraints of a physically justified absorption model. The WHIM hypothesis is investigated with a complementary 3D galaxy distribution analysis and by detailed comparison of the measurement results to the WHIM properties in the EAGLE cosmological, hydrodynamical simulation. <BR /> Results: At one of the examined FUV redshifts, z = 0.09017 ± 0.00003, we measured signals of two hot ion species, O VIII and Ne IX, with a 3.9σ combined significance level. While the absorption signal is only marginally detected in individual co-added spectra, considering the line features in all instruments collectively and assuming collisional equilibrium for absorbing gas, we were able to constrain the temperature (kT = 0.26 ± 0.03 keV) and the column density (N<SUB>H</SUB> × Z<SUB>☉</SUB>/Z = 1.3<SUB>-0.5</SUB><SUP>+0.6</SUP> × 10<SUP>19</SUP> cm<SUP>-2</SUP>) of the absorber. Thermal analysis indicates that FUV and X-ray absorption relate to different phases, with estimated temperatures, T<SUB>FUV</SUB> ≈ 3 × 10<SUP>5</SUP>, and, T<SUB>X - ray</SUB> ≈ 3 × 10<SUP>6</SUP> K. These temperatures match the EAGLE predictions for WHIM at the FUV/X-ray measured N<SUB>ion</SUB>-ranges. We detected a large scale galactic filament crossing the sight-line at the redshift of the absorption, linking the absorption to this structure. <BR /> Conclusions: This study provides observational insights into co-existing warm and hot gas within a WHIM filament and estimates the ratio of the hot and warm phases. Because the hot phase is thermally distinct from the O VI gas, the estimated baryon content of the absorber is increased, conveying the promise of X-ray follow-up studies of FUV detected WHIM in refining the picture of the missing baryons.",
+      "keywords": [
+        "X-rays: individuals: 3C 273",
+        "intergalactic medium",
+        "large-scale structure of Universe",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 9
+    },
+    {
+      "source_id": "2019ApJ...879...75H",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ab24bc",
+      "title": "Jet-driven Galaxy-scale Gas Outflows in the Hyperluminous Quasar 3C 273",
+      "authors": [
+        "Husemann, Bernd",
+        "Bennert, Vardha N.",
+        "Jahnke, Knud",
+        "Davis, Timothy A.",
+        "Woo, Jong-Hak",
+        "Scharwächter, Julia",
+        "Schulze, Andreas",
+        "Gaspari, Massimo",
+        "Zwaan, Martin A."
+      ],
+      "year": 2019,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2019ApJ...879...75H.pdf",
+      "retrieval_priority": 0.6539142992440734,
+      "abstract": "We present an unprecedented view of the morphology and kinematics of the extended narrow-line region (ENLR) and molecular gas around the prototypical hyperluminous quasar 3C 273 (L <SUB>bol</SUB> ∼ 10<SUP>47</SUP> erg s<SUP>-1</SUP> at z = 0.158) based on VLT-MUSE optical 3D spectroscopy and ALMA observations. We find the following: (1) the ENLR size of 12.1 ± 0.2 kpc implies a smooth continuation of the size-luminosity relation out to large radii or a much larger break radius as previously proposed. (2) The kinematically disturbed ionized gas with line splits reaching 1000 km s<SUP>-1</SUP> out to 6.1 ± 1.5 kpc is aligned along the jet axis. (3) The extreme line broadening on kiloparsec scales is caused by the spatial and spectral blending of many distinct gas clouds separated on subarcsecond scales by different line-of-sight (LOS) velocities. The ENLR velocity field combined with the known jet orientation rules out a simple scenario of a radiatively driven radial expansion of the outflow. Instead, we propose that a pressurized expanding hot gas cocoon created by the radio jet is impacting on an inclined gas disk, leading to transverse and/or backflow motion with respect to our LOS. The molecular gas morphology may be explained by either a density wave at the front of the outflow expanding along the jet direction as predicted by the positive feedback scenario or the cold gas may be trapped in a stellar overdensity caused by a recent merger event. Using 3C 273 as a template for observations of high-redshift hyperluminous quasars reveals that large-scale ENLRs and kiloparsec-scale outflows may often be missed, due to the brightness of the nuclei and the limited sensitivity of current near-IR instrumentation.",
+      "keywords": [
+        "ISM: jets and outflows",
+        "quasars: emission lines",
+        "quasars: individual:: 3C 273",
+        "techniques: imaging spectroscopy",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2019ApJ...880..155L",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ab29fc",
+      "title": "Search for Intra-day Optical Variability in γ-Ray-loud Blazars S5 0716+714 and 3C 273",
+      "authors": [
+        "Liu, H. T.",
+        "Feng, Hai Cheng",
+        "Xin, Y. X.",
+        "Bai, J. M.",
+        "Li, S. K.",
+        "Wang, Fang"
+      ],
+      "year": 2019,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2019ApJ...880..155L.pdf",
+      "retrieval_priority": 0.5903850477100083,
+      "abstract": "We present the photometric observations of blazars S5 0716+714 and 3C 273 with high temporal resolution (30-60 s) in the I or R bands. The observations were performed with a 1.02 m optical telescope from 2007 March 7 to 2012 May 16. The F-test, one-way analysis of variance (ANOVA) test, and z-transformed discrete correlation function (ZDCF) cross-correlation zero lag test are used to search for intra-day variability (IDV). Four and five reliable IDVs survive three tests for S5 0716+714 and 3C 273, respectively. IDVs are found for S5 0716+714 and 3C 273. A flare on 2008 May 8 has ∆I ≈ 0.06 ± 0.01 mag in a duration of 0.54 hr for S5 0716+714. A flare on 2011 May 10 shows ∆R ≈ 0.05 ± 0.01 mag in a duration of 0.40 hr for 3C 273. Sharp dips appear on 2011 May 9 for 3C 273 and show ∆R ≈ 0.05 ± 0.01 mag. Under the assumptions that the IDV is tightly connected to black hole mass, M <SUB>∙</SUB>, and that the flare durations are representative of the minimum characteristic timescales, we can estimate upper bounds to M <SUB>∙</SUB>. In the case of the Kerr black holes, M <SUB>∙</SUB> ≲ 10<SUP>8.91</SUP> M <SUB>☉</SUB> and M <SUB>∙</SUB> ≲ 10<SUP>9.02</SUP> M <SUB>☉</SUB> are given for S5 0716+714 and 3C 273, respectively. These mass measurements are consistent with those measurements reported in the literature. Also, we discuss the origins of optical variations found in this work.",
+      "keywords": [
+        "BL Lacertae objects: general",
+        "BL Lacertae objects: individual: S5 0716+714",
+        "galaxies: active",
+        "quasars: general",
+        "quasars: individual: 3C 273",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 10
+    },
+    {
+      "source_id": "2015MNRAS.452.1303P",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stv1380",
+      "title": "Constraints of flat spectrum radio quasars in the hadronic model: the case of 3C 273",
+      "authors": [
+        "Petropoulou, M.",
+        "Dimitrakoudis, S."
+      ],
+      "year": 2015,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2015MNRAS.452.1303P.pdf",
+      "retrieval_priority": 0.46160593039911035,
+      "abstract": "We present a method of constraining the properties of the γ-ray emitting region in flat spectrum radio quasars in the one-zone proton synchrotron model, where the γ-rays are produced by synchrotron radiation of relativistic protons. We show that for low enough values of the Doppler factor δ, the emission from the electromagnetic (EM) cascade which is initiated by the internal absorption of high-energy photons from photohadronic interactions may exceed the observed ∼GeV flux. We use that effect to derive an absolute lower limit of δ; first, an analytical one, in the asymptotic limit where the external radiation from the broad-line region (BLR) is negligible, and then a numerical one in the more general case that includes BLR radiation. As its energy density in the emission region depends on δ and the region's distance from the galactic centre, we use the EM cascade to determine a minimum distance for each value of δ. We complement the EM cascade constraint with one derived from variability arguments and apply our method to the FSRQ 3C 273. We find that δ ≳ 18-20 for B ≲ 30 G and ∼day time-scale variability; the emission region is located outside the BLR, namely at r ≳ 10R<SUB>BLR</SUB> ∼ 3 pc; the model requires at pc-scale distances stronger magnetic fields than those inferred from core shift observations; while the jet power exceeds by at least one order of magnitude the accretion power. In short, our results disfavour the proton synchrotron model for the FSRQ 3C 273.",
+      "keywords": [
+        "astroparticle physics",
+        "radiation mechanisms: non-thermal",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:abs_mag OR abs:absolute_magnitude)",
+      "search_rank": 27
+    },
+    {
+      "source_id": "2014ApJ...785L..24F",
+      "source_type": "paper",
+      "doi": "10.1088/2041-8205/785/2/L24",
+      "title": "High Resolution X-Ray Spectroscopy of the Local Hot Gas along the 3C 273 Sightline",
+      "authors": [
+        "Fang, Taotao",
+        "Jiang, Xiaochuan"
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2014ApJ...785L..24F.pdf",
+      "retrieval_priority": 0.5436164545172275,
+      "abstract": "X-ray observations of highly ionized metal absorption lines at z = 0 provide critical information on the hot gas distribution in and around the Milky Way. We present a study of more than 10 yr of Chandra and XMM-Newton observations of 3C 273, one of the brightest extragalactic X-ray sources. Compared with previous works, we obtain much tighter constraints on the physical properties of the X-ray absorber. We also find a large, non-thermal velocity at ~100-150 km s<SUP>-1</SUP>, the main reason for the higher line equivalent width when compared with other sightlines. Using joint analysis with X-ray emission and ultraviolet observations, we derive a size of 5-15 kpc and a temperature of (1.5-1.8) × 10<SUP>6</SUP> K for the X-ray absorber. The 3C 273 sightline passes through a number of Galactic structures, including radio loops I and IV, the North Polar Spur, and the neighborhood of the newly discovered \"Fermi bubbles.\" We argue that the X-ray absorber is unlikely to be associated with the nearby radio loops I and IV; however, the non-thermal velocity can be naturally explained as the result of the expansion of the \"Fermi bubbles.\" Our data imply a shock-expansion velocity of 200-300 km s<SUP>-1</SUP>. Our study indicates a likely complex environment for the production of the Galactic X-ray absorbers along different sightlines, and highlights the significance of probing galactic feedback with high resolution X-ray spectroscopy.",
+      "keywords": [
+        "ISM: general",
+        "quasars: absorption lines",
+        "quasars: individual: 3C 273 PKS 2155─304 Mkn 421",
+        "X-rays: ISM",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 15
+    },
+    {
+      "source_id": "2010MNRAS.405.1736W",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2010.16519.x",
+      "title": "The low-redshift Lyα forest towards 3C 273",
+      "authors": [
+        "Williger, Gerard M.",
+        "Carswell, Robert F.",
+        "Weymann, Ray J.",
+        "Jenkins, Edward B.",
+        "Sembach, Kenneth R.",
+        "Tripp, Todd M.",
+        "Davé, Romeel",
+        "Haberzettl, Lutz",
+        "Heap, Sara R."
+      ],
+      "year": 2010,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2010MNRAS.405.1736W.pdf",
+      "retrieval_priority": 0.5335627082111182,
+      "abstract": "We present an analysis of the Lyα forest towards 3C 273 from the Space Telescope Imaging Spectrograph at ~7kms<SUP>-1</SUP> resolution, along with reprocessed data from the Far Ultraviolet Spectroscopic Explorer. The high ultraviolet flux of 3C 273 allows us to probe the weak, low-z absorbers. The main sample consists of 21 HI absorbers that we could discriminate to a sensitivity of . The redshift density for absorbers with is ~ 1.5σ below the mean for other lines of sight; for , it is consistent with numerical model predictions. The Doppler parameter distribution is consistent with other low-z samples. We find no evidence for a break in the column density power-law distribution to . A broad Lyα absorber is within ∆ v &lt;= 50kms<SUP>-1</SUP> and 1.3 local-frame Mpc of two ~ 0.5L* galaxies, with an OVI absorber ~700kms<SUP>-1</SUP> away, similarly close to three galaxies and indicating overdense environments. We detect clustering on the ∆ v &lt; 1000kms<SUP>-1</SUP> scale at 3.4σ significance for , consistent with the level predicted from hydrodynamical simulations, and indication for a Lyα forest void at 0.09 &lt; z &lt; 0.12. We find at least two components for the z = 0.0053 Virgo absorber, but the total column is not significantly changed. <P />Based on observations with (1) the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 05-26555, and (2) the NASA-CNES/ESA Far Ultraviolet Spectroscopic Explorer mission, operated by the Johns Hopkins University, supported by NASA contract NAS 05-32985. <P />E-mail: williger@physics.louisville.edu",
+      "keywords": [
+        "intergalactic medium",
+        "quasars: absorption lines",
+        "cosmology: observations",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2006ASPC..360...41G",
+      "source_type": "paper",
+      "doi": "10.48550/arXiv.astro-ph/0701005",
+      "title": "Optical Variability of the Three Brightest Nearby Quasars",
+      "authors": [
+        "Gaskell, C. M.",
+        "Benker, A. J.",
+        "Campbell, J. S.",
+        "George, T. A.",
+        "Hedrick, C. H.",
+        "Hiller, M. E.",
+        "Klimek, E. S.",
+        "Leonard, J. P.",
+        "Masatoshi, S.",
+        "Peterson, B. W.",
+        "Peterson, K. C.",
+        "Sanders, K. M."
+      ],
+      "year": 2006,
+      "journal": "AGN Variability from X-Rays to Radio Waves",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2006ASPC..360...41G.pdf",
+      "retrieval_priority": 0.24318373292224166,
+      "abstract": "We report on the relative optical variability of the three brightest nearby quasars, 3C 273, PDS 456, and PHL 1811. All three have comparable absolute magnitudes, but PDS 456 and PHL 1811 are radio quiet. PDS 456 is a broad-line object, but PHL 1811 could be classified as a high-luminosity Narrow-Line Seyfert 1 (NLS1). Both of the radio-quiet quasars show significant variability on a timescale of a few days. The seasonal rms V-band variability amplitudes of 3C 273 and PDS 456 are indistinguishable, and the seasonal rms variability amplitude of PHL 1811 was only exceeded by 3C 273 once in 30 years of monitoring. We find no evidence that the optical variability of 3C 273 is greater than or more rapid than the variability of the comparably-bright, radio-quiet quasars. This suggests that not only do radio-loud and radio-quiet AGNs have similar spectral energy distributions, but that the variability mechanisms are also similar. The optical variability of 3C 273 is not dominated by a ``blazar'' component.",
+      "keywords": [
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:abs_mag OR abs:absolute_magnitude)",
+      "search_rank": 31
+    },
+    {
+      "source_id": "2004MNRAS.349...57P",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2004.07499.x",
+      "title": "XMM-Newton observations of 3C 273",
+      "authors": [
+        "Page, K. L.",
+        "Turner, M. J. L.",
+        "Done, C.",
+        "O'Brien, P. T.",
+        "Reeves, J. N.",
+        "Sembay, S.",
+        "Stuhlinger, M."
+      ],
+      "year": 2004,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2004MNRAS.349...57P.pdf",
+      "retrieval_priority": 0.5821190121076576,
+      "abstract": "A series of nine XMM-Newton observations of the radio-loud quasar 3C 273 are presented, concentrating mainly on the soft excess. Although most of the individual observations do not show evidence for iron emission, co-adding them reveals a weak, broad line (EW ~56 eV). The soft excess component is found to vary, confirming previous work, and can be well fitted with multiple blackbody components, with temperatures ranging between ~40 and ~330 eV, together with a power law. Alternatively, a Comptonization model also provides a good fit, with a mean electron temperature of ~350 eV, although this value is higher when the soft excess is more luminous over the 0.5-10 keV energy band. In the reflection grating spectrometer spectrum of 3C 273, a strong detection of the O VII Heα absorption line at zero redshift is made; this may originate in warm gas in the local intergalactic medium, consistent with the findings of both Fang, Sembach &amp; Canizares and Rasmussen, Kahn &amp; Paerels.",
+      "keywords": [
+        "galaxies: active",
+        "galaxies: individual: 3C 273",
+        "X-rays: galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2003ApJ...586L..49F",
+      "source_type": "paper",
+      "doi": "10.1086/374680",
+      "title": "Chandra Detection of Local O VII Heα Absorption along the Sight Line toward 3C 273",
+      "authors": [
+        "Fang, Taotao",
+        "Sembach, Kenneth R.",
+        "Canizares, Claude R."
+      ],
+      "year": 2003,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2003ApJ...586L..49F.pdf",
+      "retrieval_priority": 0.5103135094446232,
+      "abstract": "We detect a zero-redshift O VII Heα absorption line with a signal-to-noise ratio of 6.4. We explore two models, which associate this line with (1) the intragroup gas in the Local Group and (2) the hot halo gas in the vicinity of our Milky Way. In model 1, we find for a standard β-model of the gas distribution that the temperature is 2.3×10<SUP>5</SUP> K&lt;T&lt;1.2×10<SUP>6</SUP> K and the baryon overdensity is δ<SUB>b</SUB>~100 both results are consistent with the properties of the so-called warm-hot intergalactic medium predicted by cosmological simulations. We also find the core radius of the gas distribution should be greater than 100 kpc. In model 2, we explore several possible Galactic origins for the absorption, including the possibility that the O VII is associated with the O VI absorption observed in this direction by the Far Ultraviolet Spectroscopic Explorer. We find a strong indication that collisional ionization is the dominant ionization source for the observed absorption.",
+      "keywords": [
+        "Galaxies: Intergalactic Medium",
+        "ISM: Clouds",
+        "Galaxies: Local Group",
+        "Galaxies: Quasars: Absorption Lines",
+        "Galaxies: Quasars: Individual: Alphanumeric: 3C 273",
+        "X-Rays: Individual: Alphanumeric: 3C 273",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 18
+    },
+    {
+      "source_id": "2000ApJ...544L..95Y",
+      "source_type": "paper",
+      "doi": "10.1086/317318",
+      "title": "A Broad Fe Kα Emission Line in the X-Ray Spectrum of the Quasar 3C 273",
+      "authors": [
+        "Yaqoob, Tahir",
+        "Serlemitsos, Peter"
+      ],
+      "year": 2000,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\2000ApJ...544L..95Y.pdf",
+      "retrieval_priority": 0.5104395751843033,
+      "abstract": "The Fe Kα line, an important physical diagnostic in the X-ray spectra of active galaxies (AGNs) and quasars, has been notoriously difficult to measure in the high-luminosity, radio-loud quasar 3C 273 (z=0.158). On the few occasions that it has been detected, its intrinsic width has been thought to be narrow (FWHM&lt;10,000 km s<SUP>-1</SUP>), with an equivalent width (EW) of a few tens of eV. This was consistent with the general trend that as one goes from low- to high-luminosity AGNs, the Fe Kα line goes from being strong (EW~200-300 eV) and broad (FWHM~10<SUP>5</SUP> km s<SUP>-1</SUP>) to being weak and narrow, or absent altogether. Here we present the results of new ASCA and RXTE observations, together with archival ASCA data, and show for the first time that the Fe Kα line in 3C 273 is as broad as those seen in Seyfert 1 galaxies. The line is resolved in two of the observations, with a mean Gaussian width of 0.8+/-0.3 keV, corresponding to a FWHM of ~0.3+/-0.1c. The smallest and largest equivalent widths measured are 43<SUP>+34</SUP><SUB>-34</SUB> and 133<SUP>+52</SUP><SUB>-53</SUB> eV, respectively (in the quasar frame). The Compton-reflection continuum is less than 10% of that expected from a centrally illuminated semi-infinite, face-on, Compton-thick disk, confirming previous studies that Compton reflection is negligible in 3C 273. The largest values of the Fe Kα line EW are underpredicted if the line originates in the disk, unless a time lag longer than several days between line and continuum and/or an overabundance of Fe is invoked. We cannot unambiguously constrain the disk inclination angle. About 60° is preferred for a cold disk, while a face-on disk is allowed if the ionization state of Fe is H-like.",
+      "keywords": [
+        "Galaxies: Active",
+        "Galaxies: Quasars: Emission Lines",
+        "Galaxies: Quasars: Individual: Alphanumeric: 3C 273",
+        "X-Rays: Galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:redshift OR abs:z)",
+      "search_rank": 13
+    },
+    {
+      "source_id": "1998MNRAS.294L...7H",
+      "source_type": "paper",
+      "doi": "10.1046/j.1365-8711.1998.01368.x",
+      "title": "Discovery of radio-loud quasars with z=4.72 and z=4.010",
+      "authors": [
+        "Hook, Isobel M.",
+        "McMahon, Richard G."
+      ],
+      "year": 1998,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\1998MNRAS.294L...7H.pdf",
+      "retrieval_priority": 0.19747290472729734,
+      "abstract": "We report the discovery of two radio-loud quasars with redshifts greater than 4: GB1428+4217, with z=4.72, and GB1713+2148 with z=4.01. This doubles the number of published radio-selected quasars with z&gt;4, bringing the total to 4. GB1428+4217 is the third most distant quasar known and the highest redshift radio and X-ray source currently known. It has a radio flux density at 5 GHz of 259+/-31 mJy and an optical magnitude of R~20.9. The rest frame absolute UV magnitude, M_v(1450 A), is -26.7, similar to that of the archetypal radio-selected quasar 3C273 [z=0.158 M_v(1450 A)=-26.4]. GB1428+4217 is tentatively detected in ROSAT PSPC observations, which has been confirmed by more recent ROSAT observations described in a companion paper by Fabian et al. Both quasars were discovered during the CCD imaging phase of an investigation into the evolution of the space density of radio-loud quasars at high redshift. Combined with our earlier survey results, these objects give a lower limit on the space density of quasars with radio power P_5 GHz&gt;5.8x10^26 W Hz^-1 sr^-1 between z=4 and z=5 of 1.4+/-0.9x10^-10 Mpc^-3. This can be compared to 2.9+/-0.2x10^-10 Mpc^-3 at z=2 from Dunlop &amp; Peacock for flat-spectrum sources of the same luminosity.",
+      "keywords": [
+        "Quasars",
+        "Radio Astronomy",
+        "Red Shift",
+        "Astronomical Spectroscopy",
+        "Color-Magnitude Diagram",
+        "Noise Spectra",
+        "Lyman Alpha Radiation",
+        "Astronomy",
+        "QUASARS: GENERAL",
+        "QUASARS: INDIVIDUAL: GB1428+4217",
+        "QUASARS: INDIVIDUAL: GB1713+2148",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:abs_mag OR abs:absolute_magnitude)",
+      "search_rank": 39
+    },
+    {
+      "source_id": "1997ApJ...488L..19T",
+      "source_type": "paper",
+      "doi": "10.1086/310913",
+      "title": "Discovery of a Luminous Quasar in the Nearby Universe",
+      "authors": [
+        "Torres, Carlos A. O.",
+        "Quast, Germano R.",
+        "Coziol, Roger",
+        "Jablonski, Francisco",
+        "de la Reza, Ramiro",
+        "Lépine, J. R. D.",
+        "Gregório-Hetem, J."
+      ],
+      "year": 1997,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\1997ApJ...488L..19T.pdf",
+      "retrieval_priority": 0.19755353420042726,
+      "abstract": "In the course of the Pico dos Dias survey (PDS), we identified the stellar-like object PDS 456 at coordinates α = 17<SUP>h</SUP>28<SUP>m</SUP>19.796s, δ = -14°15'55.87\" (epoch 2000), with a relatively nearby (z = 0.184) and bright (B = 14.69) quasar. Its position at Galactic coordinates l = 10.4d, b = +11.2d, near the bulge of the Galaxy, may explain why it was not detected before. The optical spectrum of PDS 456 is typical of a luminous quasar, showing a broad (FWHM ~ 4000 km s<SUP>-1</SUP>) Hβ line, very intense Fe II lines, and a weak [O III] λ5007 line. PDS 456 is associated to the infrared source IRAS 17254-1413 with a 60 μm infrared luminosity L<SUB>60</SUB> = 3.8 × 10<SUP>45</SUP> ergs s<SUP>-1</SUP>. The relatively flat slopes in the infrared [α(25, 60) = -0.33 and α(12, 25) = -0.78] and a flat power index in the optical (F<SUB>ν</SUB> ~ ν<SUP>-0.72</SUP>) may indicate a low dust content. A good match between the position of PDS 456 and the position of the X-ray source RXS J172819.3-141600 implies an X-ray luminosity L<SUB>X</SUB> = 2.8 × 10<SUP>44</SUP> ergs s<SUP>-1</SUP>. The good correlation between the strength of the emission lines in the optical and the X-ray luminosity, as well as the steep optical to X-ray index estimated (α<SUB>OX</SUB> = -1.64), suggests that PDS 456 is radio quiet. A radio survey previously performed in this region yields an upper limit for radio power at about 5 GHz of approximately 2.6 × 10<SUP>30</SUP> ergs<SUP>-1</SUP> Hz<SUP>-1</SUP>. We estimate the Galactic reddening in this line of sight to be A<SUB>B</SUB> ~= 2.0, implying an absolute magnitude M<SUB>B</SUB> = -26.7 (using H<SUB>0</SUB> = 75 km s<SUP>-1</SUP> Mpc<SUP>-1</SUP> and q<SUB>0</SUB> = 0). In the optical, PDS 456 is therefore 1.3 times more luminous than 3C 273 and the most luminous quasar in the nearby (z &lt;= 0.3) universe. <P />Based on data collected at CNPq/Laboratório Nacional de Astrofísica, Brazil.",
+      "keywords": [
+        "INFRARED: GENERAL",
+        "GALAXIES: QUASARS: INDIVIDUAL ALPHANUMERIC: IRAS 17254-1413",
+        "GALAXIES: QUASARS: INDIVIDUAL ALPHANUMERIC: PDS 456",
+        "X-RAYS: GALAXIES",
+        "Infrared: General",
+        "Galaxies: Quasars: Individual: Alphanumeric: PDS 456",
+        "Galaxies: Quasars: Individual: Alphanumeric: IRAS 17254-1413",
+        "X-Rays: Galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:abs_mag OR abs:absolute_magnitude)",
+      "search_rank": 36
+    },
+    {
+      "source_id": "1995ApJ...450..486B",
+      "source_type": "paper",
+      "doi": "10.1086/176159",
+      "title": "Hubble Space Telescope Images of Nearby Luminous Quasars. II. Results for Eight Quasars and Tests of the Detection Sensitivity",
+      "authors": [
+        "Bahcall, John N.",
+        "Kirhakos, Sofia",
+        "Schneider, Donald P."
+      ],
+      "year": 1995,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4\\1995ApJ...450..486B.pdf",
+      "retrieval_priority": 0.23195856432507567,
+      "abstract": "Observations with the Wide-Field Camera of the Hubble Space Telescope (HST) are presented for eight intrinsically luminous quasars with redshifts between 0.16 and 0.29. These observations, when combined with a similar HST study of the quasar PKS 2349-014, show that luminous nearby quasars exist in a variety of environments. <P />Seven companion galaxies brighter than M<SUB>v</SUB> = -16.5 (H<SUB>0</SUB> = 100 km s<SUP>-1</SUP> Mpc<SUP>-1</SUP>, Ω<SUB>0</SUB> = 1.0) lie within a projected distance of 25 kpc of the quasars; three of the companions are located closer than 3\" (6 kpc projected distance) from the quasars, well within the volume that would be enclosed by a typical L<SUP>*</SUP> host galaxy. The observed association of quasars and companion galaxies is statistically significant and may be an important element in the luminous-quasar phenomenon. <P />Apparent host galaxies are detected for three of the quasars: PG 1116+215, 3C 273, and PG 1444+407; the hosts have an average absolute magnitude of about 0.6 mag brighter than L<SUP>*</SUP>. The agreement between the previously published major-axis directions in ground-based images and in the present HST images of 3C 273 and PG 1444+407 constitutes important evidence supporting the reality of these candidate host galaxies. <P />Upper limits are placed on the visual-band brightnesses of representative galactic hosts for all the quasars. These limits are established by placing galaxy images obtained with HST underneath the quasars and measuring at what faintness level the known galaxies are detected. On average, the HST spirals would have been detected if they were as faint as 1 mag below L<SUP>*</SUP>, and the early-type galaxies could have been detected down to a brightness level of about L<SUP>*</SUP>, where L<SUP>*</SUP> is the Schechter characteristic luminosity of field galaxies. Smooth, featureless galaxy models (exponential disks or de Vaucouleurs profiles) are fitted to the residual light after a best-fitting point source is subtracted from the quasar images. The results show that smooth spiral galaxies brighter than, on average, about L<SUP>*</SUP>, would have been detected. These upper limits, or possible detections, are consistent with, for example, the eight luminous quasars studied in this paper, occurring in host galaxies that have a Shechter luminosity function with a lower cutoff of in the range 0.01-0.1L<SUP>*</SUP>. <P />Tests are performed to determine if our failure to detect, in some cases, luminous host galaxies could be an artifact caused by our analysis procedures. These tests include comparing the measured point-spread function (PSF) for our HST observations with the PSFs used in previous ground-based studies of host galaxies, measuring the fluctuations in the sky signals that were subtracted from the quasar images, evaluating empirically the effects of using different stellar PSFs in the analysis, carrying out the subtraction of the stellar (nuclear) source in different ways, creating and analyzing artificial active galactic nuclei (AGNs) with known surface brightnesses, and fitting the observed quasar light to an analytic model that includes a host galaxy. Our analysis procedures successfully pass all these tests.",
+      "keywords": [
+        "GALAXIES: CLUSTERS: GENERAL",
+        "GALAXIES: QUASARS: GENERAL",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"3C 273\" OR abs:\"3C 273\") AND (abs:abs_mag OR abs:absolute_magnitude)",
+      "search_rank": 34
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1995ApJ...450..486B_3C_273_abs_mag_0",
+      "source_id": "1995ApJ...450..486B",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "abs_mag",
+      "field_value": "-25.7",
+      "field_unit": "mag",
+      "trace_id": "doc17_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1: Sample of Completed Cycle 4 Quasars and Detectable Hosts ... 3C 273 ... -25.7",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: abs_mag"
+      ]
+    },
+    {
+      "record_id": "1998MNRAS.294L...7H_3C_273_abs_mag_0",
+      "source_id": "1998MNRAS.294L...7H",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "abs_mag",
+      "field_value": "-26.7",
+      "field_unit": "mag",
+      "trace_id": "doc15_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          857,
+          357,
+          892,
+          375
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The rest frame absolute UV magnitude, M_U(1450A), is -26.7 similar to that of the archetypal radio-selected quasar 3C273 (z = 0.158; M_U(1450A) = -26.4).",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: abs_mag"
+      ]
+    },
+    {
+      "record_id": "1998MNRAS.294L...7H_3C_273_abs_mag_1",
+      "source_id": "1998MNRAS.294L...7H",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "abs_mag",
+      "field_value": "-26.4",
+      "field_unit": "mag",
+      "trace_id": "doc15_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          833,
+          694,
+          866,
+          710
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "For comparison, from HST observations of the archetypal radio-selected quasar 3C273 (z = 0.158) (Bahcall et al 1991) we find the continuum luminosity to be M_U(1450) = -26.4.",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: abs_mag"
+      ]
+    },
+    {
+      "record_id": "2000ApJ...544L..95Y_3C_273_redshift_0",
+      "source_id": "2000ApJ...544L..95Y",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc11_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          591,
+          242,
+          642,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "The Fe Kα line, an important physical diagnostic in the X-ray spectra of active galaxies (AGNs) and quasars, has been notoriously difficult to measure in the high-luminosity, radio-loud quasar 3C 273 (z = 0.158).",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2000ApJ...544L..95Y_3C_273_redshift_1",
+      "source_id": "2000ApJ...544L..95Y",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc11_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          801,
+          572,
+          852,
+          592
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "The bright, high-luminosity (L(2 − 10 keV) ∼ 0.8 − 2 × 10^46 erg s^−1; H0 = 50 km s^−1 Mpc^−1 and q0 = 0 throughout) radio-loud quasar 3C 273 (z = 0.158) has been extensively studied in all wavebands",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2000ApJ...544L..95Y_3C_273_redshift_2",
+      "source_id": "2000ApJ...544L..95Y",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc11_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          126,
+          168,
+          963,
+          903
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "The emission line parameters are all referred to the quasar frame (z = 0.158); these are the intrinsic width, σFe, the center energy, Ec, the intensity",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2000ApJ...544L..95Y_3C_273_redshift_3",
+      "source_id": "2000ApJ...544L..95Y",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc11_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          142,
+          190,
+          765,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "The line intensity (ID) and equivalent width (EW) are both referred to the quasar frame (z = 0.158). Errors are 90% confidence for one interesting parameter",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2003ApJ...586L..49F_3C_273_redshift_0",
+      "source_id": "2003ApJ...586L..49F",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": "0.158",
+      "field_unit": "dimensionless",
+      "trace_id": "doc1_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          529,
+          817,
+          580,
+          837
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "3C 273 (l = 289.95°, b = 64.36°, z_QSO = 0.158) is one of the brightest quasars in the sky at X-ray wavelengths...",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2004MNRAS.349...57P_3C_273_redshift_0",
+      "source_id": "2004MNRAS.349...57P",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": "0.158",
+      "field_unit": "dimensionless",
+      "trace_id": "doc4_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          417,
+          711,
+          458,
+          727
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "the radio source was identified with a magnitude 13, star-like object by Hazard, Mackey & Shimmins (1963) and the redshift measured by Schmidt (1963) to be z = 0.158.",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2006ASPC..360...41G_3C_273_abs_mag_0",
+      "source_id": "2006ASPC..360...41G",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "abs_mag",
+      "field_value": "-26.6",
+      "field_unit": "mag",
+      "trace_id": "doc2_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          453,
+          511,
+          477,
+          530
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "3C 273 (z = 0.158, M_V = -26.6), is the brightest, nearest, and best-known, radio-loud quasar.",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: abs_mag"
+      ]
+    },
+    {
+      "record_id": "2010MNRAS.405.1736W_3C_273_redshift_0",
+      "source_id": "2010MNRAS.405.1736W",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.117,
+      "field_unit": "",
+      "trace_id": "doc16_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          779,
+          613,
+          819,
+          629
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Rosenberg et al. (2003) compared Virgo metal systems toward RXJ1230.8+0115, which is the nearest bright low redshift QSO (z = 0.117, 55 arcmin away)...",
+      "measurement_method": "spectroscopic",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...785L..24F_3C_273_redshift_0",
+      "source_id": "2014ApJ...785L..24F",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc3_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          785,
+          597,
+          828,
+          614
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "As a calibration source, 3C 273 (z = 0.158, l = 289.95°, b = 64.36°) has been observed many times with Chandra and XMM-Newton.",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2019ApJ...879...75H_3C_273_redshift_0",
+      "source_id": "2019ApJ...879...75H",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc14_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          268,
+          444,
+          312,
+          462
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "We present an unprecedented view on the morphology and kinematics of the extended narrow-line region (ENLR) and molecular gas around the prototypical hyper-luminous quasar 3C 273 (L_bol ~ 10^47 erg s^-1 at z = 0.158) based on VLT-MUSE optical 3D spectroscopy and ALMA observations.",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2019ApJ...880..155L_3C_273_redshift_0",
+      "source_id": "2019ApJ...880..155L",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc7_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          676,
+          688,
+          723,
+          707
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The values of z and δ are 0.158 and 16.8 for 3C 273 (Savolainen et al 2010), respectively, and D ≲ 6.27 × 10^14 cm.",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    },
+    {
+      "record_id": "2020A&A...634A.106A_3C_273_redshift_0",
+      "source_id": "2020A&A...634A.106A",
+      "entity_type": "BLL",
+      "entity_name": "3C 273",
+      "field_name": "redshift",
+      "field_value": 0.158,
+      "field_unit": "",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In this study, we investigate the sight-line towards the quasar 3C 273 (z ≈ 0.158, Schmidt 1963), also included in the Yao et al. (2009) sample.",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: redshift"
+      ]
+    }
+  ]
+}

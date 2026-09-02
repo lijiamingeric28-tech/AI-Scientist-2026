@@ -66,8 +66,9 @@ def test_list_tasks_contract_shape_pruned(tmp_path):
     assert "state_json" not in item              # M-08：列表不携带大字段
     assert "pdf_paths" not in item
     # 2026-09-01: 列表轻量统计列（侧边栏「N 条记录 · M 个来源」；仍无大字段）
+    # 2026-09-02: source 归属列（我的查询 user / 演示样例 sample）
     assert set(item) == {"task_id", "query", "title", "status", "created_at", "completed_at",
-                         "replay_of", "record_count", "source_count"}
+                         "replay_of", "record_count", "source_count", "source"}
     assert item["record_count"] == 0
     assert item["source_count"] == 0
     # get_task（详情 /state 侧）仍完整返回大字段

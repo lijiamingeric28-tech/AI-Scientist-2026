@@ -1,0 +1,130 @@
+{
+  "data_lineage": {
+    "input": {
+      "sources": 11,
+      "records": 16,
+      "grounded_data_version": "2.0.0",
+      "received_at": "2026-09-01T09:41:58.309689+00:00"
+    },
+    "processing": [
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.001,
+        "reason": "8 tools, 16 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 27.603,
+        "reason": "11 sources (parallel), 16 issues, 0 anomalies, 11 variance groups"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 0.547,
+        "reason": "11 sources, overall=0.92 (good)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.183,
+        "reason": "11 sources, distribution={'Normalization': 10, 'Export': 1}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=10 Conflict=0 Export=1 Human=0"
+      },
+      {
+        "stage": "SourceRouter",
+        "agent": "SourceRouterAgent",
+        "status": "Success",
+        "duration_s": 0.004,
+        "reason": "10 to normalize, 1 skipped"
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 57.192,
+        "reason": "10 sources planned (method=llm_enhanced)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.103,
+        "reason": "6 mods (PARALLEL, base=0 adapted=0 generated=6)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Success",
+        "duration_s": 0.054,
+        "reason": "Valid=True, conflicts=0, route=Export"
+      },
+      {
+        "stage": "Report",
+        "agent": "ReportAgent",
+        "status": "Success",
+        "duration_s": 0.024,
+        "reason": "Completed"
+      },
+      {
+        "stage": "LoopCheck",
+        "agent": "LoopController",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Iteration 1/8 → next=Export"
+      },
+      {
+        "stage": "DataOrganization",
+        "agent": "DataOrganizationAgent",
+        "status": "Success",
+        "duration_s": 0.008,
+        "reason": "Organized 16 records (4 standard + 0 extra fields)"
+      },
+      {
+        "stage": "SchemaFormatting",
+        "agent": "SchemaFormattingAgent",
+        "status": "Success",
+        "duration_s": 0.048,
+        "reason": "Exported 16 rows × 5 cols, 1 format issues"
+      },
+      {
+        "stage": "MetadataGeneration",
+        "agent": "MetadataGenerationAgent",
+        "status": "Success",
+        "duration_s": 16.564,
+        "reason": "Generated 4 field definitions (LLM=True)"
+      }
+    ],
+    "output": {
+      "sources": 11,
+      "records": 16,
+      "standard_compliant": true,
+      "generated_at": "2026-09-01T09:43:41.678042+00:00"
+    }
+  },
+  "trace_completeness": {
+    "records_with_trace": 6,
+    "records_with_modification_trace": 4,
+    "records_without_trace": 0,
+    "modified_count": 4,
+    "unmodified_count": 12,
+    "deleted_count": 0,
+    "records_with_trace_id": 12,
+    "paper_records_missing_trace_id": 0,
+    "database_records": 4,
+    "db_provenance_complete": 4
+  },
+  "modified_count": 4,
+  "decision_count": 14
+}

@@ -1,0 +1,2490 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026ApJ...998...50D",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ae2ed5",
+      "title": "Betelgeuse: Detection of the Expanding Wake of the Companion Star",
+      "authors": [
+        "Dupree, Andrea K.",
+        "Cristofari, Paul I.",
+        "MacLeod, Morgan",
+        "Kravchenko, Kateryna"
+      ],
+      "year": 2026,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2026ApJ...998...50D.pdf",
+      "retrieval_priority": 0.6772188632117584,
+      "abstract": "Recent analyses conclude that Betelgeuse, a red supergiant star (HD 39801), likely has a companion object with a period of ∼2000 days orbiting at only 2.3 R<SUB>⋆</SUB>, deep in the chromosphere of the supergiant. A probable detection of such a companion, named Siwarha, has just occurred from speckle imaging. This study finds that Betelgeuse spectra in the optical region and ultraviolet exhibit signatures of variable circumstellar absorption and chromospheric outflows. These variations are consistent with the ∼2000 days period of the companion object. Circumstellar absorption evident in optical Mn I lines, and mass outflow marked by ultraviolet Fe II, Si I, and Mg I lines increase after the transit of the companion across the disk of Betelgeuse. Following the eclipse of the companion, the absorption and outflow slowly decrease in advance of the next transit. The occurrence and variation of this plasma appear consistent with the presence of a trailing and expanding wake caused by a companion star orbiting within the atmosphere of Betelgeuse.",
+      "keywords": [
+        "Stellar chromospheres",
+        "Stellar atmospheres",
+        "Stellar mass loss",
+        "M supergiant stars",
+        "230",
+        "1584",
+        "1613",
+        "988",
+        "Solar and Stellar Astrophysics",
+        "Space Physics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 29
+    },
+    {
+      "source_id": "2025Galax..13...50D",
+      "source_type": "paper",
+      "doi": "10.3390/galaxies13030050",
+      "title": "Betelgeuse, the Prototypical Red Supergiant",
+      "authors": [
+        "Dupree, Andrea K.",
+        "Montargès, Miguel"
+      ],
+      "year": 2025,
+      "journal": "Galaxies",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2025Galax..13...50D.pdf",
+      "retrieval_priority": 0.6562484097262187,
+      "abstract": "The behavior of the bright red supergiant, Betelgeuse, is described with results principally from the past 6 years. The review includes imaging, photometry, and spectroscopy to record the Great Dimming of 2019─2020. This event was followed by a slow ongoing recovery from the massive surface mass ejection after which the stellar characteristics changed. Theoretical simulations address the cause of this episodic mass ejection and the optical Dimming. Recent publications evaluating the perplexing 2100 day periodicity in the star's brightness and radial velocity provide evidence that Betelgeuse may harbor a companion object. Current attempts at direct detection of this companion are discussed. Betelgeuse provides a well-studied and meaningful example for supergiant stars in our Galaxy and others.",
+      "keywords": [
+        "stellar chromospheres (230)",
+        "stellar atmosphere (1584)",
+        "stellar mass loss (1613)",
+        "M supergiant stars (988)",
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 30
+    },
+    {
+      "source_id": "2025ApJ...978...50M",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ad93c8",
+      "title": "Radial Velocity and Astrometric Evidence for a Close Companion to Betelgeuse",
+      "authors": [
+        "MacLeod, Morgan",
+        "Blunt, Sarah",
+        "De Rosa, Robert J.",
+        "Dupree, Andrea K.",
+        "Granzer, Thomas",
+        "Harper, Graham M.",
+        "Huang, Caroline D.",
+        "Leiner, Emily M.",
+        "Loeb, Abraham",
+        "Nielsen, Eric L.",
+        "Strassmeier, Klaus G.",
+        "Wang, Jason J.",
+        "Weber, Michael"
+      ],
+      "year": 2025,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2025ApJ...978...50M.pdf",
+      "retrieval_priority": 0.6303128823511872,
+      "abstract": "We examine a century of radial velocity, visual magnitude, and astrometric observations of the nearest red supergiant, Betelgeuse, in order to reexamine the century-old assertion that Betelgeuse might be a spectroscopic binary. These data reveal Betelgeuse varying stochastically over years and decades due to its boiling, convective envelope, periodically with a 5.78 yr long secondary period (LSP), and quasiperiodically from pulsations with periods of several hundred days. We show that the LSP is consistent between astrometric and radial velocity data sets, and argue that it indicates a low-mass companion to Betelgeuse, less than a solar mass, orbiting in a 2110 day period at a separation of just over twice Betelgeuse's radius. The companion star would be nearly 20 times less massive and a million times fainter than Betelgeuse, with similar effective temperature, effectively hiding it in plain sight near one of the best-studied stars in the night sky. The astrometric data favor an edge-on binary with orbital plane aligned with Betelgeuse's measured spin axis. Tidal spin─orbit interaction drains angular momentum from the orbit and spins up Betelgeuse, explaining the spin─orbit alignment and Betelgeuse's anomalously rapid spin. In the future, the orbit will decay until the companion is swallowed by Betelgeuse in the next 10,000 yr.",
+      "keywords": [
+        "Red supergiant stars",
+        "Binary stars",
+        "Tidal interaction",
+        "Astrometric binary stars",
+        "Radial velocity",
+        "1375",
+        "154",
+        "1699",
+        "79",
+        "1332",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 1
+    },
+    {
+      "source_id": "2024MNRAS.527L..88D",
+      "source_type": "paper",
+      "doi": "10.1093/mnrasl/slad138",
+      "title": "Images of Betelgeuse with VLTI/MATISSE across the Great Dimming",
+      "authors": [
+        "Drevon, J.",
+        "Millour, F.",
+        "Cruzalèbes, P.",
+        "Paladini, C.",
+        "Scicluna, P.",
+        "Matter, A.",
+        "Chiavassa, A.",
+        "Montargès, M.",
+        "Cannon, E.",
+        "Allouche, F.",
+        "Hofmann, K.-H.",
+        "Lagarde, S.",
+        "Lopez, B.",
+        "Meilland, A.",
+        "Petrov, R.",
+        "Robbe-Dubois, S.",
+        "Schertl, D.",
+        "Zins, G.",
+        "Ábrahám, P.",
+        "Berio, P.",
+        "Henning, Th",
+        "Hron, J.",
+        "Isbell, J. W.",
+        "Jaffe, W.",
+        "Labadie, L.",
+        "Varga, J.",
+        "Weigelt, G.",
+        "Woillez, J.",
+        "van Boekel, R.",
+        "Pantin, E.",
+        "Danchi, W. C.",
+        "de Koter, A.",
+        "Gámez-Rosas, V.",
+        "Hogerheijde, M. R.",
+        "Leftley, J.",
+        "Stee, P.",
+        "Waters, R."
+      ],
+      "year": 2024,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2024MNRAS.527L..88D.pdf",
+      "retrieval_priority": 0.5714295626957422,
+      "abstract": "From Nov. 2019 to May 2020, the red supergiant star Betelgeuse experienced an unprecedented drop of brightness in the visible domain called the Great Dimming event (GDE). Large atmospheric dust clouds and large photospheric convective features are suspected to be responsible for it. To better understand the dimming event, we used mid-infrared long-baseline spectro-interferometric measurements of Betelgeuse taken with the Very Large Telescope Interferometer/Multi AperTure mid-Infrared SpectroScopic Experiment (VLTI/MATISSE) instrument before (Dec. 2018), during (Feb. 2020), and after (Dec. 2020) the GDE. We present data in the 3.98-4.15 µm range to cover SiO spectral features molecules as well as adjacent continuum. We have employed geometrical models, image reconstruction, as well as radiative transfer models to monitor the spatial distribution of SiO over the stellar surface. We find a strongly inhomogeneous spatial distribution of SiO that appears to be looking very different between our observing epochs, indicative of a vigorous activity in the stellar atmosphere. The contrast of our images is small in the pseudo-continuum for all epochs, implying that our MATISSE observations support both cold spot and dust cloud model.",
+      "keywords": [
+        "techniques: image processing",
+        "techniques: interferometric",
+        "stars: imaging",
+        "stars: individual: Betelgeuse",
+        "stars: massive",
+        "stars: variables: general",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 49
+    },
+    {
+      "source_id": "2024A&A...685A.124J",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202348846",
+      "title": "The Great Dimming of Betelgeuse: The photosphere as revealed by tomography over the past 15 yr",
+      "authors": [
+        "Jadlovský, Daniel",
+        "Granzer, Thomas",
+        "Weber, Michael",
+        "Kravchenko, Kateryna",
+        "Krtička, Jiří",
+        "Dupree, Andrea K.",
+        "Chiavassa, Andrea",
+        "Strassmeier, Klaus G.",
+        "Poppenhäger, Katja"
+      ],
+      "year": 2024,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2024A&A...685A.124J.pdf",
+      "retrieval_priority": 0.6400468307113161,
+      "abstract": "Context. Betelgeuse, a red supergiant star of semi-regular variability, reached a historical minimum brightness in February 2020, known as the Great Dimming. Even though the brightness has returned to the values prior to the Great Dimming now, it continues to exhibit highly unusual behavior. <BR /> Aims: Understanding the long-term atmospheric motions of Betelgeuse and its variability could be a clue to the nature of the Great Dimming and the mass-loss process in red supergiants. Our goal is to study long-term dynamics of the photosphere, including during the Great Dimming. <BR /> Methods: We applied the tomographic method, which allows different layers in the stellar atmosphere to be probed in order to reconstruct depth-dependent velocity fields. The method is based on the construction of spectral masks by grouping spectral lines from specific optical depths. These masks are cross-correlated with the observed spectra to recover the velocity field inside each atmospheric layer. <BR /> Results: We obtained about 2800 spectra over the past 15 yr that were observed with the STELLA robotic telescope in Tenerife. We analyzed the variability of five different layers of Betelgeuse's photosphere. We found phase shift between the layers, as well as between the variability of velocity and photometry. The time variations of the widths of the cross-correlation function reveal propagation of two shockwaves during the Great Dimming. For about 2 yr after the dimming, the timescale of variability was different between the inner and outer photospheric layers. By 2022, all the layers seemingly started to follow a similar behavior as before the dimming, but pulsating with higher frequency corresponding with the first overtone. <BR /> Conclusions: The combination of the extensive high-resolution spectroscopic data set with the tomographic method revealed the variable velocity fields in the photosphere of Betelgeuse, for the first time in such detail. We were also able to find new insights related to the Great Dimming event and its aftermath, namely the discovery of another shockwave and the subsequent rearrangement of the photosphere. Our results demonstrate that powerful shocks are the triggering mechanism for episodic mass-loss events, which may be the missing component to explain the mass-loss process in red supergiants. <P />The reduced STELLA echella spectra and determined radial velocity are only available at the CDS via anonymous ftp to <A href=\"https://cdsarc.cds.unistra.fr/\">cdsarc.cds.unistra.fr</A> (ftp://130.79.128.5) or via <A href=\"https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/685/A124\">https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/685/A124</A>",
+      "keywords": [
+        "techniques: photometric",
+        "techniques: spectroscopic",
+        "stars: late-type",
+        "stars: mass-loss",
+        "stars: winds",
+        "outflows",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 33
+    },
+    {
+      "source_id": "2023NewA...9901962J",
+      "source_type": "paper",
+      "doi": "10.1016/j.newast.2022.101962",
+      "title": "Analysis of photometric and spectroscopic variability of red supergiant Betelgeuse",
+      "authors": [
+        "Jadlovský, Daniel",
+        "Krtička, Jiří",
+        "Paunzen, Ernst",
+        "Štefl, Vladimír"
+      ],
+      "year": 2023,
+      "journal": "New Astronomy",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2023NewA...9901962J.pdf",
+      "retrieval_priority": 0.5898783770737474,
+      "abstract": "Betelgeuse is a pulsating red supergiant whose brightness is semi periodically variable and in February 2020 reached a historical minimum, the Great Dimming. The aims of this study are to characterize Betelgeuse's variability based on available archival data and to study possible causes of light variability. Many spectra, from ultraviolet and optical regions, were evaluated for spectral analysis. The spectra were used primarily to determine radial velocities from different layers of atmosphere and their long-term evolution. Additionally, photometric data were analysed in different filters as well, to construct light curves and to determine periods of the variability. Spectroscopic and photometric variability are compared to each other and given into a context with the Great Dimming. <P />The two most dominant photometric periods are P<SUB>1</SUB> = 2190 ± 270 d and P<SUB>2</SUB> = 417 ± 17 d , while the dominant optical (photospheric) radial velocity periods are P<SUB>1,v<SUB>r</SUB></SUB> = 2510 ± 440 d and P<SUB>2,v<SUB>r</SUB></SUB> = 415 ± 11 d . During the same time, the radial velocity determined from ultraviolet spectra also shows variability and is distinctively different from the variability of photospheric velocity, undergoing longer periods of variability. We attribute these velocities to the velocities at the base of outflowing wind. We also report a maximum of stellar wind velocity during the Great Dimming, accompanied by the previously reported minimum of brightness and the maximum of photospheric radial velocity. After the Dimming, Betelgeuse's mode of variability has fundamentally changed and is now instead following a shorter period of ∼ 200 d .",
+      "keywords": [
+        "Betelgeuse",
+        "Red supergiants",
+        "Radial velocity",
+        "Photometry",
+        "Spectroscopy",
+        "Stellar pulsations",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2023A&A...675A..46C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202243611",
+      "title": "The dusty circumstellar environment of Betelgeuse during the Great Dimming as seen by VLTI/MATISSE",
+      "authors": [
+        "Cannon, E.",
+        "Montargès, M.",
+        "de Koter, A.",
+        "Matter, A.",
+        "Sanchez-Bermudez, J.",
+        "Norris, R.",
+        "Paladini, C.",
+        "Decin, L.",
+        "Sana, H.",
+        "Sundqvist, J. O.",
+        "Lagadec, E.",
+        "Kervella, P.",
+        "Chiavassa, A.",
+        "Dupree, A. K.",
+        "Perrin, G.",
+        "Scicluna, P.",
+        "Stee, P.",
+        "Kraus, S.",
+        "Danchi, W.",
+        "Lopez, B.",
+        "Millour, F.",
+        "Drevon, J.",
+        "Cruzalèbes, P.",
+        "Berio, P.",
+        "Robbe-Dubois, S.",
+        "Rosales-Guzman, A."
+      ],
+      "year": 2023,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2023A&A...675A..46C.pdf",
+      "retrieval_priority": 0.5482359234554434,
+      "abstract": "Context. The `Great Dimming' of the prototypical red supergiant Betelgeuse, which occurred between December 2019 and April 2020, gives us unprecedented insight into the processes occurring on the stellar surface and in the inner wind of this type of star. In particular it may bring further understanding of their dust nucleation and mass-loss processes. <BR /> Aims: Here, we present and analyse VLTI/MATISSE observations in the N band (8-13 µm) taken near the brightness minimum in order to assess the status of the dusty circumstellar environment. <BR /> Methods: We explored the compatibility of a dust clump obscuring the star with our mid-infrared interferometric observations using continuum 3D radiative transfer modelling, and probed the effect of adding multiple clumps close to the star on the observables. We also tested the viability of a large cool spot on the stellar surface without dust present in the ambient medium. <BR /> Results: Using the visibility data, we derived a uniform disk diameter of 59.02 ± 0.64 mas in the spectral range 8-8.75 µm. We find that both the dust clump and the cool spot models are compatible with the data. Further to this, we note that the extinction and emission of our localised dust clump in the line of sight of the star directly compensate for each other, making the clump undetectable in the spectral energy distribution and visibilities. The lack of infrared brightening during the Great Dimming therefore does not exclude extinction due to a dust clump as one of the possible mechanisms. The visibilities can be reproduced by a spherical wind with dust condensing at 13 stellar radii and a dust mass-loss rate of (2.1-4.9) × 10<SUP>‒10</SUP> M<SUB>☉</SUB> yr<SUP>‒1</SUP>; however, in order to reproduce the complexity of the observed closure phases, additional surface features or dust clumps would be needed. <P />Based on observations collected at the European Southern Observatory under ESO programme 104.20V6. <P />Based in part on observations with ISO, an ESA project with instruments funded by ESA Member States (especially the PI countries: France, Germany, The Netherlands, and UK) and with the participation of ISAS and NASA. <P />The reduced MATISSE data are available as OIFITS files at the optical interferometry database: <A href=\"http://oidb.jmmc.fr\">http://oidb.jmmc.fr</A>",
+      "keywords": [
+        "supergiants",
+        "stars: individual: Betelgeuse",
+        "stars: mass-loss",
+        "circumstellar matter",
+        "techniques: interferometric",
+        "radiative transfer",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 15
+    },
+    {
+      "source_id": "2023MNRAS.526.2765S",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stad2949",
+      "title": "The evolutionary stage of Betelgeuse inferred from its pulsation periods",
+      "authors": [
+        "Saio, Hideyuki",
+        "Nandal, Devesh",
+        "Meynet, Georges",
+        "Ekström, Sylvia"
+      ],
+      "year": 2023,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2023MNRAS.526.2765S.pdf",
+      "retrieval_priority": 0.607583347125846,
+      "abstract": "Betelgeuse is a well-known bright red supergiant that shows semiregular variations with four approximate periods of 2200, 420, 230, and 185 d. While the longest period was customarily regarded as long secondary period of unknown origin, we identify the ~2200-d period as the radial fundamental mode, and the three shorter periods as the radial first, second, and third overtones. From a linear non-adiabatic pulsation analysis including the pulsation/convection coupling, we have found that these radial pulsation modes are all excited in the envelope of a model in a late stage of the core carbon burning. Models with similar pulsation property have masses of $11\\sim 12\\, \\mathrm{M}_\\odot$ ($19\\, \\mathrm{M}_\\odot$ at zero-age main sequence) with luminosities (log L/L<SUB>☉</SUB> = 5.27 ~ 5.28) and effective temperatures (log T<SUB>eff</SUB> ≈ 3.53) that are consistent with the range of the observational determinations. We also find that a synthetic light curve obtained by adding the fundamental and the first-overtone mode is comparable with the light curve of Betelgeuse up to the Great Dimming. We conclude that Betelgeuse is likely in the late stage of core carbon burning, and a good candidate for the next Galactic Type II supernova.",
+      "keywords": [
+        "stars: evolution",
+        "stars: individual: Betelgeuse (α Ori)",
+        "stars: massive",
+        "stars: oscillations",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2022MNRAS.516..693N",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stac1969",
+      "title": "Colour evolution of Betelgeuse and Antares over two millennia, derived from historical records, as a new constraint on mass and age",
+      "authors": [
+        "Neuhäuser, R.",
+        "Torres, G.",
+        "Mugrauer, M.",
+        "Neuhäuser, D. L.",
+        "Chapman, J.",
+        "Luge, D.",
+        "Cosci, M."
+      ],
+      "year": 2022,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2022MNRAS.516..693N.pdf",
+      "retrieval_priority": 0.5920817542826313,
+      "abstract": "After core hydrogen burning, massive stars evolve from blue-white dwarfs to red supergiants by expanding, brightening, and cooling within few millennia. We discuss a previously neglected constraint on mass, age, and evolutionary state of Betelgeuse and Antares, namely their observed colour evolution over historical times: We place all 236 stars bright enough for their colour to be discerned by the unaided eye (V ≤ 3.3 mag) on the colour-magnitude-diagram (CMD), and focus on those in the Hertzsprung gap. We study pre-telescopic records on star colour with historically critical methods to find stars that have evolved noticeably in colour within the last millennia. Our main result is that Betelgeuse was recorded with a colour significantly different (non-red) than today (red, B - V = 1.78 ± 0.05 mag). Hyginus (Rome) and Sima Qian (China) independently report it two millennia ago as appearing like Saturn (B - V = 1.09 ± 0.16 mag) in colour and 'yellow' (quantifiable as B - V = 0.95 ± 0.35 mag), respectively (together, 5.1σ different from today). The colour change of Betelgeuse is a new, tight constraint for single-star theoretical evolutionary models (or merger models). It is most likely located less than one millennium past the bottom of the red giant branch, before which rapid colour evolution is expected. Evolutionary tracks from MIST consistent with both its colour evolution and its location on the CMD suggest a mass of ~14 M<SUB>☉</SUB> at ~14 Myr. The (roughly) constant colour of Antares for the last three millennia also constrains its mass and age. Wezen was reported white historically, but is now yellow.",
+      "keywords": [
+        "history and philosophy of astronomy",
+        "stars: evolution",
+        "Hertzsprung-Russell and colour-magnitude-diagram",
+        "stars: individual: Betelgeuse",
+        "Antares",
+        "Wezen",
+        "supergiants",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 38
+    },
+    {
+      "source_id": "2022ApJ...936...18D",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ac7853",
+      "title": "The Great Dimming of Betelgeuse: A Surface Mass Ejection and Its Consequences",
+      "authors": [
+        "Dupree, Andrea K.",
+        "Strassmeier, Klaus G.",
+        "Calderwood, Thomas",
+        "Granzer, Thomas",
+        "Weber, Michael",
+        "Kravchenko, Kateryna",
+        "Matthews, Lynn D.",
+        "Montargès, Miguel",
+        "Tappin, James",
+        "Thompson, William T."
+      ],
+      "year": 2022,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2022ApJ...936...18D.pdf",
+      "retrieval_priority": 0.6840666666666666,
+      "abstract": "The bright supergiant, Betelgeuse (Alpha Orionis, HD 39801), underwent a historic optical dimming during 2020 January 27-February 13. Many imaging and spectroscopic observations across the electromagnetic spectrum were obtained prior to, during, and subsequent to this dimming event. These observations of Betelgeuse reveal that a substantial surface mass ejection (SME) occurred and moved out through the extended atmosphere of the supergiant. A photospheric shock occurred in 2019 January-March, progressed through the extended atmosphere of the star during the following 11 months and led to dust production in the atmosphere. Resulting from the substantial mass outflow, the stellar photosphere was left with lower temperatures and the chromosphere with a lower density. The mass ejected could represent a significant fraction of the total annual mass-loss rate from the star suggesting that episodic mass-loss events can contribute an amount comparable to that of the stellar wind. Following the SME, Betelgeuse was left with a cooler average photosphere, an unusual short photometric oscillation, reduced velocity excursions, and the disappearance of the ~400 day pulsation in the optical and radial velocity for more than two years following the Great Dimming.",
+      "keywords": [
+        "M supergiant stars",
+        "Red supergiant stars",
+        "Stellar mass loss",
+        "Stellar chromospheres",
+        "Stellar atmospheres",
+        "988",
+        "1375",
+        "1613",
+        "230",
+        "1584",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 26
+    },
+    {
+      "source_id": "2020ApJ...891L..37L",
+      "source_type": "paper",
+      "doi": "10.3847/2041-8213/ab7935",
+      "title": "Betelgeuse Just Is Not That Cool: Effective Temperature Alone Cannot Explain the Recent Dimming of Betelgeuse",
+      "authors": [
+        "Levesque, Emily M.",
+        "Massey, Philip"
+      ],
+      "year": 2020,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2020ApJ...891L..37L.pdf",
+      "retrieval_priority": 0.5717383079010608,
+      "abstract": "We present optical spectrophotometry of the red supergiant (RSG) Betelgeuse from 2020 February 15, during its recent unprecedented dimming episode. By comparing this spectrum to stellar atmosphere models for cool supergiants, as well as spectrophotometry of other Milky Way RSGs, we conclude that Betelgeuse has a current effective temperature of 3600 ± 25 K. While this is slightly cooler than previous measurements taken prior to Betelgeuse's recent lightcurve evolution, this drop in effective temperature is insufficient to explain Betelgeuse's recent optical dimming. We propose that episodic mass loss and an increase in the amount of large-grain circumstellar dust along our sightline to Betelgeuse is the most likely explanation for its recent photometric evolution.",
+      "keywords": [
+        "M supergiant stars",
+        "Stellar atmospheres",
+        "Circumstellar dust",
+        "988",
+        "1584",
+        "236",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 47
+    },
+    {
+      "source_id": "2020ApJ...899...68D",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aba516",
+      "title": "Spatially Resolved Ultraviolet Spectroscopy of the Great Dimming of Betelgeuse",
+      "authors": [
+        "Dupree, Andrea K.",
+        "Strassmeier, Klaus G.",
+        "Matthews, Lynn D.",
+        "Uitenbroek, Han",
+        "Calderwood, Thomas",
+        "Granzer, Thomas",
+        "Guinan, Edward F.",
+        "Leike, Reimar",
+        "Montargès, Miguel",
+        "Richards, Anita M. S.",
+        "Wasatonic, Richard",
+        "Weber, Michael"
+      ],
+      "year": 2020,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2020ApJ...899...68D.pdf",
+      "retrieval_priority": 0.6068817936207471,
+      "abstract": "The bright supergiant Betelgeuse (Alpha Orionis, HD 39801) experienced a visual dimming during 2019 December and the first quarter of 2020, reaching an historic minimum 2020 February 7-13. During 2019 September-November, prior to the optical dimming event, the photosphere was expanding. At the same time, spatially resolved ultraviolet spectra using the Hubble Space Telescope/Space Telescope Imaging Spectrograph revealed a substantial increase in the ultraviolet spectrum and Mg II line emission from the chromosphere over the southern hemisphere of the star. Moreover, the temperature and electron density inferred from the spectrum and C II diagnostics also increased in this hemisphere. These changes happened prior to the Great Dimming Event. Variations in the Mg II k-line profiles suggest material moved outwards in response to the passage of a pulse or acoustic shock from 2019 September through November. It appears that this extraordinary outflow of material from the star, likely initiated by convective photospheric elements, was enhanced by the coincidence with the outward motions in this phase of the ∼400 day pulsation cycle. These ultraviolet observations appear to provide the connecting link between the known large convective cells in the photosphere and the mass ejection event that cooled to form the dust cloud in the southern hemisphere imaged in 2019 December, and led to the exceptional optical dimming of Betelgeuse in 2020 February.",
+      "keywords": [
+        "M supergiant stars",
+        "Stellar chromospheres",
+        "Stellar mass loss",
+        "Stellar atmospheres",
+        "988",
+        "230",
+        "1613",
+        "1584",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 36
+    },
+    {
+      "source_id": "2019A&A...628A.101H",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201833258",
+      "title": "The inner dust shell of Betelgeuse detected by polarimetric aperture-masking interferometry",
+      "authors": [
+        "Haubois, X.",
+        "Norris, B.",
+        "Tuthill, P. G.",
+        "Pinte, C.",
+        "Kervella, P.",
+        "Girard, J. H.",
+        "Kostogryz, N. M.",
+        "Berdyugina, S. V.",
+        "Perrin, G.",
+        "Lacour, S.",
+        "Chiavassa, A.",
+        "Ridgway, S. T."
+      ],
+      "year": 2019,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2019A&A...628A.101H.pdf",
+      "retrieval_priority": 0.535204928913309,
+      "abstract": "Context. Theory surrounding the origin of the dust-laden winds from evolved stars remains mired in controversy. Characterizing the formation loci and the dust distribution within approximately the first stellar radius above the surface is crucial for understanding the physics that underlie the mass-loss phenomenon. <BR /> Aims: By exploiting interferometric polarimetry, we derive the fundamental parameters that govern the dust structure at the wind base of a red supergiant. <BR /> Methods: We present near-infrared aperture-masking observations of Betelgeuse in polarimetric mode obtained with the NACO/SAMPol instrument. We used both parametric models and radiative transfer simulations to predict polarimetric differential visibility data and compared them to SPHERE/ZIMPOL measurements. <BR /> Results: Using a thin dust shell model, we report the discovery of a dust halo that is located at only 0.5 R<SUB>⋆</SUB> above the photosphere (i.e. an inner radius of the dust halo of 1.5 R<SUB>⋆</SUB>). By fitting the data under the assumption of Mie scattering, we estimate the grain size and density for various dust species. By extrapolating to the visible wavelengths using radiative transfer simulations, we compare our model with SPHERE/ZIMPOL data and find that models based on dust mixtures that are dominated by forsterite are most favored. Such a close dusty atmosphere has profound implications for the dust formation mechanisms around red supergiants. <P />Based on SAMPol data obtained at the ESO VLT Yepun telescope (090.D-0898(A)).",
+      "keywords": [
+        "techniques: interferometric",
+        "stars: fundamental parameters",
+        "infrared: stars",
+        "stars: individual: Betelgeuse",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2018A&A...615A.116M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201732542",
+      "title": "Evolution of the magnetic field of Betelgeuse from 2009-2017",
+      "authors": [
+        "Mathias, P.",
+        "Aurière, M.",
+        "López Ariste, A.",
+        "Petit, P.",
+        "Tessore, B.",
+        "Josselin, E.",
+        "Lèbre, A.",
+        "Morin, J.",
+        "Wade, G.",
+        "Herpin, F.",
+        "Chiavassa, A.",
+        "Montargès, M.",
+        "Konstantinova-Antova, R.",
+        "Kervella, P.",
+        "Perrin, G.",
+        "Donati, J.-F.",
+        "Grunhut, J."
+      ],
+      "year": 2018,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2018A&A...615A.116M.pdf",
+      "retrieval_priority": 0.5270110062123542,
+      "abstract": "Context. Betelgeuse is an M-type supergiant that presents a circularly polarized (Stokes V) signal in its line profiles, interpreted in terms of a surface magnetic field. <BR /> Aims: The weak circular polarization signal has been monitored over 7.5 years in order to follow its evolution on different timescales, and eventually to determine its physical origin. Linear polarization measurements have also been obtained regularly in the last few years. <BR /> Methods: We used both the ESPaDOnS and Narval spectropolarimeters to obtain high signal-to-noise ratio spectra, which were processed by means of the least-squares deconvolution method. In order to ensure the reality of the very weak circular polarization, special care has been taken to limit instrumental effects. In addition, several tests were performed on the Stokes V signal to establish its stellar and Zeeman origin. <BR /> Results: We confirm the magnetic nature of the circular polarization, pointing to a surface magnetic field of the order of 1 G. The Stokes V profiles present variations over different timescales, the most prominent one being close to the long secondary period (LSP; around 2000 d for Betelgeuse) often invoked in red evolved stars. This long period is also dominant for all the other Stokes parameters. The circular polarization is tentatively modeled by means of magnetic field concentrations mimicking spots, showing in particular that the velocity associated with each \"spot\" also follows the long timescale, and that this signal is nearly always slightly redshifted. <BR /> Conclusions: From the coupled variations of both linear and circular polarization signatures in amplitude, velocity and timescale, we favour giant convection cells as the main engine at the origin of polarization signatures and variations in all the Stokes parameters. This strengthens support for the hypothesis that large convective cells are at the origin of the LSP. <P />Based on observations obtained at the Télescope Bernard Lyot (TBL) at Observatoire du Pic du Midi, CNRS/INSU and Université de Toulouse, France, and at the Canada-France-Hawaii Telescope (CFHT) which is operated by the National Research Council of Canada, CNRS/INSU and the University of Hawaii.",
+      "keywords": [
+        "stars: magnetic field",
+        "stars: individual: Betelgeuse",
+        "stars: late-type",
+        "supergiants",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 52
+    },
+    {
+      "source_id": "2018A&A...609A..67K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201731761",
+      "title": "The close circumstellar environment of Betelgeuse. V. Rotation velocity and molecular envelope properties from ALMA",
+      "authors": [
+        "Kervella, Pierre",
+        "Decin, Leen",
+        "Richards, Anita M. S.",
+        "Harper, Graham M.",
+        "McDonald, Iain",
+        "O'Gorman, Eamon",
+        "Montargès, Miguel",
+        "Homan, Ward",
+        "Ohnaka, Keiichi"
+      ],
+      "year": 2018,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2018A&A...609A..67K.pdf",
+      "retrieval_priority": 0.59971173917226,
+      "abstract": "We observed Betelgeuse using ALMA's extended configuration in band 7 (f ≈ 340 GHz, λ ≈ 0.88 mm), resulting in a very high angular resolution of 18 mas. Using a solid body rotation model of the <SUP>28</SUP>SiO(ν= 2, J = 8-7) line emission, we show that the supergiant is rotating with a projected equatorial velocity of ν<SUB>eq</SUB>sini = 5.47 ± 0.25 km s<SUP>-1</SUP> at the equivalent continuum angular radius R<SUB>star</SUB> = 29.50 ± 0.14 mas. This corresponds to an angular rotation velocity of ω sini = (5.6 ± 1.3) × 10<SUP>-9</SUP> rad s<SUP>-1</SUP>. The position angle of its north pole is PA = 48.0 ± 3.5°. The rotation period of Betelgeuse is estimated to P/ sini = 36 ± 8 years. The combination of our velocity measurement with previous observations in the ultraviolet shows that the chromosphere is co-rotating with the star up to a radius of ≈ 10 au (45 mas or 1.5 × the ALMA continuum radius). The coincidence of the position angle of the polar axis of Betelgeuse with that of the major ALMA continuum hot spot, a molecular plume, and a partial dust shell (from previous observations) suggests that focused mass loss is currently taking place in the polar region of the star. We propose that this hot spot corresponds to the location of a particularly strong \"rogue\" convection cell, which emits a focused molecular plume that subsequently condenses into dust at a few stellar radii. Rogue convection cells therefore appear to be an important factor shaping the anisotropic mass loss of red supergiants.",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "supergiants",
+        "stars: rotation",
+        "circumstellar matter",
+        "techniques: high angular resolution",
+        "stars: imaging",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2017MNRAS.465.2654W",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stw2893",
+      "title": "The Betelgeuse Project: constraints from rotation",
+      "authors": [
+        "Wheeler, J. Craig",
+        "Nance, S.",
+        "Diaz, M.",
+        "Smith, S. G.",
+        "Hickey, J.",
+        "Zhou, L.",
+        "Koutoulaki, M.",
+        "Sullivan, J. M.",
+        "Fowler, J. M."
+      ],
+      "year": 2017,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2017MNRAS.465.2654W.pdf",
+      "retrieval_priority": 0.55907036234688,
+      "abstract": "In order to constrain the evolutionary state of the red supergiant Betelgeuse (α Orionis), we have produced a suite of models with zero-age main sequence masses from 15 to 25 M<SUB>☉</SUB> in intervals of 1 M<SUB>☉</SUB> including the effects of rotation. The models were computed with the stellar evolutionary code MESA. For non-rotating models, we find results that are similar to other work. It is somewhat difficult to find models that agree within 1σ of the observed values of R, T<SUB>eff</SUB> and L, but modestly easy within 3σ uncertainty. Incorporating the nominal observed rotational velocity, ∼15 km s<SUP>-1</SUP>, yields significantly different and challenging constraints. This velocity constraint is only matched when the models first approach the base of the red supergiant branch (RSB), having crossed the Hertzsprung gap, but not yet having ascended the RSB and most violate even generous error bars on R, T<SUB>eff</SUB> and L. Models at the tip of the RSB typically rotate at only ∼0.1 km s<SUP>-1</SUP>, independent of any reasonable choice of initial rotation. We discuss the possible uncertainties in our modelling and the observations, including the distance to Betelgeuse, the rotation velocity and model parameters. We summarize various options to account for the rotational velocity and suggest that one possibility is that Betelgeuse merged with a companion star of about 1 M<SUB>☉</SUB> as it ascended the RSB, in the process producing the ring structure observed at about 7 arcmin away. A past coalescence would complicate attempts to understand the evolutionary history and future of Betelgeuse.",
+      "keywords": [
+        "stars: AGB and post-AGB",
+        "stars: evolution",
+        "stars: individual: (Betelgeuse)",
+        "supernovae: general",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 46
+    },
+    {
+      "source_id": "2017A&A...602L..10O",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201731171",
+      "title": "The inhomogeneous submillimeter atmosphere of Betelgeuse",
+      "authors": [
+        "O'Gorman, E.",
+        "Kervella, P.",
+        "Harper, G. M.",
+        "Richards, A. M. S.",
+        "Decin, L.",
+        "Montargès, M.",
+        "McDonald, I."
+      ],
+      "year": 2017,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2017A&A...602L..10O.pdf",
+      "retrieval_priority": 0.5888488866047645,
+      "abstract": "The mechanisms responsible for heating the extended atmospheres of early-M spectral-type supergiants are poorly understood. So too is the subsequent role these mechanisms play in driving the large mass-loss rates of these stars. Here we present ALMA long (I.e., 16 km) baseline 338 GHz (0.89 mm) continuum observations of the free-free emission in the extended atmosphere of the M2 spectral-type supergiant Betelgeuse. The spatial resolution of 14 mas exquisitely resolves the atmosphere, revealing it to have a mean temperature of 2760 K at 1.3 R<SUB>⋆</SUB>, which is below both the photospheric effective temperature (T<SUB>eff</SUB> = 3690 K) and the temperatures at 2 R<SUB>⋆</SUB>. This is unambiguous proof for the existence of an inversion of the mean temperature in the atmosphere of a red supergiant. The emission is clearly not spherically symmetric with two notable deviations from a uniform disk detected in both the images and visibilities. The most prominent asymmetry is located in the north-east quadrant of the disk and is spatially resolved showing it to be highly elongated with an axis-ratio of 2.4 and occupying 5% of the disk projected area. Its temperature is approximately 1000 K above the measured mean temperature at 1.3 R<SUB>⋆</SUB>. The other main asymmetry is located on the disk limb almost due east of the disk center and occupies 3% of the disk projected area. Both emission asymmetries are clear evidence for localized heating taking place in the atmosphere of Betelgeuse. We suggest that the detected localized heating is related to magnetic activity generated by large-scale photospheric convection.",
+      "keywords": [
+        "stars: atmospheres",
+        "stars: evolution",
+        "stars: imaging",
+        "stars: individual: Betelgeuse",
+        "submillimeter: stars",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 45
+    },
+    {
+      "source_id": "2016A&A...591A.119A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201628077",
+      "title": "Discovery of a complex linearly polarized spectrum of Betelgeuse dominated by depolarization of the continuum",
+      "authors": [
+        "Aurière, M.",
+        "López Ariste, A.",
+        "Mathias, P.",
+        "Lèbre, A.",
+        "Josselin, E.",
+        "Montargès, M.",
+        "Petit, P.",
+        "Chiavassa, A.",
+        "Paletou, F.",
+        "Fabas, N.",
+        "Konstantinova-Antova, R.",
+        "Donati, J.-F.",
+        "Grunhut, J. H.",
+        "Wade, G. A.",
+        "Herpin, F.",
+        "Kervella, P.",
+        "Perrin, G.",
+        "Tessore, B."
+      ],
+      "year": 2016,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2016A&A...591A.119A.pdf",
+      "retrieval_priority": 0.5123834091102152,
+      "abstract": "Context. <ASTROBJ>Betelgeuse</ASTROBJ> is an M supergiant that harbors spots and giant granules at its surface and presents linear polarization of its continuum. <BR /> Aims: We have previously discovered linear polarization signatures associated with individual lines in the spectra of cool and evolved stars. Here, we investigate whether a similar linearly polarized spectrum exists for <ASTROBJ>Betelgeuse</ASTROBJ>. <BR /> Methods: We used the spectropolarimeter Narval, combining multiple polarimetric sequences to obtain high signal-to-noise ratio spectra of individual lines, as well as the least-squares deconvolution (LSD) approach, to investigate the presence of an averaged linearly polarized profile for the photospheric lines. <BR /> Results: We have discovered the existence of a linearly polarized spectrum for <ASTROBJ>Betelgeuse</ASTROBJ>, detecting a rather strong signal (at a few times 10<SUP>-4</SUP> of the continuum intensity level), both in individual lines and in the LSD profiles. Studying its properties and the signal observed for the resonant Na I D lines, we conclude that we are mainly observing depolarization of the continuum by the absorption lines. The linear polarization of the Betelgeuse continuum is due to the anisotropy of the radiation field induced by brightness spots at the surface and Rayleigh scattering in the atmosphere. We have developed a geometrical model to interpret the observed polarization, from which we infer the presence of two brightness spots and their positions on the surface of <ASTROBJ>Betelgeuse</ASTROBJ>. We show that applying the model to each velocity bin along the Stokes Q and U profiles allows the derivation of a map of the bright spots. We use the Narval linear polarization observations of <ASTROBJ>Betelgeuse</ASTROBJ> obtained over a period of 1.4 yr to study the evolution of the spots and of the atmosphere. <BR /> Conclusions: Our study of the linearly polarized spectrum of <ASTROBJ>Betelgeuse</ASTROBJ> provides a novel method for studying the evolution of brightness spots at its surface and complements quasi-simultaneous observations obtained with PIONIER at the VLTI. <P />Based on observations obtained at the Télescope Bernard Lyot (TBL) at Observatoire du Pic du Midi, CNRS/INSU and Université de Toulouse, France.",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "supergiants",
+        "stars: massive",
+        "polarization",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 53
+    },
+    {
+      "source_id": "2016ApJ...819....7D",
+      "source_type": "paper",
+      "doi": "10.3847/0004-637X/819/1/7",
+      "title": "Evolutionary Tracks for Betelgeuse",
+      "authors": [
+        "Dolan, Michelle M.",
+        "Mathews, Grant J.",
+        "Lam, Doan Duc",
+        "Quynh Lan, Nguyen",
+        "Herczeg, Gregory J.",
+        "Dearborn, David S. P."
+      ],
+      "year": 2016,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2016ApJ...819....7D.pdf",
+      "retrieval_priority": 0.6138532622313282,
+      "abstract": "We have constructed a series of nonrotating quasi-hydrostatic evolutionary models for the M2 Iab supergiant Betelgeuse (α Orionis). Our models are constrained by multiple observed values for the temperature, luminosity, surface composition, and mass loss for this star, along with the parallax distance and high-resolution imagery that determines its radius. We have then applied our best-fit models to analyze the observed variations in surface luminosity and the size of detected surface bright spots as the result of up-flowing convective material from regions of high temperature in the surface convective zone. We also attempt to explain the intermittently observed periodic variability in a simple radial linear adiabatic pulsation model. Based on the best fit to all observed data, we suggest a best progenitor mass estimate of {20}<SUB>-3</SUB><SUP>+5</SUP> {M}<SUB>☉ </SUB> and a current age from the start of the zero-age main sequence of 8.0-8.5 Myr based on the observed ejected mass while on the giant branch.",
+      "keywords": [
+        "stars: evolution",
+        "stars: individual: Alpha Orionis",
+        "stars: late-type",
+        "stars: mass-loss",
+        "stars: oscillations",
+        "starspots",
+        "supergiants",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 32
+    },
+    {
+      "source_id": "2016A&A...585A..28K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201527134",
+      "title": "The close circumstellar environment of Betelgeuse. III. SPHERE/ZIMPOL imaging polarimetry in the visible",
+      "authors": [
+        "Kervella, P.",
+        "Lagadec, E.",
+        "Montargès, M.",
+        "Ridgway, S. T.",
+        "Chiavassa, A.",
+        "Haubois, X.",
+        "Schmid, H.-M.",
+        "Langlois, M.",
+        "Gallenne, A.",
+        "Perrin, G."
+      ],
+      "year": 2016,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2016A&A...585A..28K.pdf",
+      "retrieval_priority": 0.5139166758364007,
+      "abstract": "The physical mechanism through which the outgoing material of massive red supergiants is accelerated above the escape velocity is unclear. Thanks to the transparency of its circumstellar envelope, the nearby red supergiant Betelgeuse gives the opportunity to probe the innermost layers of the envelope of a typical red supergiant down to the photosphere, I.e. where the acceleration of the wind is expected to occur. We took advantage of the SPHERE/ZIMPOL adaptive optics imaging polarimeter to resolve the visible photosphere and close envelope of Betelgeuse. We detect an asymmetric gaseous envelope inside a radius of 2 to 3 times the near-infrared photospheric radius of the star (R<SUB>⋆</SUB>), and a significant Hα emission mostly contained within 3 R<SUB>⋆</SUB>. From the polarimetric signal, we also identify the signature of dust scattering in an asymmetric and incomplete dust shell located at a similar radius. The presence of dust so close to the star may have a significant impact on the wind acceleration through radiative pressure on the grains. The 3 R<SUB>⋆</SUB> radius emerges as a major interface between the hot gaseous and dusty envelopes. The detected asymmetries strengthen previous indications that the mass loss of Betelgeuse is likely tied to the vigorous convective motions in its atmosphere. <P />Based on observations made with ESO telescopes at Paranal Observatory, under ESO program 095.D-0309(E).",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "stars: imaging",
+        "supergiants",
+        "circumstellar matter",
+        "techniques: polarimetric",
+        "techniques: high angular resolution",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 17
+    },
+    {
+      "source_id": "2016A&A...588A.130M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201527028",
+      "title": "The close circumstellar environment of Betelgeuse. IV. VLTI/PIONIER interferometric monitoring of the photosphere",
+      "authors": [
+        "Montargès, M.",
+        "Kervella, P.",
+        "Perrin, G.",
+        "Chiavassa, A.",
+        "Le Bouquin, J.-B.",
+        "Aurière, M.",
+        "López Ariste, A.",
+        "Mathias, P.",
+        "Ridgway, S. T.",
+        "Lacour, S.",
+        "Haubois, X.",
+        "Berger, J.-P."
+      ],
+      "year": 2016,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2016A&A...588A.130M.pdf",
+      "retrieval_priority": 0.5551415801870738,
+      "abstract": "Context. The mass-loss mechanism of cool massive evolved stars is poorly understood. The proximity of Betelgeuse makes it an appealing target to study its atmosphere, map the shape of its envelope, and follow the structure of its wind from the photosphere out to the interstellar medium. <BR /> Aims: A link is suspected between the powerful convective motions in Betelgeuse and its mass loss. We aim to constrain the spatial structure and temporal evolution of the convective pattern on the photosphere and to search for evidence of this link. <BR /> Methods: We report new interferometric observations in the infrared H-band using the VLTI/PIONIER instrument. We monitored the photosphere of Betelgeuse between 2012 January and 2014 November to look for evolutions that may trigger the outflow. <BR /> Results: Our interferometric observations at low spatial frequencies are compatible with the presence of a hot spot on the photosphere that has a characteristic width of one stellar radius. It appears to be superposed on the smaller scale convective pattern. In the higher spatial frequency domain, we observe a significant difference between the observations and the predictions of 3D hydrodynamical simulations. <BR /> Conclusions: We bring new evidence for the presence of a convective pattern in the photosphere of red supergiants. The inferred hot spot is probably the top of a giant convection cell although an asymmetric extension of the star cannot be excluded by these interferometric observations alone. The properties of the observed surface features show a stronger contrast and inhomogeneity as predicted by 3D radiative hydrodynamical simulations. We propose that the large observed feature is modifying the signature of the convective pattern at the surface of the star in a way that simulations cannot reproduce. <P />Based on observations made with ESO telescopes at Paranal Observatory, under ESO programs 288.D-5035(A), 090.D-0548(A), 092.D-0366(A), 092.D-0366(B) and 094.D-0869 (A).",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "stars: imaging",
+        "supergiants",
+        "stars: mass-loss",
+        "infrared: stars",
+        "techniques: interferometric",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 6
+    },
+    {
+      "source_id": "2015A&A...580A.101O",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201526136",
+      "title": "Temporal evolution of the size and temperature of Betelgeuse's extended atmosphere",
+      "authors": [
+        "O'Gorman, E.",
+        "Harper, G. M.",
+        "Brown, A.",
+        "Guinan, E. F.",
+        "Richards, A. M. S.",
+        "Vlemmings, W.",
+        "Wasatonic, R."
+      ],
+      "year": 2015,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2015A&A...580A.101O.pdf",
+      "retrieval_priority": 0.6292715687142901,
+      "abstract": "Spatially resolved multi-wavelength centimeter continuum observations of cool evolved stars can not only constrain the morphology of the radio emitting regions, but can also directly probe the mean gas temperature at various depths of the star's extended atmosphere. Here, we use the Very Large Array (VLA) in the A configuration with the Pie Town (PT) Very Long Baseline Array (VLBA) antenna to spatially resolve the extended atmosphere of Betelgeuse over multiple epochs at 0.7, 1.3, 2.0, 3.5, and 6.1 cm. The extended atmosphere deviates from circular symmetry at all wavelengths while at some epochs we find possible evidence for small pockets of gas significantly cooler than the mean global temperature. We find no evidence for the recently reported e-MERLIN radio hotspots in any of our multi-epoch VLA/PT data, despite having sufficient spatial resolution and sensitivity at short wavelengths, and conclude that these radio hotspots are most likely interferometric artefacts. The mean gas temperature of the extended atmosphere has a typical value of 3000 K at 2 R<SUB>⋆</SUB> and decreases to 1800 K at 6 R<SUB>⋆</SUB>, in broad agreement with the findings of the single epoch study from Lim et al. (1998, Nature, 392, 575). The overall temperature profile of the extended atmosphere between 2 R<SUB>⋆</SUB> ≲ r ≲ 6 R<SUB>⋆</SUB> can be described by a power law of the form T<SUB>gas</SUB>(r) ∝ r<SUP>-0.6</SUP>, with temporal variability of a few 100 K evident at some epochs. Finally, we present over 12 yr of V band photometry, part of which overlaps our multi-epoch radio data. We find a correlation between the fractional flux density variability at V band with most radio wavelengths. This correlation is likely due to shock waves induced by stellar pulsations, which heat the inner atmosphere and ionize the more extended atmosphere through radiative means. Stellar pulsations may play an important role in exciting Betelgeuse's extended atmosphere.",
+      "keywords": [
+        "stars: atmospheres",
+        "stars: massive",
+        "stars: late-type",
+        "supergiants",
+        "stars: individual: Betelgeuse",
+        "stars: mass-loss",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 28
+    },
+    {
+      "source_id": "2014A&A...572A..17M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201423538",
+      "title": "Properties of the CO and H<SUB>2</SUB>O MOLsphere of the red supergiant Betelgeuse from VLTI/AMBER observations",
+      "authors": [
+        "Montargès, M.",
+        "Kervella, P.",
+        "Perrin, G.",
+        "Ohnaka, K.",
+        "Chiavassa, A.",
+        "Ridgway, S. T.",
+        "Lacour, S."
+      ],
+      "year": 2014,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2014A&A...572A..17M.pdf",
+      "retrieval_priority": 0.5330325011940344,
+      "abstract": "Context. <ASTROBJ>Betelgeuse</ASTROBJ> is the closest red supergiant (RSG); therefore, it is well suited for studying the complex processes in its atmosphere that lead to the chemical enrichment of the interstellar medium. <BR /> Aims: We intend to investigate the shape and composition of the close molecular layer (also known as the MOLsphere) that surrounds the star. This analysis is part of a wider program that aims at understanding the dynamics of the circumstellar envelope of Betelgeuse. <BR /> Methods: On January and February 2011, Betelgeuse was observed using the Astronomical Multi-BEam combineR (AMBER) instrument of the Very Large Telescope Interferometer (VLTI) in the H and K bands. Using the medium spectral resolution of the instrument (R ~ 1500), we were able to investigate the carbon monoxide band heads and the water-vapor bands. We used two different approaches to analyse our data: a model fit in both the continuum and absorption lines and then a fit with a radiative hydrodynamics (RHD) simulation. <BR /> Results: Using the continuum data, we derive a uniform disk diameter of 41.01 ± 0.41 mas, a power law type limb-darkened disk diameter of 42.28 ± 0.43 mas and a limb-darkening exponent of 0.155 ± 0.009. Within the absorption lines, using a single layer model, we obtain parameters of the MOLsphere. Using a RHD simulation, we unveil the convection pattern in the visibilities. <BR /> Conclusions: We derived a new value of the angular diameter of Betelgeuse in the K band continuum. Our observations in the absorption lines are well reproduced by a molecular layer at 1.2 stellar radii containing both CO and H<SUB>2</SUB>O. The visibilities at higher spatial frequencies are matching a convection pattern in a RHD simulation. <P />Based on AMBER observations made with ESO Telescopes at the Paranal Observatory under programmes ID 086.D-0351 and 286.D-5036(A).Table 1 is available in electronic form at <A href=\"http://www.aanda.org/10.1051/0004-6361/201423538/olm\">http://www.aanda.org</A>",
+      "keywords": [
+        "infrared: stars",
+        "techniques: interferometric",
+        "stars: late-type",
+        "stars: atmospheres",
+        "stars: individual: Betelgeuse",
+        "supergiants",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 11
+    },
+    {
+      "source_id": "2012A&A...548A.113D",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201219792",
+      "title": "The enigmatic nature of the circumstellar envelope and bow shock surrounding Betelgeuse as revealed by Herschel. I. Evidence of clumps, multiple arcs, and a linear bar-like structure",
+      "authors": [
+        "Decin, L.",
+        "Cox, N. L. J.",
+        "Royer, P.",
+        "Van Marle, A. J.",
+        "Vandenbussche, B.",
+        "Ladjal, D.",
+        "Kerschbaum, F.",
+        "Ottensamer, R.",
+        "Barlow, M. J.",
+        "Blommaert, J. A. D. L.",
+        "Gomez, H. L.",
+        "Groenewegen, M. A. T.",
+        "Lim, T.",
+        "Swinyard, B. M.",
+        "Waelkens, C.",
+        "Tielens, A. G. G. M."
+      ],
+      "year": 2012,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2012A&A...548A.113D.pdf",
+      "retrieval_priority": 0.5074980708415066,
+      "abstract": "Context. The interaction between stellar winds and the interstellar medium (ISM) can create complex bow shocks. The photometers on board the Herschel Space Observatory are ideally suited to studying the morphologies of these bow shocks. <BR /> Aims: We aim to study the circumstellar environment and wind-ISM interaction of the nearest red supergiant, Betelgeuse. Methods.Herschel PACS images at 70, 100, and 160 μm and SPIRE images at 250, 350, and 500 μm were obtained by scanning the region around Betelgeuse. These data were complemented with ultraviolet GALEX data, near-infrared WISE data, and radio 21 cm GALFA-HI data. The observational properties of the bow shock structure were deduced from the data and compared with hydrodynamical simulations. <BR /> Results: The infrared Herschel images of the environment around Betelgeuse are spectacular, showing the occurrence of multiple arcs at ~6-7' from the central target and the presence of a linear bar at ~9'. Remarkably, no large-scale instabilities are seen in the outer arcs and linear bar. The dust temperature in the outer arcs varies between 40 and 140 K, with the linear bar having the same colour temperature as the arcs. The inner envelope shows clear evidence of a non-homogeneous clumpy structure (beyond 15''), probably related to the giant convection cells of the outer atmosphere. The non-homogeneous distribution of the material even persists until the collision with the ISM. A strong variation in brightness of the inner clumps at a radius of ~2' suggests a drastic change in mean gas and dust density ~32 000 yr ago. Using hydrodynamical simulations, we try to explain the observed morphology of the bow shock around Betelgeuse. <BR /> Conclusions: Different hypotheses, based on observational and theoretical constraints, are formulated to explain the origin of the multiple arcs and the linear bar and the fact that no large-scale instabilities are visible in the bow shock region. We infer that the two main ingredients for explaining these phenomena are a non-homogeneous mass-loss process and the influence of the Galactic magnetic field. The hydrodynamical simulations show that a warm interstellar medium, reflecting a warm neutral or partially ionized medium, or a higher temperature in the shocked wind also prevent the growth of strong instabilities. The linear bar is probably an interstellar structure illuminated by Betelgeuse itself. <P />Herschel is an ESA space observatory with science instruments provided by European-led Principal Investigator consortia and with important participation from NASA.Appendices (including movies) are available in electronic form at <A href=\"http://www.aanda.org\">http://www.aanda.org</A>",
+      "keywords": [
+        "stars: AGB and post-AGB",
+        "stars: mass-loss",
+        "circumstellar matter",
+        "stars: individual: Betelgeuse",
+        "methods: numerical",
+        "infrared: stars",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 18
+    },
+    {
+      "source_id": "2011A&A...529A.163O",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201016279",
+      "title": "Imaging the dynamical atmosphere of the red supergiant Betelgeuse in the CO first overtone lines with VLTI/AMBER",
+      "authors": [
+        "Ohnaka, K.",
+        "Weigelt, G.",
+        "Millour, F.",
+        "Hofmann, K.-H.",
+        "Driebe, T.",
+        "Schertl, D.",
+        "Chelli, A.",
+        "Massi, F.",
+        "Petrov, R.",
+        "Stee, Ph."
+      ],
+      "year": 2011,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2011A&A...529A.163O.pdf",
+      "retrieval_priority": 0.5119279466490247,
+      "abstract": "<BR /> Aims: We present one-dimensional aperture synthesis imaging of the red supergiant Betelgeuse (α Ori) with VLTI/AMBER. We reconstructed for the first time one-dimensional images in the individual CO first overtone lines. Our aim is to probe the dynamics of the inhomogeneous atmosphere and its time variation. <BR /> Methods: Betelgeuse was observed between 2.28 and 2.31 μm with VLTI/AMBER using the 16-32-48 m telescope configuration with a spectral resolution up to 12 000 and an angular resolution of 9.8 mas. The good nearly one-dimensional uv coverage allows us to reconstruct one-dimensional projection images (i.e., one-dimensional projections of the object's two-dimensional intensity distributions). <BR /> Results: The reconstructed one-dimensional projection images reveal that the star appears differently in the blue wing, line center, and red wing of the individual CO lines. The one-dimensional projection images in the blue wing and line center show a pronounced, asymmetrically extended component up to ~1.3 R<SUB>⋆</SUB>, while those in the red wing do not show such a component. The observed one-dimensional projection images in the lines can be reasonably explained by a model in which the CO gas within a region more than half as large as the stellar size is moving slightly outward with 0-5 km s<SUP>-1</SUP>, while the gas in the remaining region is infalling fast with 20-30 km s<SUP>-1</SUP>. A comparison between the CO line AMBER data taken in 2008 and 2009 shows a significant time variation in the dynamics of the CO line-forming region in the photosphere and the outer atmosphere. In contrast to the line data, the reconstructed one-dimensional projection images in the continuum show only a slight deviation from a uniform disk or limb-darkened disk. We derive a uniform-disk diameter of 42.05 ± 0.05 mas and a power-law-type limb-darkened disk diameter of 42.49 ± 0.06 mas and a limb-darkening parameter of (9.7 ± 0.5) × 10<SUP>-2</SUP>. This latter angular diameter leads to an effective temperature of 3690 ± 54 K for the continuum-forming layer. These diameters confirm that the near-IR size of Betelgeuse was nearly constant over the last 18 years, in marked contrast to the recently reported noticeable decrease in the mid-IR size. The continuum data taken in 2008 and 2009 reveal no or only marginal time variations, much smaller than the maximum variation predicted by the current three-dimensional convection simulations. <BR /> Conclusions: Our two-epoch AMBER observations show that the outer atmosphere extending to ~1.3-1.4 R<SUB>⋆</SUB> is asymmetric and its dynamics is dominated by vigorous, inhomogeneous large-scale motions, whose overall nature changes drastically within one year. This is likely linked to the wind-driving mechanism in red supergiants. <P />Based on AMBER observations made with the Very Large Telescope Interferometer of the European Southern Observatory. Program ID: 082.D-0280 (AMBER Guaranteed Time Observation).Appendices are available in electronic form at <A href=\"http://www.aanda.org\">http://www.aanda.org</A>",
+      "keywords": [
+        "infrared: stars",
+        "techniques: interferometric",
+        "supergiants",
+        "stars: late-type",
+        "stars: atmospheres",
+        "stars: individual: Betelgeuse",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 55
+    },
+    {
+      "source_id": "2011ApJ...740...24R",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/740/1/24",
+      "title": "The Non-uniform, Dynamic Atmosphere of Betelgeuse Observed at Mid-infrared Wavelengths",
+      "authors": [
+        "Ravi, V.",
+        "Wishnow, E. H.",
+        "Townes, C. H.",
+        "Lockwood, S.",
+        "Mistry, H.",
+        "Tatebe, K."
+      ],
+      "year": 2011,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2011ApJ...740...24R.pdf",
+      "retrieval_priority": 0.5222421484855593,
+      "abstract": "We present an interferometric study of the continuum surface of the red supergiant star Betelgeuse at 11.15 μm wavelength, using data obtained with the Berkeley Infrared Spatial Interferometer each year between 2006 and 2010. These data allow an investigation of an optically thick layer within 1.4 stellar radii of the photosphere. The layer has an optical depth of ~1 at 11.15 μm, and varies in temperature between 1900 K and 2800 K and in outer radius between 1.16 and 1.36 stellar radii. Electron-hydrogen-atom collisions contribute significantly to the opacity of the layer. The layer has a non-uniform intensity distribution that changes between observing epochs. These results indicate that large-scale surface convective activity strongly influences the dynamics of the inner atmosphere of Betelgeuse and mass-loss processes.",
+      "keywords": [
+        "circumstellar matter",
+        "infrared: stars",
+        "stars: individual: Betelgeuse",
+        "stars: mass-loss",
+        "techniques: interferometric",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Instrumentation and Methods for Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 8
+    },
+    {
+      "source_id": "2011A&A...531A.117K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201116962",
+      "title": "The close circumstellar environment of Betelgeuse. II. Diffraction-limited spectro-imaging from 7.76 to 19.50 μm with VLT/VISIR",
+      "authors": [
+        "Kervella, P.",
+        "Perrin, G.",
+        "Chiavassa, A.",
+        "Ridgway, S. T.",
+        "Cami, J.",
+        "Haubois, X.",
+        "Verhoelst, T."
+      ],
+      "year": 2011,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2011A&A...531A.117K.pdf",
+      "retrieval_priority": 0.5316132308292083,
+      "abstract": "Context. Mass-loss occurring in red supergiants (RSGs) is a major contributor to the enrichment of the interstellar medium in dust and molecules. The physical mechanism of this mass loss is however relatively poorly known. Betelgeuse is the nearest RSG, and as such a prime object for high angular resolution observations of its surface (by interferometry) and close circumstellar environment. <BR /> Aims: The goal of our program is to understand how the material expelled from Betelgeuse is transported from its surface to the interstellar medium, and how it evolves chemically in this process. <BR /> Methods: We obtained diffraction-limited images of Betelgeuse and a calibrator (Aldebaran) in six filters in the N band (7.76 to 12.81 μm) and two filters in the Q band (17.65 and 19.50 μm), using the VLT/VISIR instrument. <BR /> Results: Our images show a bright, extended and complex circumstellar envelope at all wavelengths. It is particularly prominent longwards of ≈ 9-10 μm, pointing at the presence of O-rich dust, such as silicates or alumina. A partial circular shell is observed between 0.5 and 1.0″ from the star, and could correspond to the inner radius of the dust envelope. Several knots and filamentary structures are identified in the nebula. One of the knots, located at a distance of 0.9″ west of the star, is particularly bright and compact. <BR /> Conclusions: The circumstellar envelope around Betelgeuse extends at least up to several tens of stellar radii. Its relatively high degree of clumpiness indicates an inhomogeneous spatial distribution of the material lost by the star. Its extension corresponds to an important intermediate scale, where most of the dust is probably formed, between the hot and compact gaseous envelope observed previously in the near infrared and the interstellar medium. <P />Based on observations made with ESO telescopes at Paranal Observatory, under ESO DDT program 286.D-5007(A).",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "stars: imaging",
+        "supergiants",
+        "circumstellar matter",
+        "stars: mass-loss",
+        "infrared: stars",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 9
+    },
+    {
+      "source_id": "2010A&A...515A..12C",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200913907",
+      "title": "Radiative hydrodynamics simulations of red supergiant stars. II. Simulations of convection on Betelgeuse match interferometric observations",
+      "authors": [
+        "Chiavassa, A.",
+        "Haubois, X.",
+        "Young, J. S.",
+        "Plez, B.",
+        "Josselin, E.",
+        "Perrin, G.",
+        "Freytag, B."
+      ],
+      "year": 2010,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2010A&A...515A..12C.pdf",
+      "retrieval_priority": 0.57691269786889,
+      "abstract": "Context. The red supergiant (RSG) Betelgeuse is an irregular variable star. Convection may play an important role in understanding this variability. Interferometric observations can be interpreted using sophisticated simulations of stellar convection. <BR /> Aims: We compare the visibility curves and closure phases obtained from our 3D simulation of RSG convection with CO5BOLD to various interferometric observations of Betelgeuse from the optical to the H band to characterize and measure the convection pattern on this star. <BR /> Methods: We use a 3D radiative-hydrodynamics (RHD) simulation to compute intensity maps in different filters and thus derive interferometric observables using the post-processing radiative transfer code OPTIM3D. The synthetic visibility curves and closure phases are compared to observations. <BR /> Results: We provide a robust detection of the granulation pattern on the surface of Betelgeuse in both the optical and the H band based on excellent fits to the observed visibility points and closure phases. We determine that the Betelgeuse surface in the H band is covered by small to medium scale (5-15 mas) convection-related surface structures and a large (≈30 mas) convective cell. In this spectral region, H<SUB>2</SUB>O molecules are the main absorbers and contribute to both the small structures and the position of the first null of the visibility curve (i.e., the apparent stellar radius).",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "stars: atmospheres",
+        "hydrodynamics",
+        "radiative transfer",
+        "techniques: interferometric",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Instrumentation and Methods for Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2010A&A...516L...2A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201014925",
+      "title": "The magnetic field of Betelgeuse: a local dynamo from giant convection cells?",
+      "authors": [
+        "Aurière, M.",
+        "Donati, J.-F.",
+        "Konstantinova-Antova, R.",
+        "Perrin, G.",
+        "Petit, P.",
+        "Roudier, T."
+      ],
+      "year": 2010,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2010A&A...516L...2A.pdf",
+      "retrieval_priority": 0.5317155620325006,
+      "abstract": "Context. Betelgeuse is an M supergiant with a complex and extended atmosphere, which also harbors spots and giant granules at its surface. A possible magnetic field could contribute to the mass loss and to the heating of the outer atmosphere. <BR /> Aims: We observed Betelgeuse, to directly study and infer the nature of its magnetic field. <BR /> Methods: We used the new-generation spectropolarimeter NARVAL and the least square deconvolution (LSD) method to detect circular polarization within the photospheric absorption lines of Betelgeuse. <BR /> Results: We have unambiguously detected a weak Stokes V signal in the spectral lines of Betelgeuse, and measured the related surface-averaged longitudinal magnetic field B_ℓ at 6 different epochs over one month. The detected longitudinal field is about one Gauss and is apparently increasing on the time scale of our observations. <BR /> Conclusions: This work presents the first direct detection of the magnetic field of Betelgeuse. This magnetic field may be associated to the giant convection cells that could enable a “local dynamo”. <P />Based on observations obtained at the Télescope Bernard Lyot (TBL) at Observatoire du Pic du Midi, CNRS/INSU and Université de Toulouse, France.",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "stars: magnetic field",
+        "stars: late-type",
+        "supergiants",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 48
+    },
+    {
+      "source_id": "2009A&A...508..923H",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200912927",
+      "title": "Imaging the spotty surface of <ASTROBJ>Betelgeuse</ASTROBJ> in the H band",
+      "authors": [
+        "Haubois, X.",
+        "Perrin, G.",
+        "Lacour, S.",
+        "Verhoelst, T.",
+        "Meimon, S.",
+        "Mugnier, L.",
+        "Thiébaut, E.",
+        "Berger, J. P.",
+        "Ridgway, S. T.",
+        "Monnier, J. D.",
+        "Millan-Gabet, R.",
+        "Traub, W."
+      ],
+      "year": 2009,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2009A&A...508..923H.pdf",
+      "retrieval_priority": 0.6292727691626725,
+      "abstract": "Aims. This paper reports on H-band interferometric observations of <ASTROBJ>Betelgeuse</ASTROBJ> made at the three-telescope interferometer IOTA. We image <ASTROBJ>Betelgeuse</ASTROBJ> and its asymmetries to understand the spatial variation of the photosphere, including its diameter, limb darkening, effective temperature, surrounding brightness, and bright (or dark) star spots.<BR /> Methods: We used different theoretical simulations of the photosphere and dusty environment to model the visibility data. We made images with parametric modeling and two image reconstruction algorithms: MIRA and WISARD.<BR /> Results: We measure an average limb-darkened diameter of 44.28 ± 0.15 mas with linear and quadratic models and a Rosseland diameter of 45.03 ± 0.12 mas with a MARCS model. These measurements lead us to derive an updated effective temperature of 3600 ± 66 K. We detect a fully-resolved environment to which the silicate dust shell is likely to contribute. By using two imaging reconstruction algorithms, we unveiled two bright spots on the surface of <ASTROBJ>Betelgeuse</ASTROBJ>. One spot has a diameter of about 11 mas and accounts for about 8.5% of the total flux. The second one is unresolved (diameter &lt; 9 mas) with 4.5% of the total flux.<BR /> Conclusions: Resolved images of <ASTROBJ>Betelgeuse</ASTROBJ> in the H band are asymmetric at the level of a few percent. The MOLsphere is not detected in this wavelength range. The amount of measured limb-darkening is in good agreement with model predictions. The two spots imaged at the surface of the star are potential signatures of convective cells.",
+      "keywords": [
+        "convection",
+        "techniques: interferometric",
+        "stars: fundamental parameters",
+        "infrared: stars",
+        "stars: individual: <ASTROBJ>Betelgeuse</ASTROBJ>",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:surface OR abs:temperature OR abs:teff OR abs:effective)",
+      "search_rank": 43
+    },
+    {
+      "source_id": "2009AJ....137.3558S",
+      "source_type": "paper",
+      "doi": "10.1088/0004-6256/137/3/3558",
+      "title": "Red Supergiants as Potential Type IIn Supernova Progenitors: Spatially Resolved 4.6 μm CO Emission Around VY CMa and Betelgeuse",
+      "authors": [
+        "Smith, Nathan",
+        "Hinkle, Kenneth H.",
+        "Ryde, Nils"
+      ],
+      "year": 2009,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2009AJ....137.3558S.pdf",
+      "retrieval_priority": 0.6054034720481009,
+      "abstract": "We present high-resolution 4.6 μm CO spectra of the circumstellar environments of two red supergiants (RSGs) that are potential supernova (SN) progenitors: Betelgeuse and VY Canis Majoris (VY CMa). Around Betelgeuse, <SUP>12</SUP>CO emission within ±3'' (±12 km s<SUP>-1</SUP>) follows a mildly clumpy but otherwise spherical shell, smaller than its ~55'' shell in K I λ7699. In stark contrast, 4.6 μm CO emission around VY CMa is coincident with bright K I in its clumpy asymmetric reflection nebula, within ±5'' (±40 km s<SUP>-1</SUP>) of the star. Our CO data reveal redshifted features not seen in K I spectra of VY CMa, indicating a more isotropic distribution of gas punctuated by randomly distributed asymmetric clumps. The relative CO and K I distribution in Betelgeuse arises from ionization effects within a steady wind, whereas in VY CMa, K I is emitted from skins of CO cloudlets resulting from episodic mass ejections 500-1000 yr ago. In both cases, CO and K I trace potential pre-SN circumstellar matter: we conclude that an extreme RSG like VY CMa might produce a Type IIn event like SN 1988Z if it were to explode in its current state, but Betelgeuse will not. VY CMa demonstrates that luminous blue variables are not necessarily the only progenitors of SNe IIn, but it underscores the requirement that SNe IIn suffer enhanced episodic mass loss shortly before exploding. <P />Based on observations obtained at the Gemini Observatory.",
+      "keywords": [
+        "circumstellar matter",
+        "stars: evolution",
+        "stars: mass loss",
+        "stars: winds",
+        "outflows",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:mass OR abs:\"stellar mass\" OR abs:\"star mass\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2009A&A...504..115K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200912521",
+      "title": "The close circumstellar environment of Betelgeuse. Adaptive optics spectro-imaging in the near-IR with VLT/NACO",
+      "authors": [
+        "Kervella, P.",
+        "Verhoelst, T.",
+        "Ridgway, S. T.",
+        "Perrin, G.",
+        "Lacour, S.",
+        "Cami, J.",
+        "Haubois, X."
+      ],
+      "year": 2009,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2009A&A...504..115K.pdf",
+      "retrieval_priority": 0.5010509765584287,
+      "abstract": "Context: Betelgeuse is one the largest stars in the sky in terms of angular diameter. Structures on the stellar photosphere have been detected in the visible and near-infrared as well as a compact molecular environment called the MOLsphere. Mid-infrared observations have revealed the nature of some of the molecules in the MOLsphere, some being the precursor of dust. <BR />Aims: Betelgeuse is an excellent candidate to understand the process of mass loss in red supergiants. Using diffraction-limited adaptive optics (AO) in the near-infrared, we probe the photosphere and close environment of Betelgeuse to study the wavelength dependence of its extension, and to search for asymmetries. <BR />Methods: We obtained AO images with the VLT/NACO instrument, taking advantage of the “cube” mode of the CONICA camera to record separately a large number of short-exposure frames. This allowed us to adopt a “lucky imaging” approach for the data reduction, and obtain diffraction-limited images over the spectral range 1.04-2.17~μm in 10 narrow-band filters. <BR />Results: In all filters, the photosphere of Betelgeuse appears partly resolved. We identify an asymmetric envelope around the star, with in particular a relatively bright “plume” extending in the southwestern quadrant up to a radius of approximately six times the photosphere. The CN molecule provides an excellent match to the 1.09 μm bandhead in absorption in front of the stellar photosphere, but the emission spectrum of the plume is more difficult to interpret. <BR />Conclusions: Our AO images show that the envelope surrounding Betelgeuse has a complex and irregular structure. We propose that the southwestern plume is linked either to the presence of a convective hot spot on the photosphere, or to the rotation of the star. <P />Based on observations made with ESO telescopes at Paranal Observatory, under ESO program 082.D-0172(A).",
+      "keywords": [
+        "stars: individual: Betelgeuse",
+        "stars: imaging",
+        "stars: supergiants",
+        "stars: circumstellar matter",
+        "methods: observational",
+        "techniques: high angular resolution",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 14
+    },
+    {
+      "source_id": "2007A&A...474..599P",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20077863",
+      "title": "The molecular and dusty composition of Betelgeuse's inner circumstellar environment",
+      "authors": [
+        "Perrin, G.",
+        "Verhoelst, T.",
+        "Ridgway, S. T.",
+        "Cami, J.",
+        "Nguyen, Q. N.",
+        "Chesneau, O.",
+        "Lopez, B.",
+        "Leinert, Ch.",
+        "Richichi, A."
+      ],
+      "year": 2007,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\e2f0e2a2-61e9-4d40-b42d-1f5d655821ec\\2007A&A...474..599P.pdf",
+      "retrieval_priority": 0.49240932524518655,
+      "abstract": "Context: The study of the atmosphere of red supergiant stars in general and of <ASTROBJ>Betelgeuse</ASTROBJ> (<ASTROBJ>α Orionis</ASTROBJ>) in particular is of prime importance to understand dust formation and how mass is lost to the interstellar medium in evolved massive stars. <BR />Aims: A molecular shell, the MOLsphere (Tsuji 2000a, ApJ, 538, 801), in the atmosphere of Betelgeuse has been proposed to account for the near- and mid-infrared spectroscopic observations of Betelgeuse. The goal is to further test this hypothesis and to identify some of the molecules in this MOLsphere. <BR />Methods: We report on measurements taken with the mid-infrared two-telescope beam combiner of the VLTI, MIDI, operated between 7.5 and 13.5 μm. The data are compared to a simple geometric model of a photosphere surrounded by a warm absorbing and emitting shell. Physical characteristics of the shell are derived: size, temperature and optical depth. The chemical constituents are determined with an analysis consistent with available infrared spectra and interferometric data. <BR />Results: The MIDI data are well modeled with a geometrically thin shell whose radius varies from 1.31 to 1.43 R_star across the N band with a typical temperature of 1550 K. We are able to account for the measured optical depth of the shell in the N band, the ISO-SWS spectrum and K and L band interferometric data with a shell whose inner and outer radii are given by the above range and with the following species and densities: H2O (7.1 ± 4.7 × 10<SUP>19</SUP> cm<SUP>-2</SUP>), SiO (4.0 ± 1.1 × 10<SUP>20</SUP> cm<SUP>-2</SUP>), Al2O3 (2.4 ± 0.5 × 10<SUP>15</SUP> cm<SUP>-2</SUP>). <BR />Conclusions: These results confirm the MOLsphere model. We bring evidence for more constituents and for the presence of species participating in the formation of dust grains in the atmosphere of the star, i.e. well below the distance at which the dust shell is detected. We believe these results bring key elements to the understanding of mass loss in Betelgeuse and red supergiants in general and bring support to the dust-driven scenario. <P />Based on observations collected at ESO with the VLTI/MIDI instrument.",
+      "keywords": [
+        "techniques: interferometric",
+        "stars: fundamental parameters",
+        "stars: mass-loss",
+        "stars: individual: Betelgeuse",
+        "infrared: stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Betelgeuse\" OR abs:\"Betelgeuse\") AND (abs:radius OR abs:\"stellar radius\")",
+      "search_rank": 13
+    },
+    {
+      "source_id": "SRC_DB_TIC",
+      "source_type": "database",
+      "title": "TESS Input Catalog (TIC)",
+      "vizier_table_id": "IV/38/tic",
+      "description": "凌星系外行星巡天卫星(TESS)的输入星表，综合了多项巡天数据，用于为TESS任务挑选观测目标并提供先验的恒星物理参数。",
+      "reference_paper": "Stassun, K. G., et al. 2019, AJ, 158, 138",
+      "bibcode": "2019AJ....158..138S",
+      "research_methodology": "多星表交叉匹配与天体物理参数的统计学推断",
+      "observation_facility": "Compilation (Gaia, 2MASS, ALLWISE, etc.)",
+      "waveband": "Optical to Near-Infrared (TESS band ~600-1000 nm + reference bands)",
+      "research_content": "包含数十亿个点源的坐标、自行、估计的TESS星等，及数千万恒星的有效温度、半径、质量、表面重力等物理参数。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2007A&A...474..599P_Betelgeuse_teff_0",
+      "source_id": "2007A&A...474..599P",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3641,
+      "field_unit": "K",
+      "trace_id": "doc16_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          830,
+          775,
+          870,
+          797
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Perrin et al. (2004a) have shown that the near-infrared structure of Betelgeuse can be described by two main components: a photosphere of temperature 3641 ± 53 K and a gaseous shell...",
+      "measurement_method": "interferometry and spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009A&A...508..923H_Betelgeuse_teff_0",
+      "source_id": "2009A&A...508..923H",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3600 ± 66",
+      "field_unit": "K",
+      "trace_id": "doc8_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          102,
+          496,
+          138,
+          516
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "These measurements lead us to derive an updated effective temperature of 3600 ± 66 K.",
+      "measurement_method": "interferometric observations with MIRA and WISARD algorithms",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009A&A...508..923H_Betelgeuse_teff_1",
+      "source_id": "2009A&A...508..923H",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3600 ± 66",
+      "field_unit": "K",
+      "trace_id": "doc8_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          83,
+          928,
+          122,
+          949
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We propose the updated slightly lower value of 3600 ± 66 K for the effective temperature of Betelgeuse.",
+      "measurement_method": "bolometric flux and limb darkening model",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009AJ....137.3558S_Betelgeuse_stellar_mass_0",
+      "source_id": "2009AJ....137.3558S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 17.5,
+      "field_unit": "Msun",
+      "trace_id": "doc5_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          365,
+          528,
+          388,
+          545
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "At a distance of 152-197 pc, the star's luminosity is roughly 0.9-1.5x10^5 L_sun, implying an initial mass of 15-20 M_sun.",
+      "measurement_method": "derived from luminosity and evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2010A&A...515A..12C_Betelgeuse_stellar_radius_0",
+      "source_id": "2010A&A...515A..12C",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 832,
+      "field_unit": "Rsun",
+      "trace_id": "doc30_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          384,
+          647,
+          416,
+          668
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The model has 12 M_sun, a numerical resolution of 235^3 grid points with a step of 8.6 R_sun, an average luminosity over spherical shells and over time of L=93000±1300 L_sun, an effective temperature of Teff=3490±13 K, a radius of R=832±0.7 R_sun...",
+      "measurement_method": "simulation",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2010A&A...515A..12C_Betelgeuse_teff_1",
+      "source_id": "2010A&A...515A..12C",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3490,
+      "field_unit": "K",
+      "trace_id": "doc30_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          203,
+          647,
+          244,
+          668
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The model has 12 M_sun, a numerical resolution of 235^3 grid points with a step of 8.6 R_sun, an average luminosity over spherical shells and over time of L=93000±1300 L_sun, an effective temperature of Teff=3490±13 K, a radius of R=832±0.7 R_sun...",
+      "measurement_method": "simulation",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2010A&A...516L...2A_Betelgeuse_teff_0",
+      "source_id": "2010A&A...516L...2A",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3750,
+      "field_unit": "K",
+      "trace_id": "doc13_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          439,
+          236,
+          497,
+          253
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We used a solar abundance line mask calculated from data provided by VALD (Kupka et al. 1999) for an effective temperature of 3750 K, log g = 0.0, and a microturbulence of 4.0 km s−1, consistent with the physical parameters of Betelgeuse",
+      "measurement_method": "spectral line mask calculation",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2011A&A...529A.163O_Betelgeuse_teff_0",
+      "source_id": "2011A&A...529A.163O",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3690,
+      "field_unit": "K",
+      "trace_id": "doc32_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          562,
+          677,
+          602,
+          698
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The limb-darkened disk diameter derived from the K-band continuum data and a bolometric flux of (111.67 ± 6.49) × 10−13 W cm−2 (Perrin et al. 2004) lead to an effective temperature of 3690±54 K. We propose this value as an effective temperature of the continuum-forming layer...",
+      "measurement_method": "interferometry and bolometric flux fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2011A&A...531A.117K_Betelgeuse_stellar_radius_0",
+      "source_id": "2011A&A...531A.117K",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 3.4,
+      "field_unit": "AU",
+      "trace_id": "doc7_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          742,
+          223,
+          795,
+          239
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Considering this distance of 152 ± 20 pc, the photosphere (~44 mas in the K band, Perrin et al. 2004) has a linear radius of 3.4 AU, and the shell (angular radius of 0.9'') is located at ≈ 134 AU.",
+      "measurement_method": "interferometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...740...24R_Betelgeuse_stellar_radius_0",
+      "source_id": "2011ApJ...740...24R",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 950.0,
+      "field_unit": "Rsun",
+      "trace_id": "doc11_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          323,
+          278,
+          355,
+          296
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.85,
+      "context_snippet": "Its large angular diameter (0.047'', Michelson & Pease 1921) and high apparent magnitude (M_K = -4.38) make it an excellent subject for high spatial resolution studies.",
+      "measurement_method": "interferometry and photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2012A&A...548A.113D_Betelgeuse_stellar_mass_1",
+      "source_id": "2012A&A...548A.113D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": "20",
+      "field_unit": "Msun",
+      "trace_id": "doc24_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          67,
+          282,
+          950,
+          906
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: Physical parameters of the envelope of Betelgeuse. ... Stellar mass M* = 20 Msun",
+      "measurement_method": "model",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2012A&A...548A.113D_Betelgeuse_stellar_radius_0",
+      "source_id": "2012A&A...548A.113D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": "7.5 x 10^13",
+      "field_unit": "cm",
+      "trace_id": "doc24_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          67,
+          282,
+          950,
+          906
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: Physical parameters of the envelope of Betelgeuse. ... Stellar radius R* = 7.5 x 10^13 cm",
+      "measurement_method": "model",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2012A&A...548A.113D_Betelgeuse_teff_2",
+      "source_id": "2012A&A...548A.113D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3500",
+      "field_unit": "K",
+      "trace_id": "doc24_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          67,
+          282,
+          950,
+          906
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: Physical parameters of the envelope of Betelgeuse. ... Photospheric temperature T* = 3500 K",
+      "measurement_method": "model",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2014A&A...572A..17M_Betelgeuse_stellar_radius_0",
+      "source_id": "2014A&A...572A..17M",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 897,
+      "field_unit": "Rsun",
+      "trace_id": "doc33_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          699,
+          602,
+          731,
+          619
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "From our limb-darkened measurements and the distance of 197 ± 45 pc (Harper et al. 2008), we derive the stellar radius of Betelgeuse R* = 897 ± 211 Rsun and its luminosity...",
+      "measurement_method": "derived from limb-darkened measurements and distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2015A&A...580A.101O_Betelgeuse_teff_0",
+      "source_id": "2015A&A...580A.101O",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3690,
+      "field_unit": "K",
+      "trace_id": "doc4_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The vertical and horizontal dashed lines represent the photospheric radius of 21.24 mas and the photospheric effective temperature of 3690 K, respectively (Ohnaka et al. 2011)",
+      "measurement_method": "literature reference (Ohnaka et al. 2011)",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2016A&A...588A.130M_Betelgeuse_stellar_mass_1",
+      "source_id": "2016A&A...588A.130M",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 11.6,
+      "field_unit": "Msun",
+      "trace_id": "doc20_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          690,
+          888,
+          726,
+          905
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "It is a M2Iab prototypical RSG, with a mass estimated between 11.6 +5.0 -3.9 M_sun (Neilson et al. 2011)",
+      "measurement_method": "derived from evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2016A&A...588A.130M_Betelgeuse_stellar_radius_0",
+      "source_id": "2016A&A...588A.130M",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 1000,
+      "field_unit": "Rsun",
+      "trace_id": "doc20_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          558,
+          874,
+          598,
+          891
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "converting to an extremely large linear radius of the order of 1000 R_sun. It is a M2Iab prototypical RSG, with a mass estimated between 11.6 +5.0 -3.9 M_sun",
+      "measurement_method": "derived from angular diameter and distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2016A&A...591A.119A_Betelgeuse_teff_0",
+      "source_id": "2016A&A...591A.119A",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3750",
+      "field_unit": "K",
+      "trace_id": "doc26_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          682,
+          483,
+          738,
+          500
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We used a solar abundance line mask calculated from data provided by the Vienna Atomic Line Database (VALD, Kupka et al. 1999) for an effective temperature of 3750 K, surface gravity log g = 0.0, and a microturbulence of 4.0 km s−1, consistent with the physical parameters of Betelgeuse",
+      "measurement_method": "model fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2016ApJ...819....7D_Betelgeuse_stellar_mass_0",
+      "source_id": "2016ApJ...819....7D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 20,
+      "field_unit": "Msun",
+      "trace_id": "doc6_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          655,
+          763,
+          678,
+          780
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Based upon the best fit to all observed data, we suggest a best progenitor mass estimate of 20^{+5}_{-3} M_sun and a current age from the start of the zero-age main sequence of 8.0 - 8.5 Myr",
+      "measurement_method": "evolutionary model fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2017A&A...602L..10O_Betelgeuse_teff_0",
+      "source_id": "2017A&A...602L..10O",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3690,
+      "field_unit": "K",
+      "trace_id": "doc23_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          717,
+          419,
+          767,
+          435
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "It is below both the photospheric effective temperature (T_eff = 3690 K) and the temperatures at ~2 R_*.",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2017MNRAS.465.2654W_Betelgeuse_teff_0",
+      "source_id": "2017MNRAS.465.2654W",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3500,
+      "field_unit": "K",
+      "trace_id": "doc9_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          67,
+          638,
+          105,
+          654
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We compared the results of our models to the observational constraints on Betelgeuse as given by Dolan et al. (2016): log L/L⊙ = 5.10 ± 0.22; R/R⊙ = 887 ± 203; Teff = 3500 ± 200K.",
+      "measurement_method": "observational constraints",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2018A&A...609A..67K_Betelgeuse_stellar_radius_0",
+      "source_id": "2018A&A...609A..67K",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": "1400",
+      "field_unit": "R_sun",
+      "trace_id": "doc12_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          790,
+          520,
+          830,
+          537
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Assuming a mass of M_Bet = 15 ± 5 M_sun and a radius of R_star = 1400 ± 250 R_sun (from our equivalent ALMA continuum angular radius and the parallax pi = 4.51 ± 0.80 mas by Harper et al. 2017a)",
+      "measurement_method": "derived from angular radius and parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2018A&A...615A.116M_Betelgeuse_teff_0",
+      "source_id": "2018A&A...615A.116M",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3750",
+      "field_unit": "K",
+      "trace_id": "doc27_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          764,
+          327,
+          819,
+          343
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We used a solar abundance line mask (similar to that of Aurière et al. 2016), calculated from data provided by VALD (Kupka et al. 1999) for an effective temperature of 3750 K, log g = 0.0, and a microturbulence of 4.0 km s−1, consistent with the physical parameters of Betelgeuse",
+      "measurement_method": "spectral analysis (LSD method with VALD line mask)",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2019A&A...628A.101H_Betelgeuse_stellar_radius_0",
+      "source_id": "2019A&A...628A.101H",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 900,
+      "field_unit": "Rsun",
+      "trace_id": "doc34_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          67,
+          177,
+          951,
+          813
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 4. Parameters describing the star and dust shell models used for MCFOST simulations. ... Stellar radius 900 R_sun",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2020ApJ...891L..37L_Betelgeuse_teff_0",
+      "source_id": "2020ApJ...891L..37L",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3600,
+      "field_unit": "K",
+      "trace_id": "doc29_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          281,
+          354,
+          387,
+          373
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "we conclude that Betelgeuse has a current effective temperature of 3600 ± 25 K. While this is slightly cooler than previous measurements taken prior to Betelgeuse's recent lightcurve evolution",
+      "measurement_method": "optical spectrophotometry and MARCS stellar atmosphere models",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2022MNRAS.516..693N_Betelgeuse_stellar_mass_0",
+      "source_id": "2022MNRAS.516..693N",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 14,
+      "field_unit": "Msun",
+      "trace_id": "doc19_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          396,
+          501,
+          419,
+          518
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Evolutionary tracks from MIST consistent with both its colour evolution and its location on the CMD suggest a mass of ~14Msun at ~14 Myr.",
+      "measurement_method": "evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2022MNRAS.516..693N_Betelgeuse_stellar_mass_1",
+      "source_id": "2022MNRAS.516..693N",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 14,
+      "field_unit": "Msun",
+      "trace_id": "doc19_p15",
+      "provenance": {
+        "page": 15,
+        "bbox": [
+          770,
+          350,
+          792,
+          366
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Our mass estimates for Betelgeuse (~ 14 Msun) and Antares A (~13, 15, or 16 Msun), based on consistency with both the CMD (Fig. 1) and the historical colour evolution as observed (Table 3), are in agreement with recent independent determinations by other methods",
+      "measurement_method": "CMD and historical colour evolution",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2023A&A...675A..46C_Betelgeuse_stellar_mass_0",
+      "source_id": "2023A&A...675A..46C",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 15,
+      "field_unit": "Msun",
+      "trace_id": "doc18_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          735,
+          236,
+          758,
+          252
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "we ran a comparison test with a MARCS stellar atmosphere model from Decin (2000) with the following parameters: T_eff = 3600 K, log g = 0.00, [Fe/H] = 0.00 and M = 15 M_sun.",
+      "measurement_method": "model parameter",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_stellar_mass_0",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": "11  12",
+      "field_unit": "Msun",
+      "trace_id": "doc28_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          304,
+          344,
+          328,
+          362
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Models with similar pulsation property have masses of 11 ~ 12 M_sun (19 M_sun at ZAMS) with luminosities...",
+      "measurement_method": "derived from luminosity and evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_stellar_radius_7",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": "1300",
+      "field_unit": "Rsun",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          776,
+          443,
+          813,
+          459
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.9,
+      "context_snippet": "A large radius of about 1300 R_sun (needed for the long-period fundamental mode) is supported by some interferometric measurements...",
+      "measurement_method": "interferometric measurements and model fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_teff_1",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3.53",
+      "field_unit": "log K",
+      "trace_id": "doc28_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          229,
+          360,
+          244,
+          378
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "...and effective temperatures (log T_eff ≈ 3.53) that are consistent with the range of the observational determinations.",
+      "measurement_method": "observational determination",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_teff_2",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3500  100",
+      "field_unit": "K",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          245,
+          138,
+          282,
+          154
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Lobel & Dupree (2000) obtained the surface gravity log g = -0.5 and effective temperature T_eff = 3500 ± 100 K by fitting of synthetic profiles...",
+      "measurement_method": "fitting of synthetic profiles",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_teff_3",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3540  260",
+      "field_unit": "K",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          238,
+          96,
+          327,
+          112
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Furthermore, from CO equivalent widths for Betelgeuse Carr et al. (2000) obtained T_eff = 3540 ± 260 K.",
+      "measurement_method": "CO equivalent widths from near-IR spectra",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_teff_4",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3600  25",
+      "field_unit": "K",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          281,
+          110,
+          364,
+          126
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "More recently, Levesque & Massey (2020) obtained T_eff = 3600 ± 25 K from optical spectrophotometry.",
+      "measurement_method": "optical spectrophotometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_teff_5",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3500  200",
+      "field_unit": "K",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          245,
+          138,
+          336,
+          154
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Based on these spectrosopic T_eff determinations for Betelgeuse, we adopt T_eff = 3500 ± 200 K for a constraint for our models...",
+      "measurement_method": "adopted from spectroscopic determinations",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.526.2765S_Betelgeuse_teff_6",
+      "source_id": "2023MNRAS.526.2765S",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": "3.544  0.025",
+      "field_unit": "log K",
+      "trace_id": "doc28_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          67,
+          287,
+          924,
+          922
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Model examples which excite pulsations consistent with periods of Betelgeuse... log T_eff[K] 3.544 ± 0.025",
+      "measurement_method": "model fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2023NewA...9901962J_Betelgeuse_stellar_radius_0",
+      "source_id": "2023NewA...9901962J",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 887,
+      "field_unit": "R_sun",
+      "trace_id": "doc25_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          131,
+          611,
+          163,
+          628
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "A reliable estimate of distance determined by Harper et al. (2008) 887 ± 203 R_sun is based on multi-wavelength observations.",
+      "measurement_method": "multi-wavelength observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2024MNRAS.527L..88D_Betelgeuse_teff_0",
+      "source_id": "2024MNRAS.527L..88D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3650,
+      "field_unit": "K",
+      "trace_id": "doc15_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          187,
+          96,
+          262,
+          112
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Its effective temperature Teff is estimated to range from 3650±25 K, using spectro-photometric observations (Levesque et al. 2005), to 3690±54 K (Ohnaka 2014)",
+      "measurement_method": "spectro-photometric observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2024MNRAS.527L..88D_Betelgeuse_teff_1",
+      "source_id": "2024MNRAS.527L..88D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3690,
+      "field_unit": "K",
+      "trace_id": "doc15_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          307,
+          110,
+          382,
+          126
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Its effective temperature Teff is estimated to range from 3650±25 K, using spectro-photometric observations (Levesque et al. 2005), to 3690±54 K (Ohnaka 2014)",
+      "measurement_method": "spectro-interferometric observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...978...50M_Betelgeuse_stellar_radius_0",
+      "source_id": "2025ApJ...978...50M",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "field_value": 796,
+      "field_unit": "Rsun",
+      "trace_id": "doc10_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          672,
+          755,
+          703,
+          773
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Based on the observed 42.28 ± 0.43 mas apparent photospheric radius of Montargès et al. (2014), the estimated stellar radius is R_a ≈ 796 R_sun (d / 175 pc)",
+      "measurement_method": "parallax inversion and angular size measurement",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_radius"
+      ]
+    },
+    {
+      "record_id": "2025Galax..13...50D_Betelgeuse_stellar_mass_0",
+      "source_id": "2025Galax..13...50D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 20.0,
+      "field_unit": "Msun",
+      "trace_id": "doc17_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          101,
+          185,
+          945,
+          820
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Fundamental parameters of Betelgeuse... Initial mass | 20 +5 -3 Msun | [43] | d = 197 ± 45 pc",
+      "measurement_method": "evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2025Galax..13...50D_Betelgeuse_stellar_mass_1",
+      "source_id": "2025Galax..13...50D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 19.55,
+      "field_unit": "Msun",
+      "trace_id": "doc17_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          101,
+          185,
+          945,
+          820
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Fundamental parameters of Betelgeuse... Current mass | 19.4 - 19.7 | [43] | d = 197 ± 45 pc",
+      "measurement_method": "evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2025Galax..13...50D_Betelgeuse_stellar_mass_2",
+      "source_id": "2025Galax..13...50D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 19.5,
+      "field_unit": "Msun",
+      "trace_id": "doc17_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          101,
+          185,
+          945,
+          820
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Fundamental parameters of Betelgeuse... Initial mass | 18 - 21 Msun | [37] | Seismic analysis",
+      "measurement_method": "seismic analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2025Galax..13...50D_Betelgeuse_stellar_mass_3",
+      "source_id": "2025Galax..13...50D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 17.8,
+      "field_unit": "Msun",
+      "trace_id": "doc17_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          101,
+          185,
+          945,
+          820
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Fundamental parameters of Betelgeuse... Current mass | 16.6 - 19 Msun | [37] | Seismic analysis",
+      "measurement_method": "seismic analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2025Galax..13...50D_Betelgeuse_stellar_mass_4",
+      "source_id": "2025Galax..13...50D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": "19",
+      "field_unit": "Msun",
+      "trace_id": "doc17_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          101,
+          185,
+          945,
+          820
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Fundamental parameters of Betelgeuse... Initial mass | 19 Msun | [44] | d = 222 +48 -34 pc Seismic analysis",
+      "measurement_method": "seismic analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "2025Galax..13...50D_Betelgeuse_stellar_mass_5",
+      "source_id": "2025Galax..13...50D",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "field_value": 11.5,
+      "field_unit": "Msun",
+      "trace_id": "doc17_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          101,
+          185,
+          945,
+          820
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Fundamental parameters of Betelgeuse... Current mass | 11 - 12 Msun | [44] | d = 222 +48 -34 pc Seismic analysis",
+      "measurement_method": "seismic analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: stellar_mass"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_269273552_0_Teff",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "field_value": 3601.6,
+      "field_unit": "K",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "269273552",
+        "raw_column": "Teff",
+        "raw_unit": "K",
+        "row_index": 0
+      }
+    }
+  ]
+}

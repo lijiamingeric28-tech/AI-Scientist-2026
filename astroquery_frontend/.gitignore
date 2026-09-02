@@ -9,7 +9,6 @@ subgraphs/data/             # 论文 PDF 下载目录（单查询可达数 GB）
 frontend/dist/              # 前端构建产物（npm run build 生成）
 frontend/node_modules/
 tests/cassettes/            # VCR 录制（E2E 回放，体积大走 Release）
-data/                       # 绿色包运行时数据目录
 *.log
 
 # ─────────── 缓存 ───────────
@@ -22,13 +21,6 @@ column_mapping_cache.json
 table_meta_cache.json
 *.bak
 
-# ─────────── 打包 ───────────
-build_venv/                 # 打包用独立 venv（可重建）
-build/                      # PyInstaller 中间产物
-dist/                       # PyInstaller 产物（绿色包，走 Release）
-*.egg-info/
-packaging/__pycache__/
-
 # ─────────── IDE / 编辑器 ───────────
 .idea/
 .vscode/
@@ -36,6 +28,7 @@ packaging/__pycache__/
 Thumbs.db
 Desktop.ini
 .DS_Store
+frontend/*state_snap.json   # Qoder/VS Code 工作区状态快照（12MB IDE 垃圾，不入库）
 
 # ─────────── Claude Code 本地配置 ───────────
 .claude/                    # 本地个人配置不提交（团队共享配置可去掉本行）

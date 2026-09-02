@@ -1,0 +1,155 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "AstroQuery 质量管线 V3.4（全展开）",
+    "locale": "zh-CN",
+    "output": "docs/quality-pipeline.html",
+    "quality_profile": "standard",
+    "views": [
+      {
+        "id": "main-path",
+        "label": "主路径",
+        "focus": ["profiling", "q_assessment", "scoring", "decision", "dispatch", "source_router", "planning", "normalization", "validation", "report", "loop", "data_organization", "schema_formatting", "metadata_generation", "traceability", "output_validation", "export_generation", "field_insight", "relationship", "recommendation", "synthesis"],
+        "note": "A→B→D 成功路径：评估 → 规范化 → 导出 → 洞察"
+      },
+      {
+        "id": "loops",
+        "label": "循环与重试",
+        "focus": ["decision", "dispatch", "loop", "validation", "planning", "report", "source_router", "variance_aggregation", "annotation_confidence", "anomaly_verification", "annotation_report", "human_review"],
+        "note": "Gate 重试 ≤3、内部重试 ≤2、B⇄C 循环 ≤3、总访问上限 8 强制导出"
+      },
+      {
+        "id": "human-review",
+        "label": "人工审核",
+        "focus": ["human_review", "dispatch", "profiling", "source_router", "loop"],
+        "note": "HITL 裁决：采用 A/B、自定义值、保留双值、跳过；出口 E→B 执行修改 / E→A 重新评估"
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "assessment", "label": "质量评估" },
+    { "id": "normalization", "label": "规范化" },
+    { "id": "control", "label": "流程控制" },
+    { "id": "review", "label": "人工审核", "variant": "exception" },
+    { "id": "conflict", "label": "冲突检测" },
+    { "id": "export", "label": "数据导出" },
+    { "id": "insights", "label": "洞察" }
+  ],
+  "groups": [
+    { "id": "g_assessment", "label": "Assessment 子图", "lane": "assessment", "fromCol": 0, "toCol": 3 },
+    { "id": "g_norm", "label": "Normalization 子图", "lane": "normalization", "fromCol": 0, "toCol": 4, "variant": "dashed" },
+    { "id": "g_control", "label": "路由/循环控制", "lane": "control", "fromCol": 3, "toCol": 4, "variant": "emphasis" },
+    { "id": "g_conflict", "label": "Conflict 子图", "lane": "conflict", "fromCol": 0, "toCol": 4, "variant": "dashed" },
+    { "id": "g_export", "label": "Export 子图", "lane": "export", "fromCol": 0, "toCol": 5, "variant": "dashed" },
+    { "id": "g_insights", "label": "Insights 子图", "lane": "insights", "fromCol": 0, "toCol": 3, "variant": "dashed" }
+  ],
+  "semanticChecks": {
+    "allowedTerminals": ["synthesis"],
+    "requiredEdges": [
+      { "from": "dispatch", "to": "human_review" },
+      { "from": "report", "to": "loop" },
+      { "from": "annotation_report", "to": "loop" },
+      { "from": "loop", "to": "data_organization" }
+    ],
+    "requiredPaths": [
+      { "from": "human_review", "to": "profiling" },
+      { "from": "loop", "to": "source_router" },
+      { "from": "loop", "to": "variance_aggregation" }
+    ]
+  },
+  "nodes": [
+    { "id": "profiling", "lane": "assessment", "col": 0, "type": "backend", "label": "ProfilingAgent", "sublabel": "数据画像", "width": 125 },
+    { "id": "q_assessment", "lane": "assessment", "col": 1, "type": "backend", "label": "QualityAssessmentAgent", "sublabel": "5维检查", "width": 180 },
+    { "id": "scoring", "lane": "assessment", "col": 2, "type": "backend", "label": "QualityScoringAgent", "sublabel": "6维评分·领域权重", "width": 170 },
+    { "id": "decision", "lane": "assessment", "col": 3, "type": "backend", "label": "DecisionReasoningAgent", "sublabel": "per_source_routes", "width": 180 },
+    { "id": "dispatch", "lane": "control", "col": 3, "type": "security", "label": "Dispatch", "sublabel": "按来源队列分发", "width": 135 },
+    { "id": "loop", "lane": "control", "col": 4, "type": "security", "label": "LoopController", "sublabel": "B⇄C 循环状态机", "width": 145 },
+    { "id": "source_router", "lane": "normalization", "col": 0, "type": "backend", "label": "SourceRouterAgent", "sublabel": "来源路由", "width": 140 },
+    { "id": "planning", "lane": "normalization", "col": 1, "type": "backend", "label": "PlanningAgent", "sublabel": "制定计划", "width": 125 },
+    { "id": "normalization", "lane": "normalization", "col": 2, "type": "backend", "label": "NormalizationAgent", "sublabel": "执行修改+溯源", "width": 150 },
+    { "id": "validation", "lane": "normalization", "col": 3, "type": "backend", "label": "ValidationAgent", "sublabel": "复检", "width": 130 },
+    { "id": "report", "lane": "normalization", "col": 4, "type": "backend", "label": "ReportAgent", "sublabel": "报告+路由决策", "width": 130 },
+    { "id": "human_review", "lane": "review", "col": 2, "type": "external", "label": "HumanReviewAgent", "sublabel": "HITL 人工裁决", "width": 145 },
+    { "id": "variance_aggregation", "lane": "conflict", "col": 0, "type": "backend", "label": "VarianceAggregationAgent", "sublabel": "多源方差聚合", "width": 195 },
+    { "id": "difference_classification", "lane": "conflict", "col": 1, "type": "backend", "label": "DifferenceClassificationAgent", "sublabel": "差异分类", "width": 215 },
+    { "id": "anomaly_verification", "lane": "conflict", "col": 2, "type": "backend", "label": "AnomalyVerificationAgent", "sublabel": "异常验证", "width": 195 },
+    { "id": "annotation_confidence", "lane": "conflict", "col": 3, "type": "backend", "label": "AnnotationConfidenceAgent", "sublabel": "标注置信度", "width": 205 },
+    { "id": "annotation_report", "lane": "conflict", "col": 4, "type": "backend", "label": "AnnotationReportAgent", "sublabel": "消解报告+路由", "width": 175 },
+    { "id": "data_organization", "lane": "export", "col": 0, "type": "backend", "label": "DataOrganizationAgent", "sublabel": "数据组织", "width": 175 },
+    { "id": "schema_formatting", "lane": "export", "col": 1, "type": "backend", "label": "SchemaFormattingAgent", "sublabel": "Schema 格式化", "width": 175 },
+    { "id": "metadata_generation", "lane": "export", "col": 2, "type": "backend", "label": "MetadataGenerationAgent", "sublabel": "元数据生成", "width": 190 },
+    { "id": "traceability", "lane": "export", "col": 3, "type": "backend", "label": "TraceabilityConstructionAgent", "sublabel": "溯源构建", "width": 230 },
+    { "id": "output_validation", "lane": "export", "col": 4, "type": "backend", "label": "OutputValidationAgent", "sublabel": "输出校验", "width": 175 },
+    { "id": "export_generation", "lane": "export", "col": 5, "type": "database", "label": "StructuredExportGenerationAgent", "sublabel": "结构化导出·quarantine", "width": 245 },
+    { "id": "field_insight", "lane": "insights", "col": 0, "type": "backend", "label": "FieldInsightAgent", "sublabel": "字段洞察", "width": 140 },
+    { "id": "relationship", "lane": "insights", "col": 1, "type": "backend", "label": "RelationshipAgent", "sublabel": "关联分析", "width": 140 },
+    { "id": "recommendation", "lane": "insights", "col": 2, "type": "backend", "label": "RecommendationAgent", "sublabel": "建议生成", "width": 160 },
+    { "id": "synthesis", "lane": "insights", "col": 3, "type": "backend", "label": "SynthesisAgent", "sublabel": "综合洞察报告", "width": 130 }
+  ],
+  "edges": [
+    { "id": "e_prof_qass", "from": "profiling", "to": "q_assessment" },
+    { "id": "e_qass_scoring", "from": "q_assessment", "to": "scoring" },
+    { "id": "e_scoring_decision", "from": "scoring", "to": "decision" },
+    { "id": "e_decision_dispatch", "from": "decision", "to": "dispatch", "label": "评估完成", "variant": "emphasis" },
+    { "id": "e_dispatch_norm", "from": "dispatch", "to": "source_router", "label": "队列", "role": "branch" },
+    { "id": "e_dispatch_conflict", "from": "dispatch", "to": "variance_aggregation", "label": "队列", "role": "branch" },
+    { "id": "e_dispatch_export", "from": "dispatch", "to": "data_organization", "label": "队列", "role": "branch" },
+    { "id": "e_dispatch_hr", "from": "dispatch", "to": "human_review", "label": "HR 优先·失败信号", "variant": "security", "role": "branch" },
+    { "id": "e_sr_plan", "from": "source_router", "to": "planning", "label": "需规范化" },
+    { "id": "e_sr_skip", "from": "source_router", "to": "loop", "label": "无需规范化", "variant": "dashed", "role": "branch" },
+    { "id": "e_plan_norm", "from": "planning", "to": "normalization" },
+    { "id": "e_norm_validation", "from": "normalization", "to": "validation" },
+    { "id": "e_validation_retry", "from": "validation", "to": "planning", "label": "Retry ≤2", "variant": "dashed", "role": "branch" },
+    { "id": "e_validation_report", "from": "validation", "to": "report", "label": "通过" },
+    { "id": "e_report_loop", "from": "report", "to": "loop", "label": "汇入路由", "variant": "emphasis" },
+    { "id": "e_va_dc", "from": "variance_aggregation", "to": "difference_classification" },
+    { "id": "e_va_skip", "from": "variance_aggregation", "to": "loop", "label": "无方差→导出", "variant": "dashed", "role": "branch" },
+    { "id": "e_dc_av", "from": "difference_classification", "to": "anomaly_verification" },
+    { "id": "e_av_ac", "from": "anomaly_verification", "to": "annotation_confidence" },
+    { "id": "e_ac_retry", "from": "annotation_confidence", "to": "anomaly_verification", "label": "Retry ≤2", "variant": "dashed", "role": "branch" },
+    { "id": "e_ac_report", "from": "annotation_confidence", "to": "annotation_report", "label": "通过" },
+    { "id": "e_ar_loop", "from": "annotation_report", "to": "loop", "label": "汇入路由", "variant": "emphasis" },
+    { "id": "e_loop_conflict", "from": "loop", "to": "variance_aggregation", "label": "B→C 发现冲突", "role": "branch" },
+    { "id": "e_loop_norm", "from": "loop", "to": "source_router", "label": "C→B 再规范化", "role": "branch" },
+    { "id": "e_loop_hr", "from": "loop", "to": "human_review", "label": "HR 决策", "variant": "security", "role": "branch" },
+    { "id": "e_loop_export", "from": "loop", "to": "data_organization", "label": "完成/超限强制", "variant": "emphasis" },
+    { "id": "e_hr_profiling", "from": "human_review", "to": "profiling", "label": "E→A 重新评估", "variant": "dashed", "role": "branch" },
+    { "id": "e_hr_norm", "from": "human_review", "to": "source_router", "label": "E→B 执行修改", "variant": "dashed", "role": "branch" },
+    { "id": "e_hr_dispatch", "from": "human_review", "to": "dispatch", "label": "队列继续", "variant": "dashed", "role": "branch" },
+    { "id": "e_do_sf", "from": "data_organization", "to": "schema_formatting" },
+    { "id": "e_sf_mg", "from": "schema_formatting", "to": "metadata_generation" },
+    { "id": "e_mg_tc", "from": "metadata_generation", "to": "traceability" },
+    { "id": "e_tc_ov", "from": "traceability", "to": "output_validation" },
+    { "id": "e_ov_eg", "from": "output_validation", "to": "export_generation", "label": "失败隔离" },
+    { "id": "e_eg_insights", "from": "export_generation", "to": "field_insight", "label": "交付→洞察", "variant": "emphasis" },
+    { "id": "e_fi_rel", "from": "field_insight", "to": "relationship" },
+    { "id": "e_rel_rec", "from": "relationship", "to": "recommendation" },
+    { "id": "e_rec_syn", "from": "recommendation", "to": "synthesis" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "循环与重试语义",
+      "items": [
+        "Gate：Retry 重入子图 ≤3，Failed/耗尽 → 人工审核；子图内重试 ≤2",
+        "LoopController：B⇄C 循环 ≤3，总访问上限 8 → 强制导出"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "人工审核 (HITL)",
+      "items": [
+        "逐条裁决：采用 A/B、自定义值、保留双值、跳过；出口 E→B 修改 / E→A 重评",
+        "Web 端 interrupt 挂起；无待审冲突 → 队列继续"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "质量评估维度",
+      "items": [
+        "5 维检查 + 自适应阈值 + LLM 完整性；6 维加权评分（领域权重）"
+      ]
+    }
+  ]
+}

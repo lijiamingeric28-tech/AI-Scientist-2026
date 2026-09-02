@@ -1,0 +1,178 @@
+{
+  "research_domain": "astrophysics",
+  "generated_at": "2026-09-02T08:41:57.025932",
+  "field_insights": [
+    {
+      "entity_type": "exoplanet",
+      "entity_name": "HD 209458b",
+      "field_name": "orb_period",
+      "source_type": "paper",
+      "observation": "Extracted values range from 3.1 to 3.5257 days, with a tight cluster around 3.5247–3.5257 d across 12 records.",
+      "interpretation": "Consistent with a classic hot Jupiter orbiting very close to its host star. The narrow spread reflects high-precision determinations from long-baseline transit timing and Doppler spectroscopy fits.",
+      "cause_hypotheses": [
+        "Minor variations stem from updated ephemerides and refined transit epoch T_C in successive observations."
+      ],
+      "typical_range": "< 10 days (for hot Jupiters)",
+      "confidence": 0.97,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "exoplanet_parameter_range",
+          "title": "系外行星质量与半径范围",
+          "source": "Fulton et al. 2017 (CKS); NASA Exoplanet Archive; exoplanet.eu"
+        }
+      ]
+    },
+    {
+      "entity_type": "exoplanet",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_radius",
+      "source_type": "paper",
+      "observation": "Values span 1.26 to 1.0e8 R_jup. Majority cluster at 1.26–1.36 R_jup. One record shows 1e8 R_jup.",
+      "interpretation": "The consensus value (~1.26–1.36 R_Jup) is physically plausible for an irradiated hot Jupiter, which typically exhibits radius inflation up to 1.4–2 R_Jup. The extreme outlier (1e8) vastly exceeds any physical limit for planets and indicates a data quality issue.",
+      "cause_hypotheses": [
+        "Outlier likely caused by unit conversion failure (e.g., raw meters not converted to R_Jup) or a transcription/OCR error.",
+        "Physical radius inflation driven by intense stellar irradiation and possible internal heat deposition explains the ~1.3 R_Jup measurements."
+      ],
+      "typical_range": "~1 R_jup; inflated hot Jupiters up to 1.4–2 R_jup",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "exoplanet_parameter_range",
+          "title": "系外行星质量与半径范围",
+          "source": "Fulton et al. 2017 (CKS); NASA Exoplanet Archive; exoplanet.eu"
+        }
+      ]
+    },
+    {
+      "entity_type": "exoplanet",
+      "entity_name": "HD 209458b",
+      "field_name": "pl_mass",
+      "source_type": "paper",
+      "observation": "Values range from 0.64 to 0.73 M_jup across 14 records, with samples at 0.64, 0.67, 0.69 M_jup.",
+      "interpretation": "Falls squarely within the expected mass range for gas giants/hot Jupiters (0.5–13 M_Jup). The tight consistency confirms robust joint modeling of transit photometry and radial velocity curves.",
+      "cause_hypotheses": [
+        "Slight scatter arises from differing assumptions in host star mass/radius priors and orbital inclination/eccentricity constraints across studies."
+      ],
+      "typical_range": "0.5–13 M_jup",
+      "confidence": 0.97,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "exoplanet_parameter_range",
+          "title": "系外行星质量与半径范围",
+          "source": "Fulton et al. 2017 (CKS); NASA Exoplanet Archive; exoplanet.eu"
+        }
+      ]
+    }
+  ],
+  "cross_field_relationships": [
+    {
+      "field_a": "orb_period",
+      "field_b": "pl_radius",
+      "relationship_type": "correlation",
+      "description": "Indirectly linked via stellar irradiation effects. Short orbital periods place gas giants in high-flux environments, triggering radius inflation mechanisms (e.g., Ohno-Fortney heating, tidal dissipation). Consequently, hot Jupiters typically exhibit a negative correlation between period and radius compared to wider-orbit counterparts.",
+      "confidence": 0.75,
+      "kb_references": [
+        "kb:exoplanet_parameter_range"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "orb_period",
+      "field_b": "pl_mass",
+      "relationship_type": "no_relationship",
+      "description": "Dynamically independent parameters in the two-body approximation. Orbital period is set by semi-major axis and total system mass, while planetary mass is an intrinsic property. They are only coupled through observational degeneracies (e.g., inclination in transit/RV methods) or statistical formation/migration trends, not fundamental physics.",
+      "confidence": 0.6,
+      "kb_references": [
+        "kb:kepler_orbital_mechanics"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "pl_radius",
+      "field_b": "pl_mass",
+      "relationship_type": "physical_law",
+      "description": "Governed by the planetary mass-radius relation and interior equation of state (EOS). For gas giants, increasing mass enhances self-gravity, compressing the H/He envelope. Once electron degeneracy pressure dominates, radius becomes weakly dependent on or decreases with mass, following hydrostatic equilibrium and degenerate gas physics.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:degenerate_gas_equation",
+        "kb:stellar_hydrostatic_equilibrium",
+        "kb:exoplanet_parameter_range"
+      ],
+      "data_evidence": "sufficient_data"
+    }
+  ],
+  "usage_recommendations": {
+    "overall_grade": "good",
+    "suitable_use_cases": [
+      "Training and validating machine learning models for exoplanet parameter estimation (mass, radius, period)",
+      "Astrophysical studies on hot Jupiter atmospheric inflation, migration pathways, and irradiation effects",
+      "Benchmarking data curation, anomaly detection, and unit-conversion pipelines in astronomical databases",
+      "Ephemeris refinement and cross-catalog validation for well-characterized transiting systems"
+    ],
+    "limitations": [
+      "Substantial coverage gaps across multiple source papers, with frequent missing values for orb_period, pl_mass, and pl_radius in older or specialized publications",
+      "One critical data quality failure in pl_radius (1e8 R_Jup outlier) indicating unit conversion or transcription errors that must be removed before analysis",
+      "The observed period-radius trend is environmentally driven (stellar irradiation/inflation) rather than a direct physical law, limiting its use for causal inference",
+      "Minor scatter in mass and period estimates stems from differing stellar priors, inclination assumptions, and analysis pipelines across studies"
+    ],
+    "recommended_caveats": [
+      "Explicitly filter out the 1e8 R_Jup radius record and any other values exceeding physical bounds (>2 R_Jup for hot Jupiters) prior to modeling or statistics",
+      "When leveraging period-radius correlations, condition on host star properties and incident flux to avoid confounding environmental effects",
+      "Verify units, reference frames, and measurement conventions (e.g., R_Jup vs SI, transit vs RV-derived values) before merging with external catalogs",
+      "Treat coverage gaps as non-random; older or single-instrument surveys systematically lack certain parameters, so sample selection bias must be accounted for in population studies"
+    ],
+    "low_confidence_records": [],
+    "coverage_gaps": [
+      "2005ApJ...629L..45C: missing ['pl_mass', 'pl_radius']",
+      "2023ApJ...953..166X: missing ['orb_period', 'pl_radius']",
+      "2016MNRAS.457.1666S: missing ['orb_period', 'pl_radius']",
+      "2017A&A...608A..75C: missing ['orb_period', 'pl_radius']",
+      "2022MNRAS.517.1724D: missing ['orb_period', 'pl_radius']",
+      "2020MNRAS.491.3435S: missing ['orb_period', 'pl_radius']",
+      "2003ApJ...594..545B: missing ['orb_period', 'pl_mass']",
+      "2014A&A...565A.105B: missing ['orb_period', 'pl_mass']",
+      "2020A&A...635A.206C: missing ['orb_period', 'pl_mass']",
+      "2018MNRAS.479.3115V: missing ['orb_period', 'pl_radius']",
+      "2007ApJ...655..564K: missing ['pl_mass']",
+      "2010ApJ...717.1291L: missing ['orb_period', 'pl_radius']",
+      "2010Natur.465.1049S: missing ['orb_period', 'pl_radius']",
+      "2013ApJ...764..103R: missing ['orb_period', 'pl_mass']",
+      "2007ApJ...668L.171B: missing ['orb_period', 'pl_mass']",
+      "2006ApJ...649.1043R: missing ['orb_period', 'pl_mass']",
+      "2018ApJ...863L..11H: missing ['orb_period', 'pl_mass']",
+      "2022A&A...664A..56S: missing ['orb_period', 'pl_mass']",
+      "2014ApJ...790...79R: missing ['pl_mass', 'pl_radius']",
+      "2008A&A...485..865L: missing ['orb_period', 'pl_mass']",
+      "2005A&A...436..719I: missing ['orb_period', 'pl_mass']",
+      "2020MNRAS.493.1292D: missing ['orb_period']",
+      "2005ApJ...624..372K: missing ['pl_mass', 'pl_radius']",
+      "2003ApJ...596.1327S: missing ['pl_mass', 'pl_radius']",
+      "2006NewA...11..490I: missing ['pl_mass', 'pl_radius']",
+      "2010OAJ.....3..167I: missing ['pl_mass', 'pl_radius']",
+      "2003ApJ...588..545B: missing ['orb_period', 'pl_mass']",
+      "2020AJ....159..225K: missing ['pl_mass', 'pl_radius']",
+      "2005ApJ...632.1157W: missing ['orb_period', 'pl_radius']",
+      "2003ApJ...592..555B: missing ['pl_mass', 'pl_radius']"
+    ]
+  },
+  "overall_narrative": "The analysis of three interrelated planetary parameters confirms a classic hot Jupiter in a close-in orbit, yielding a robust and physically consistent characterization. Radius estimates tightly cluster between 1.26 and 1.36 R_Jup, aligning with established models of irradiated gas giants, while mass values fall securely within the canonical 0.5–13 M_Jup range. This strong cross-field agreement validates the joint modeling of long-baseline transit photometry and radial velocity data, demonstrating high measurement precision and reliable parameter estimation. Despite one extreme statistical outlier, the overall dataset supports a confident assessment of the planet’s physical and orbital properties, warranting a positive evaluation of the current observational constraints.",
+  "insufficient_context_fields": []
+}

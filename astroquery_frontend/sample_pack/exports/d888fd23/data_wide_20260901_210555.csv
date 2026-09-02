@@ -1,0 +1,17 @@
+﻿source_id,distance,distance_unit,parallax,parallax_unit,pm_dec,pm_dec_unit,pm_ra,pm_ra_unit,pm_total,pm_total_unit
+2026A&A...706A.112L,1.3,pc,768.373,mas,0.769458,arcsec/yr,"-3.781761",arcsec/yr,,
+2025AJ....170...22L,1.301971,pc,768.066,mas,0.769465,arcsec/yr,"-3.781741",arcsec/yr,,
+2019MNRAS.487.1653B,1.3,pc,,,,,,,,
+2018MNRAS.480.2660B,,,768.77,mas,0.7705,arcsec/yr,"-3.7738",arcsec/yr,,
+2017ApJ...850L...6A,1.3,pc,768.13,mas,0.76554,arcsec/yr,"-3.77575",arcsec/yr,,
+2016Natur.536..437A,1.295,pc,,,,,,,,
+2014ApJ...782...89S,,,771.64 ± 2.60,mas,,,,,3.78526 ± 0.0026,arcsec/yr
+2014AJ....148...91L,1.3,pc,768.13,mas,"-0.2624",arcsec/yr,3.8508,arcsec/yr,,
+2003PASA...20..257S,1.295,pc,,,,,,,,
+2001ApJ...547L..49W,1.295,pc,,,,,,,,
+1999AJ....118.1086B,,,768.7,mas,,,,,3.8517,arcsec/yr
+SRC_DB_ALLWISE,,,,,1279,mas/yr,"-2944",mas/yr,,
+SRC_DB_GAIA_DR2,,,768.5004,mas,769.766,mas/yr,"-3781.306",mas/yr,,
+SRC_DB_GAIA_DR3,1.3010999999999999,pc,768.06650000000002,mas,769.46500000000003,mas/yr,"-3781.741",mas/yr,3859.2280000000001,mas/yr
+SRC_DB_TIC,1.3012,pc,768.5,mas,769.766,mas/yr,"-3781.31",mas/yr,,
+SRC_DB_HIPPARCOS,,,772.33001708984375,mas,768.15999999999997,mas/yr,"-3775.6399999999999",mas/yr,,
