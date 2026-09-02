@@ -41,7 +41,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
   const [manageMode, setManageMode] = useState(false)
   const [checked, setChecked] = useState(() => new Set())
   // 2026-08-27: 左栏可拖拽调宽（200-400px）；默认 320（用户反馈 300 仍略窄，再宽一点点）
-  const [width, setWidth] = useState(320)
+  const [width, setWidth] = useState(345)
   const dragRef = useRef(null)
 
   const startDrag = (e) => {
@@ -105,7 +105,17 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
       />
       {/* 新建任务 + 收起 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '16px 12px 12px 16px' }}>
-        <Button variant="sidebar" className="flex-1 justify-start gap-2 text-sm font-normal" onClick={onNew}>
+        {/* 2026-09-01 用户重设计：淡绿主题主按钮（绿字/绿边/浅绿底） */}
+        <Button
+          variant="sidebar"
+          className="flex-1 justify-start gap-2 text-sm font-normal"
+          onClick={onNew}
+          style={{
+            background: 'var(--accent-light)',
+            color: 'var(--accent-text)',
+            border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)',
+          }}
+        >
           <Icon.Plus />
           <span>新建提取任务</span>
         </Button>
@@ -122,13 +132,14 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
             onClick={() => onFilterChange(f.key)}
             style={{
               flex: 1,
-              padding: '4px 0',
+              padding: '5px 0',
               fontSize: 12,
-              borderRadius: 5,
+              borderRadius: 6,
               border: 'none',
               cursor: 'pointer',
-              background: filter === f.key ? 'var(--sidebar-active)' : 'transparent',
-              color: filter === f.key ? 'var(--sidebar-text)' : 'var(--sidebar-text-secondary)',
+              // 用户重设计：选中筛选 chip 淡绿底绿字
+              background: filter === f.key ? 'var(--accent-light)' : 'transparent',
+              color: filter === f.key ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
               fontWeight: filter === f.key ? 510 : 400,
             }}
           >
@@ -195,17 +206,19 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                 onMouseLeave={() => setHoveredId(null)}
                 style={{
                   padding: '8px 10px',
-                  borderRadius: 6,
+                  borderRadius: 8,
                   marginBottom: 2,
                   cursor: manageMode ? (active_ ? 'not-allowed' : 'pointer') : 'pointer',
                   opacity: manageMode && active_ ? 0.5 : 1,
-                  background: isChecked
-                    ? 'var(--sidebar-active)'
-                    : isActive
-                      ? 'var(--sidebar-active)'
-                      : hoveredId === task.task_id
-                        ? 'var(--sidebar-hover)'
-                        : 'transparent',
+                  // 用户重设计：选中/勾选条目淡绿底 + 左侧绿色圆角竖条
+                  background: (isChecked || isActive)
+                    ? 'var(--accent-light)'
+                    : hoveredId === task.task_id
+                      ? 'var(--sidebar-hover)'
+                      : 'transparent',
+                  boxShadow: (isChecked || isActive)
+                    ? 'inset 3px 0 0 0 var(--accent)'
+                    : undefined,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -215,6 +228,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                       checked={isChecked}
                       disabled={active_}
                       onChange={() => toggleCheck(task.task_id)}
+                      onClick={(e) => e.stopPropagation()}  // 阻止冒泡到行 onClick——否则两次翻转抵消，勾选无反应
                       style={{ accentColor: 'var(--accent)', flexShrink: 0 }}
                     />
                   )}
@@ -245,6 +259,13 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                     </span>
                   )}
                 </div>
+                {/* 2026-09-01 用户重设计：任务条目「N 条记录 · M 个来源」（完成任务；列表接口轻量统计列） */}
+                {task.status === 'completed' && (Number(task.record_count) > 0 || Number(task.source_count) > 0) && (
+                  <div style={{ fontSize: 11, color: 'var(--sidebar-text-secondary)', marginTop: 4, paddingLeft: 14 }}>
+                    {Number(task.record_count) > 0 && <>{task.record_count} 条记录 · </>}
+                    {task.source_count} 个来源
+                  </div>
+                )}
                 {/* 2026-08-27：操作按钮（重试/重放/清理）统一移到此行、紧挨时间——
                     「时间 + 操作」一组视觉，第一行只保留标题（用户反馈：旧版
                     按钮散在标题行/行末，根本看不见） */}

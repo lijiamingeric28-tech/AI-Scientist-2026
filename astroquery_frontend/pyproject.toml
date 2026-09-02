@@ -38,6 +38,8 @@ dependencies = [
     "uvicorn>=0.25",
     "sse-starlette>=1.6",
     "langgraph-checkpoint-sqlite>=2.0",
+    # ── 桌面窗口（2026-09-01：内置引擎入口 web/desktop.py，WebView2 运行时 Win11 自带）
+    "pywebview>=4.0",
 ]
 
 [project.optional-dependencies]

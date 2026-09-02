@@ -482,8 +482,55 @@ body,
   transition: background-color 0.12s ease;
 }
 
+.record-row td:first-child {
+  position: relative;
+}
+
 .record-row:hover {
   background: var(--sidebar-hover);
+}
+
+/* 用户重设计：hover 左侧绿色指示条（圆角，不覆盖行高全高） */
+.record-row:hover td:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 99px;
+  background: var(--accent);
+}
+
+
+/* 记录分页按钮（用户重设计：灰边小方块；当前页 accent 实心白字） */
+.pager-btn {
+  min-width: 28px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  background: var(--surface-bg);
+  font-size: 12px;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+}
+
+.pager-btn:hover:not(:disabled) {
+  border-color: var(--content-fg-tertiary);
+  color: var(--content-fg);
+}
+
+.pager-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pager-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-on);
+  font-weight: 600;
 }
 
 /* 修改轨迹条目 */
@@ -623,6 +670,12 @@ textarea {
 
 textarea::placeholder {
   color: var(--content-fg-tertiary);
+}
+
+/* 编辑控件鼠标聚焦也命中 :focus-visible——textarea 为自定义外观（无边框），
+   去除全局 accent 聚焦环（点击输入框出现的绿色描边） */
+textarea:focus-visible {
+  outline: none;
 }
 
 /* Focus visible for accessibility（OpenAI：青绿聚焦环 + 柔和外圈） */

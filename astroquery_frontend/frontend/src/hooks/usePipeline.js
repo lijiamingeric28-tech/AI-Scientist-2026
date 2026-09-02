@@ -891,15 +891,9 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task, reset])
 
-  /* ── 提交新查询：上传 → 建任务 → 打开流 ── */
-  const submitQuery = useCallback(async (query, fileList) => {
-    let pdfIds = []
-    if (fileList && fileList.length) {
-      const up = await api.uploadFiles(fileList)
-      if (up.rejected?.length) throw new Error(up.rejected[0].reason)
-      pdfIds = up.pdf_ids
-    }
-    const task = await api.createTask(query, pdfIds)
+  /* ── 提交新查询：建任务 → 打开流 ── */
+  const submitQuery = useCallback(async (query) => {
+    const task = await api.createTask(query)
     await openTask(task.task_id)
     return task.task_id
   }, [openTask])

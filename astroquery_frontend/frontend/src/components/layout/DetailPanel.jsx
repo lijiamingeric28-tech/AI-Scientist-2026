@@ -7,6 +7,7 @@ import * as api from '@/services/api'
 import { STATUS_LABELS, STATUS_COLORS } from '@/components/status'
 import { SourcesList, OutputFiles } from '@/components/results/ResultTabs'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useWheelHorizontal } from '@/hooks/useWheelHorizontal'
 import Markdown from '@/lib/markdown'
 
 /* 右侧详情面板（块 5 定案）：
@@ -77,7 +78,7 @@ function FigureLightboxModal({ fig, onClose }) {
     <div
       onClick={onClose}
       className="animate-fade-in"
-      style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -92,21 +93,25 @@ function FigureLightboxModal({ fig, onClose }) {
           overflow: 'hidden',
         }}
       >
-        {/* 头部：标题 + 来源 + 关闭（对齐记录详情头部） */}
-        <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-          <span style={{ fontSize: 14, fontWeight: 510, color: 'var(--content-fg)' }}>
+        {/* 头部：标题 + 来源 + 关闭（对齐记录详情头部；minWidth:0 防标题/来源挤出头部） */}
+        <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0, overflow: 'hidden' }}>
+          <span style={{ fontSize: 14, fontWeight: 510, color: 'var(--content-fg)', flexShrink: 0, whiteSpace: 'nowrap' }}>
             图证详情{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
           </span>
           {fig.source_id && (
-            <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{fig.source_id}</span>
+            <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{fig.source_id}</span>
           )}
-          <span style={{ flex: 1 }} />
+          <span style={{ flexShrink: 0 }} />
           <Button variant="ghost" size="icon" onClick={onClose}><Icon.Close /></Button>
         </div>
-        {/* 大图区：objectFit contain 撑满剩余高度 */}
-        <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-secondary)', padding: 14 }}>
+        {/* 大图区：双层包装——外层 overflow hidden 兜底，内层 wrapper(minWidth:0)
+            承接 flex，img 只受 max*100% + objectFit:contain 约束。
+            任意长宽比的图都等比缩放居中，不拉伸、不出界（2026-09-01 兼容性修复） */}
+        <div style={{ flex: 1, minHeight: 0, background: 'var(--surface-secondary)', padding: 14, overflow: 'hidden' }}>
           {fig.image_url ? (
-            <img src={fig.image_url} alt={fig.caption || ''} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            <div style={{ width: '100%', height: '100%', minWidth: 0, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img src={fig.image_url} alt={fig.caption || ''} style={{ display: 'block', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            </div>
           ) : (
             <span className="hint-dim">该图证无图像文件</span>
           )}
@@ -339,6 +344,134 @@ function Chip({ children, color, bg }) {
     }}>
       {children}
     </span>
+  )
+}
+
+/* 概览 KPI 卡（用户重设计：2×2，完成状态带绿色圆环对勾） */
+function KpiCard({ label, value, status }) {
+  return (
+    <div className="kpi-card" style={{ padding: '10px 12px' }}>
+      <div className="kpi-label" style={{ marginBottom: 4 }}>{label}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, minHeight: 22 }}>
+        <span className="font-mono kpi-value-sm" style={{ color: 'var(--content-fg)' }}>{value}</span>
+        {status === 'completed' && (
+          <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="var(--status-success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <circle cx="10" cy="10" r="8.2" />
+            <path d="M6.6 10.2l2.2 2.2 4.4-4.6" />
+          </svg>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── 概览：6 维雷达图（2026-09-01 用户重设计；轴取后端真实 dimension_scores
+ * completeness/consistency/format/source_reliability/conflict_risk/extraction_quality） ── */
+const QUALITY_DIM_LABELS = {
+  completeness: '完整性',
+  consistency: '一致性',
+  format: '格式规范',
+  source_reliability: '来源可信度',
+  conflict_risk: '冲突风险',
+  extraction_quality: '提取质量',
+}
+
+function RadarChart({ dims, size = 230 }) {
+  const cx = size / 2
+  const cy = size / 2
+  const radius = size / 2 - 38
+  const n = dims.length || 1
+  const pt = (i, r) => {
+    const ang = (Math.PI * 2 * i) / n - Math.PI / 2
+    return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)]
+  }
+  const ringPoly = (frac) => dims.map((_, i) => pt(i, radius * frac).join(',')).join(' ')
+  const dataPoly = dims.map((d, i) => {
+    const r = radius * Math.max(0, Math.min(1, Number(d.score) || 0))
+    return pt(i, r).join(',')
+  }).join(' ')
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label="质量维度雷达图">
+      {[0.25, 0.5, 0.75, 1].map((f) => (
+        <polygon key={f} points={ringPoly(f)} fill="none" stroke="var(--surface-border-subtle)" strokeWidth={1} />
+      ))}
+      {dims.map((_, i) => {
+        const [x, y] = pt(i, radius)
+        return <line key={`a-${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--surface-border-subtle)" strokeWidth={1} />
+      })}
+      <polygon points={dataPoly} fill="color-mix(in srgb, var(--accent) 10%, transparent)" stroke="var(--accent)" strokeWidth={1.6} />
+      {dims.map((d, i) => {
+        const [x, y] = pt(i, radius * Math.max(0.02, Math.min(1, Number(d.score) || 0)))
+        return <circle key={`n-${i}`} cx={x} cy={y} r={2.4} fill="var(--accent)" />
+      })}
+      {dims.map((d, i) => {
+        const [x, y] = pt(i, radius + 13)
+        const anchor = Math.abs(x - cx) < 8 ? 'middle' : (x < cx ? 'end' : 'start')
+        return (
+          <text key={`l-${i}`} x={x} y={y - 2} textAnchor={anchor} fontSize={10} fill="var(--content-fg-secondary)">
+            {d.label}
+          </text>
+        )
+      })}
+      {dims.map((d, i) => {
+        const [x, y] = pt(i, radius + 25)
+        const anchor = Math.abs(x - cx) < 8 ? 'middle' : (x < cx ? 'end' : 'start')
+        return (
+          <text key={`p-${i}`} x={x} y={y} textAnchor={anchor} fontSize={10} fontWeight={510} fill="var(--content-fg)">
+            {Math.round((Number(d.score) || 0) * 100)}%
+          </text>
+        )
+      })}
+    </svg>
+  )
+}
+
+/* 概览「数据质量评分」卡：大数字 + 等级 + 水平条 + 雷达图 + 统计行 */
+function QualityScoreSection({ qScoring, normCount, onOpenQuality }) {
+  if (!qScoring) {
+    return (
+      <div className="empty-state" style={{ padding: '20px 12px' }}>
+        <span style={{ fontSize: 'var(--fs-sm)' }}>任务进行中，质检完成后展示评分</span>
+      </div>
+    )
+  }
+  const overall = Number(qScoring.overall_score) || 0
+  const dims = Object.entries(qScoring.dimension_scores || {}).map(([key, score]) => ({
+    label: QUALITY_DIM_LABELS[key] || key,
+    score,
+  }))
+  const level = (qScoring.quality_level || 'unknown').toUpperCase()
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+            <span className="font-mono" style={{ fontSize: 40, fontWeight: 590, letterSpacing: '-0.03em', lineHeight: 1, color: 'var(--content-fg)' }}>
+              {Math.round(overall * 100)}
+            </span>
+            <span className="font-mono" style={{ fontSize: 13, color: 'var(--content-fg-tertiary)' }}>/100</span>
+          </div>
+          <span style={{ fontSize: 11, fontWeight: 590, letterSpacing: '0.08em', marginTop: 4, color: gradeColor(qScoring.quality_level) }}>{level}</span>
+          <div style={{ width: 84, height: 5, borderRadius: 99, background: 'var(--surface-secondary)', marginTop: 6, overflow: 'hidden' }}>
+            <div style={{ height: '100%', borderRadius: 99, width: `${Math.round(overall * 100)}%`, background: scoreColor(overall) }} />
+          </div>
+        </div>
+        {/* 雷达（label 放左侧时右侧图居中） */}
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: 'center' }}>
+          {dims.length ? <RadarChart dims={dims} /> : null}
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+        <span className="section-label">质量等级</span>
+        <span style={{ fontSize: 12, fontWeight: 510, color: gradeColor(qScoring.quality_level) }}>
+          {String(qScoring.quality_level || '').toUpperCase()}
+        </span>
+        {Number.isFinite(normCount) && normCount >= 0 && (
+          <span style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>· 归一化 {normCount}</span>
+        )}
+        <span style={{ flex: 1 }} />
+      </div>
+    </div>
   )
 }
 
@@ -663,6 +796,9 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
   // 即此前的最小宽度（MIN_W），三栏更均衡
   const [width, setWidth] = useState(400)
   const [section, setSection] = useState('overview')
+  // 分区 Tab 条：横向溢出时鼠标滚轮左右滚动
+  const tabBarRef = useRef(null)
+  useWheelHorizontal(tabBarRef)
   const [lightbox, setLightbox] = useState(null)
   const dragRef = useRef(null)
   const isDrawer = useMediaQuery('(max-width: 1279px)')
@@ -775,17 +911,17 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
    */
   const qState = useMemo(() => quality?.quality_report?.report_state?.quality || null, [quality])
   const qScoring = useMemo(() => qState?.quality_scoring || null, [qState])
+  // 归一化修改数（slim 响应保留 modifications 列表；概览「归一化 N」）
+  const normCount = useMemo(
+    () => (Array.isArray(quality?.quality_report?.report_state?.normalization?.modifications)
+      ? quality.quality_report.report_state.normalization.modifications.length : null),
+    [quality],
+  )
   const workflowState = useMemo(() => quality?.quality_report?.workflow_state || null, [quality])
   const procStats = useMemo(
     () => quality?.quality_report?.output_state?.quality_summary?.processing_statistics || null,
     [quality],
   )
-  const overallScore = useMemo(() => {
-    const v = qScoring?.overall_score
-    if (typeof v !== 'number') return null
-    return Math.round(v * 100)
-  }, [qScoring])
-
   if (!open) return null
 
   const insightCount = insights
@@ -856,7 +992,7 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
         </div>
 
         {/* 分区 Tab */}
-        <div style={{ display: 'flex', gap: 2, padding: '6px 10px 0', borderBottom: '1px solid var(--surface-border)', flexShrink: 0, overflowX: 'auto' }}>
+        <div ref={tabBarRef} style={{ display: 'flex', gap: 2, padding: '6px 10px 0', borderBottom: '1px solid var(--surface-border)', flexShrink: 0, overflowX: 'auto' }}>
           {sections.map((s) => (
             <button
               key={s.key}
@@ -873,53 +1009,25 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
             <PanelSkeleton />
           ) : (
             <div key={section} className="animate-tab-in">
-              {/* ── 概览 ── */}
+              {/* ── 概览（用户重设计：2×2 KPI + 质量评分大数字 + 6 维雷达 + 报告入口） ── */}
               {section === 'overview' && (
                 <div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8, marginBottom: 16 }}>
-                    {[
-                      ['数据源', sources.length, 'var(--content-fg)'],
-                      ['记录', recordCount ?? '—', 'var(--content-fg)'],
-                      ['图证', figures.length, 'var(--content-fg)'],
-                      ['状态', STATUS_LABELS[task?.status] || '—', STATUS_COLORS[task?.status] || 'var(--content-fg)'],
-                    ].map(([label, value, color]) => (
-                      <div key={label} className="kpi-card" style={{ padding: '10px 12px' }}>
-                        <div className="kpi-label" style={{ marginBottom: 4 }}>{label}</div>
-                        <div className="font-mono kpi-value-sm" style={{ color }}>{value}</div>
-                      </div>
-                    ))}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 18 }}>
+                    <KpiCard label="数据源" value={sources.length} />
+                    <KpiCard label="数据记录" value={recordCount ?? '—'} />
+                    <KpiCard label="图证" value={figures.length} />
+                    <KpiCard label="状态" value={STATUS_LABELS[task?.status] || '—'} status={task?.status} />
                   </div>
 
-                  {/* 质量评分摘要（真实数据：report_state.quality.quality_scoring） */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                    <span className="section-label">数据质量评分</span>
+                    <span style={{ flex: 1 }} />
+                    <Button variant="outline" size="sm" onClick={() => setSection('quality')}>
+                      查看质量报告
+                    </Button>
+                  </div>
                   {qScoring ? (
-                    <>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                        <span className="section-label">质量评分</span>
-                        <span
-                          className="font-mono"
-                          style={{
-                            marginLeft: 'auto', fontSize: 'var(--fs-md)', fontWeight: 510,
-                            color: scoreColor(qScoring.overall_score),
-                          }}
-                        >
-                          {overallScore} 分
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
-                        {qScoring.quality_level && (
-                          <span style={{ fontSize: 11, padding: '2px 10px', borderRadius: 'var(--radius-pill)', fontWeight: 510, color: gradeColor(qScoring.quality_level), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
-                            等级 {String(qScoring.quality_level).toUpperCase()}
-                          </span>
-                        )}
-                        <span className="hint-dim">
-                          {Object.entries(qState?.route_counts || {})
-                            .map(([r, n]) => `${ROUTE_LABELS[r] || r} ${n}`).join(' · ') || '—'}
-                        </span>
-                      </div>
-                      <Button variant="outline" size="sm" onClick={() => setSection('quality')}>
-                        查看质量报告
-                      </Button>
-                    </>
+                    <QualityScoreSection qScoring={qScoring} normCount={normCount} />
                   ) : (
                     <TabEmpty text={taskRunning ? '任务进行中，质检完成后展示评分' : '暂无质量报告'} />
                   )}

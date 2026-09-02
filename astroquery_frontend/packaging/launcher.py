@@ -4,9 +4,12 @@
 1. 解析包根（exe 所在目录）与数据目录（exe 旁 data/）
 2. 设置 ASTROQUERY_DATA_DIR / ASTROQUERY_FRONTEND_DIR 环境变量
    （web/main.py 与 quality/subgraph2 均读这两个变量外置可写目录）
-3. 启动 uvicorn 服务 + 自动打开浏览器
+3. 启动 uvicorn 服务：
+   - 默认：自动打开外部浏览器
+   - --desktop：内置引擎窗口（pywebview + WebView2，不依赖外部浏览器）
 4. Ctrl+C / 窗口关闭时优雅退出
 """
+import argparse
 import os
 import sys
 import threading
@@ -33,6 +36,17 @@ def _data_dir(root: Path) -> Path:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="AstroQuery 启动器")
+    parser.add_argument(
+        "--desktop", action="store_true",
+        help="内置引擎窗口（pywebview + WebView2），不打开外部浏览器",
+    )
+    parser.add_argument(
+        "--port", type=int, default=None,
+        help="覆盖服务端口（默认取 ASTROQUERY_PORT，缺省 8000）",
+    )
+    args = parser.parse_args()
+
     root = _app_root()
     data = _data_dir(root)
     os.environ["ASTROQUERY_DATA_DIR"] = str(data)
@@ -67,6 +81,12 @@ def main() -> None:
             k, _, v = line.partition("=")
             os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
+    # --desktop：内置窗口模式（不需要浏览器；复用 web.desktop 的端口自动选取）
+    if args.desktop:
+        from web.desktop import run_embedded
+        run_embedded(host=HOST, port=args.port if args.port else None)
+        return
+
     def _open_browser() -> None:
         time.sleep(STARTUP_DELAY)
         webbrowser.open(f"http://{HOST}:{PORT}")
@@ -77,7 +97,7 @@ def main() -> None:
     from web.main import app as fastapi_app
 
     import uvicorn
-    uvicorn.run(fastapi_app, host=HOST, port=PORT, log_level="info")
+    uvicorn.run(fastapi_app, host=HOST, port=args.port or PORT, log_level="info")
 
 
 if __name__ == "__main__":

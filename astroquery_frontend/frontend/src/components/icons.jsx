@@ -3,7 +3,6 @@
 export const Icon = {
   Plus: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><path d="M8 3v10M3 8h10" /></svg>,
   Send: (p) => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M14 2L7 9M14 2l-4.5 12-2.5-5.5L2 6z" /></svg>,
-  Paperclip: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13.5 7.5l-6 6a3.5 3.5 0 01-5-5l6-6a2.5 2.5 0 013.5 3.5l-6 6a1.5 1.5 0 01-2-2l5.5-5.5" /></svg>,
   Check: (p) => <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>,
   ChevronDown: (p) => <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 4.5l3 3 3-3" /></svg>,
   ChevronRight: (p) => <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4.5 3l3 3-3 3" /></svg>,
@@ -19,6 +18,10 @@ export const Icon = {
   Sparkle: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M8 2l1.5 4L14 7.5 9.5 9 8 14 6.5 9 2 7.5l4.5-1.5z" /></svg>,
   Menu: (p) => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><path d="M2 4h12M2 8h12M2 12h12" /></svg>,
   Refresh: (p) => <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13.5 8a5.5 5.5 0 11-1.6-3.9M13.5 1.5v3h-3" /></svg>,
+  Search: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><circle cx="7" cy="7" r="4" /><path d="M10.5 10.5L14 14" /></svg>,
+  Filter: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M2 4h12M4.8 8h6.4M7 11.5h2" /></svg>,
+  Ellipsis: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" stroke="none" {...p}><circle cx="3" cy="8" r="1.4" /><circle cx="8" cy="8" r="1.4" /><circle cx="13" cy="8" r="1.4" /></svg>,
+  Table: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" {...p}><rect x="2" y="3" width="12" height="10" rx="2" /><path d="M2 6.8h12M6.8 6.8v6.2" /></svg>,
   Play: (p) => <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" stroke="none" {...p}><path d="M3 1.8l7 4.2-7 4.2z" /></svg>,
   Sun: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...p}><circle cx="8" cy="8" r="3" /><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M12.6 3.4l-1 1M4.4 11.6l-1 1" /></svg>,
   Moon: (p) => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13.5 9.5A5.5 5.5 0 016.5 2.5a5.5 5.5 0 107 7z" /></svg>,

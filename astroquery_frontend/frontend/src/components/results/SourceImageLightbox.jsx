@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 
@@ -18,6 +18,28 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
   const [view, setView] = useState({ scale: 1, pan: { x: 0, y: 0 } })
   const stageRef = useRef(null)   // 视口容器 (缩放锚点计算用)
   const dragRef = useRef(null)
+  // 2026-09-01 bbox 漂移修复：给图片盒显式像素尺寸（fit 计算）。
+  // 此前用 maxHeight:100%（wrapper↔img 互为基准的 % 自引用链），窗口/图比例变化时
+  // 浏览器解析出不同布局尺寸 → bbox 百分比基准与 img 显示网格脱钩 → 放大后红框漂移。
+  const [nat, setNat] = useState(null)          // {nw, nh} 原图尺寸（onLoad）
+  const [stageBox, setStageBox] = useState(null) // {w, h} 舞台视口尺寸（ResizeObserver）
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const apply = () => {
+      const r = el.getBoundingClientRect()
+      setStageBox({ w: r.width, h: r.height })
+    }
+    apply()
+    const ro = new ResizeObserver(apply)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  const fit = useMemo(() => {
+    if (!nat || !stageBox || !stageBox.w || !stageBox.h) return null
+    const s = Math.min(stageBox.w / nat.nw, stageBox.h / nat.nh, 1)  // ≤1：只缩不放
+    return { w: Math.max(1, Math.round(nat.nw * s)), h: Math.max(1, Math.round(nat.nh * s)) }
+  }, [nat, stageBox])
 
   const [x0, y0, x1, y1] = bbox
   const isTable = source === 'full_table'
@@ -98,6 +120,7 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
         position: 'fixed', inset: 0, zIndex: 220,
         background: 'var(--overlay)',
         display: 'flex', flexDirection: 'column',
+        overflow: 'hidden',
       }}
     >
       {/* 工具条 (玻璃风格, 与 RecordDetail 弹窗统一) */}
@@ -135,17 +158,27 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
         }}
       >
         <div style={{
-          position: 'relative', maxWidth: '92vw', maxHeight: 'calc(100vh - 90px)',
+          // 显式像素尺寸（fit 计算，无 % 循环）——bbox 百分比绑定到与 img 完全一致的
+          // 网格；缩放/平移仍作用于本容器（transform），红框与图永远整齐同动
+          position: 'relative',
+          width: fit ? `${fit.w}px` : '100%',
+          height: fit ? `${fit.h}px` : '100%',
+          maxWidth: '100%', maxHeight: '100%',
           transform: `translate(${view.pan.x}px, ${view.pan.y}px) scale(${view.scale})`,
           boxShadow: 'var(--shadow-modal)',
           borderRadius: 'var(--radius-md)',
           overflow: 'hidden',
+          flexShrink: 0,
         }}>
           <img
             src={url}
             alt="溯源定位大图"
             onError={() => setFailed(true)}
-            style={{ display: 'block', maxWidth: '92vw', maxHeight: 'calc(100vh - 90px)', width: 'auto', height: 'auto' }}
+            onLoad={(e) => {
+              const im = e.target
+              if (im.naturalWidth && im.naturalHeight) setNat({ nw: im.naturalWidth, nh: im.naturalHeight })
+            }}
+            style={{ display: 'block', width: '100%', height: '100%', objectFit: 'fill' }}
             draggable={false}
           />
           <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>

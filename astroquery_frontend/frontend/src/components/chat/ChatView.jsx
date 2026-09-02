@@ -2,6 +2,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import Markdown from '@/lib/markdown'
+import * as api from '@/services/api'
 import StageCard from './StageCard'
 import ClarificationCard from './ClarificationCard'
 import ResultTabs from '@/components/results/ResultTabs'
@@ -60,12 +61,19 @@ const EXAMPLE_PROMPTS = [
   '收集 M31 球状星团系统的金属丰度数据',
 ]
 
+/* 顶部信息带：运行耗时（completed_at-created_at）+ 数据源/记录计数（完成时一次性拉取）
+ * 2026-09-01 用户重设计 */
+function fmtDuration(sec) {
+  if (!Number.isFinite(sec) || sec < 0) return null
+  const m = Math.floor(sec / 60)
+  const s = Math.round(sec % 60)
+  return m > 0 ? `${m}m ${s}s` : `${s}s`
+}
+
 export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleLog, focusStage, onOpenInsights }) {
   const { messages, stages, timeline, pending, started, taskDone, logs, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState('')
-  const [files, setFiles] = useState([])   // 已选 PDF chips [{name, size}]
   const [submitting, setSubmitting] = useState(false)
-  const fileInputRef = useRef(null)
   const { toast } = useToast()
   // 卡片默认展开，用户手动收起才收起（collapsed 记录用户收起过的卡）。
   // P1-8：done 卡无展开内容（完成摘要已在卡头）→ 默认折叠
@@ -75,6 +83,25 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
   const scrollRef = useRef(null)
   // 贴底跟随：用户在底部附近才自动滚动，向上翻阅时不被拽回
   const stickToBottomRef = useRef(true)
+
+  // 顶部信息带统计（任务完成时一次性拉取并缓存；taskId 键防重复请求）
+  const [summaryStats, setSummaryStats] = useState(null)
+  const statsCacheRef = useRef({})
+  useEffect(() => {
+    if (!task?.task_id || task.status !== 'completed') return
+    const cached = statsCacheRef.current[task.task_id]
+    if (cached) { setSummaryStats(cached); return }
+    let alive = true
+    Promise.all([
+      api.getSources(task.task_id).catch(() => []),
+      api.getRecords(task.task_id).catch(() => []),
+    ]).then(([s, r]) => {
+      const d = { sources: (Array.isArray(s) ? s : []).length, records: (Array.isArray(r) ? r : []).length }
+      statsCacheRef.current[task.task_id] = d
+      if (alive) setSummaryStats(d)
+    })
+    return () => { alive = false }
+  }, [task?.task_id, task?.status])
 
   // 2026-08-27：useCallback 稳定引用——StageCard 已 memo，onToggle/onOpenAgent/
   // onOpenInsights 若不稳定（每次 render 新函数），memo 恒失效，高频 setStages
@@ -150,19 +177,6 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
     return () => cancelAnimationFrame(raf)
   }, [messages, stages, pending, running, taskDone])
 
-  const formatSize = (bytes) => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`)
-
-  const handleFiles = (e) => {
-    const list = Array.from(e.target.files || [])
-    const valid = list.filter((f) => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'))
-    const rejected = list.length - valid.length
-    if (rejected > 0) toast(`仅支持 PDF 文件（${rejected} 个已忽略）`, 'error')
-    setFiles((prev) => [...prev, ...valid.map((f) => ({ name: f.name, size: f.size, file: f }))])
-    e.target.value = ''
-  }
-
-  const removeFile = (name) => setFiles((prev) => prev.filter((f) => f.name !== name))
-
   const handleSubmit = async () => {
     const text = input.trim()
     if (!text || running || clarifying || submitting) return
@@ -173,12 +187,11 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
         await submitAnswer(text)
         setInput('')
       } else {
-        // 新查询：上传 PDF → 建任务 → 打开事件流
-        const taskId = await submitQuery(text, files.map((f) => f.file))
+        // 新查询：建任务 → 打开事件流
+        const taskId = await submitQuery(text)
         onNewTask?.(taskId)
-        // L-02：清理移入成功分支——失败（400/上传错误）保留输入与已选 PDF
+        // 失败（400）保留输入
         setInput('')
-        setFiles([])
       }
     } catch (err) {
       toast(`提交失败：${err.message}`, 'error')
@@ -192,6 +205,26 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
       {/* 内容区：统一时间线 —— 消息与卡片按产生顺序交错排列 */}
       <div ref={scrollRef} onScroll={handleScroll} className="chat-gutter" style={{ flex: 1, overflowY: 'auto', padding: '24px 24px 16px' }}>
         <div className="chat-column">
+          {/* 顶部信息带（用户重设计）：耗时 · 数据源 · 记录数 + 质量总结 */}
+          {task?.status === 'completed' && summaryStats && (
+            <div style={{ marginBottom: 18 }}>
+              <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginBottom: 8 }}>
+                运行耗时 {fmtDuration((new Date(task.completed_at || 0) - new Date(task.created_at)) / 1000) || '—'}
+                {' · '}{summaryStats.sources} 个数据源 · {summaryStats.records} 条记录
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                <span style={{
+                  width: 20, height: 20, borderRadius: '50%', background: 'var(--status-success)',
+                  color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>
+                  <Icon.Check style={{ width: 10, height: 10 }} />
+                </span>
+                <span style={{ fontSize: 14, color: 'var(--content-fg)' }}>
+                  数据提取已完成，整体质量良好，可直接用于后续天文数据分析。
+                </span>
+              </div>
+            </div>
+          )}
           {timeline.map((entry) => {
             if (entry.kind === 'msg') {
               const msg = messages.find((m) => m.id === entry.id)
@@ -271,41 +304,12 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
         <div className="chat-column">
           <div
             className="composer"
-            style={{ opacity: running || clarifying ? 0.6 : 1 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 6px 6px 16px', opacity: running || clarifying ? 0.6 : 1 }}
           >
-            {/* 已选 PDF chips */}
-            {files.length > 0 && (
-              <div style={{ display: 'flex', gap: 6, padding: '10px 14px 0', flexWrap: 'wrap' }}>
-                {files.map((f) => (
-                  <span
-                    key={f.name}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 6,
-                      padding: '3px 8px',
-                      fontSize: 12,
-                      borderRadius: 6,
-                      background: 'var(--surface-secondary)',
-                      border: '1px solid var(--surface-border)',
-                      color: 'var(--content-fg)',
-                    }}
-                  >
-                    <Icon.FileText style={{ width: 12, height: 12, color: 'var(--content-fg-tertiary)' }} />
-                    {f.name} <span style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>{formatSize(f.size)}</span>
-                    <button
-                      onClick={() => removeFile(f.name)}
-                      style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--content-fg-tertiary)', padding: 0, display: 'flex' }}
-                      title="移除"
-                    >
-                      <Icon.Close style={{ width: 10, height: 10 }} />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* 用户重设计：左图标 + 大圆角输入舱 + 圆形绿色发送钮 */}
+            <Icon.Sparkle style={{ width: 15, height: 15, color: 'var(--accent-text)', flexShrink: 0 }} />
             <textarea
-              rows={2}
+              rows={1}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -315,34 +319,33 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                 }
               }}
               disabled={running || clarifying}
-              placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '描述您的天文查询需求，智能体将自动检索文献（也可上传 PDF）…'}
+              placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '查询数据、筛选记录或继续分析…'}
               style={{
-                width: '100%',
-                padding: '14px 16px 8px',
+                flex: 1,
+                minWidth: 0,
+                // 一行布局：上下对称 padding，文字与星标/发送钮同轴垂直居中
+                padding: '9px 4px 9px',
                 fontSize: 14,
                 lineHeight: 1.5,
                 color: 'var(--content-fg)',
-                minHeight: 48,
+                minHeight: 21,
                 ...((running || clarifying) ? { cursor: 'not-allowed' } : {}),
               }}
             />
-            <div style={{ display: 'flex', alignItems: 'center', padding: '6px 10px', gap: 4 }}>
-              {/* 附件上传（运行/澄清期禁用） */}
-              <input ref={fileInputRef} type="file" accept=".pdf" multiple hidden onChange={handleFiles} />
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1.5 text-xs"
-                disabled={running || clarifying}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Icon.Paperclip />上传 PDF
-              </Button>
-              <div style={{ flex: 1 }} />
-              <Button variant="accent" size="icon" className="rounded-full" onClick={handleSubmit} disabled={!input.trim() || running || clarifying}>
-                <Icon.Send />
-              </Button>
-            </div>
+            <button
+              onClick={handleSubmit}
+              disabled={!input.trim() || running || clarifying}
+              title="发送"
+              style={{
+                width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+                border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: running || clarifying ? 'var(--surface-secondary)' : !input.trim() ? 'var(--surface-secondary)' : 'var(--accent)',
+                color: running || clarifying ? 'var(--content-fg-tertiary)' : !input.trim() ? 'var(--content-fg-tertiary)' : 'var(--accent-on)',
+                transition: 'background .15s, color .15s',
+              }}
+            >
+              <Icon.Send />
+            </button>
           </div>
           <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
             AI Scientist 可能产生误差，请核实关键信息

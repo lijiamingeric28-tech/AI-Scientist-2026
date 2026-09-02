@@ -40,28 +40,11 @@ async function request(path, options = {}) {
   return res.json()
 }
 
-/* ── 上传 / 任务 ── */
-export async function uploadFiles(fileList) {
-  const fd = new FormData()
-  fileList.forEach((f) => fd.append('files', f))
-  // H-03：res.ok 检查——4xx/5xx 不再静默解析错误体当成功（此前 up.pdf_ids
-  // undefined → 前端静默以空列表建任务，用户以为上传成功）
-  const res = await fetch(`${BASE}/upload`, { method: 'POST', body: fd })
-  if (!res.ok) {
-    let detail = res.statusText
-    try {
-      const body = await res.json()
-      detail = body.detail ?? body
-    } catch { /* ignore */ }
-    throw new Error(formatErrorDetail(detail))
-  }
-  return res.json()
-}
-
-export function createTask(query, pdfIds) {
+/* ── 任务 ── */
+export function createTask(query) {
   return request('/tasks', {
     method: 'POST',
-    body: JSON.stringify({ query, pdf_ids: pdfIds }),
+    body: JSON.stringify({ query }),
   })
 }
 

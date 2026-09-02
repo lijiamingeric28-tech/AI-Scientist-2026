@@ -22,7 +22,10 @@ def _now() -> str:
 
 # M-08: 列表显式列裁剪（契约 D8-4；state_json/pdf_paths 走 get_task /state）
 # replay_of: 回放任务指向源任务（事件级重放，2026-08-27；前端徽标/防重用）
-_LIST_COLUMNS = "task_id, query, title, status, created_at, completed_at, replay_of"
+# 2026-09-01: 列表轻量统计列 record_count/source_count（侧边栏「N 条记录 · M 个来源」）
+# ——完成任务落库时在 update_task 解析一次写入，列表纯列 SELECT（不触碰大 state_json）；
+# 取数与 /records、/sources 端点同源优先链（quality structured_data 优先）。
+_LIST_COLUMNS = "task_id, query, title, status, created_at, completed_at, replay_of, record_count, source_count"
 
 
 def _ensure_column(conn: sqlite3.Connection, table: str, name: str, ddl: str) -> None:
@@ -55,7 +58,9 @@ class TaskStore:
                 output_dir TEXT DEFAULT '',
                 pdf_paths TEXT DEFAULT '[]',
                 state_json TEXT DEFAULT '{}',
-                replay_of TEXT DEFAULT NULL
+                replay_of TEXT DEFAULT NULL,
+                record_count INTEGER DEFAULT 0,
+                source_count INTEGER DEFAULT 0
             )""")
             conn.execute("""CREATE TABLE IF NOT EXISTS events (
                 seq INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,6 +71,8 @@ class TaskStore:
             conn.execute("CREATE INDEX IF NOT EXISTS idx_events_task ON events(task_id, seq)")
             # 老库幂等升级（建表 DDL 已带列时 PRAGMA 命中，ALTER 不执行）
             _ensure_column(conn, "tasks", "replay_of", "replay_of TEXT DEFAULT NULL")
+            _ensure_column(conn, "tasks", "record_count", "record_count INTEGER DEFAULT 0")
+            _ensure_column(conn, "tasks", "source_count", "source_count INTEGER DEFAULT 0")
             _ensure_column(conn, "events", "ts", "ts REAL DEFAULT NULL")
 
     # ── tasks ──
@@ -119,6 +126,26 @@ class TaskStore:
     def update_task(self, task_id: str, **fields: Any) -> None:
         if not fields:
             return
+        # 2026-09-01: state_json 落库时顺带解析轻量计数（列表「N 条记录 · M 个来源」）——
+        # 免去列表接口读大字段；取数与 /records、/sources 端点同源（质量输出优先）。
+        # 解析失败不阻塞落库（计数置 0，仅影响统计展示）。
+        if "state_json" in fields:
+            rec_count = src_count = 0
+            try:
+                st = json.loads(fields["state_json"] or "{}")
+                fo = st.get("final_output") or {}
+                sd = (fo.get("quality_report") or {}).get("output_state", {}).get("structured_data", {})
+                rec_count = sd.get("row_count") if sd else None
+                if rec_count is None:
+                    rec_count = len(fo.get("records") or [])
+                srcs = (sd or {}).get("json", {}).get("sources")
+                if srcs is None:
+                    srcs = fo.get("sources")
+                src_count = len(srcs) if isinstance(srcs, (list, dict)) else (int(srcs or 0) if isinstance(srcs, (int, float)) else 0)
+                rec_count = int(rec_count or 0)
+            except Exception:  # noqa: BLE001
+                rec_count = src_count = 0
+            fields = {**fields, "record_count": rec_count, "source_count": src_count}
         cols = ", ".join(f"{k}=?" for k in fields)
         with self._lock, self._conn() as conn:
             conn.execute(f"UPDATE tasks SET {cols} WHERE task_id=?", (*fields.values(), task_id))
