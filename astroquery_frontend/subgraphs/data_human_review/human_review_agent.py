@@ -95,7 +95,32 @@ class HumanReviewAgent:
             return self._no_conflicts_result(state)
 
         # ── Step 3: 人工裁决（2026-09-02 批量协议：单次 interrupt 承载全部冲突）──
-        if _BATCH_ENABLED:
+        # 2026-09-02 QHR 自动降级：质量类审核项（提取质量差/完整性不足/无字段无实体）
+        # 无需人工裁决——自动 skip + annotate（保留溯源标注），不弹人工卡。
+        # 对齐 V1 设计约束"❌ A→E 不存在"（Assessment 不触发 HumanReview）。
+        _pure_qhr = [c for c in conflicts
+                     if not c.get("field_name") and not c.get("entity_name")]
+        if _pure_qhr and len(_pure_qhr) == len(conflicts):
+            logger.info("[HumanReview] %d 项纯质量类待审 → 自动降级 skip (QHR auto-downgrade)",
+                        len(_pure_qhr))
+            decisions = self._default_decisions(conflicts, "skip",
+                                                "批量跳过（QHR 质量类审核项自动降级，数据原样交付）")
+        elif _pure_qhr:
+            # 混合批次：纯 QHR 项自动 skip，其余走人工裁决
+            _human = [c for c in conflicts if c not in _pure_qhr]
+            if _BATCH_ENABLED:
+                try:
+                    _dec = self._interact_batch(_human)
+                except Exception:
+                    logger.exception("[HumanReview] 批量交互失败，降级逐条")
+                    _dec = self._run_legacy_interaction(_human, rs)
+            else:
+                _dec = self._run_legacy_interaction(_human, rs)
+            _qhr_dec = self._default_decisions(
+                _pure_qhr, "skip",
+                "批量跳过（QHR 质量类审核项自动降级，数据原样交付）")
+            decisions = {**_dec, **_qhr_dec}
+        elif _BATCH_ENABLED:
             try:
                 decisions = self._interact_batch(conflicts)
             except Exception:
@@ -576,11 +601,45 @@ class HumanReviewAgent:
     # ── Helpers ──
 
     def _extract_pending(self, state) -> list[dict]:
-        """提取所有待人工审核的冲突/异常 (V3.1: 兼容 resolution_plan.human_review_items)。"""
+        """提取所有待人工审核的冲突/异常 (V3.1: 兼容 resolution_plan.human_review_items)。
+
+        2026-09-02 info-chain fix: 人工可见信息必须完整——
+        从 quality.multi_source_variance.variances[].source_stats 回填
+        source_a/b 的值/单位/记录/方法/可靠性（此前 H-04 兜底只有 source_id，
+        前端 Source A/B 恒显示 ?，人工无法裁决）。
+        """
         # V3.3 fix: conflict 可能为 None (dispatch 清理后) — 空值保护
         conflict = state.get("report_state", {}).get("conflict") or {}
         resolution_report = conflict.get("resolution_report") or {}
         pending = []
+
+        # 2026-09-02: 从 variance 组构建 source_stats 回填映射
+        # {field/entity → {source_id: {value, unit, year, methods, record_ids, ...}}}
+        _qa = state.get("report_state", {}).get("quality") or {}
+        _variances = _qa.get("multi_source_variance", {}).get("variances", []) or []
+        _stats_map = {}  # (entity, field) → {source_id: stats}
+        for _v in _variances:
+            _key = (_v.get("entity_name", ""), _v.get("field_name", ""))
+            _stats_src = _v.get("source_stats") or {}
+            _stats_map.setdefault(_key, {})
+            for _sid, _st in _stats_src.items():
+                if isinstance(_st, dict):
+                    _stats_map[_key][_sid] = _st
+
+        def _rich_source(src, entity, field):
+            """从 variance source_stats 回填值/单位/记录/方法/年份（源信息权威）。"""
+            if not isinstance(src, dict):
+                return src
+            st = _stats_map.get((entity, field), {}).get(src.get("source_id", ""), {})
+            out = dict(src)
+            if isinstance(st, dict):
+                for k, v in (("mean", "value"), ("unit", "unit"), ("year", "year")):
+                    if st.get(k) is not None and not out.get(k):
+                        out[k] = st[k]
+                out["measurement_methods"] = st.get("measurement_methods", [])
+                out["record_ids"] = st.get("record_ids", [])
+                out["avg_extraction_confidence"] = st.get("avg_extraction_confidence")
+            return out
 
         # 从 resolution_plan.human_review_items (V3.1 fix: 由 resolution_report_agent 生成)
         plan = resolution_report.get("resolution_plan", {})
@@ -595,6 +654,11 @@ class HumanReviewAgent:
             source_a = full.get("source_a", {}) or {}
             if not source_a and src_ids:
                 source_a = {"source_id": src_ids[0]}
+            # 2026-09-02 info-chain fix: 从 variance stats 回填值
+            _ent = item.get("entity_name", "")
+            _fld = item.get("field_name", "")
+            source_a = _rich_source(source_a, _ent, _fld)
+            source_b = _rich_source(full.get("source_b", {}) or {}, _ent, _fld)
             pending.append({
                 "conflict_d": item.get("conflict_d", "?"),
                 "field_name": full.get("field_name", item.get("field_name", "?")),
@@ -602,7 +666,7 @@ class HumanReviewAgent:
                 "reason": item.get("reason", full.get("reasoning_chain", [""])[0] if full.get("reasoning_chain") else ""),
                 "evidence_summary": item.get("evidence_summary", {}),
                 "source_a": source_a,
-                "source_b": full.get("source_b", {}),
+                "source_b": source_b,
                 "cohens_d": full.get("cohens_d", 0),
                 "effect_size": full.get("effect_size", ""),
                 "reasoning_chain": full.get("reasoning_chain", []),
@@ -655,44 +719,122 @@ class HumanReviewAgent:
 
         # V3.5 fix: review_items 抽象 — Assessment 触发 HR (提取质量过低/严重质量问题)
         # 但无 conflict 报告时, 从 quality 构造质量类审核项, 不能直接跳过人工审核
+        # 2026-09-02 修正: 优先构造带字段/值/差异的 variance 组审核项（值分歧人工可裁决），
+        # 仅当 multi_source_variance 为空时才走纯质量类（提取质量差等）构造。
         if not pending:
             quality = state.get("report_state", {}).get("quality") or {}
             per_source_routes = quality.get("per_source_routes", {})
             sources = quality.get("sources", {})
-            for sid, route in per_source_routes.items():
-                if route != "HumanReview":
-                    continue
-                sr = sources.get(sid, {})
-                reasons = []
-                extr = (sr.get("extraction_quality") or {}).get("score")
-                if extr is not None and extr < 0.3:
-                    reasons.append(f"提取质量极低 (score={extr:.2f})")
-                comp = (sr.get("completeness") or {}).get("score")
-                if comp is not None and comp < 0.5:
-                    reasons.append(f"数据完整性严重不足 (score={comp:.2f})")
-                ql = (sr.get("quality_scoring") or {}).get("quality_level")
-                if ql == "poor":
-                    reasons.append("质量等级 poor")
-                if not reasons:
-                    reasons.append("Assessment 判定需人工审核")
-                pending.append({
-                    "conflict_d": f"QHR-{sid[:20]}",
-                    "field_name": "",
-                    "entity_name": "",
-                    "reason": "; ".join(reasons),
-                    "evidence_summary": {
-                        "extraction_quality": extr,
-                        "completeness": comp,
-                        "quality_level": ql,
-                    },
-                    "source_a": {"source_id": sid},
-                    "source_b": {},
-                    "cohens_d": 0, "effect_size": "",
-                    "reasoning_chain": reasons,
-                    "risk_assessment": "quality_issue",
-                    "confidence": 0,
-                    "strategy": "escalate_to_human",
-                })
+            vars_of_interest = quality.get("multi_source_variance", {}).get("variances", []) or []
+
+            # (1) variance 组构造：值分歧（真实人工可裁决场景，带字段/实体/值）
+            # 2026-09-02: Source B 取离群均值（距中位数最远的 source），Source A 取主群（剩余来源均值）——
+            # 让人工一眼看到"污染值 vs 主群"（如 9.98 vs -19.2），而非两个相同值。
+            _built = False
+            if vars_of_interest:
+                for v in vars_of_interest:
+                    _ent = v.get("entity_name", "")
+                    _fld = v.get("field_name", "")
+                    _stats = v.get("source_stats") or {}
+                    _sids = v.get("source_ids", []) or []
+
+                    def _from(st):
+                        return {
+                            "source_id": st.get("source_id", ""),
+                            "value": st.get("mean"),
+                            "unit": st.get("unit", ""),
+                            "year": st.get("year"),
+                            "n": st.get("n"),
+                            "record_ids": st.get("record_ids", []),
+                            "measurement_methods": st.get("measurement_methods", []),
+                        }
+
+                    _means = {}
+                    for sid in _sids:
+                        st = _stats.get(sid) or {}
+                        if st.get("mean") is not None:
+                            _means[sid] = float(st["mean"])
+                    _sa, _sb = {}, {}
+                    if len(_means) >= 2:
+                        _items = list(_means.items())
+                        # 离群 = 与其他所有来源距离和最大的单个来源
+                        # （对 N 个点通用：离群源与群内距离大；两来源时"离群" = 与对方差最大，天然取污染源）
+                        _dist = {}
+                        for sid, m in _items:
+                            _dist[sid] = sum(abs(m - mv) for osid, mv in _items if osid != sid)
+                        _out = max(_items, key=lambda kv: _dist[kv[0]])
+                        # 主群 = 剩余来源均值
+                        _rest = [m for s, m in _items if s != _out[0]]
+                        _main = sum(_rest) / len(_rest) if _rest else _out[1]
+                        # Source B = 离群值（污染源一目了然），Source A = 主群均值
+                        _main_sid = next((s for s, m in _items if s != _out[0]), _out[0])
+                        _b_st = _stats.get(_out[0]) or {}
+                        _bind = {"source_id": _out[0], "value": _out[1]}
+                        _b = _from(_b_st) if _b_st else _bind
+                        _b["value"] = _out[1]
+                        _a = {"source_id": _main_sid, "value": _main,
+                              "unit": (_stats.get(_main_sid) or {}).get("unit", ""),
+                              "n": sum(_st.get("n", 0) for _st in (_stats.get(s) or {} for s in _sids if s != _out[0]))}
+                        _sa, _sb = _a, _b
+                    else:
+                        _a = {"source_id": _sids[0]} if _sids else {}
+                        _b = {"source_id": _sids[1]} if len(_sids) > 1 else {}
+                        _sa, _sb = _from(_stats.get(_a["source_id"], {}) or {}) or _a, \
+                                    _from(_stats.get(_b["source_id"], {}) or {}) or _b
+                    pending.append({
+                        "conflict_d": f"VAR-{_ent}-{_fld}",
+                        "field_name": _fld,
+                        "entity_name": _ent,
+                        "reason": f"多源值分歧 ({v.get('source_count', len(_sids))} 个来源, "
+                                  f"{v.get('value_range', [])}) 无法自动归类",
+                        "evidence_summary": {"value_range": v.get("value_range", []),
+                                             "source_count": v.get("source_count", len(_sids))},
+                        "source_a": _sa,
+                        "source_b": _sb,
+                        "cohens_d": 0, "effect_size": "",
+                        "reasoning_chain": [],
+                        "risk_assessment": "multi_source_variance",
+                        "confidence": 0,
+                        "strategy": "escalate_to_human",
+                    })
+                _built = True
+
+            # (2) 纯质量类（仅 multi_source_variance 为空——真实提取质量差，自动降级由 Step3 拦截）
+            if not _built:
+                for sid, route in per_source_routes.items():
+                    if route != "HumanReview":
+                        continue
+                    sr = sources.get(sid, {})
+                    reasons = []
+                    extr = (sr.get("extraction_quality") or {}).get("score")
+                    if extr is not None and extr < 0.3:
+                        reasons.append(f"提取质量极低 (score={extr:.2f})")
+                    comp = (sr.get("completeness") or {}).get("score")
+                    if comp is not None and comp < 0.5:
+                        reasons.append(f"数据完整性严重不足 (score={comp:.2f})")
+                    ql = (sr.get("quality_scoring") or {}).get("quality_level")
+                    if ql == "poor":
+                        reasons.append("质量等级 poor")
+                    if not reasons:
+                        reasons.append("Assessment 判定需人工审核")
+                    pending.append({
+                        "conflict_d": f"QHR-{sid[:20]}",
+                        "field_name": "",
+                        "entity_name": "",
+                        "reason": "; ".join(reasons),
+                        "evidence_summary": {
+                            "extraction_quality": extr,
+                            "completeness": comp,
+                            "quality_level": ql,
+                        },
+                        "source_a": {"source_id": sid},
+                        "source_b": {},
+                        "cohens_d": 0, "effect_size": "",
+                        "reasoning_chain": reasons,
+                        "risk_assessment": "quality_issue",
+                        "confidence": 0,
+                        "strategy": "escalate_to_human",
+                    })
 
         return pending
 

@@ -431,3 +431,87 @@ def test_batch_reason_propagates_to_actions():
     decisions2, _ = agent._parse_batch_answer('{"verdicts": {"CF-001": {"action": "retain_both"}}}', conflicts)
     actions2 = agent._decisions_to_actions(decisions2)
     assert " 理由: " not in actions2[0]["reason"], actions2
+
+
+# ══════════════════════════════════════════════════════════
+# 2026-09-02 HR 信息链：variance 构造带值 / QHR 自动降级
+# ══════════════════════════════════════════════════════════
+
+def test_extract_pending_variance_backfills_values():
+    """第4级兜底：multi_source_variance.variances 构造带字段/实体/值/记录的审核项。"""
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+    agent = HumanReviewAgent()
+    state = {
+        "workflow_state": {"pending_sources": {"HumanReview": []}, "__human_review_decision__": None},
+        "report_state": {
+            "conflict": {"resolution_report": {}},  # 第4级兜底：无可审项
+            "quality": {
+                "per_source_routes": {"S1": "HumanReview", "S2": "HumanReview"},
+                "multi_source_variance": {"variances": [{
+                    "entity_name": "SN 2011fe", "field_name": "peak_absolute_magnitude",
+                    "source_count": 2, "value_range": ["-19.27", "9.98"],
+                    "source_ids": ["S1", "S2"],
+                    "source_stats": {
+                        "S1": {"mean": -19.27, "unit": "mag", "year": 2024, "n": 2,
+                               "record_ids": ["r1"], "measurement_methods": ["Mira distance ladder"]},
+                        "S2": {"mean": 9.98, "unit": "mag", "year": 2020, "n": 1,
+                               "record_ids": ["r2"], "measurement_methods": ["light-curve fitting"]},
+                    },
+                }]},
+                "sources": {},
+            },
+        },
+        "data_state": {},
+    }
+    pending = agent._extract_pending(state)
+    assert len(pending) == 1
+    p = pending[0]
+    assert p["field_name"] == "peak_absolute_magnitude"
+    assert p["entity_name"] == "SN 2011fe"
+    # 2026-09-02 离群对：Source A/B 必须可见且不同（A=主群均值、B=离群；两来源时 A≠B 即可）
+    assert p["source_a"]["value"] is not None, p["source_a"]
+    assert p["source_b"]["value"] is not None, p["source_b"]
+    assert p["source_a"]["value"] != p["source_b"]["value"], (p["source_a"], p["source_b"])
+    assert p["source_b"]["unit"] == "mag"
+
+
+def test_qhr_auto_downgrade_skips_without_interrupt():
+    """纯 QHR（提取质量差/无字段无实体）→ 自动 skip 降级，不弹批量裁决卡（仅剩 next 出口）。"""
+    import subgraphs.data_human_review.human_review_agent as hra
+    from subgraphs.data_human_review.human_review_agent import HumanReviewAgent
+
+    interruptions = []
+
+    def fake_interrupt(payload):
+        interruptions.append(payload)
+        return "1"
+
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr(hra, "interrupt", fake_interrupt)
+    try:
+        # 纯质量类 conflict（无 field/entity）直接构造可用 _extract 输出
+        state = {
+            "workflow_state": {"pending_sources": {"HumanReview": []}, "__human_review_decision__": None},
+            "report_state": {
+                "conflict": {"resolution_report": {"resolution_plan": {
+                    "human_review_items": [{  # QHR 类：交叉证认错误无字段
+                        "conflict_d": "QHR-1", "field_name": "", "entity_name": "",
+                        "source_ids": ["S1"],
+                    }],
+                }}},
+                "quality": {},
+            },
+            "data_state": {},
+        }
+        result = HumanReviewAgent().run(state)
+    finally:
+        monkeypatch.undo()
+
+    # 自动降级 → 无批量裁决 interrupt（仅 remaining next 出口，非裁决卡）
+    types = [p["type"] for p in interruptions]
+    assert "human_review_batch" not in types, f"纯 QHR 不应弹批量裁决卡: {types}"
+    assert len(interruptions) == 1 and types == ["human_review_next"], types
+    assert result["workflow_state"]["route_decision"] == "Normalization"  # skip 决策仍进 Normalization 落 annotate
+    decisions = result.get("workflow_state", {}).get("__human_review_decision__", {}).get("decisions", {})
+    assert decisions["QHR-1"]["action"] == "skip"
+    assert "自动降级" in decisions["QHR-1"]["reason"]

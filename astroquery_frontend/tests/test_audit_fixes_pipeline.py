@@ -604,7 +604,8 @@ def test_h04_extract_pending_backfills_source_a_from_item_source_ids():
     })
     pending = agent._extract_pending(state)
     assert len(pending) == 1
-    assert pending[0]["source_a"] == {"source_id": "S1"}
+    # 2026-09-02 info-chain fix: source_a 在 source_id 基础上补充空键（无 variance stats 时）
+    assert pending[0]["source_a"]["source_id"] == "S1"
     assert pending[0]["field_name"] == "distance"
 
 
