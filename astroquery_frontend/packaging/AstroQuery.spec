@@ -62,7 +62,7 @@ exe = EXE(
     exclude_binaries=True,
     name="AstroQuery",
     console=False,            # 无控制台窗口（GUI 应用）；排障时可改 True
-    icon=None,
+    icon=os.path.join(SPECPATH, "icon.ico"),
     uac_admin=False,
 )
 

@@ -937,7 +937,7 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
     { key: 'figures', label: `图证 (${figures.length})` },
     { key: 'traces', label: `轨迹 (${traces.length})` },
     { key: 'insights', label: `洞察 (${insightCount})` },
-    { key: 'downloads', label: '下载' },
+    { key: 'downloads', label: '任务数据包' },
   ]
 
   const taskRunning = task && (task.status === 'running' || task.status === 'queued')

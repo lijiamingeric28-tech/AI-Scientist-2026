@@ -1,0 +1,181 @@
+==== M31 的HI谱线宽度和恒星质量 [b69b388f] otype=AGN recs=5
+  [stellar_mass] x5
+      13 - 20 x 10^10                      M_sun     p10  <- 2018MNRAS.475.4043K The need for speed: escape velocity an
+      11.1 ± 0.09                          log(M_*/M_sun) p11  <- 2017ApJ...839...78J Panchromatic Hubble Andromeda Treasury
+      (10-15) * 10^10                      Msun      p1  <- 2012A&A...546A...4T Stellar mass map and dark matter distr
+      (9.5 ± 1.7) × 10^10                  M_sun     p17  <- 2009ApJ...705.1395C H I Kinematics and Dynamics of Messier
+      (9.5 ± 1.7) × 10^10                  M_sun     p19  <- 2009ApJ...705.1395C H I Kinematics and Dynamics of Messier
+==== SS Cygni 的轨道周期和爆发间隔 [78200431] otype=CV* recs=3
+  [orbital_period] x2
+      0.275                                d         p2  <- 2018MNRAS.481.2140A Fourier time lags in the dwarf nova SS
+      0.275                                d         p6  <- 1998ApJ...493..426C On the M<SUB>V</SUB>(peak) versus Orbi
+  [outburst_cycle_length] x1
+      50                                   d         p2  <- 2018MNRAS.481.2140A Fourier time lags in the dwarf nova SS
+==== 3C 273 的红移和绝对星等 [57c94f31] otype=BLL recs=15
+  [redshift] x11
+      0.158                                          p2  <- 2003ApJ...586L..49F Chandra Detection of Local O VII Heα A
+      0.158                                          p2  <- 2014ApJ...785L..24F High Resolution X-Ray Spectroscopy of 
+      0.158                                          p1  <- 2004MNRAS.349...57P XMM-Newton observations of 3C 273
+      0.158                                          p8  <- 2019ApJ...880..155L Search for Intra-day Optical Variabili
+      0.158                                          p2  <- 2000ApJ...544L..95Y A Broad Fe Kα Emission Line in the X-R
+      0.158                                          p3  <- 2000ApJ...544L..95Y A Broad Fe Kα Emission Line in the X-R
+      0.158                                          p12  <- 2000ApJ...544L..95Y A Broad Fe Kα Emission Line in the X-R
+      0.158                                          p13  <- 2000ApJ...544L..95Y A Broad Fe Kα Emission Line in the X-R
+      0.158                                          p1  <- 2020A&A...634A.106A Hot WHIM counterparts of FUV O VI abso
+      0.158                                          p1  <- 2019ApJ...879...75H Jet-driven Galaxy-scale Gas Outflows i
+      0.117                                          p2  <- 2010MNRAS.405.1736W The low-redshift Lyα forest towards 3C
+  [abs_mag] x4
+      -26.6                                mag       p2  <- 2006ASPC..360...41G Optical Variability of the Three Brigh
+      -26.7                                mag       p1  <- 1998MNRAS.294L...7H Discovery of radio-loud quasars with z
+      -26.4                                mag       p3  <- 1998MNRAS.294L...7H Discovery of radio-loud quasars with z
+      -25.7                                mag       p6  <- 1995ApJ...450..486B Hubble Space Telescope Images of Nearb
+==== HCG 92 的速度弥散和成员星系数 [c4bf05b2] otype=CGG recs=0
+==== 天鹅座OB2的距离和总质量 [c1dc18f6] otype=As* recs=61
+  [distance_pc] x30
+      1593                                 pc        p  <- SRC_DB_MWSC Milky Way Global Survey of Star Cluste
+      ~ 1400                               pc        p1  <- 2013ApJ...773..135G The Protoplanetary Disks in the Nearby
+      2100                                 pc        p4  <- 2013ApJ...763..139D Multi-epoch Very Long Baseline Array O
+      1700                                 pc        p4  <- 2013ApJ...763..139D Multi-epoch Very Long Baseline Array O
+      1400                                 pc        p4  <- 2013ApJ...763..139D Multi-epoch Very Long Baseline Array O
+      1400                                 pc        p4  <- 2013ApJ...763..139D Multi-epoch Very Long Baseline Array O
+      1400                                 pc        p4  <- 2013ApJ...763..139D Multi-epoch Very Long Baseline Array O
+      1500                                 pc        p17  <- 2013ApJ...763..139D Multi-epoch Very Long Baseline Array O
+      1500                                 pc        p20  <- 2003ApJ...597..957H A Study of Cygnus OB2: Pointing the Wa
+      1.4                                  kpc       p1  <- 2018A&A...620A..56B Oxygen and silicon abundances in Cygnu
+      1450                                 pc        p2  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      1400                                 pc        p2  <- 2019MNRAS.490..440L A Gaia view of the two OB associations
+      1400 ± 80                            pc        p1  <- 2015MNRAS.449..741W The massive star population of Cygnus 
+      1450                                 pc        p8  <- 2015MNRAS.449..741W The massive star population of Cygnus 
+      1330                                 pc        p2  <- 2019MNRAS.485.1489W External photoevaporation of protoplan
+      1450                                 pc        p1  <- 2010IAUS..266..551W The massive star-forming region Cygnus
+      2100                                 pc        p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      1700                                 pc        p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      1400                                 pc        p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      1400                                 pc        p2  <- 2014MNRAS.438..639W Constraints on massive star formation:
+      1330                                 pc        p2  <- 2016MNRAS.460.2593W Cygnus OB2 DANCe: A high-precision pro
+      1330                                 pc        p15  <- 2016MNRAS.460.2593W Cygnus OB2 DANCe: A high-precision pro
+      1800                                 pc        p1  <- 2010A&A...511A..84S The eclipsing, double-lined, Of superg
+      1.33±0.06                            kpc       p1  <- 2015ApJ...811...85K Predicting GAIA's Parallax Distance to
+      1.33±0.06                            kpc       p15  <- 2015ApJ...811...85K Predicting GAIA's Parallax Distance to
+      1.33±0.06                            kpc       p16  <- 2015ApJ...811...85K Predicting GAIA's Parallax Distance to
+      1500                                 pc        p3  <- 2014PASA...31...20M Investigation of Cyg OB2 #11(O5 Ifc) b
+      1400                                 pc        p3  <- 2012ApJ...746L..21W Photoevaporating Proplyd-like Objects 
+      1501+142-117                         pc        p1  <- 2019A&A...627A...2R Quest for the tertiary component in Cy
+      1820                                 pc        p1  <- 2003A&A...405..991B Does Cyg OB2 harbour any open cluster?
+  [total_mass] x20
+      16500                                Msun      p4  <- 2019MNRAS.484.1838B Disentangling the spatial substructure
+      10^4                                 Msun      p1  <- 2003ApJ...597..957H A Study of Cygnus OB2: Pointing the Wa
+      3x10^4                               Msun      p1  <- 2016MNRAS.463..763M e-MERLIN 21 cm constraints on the mass
+      (4-10) x 10^4                        Msun      p1  <- 2000A&A...360..539K Cygnus OB2 - a young globular cluster 
+      (4-10) x 10^4                        Msun      p8  <- 2000A&A...360..539K Cygnus OB2 - a young globular cluster 
+      4-10 x 10^4                          Msun      p2  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      ~ 3 x 10^4                           Msun      p2  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      (3 ± 1) x 10^4                       Msun      p22  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      3 x 10^4                             Msun      p24  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      2-10 x 10^4                          Msun      p2  <- 2019MNRAS.490..440L A Gaia view of the two OB associations
+      16500+3800-2800                      Msun      p1  <- 2015MNRAS.449..741W The massive star population of Cygnus 
+      16500+3800-2800                      Msun      p16  <- 2015MNRAS.449..741W The massive star population of Cygnus 
+      2-10 x 10^4                          Msun      p2  <- 2019MNRAS.485.1489W External photoevaporation of protoplan
+      0.6-2.7e4                            Msun      p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      1e5                                  Msun      p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      10000                                Msun      p13  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      3e4                                  Msun      p2  <- 2014MNRAS.438..639W Constraints on massive star formation:
+      3e4                                  Msun      p5  <- 2014MNRAS.438..639W Constraints on massive star formation:
+      3e4                                  Msun      p6  <- 2014MNRAS.438..639W Constraints on massive star formation:
+      (1.6 ± 0.3) × 10^4                   Msun      p1  <- 2015A&A...581A..37L Period change of massive binaries from
+  [cluster_distance_modulus] x10
+      10.80                                mag       p19  <- 2003ApJ...597..957H A Study of Cygnus OB2: Pointing the Wa
+      10.8                                 mag       p6  <- 2018A&A...612A..50B New massive members of Cygnus OB2
+      10.8                                 mag       p4  <- 2008A&A...487..575N New very massive stars in Cygnus OB2
+      10.8                                 mag       p7  <- 2008A&A...487..575N New very massive stars in Cygnus OB2
+      10.8                                 mag       p9  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      10.8                                 mag       p10  <- 2010ApJ...713..871W The Massive Star-Forming Region Cygnus
+      10.80                                mag       p8  <- 2015MNRAS.449..741W The massive star population of Cygnus 
+      11.2                                 mag       p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      10.8                                 mag       p2  <- 2008MNRAS.386.1761D Early-A stars from IPHAS, and their di
+      10.7                                 mag       p1  <- 2003A&A...405..991B Does Cyg OB2 harbour any open cluster?
+  [parallax] x1
+      0.64±0.06                            mas       p1  <- 2019A&A...627A...2R Quest for the tertiary component in Cy
+==== SN 2011fe 的峰值绝对星等 [cacc8691] otype=SN* recs=39
+  [peak_absolute_magnitude] x39
+      -19.04                               mag       p1  <- 2013ApJ...767..119M The Mid-infrared and Optical Decay of 
+      -19.21 ± 0.15                        mag       p2  <- 2015MNRAS.446.2073G Twins for life? A comparative analysis
+      -19.55                               mag       p6  <- 2013NewA...20...30M BVRI lightcurves of supernovae SN 2011
+      -19.218 ± 0.032                      mag       p6  <- 2012A&A...546A..12V Testing supernovae Ia distance measure
+      -19.157 ± 0.025                      mag       p6  <- 2012A&A...546A..12V Testing supernovae Ia distance measure
+      9.94                                 mag       p1  <- 2013A&A...554A..27P Spectrophotometric time series of SN 2
+      9.94 ± 0.01                          mag       p6  <- 2013A&A...554A..27P Spectrophotometric time series of SN 2
+      -19.10 ± 0.19                        mag       p16  <- 2013A&A...554A..27P Spectrophotometric time series of SN 2
+      1.14 ± 0.02                          mag       p11  <- 2024A&A...685A.135W Observations of type Ia supernova SN 2
+      9.98 (0.02)                          mag       p8  <- 2020MNRAS.491.5991F Significant luminosity differences of 
+      10.51 ± 0.04                         mag       p2  <- 2012ApJ...754...19M The Infrared Light Curve of SN 2011fe 
+      10.75 ± 0.04                         mag       p2  <- 2012ApJ...754...19M The Infrared Light Curve of SN 2011fe 
+      10.64 ± 0.05                         mag       p2  <- 2012ApJ...754...19M The Infrared Light Curve of SN 2011fe 
+      -19.24 ± 0.19                        mag       p4  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -19.17 ± 0.19                        mag       p4  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -19.74 ± 0.19                        mag       p39  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -19.23 ± 0.19                        mag       p39  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -19.17 ± 0.19                        mag       p39  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -19.11 ± 0.19                        mag       p39  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -18.85 ± 0.19                        mag       p39  <- 2016ApJ...820...67Z Optical Observations of the Type Ia Su
+      -19.21                               mag       p2  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.19                               mag       p2  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.18                               mag       p2  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -18.94                               mag       p2  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.21                               mag       p24  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.19                               mag       p24  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.18                               mag       p24  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -18.94                               mag       p24  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.21 ± 0.15                        mag       p27  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.19 ± 0.15                        mag       p27  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.18 ± 0.15                        mag       p27  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -18.94 ± 0.15                        mag       p27  <- 2012JAVSO..40..872R BVRI Photometry of SN 2011fe in M101
+      -19.41 ± 0.13                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+      -19.39 ± 0.13                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+      -19.38 ± 0.13                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+      -19.14 ± 0.13                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+      -18.79 ± 0.14                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+      -18.55 ± 0.14                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+      -18.66 ± 0.13                        mag       p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia S
+==== HD 209458b 的轨道周期、行星质量、行星半径 [b162e0f6] otype=None recs=0
+==== 蟹状星云脉冲星的自转周期 [76b36793] otype=None recs=0
+==== NGC 6543 的膨胀速度、电子密度和中心星温度 [9728c210] otype=None recs=9
+  [中心星温度] x4
+      82000                                K         p2  <- 2020MNRAS.495.2234G Rings and arcs around evolved stars - 
+      1,700,000                            K         p3  <- 2020MNRAS.492.4097G Distance mapping applied to four well-
+      ~60400                               K         p9  <- 2023MNRAS.518.3908M Low-ionization structures in planetary
+      40,000 and 70,000                    K         p1  <- 2022MNRAS.516.2711C Morphokinematic modelling of the point
+  [膨胀速度] x4
+      13.5±6                               km s⁻¹    p8  <- 2020MNRAS.495.2234G Rings and arcs around evolved stars - 
+      ~ 10                                 km s^-1   p2  <- 1999AJ....118.2430R Hubble Space Telescope Measurements of
+      39                                   km s⁻¹    p7  <- 2023MNRAS.518.3908M Low-ionization structures in planetary
+      1,750                                km s^-1   p2  <- 2001ApJ...553L..69C Chandra Reveals the X-Ray Glint in the
+  [电子密度] x1
+      4,000                                cm^-3     p10  <- 2001ApJ...553L..69C Chandra Reveals the X-Ray Glint in the
+==== Hercules X-1 的自转周期和轨道周期 [12fd238e] otype=LXB recs=24
+  [spin_period] x14
+      1.24                                 s         p1  <- 2021ARep...65.1039S On the Nature of the 35-Day Cycle in H
+      1240                                 ms        p1  <- 2008A&A...482..907K INTEGRAL observations of Hercules X-1
+      1237.76                              ms        p1  <- 2008PASJ...60S..57E Suzaku Observations of Hercules X-1: M
+      1237.76 ± 0.01                       ms        p6  <- 2008PASJ...60S..57E Suzaku Observations of Hercules X-1: M
+      1237.76 ± 0.01                       ms        p13  <- 2008PASJ...60S..57E Suzaku Observations of Hercules X-1: M
+      1240                                 ms        p1  <- 2022MNRAS.513.3359K Evidence for neutron star triaxial fre
+      1240                                 ms        p2  <- 1997ApJ...491..903B Hopkins Ultraviolet Telescope Observat
+      1237.749                             ms        p4  <- 1994ApJ...436L...9V Multiwavelength Observations of Hercul
+      1.24                                 s         p2  <- 2001ApJ...553..776S RXTE Observations of Hercules X-1 duri
+      1.237727(1)                          s         p13  <- 2001ApJ...553..776S RXTE Observations of Hercules X-1 duri
+      1.24                                 sec       p1  <- 2006AIPC..840...65S Long-term developments in Her X-1: Cor
+      1240                                 ms        p1  <- 2009A&A...506.1261K Continuous monitoring of pulse period 
+      1240                                 ms        p2  <- 2010arXiv1001.5252K Monitoring of pulse period in Her X-1 
+      1240                                 ms        p1  <- 2009A&A...494.1025S Two ~35 day clocks in Hercules X-1: ev
+  [orbital_period] x10
+      1.7                                  days      p1  <- 2020MNRAS.499.1747K Modelling of 35-d superorbital cycle o
+      1.7                                  day       p1  <- 2004MNRAS.350..506Z XMM-Newton EPIC and Optical Monitor ob
+      40.8                                 hr        p1  <- 2022MNRAS.513.3359K Evidence for neutron star triaxial fre
+      1.7                                  d         p2  <- 2001ApJ...554..352S Atmospheric Reflection during an Anoma
+      1.7                                  days      p1  <- 2019IAUS..346..239I Long-term optical variability of Her X
+      1.699646(8)                          days      p2  <- 2019IAUS..346..239I Long-term optical variability of Her X
+      1.7                                  days      p1  <- 2025A&A...698A.166R Traces of wobbling accretion disk in X
+      1.7                                  d         p2  <- 2001ApJ...553..776S RXTE Observations of Hercules X-1 duri
+      1.7002(3)                            d         p13  <- 2001ApJ...553..776S RXTE Observations of Hercules X-1 duri
+      1.700                                d         p1  <- 2009A&A...500..883S Updating the orbital ephemeris of Herc

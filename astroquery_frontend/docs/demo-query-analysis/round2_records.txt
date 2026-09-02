@@ -1,0 +1,271 @@
+
+================================================================================
+QUERY: Pollux的质量、半径、表面温度和光谱型  [7177a745] otype=PM*
+
+  [mass] x5
+      1.91 ± 0.09                            Msun       conf= p2  <- 2017A&A...599A..47O Detection of thermal radio emission from
+      1.86                                   Msun       conf= p3  <- 2006ApJ...652..661R Precise Radial Velocities of Giant Stars
+      2.09 ± 0.26                            M_sun      conf= p7  <- 2026MNRAS.547ag413R Halo photometry and asteroseismology for
+      1.7                                    Msun       conf= p4  <- 2021A&A...646A.130A Pollux: A weak dynamo-driven dipolar mag
+      2.31                                   Msun       conf= p5  <- 2009A&A...504..231A Discovery of a weak magnetic field in th
+
+  [teff] x4
+      4892.6000000000004                     K          conf= p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      5000                                   K          conf= p2  <- 2021A&A...646A.130A Pollux: A weak dynamo-driven dipolar mag
+      5000                                   K          conf= p2  <- 2021A&A...646A.130A Pollux: A weak dynamo-driven dipolar mag
+      4904                                   K          conf= p5  <- 2009A&A...504..231A Discovery of a weak magnetic field in th
+
+  [spectral_type] x4
+      K0IIIvar                                          conf= p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      K0                                                conf= p  <- SRC_DB_HD Henry Draper Catalogue (HD)
+      K0IIIb                                            conf= p  <- SRC_DB_HR Bright Star Catalogue (HR)
+      K0III                                             conf= p1  <- 2021A&A...646A.130A Pollux: A weak dynamo-driven dipolar mag
+
+  [radius] x3
+      9.3                                    Rsun       conf= p4  <- 2015A&A...574A..90A The magnetic fields at the surface of ac
+      8.8                                    Rsun       conf= p5  <- 2021A&A...646A.130A Pollux: A weak dynamo-driven dipolar mag
+      8.8 ± 0.1                              Rsun       conf= p4  <- 2009A&A...504..231A Discovery of a weak magnetic field in th
+
+================================================================================
+QUERY: 大麦哲伦云的恒星形成率和气体金属丰度  [4595e502] otype=G
+
+  [gas_phase_metallicity] x9
+      8.38                                   dex        conf= p10  <- 2016A&A...590A..36C A milestone toward understanding PDR pro
+      8.33 ± 0.018                           dex        conf= p4  <- 2024MNRAS.529.2611L Emission-line velocity, metallicity, and
+      0.5                                    Z_sun      conf= p1  <- 2022ApJ...928...90R METAL: The Metal Evolution, Transport, a
+      0.5                                    Z_sun      conf= p18  <- 2022ApJ...928...90R METAL: The Metal Evolution, Transport, a
+      50                                     % solar metallicity conf= p24  <- 2022ApJ...928...90R METAL: The Metal Evolution, Transport, a
+      8.41                                   dex        conf= p3  <- 2012A&A...548A..91L Physical conditions in the gas phases of
+      0.01                                   Z          conf= p7  <- 2023MNRAS.523.1153V Evolution of radioactive elements in the
+      -0.3                                   dex        conf= p3  <- 2022ApJ...935..105R METAL: The Metal Evolution, Transport, a
+      0.5                                    dex        conf= p2  <- 2021ApJ...910...95R METAL: The Metal Evolution, Transport, a
+
+  [star_formation_rate] x7
+      ~ 0.2                                  M_sun yr^-1 conf= p3  <- 2024ApJ...974...22Z Braving the Storm: Quantifying Disk-wide
+      0.2                                    Msun/yr    conf= p15  <- 2007MNRAS.382..543H An Australia Telescope Compact Array 20-
+      0.22^{+0.06}_{-0.07}                   M_☉ yr⁻¹   conf= p1  <- 2026A&A...707A.225K A comprehensive catalogue of high-mass X
+      0.2                                    Msun/yr    conf= p1  <- 2009AJ....138.1243H The Star Formation History of the Large 
+      0.2                                    Msun/yr    conf= p9  <- 2009AJ....138.1243H The Star Formation History of the Large 
+      0.2                                    Msun/yr    conf= p15  <- 2009AJ....138.1243H The Star Formation History of the Large 
+      0.19 - 0.26                            M☉ yr⁻¹    conf= p13  <- 2009MNRAS.396..918M The global gas and dust budget of the La
+
+================================================================================
+QUERY: 参宿七的光度和有效温度  [158bb10c] otype=s*b
+
+  [luminosity] x4
+      2.79 x 10^5                            Lsun       conf= p6  <- 2014A&A...566A.125C The variable stellar wind of Rigel probe
+      5.07 ± 0.10                            log L/Lsun conf= p1  <- 2011arXiv1109.6071M Messages from the Core: Excited Gravity 
+      123000                                 Lsun       conf= p7  <- 2022MNRAS.515....1D Combined spectroscopy and intensity inte
+      5.07 +0.10 -0.18                       log(L/L_sun) conf= p2  <- 2012ApJ...749...74M Asteroseismology of the nearby SN II Pro
+
+  [teff] x2
+      12100                                  K          conf= p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      12105                                  K          conf= p9  <- 2013MNRAS.433.1246S Evolution of blue supergiants and α Cygn
+
+================================================================================
+QUERY: M31 的距离和恒星质量  [6aba676d] otype=AGN
+
+  [distance] x34
+      772 ± 44                               kpc        conf= p1  <- 2005ApJ...635L..37R First Determination of the Distance and 
+      772 ± 44                               kpc        conf= p3  <- 2005ApJ...635L..37R First Determination of the Distance and 
+      776 +22 -21                            kpc        conf= p4  <- 2025ApJ...982L...3A Andromeda XXXV: The Faintest Dwarf Satel
+      784 ± 13 ± 17                          kpc        conf= p1  <- 1998ApJ...503L.131S Distance to M31 with the Hubble Space Te
+      784 ± 13                               kpc        conf= p9  <- 1998ApJ...503L.131S Distance to M31 with the Hubble Space Te
+      776.2 +22.2 -21.2                      kpc        conf= p14  <- 2022ApJ...938..101S The Hubble Space Telescope Survey of M31
+      776.2 +22.2 -21.2                      kpc        conf= p15  <- 2022ApJ...938..101S The Hubble Space Telescope Survey of M31
+      24.32 ± 0.12                           mag        conf= p1  <- 2007A&A...473..847V A comprehensive study of Cepheid variabl
+      24.32 ± 0.12                           mag        conf= p8  <- 2007A&A...473..847V A comprehensive study of Cepheid variabl
+      24.32 ± 0.12                           mag        conf= p9  <- 2007A&A...473..847V A comprehensive study of Cepheid variabl
+      24.36                                  mag        conf= p8  <- 2014ApJ...797...22L Properties of M31. V. 298 Eclipsing Bina
+      744 ± 33                               kpc        conf= p1  <- 2010A&A...509A..70V The distance to the Andromeda galaxy fro
+      724 ± 37                               kpc        conf= p3  <- 2010A&A...509A..70V The distance to the Andromeda galaxy fro
+      744 ± 33                               kpc        conf= p4  <- 2010A&A...509A..70V The distance to the Andromeda galaxy fro
+      744 ± 33                               kpc        conf= p5  <- 2010A&A...509A..70V The distance to the Andromeda galaxy fro
+      783                                    kpc        conf= p3  <- 2006ApJ...652.1188G A New Method for Isolating M31 Red Giant
+      0.8                                    Mpc        conf= p2  <- 2025ApJ...979..205S The Hubble Space Telescope Survey of M31
+      745                                    kpc        conf= p1  <- 1998AJ....115.1916H The Distance to the M31 Globular Cluster
+      900                                    kpc        conf= p1  <- 1998AJ....115.1916H The Distance to the M31 Globular Cluster
+      24.46 ± 0.10                           mag        conf= p1  <- 2014AJ....148...17D Clustering of Local Group Distances: Pub
+      24.46 ± 0.10                           mag        conf= p16  <- 2014AJ....148...17D Clustering of Local Group Distances: Pub
+      24.44 ± 0.12                           mag        conf= p17  <- 2014AJ....148...17D Clustering of Local Group Distances: Pub
+      24.36 ± 0.10                           mag        conf= p17  <- 2014AJ....148...17D Clustering of Local Group Distances: Pub
+      24.48 ± 0.07                           mag        conf= p17  <- 2014AJ....148...17D Clustering of Local Group Distances: Pub
+      24.45 ± 0.10                           mag        conf= p24  <- 2014AJ....148...17D Clustering of Local Group Distances: Pub
+      0.8                                    Mpc        conf= p2  <- 2012ApJ...753....9V The M31 Velocity Vector. III. Future Mil
+      770 ± 40                               kpc        conf= p7  <- 2012ApJ...753....9V The M31 Velocity Vector. III. Future Mil
+      770.0                                  kpc        conf= p38  <- 2012ApJ...753....9V The M31 Velocity Vector. III. Future Mil
+      770.0 ± 40.0                           kpc        conf= p40  <- 2012ApJ...753....9V The M31 Velocity Vector. III. Future Mil
+      770±40                                 kpc        conf= p3  <- 2025ApJ...985..121P The M31─M33 Interaction: Impact on M31's
+      776.2+22−21                            kpc        conf= p3  <- 2025ApJ...985..121P The M31─M33 Interaction: Impact on M31's
+      0.78                                   Mpc        conf= p2  <- 2000AJ....120..810M The DIRECT Project: Influence of Blendin
+      0.77 ± 0.025                           Mpc        conf= p3  <- 2000AJ....120..810M The DIRECT Project: Influence of Blendin
+      0.77 ± 0.025                           Mpc        conf= p19  <- 2000AJ....120..810M The DIRECT Project: Influence of Blendin
+
+  [stellar_mass] x4
+      13 - 20 x 10^10                        M_sun      conf= p10  <- 2018MNRAS.475.4043K The need for speed: escape velocity and 
+      1.03 x 10^11                           M_sun      conf= p11  <- 2018MNRAS.475.4043K The need for speed: escape velocity and 
+      (10-15) * 10^10                        M_sun      conf= p1  <- 2012A&A...546A...4T Stellar mass map and dark matter distrib
+      10.3^{+2.3}_{-1.7} \times 10^{10}      M_\odot    conf= p4  <- 2015IAUS..311...82S The Stellar Mass of M31 as inferred by t
+
+================================================================================
+QUERY: M15 的King聚集度、中心面亮度和核心半径  [4353bcf3] otype=GlC
+
+  [core_radius_pc] x3
+      4.2699999999999996                     pc         conf= p  <- SRC_DB_MWSC Milky Way Global Survey of Star Clusters
+      0.036                                  pc         conf= p5  <- 1997AJ....114.1517S Mass Segregation and Equipartition of En
+      0.027                                  pc         conf= p6  <- 2011ApJ...732...67M Fokker-Planck Models for M15 Without a C
+
+  [cluster_king_concentration] x3
+      core-collapse                                     conf= p3  <- 2002AJ....124.3270G Hubble Space Telescope Evidence for an I
+      core-collapse                                     conf= p1  <- 2010ApJ...722..158H Ultraviolet-bright Stellar Populations a
+      > 1.7                                             conf= p6  <- 2021MNRAS.503.1680U MUSE narrow field mode observations of t
+
+  [core_radius_arcmin] x3
+      1.0                                    arcmin     conf= p11  <- 1997AJ....113..669C Globular Cluster Photometry with the Hub
+      0.0167                                 arcmin     conf= p5  <- 1997AJ....114.1517S Mass Segregation and Equipartition of En
+      0.07                                   arcmin     conf= p3  <- 2007ApJ...670..379D Unveiling the Core of the Globular Clust
+
+================================================================================
+QUERY: 天狼星B的质量、表面重力和冷却年龄  [5db879b9] otype=WD*
+
+  [mass] x21
+      1.018 ± 0.011                          Msun       conf= p7  <- 2026MNRAS.545f1811B New ultralight scalar particles and the 
+      1.02+0.06 -0.07                        Msun       conf= p5  <- 2018ApJ...866...21C The White Dwarf Initial-Final Mass Relat
+      1.018 ± 0.011                          Msun       conf= p4  <- 2022AJ....163...81L An Imaging Search for Post-main-sequence
+      0.978                                  Msun       conf= p1  <- 2005MNRAS.362.1134B Hubble Space Telescope spectroscopy of t
+      1.02                                   Msun       conf= p1  <- 2005MNRAS.362.1134B Hubble Space Telescope spectroscopy of t
+      0.978 ± 0.005                          Msun       conf= p10  <- 2005MNRAS.362.1134B Hubble Space Telescope spectroscopy of t
+      1.02 ± 0.02                            Msun       conf= p10  <- 2005MNRAS.362.1134B Hubble Space Telescope spectroscopy of t
+      5.056+0.374-0.276                      Msun       conf= p1  <- 2005ApJ...630L..69L The Age and Progenitor Mass of Sirius B
+      1.00±0.02                              Msun       conf= p5  <- 2005ApJ...630L..69L The Age and Progenitor Mass of Sirius B
+      1.017 ± 0.025                          Msun       conf= p1  <- 2018MNRAS.481.2361J The gravitational redshift of Sirius B
+      1.017 ± 0.025                          Msun       conf= p8  <- 2018MNRAS.481.2361J The gravitational redshift of Sirius B
+      1.036 ± 0.025                          Msun       conf= p8  <- 2018MNRAS.481.2361J The gravitational redshift of Sirius B
+      1.017 ± 0.025                          Msun       conf= p10  <- 2018MNRAS.481.2361J The gravitational redshift of Sirius B
+      1.018 ± 0.011                          Msun       conf= p2  <- 2018MNRAS.479.1612J Testing the white dwarf mass-radius rela
+      0.927 ± 0.107                          Msun       conf= p8  <- 2018MNRAS.479.1612J Testing the white dwarf mass-radius rela
+      1.018 ± 0.011                          Msun       conf= p14  <- 2018MNRAS.479.1612J Testing the white dwarf mass-radius rela
+      1.018 ± 0.011                          Msun       conf= p15  <- 2018MNRAS.479.1612J Testing the white dwarf mass-radius rela
+      0.974 ± 0.013                          Msun       conf= p9  <- 2019MNRAS.484.2711R The white dwarf mass-radius relation and
+      1.018 ± 0.011                          Msun       conf= p9  <- 2019MNRAS.484.2711R The white dwarf mass-radius relation and
+      1.017 ± 0.025                          Msun       conf= p9  <- 2019MNRAS.484.2711R The white dwarf mass-radius relation and
+      0.978 ± 0.005                          Msun       conf= p9  <- 2019MNRAS.484.2711R The white dwarf mass-radius relation and
+
+  [cooling_age] x6
+      ~126                                   Myr        conf= p2  <- 2017ApJ...840...70B The Sirius System and Its Astrophysical 
+      126                                    Myr        conf= p15  <- 2017ApJ...840...70B The Sirius System and Its Astrophysical 
+      126                                    Myr        conf= p23  <- 2017ApJ...840...70B The Sirius System and Its Astrophysical 
+      126                                    Myr        conf= p24  <- 2017ApJ...840...70B The Sirius System and Its Astrophysical 
+      124±10                                 Myr        conf= p1  <- 2005ApJ...630L..69L The Age and Progenitor Mass of Sirius B
+      123.6±10                               Myr        conf= p6  <- 2005ApJ...630L..69L The Age and Progenitor Mass of Sirius B
+
+  [surface_gravity] x4
+      8.556                                  dex        conf= p1  <- 2005MNRAS.362.1134B Hubble Space Telescope spectroscopy of t
+      8.556                                  dex        conf= p6  <- 2005MNRAS.362.1134B Hubble Space Telescope spectroscopy of t
+      8.556                                  dex        conf= p4  <- 2008A&A...489..651B ADONIS high contrast infrared imaging of
+      8.6                                    dex        conf= p8  <- 2006A&A...458..541B Establishing <ASTROBJ>HZ43 A</ASTROBJ>, 
+
+================================================================================
+QUERY: delta Cephei 的光变周期、距离和金属丰度  [4875820b] otype=cC*
+
+  [distance] x20
+      4352.2700000000004                     pc         conf= p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      320.85750000000002                     pc         conf= p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      273                                    pc         conf= p2  <- 2017ApJ...838...67E The Secret Lives of Cepheids: δ Cep—The 
+      272 ± 3(sigma_x) ± 5(sigma)            pc         conf= p1  <- 2012ApJ...747..145M New Evidence Supporting Cluster Membersh
+      272 ± 3(sigma_x) ± 5(sigma)            pc         conf= p4  <- 2012ApJ...747..145M New Evidence Supporting Cluster Membersh
+      254 ± 30                               pc         conf= p10  <- 2001AJ....121..476A Diameters of δ Cephei and η Aquilae Meas
+      274 ± 11                               pc         conf= p2  <- 2017A&A...597A..73N HARPS-N high spectral resolution observa
+      272 ± 3(stat.) ± 5(syst.)              pc         conf= p4  <- 2017A&A...597A..73N HARPS-N high spectral resolution observa
+      244 ± 10                               pc         conf= p23  <- 2015ApJ...804..144A Revealing δ Cephei's Secret Companion an
+      273+11-12                              pc         conf= p3  <- 2008ApJ...674L..93N Theoretical Fits of the δ Cephei Light, 
+      274 ± 11                               pc         conf= p11  <- 2008ApJ...674L..93N Theoretical Fits of the δ Cephei Light, 
+      273 ± 11                               pc         conf= p4  <- 2014ApJ...794...80E The Secret Lives of Cepheids: Evolutiona
+      273 ± 11                               pc         conf= p16  <- 2014ApJ...794...80E The Secret Lives of Cepheids: Evolutiona
+      274 ± 11                               pc         conf= p3  <- 2005astro.ph..6695A The projection factor of delta Cephei A 
+      274                                    pc         conf= p6  <- 2015A&A...584A..80M Cepheid distances from the SpectroPhoto-
+      278+48−36                              pc         conf= p13  <- 2002AJ....123.3380N Calibration of the Barnes-Evans Relation
+      272 ± 6                                pc         conf= p22  <- 2002AJ....123.3380N Calibration of the Barnes-Evans Relation
+      262 ± 5                                pc         conf= p22  <- 2002AJ....123.3380N Calibration of the Barnes-Evans Relation
+      273±0.011                              pc         conf= p5  <- 2012ApJ...744...53M New Evidence for Mass Loss from δ Cephei
+      0.273±0.011                            kpc        conf= p3  <- 2010ApJ...725.2392M An Infrared Nebula Associated with δ Cep
+
+  [pulsation_period] x16
+      5.369999885559082                      d          conf= p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      5.366                                  d          conf= p2  <- 2017ApJ...838...67E The Secret Lives of Cepheids: δ Cep—The 
+      5.366316                               d          conf= p7  <- 2002AJ....124.1695B Astrometry with the Hubble Space Telesco
+      5.366316                               d          conf= p2  <- 2001AJ....121..476A Diameters of δ Cephei and η Aquilae Meas
+      5.366208                               d          conf= p2  <- 2017A&A...597A..73N HARPS-N high spectral resolution observa
+      2201                                   d          conf= p1  <- 2015ApJ...804..144A Revealing δ Cephei's Secret Companion an
+      5.3663                                 d          conf= p4  <- 2008ApJ...674L..93N Theoretical Fits of the δ Cephei Light, 
+      5.36627                                d          conf= p13  <- 2007AJ....133.1810B Hubble Space Telescope Fine Guidance Sen
+      5.366316                               d          conf= p2  <- 2005astro.ph..6695A The projection factor of delta Cephei A 
+      5.3662906 ± 0.0000061                  d          conf= p6  <- 2015A&A...584A..80M Cepheid distances from the SpectroPhoto-
+      5.37                                   d          conf= p1  <- 2016MNRAS.461.1451G Multiplicity of Galactic Cepheids from l
+      5.366341                               d          conf= p5  <- 2012ApJ...744...53M New Evidence for Mass Loss from δ Cephei
+      5.37                                   d          conf= p3  <- 2010ApJ...725.2392M An Infrared Nebula Associated with δ Cep
+      5.366531                               d          conf= p4  <- 2026arXiv260702439E Native-Opacity Sensitivity of a Fixed De
+      5.366531                               d          conf= p5  <- 2026arXiv260702439E Native-Opacity Sensitivity of a Fixed De
+      5.3663671                              d          conf= p1  <- 2024A&A...684L...9N The orbital parameters of the δ Cep inne
+
+  [parallax] x13
+      -1.1717                                mas        conf= p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      -1.1717                                mas        conf= p  <- SRC_DB_GAIA_DR2 Gaia Data Release 2 (Gaia DR2)
+      3.5550999999999999                     mas        conf= p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      3.3199999332427979                     mas        conf= p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      0.010999999940395355                              conf= p  <- SRC_DB_HR Bright Star Catalogue (HR)
+      3.77 ± 0.16                            mas        conf= p1  <- 2012ApJ...747..145M New Evidence Supporting Cluster Membersh
+      3.66 ± 0.15                            mas        conf= p10  <- 2002AJ....124.1695B Astrometry with the Hubble Space Telesco
+      3.66 ± 0.15                            mas        conf= p26  <- 2002AJ....124.1695B Astrometry with the Hubble Space Telesco
+      3.32 ± 0.58                            mas        conf= p1  <- 2001AJ....121..476A Diameters of δ Cephei and η Aquilae Meas
+      4.09 ± 0.16                            mas        conf= p1  <- 2015ApJ...804..144A Revealing δ Cephei's Secret Companion an
+      4.09 ± 0.16                            mas        conf= p16  <- 2015ApJ...804..144A Revealing δ Cephei's Secret Companion an
+      3.66 ± 0.15                            mas        conf= p5  <- 2016MNRAS.461.1451G Multiplicity of Galactic Cepheids from l
+      3.5551 ± 0.1475                        mas        conf= p2  <- 2024A&A...684L...9N The orbital parameters of the δ Cep inne
+
+  [metallicity_Fe_H] x3
+      0                                                 conf= p  <- SRC_DB_GAIA_DR2 Gaia Data Release 2 (Gaia DR2)
+      -0.129                                            conf= p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      0.06                                   dex        conf= p6  <- 2015A&A...584A..80M Cepheid distances from the SpectroPhoto-
+
+  [m_h] x1
+      -0.024799999999999999                  log(Sun)   conf= p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+
+================================================================================
+QUERY: SN 2011fe 的Δm15衰减率、峰值绝对星等和stretch参数  [4ecef231] otype=SN*
+
+  [peak_absolute_magnitude] x7
+      -19.21 ± 0.15                          mag        conf= p7  <- 2026SCPMA..6999511I SN 2021pfs: A type Ia supernova likely a
+      -19.21 ± 0.15                          mag        conf= p7  <- 2026arXiv260819929I SN 2021pfs: A Type Ia Supernova Likely A
+      -19.27 ± 0.09                          mag        conf= p1  <- 2024ApJ...963...83H The Mira Distance to M101 and a 4% Measu
+      -19.27 ± 0.09                          mag        conf= p14  <- 2024ApJ...963...83H The Mira Distance to M101 and a 4% Measu
+      -19.21 ± 0.15                          mag        conf= p2  <- 2015MNRAS.446.2073G Twins for life? A comparative analysis o
+      9.98 (0.02)                            mag        conf= p8  <- 2020MNRAS.491.5991F Significant luminosity differences of tw
+      -19.41 ± 0.13, -19.39 ± 0.13, -19.38   mag        conf= p7  <- 2012ApJ...760L..14L The Distance to M101 Hosting Type Ia Sup
+
+  [stretch] x2
+      1.10                                   mag        conf= p3  <- 2016MNRAS.461.1308F Ultraviolet diversity of Type Ia Superno
+      0.969 ± 0.010                                     conf= p9  <- 2018ApJ...859...79G Observations of SN 2015F Suggest a Corre
+
+================================================================================
+QUERY: 3C 273 的红移、绝对星等和X射线光子谱指数  [f3086b68] otype=BLL
+
+  [redshift] x9
+      0.158                                             conf= p1  <- 2004MNRAS.349...57P XMM-Newton observations of 3C 273
+      0.158                                             conf= p2  <- 2003ApJ...586L..49F Chandra Detection of Local O VII Heα Abs
+      0.158                                             conf= p2  <- 2014ApJ...785L..24F High Resolution X-Ray Spectroscopy of th
+      0.09017 ± 0.00003                                 conf= p1  <- 2020A&A...634A.106A Hot WHIM counterparts of FUV O VI absorb
+      0.158                                             conf= p2  <- 2000ApJ...544L..95Y A Broad Fe Kα Emission Line in the X-Ray
+      0.158                                             conf= p3  <- 2000ApJ...544L..95Y A Broad Fe Kα Emission Line in the X-Ray
+      0.158                                             conf= p8  <- 2019ApJ...880..155L Search for Intra-day Optical Variability
+      0.158                                             conf= p1  <- 2019ApJ...879...75H Jet-driven Galaxy-scale Gas Outflows in 
+      0.158                                             conf= p2  <- 2010MNRAS.405.1736W The low-redshift Lyα forest towards 3C 2
+
+  [xray_photon_index] x7
+      1.6                                               conf= p8  <- 2000ApJ...533..650S Testing the Blazar Paradigm: ASCA Observ
+      1.82 ± 0.01                                       conf= p1  <- 2007A&A...465..147C 2003-2005 INTEGRAL and XMM-Newton observ
+      1.81 +0.01 -0.01                                  conf= p4  <- 2007A&A...465..147C 2003-2005 INTEGRAL and XMM-Newton observ
+      1.84 +0.01 -0.01                                  conf= p4  <- 2007A&A...465..147C 2003-2005 INTEGRAL and XMM-Newton observ
+      1.70 +0.01 -0.01                                  conf= p4  <- 2007A&A...465..147C 2003-2005 INTEGRAL and XMM-Newton observ
+      1.75 +0.01 -0.01                                  conf= p4  <- 2007A&A...465..147C 2003-2005 INTEGRAL and XMM-Newton observ
+      1.66 +0.01 -0.01                                  conf= p4  <- 2007A&A...465..147C 2003-2005 INTEGRAL and XMM-Newton observ

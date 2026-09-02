@@ -108,6 +108,11 @@ export function batchDeleteTasks(taskIds) {
   return request('/tasks/batch-delete', { method: 'POST', body: JSON.stringify({ task_ids: taskIds }) })
 }
 
+/* 记录级删除（2026-09-02：主表格操作列"删除"，不可逆；encodeURIComponent 防 record_id 特殊字符） */
+export function deleteRecord(taskId, recordId) {
+  return request(`/tasks/${taskId}/records/${encodeURIComponent(recordId)}`, { method: 'DELETE' })
+}
+
 /* ── 结果（重度数据 HTTP） ── */
 export function getRecords(taskId) {
   return request(`/tasks/${taskId}/records`)

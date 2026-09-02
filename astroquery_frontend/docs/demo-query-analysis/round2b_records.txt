@@ -1,0 +1,432 @@
+==== HD 209458b 的轨道周期、行星质量、行星半径和凌星深度 [718453f4] otype=Pl recs=100
+  [transit_depth] x56
+      14840 ± 330                          ppm       p1  <- 2012ApJ...752...81C Spitzer/MIPS 24 μm Observations of HD 
+      1.479±0.005                          percent   p18  <- 2018AJ....156..175M A SEA BASS on the Exoplanet HD 209458b
+      9.6 ± 7.0                            %         p1  <- 2008A&A...483..933E New observations of the extended hydro
+      5.3 ± 10.0                           %         p1  <- 2008A&A...483..933E New observations of the extended hydro
+      8.0 ± 5.7                            %         p1  <- 2008A&A...483..933E New observations of the extended hydro
+      84000 - 89000 ± 20000                ppm       p1  <- 2008ApJ...688.1352B Spectral, Spatial, and Time Properties
+      0.1052±0.0011                        Rp/Rstar  p12  <- 2014ApJ...796...15L Electron Densities and Alkali Atoms in
+      50000-100000                         ppm       p1  <- 2011ApJ...728..152T Hot Jupiter Magnetospheres
+      50000-100000                         ppm       p18  <- 2011ApJ...728..152T Hot Jupiter Magnetospheres
+      14000                                ppm       p6  <- 2018ApJ...855L..11O A New Window into Escaping Exoplanet A
+      100000                               ppm       p1  <- 2014ApJ...788..161T Magnetohydrodynamic Simulations of Hot
+      0.023                                per cent  p2  <- 2011MNRAS.412.2376W Transmission spectroscopy of the sodiu
+      0.11                                 per cent  p2  <- 2011MNRAS.412.2376W Transmission spectroscopy of the sodiu
+      0.135                                per cent  p2  <- 2011MNRAS.412.2376W Transmission spectroscopy of the sodiu
+      0.135                                per cent  p10  <- 2011MNRAS.412.2376W Transmission spectroscopy of the sodiu
+      0.070                                per cent  p10  <- 2011MNRAS.412.2376W Transmission spectroscopy of the sodiu
+      0.056                                per cent  p10  <- 2011MNRAS.412.2376W Transmission spectroscopy of the sodiu
+      15 ± 4                               %         p7  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      6.6 ± 2.3                            %         p23  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      6.6 ± 2.3                            %         p31  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      10.5 ± 4.4                           %         p31  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      7.6 ± 2.2                            %         p31  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      7.9 ± 1.5                            %         p31  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      8.2 ± 1.4                            %         p31  <- 2013Icar..226.1695K The escape of heavy atoms from the ion
+      15 ± 4                               %         p1  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      13 ± 4.5                             %         p2  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      5 ± 2                                %         p2  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.6 ± 2.3                            %         p2  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      10.5 ± 4.4                           %         p2  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      7.4 ± 4.7                            %         p2  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.6                                  %         p5  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.6                                  %         p6  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      4.3                                  %         p6  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      12.8 ± 4.5                           %         p7  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      10.5 ± 4.4                           %         p7  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      4.3                                  %         p8  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.7                                  %         p9  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      7.7                                  %         p9  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.6                                  %         p9  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      5.8                                  %         p9  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      7.2                                  %         p9  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      5.2                                  %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      3.7                                  %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      2.9                                  %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      2.7                                  %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      10.8                                 %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      13.1                                 %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      12.2                                 %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      7.8                                  %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.3                                  %         p10  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      2.3                                  %         p11  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      2.2                                  %         p11  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      6.6                                  %         p11  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      3.9                                  %         p11  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      4.3                                  %         p12  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+      4.3 ± 1.1                            %         p12  <- 2010ApJ...723..116K Characterizing the Thermosphere of HD2
+  [pl_radius] x19
+      1.320 ± 0.025                        R_jup     p1  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      1.320 ± 0.025                        R_jup     p11  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      1.320 ± 0.025                        R_jup     p18  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      1.320 +0.024 -0.025                  R_jup     p29  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      1.26 ± 0.08                          R_J       p2  <- 2006ApJ...649.1043R A Spitzer Infrared Radius for the Tran
+      1.26 ± 0.08                          R_J       p8  <- 2006ApJ...649.1043R A Spitzer Infrared Radius for the Tran
+      1.380                                R_jup     p3  <- 2014A&A...565A.105B Modeling magnesium escape from HD 2094
+      1.29                                 Jupiter radius p5  <- 2008A&A...485..865L Rayleigh scattering by H<SUB>2</SUB> i
+      1.38±0.018                           R_J       p1  <- 2018ApJ...863L..11H Evidence for Multiple Molecular Specie
+      1e8                                  m         p9  <- 2013ApJ...764..103R Three-dimensional Atmospheric Circulat
+      1.38                                 R_jup     p19  <- 2022A&A...664A..56S Exploring the deep atmospheres of HD 2
+      1.359^{+0.016}_{-0.019}              R_jup     p4  <- 2020A&A...635A.206C Is there Na I in the atmosphere of HD 
+      1.529                                R_J       p5  <- 2020MNRAS.493.1292D Effects of radiation pressure on the e
+      1.347 ± 0.060                        R_Jup     p1  <- 2003ApJ...588..545B Measuring the Oblateness and Rotation 
+      1.40±0.17                            R_J       p2  <- 2003ApJ...594..545B A Theory for the Radius of the Transit
+      1.42^{+0.10}_{-0.13}                 R_J       p2  <- 2003ApJ...594..545B A Theory for the Radius of the Transit
+      1.35                                 R_jup     p2  <- 2005A&A...436..719I A time-dependent radiative model of HD
+      1.32±0.025                           R_J       p3  <- 2007ApJ...668L.171B Theoretical Spectral Models of the Pla
+      1.4                                  R_Jup     p1  <- 2017ApJ...844...94K Structure and Evolution of Internally 
+  [orb_period] x13
+      3.52474859(38)                       d         p24  <- 2010ApJ...717.1291L Observations of Mass Loss from the Tra
+      3.5257                               days      p1  <- 2005ApJ...629L..45C Dynamic Meteorology at the Photosphere
+      3.52474859 ± 0.00000038              d         p16  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      3.52474859 ± 0.00000038              d         p18  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      3.52474859 ± 0.00000038              d         p30  <- 2007ApJ...655..564K Using Stellar Limb-Darkening to Refine
+      3.5247                               d         p3  <- 2010Natur.465.1049S The orbital motion, absolute mass and 
+      3.5                                  d         p3  <- 2008ApJ...682..559S Atmospheric Circulation of Hot Jupiter
+      3.5247537 ± 0.0000049                d         p10  <- 2012ApJ...752...81C Spitzer/MIPS 24 μm Observations of HD 
+      3.5247455                            days      p3  <- 2014ApJ...790...53Z The 4.5 μm Full-orbit Phase Curve of t
+      3.52                                 days      p3  <- 2018ApJ...863L..11H Evidence for Multiple Molecular Specie
+      3.52474859 \\_pm 0.00000038          d         p4  <- 2020A&A...635A.206C Is there Na I in the atmosphere of HD 
+      3.52474859±0.00000038                d         p2  <- 2018AJ....156..175M A SEA BASS on the Exoplanet HD 209458b
+      3.52474554 ± 1.8 × 10^-7             days      p5  <- 2006NewA...11..490I Are we far from testing general relati
+  [pl_mass] x12
+      0.67                                 M_Jup     p4  <- 2016MNRAS.457.1666S Photoionization of planetary winds: ca
+      0.67                                 M_J       p4  <- 2018MNRAS.479.3115V Magnetized winds and their influence i
+      0.64 ± 0.06                          M_Jup     p24  <- 2010ApJ...717.1291L Observations of Mass Loss from the Tra
+      0.69                                 M_J       p8  <- 2023ApJ...953..166X The Mass Fractionation of Helium in th
+      0.73                                 M_J       p4  <- 2022MNRAS.517.1724D Effects of charge exchange on the evap
+      0.69                                 M_J       p4  <- 2017A&A...608A..75C Effect of stellar flares on the upper 
+      0.64 ± 0.09                          Mjup      p3  <- 2010Natur.465.1049S The orbital motion, absolute mass and 
+      0.71                                 M_jup     p3  <- 2020MNRAS.491.3435S Three-dimensional modelling of absorpt
+      0.66±0.04                            M_jup     p2  <- 2005ApJ...632.1157W System Parameters of the Transiting Ex
+      0.66 ±0.04                           M_jup     p17  <- 2005ApJ...632.1157W System Parameters of the Transiting Ex
+      0.657                                M_jup     p23  <- 2005ApJ...632.1157W System Parameters of the Transiting Ex
+      0.73                                 M_J       p5  <- 2020MNRAS.493.1292D Effects of radiation pressure on the e
+==== 比邻星的距离、视差和自行 [d888fd23] otype=PM* recs=50
+  [parallax] x14
+      768.5                                mas       p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      768.5                                mas       p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      772.33001708984375                   mas       p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      768.06650000000002                   mas       p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      768.50040000000001                   mas       p  <- SRC_DB_GAIA_DR2 Gaia Data Release 2 (Gaia DR2)
+      771.64 ± 2.60                        mas       p2  <- 2014ApJ...782...89S Microlensing Events by Proxima Centaur
+      768.77                               mas       p23  <- 2018MNRAS.480.2660B Testing gravity with wide binary stars
+      768.13 ± 1.04                        mas       p9  <- 2014AJ....148...91L The Solar Neighborhood. XXXIV. a Searc
+      768.7 ± 0.3                          mas       p1  <- 1999AJ....118.1086B Interferometric Astrometry of Proxima 
+      768.7 ± 0.3                          mas       p18  <- 1999AJ....118.1086B Interferometric Astrometry of Proxima 
+      768.13                               mas       p2  <- 2017ApJ...850L...6A ALMA Discovery of Dust Belts around Pr
+      768.066 ± 0.050                      mas       p4  <- 2025AJ....170...22L A Demonstration of Interstellar Naviga
+      0.2                                  mas       p1  <- 2026A&A...706A.112L Astrometric Reconnaissance of Exoplane
+      768.373                              mas       p6  <- 2026A&A...706A.112L Astrometric Reconnaissance of Exoplane
+  [pm_ra] x11
+      -3781.3099999999999                  mas/yr    p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      -3781.3099999999999                  mas/yr    p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      -3775.6399999999999                  mas/yr    p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      -3781.741                            mas/yr    p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      -3781.306                            mas/yr    p  <- SRC_DB_GAIA_DR2 Gaia Data Release 2 (Gaia DR2)
+      -2944                                mas/yr    p  <- SRC_DB_ALLWISE AllWISE Data Release
+      -3.7738                              arcsec/yr p23  <- 2018MNRAS.480.2660B Testing gravity with wide binary stars
+      3.8508 ± 0.0006                      arcsec/yr p9  <- 2014AJ....148...91L The Solar Neighborhood. XXXIV. a Searc
+      -3.77575                             arcsec/yr p2  <- 2017ApJ...850L...6A ALMA Discovery of Dust Belts around Pr
+      -3.781741 ± 0.000031                 arcsec/yr p4  <- 2025AJ....170...22L A Demonstration of Interstellar Naviga
+      -3.781761                            arcsec/yr p6  <- 2026A&A...706A.112L Astrometric Reconnaissance of Exoplane
+  [pm_dec] x11
+      769.76599999999996                   mas/yr    p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      769.76599999999996                   mas/yr    p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      768.15999999999997                   mas/yr    p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      769.46500000000003                   mas/yr    p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      769.76599999999996                   mas/yr    p  <- SRC_DB_GAIA_DR2 Gaia Data Release 2 (Gaia DR2)
+      1279                                 mas/yr    p  <- SRC_DB_ALLWISE AllWISE Data Release
+      0.7705                               arcsec/yr p23  <- 2018MNRAS.480.2660B Testing gravity with wide binary stars
+      -0.2624 ± 0.00002                    arcsec/yr p9  <- 2014AJ....148...91L The Solar Neighborhood. XXXIV. a Searc
+      0.76554                              arcsec/yr p2  <- 2017ApJ...850L...6A ALMA Discovery of Dust Belts around Pr
+      0.769465 ± 0.000051                  arcsec/yr p4  <- 2025AJ....170...22L A Demonstration of Interstellar Naviga
+      0.769458                             arcsec/yr p6  <- 2026A&A...706A.112L Astrometric Reconnaissance of Exoplane
+  [distance] x11
+      1.3011999999999999                   pc        p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      1.3011999999999999                   pc        p  <- SRC_DB_TIC TESS Input Catalog (TIC)
+      1.3010999999999999                   pc        p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      1.295                                pc        p4  <- 2003PASA...20..257S Long-duration Coherent Radio Emission 
+      1.295                                pc        p3  <- 2001ApJ...547L..49W Observational Estimates for the Mass-L
+      1.30                                 pc        p5  <- 2019MNRAS.487.1653B Directly testing gravity with Proxima 
+      1.295                                pc        p2  <- 2016Natur.536..437A A terrestrial planet candidate in a te
+      1.30 ± 0.01                          pc        p11  <- 2014AJ....148...91L The Solar Neighborhood. XXXIV. a Searc
+      1.3                                  pc        p2  <- 2017ApJ...850L...6A ALMA Discovery of Dust Belts around Pr
+      1.301971 ± 0.000085                  pc        p4  <- 2025AJ....170...22L A Demonstration of Interstellar Naviga
+      1.3                                  pc        p1  <- 2026A&A...706A.112L Astrometric Reconnaissance of Exoplane
+  [pm_total] x3
+      3859.2280000000001                   mas/yr    p  <- SRC_DB_GAIA_DR3 Gaia Data Release 3 (Gaia DR3)
+      3.78526 ± 0.0026                     arcsec/yr p2  <- 2014ApJ...782...89S Microlensing Events by Proxima Centaur
+      3.8517 ± 0.0001                      arcsec/yr p18  <- 1999AJ....118.1086B Interferometric Astrometry of Proxima 
+==== 蟹状星云脉冲星的自转周期、周期导数和特征年龄 [68f1f2ea] otype=Psr recs=14
+  [pulse_period] x9
+      0.0335466                            s         p2  <- 2003A&A...411L..31K Absolute timing with IBIS, SPI and JEM
+      33                                   ms        p2  <- 2019JHEAp..24...15L Phase-resolved gamma-ray spectroscopy 
+      33.46                                ms        p1  <- 2001A&A...373..236V RXTE observations of single pulses of 
+      0.033                                s         p6  <- 1999ApJ...522.1046M Polarimetric Properties of the Crab Pu
+      0.03374169                           s         p3  <- 2018MNRAS.478.3832S The largest glitch observed in the Cra
+      0.0330847                            s         p2  <- 2015MNRAS.450.1990K Rotational evolution of the Crab pulsa
+      33                                   ms        p2  <- 2012ApJS..199...32G X-Ray Phase-resolved Spectroscopy of P
+      33                                   ms        p33  <- 2012ApJS..199...32G X-Ray Phase-resolved Spectroscopy of P
+      0.0334                               s         p12  <- 2022Univ....8..628Z Evolution of Spin Period and Magnetic 
+  [spin_down_age] x5
+      1.257                                kyr       p3  <- 2017MNRAS.469.1974E On the new braking index of PSR B0540-
+      1000                                 yr        p2  <- 2004CQGra..21S.843P Searching for gravitational waves from
+      ~ 700                                yr        p1  <- 2025MNRAS.544....1M The non-uniform expansion of the Crab 
+      690                                  yrs       p9  <- 2025MNRAS.544....1M The non-uniform expansion of the Crab 
+      1260                                 yr        p12  <- 2022Univ....8..628Z Evolution of Spin Period and Magnetic 
+==== 五车二（Capella）的轨道周期、双星质量和视向速度半振幅 [4f1eba75] otype=SB* recs=23
+  [component_mass] x12
+      2.5687±0.0074                        Msun      p2  <- 2023A&A...676A..19M An insight into Capella (α Aurigae): F
+      2.4828±0.0067                        Msun      p2  <- 2023A&A...676A..19M An insight into Capella (α Aurigae): F
+      2.573 ± 0.009                        Msun      p4  <- 2011A&A...531A..89W The spectroscopic orbit of Capella rev
+      2.488 ± 0.008                        Msun      p4  <- 2011A&A...531A..89W The spectroscopic orbit of Capella rev
+      2.466 ± 0.018                        Msun      p1  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      2.443 ± 0.013                        Msun      p1  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      2.466 ± 0.018                        Msun      p36  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      2.443 ± 0.013                        Msun      p36  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      2.466 ± 0.018                        Msun      p40  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      2.443 ± 0.013                        Msun      p40  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      2.5687 ± 0.0074                      Msun      p6  <- 2015ApJ...807...26T Capella (α Aurigae) Revisited: New Bin
+      2.4828 ± 0.0067                      Msun      p6  <- 2015ApJ...807...26T Capella (α Aurigae) Revisited: New Bin
+  [velocity_semi_amplitude] x8
+      30                                             p  <- SRC_DB_HR Bright Star Catalogue (HR)
+      29.9378 ± 0.0026                     km/s      p4  <- 2011A&A...531A..89W The spectroscopic orbit of Capella rev
+      26.840 ± 0.024                       km/s      p4  <- 2011A&A...531A..89W The spectroscopic orbit of Capella rev
+      26.05 and 27.40                      km/s      p3  <- 2006ApJ...644L.117I Chandra/HETGS Observations of the Cape
+      26.005 ± 0.036                       km/s      p36  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      26.260 ± 0.087                       km/s      p36  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      25.9611 ± 0.0044                     km/s      p4  <- 2015ApJ...807...26T Capella (α Aurigae) Revisited: New Bin
+      26.860 ± 0.017                       km/s      p4  <- 2015ApJ...807...26T Capella (α Aurigae) Revisited: New Bin
+  [orbital_period] x3
+      104                                  d         p2  <- 2013A&A...560A.113H FIRST, a fibered aperture masking inst
+      104                                  d         p1  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+      104.02173 ± 0.00022                  d         p36  <- 2009ApJ...700.1349T Binary Orbit, Physical Properties, and
+==== 3C 31 的射电功率、射电光谱指数和FR分类 [9e31816c] otype=AGN recs=2
+  [radio_flux_6cm] x2
+      91                                   mJy       p2  <- 2002MNRAS.334..182H A Chandra observation of the X-ray env
+      2.1 ± 0.3                            Jy        p17  <- 2018MNRAS.474.5049H LOFAR reveals the giant: a low-frequen
+==== 常陈一（α² CVn）的磁场强度和自转周期 [97ffc44d] otype=a2* recs=12
+  [rotation_period] x9
+      5.4699997901916504                   d         p  <- SRC_DB_HIPPARCOS The Hipparcos and Tycho Catalogues
+      5.43730 ± 0.470                      d         p9  <- 2020AstBu..75..284K Superfast Line Profile Variations in t
+      5.46939                              d         p9  <- 2014AN....335.1049K Modified methods of stellar magnetic f
+      14.67                                d         p1  <- 2017MNRAS.471.3193D Large amplitude change in spot-induced
+      14.6679(3)                           d         p3  <- 2017MNRAS.471.3193D Large amplitude change in spot-induced
+      14.668                               d         p7  <- 2017MNRAS.471.3193D Large amplitude change in spot-induced
+      5.68459                              d         p1  <- 2011MNRAS.414.2550K The first evidence for multiple pulsat
+      5.68459                              d         p2  <- 2011MNRAS.414.2550K The first evidence for multiple pulsat
+      5.68459 ± 0.00013                    d         p5  <- 2011MNRAS.414.2550K The first evidence for multiple pulsat
+  [magnetic_rot_period] x2
+      5.43730 ± 0.470                      d         p9  <- 2020AstBu..75..284K Superfast Line Profile Variations in t
+      5.46939                              d         p2  <- 2004IAUS..224..602R The vertical structure of the magnetic
+  [longitudinal_mag_field] x1
+      600 ± 56                             G         p9  <- 2020AstBu..75..284K Superfast Line Profile Variations in t
+==== SS Cygni 的轨道周期、爆发周期和超周期长度 [abaafc4d] otype=CV* recs=2
+  [orbital_period] x2
+      0.275                                d         p2  <- 2018MNRAS.481.2140A Fourier time lags in the dwarf nova SS
+      0.275                                d         p6  <- 1998ApJ...493..426C On the M<SUB>V</SUB>(peak) versus Orbi
+==== Hercules X-1 的自转周期、轨道周期和爆发重现时间 [b422734d] otype=LXB recs=24
+  [orbital_period] x13
+      1.7                                  days      p1  <- 2020MNRAS.499.1747K Modelling of 35-d superorbital cycle o
+      1.7                                  day       p8  <- 2016ApJ...831..194W The NuSTAR X-Ray Spectrum of Hercules 
+      1.7                                  day       p1  <- 2014A&A...572A.119S Long-term change in the cyclotron line
+      1.7                                  d         p1  <- 2002MNRAS.337.1185R XMM-Newton EPIC observations of Her X-
+      1.7                                  days      p1  <- 2022MNRAS.513.3359K Evidence for neutron star triaxial fre
+      1.7                                  days      p2  <- 2009ApJ...700..977J The Photoionized Accretion Disk in Her
+      1.700                                d         p1  <- 2009A&A...500..883S Updating the orbital ephemeris of Herc
+      40.8                                 hr        p1  <- 2025A&A...698A.166R Traces of wobbling accretion disk in X
+      1.7                                  day       p1  <- 2004MNRAS.350..506Z XMM-Newton EPIC and Optical Monitor ob
+      40.8                                 hr        p1  <- 2009A&A...494.1025S Two ~35 day clocks in Hercules X-1: ev
+      40.8                                 hr        p3  <- 2008PASJ...60S..57E Suzaku Observations of Hercules X-1: M
+      1.7                                  d         p2  <- 2001ApJ...554..352S Atmospheric Reflection during an Anoma
+      40.8                                 hr        p2  <- 2013ApJ...779...69F The Smooth Cyclotron Line in Her X-1 a
+  [spin_period] x11
+      1240                                 ms        p1  <- 2021ARep...65.1039S On the Nature of the 35-Day Cycle in H
+      1.24                                 s         p1  <- 2022MNRAS.513.3359K Evidence for neutron star triaxial fre
+      1.24                                 s         p2  <- 2001ApJ...553..776S RXTE Observations of Hercules X-1 duri
+      1240                                 ms        p1  <- 2008A&A...482..907K INTEGRAL observations of Hercules X-1
+      1240                                 ms        p1  <- 2009A&A...494.1025S Two ~35 day clocks in Hercules X-1: ev
+      1240                                 ms        p3  <- 2008PASJ...60S..57E Suzaku Observations of Hercules X-1: M
+      1240                                 ms        p2  <- 1997ApJ...491..903B Hopkins Ultraviolet Telescope Observat
+      1240                                 ms        p1  <- 2009A&A...506.1261K Continuous monitoring of pulse period 
+      1.24                                 sec       p1  <- 2006AIPC..840...65S Long-term developments in Her X-1: Cor
+      1237.749 ± 0.1                       ms        p4  <- 1994ApJ...436L...9V Multiwavelength Observations of Hercul
+      1240                                 ms        p2  <- 2010arXiv1001.5252K Monitoring of pulse period in Her X-1 
+==== Vela 脉冲星的色散量、自转突跳次数和旋转量 [74755226] otype=Psr recs=9
+  [dispersion_measure] x9
+      56.771(3)                            pc cm^-3  p8  <- 2025NewA..12102460K Unlocking the hidden potential of puls
+      ~0.3                                 cm^-3 pc  p1  <- 2024PASA...41...80L Probing magneto-ionic microstructure t
+      ~0.3                                 cm^-3 pc  p1  <- 2024PASA...41...80L Probing magneto-ionic microstructure t
+      67.63 ± 0.01                         cm^-3 pc  p8  <- 2024PASA...41...80L Probing magneto-ionic microstructure t
+      ~0.3-0.4                             cm^-3 pc  p8  <- 2024PASA...41...80L Probing magneto-ionic microstructure t
+      67.63 ± 0.01                         cm^-3 pc  p9  <- 2024PASA...41...80L Probing magneto-ionic microstructure t
+      ~0.3-0.4                             cm^-3 pc  p10  <- 2024PASA...41...80L Probing magneto-ionic microstructure t
+      147.2                                pc cm^-3  p4  <- 2026MNRAS.546ag057K Probing the morphology of the Gum Nebu
+      67.74                                pc cm^-3  p4  <- 2007Ap&SS.308..585D Two decades of pulsar timing of Vela
+==== 天鹅座X-1的轨道周期和致密天体质量 [655cd7af] otype=HXB recs=48
+  [orbital_period] x26
+      5.599829(16)                         d         p2  <- 2008Ap&SS.315..335I On the orbital and physical parameters
+      5.6                                  d         p1  <- 2007MNRAS.375..793S Jet radio emission in Cygnus X-1 and i
+      5.599829±0.000016                    d         p3  <- 2010ApJ...710..197B X-ray Variations at the Orbital Period
+      5.6                                  d         p5  <- 2011MNRAS.412.1985Z The doubling of the superorbital perio
+      5.599829 ± 0.000016                  d         p3  <- 2012ApJ...747..111W Understanding Compact Object Formation
+      5.6                                  d         p2  <- 2012MNRAS.419.3194R A weak compact jet in a soft state of 
+      5.599829 ± 0.000016                  d         p1  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.599836 ± 0.000024                  d         p1  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.599829 ± 0.000016                  d         p2  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.599836 ± 0.000024                  d         p2  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.599829                             d         p3  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.599829±0.000016                    d         p4  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.599836±0.000037                    d         p4  <- 1999A&A...343..861B An improved orbital ephemeris for Cygn
+      5.6                                  d         p1  <- 2006MNRAS.368.1025L Periodic long-term X-ray and radio var
+      5.6                                  d         p1  <- 2017PASJ...69...52S Orbital modulations of X-ray light cur
+      5.6                                  days      p2  <- 2017PASJ...69...52S Orbital modulations of X-ray light cur
+      5.599829 ± 0.000016                  d         p3  <- 2017PASJ...69...52S Orbital modulations of X-ray light cur
+      5.5998                               d         p1  <- 1998MNRAS.301..285L The orbital period of HDE 226868/Cyg X
+      5.5998 ± 0.0001                      d         p2  <- 1998MNRAS.301..285L The orbital period of HDE 226868/Cyg X
+      5.5998(1)                            d         p4  <- 1998MNRAS.301..285L The orbital period of HDE 226868/Cyg X
+      5.6                                  d         p1  <- 1999MNRAS.309.1063B Orbital, precessional and flaring vari
+      5.599829±0.000016                    d         p6  <- 1999MNRAS.309.1063B Orbital, precessional and flaring vari
+      5.6                                  d         p1  <- 2023A&A...678A..58K Peering into the tilted heart of Cyg X
+      5.6                                  days      p2  <- 2007A&A...464..437B Very high energy gamma-ray production 
+      5.599847 ± 0.000018                  d         p2  <- 1999MNRAS.302L...1P Orbital modulation and longer term var
+      5.6                                  d         p1  <- 2025A&A...701A.115K Variability of X-ray polarization of C
+  [compact_object_mass] x22
+      14.8 ± 1.0                           Msun      p1  <- 2015A&A...576A.117G Long term variability of Cygnus X-1. V
+      21.2 ± 2.2                           Msun      p2  <- 2024A&A...691A..78L Characterisation of the stellar wind i
+      14.8 ± 1.0                           Msun      p2  <- 2011ApJ...742...84O The Mass of the Black Hole in Cygnus X
+      14.81 ± 0.98                         Msun      p12  <- 2011ApJ...742...84O The Mass of the Black Hole in Cygnus X
+      14.81 ± 0.98                         Msun      p16  <- 2011ApJ...742...84O The Mass of the Black Hole in Cygnus X
+      14.81 ± 0.98                         Msun      p17  <- 2011ApJ...742...84O The Mass of the Black Hole in Cygnus X
+      21.2 ± 2.2                           Msun      p2  <- 2025A&A...696A.237F A hidden quasi-periodic oscillation in
+      21 ± 8                               Msun      p1  <- 2007ApJ...665L..51A Very High Energy Gamma-Ray Radiation f
+      14.81 ± 0.98                         Msun      p3  <- 2012ApJ...747..111W Understanding Compact Object Formation
+      8.7±0.8                              Msun      p25  <- 2008AJ....136..631Y Optical Spectroscopic Observations of 
+      14.8                                 Msun      p1  <- 2015A&A...584A..95P Lepto-hadronic model for the broadband
+      14.8                                 Msun      p5  <- 2015A&A...584A..95P Lepto-hadronic model for the broadband
+      15 ± 4                               Msun      p1  <- 2026MNRAS.545f2232O X-ray reverberation black hole mass an
+      15^{+4}_{-4}                         Msun      p11  <- 2026MNRAS.545f2232O X-ray reverberation black hole mass an
+      8.7 ± 0.8                            M_sun     p1  <- 2007ApJ...663..445S Determination of Black Hole Mass in Cy
+      8.7 ± 0.8                            M_sun     p8  <- 2007ApJ...663..445S Determination of Black Hole Mass in Cy
+      8.7 ± 0.8                            M_sun     p9  <- 2007ApJ...663..445S Determination of Black Hole Mass in Cy
+      16                                   Msun      p3  <- 1997ApJ...477L..95Z The 1996 Soft State Transition of Cygn
+      21.2 ± 2.2                           Msun      p2  <- 2024A&A...687A.284K Long term variability of Cygnus X-1. V
+      14.8 ± 1.0                           Msun      p2  <- 2011ApJ...742...85G The Extreme Spin of the Black Hole in 
+      14.8 ± 1.0                           Msun      p8  <- 2011ApJ...742...85G The Extreme Spin of the Black Hole in 
+      8-16                                 Msun      p3  <- 2011ApJ...736...63R A Multiwavelength Study of Cygnus X-1:
+==== 环状星云M57的膨胀速度、电子密度和中心星温度 [190cea08] otype=PN recs=2
+  [cspn_teff] x1
+      8598.6700000000001                   K         p  <- SRC_DB_GAIA_DR2 Gaia Data Release 2 (Gaia DR2)
+  [electron_density] x1
+      100 - 3000                           cm^-3     p6  <- 2016MNRAS.463.4223M Optimal fitting of Gaussian-apodized o
+==== NGC 4151 的黑洞质量、Hβ发射线半高全宽和X射线光子谱指数 [67eafb42] otype=Sy1 recs=99
+  [fwhm_broad_hbeta] x37
+      4711 ± 750                           km/s      p6  <- 2006ApJ...651..775B A Reverberation-based Mass for the Cen
+      6860 ± 566                           km s^{-1} p16  <- 2010A&A...509A.106S Long-term variability of the optical s
+      6110±440                             km/s      p10  <- 2008A&A...486...99S Long-term variability of the optical s
+      6630±29                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      6360±21                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5741±21                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      6069±22                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5714±21                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      7352±34                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      6224±24                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      6118±42                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5174±32                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5366±18                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5191±12                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      4677±19                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      4937±14                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5072±17                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5163±17                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5066±13                              km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      5407±7                               km s^{-1} p5  <- 2025ApJ...988..273L The Virial Factor f of the Hβ Broad Li
+      6650 ± 29                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      6360 ± 21                            km s¹     p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      5741 ± 21                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      6069 ± 22                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      5714 ± 21                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      7352 ± 34                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      6224 ± 24                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      6118 ± 42                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      5366 ± 18                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      5191 ± 12                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      4677 ± 19                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      5072 ± 17                            km s⁻¹    p16  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      4799 ± 20                            km s⁻¹    p17  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      7099 ± 52                            km s⁻¹    p17  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      5003 ± 13                            km s⁻¹    p17  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      6031 ± 50                            km s¹     p17  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+      4897 ± 5                             km s⁻¹    p17  <- 2023MNRAS.520.1807C Broad-line region in NGC 4151 monitore
+  [xray_photon_index] x37
+      1.42 ± 0.06                                    p3  <- 1978ApJ...225L.115M X-ray observations of a flare in NGC 4
+      1.42 ± .06                                     p4  <- 1978ApJ...225L.115M X-ray observations of a flare in NGC 4
+      1.58^{+0.39}_{-0.29}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.51^{+0.05}_{-0.22}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.63^{+0.22}_{-0.27}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.59^{+0.18}_{-0.17}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.74^{+0.22}_{-0.17}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.56^{+0.21}_{-0.29}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.71^{+0.17}_{-0.23}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.52^{+0.02}_{-0.06}                           p6  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.42                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.54                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.42                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.51                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.59                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.47                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.30                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.50                                           p10  <- 2007A&A...463..903D The broad band spectrum and variabilit
+      1.71^{+0.06}_{-0.01}                           p6  <- 2010MNRAS.408.1851L Extreme flux states of NGC 4151 observ
+      1.81^{+0.03}_{-0.03}                           p6  <- 2010MNRAS.408.1851L Extreme flux states of NGC 4151 observ
+      1.81^{+0.01}_{-0.01}                           p6  <- 2010MNRAS.408.1851L Extreme flux states of NGC 4151 observ
+      1.35 - 1.7                                     p2  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      0.32+0.05-0.12                                 p3  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      0.4 ± 0.3                                      p3  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      1.9 ± 0.05                                     p12  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      1.8 ± 0.2                                      p12  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      1.7 ± 0.1                                      p12  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      1.2 ± 0.2                                      p12  <- 2010ApJ...714.1497W Revisiting the Short-term X-ray Spectr
+      ~ 1.5                                          p2  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.53 +0.04 -0.04                               p4  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.85 +0.09 -0.09                               p4  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.85 +0.09 -0.09                               p7  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.85 +0.09 -0.09                               p8  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.79 ± 0.02                                    p12  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.53 +0.04 -0.04                               p12  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.85 +0.09 -0.09                               p12  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+      1.61 +0.06 -0.06                               p12  <- 2005ApJ...634..939B The High-Energy Spectrum of NGC 4151
+  [black_hole_mass] x25
+      (4.14 ± 0.73) × 10^7                 Msun      p1  <- 2006ApJ...647..901M The Mass of the Central Black Hole in 
+      (2.58 ± 0.35) × 10^7                 Msun      p8  <- 2006ApJ...647..901M The Mass of the Central Black Hole in 
+      (8.55 ± 1.26) × 10^7                 Msun      p9  <- 2006ApJ...647..901M The Mass of the Central Black Hole in 
+      (4.14 ± 0.73) × 10^7                 Msun      p9  <- 2006ApJ...647..901M The Mass of the Central Black Hole in 
+      (4.14 ± 0.73) × 10^7                 Msun      p9  <- 2006ApJ...647..901M The Mass of the Central Black Hole in 
+      4.57 +0.57 -0.47                     10^7 M_sun p2  <- 2015ApJ...806..149K NuSTAR and Suzaku X-ray Spectroscopy o
+      3.76 ± 1.15 × 10^7                   Msun      p1  <- 2014ApJ...791...37O The Black Hole Mass of NGC 4151. II. S
+      3.57^{+0.45}_{-0.43}                 10^7 Msun p13  <- 2021ApJ...916...25R The Black Hole Mass of NGC 4151 from S
+      2.06^{+0.05}_{-0.05}                 10^7 Msun p13  <- 2021ApJ...916...25R The Black Hole Mass of NGC 4151 from S
+      1.2e7                                Msun      p2  <- 2005AJ....130..936U VLBA Identification of the Milliarcsec
+      3.7 ± 0.5 × 10^7                     M_sun     p3  <- 2019ApJ...877...65N Spectral Properties of NGC 4151 and th
+      4.45^{+0.79}_{-0.56}                 10^7 Msun p10  <- 2022ApJ...934..168B The Broad Line Region and Black Hole M
+      2.41^{+0.18}_{-0.21}                 10^7 Msun p10  <- 2022ApJ...934..168B The Broad Line Region and Black Hole M
+      7.08                                 Msun      p14  <- 2003MNRAS.342.1222C Variability of accretion flow in the c
+      4 x 10^7                             Msun      p4  <- 2020MNRAS.491.5126M Discarding the disc in a changing-stat
+      4.57^{+0.57}_{-0.47} \times 10^7     M_sun     p1  <- 2007ApJ...670..105O The Black Hole Mass of NGC 4151: Compa
+      4.6 ± 0.5                            10^7 Msun p3  <- 2014MNRAS.438.2980C Modelling the broad Fe Kα reverberatio
+      3.71 x 10^7                          M_sun     p2  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      2.14 x 10^7                          M_sun     p2  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      1.66 x 10^7                          M_sun     p2  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      1.92 x 10^7                          M_sun     p2  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      3.7 x 10^7                           M_sun     p3  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      2.1 x 10^7                           M_sun     p3  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      1.7 x 10^7                           M_sun     p3  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+      1.9 x 10^7                           M_sun     p3  <- 2023MNRAS.521.2897W Assessing indirect methods to determin
+==== 3C 273 的绝对星等 [ab1c77a6] otype=BLL recs=4
+  [abs_mag] x4
+      -26.6                                mag       p2  <- 2006ASPC..360...41G Optical Variability of the Three Brigh
+      -26.7                                mag       p1  <- 1998MNRAS.294L...7H Discovery of radio-loud quasars with z
+      -26.4                                mag       p3  <- 1998MNRAS.294L...7H Discovery of radio-loud quasars with z
+      -25.7                                mag       p6  <- 1995ApJ...450..486B Hubble Space Telescope Images of Nearb

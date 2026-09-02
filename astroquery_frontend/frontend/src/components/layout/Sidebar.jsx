@@ -41,7 +41,8 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
   const [manageMode, setManageMode] = useState(false)
   const [checked, setChecked] = useState(() => new Set())
   // 2026-08-27: 左栏可拖拽调宽（200-400px）；默认 320（用户反馈 300 仍略窄，再宽一点点）
-  const [width, setWidth] = useState(345)
+  // 2026-09-02: 默认宽 305（345 → 325 → 305，用户要求主内容区再宽 20px；拖拽手柄可再调）
+  const [width, setWidth] = useState(305)
   const dragRef = useRef(null)
 
   const startDrag = (e) => {
@@ -105,18 +106,22 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
       />
       {/* 新建任务 + 收起 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '16px 12px 12px 16px' }}>
-        {/* 2026-09-01 用户重设计：淡绿主题主按钮（绿字/绿边/浅绿底） */}
+        {/* 2026-09-02 用户截图样式：白底卡片 + 外围绿色描边悬浮（光晕阴影）效果 */}
         <Button
           variant="sidebar"
-          className="flex-1 justify-start gap-2 text-sm font-normal"
+          className="flex-1 justify-start gap-2 text-sm"
           onClick={onNew}
           style={{
-            background: 'var(--accent-light)',
-            color: 'var(--accent-text)',
-            border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)',
+            background: 'var(--glass-bg)',
+            color: 'var(--content-fg)',
+            border: '1px solid color-mix(in srgb, var(--accent) 55%, transparent)',
+            borderRadius: 10,
+            fontWeight: 450,
+            boxShadow:
+              '0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent), 0 2px 8px color-mix(in srgb, var(--accent) 16%, transparent)',
           }}
         >
-          <Icon.Plus />
+          <Icon.Plus style={{ color: 'var(--accent)' }} />
           <span>新建提取任务</span>
         </Button>
         <Button variant="ghost" size="icon" onClick={onCollapse} title="收起侧边栏">

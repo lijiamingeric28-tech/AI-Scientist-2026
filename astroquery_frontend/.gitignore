@@ -39,3 +39,12 @@ Desktop.ini
 
 # ─────────── Claude Code 本地配置 ───────────
 .claude/                    # 本地个人配置不提交（团队共享配置可去掉本行）
+
+# 2026-09-02: 演示任务数据库备份（652MB×2，仅本机留档不入库）
+docs/demo-query-analysis/backup/
+# 演示查询提交临时记录
+_demo_submitted*.json
+_demo_progress.log
+_demo_autoconfirm.log
+# 构建中间产物
+docs/quality-pipeline.visual-check.*

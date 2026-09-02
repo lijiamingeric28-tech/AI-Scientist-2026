@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { useToast } from '@/components/ui/toast'
 import RecordDetailDialog from './RecordDetail'
+import ExportDialog from './ExportDialog'
 import * as api from '@/services/api'
 import { useWheelHorizontal } from '@/hooks/useWheelHorizontal'
 import { journalLabel } from '@/lib/journal'
@@ -50,14 +51,23 @@ function pageItems(page, totalPages) {
   return items
 }
 
-export function RecordsTable({ records, onRowClick, searchText = '' }) {
+export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRecord }) {
   const [fieldFilter, setFieldFilter] = useState('all')
   const [sourceFilter, setSourceFilter] = useState('all')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)  // 用户重设计：默认 20 条/页
+  const [menuFor, setMenuFor] = useState(null)  // 下拉菜单打开的 record_id
   // 记录表格：横向溢出时鼠标滚轮左右滚动
   const tableScrollRef = useRef(null)
   useWheelHorizontal(tableScrollRef)
+
+  // 点击菜单外任意处关闭（2026-09-02：除再点三点外也能关闭）
+  useEffect(() => {
+    if (!menuFor) return
+    const onDocClick = () => setMenuFor(null)
+    document.addEventListener('click', onDocClick)
+    return () => document.removeEventListener('click', onDocClick)
+  }, [menuFor])
 
   const fields = useMemo(() => [...new Set(records.map((r) => r.field_name))], [records])
   const sources = useMemo(() => [...new Set(records.map((r) => r.source_id))], [records])
@@ -140,14 +150,33 @@ export function RecordsTable({ records, onRowClick, searchText = '' }) {
                   <MethodBadge method={r.extraction_method} />
                 </td>
                 <td style={{ ...tdStyle, width: 32, color: 'var(--content-fg-tertiary)', textAlign: 'center' }}>
-                  {/* 操作列：… 三点菜单（点击=查看详情，与行点击一致） */}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onRowClick?.(r) }}
-                    title="查看详情"
-                    style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--content-fg-tertiary)', padding: 2, display: 'flex' }}
-                  >
-                    <Icon.Ellipsis style={{ width: 14, height: 14 }} />
-                  </button>
+                  {/* 操作列：… 点击弹出下拉菜单（查看详情 / 删除）；菜单关闭即收起（2026-09-02） */}
+                  <div style={{ position: 'relative', display: 'inline-block' }}>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setMenuFor(menuFor === r.record_id ? null : r.record_id) }}
+                      title="操作"
+                      style={{ border: 'none', background: menuFor === r.record_id ? 'var(--surface-secondary)' : 'transparent', cursor: 'pointer', color: 'var(--content-fg-tertiary)', padding: 2, display: 'flex', borderRadius: 4 }}
+                    >
+                      <Icon.Ellipsis style={{ width: 14, height: 14 }} />
+                    </button>
+                    {menuFor === r.record_id && (
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          position: 'absolute', right: 0, top: '100%', zIndex: 30, minWidth: 110,
+                          background: '#ffffff', border: '1px solid #e5e7eb',
+                          borderRadius: 8, padding: 4, boxShadow: '0 6px 20px rgba(0,0,0,.18)',
+                        }}
+                      >
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setMenuFor(null); onDeleteRecord?.(r) }}
+                          style={{ ...menuItemStyle, color: 'var(--status-error)' }}
+                        >
+                          删除
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -214,6 +243,14 @@ const selectStyle = {
   background: 'var(--surface-bg)',
   color: 'var(--content-fg)',
   outline: 'none',
+}
+
+/* 操作下拉菜单条目（2026-09-02） */
+const menuItemStyle = {
+  display: 'flex', alignItems: 'center', width: '100%',
+  padding: '7px 10px', fontSize: 12.5, textAlign: 'left',
+  border: 'none', borderRadius: 6, cursor: 'pointer',
+  background: 'transparent', color: 'var(--content-fg-secondary)',
 }
 
 const tdStyle = { padding: '11px 12px', borderTop: '1px solid var(--surface-border-subtle)' }
@@ -327,9 +364,11 @@ export default function ResultTabs({ taskId, status }) {
   const [sources, setSources] = useState([])          // GET /sources（来源标题）
   const [detailLoading, setDetailLoading] = useState(false)
   const lineageLoaded = useRef(false)
-  // 2026-09-01 用户重设计：表格工具行（搜索/CSV 下载）
+  // 2026-09-02 用户重设计：搜索留在表格内；导出改专门弹窗（ExportDialog）
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
+  const [exportOpen, setExportOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState(null)  // 待确认删除的记录
   const searchRef = useRef(null)
 
   const openSearch = () => {
@@ -337,29 +376,18 @@ export default function ResultTabs({ taskId, status }) {
     if (!searchOpen) setTimeout(() => searchRef.current?.focus(), 30)
   }
 
-  const downloadCsv = () => {
-    if (!records || !records.length) {
-      toast('暂无记录可导出', 'info')
-      return
+  // 记录删除（2026-09-02：不可逆，走 DELETE /records/{id}；确认弹窗后执行）
+  const confirmDelete = async () => {
+    const target = deleteTarget
+    setDeleteTarget(null)
+    if (!target || !taskId) return
+    try {
+      const r = await api.deleteRecord(taskId, target.record_id)
+      toast(`已删除记录（剩余 ${r.remaining} 条）`, 'success')
+      setRecords((prev) => (Array.isArray(prev) ? prev.filter((x) => x.record_id !== target.record_id) : prev))
+    } catch (err) {
+      toast(`删除失败：${err.message}`, 'error')
     }
-    const head = ['实体', '性质', '值', '单位', '来源', '提取方式']
-    const lines = [head.join(',')]
-    for (const r of records) {
-      const cells = [r.entity_name, r.field_name, r.field_value, r.field_unit, r.source_id,
-        r.extraction_method === 'vlm_table' ? 'VLM 表格' : r.extraction_method === 'vlm_text' ? 'VLM 文本' : r.extraction_method || '数据库']
-      // CSV 注入：值含逗号/引号/换行 → 引号包裹
-      lines.push(cells.map((c) => {
-        const s = String(c ?? '')
-        return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
-      }).join(','))
-    }
-    const url = URL.createObjectURL(new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8' }))
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `astroquery_records_${taskId?.slice(0, 8) || 'export'}.csv`
-    a.click()
-    URL.revokeObjectURL(url)
-    toast(`已导出 ${records.length} 条记录`, 'success')
   }
 
   useEffect(() => {
@@ -414,9 +442,8 @@ export default function ResultTabs({ taskId, status }) {
         </span>
         <span style={{ flex: 1 }} />
         <ToolBtn icon={<Icon.Search />} title={searchOpen ? '收起搜索' : '搜索记录'} onClick={openSearch} active={searchOpen} />
-        <ToolBtn icon={<Icon.Filter />} title="筛选（上方性质/来源下拉）" />
-        <ToolBtn icon={<Icon.Download />} title="导出 CSV" onClick={downloadCsv} />
-        <ToolBtn icon={<Icon.Table />} title="表格视图" />
+        {/* 2026-09-02：导出按钮打开专门导出窗口（清理了两个无功能摆设按钮：筛选/表格视图） */}
+        <ToolBtn icon={<Icon.Download />} title="导出数据（筛选/剔除后导出）" onClick={() => setExportOpen(true)} />
       </div>
       {/* 搜索输入行（点击搜索图标展开） */}
       {searchOpen && (
@@ -445,7 +472,7 @@ export default function ResultTabs({ taskId, status }) {
             <span style={{ fontSize: 'var(--fs-sm)' }}>本次任务未产生记录</span>
           </div>
         ) : (
-          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} />
+          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={setDeleteTarget} />
         )}
       </div>
 
@@ -458,6 +485,34 @@ export default function ResultTabs({ taskId, status }) {
           loading={detailLoading}
           onClose={() => setDetail(null)}
         />
+      )}
+
+      {/* 导出窗口（2026-09-02 用户重设计：专门弹窗，与主表浏览分离） */}
+      {exportOpen && (
+        <ExportDialog
+          open={exportOpen}
+          taskId={taskId}
+          records={records || []}
+          onClose={() => setExportOpen(false)}
+        />
+      )}
+
+      {/* 记录删除确认（不可逆，必须确认）——纯白不透明（2026-09-02） */}
+      {deleteTarget && (
+        <div className="animate-fade-in" style={{ position: 'fixed', inset: 0, zIndex: 220, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div onClick={() => setDeleteTarget(null)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.45)' }} />
+          <div style={{ position: 'relative', width: 380, background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 18, boxShadow: '0 20px 48px rgba(0,0,0,.3)', color: '#1f2937' }}>
+            <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>删除这条记录？</div>
+            <div style={{ fontSize: 12.5, color: '#4b5563', lineHeight: 1.6, marginBottom: 14 }}>
+              <span className="font-mono" style={{ color: 'var(--status-error)', fontWeight: 600 }}>{deleteTarget.field_name} = {deleteTarget.field_value} {deleteTarget.field_unit}</span>
+              <br />删除后不可恢复，回放/重新导出将不再包含此记录。
+            </div>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <Button variant="outline" size="sm" onClick={() => setDeleteTarget(null)} style={{ color: '#1f2937', borderColor: '#d1d5db', background: '#ffffff' }}>取消</Button>
+              <Button variant="destructive" size="sm" onClick={confirmDelete}>确认删除</Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
