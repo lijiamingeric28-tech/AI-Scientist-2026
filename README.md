@@ -136,7 +136,19 @@ pip install -e .
 python -m astroquery_ai "M31 的距离和金属丰度"
 ```
 
-### 4. Web 界面（SSE 实时流 + 回放 + 质量报告）
+### 4. 前端构建（Web 界面 / 桌面窗口必需）
+
+> 仓库不包含前端构建产物（`.gitignore` 排除 `frontend/dist/` 与 `frontend/node_modules/`）。
+> **每次克隆或拉取代码后**，必须先安装依赖并构建，否则 `web.main` 找不到静态页面（窗口/页面会是空白 404）：
+
+```bash
+cd AstroQuery_AI/frontend
+npm install                          # 网络慢可加 --registry=https://registry.npmmirror.com
+npm run build
+cd ..
+```
+
+### 5. Web 界面（SSE 实时流 + 回放 + 质量报告）
 
 ```bash
 python -m web.main        # 浏览器模式 → http://127.0.0.1:8000
