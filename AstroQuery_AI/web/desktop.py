@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import socket
+import sys
 import threading
 import time
 
@@ -111,7 +112,8 @@ def run_embedded(host: str = HOST, port: int | None = None) -> None:
     # 窗口/任务栏图标：webview.start(icon=) 官方入口（2026-09-02 fix——
     # 此前 loaded 回调 hack 在 pythonnet 未预加载 System.Drawing 时静默失败，
     # 任务栏仍显示 python.exe 图标；start() 在窗口创建前应用，任务栏正确）
-    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # 2026-09-04 PyInstaller 兼容：冻结态资源根 = sys._MEIPASS（_internal/，icon.ico 已打包于该处）
+    root_dir = getattr(sys, "_MEIPASS", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     _ico = os.path.join(root_dir, "icon.ico")
     _start_kwargs = {}
     if os.path.isfile(_ico):

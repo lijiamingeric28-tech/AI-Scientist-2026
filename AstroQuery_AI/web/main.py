@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import shutil
+import sys
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -35,11 +36,17 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname
 logger = logging.getLogger("web")
 
 # ── 路径配置 ──
-ROOT = Path(__file__).resolve().parent.parent
-WEB_DIR = Path(__file__).resolve().parent
-# 2026-09-02：绿色包外置数据目录机制已移除——数据固定源码布局
-DATA_DIR = WEB_DIR / "data"
-OUTPUT_DIR = ROOT / "output"
+# 2026-09-04：PyInstaller 打包兼容——冻结态只读资源位于 sys._MEIPASS（_internal/），
+# 运行态产物（web/data、output/）写入 exe 旁边可写目录；源码态保持原布局不变。
+_FROZEN = getattr(sys, "frozen", False)
+ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
+WEB_DIR = Path(__file__).resolve().parent if not _FROZEN else ROOT
+if _FROZEN:
+    DATA_DIR = Path(sys.executable).parent / "data"
+    OUTPUT_DIR = Path(sys.executable).parent / "output"
+else:
+    DATA_DIR = WEB_DIR / "data"
+    OUTPUT_DIR = ROOT / "output"
 UPLOAD_DIR = DATA_DIR / "uploads"
 DB_PATH = DATA_DIR / "tasks.db"
 CHECKPOINT_PATH = DATA_DIR / "checkpoints.sqlite"

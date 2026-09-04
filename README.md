@@ -155,6 +155,38 @@ python -m web.desktop     # 内置窗口模式（WebView2，不依赖浏览器�
 
 ---
 
+## 📦 打包成绿色包（Windows 桌面版）
+
+把整个应用封装为 **exe + 依赖文件夹**（PyInstaller onedir：无控制台、无浏览器依赖，WebView2 渲染，关窗即退出）：
+
+```bash
+cd AstroQuery_AI
+pip install pyinstaller                                              # 首次
+python -m PyInstaller --noconfirm --clean packaging/astroquery_ai.spec
+# 或一键脚本：packaging\build_exe.bat
+```
+
+**产物**：`dist/AstroQueryAI/`（约 185MB，含 exe 29MB）；压缩为 `dist/AstroQueryAI-win64.zip`（约 92MB）即可分发。
+
+| 使用事项 | 说明 |
+|------|------|
+| 启动 | 解压 → 双击 `AstroQueryAI.exe`（自动避让端口，窗口关闭即停服务） |
+| API Key | 在 exe 同目录放 `.env`（`DASHSCOPE_API_KEY` 等，与源码方式同格式） |
+| 演示样例（可选） | 把 `sample_pack/` 目录放 exe 旁边，启动时自动导入 17 组真实演示 |
+| 数据目录 | exe 旁自动生成 `data/`（任务库）与 `output/`（图证/导出），删除即重置 |
+
+**发布到 GitHub Release**（zip 单附件限 2GB，92MB 轻松过）：
+
+```bash
+git tag v2.1.0 && git push origin v2.1.0
+gh release create v2.1.0 --title "AstroQuery AI v2.1.0" --notes "解压后双击 AstroQueryAI.exe，首次在 exe 旁放 .env" \
+  AstroQuery_AI/dist/AstroQueryAI-win64.zip
+```
+
+> 构建说明：打包机需 Python 3.10 且已执行过前端构建（`dist/` 整体内嵌，无需目标机装任何环境）；构建前确保 `frontend/dist/` 存在（见快速开始第 4 步）。
+
+---
+
 ## 🖥️ 功能总览
 
 | 模块 | 能力 | 关键实现 |
