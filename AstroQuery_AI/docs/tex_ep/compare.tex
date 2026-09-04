@@ -1,0 +1,73 @@
+% 表格风格对比样张（4 种方案）
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{tabularray}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{float}
+\definecolor{ink}{HTML}{1F3864}    % 墨蓝
+\definecolor{hdrblue}{HTML}{DCE6F1}% 淡蓝灰表头
+\definecolor{rowalt}{HTML}{F5F7FA} % 极淡隔行
+\definecolor{linegray2}{HTML}{C9CFD6} % 更浅细线
+
+\begin{document}
+
+\section*{方案 A —— 现行 booktabs 三线表（基线）}
+\begin{table}[H]\centering
+\caption{方案 A：三线表（基线）}
+\begin{tabular}{@{}p{6.2cm}p{2.6cm}p{2.4cm}p{3.2cm}@{}}
+\toprule
+原始内容或位置 & 提取结果 & 单位或上下文 & 当前状态 \\
+\midrule
+1999ApJ…523..328N 第 13 页正文：“Hipparcos 视差误差相关性”上下文 & 130.7 $\pm$ 11.1 & pc & 正确 \\
+2005A\&A…429.645S 第 1 页表格（距离与金属丰度测定表） & $-$0.034 $\pm$ 0.024 & dex & 正确 \\
+2018MNRAS…473.4612K 表格单元格 “7.48 $\pm$ 0.03” & 7.48 & mas & 已统一（清理不确定度） \\
+MWSC 星团目录 catalog 行 0305 原始列 logt & 8.15 & log(yr)（原始写法保留） & 待核对（与论文 Myr 写法不同） \\
+2006A\&A…446..611F 第 2 页 “星团参数汇总表” & 75-100 & Myr（区间保留原样） & 待核对（区间按设计保留） \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\section*{方案 B —— 表头浅底 + 细线 + 隔行条纹（无竖线，最克制）}
+\begin{table}[H]\centering
+\caption{方案 B：浅灰表头 + 细横线 + 隔行条纹}
+\begin{tblr}{colspec={X[3.2]X[1.1]X[1.2]X[1.6]}, row{1}={bg=hdrblue,font=\bfseries}, row{odd[2-Z]}={bg=rowalt}, hline{1,Z}={0.8pt,ink}, hline{2}={0.4pt,ink}, hline{3-Y}={0.2pt,linegray2}}
+原始内容或位置 & 提取结果 & 单位或上下文 & 当前状态 \\
+1999ApJ…523..328N 第 13 页正文：“Hipparcos 视差误差相关性”上下文 & 130.7 $\pm$ 11.1 & pc & 正确 \\
+2005A\&A…429.645S 第 1 页表格（距离与金属丰度测定表） & $-$0.034 $\pm$ 0.024 & dex & 正确 \\
+2018MNRAS…473.4612K 表格单元格 “7.48 $\pm$ 0.03” & 7.48 & mas & 已统一（清理不确定度） \\
+MWSC 星团目录 catalog 行 0305 原始列 logt & 8.15 & log(yr)（原始写法保留） & 待核对（与论文 Myr 写法不同） \\
+2006A\&A…446..611F 第 2 页 “星团参数汇总表” & 75-100 & Myr（区间保留原样） & 待核对（区间按设计保留） \\
+\end{tblr}
+\end{table}
+
+\clearpage
+\section*{方案 C —— 细灰全框 + 淡蓝表头（边框齐全但轻）}
+\begin{table}[H]\centering
+\caption{方案 C：细灰全框 + 淡蓝表头}
+\begin{tblr}{colspec={X[3.2]X[1.1]X[1.2]X[1.6]}, row{1}={bg=hdrblue,font=\bfseries}, row{odd[2-Z]}={bg=rowalt}, hline{1,Z}={0.9pt,ink}, hline{2}={0.4pt,ink}, hline{3-Y}={0.2pt,linegray2}, vline{1,Z}={0.9pt,ink}, vline{2-Y}={0.2pt,linegray2}}
+原始内容或位置 & 提取结果 & 单位或上下文 & 当前状态 \\
+1999ApJ…523..328N 第 13 页正文：“Hipparcos 视差误差相关性”上下文 & 130.7 $\pm$ 11.1 & pc & 正确 \\
+2005A\&A…429.645S 第 1 页表格（距离与金属丰度测定表） & $-$0.034 $\pm$ 0.024 & dex & 正确 \\
+2018MNRAS…473.4612K 表格单元格 “7.48 $\pm$ 0.03” & 7.48 & mas & 已统一（清理不确定度） \\
+MWSC 星团目录 catalog 行 0305 原始列 logt & 8.15 & log(yr)（原始写法保留） & 待核对（与论文 Myr 写法不同） \\
+2006A\&A…446..611F 第 2 页 “星团参数汇总表” & 75-100 & Myr（区间保留原样） & 待核对（区间按设计保留） \\
+\end{tblr}
+\end{table}
+
+\clearpage
+\section*{方案 D —— 墨蓝表头白字 + 细灰内线（数据仪表风）}
+\begin{table}[H]\centering
+\caption{方案 D：墨蓝表头 + 白字 + 细灰内线}
+\begin{tblr}{colspec={X[3.2]X[1.1]X[1.2]X[1.6]}, row{1}={bg=ink,fg=white,font=\bfseries}, row{odd[2-Z]}={bg=rowalt}, hline{1,Z}={0.9pt,ink}, hline{2}={0.5pt,ink}, hline{3-Y}={0.15pt,linegray2}, vline{1,Z}={0.9pt,ink}, vline{2-Y}={0.15pt,linegray2}}
+原始内容或位置 & 提取结果 & 单位或上下文 & 当前状态 \\
+1999ApJ…523..328N 第 13 页正文：“Hipparcos 视差误差相关性”上下文 & 130.7 $\pm$ 11.1 & pc & 正确 \\
+2005A\&A…429.645S 第 1 页表格（距离与金属丰度测定表） & $-$0.034 $\pm$ 0.024 & dex & 正确 \\
+2018MNRAS…473.4612K 表格单元格 “7.48 $\pm$ 0.03” & 7.48 & mas & 已统一（清理不确定度） \\
+MWSC 星团目录 catalog 行 0305 原始列 logt & 8.15 & log(yr)（原始写法保留） & 待核对（与论文 Myr 写法不同） \\
+2006A\&A…446..611F 第 2 页 “星团参数汇总表” & 75-100 & Myr（区间保留原样） & 待核对（区间按设计保留） \\
+\end{tblr}
+\end{table}
+
+\end{document}
