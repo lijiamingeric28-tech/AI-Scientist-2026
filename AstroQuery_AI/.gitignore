@@ -48,3 +48,4 @@ docs/tex/_build/
 docs/tex/*.log
 # Word 临时锁文件
 ~$*
+docs/tex_ep/build*/
