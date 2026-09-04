@@ -34,8 +34,10 @@ class _EventLogHandler(logging.Handler):
                 return
             level = _level_map.get(record.levelno, "INFO")
             # 只转发业务节点的日志（过滤框架噪音）
-            msg = record.getMessage()[:500]
-            self._bus.emit(task_id, "log", node=record.name.split(".")[-1], level=level, message=msg)
+            msg = record.getMessage()
+            if record.exc_info:  # 2026-09-04：异常必须完整可见（此前 traceback 被丢弃，排障不可用）
+                msg += "\n" + logging.Formatter().formatException(record.exc_info)
+            self._bus.emit(task_id, "log", node=record.name.split(".")[-1], level=level, message=msg[:4000])
         except Exception:
             pass  # 日志转发失败绝不击穿
 

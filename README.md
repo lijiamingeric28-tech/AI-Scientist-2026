@@ -172,7 +172,7 @@ python -m PyInstaller --noconfirm --clean packaging/astroquery_ai.spec
 |------|------|
 | 启动 | 解压 → 双击 `AstroQueryAI.exe`（自动避让端口，窗口关闭即停服务） |
 | API Key | 在 exe 同目录放 `.env`（`DASHSCOPE_API_KEY` 等，与源码方式同格式） |
-| 演示样例（可选） | 把 `sample_pack/` 目录放 exe 旁边，启动时自动导入 17 组真实演示 |
+| 演示样例 | **包内已内置** `sample_pack/`（18 组真实演示），首启自动导入，开箱即可回放演示；删除 exe 旁 `data/` 可重置后由包重导 |
 | 数据目录 | exe 旁自动生成 `data/`（任务库）与 `output/`（图证/导出），删除即重置 |
 
 **发布到 GitHub Release**（zip 单附件限 2GB，92MB 轻松过）：

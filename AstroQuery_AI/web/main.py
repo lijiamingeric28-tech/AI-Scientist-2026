@@ -35,6 +35,17 @@ from .task_store import TaskStore
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
 logger = logging.getLogger("web")
 
+# 2026-09-04：打包态（无控制台）把全量日志写入 exe 旁 logs/app.log，排障兜底
+if getattr(sys, "frozen", False):
+    try:
+        _log_dir = Path(sys.executable).parent / "logs"
+        _log_dir.mkdir(parents=True, exist_ok=True)
+        _fh = logging.FileHandler(_log_dir / "app.log", encoding="utf-8")
+        _fh.setFormatter(logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s"))
+        logging.getLogger().addHandler(_fh)
+    except Exception as _exc:  # noqa: BLE001
+        logger.warning("日志文件初始化失败: %s", _exc)
+
 # ── 路径配置 ──
 # 2026-09-04：PyInstaller 打包兼容——冻结态只读资源位于 sys._MEIPASS（_internal/），
 # 运行态产物（web/data、output/）写入 exe 旁边可写目录；源码态保持原布局不变。
@@ -1022,7 +1033,8 @@ def _os_open(path: str) -> None:
 # 配置（契约 D10：GET 只返回是否配置；PUT 写回 .env）
 # ══════════════════════════════════════════════════════
 
-_ENV_FILE = ROOT / ".env"
+# .env 位置与 config.py 同口径：源码态 = 项目根；打包态 = exe 旁（与 AstroQueryAI.exe 同级）
+_ENV_FILE = (Path(sys.executable).parent if _FROZEN else ROOT) / ".env"
 _ENV_KEYS = ["DASHSCOPE_API_KEY", "DASHSCOPE_BASE_URL",
              "ADS_API_TOKEN", "UNPAYWALL_EMAIL"]
 

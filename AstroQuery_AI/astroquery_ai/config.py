@@ -9,13 +9,16 @@ subgraph3 settings.py、quality_pipeline llm_config.yaml），env/yaml 优先级
 config 模块内联；本模块只负责敏感字段 + 运行参数。
 """
 
+import sys
 from functools import lru_cache
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# 项目根目录（.env 所在处）
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+# 项目根目录（.env 所在处）：源码态 = 本包上两级（AstroQuery_AI/）；
+# 打包态（PyInstaller 2026-09-04）= exe 所在目录（.env 与 exe 同级放置）。
+_SRC_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(sys.executable).parent if getattr(sys, "frozen", False) else _SRC_ROOT
 
 
 class Settings(BaseSettings):
