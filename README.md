@@ -20,7 +20,7 @@
 
 </div>
 
-> **一句话**：输入一句自然语言（如「M31 的距离和金属丰度」），AstroQuery AI 自动完成意图澄清、27 个天文星表/文献库检索、VLM 多模态数据提取、8 项质量评估、自动标准化/冲突裁决（内置 LLM 动态工具 + 沙箱），最终输出可追溯、可复现、带 6 维质量评分与雷达报告的结构化黄金数据。
+> **作品定位**：面向天文科研数据获取的智能检索与数据整合系统 —— 研究者输入一句自然语言查询目标天体参数（如「M31 的距离和金属丰度」），系统自动完成意图解析与目标确认，并行检索多源专业星表与海量文献库；依托多模态大模型，从论文正文、复杂表格及科学图表中提取相关数值与图文佐证，并为每条数据生成可精确定位回溯的原文证据链。随后数据进入闭环质检流水线：多维校验单位格式与物理合理性，给出置信评分；自动规范清洗并全程修改留痕；对多源数据展开冲突分析与分歧归因，疑难异常流转人工复核。最终结合字段洞察在前端可视化呈现，并支持导出高可信度的结构化科研数据。
 
 ---
 
@@ -44,13 +44,28 @@
 
 > 提取到的每一行数据，**质量是否可信？有没有被自动清洗过？清洗依据是什么？**
 
+## 💡 实际核心方法
+
+系统通过人机交互确认目标天体与所需性质，结合天文数据库展开**全别名**，并依据知识库生成**统一性质清单**；随后**并行检索**专业星表与文献论文，利用多模态大模型解析正文与图表提取数值，配合**文本层逆向定位**提供精准原文位置；最后通过质量流水线对字段格式与合理范围进行多维质检，由确定性规则完成**误差区间拆解**与**单位规范化**，并利用离群统计分析**自动归因多源测量冲突**，在保留原始分歧与全流程修改留痕的前提下完成结构化交付。
+
+一次查询的六阶段闭环：
+
+| 阶段 | 环节 | 内容 |
+|------|:---:|------|
+| 1 | 需求解析 | 自然语言意图理解 + 人机多轮澄清 → 天文数据库统一标识 + 全别名展开 → 领域知识库生成统一性质清单（字段白名单 + 标准单位） |
+| 2 | 检索 | 基于性质清单并行检索多张专业星表，自动生成文献检索式，实现论文及附表数据的靶向筛选与下载 |
+| 3 | 提取 | 多模态大模型逐页解析论文正文与复杂表格提取物理量数值，配合文本层逆向定位锁定真实坐标并筛选图表证据 |
+| 4 | 质检 | 多维评估打分 + 确定性规则清洗 + 离群冲突检测；误差区间拆解与单位规范化，冲突显式归因并保留原始分歧，状态机闭环迭代 + 人机协同裁决 |
+| 5 | 数据产出 | 输出标准化数据集，完整保留原始出处、页码坐标、逐字摘录与修改留痕，全要素深度可溯源 |
+| 6 | 前端显示 | 多维数据检索、原文高亮定位回溯、图证画廊展示、冲突洞察分析与任务流交互回放 |
+
 ---
 
 ## ✨ 核心亮点
 
 | # | 亮点 | 说明 |
 |---|------|------|
-| 1 | **PropertySpec 系统中枢** | 目标天体 → SIMBAD/otype → RAG 性质库 → 字段名白名单 + 标准单位表（~100+ otype），数据库/论文/补充材料三条提取路径全部归一 |
+| 1 | **PropertySpec 系统中枢** | 目标天体 → SIMBAD/otype → RAG 性质库（99 类 otype · 294 条领域规则）→ 字段名白名单 + 标准单位表，数据库/论文/补充材料三条提取路径全部归一 |
 | 2 | **三路并行检索** | 27 个 VizieR 星表（LLM 列名归一）+ ADS 论文检索（RAG 标准名构造查询串）+ Unpaywall → PDF 瀑布式下载 + CDS J/ 补充材料 |
 | 3 | **VLM 多模态提取** | 论文 PDF → 页图/bbox 标注 → 多模态模型批量提取（prompt 注入 PropertySpec 白名单），图证→记录逐条可溯源 |
 | 4 | **三层动态工具** | 数据标准化的 Layer3（LLM 动态生成 Python 函数）在 **AST 白名单沙箱**内执行：dry-run 5 样本 → 自检 → 8s 超时 → 修复循环；生成失败安全回退 Base Tools |
@@ -59,66 +74,49 @@
 | 7 | **质检路由决策** | 8 项检查清单 + 4×3 决策矩阵（Quality × Repair Cost）→ Export / Normalize / Conflict / HumanReview，最大 3 轮 B↔C 循环 |
 | 8 | **HITL 人机协同** | 意图澄清（子图 1）+ 人工复核节点（interrupt/resume），需要人类判断时停下等输入 |
 | 9 | **SSE 实时 Web + 事件回放** | FastAPI + 12 类事件流 / 断点续播 / 任意已完成任务「一键重放」（压缩倍率可调），演示级流畅度 |
-| 10 | **桌面内置引擎** | 一个 `python -m web.desktop` 即开出原生窗口（WebView2），绿色免安装包（PyInstaller）双击即用 |
+| 10 | **桌面内置引擎** | 一个 `python -m web.desktop` 即开出原生窗口（WebView2），不依赖浏览器 |
 
 ---
 
-## 🧭 系统架构
+## 🧭 系统架构图集
 
-```mermaid
-flowchart LR
-    U(["🧑‍💻 自然语言查询"]) --> N1[意图澄清 子图1]
-    N1 --> P1["性质标准化 P1<br>SIMBAD · otype · RAG 性质库<br>→ PropertySpec 白名单 + 标准单位"]
 
-    P1 --> N2["检索 子图2"]
-    N2 --> DB["VizieR 27 星表<br>LLM 列名归一"]
-    N2 --> PAP["ADS 论文检索<br>Unpaywall PDF 下载"]
-    N2 --> SUPP["CDS J/ 补充材料"]
+<div align="center">
 
-    subgraph 提取 子图3
-        N3["PDF → 页图 + bbox"] --> VLM["Qwen-VLM 多模态提取<br>Prompt: PropertySpec"]
-    end
-    DB & PAP & SUPP --> N3
+**① 真实查询全流程** —— 一次查询的五阶段主线：需求与性质标准化 → 来源查找与文献解析 → 数据提取与多源整合 → 质量评估与清洗闭环 → 成果交付与科研洞察
 
-    AGG["聚合器 aggregator<br>final_output + error_log"] --> QP["质检接缝<br>target_schema + standard_units"]
+<img src="assets/Architecture/real_process.jpg" alt="真实查询全流程" width="100%" />
 
-    subgraph 质量管线 quality_pipeline/ 9 子图之一族
-        A[评估 Assessment] -->|格式/单位/别名问题| B[标准化 Normalization]
-        A -->|跨源冲突| C[冲突裁决 Conflict]
-        A -->|完美数据 8/8| D[导出 Export]
-        A -->|严重问题| E[人工复核 HumanReview]
-        B --> C
-        C -->|需要再清洗| B
-        C --> D
-        E --> A & B
-        D --> INS[洞察 Insights<br>字段关系/推荐]
-    end
+**② 系统架构总览** —— LangGraph 主图编排 · 子图 1-3 契约 · Web 单体流程 · 外部服务与数据源 · 资产与存储层（99 类 PropertySpec · 294 条领域规则）
 
-    AGG --> A
-    D --> WEB["🧱 结构化输出<br>JSON/CSV/溯源链/质量摘要"]
-    INS --> WEB
-    WEB --> W["Web 前端 React<br>SSE 实时 · 回放 · 雷达图"]
-    W --- DESK["桌面窗口 pywebview/WebView2"]
-```
+<img src="assets/Architecture/system_architrcture.png" alt="系统架构总览" width="100%" />
 
-### 质量决策矩阵（Assessment → 下游路由）
+**③ 检索与提取流水线** —— 01 规范中枢与星表检索（PropertySpec / VizieR 27 星表 / SIMBAD）→ 02 论文与补充材料检索链（ADS / Unpaywall / CDS）→ 03 多模态精细提取（页图切片 / VLM 约束提取 / bbox 定位 / 图证抽取）
 
-| | **Excellent** | **Good** | **Fair** | **Poor** |
-|---|---|---|---|---|
-| **Low 修复成本** | Export | Export | Normalization | Normalization |
-| **Medium** | Export | Normalization | Normalization | Conflict |
-| **High** | Normalization | Conflict | Conflict | **Human Review** |
+<img src="assets/Architecture/search_retrieve.png" alt="检索与提取流水线" width="100%" />
+
+**④ 质量管线（Quality Pipeline V3.4）** —— 评估 → 清洗 ⇄ 冲突 → 导出 → 洞察 + HITL 人工复核异常通道；B⇄C 状态机（循环阈值 ≤ 3，总迭代上限 8），Invariant Rules 约束每轮裁决
+
+<img src="assets/Architecture/quality.png" alt="质量管线" width="100%" />
+
+**⑤ 前端交互模式** —— 「我的查询 · 真实任务栈」与「演示样例 · 内置全保真」双模式切换 + 共享增值面板（质量报告 / 来源清单 / 图证 / 数据包）
+
+<img src="assets/Architecture/frontend.png" alt="前端交互模式" width="100%" />
+
+</div>
 
 ---
 
 ## 🚀 快速开始
 
-### 1. 环境
+### 1. 克隆仓库
 
 ```bash
-# Python 3.10+，依赖见 pyproject.toml（pip install -e . 自动安装）
-cd AstroQuery_AI
-pip install -e .
+git clone https://github.com/lijiamingeric28-tech/AI-Scientist-2026.git
+cd AI-Scientist-2026/AstroQuery_AI
+
+# 安装运行依赖（Python 3.10+，清单见 requirements.txt / pyproject.toml）
+pip install -r requirements.txt
 ```
 
 ### 2. 配置 API Key（`AstroQuery_AI/.env`）
@@ -142,7 +140,7 @@ python -m astroquery_ai "M31 的距离和金属丰度"
 > **每次克隆或拉取代码后**，必须先安装依赖并构建，否则 `web.main` 找不到静态页面（窗口/页面会是空白 404）：
 
 ```bash
-cd AstroQuery_AI/frontend
+cd frontend                          # 当前已在 AstroQuery_AI/ 内
 npm install                          # 网络慢可加 --registry=https://registry.npmmirror.com
 npm run build
 cd ..
@@ -153,7 +151,6 @@ cd ..
 ```bash
 python -m web.main        # 浏览器模式 → http://127.0.0.1:8000
 python -m web.desktop     # 内置窗口模式（WebView2，不依赖浏览器）
-python packaging/launcher.py --desktop   # 绿色包/统一入口，双击 exe 即达
 ```
 
 ---
@@ -186,14 +183,16 @@ python packaging/launcher.py --desktop   # 绿色包/统一入口，双击 exe �
 ## 🧪 测试与质量
 
 ```bash
-cd AstroQuery_AI
+# 测试/ruff 需要开发依赖（含 pytest + vcrpy）
+pip install -r requirements-dev.txt
+
 python -m pytest tests/ -m "not network"   # 370 项全 mock 离线 ✅
 python -m pytest tests/                    # + 网络冒烟（需真实 API）
 python -m ruff check .
 ```
 
-- **370 项测试全绿**（全 mock、无网络、无 LLM）；全库 13 单元两阶段审计曾发现并修复 80 条确认问题（`docs/AUDIT_REPORT.md`）
-- VCR 录制回放（dev extra `vcrpy`）支撑离线真实交互协议测试
+- **370 项测试全绿**（全 mock、无网络、无 LLM）；全库 13 单元两阶段审计曾发现并修复 80 条确认问题（`HISTORY_VERSION/V3/docs/AUDIT_REPORT.md`）
+- VCR 录制回放（`vcrpy`，见 requirements-dev.txt）支撑离线真实交互协议测试
 
 ## 📁 目录结构
 
@@ -205,23 +204,18 @@ AI-Scientist-2026/
 │   ├── quality_pipeline/      # 质量管线共享设施（configs/models/tools/sandbox）
 │   ├── web/                   # FastAPI 后端：任务/SSE/回放/桌面入口(desktop.py)
 │   ├── frontend/              # React + Vite（7 阶段卡片/质量雷达/溯源查看）
-│   ├── rag_properties/        # RAG 性质库（~100+ otype 标准单位）
-│   ├── packaging/             # PyInstaller 绿色包（launcher + spec）
-│   └── tests/                 # pytest 全 mock 离线测试
+│   ├── rag_properties/        # RAG 性质库（99 类 otype 标准单位）
+│   ├── scripts/               # 运维/演示/实验脚本（提交任务、重建样例包等）
+│   ├── sample_pack/           # 演示回放包（内置样例库）
+│   ├── output/                # 本地运行产物（不提交）
+│   ├── tests/                 # pytest 全 mock 离线测试
+│   ├── requirements.txt       # 运行依赖（与 pyproject.toml 同步）
+│   └── requirements-dev.txt   # 开发依赖（pytest/ruff/vcrpy…）
 ├── HISTORY_VERSION/           # 历史版本归档（V1/V2/V3 + 设计思路）
-├── assets/                    # 标题图 / Logo / 演示 GIF / 开发日志
+├── assets/                    # 标题图 / Logo / 演示 GIF / 架构图集 / 开发日志
+├── site/                      # GitHub Pages 落地页
 └── README.md
 ```
-
-## 📚 文档
-
-| 文档 | 位置 |
-|------|------|
-| 总架构设计方案（9 子图 + 主图装配） | `AstroQuery_AI/quality_pipeline/总架构设计方案.md` |
-| 前端集成契约 | `AstroQuery_AI/docs/FRONTEND_INTEGRATION.md` |
-| 开发日志（7.7–7.20 项目历程） | `assets/开发日志.md` |
-| 历史审计报告（80 条确认问题修复，V3 归档） | `HISTORY_VERSION/V3/docs/AUDIT_REPORT.md` |
-| 历史优化/修复状态（V3 归档） | `HISTORY_VERSION/V3/docs/OPTIMIZATION_STATUS.md` |
 
 ---
 

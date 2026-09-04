@@ -1,0 +1,35 @@
+# 运行依赖（与 pyproject.toml [project.dependencies] 同步，Python 3.10+）
+# ── 核心编排 ──
+langgraph>=0.1.0
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-openai>=0.1.0
+openai>=1.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-multipart>=0.0.9
+# ── 子图 1：意图澄清（LLM）──
+python-dotenv>=1.0.0
+PyYAML>=6.0.1
+# ── 子图 2：并行检索（天文库 + 论文）──
+astroquery>=0.4.6
+ads>=0.12.7
+requests>=2.31.0
+httpx>=0.25.0
+tenacity>=8.2.3
+numpy>=1.24.0
+# ── 子图 3：多模态提取（PDF + VLM）──
+PyMuPDF>=1.23.0
+Pillow>=10.0.0
+dashscope>=1.14.0
+json-repair>=0.7.0
+tqdm>=4.66.0
+# ── Web 层（FastAPI/SSE/回放）──
+fastapi>=0.110
+uvicorn>=0.25
+sse-starlette>=1.6
+langgraph-checkpoint-sqlite>=2.0
+# ── 桌面窗口（WebView2 运行时 Win11 自带）──
+pywebview>=4.0
+
+# 开发依赖（pytest/ruff/mypy/bandit/pre-commit/vcrpy）见 pyproject.toml [project.optional-dependencies]

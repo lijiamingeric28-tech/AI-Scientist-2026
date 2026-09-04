@@ -7,6 +7,7 @@ Phase 1 收敛：API key 与模型名来自统一 Settings（astroquery_ai/confi
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Callable
 
 from astroquery_ai.config import get_settings
 
@@ -121,7 +122,7 @@ settings = Settings()
 # web_runner 任务执行期注册 should_cancel 回调；vlm_extractor 的 as_completed
 # 循环每个 future 完成时检查，取消即抛终止。executor 串行复用线程——
 # 任务级注册/清除保证不串台（不在 dataclass 字段内，避免影响既有测试）。
-_SHOULD_CANCEL: callable | None = None
+_SHOULD_CANCEL: Callable | None = None
 
 
 def set_should_cancel(fn) -> None:
