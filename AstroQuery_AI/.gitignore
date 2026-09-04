@@ -41,3 +41,10 @@ _demo_progress.log
 _demo_autoconfirm.log
 # 构建中间产物
 docs/quality-pipeline.visual-check.*
+
+# ─────────── 申报报告 LaTeX 构建产物 ───────────
+docs/tex/build*/
+docs/tex/_build/
+docs/tex/*.log
+# Word 临时锁文件
+~$*

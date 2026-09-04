@@ -80,6 +80,34 @@ def route_after_initial_parse(state: IntentClarificationState) -> Literal[
     return "ask_entity"
 
 
+def route_after_ask_properties(state: IntentClarificationState) -> Literal[
+    "confirm", "reask", "cancel"
+]:
+    """
+    ask_properties 答复解读后的路由（2026-09-03 方向1：答复就地解读，
+    不再回 initial_parse 全量重分类 —— 修复"全部"/回车被误判 invalid 杀死任务）。
+
+    Args:
+        state: 当前状态（ask_properties 已设置 properties_resolved /
+               clarification_status）
+
+    Returns:
+        str: "confirm" → final_confirm | "reask" → ask_properties | "cancel" → END
+    """
+    # 澄清轮内显式取消（算了/不查了/取消…）→ 优雅终止
+    if state.get("clarification_status") == "cancelled":
+        logger.info("[route_after_ask_properties] 用户取消，路由到 END")
+        return "cancel"
+
+    if state.get("properties_resolved"):
+        logger.info("[route_after_ask_properties] 性质已确定，路由到 final_confirm")
+        return "confirm"
+
+    turns = state.get("clarification_turns", 0)
+    logger.info(f"[route_after_ask_properties] 答复未解析，重问性质 (轮次 {turns})")
+    return "reask"
+
+
 def route_after_final_confirm(state: IntentClarificationState) -> Literal[
     "success", "modify", "cancel"
 ]:

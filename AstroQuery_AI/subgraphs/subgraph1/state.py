@@ -88,6 +88,14 @@ class IntentClarificationState(TypedDict):
     默认：False
     """
 
+    properties_resolved: NotRequired[bool]
+    """
+    ask_properties 答复是否已就地解读确定（2026-09-03 方向1）
+    - True: 已确定（查全部 / 具体性质 / 重问超限回退），可进 final_confirm
+    - False: 答复未解析出性质，需礼貌重问
+    默认：False
+    """
+
     # ===== 输出字段（传递给下游子图） =====
     user_confirmed: NotRequired[bool]
     """

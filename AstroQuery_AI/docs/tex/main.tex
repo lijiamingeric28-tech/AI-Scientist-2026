@@ -1,0 +1,104 @@
+% ============================================================
+% AstroQuery AI 申报技术报告（技术方案 PDF）
+% 编译：xelatex main.tex （两遍）
+% ============================================================
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[margin=2.0cm,top=2.1cm,bottom=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{amsmath,amssymb}
+
+% ---------- 样式 ----------
+\setcounter{secnumdepth}{3}
+\linespread{1.03}
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.02}
+\captionsetup{font=small,labelfont=bf,labelsep=period,skip=4pt}
+\graphicspath{{E:/work/AI-Scientist-2026/AstroQuery_AI/docs/pic/w/}{E:/work/AI-Scientist-2026/AstroQuery_AI/docs/pic/}{}}
+% 圈号数字归入 CJK 字体类别，避免 latin 上下文缺字
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+\setlength{\emergencystretch}{3em}
+
+% 表格内单元格加小号
+\newcommand{\sm}{\small}
+
+% 等宽/代码样式（内嵌字段名、文件名）
+\newcommand{\code}[1]{\texttt{#1}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\thepage}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+% ---------- 标题与列表收紧 ----------
+\titlespacing*{\section}{0pt}{10pt}{6pt}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{3pt}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries}
+\setlist{topsep=2pt,itemsep=1pt,parsep=0pt}
+\setlist[enumerate,1]{leftmargin=1.5em}
+\setlist[itemize,1]{leftmargin=1.1em}
+
+% 表格一律小号
+\AtBeginEnvironment{longtable}{\small}
+
+% ---------- 目录紧凑化 ----------
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{\small\bfseries}
+\renewcommand{\cftsubsecfont}{\small}
+\renewcommand{\cftsubsubsecfont}{\footnotesize}
+\renewcommand{\cftsecpagefont}{\small\bfseries}
+\setlength{\cftbeforesecskip}{1.5pt}
+\setlength{\cftbeforesubsecskip}{0.5pt}
+\setlength{\cftbeforesubsubsecskip}{0.25pt}
+\renewcommand{\cftsecnumwidth}{2.2em}
+\renewcommand{\cftsubsecnumwidth}{2.6em}
+\renewcommand{\cftsubsubsecnumwidth}{3em}
+
+\begin{document}
+
+% ========== 封面 ==========
+\begin{titlepage}
+\centering
+\vspace*{2.4cm}
+{\LARGE\bfseries 2026 年度中国青年科技创新\par“揭榜挂帅”擂台赛·阿里云榜题\par}
+\vspace{1.2cm}
+{\large 赛道二·数据场景 ｜ 方向 1A·科学数据查找解析与整合\par}
+\vspace{1.6cm}
+{\Huge\bfseries AstroQuery AI\par}
+\vspace{0.5cm}
+{\Large 基于 Qwen 多模态大模型与可解释闭环的\par 天文科学数据智能挖掘与跨源整合系统\par}
+\vspace{1.2cm}
+{\large\itshape 申报技术报告（技术方案 PDF）\par}
+\vfill
+{\large 编制日期：2026 年 9 月\par}
+\end{titlepage}
+\thispagestyle{plain}
+% 目录使用罗马页码，正文重新从 1 计
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ========== 正文 ==========
+\input{src/part1.tex}
+\input{src/part2.tex}
+\input{src/part3.tex}
+\input{src/part4.tex}
+
+\end{document}

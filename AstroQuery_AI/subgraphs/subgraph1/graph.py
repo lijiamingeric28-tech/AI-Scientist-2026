@@ -13,7 +13,11 @@ from .nodes import (
     ask_properties,
     final_confirm
 )
-from .routes import route_after_initial_parse, route_after_final_confirm
+from .routes import (
+    route_after_initial_parse,
+    route_after_ask_properties,
+    route_after_final_confirm,
+)
 from .config import config
 
 logger = logging.getLogger(__name__)
@@ -83,7 +87,19 @@ def create_intent_clarification_subgraph(checkpointer=None) -> StateGraph:
     graph.add_edge("greeting_handler", "initial_parse")
     graph.add_edge("ask_entity", "initial_parse")
     graph.add_edge("handle_failure", END)
-    graph.add_edge("ask_properties", "initial_parse")
+
+    # 路由 3: ask_properties 答复就地解读后的分支（2026-09-03 方向1：
+    # 不再固定回 initial_parse 全量重分类 —— "全部"/回车等澄清答复
+    # 曾被 classify_query_type 误判 invalid 导致整次查询 polite_reject 失败）
+    graph.add_conditional_edges(
+        "ask_properties",
+        route_after_ask_properties,
+        {
+            "confirm": "final_confirm",
+            "reask": "ask_properties",
+            "cancel": END,
+        }
+    )
 
     logger.debug("[create_intent_clarification_subgraph] 已添加固定边")
 
