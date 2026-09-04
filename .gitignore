@@ -238,3 +238,5 @@ AstroQuery_AI/__pycache__/
 CLAUDE.md
 .claude/
 _site/
+
+.docs/

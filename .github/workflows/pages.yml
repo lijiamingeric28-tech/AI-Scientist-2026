@@ -31,13 +31,13 @@ jobs:
 
       - uses: actions/configure-pages@v5
 
-      # 组装站点根：site/* 为页面，assets/ 图片/logo/gif 同层拷贝
+      # 组装站点根：site/* 为页面，assets/ 图片同层拷贝
       - name: Assemble site root
         run: |
           mkdir -p _site/assets
           cp -r site/* _site/
-          cp assets/logo.png assets/readme_title.png _site/assets/
-          cp assets/export-1788355820917-light.gif _site/assets/
+          cp assets/export-1788355820917.gif _site/assets/
+          cp -r assets/Architecture _site/assets/
 
       - uses: actions/upload-pages-artifact@v3
         with:

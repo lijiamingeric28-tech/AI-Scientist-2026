@@ -11,6 +11,7 @@ import datetime
 import json
 import os
 import re
+import sys
 import time
 from typing import Any
 
@@ -23,7 +24,17 @@ logger = get_logger(__name__)
 # V3.5: 领域常量从 domain_config 读取
 from quality_pipeline.configs.domain_config import DEFAULT_DOMAIN, MAX_NARRATIVE_CHARS, MAX_KEY_OBSERVATIONS
 
-_DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "output")
+def _default_output_dir() -> str:
+    """输出目录：源码态 = 包根 output/；打包态（PyInstaller onedir）= exe 旁 output/。
+
+    2026-09-04：原为模块常量按包根相对路径求值——frozen 下包根实为
+    sys._MEIPASS（_internal/），insights 文件全部落进 _internal/output/，
+    与 data_export 同款事故（见 tests/test_frozen_output_dir.py）。必须
+    运行时求值，口径与 web.main._FROZEN 一致。
+    """
+    if getattr(sys, "frozen", False):
+        return os.path.join(os.path.dirname(sys.executable), "output")
+    return os.path.join(os.path.dirname(__file__), "..", "..", "..", "output")
 
 
 class SynthesisAgent:
@@ -205,7 +216,7 @@ def _resolve_output_dir(state, wf) -> str:
         return existing
     run_id = wf.get("run_id", datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
     run_dir = run_id[:8] if len(run_id) >= 8 else run_id
-    base = os.environ.get("EXPORT_OUTPUT_DIR", _DEFAULT_OUTPUT_DIR)
+    base = os.environ.get("EXPORT_OUTPUT_DIR", _default_output_dir())
     output_dir = os.path.join(os.path.abspath(base), run_dir)
     os.makedirs(output_dir, exist_ok=True)
     return output_dir

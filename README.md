@@ -15,6 +15,7 @@
 
 [![Tests](https://img.shields.io/badge/tests-370%20passed%20FULLY-2ea44f)](#-测试与质量)
 [![Desktop](https://img.shields.io/badge/桌面内置引擎-WebView2-1f6feb)](#--内置窗口模式)
+[![Website](https://img.shields.io/badge/🌌-网站落地页-8b5cf6)](https://lijiamingeric28-tech.github.io/AI-Scientist-2026/)
 
 **EXPLORE · ANALYZE · EVOLVE** — *查询 → 检索 → 提取 → 质检 → 数据科学可用*
 
@@ -108,7 +109,7 @@
 ---
 
 ## 🚀 快速开始
-
+## 通过源码编译运行
 ### 1. 克隆仓库
 
 ```bash
@@ -120,7 +121,8 @@ pip install -r requirements.txt
 ```
 
 ### 2. 配置 API Key（`AstroQuery_AI/.env`）
-
+**我们提供一定量的api额度，可通过如下方式获取：**
+使用从源码进行编译的方式进行配置.env文件需要从我们提交的文档中获得**夸克网盘**的链接，并从链接中下载.env文件，放置在AI-Scientist-2026/AstroQuery_AI目录下即可。
 | 变量 | 必填 | 说明 |
 |------|:---:|------|
 | `DASHSCOPE_API_KEY` | ✅ | 阿里云百炼（Qwen 文本 + VLM 多模态），驱动澄清/提取/生成 |
@@ -154,19 +156,11 @@ python -m web.desktop     # 内置窗口模式（WebView2，不依赖浏览器�
 ```
 
 ---
+## 📦 通过release下载绿色包运行（Windows 桌面版）
 
-## 📦 打包成绿色包（Windows 桌面版）
+我们现在已经把整个应用封装为 **exe + 依赖文件夹**形式，您可以直接下载后解压运行，无需配置环境，唯一需要进行配置的只有 `.env` 文件（放在 exe 同目录下，内容同源码方式，获取方式与上相同）。
 
-把整个应用封装为 **exe + 依赖文件夹**（PyInstaller onedir：无控制台、无浏览器依赖，WebView2 渲染，关窗即退出）：
-
-```bash
-cd AstroQuery_AI
-pip install pyinstaller                                              # 首次
-python -m PyInstaller --noconfirm --clean packaging/astroquery_ai.spec
-# 或一键脚本：packaging\build_exe.bat
-```
-
-**产物**：`dist/AstroQueryAI/`（约 185MB，含 exe 29MB）；压缩为 `dist/AstroQueryAI-win64.zip`（约 92MB）即可分发。
+**产物**：`AstroQueryAI-win64.zip`
 
 | 使用事项 | 说明 |
 |------|------|
@@ -174,16 +168,6 @@ python -m PyInstaller --noconfirm --clean packaging/astroquery_ai.spec
 | API Key | 在 exe 同目录放 `.env`（`DASHSCOPE_API_KEY` 等，与源码方式同格式） |
 | 演示样例 | **包内已内置** `sample_pack/`（18 组真实演示），首启自动导入，开箱即可回放演示；删除 exe 旁 `data/` 可重置后由包重导 |
 | 数据目录 | exe 旁自动生成 `data/`（任务库）与 `output/`（图证/导出），删除即重置 |
-
-**发布到 GitHub Release**（zip 单附件限 2GB，92MB 轻松过）：
-
-```bash
-git tag v2.1.0 && git push origin v2.1.0
-gh release create v2.1.0 --title "AstroQuery AI v2.1.0" --notes "解压后双击 AstroQueryAI.exe，首次在 exe 旁放 .env" \
-  AstroQuery_AI/dist/AstroQueryAI-win64.zip
-```
-
-> 构建说明：打包机需 Python 3.10 且已执行过前端构建（`dist/` 整体内嵌，无需目标机装任何环境）；构建前确保 `frontend/dist/` 存在（见快速开始第 4 步）。
 
 ---
 

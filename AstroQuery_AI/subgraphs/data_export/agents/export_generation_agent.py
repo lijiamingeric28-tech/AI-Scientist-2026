@@ -7,14 +7,25 @@ from __future__ import annotations
 import datetime
 import json
 import os
+import sys
 import time
 from typing import Any
 from quality_pipeline.quality_state import QualityGraphState
 from quality_pipeline.utils.logger import get_logger
 logger = get_logger(__name__)
 
-# 默认输出目录（2026-09-02：绿色包外置机制移除，固定相对包根）
-_DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "output")
+
+def _default_output_dir() -> str:
+    """输出目录：源码态 = 包根 output/；打包态（PyInstaller onedir）= exe 旁 output/。
+
+    2026-09-04：原为模块常量按包根相对路径求值——frozen 下包根实为
+    sys._MEIPASS（_internal/），导出文件全部落进 _internal/output/，而
+    web API（web.main.OUTPUT_DIR）扫描 exe 旁 output/，两侧分裂导致
+    「任务数据包」恒空。必须运行时求值，口径与 web.main._FROZEN 一致。
+    """
+    if getattr(sys, "frozen", False):
+        return os.path.join(os.path.dirname(sys.executable), "output")
+    return os.path.join(os.path.dirname(__file__), "..", "..", "..", "output")
 
 
 class StructuredExportGenerationAgent:
@@ -184,7 +195,7 @@ def _resolve_output_dir(state: QualityGraphState) -> str:
     wf = state.get("workflow_state", {})
     run_id = wf.get("run_id", datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
     run_dir = run_id[:8] if len(run_id) >= 8 else run_id
-    base = os.environ.get("EXPORT_OUTPUT_DIR", _DEFAULT_OUTPUT_DIR)
+    base = os.environ.get("EXPORT_OUTPUT_DIR", _default_output_dir())
     output_dir = os.path.join(os.path.abspath(base), run_dir)
     os.makedirs(output_dir, exist_ok=True)
     return output_dir
