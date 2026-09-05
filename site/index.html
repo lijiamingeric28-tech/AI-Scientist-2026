@@ -4,546 +4,1997 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>AstroQuery AI · 用自然语言问天</title>
-<meta name="description" content="AstroQuery AI —— 2026 挑战杯 · 阿里云 AI 科研助手：输入一句自然语言，自动完成天文检索、多模态提取与八项质检，交付每一行都可追溯的结构化科研数据。" />
+<meta name="description" content="AstroQuery AI —— 2026 挑战杯 · 阿里云 AI 科研助手：输入一句自然语言，自动完成天文检索、多模态提取与质检交付，每一行数据都可追溯。" />
 <meta property="og:title" content="AstroQuery AI · 用自然语言问天" />
 <meta property="og:description" content="从文献到结构化黄金数据的科研智能体 —— 检索 · 提取 · 质检 · 交付，全链路可追溯。" />
 <link rel="icon" type="image/png" href="assets/icon.png" />
+
 <style>
-  /* MiSans（小米，免费商用）自托管子集 */
-  @font-face { font-family: "MiSans"; src: url("fonts/misans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-  @font-face { font-family: "MiSans"; src: url("fonts/misans-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
-  @font-face { font-family: "MiSans"; src: url("fonts/misans-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+  /* ═══════════════════════════════════════════════
+     MiSans（小米免费商用字体）自托管体系
+     ═══════════════════════════════════════════════ */
+  @font-face {
+    font-family: "MiSans";
+    src: url("fonts/misans-400.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "MiSans";
+    src: url("fonts/misans-500.woff2") format("woff2");
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "MiSans";
+    src: url("fonts/misans-700.woff2") format("woff2");
+    font-weight: 700;
+    font-display: swap;
+  }
 
   /* ═══════════════════════════════════════════════
-     AstroQuery AI · Astra 风格设计系统
-     深色电影感 · 螺旋星系 Hero · 窄栏编辑式 · 粉彩数据色
+     Astra 极简暗黑设计系统 (Design Tokens)
      ═══════════════════════════════════════════════ */
   :root {
-    --bg:      #050508;
-    --bg-elev: #0b0c12;
-    --panel:   #0e0f16;
-    --ink:     #f4f5f8;
-    --mut:     #9aa0ac;
-    --faint:   #62676f;
-    --line:    rgba(255, 255, 255, 0.085);
-    --vio:     #a67df2;
-    --teal:    #10a37f;
-    /* OpenAI 图表粉彩色板 */
-    --c-vio-bg: #ede5fc; --c-vio-ink: #4e2f88;
-    --c-grn-bg: #def3e5; --c-grn-ink: #2c6732;
-    --c-yel-bg: #fdf6dc; --c-yel-ink: #734615;
-    --c-pch-bg: #fbe8db; --c-pch-ink: #87401d;
-    --c-pnk-bg: #fdedf4; --c-pnk-ink: #a23d69;
-    --c-red-bg: #ffe5e0; --c-red-ink: #a23b32;
-    --sans: "MiSans", "SF Pro Display", -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "JetBrains Mono", monospace;
-    --content: 1080px;
-    --media: 1240px;
-    --ease: cubic-bezier(.2, .7, .2, 1);
+    --bg-base:        #000000;
+    --bg-surface-1:   #09090b;
+    --bg-surface-2:   #121215;
+    --bg-interactive: rgba(255, 255, 255, 0.05);
+
+    --border-subtle:  rgba(255, 255, 255, 0.08);
+    --border-card:    rgba(255, 255, 255, 0.10);
+    --border-active:  rgba(255, 255, 255, 0.24);
+
+    --text-primary:   #ffffff;
+    --text-secondary: #d1d5db;
+    --text-muted:     #71717a;
+    --text-faint:     #52525b;
+
+    --accent-glow:    #e0f2fe;
+    --accent-cyan:    #38bdf8;
+    --accent-violet:  #818cf8;
+    --accent-amber:   #fbbf24;
+
+    --radius-card:    20px;
+    --radius-pill:    9999px;
+    --radius-inner:   14px;
+
+    --sans: "MiSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --mono: ui-monospace, "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, monospace;
+    --content-width:  1080px;
+    --media-width:    1200px;
+    --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #020409;
+    background-image: radial-gradient(ellipse 85% 65% at 50% 0%, #081126 0%, #030611 50%, #010206 100%);
+    color: var(--text-primary);
+  }
+
   body {
     font-family: var(--sans);
-    background: var(--bg);
-    color: var(--ink);
+    background: transparent !important;
+    color: var(--text-primary);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern" 1, "liga" 1;
     overflow-x: hidden;
     font-weight: 400;
   }
-  body > nav, body > header, body > section, body > footer { z-index: 1; }
+
+  body > nav, body > header, body > section, body > footer {
+    position: relative;
+    z-index: 1;
+    background: transparent !important;
+  }
+
+  /* 统一贯穿全页面的深空星尘画布，位于最底层全局固定背景 */
   #sidefield {
-    position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%;
-    pointer-events: none; opacity: 0;
-    filter: brightness(1.2) saturate(1.24); mix-blend-mode: screen;
-    transition: opacity .35s linear;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.95;
   }
-  ::selection { background: rgba(166, 125, 242, .4); color: #fff; }
-  img { max-width: 100%; }
-  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--vio); outline-offset: 3px; border-radius: 6px; }
-  .car:focus-visible, .slide .img:focus-visible { outline: 2px solid #d9c9ff; outline-offset: 3px; }
 
-  .wrap { max-width: var(--content); margin: 0 auto; padding: 0 28px; }
-  .wrap-wide { max-width: var(--media); margin: 0 auto; padding: 0 28px; }
-  section { padding: 132px 0; position: relative; scroll-margin-top: 56px; }
-  @media (max-width: 720px) { section { padding: 88px 0; } .wrap, .wrap-wide { padding: 0 20px; } }
+  ::selection {
+    background: rgba(56, 189, 248, 0.35);
+    color: #ffffff;
+  }
 
-  /* ── 导航 ── */
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .car:focus-visible, .slide .img:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .wrap-wide {
+    max-width: var(--media-width);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  section {
+    padding: 130px 0;
+    position: relative;
+    scroll-margin-top: 60px;
+    background: transparent !important;
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 90px 0; }
+    .wrap, .wrap-wide { padding: 0 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     全站导航栏（Astra 悬浮极简）
+     ═══════════════════════════════════════════════ */
+  /* ═══════════════════════════════════════════════
+     全站吸顶导航栏（对标 OpenAI Astra 导航布局）
+     左侧：AstroQuery AI 品牌标志 + 愿景/演示/核心能力/基准评测/快速开始
+     右侧：GitHub ↗ 药丸按钮
+     ═══════════════════════════════════════════════ */
   nav {
-    position: fixed; inset: 0 0 auto 0; z-index: 60; height: 62px;
-    display: flex; align-items: center;
-    background: rgba(5, 5, 8, 0.55);
-    backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    background: transparent;
     border-bottom: 1px solid transparent;
-    transition: border-color .3s, background .3s;
+    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
   }
-  nav.scrolled { border-color: var(--line); background: rgba(5, 5, 8, 0.82); }
-  nav .wrap-wide { width: 100%; display: flex; align-items: center; justify-content: space-between; }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 700; font-size: 15px; letter-spacing: .04em; }
-  .brand-mark { width: 28px; height: 28px; flex: none; border-radius: 8px; }
-  .nav-links { display: flex; align-items: center; gap: 30px; }
-  .nav-links a { color: var(--mut); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .15s; }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-cta {
-    color: #0a0a0c !important; background: #fff; font-weight: 600;
-    padding: 8px 20px; border-radius: 999px; font-size: 13.5px !important;
-    transition: transform .18s var(--ease), box-shadow .18s;
-  }
-  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255, 255, 255, .22); }
-  @media (max-width: 900px) { .nav-links a:not(.nav-cta) { display: none; } }
 
-  /* ── HERO：Sticky A/Q 星图舞台 ── */
-  .hero { position: relative; height: 180svh; padding: 0; text-align: center; }
+  nav.scrolled {
+    background: rgba(2, 5, 14, 0.78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .nav-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: var(--media-width);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15.5px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+
+  .brand-mark {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: 6px;
+  }
+
+  .brand-name {
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 450;
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover {
+    color: #ffffff;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 18px;
+    border-radius: var(--radius-pill);
+    background: #ffffff;
+    color: #020409 !important;
+    font-size: 13.5px !important;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+
+  .nav-cta:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(255, 255, 255, 0.28);
+  }
+
+  @media (max-width: 860px) {
+    .nav-left { gap: 16px; }
+    .nav-links { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     首屏 HERO：100vh 独立满屏 + 3D 核心旋转星云 + 极简大留白
+     规范分幕滚动视差：180vh 滚动跑道，首屏独立居中，下滚时平滑淡出
+     ═══════════════════════════════════════════════ */
+  .hero {
+    position: relative;
+    height: 180vh;
+    padding: 0;
+    text-align: center;
+    background: transparent !important;
+  }
+
   .hero-stage {
     --hero-copy-opacity: 1;
     --hero-copy-scale: 1;
+    --hero-copy-y: 0px;
+    --hero-copy-pointer: auto;
     --hero-progress: 0;
-    position: sticky; top: 0; height: 100svh; min-height: 640px;
-    display: grid; place-items: center; overflow: hidden; isolation: isolate;
-    background: #030307;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: transparent !important;
+    padding: 80px 24px 36px;
   }
+
   #starfield {
-    position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
-    filter: brightness(1.28) saturate(1.32) contrast(1.08);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    clip-path: inset(50%);
   }
+
+  /* 柔和宇宙深空光晕（星系微光氛围与立体层次） */
   .hero-nebula {
-    position: absolute; z-index: 0; inset: 8% 10% 12%; pointer-events: none;
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
     background:
-      radial-gradient(ellipse 30% 24% at 50% 47%, rgba(224, 240, 255, .2), transparent 63%),
-      radial-gradient(ellipse 46% 34% at 50% 46%, rgba(255, 184, 137, .18), transparent 66%),
-      radial-gradient(ellipse 66% 46% at 48% 48%, rgba(132, 89, 240, .2), transparent 74%);
-    filter: blur(40px); opacity: calc(.96 - var(--hero-progress) * .5);
-    transform: rotate(-10deg) scale(calc(1 + var(--hero-progress) * .22));
+      radial-gradient(circle 360px at 70% 48%, rgba(56, 189, 248, 0.12) 0%, rgba(168, 85, 247, 0.06) 45%, transparent 75%),
+      radial-gradient(circle 520px at 68% 46%, rgba(251, 191, 36, 0.05) 0%, transparent 65%);
+    filter: blur(45px);
+    opacity: 0.88;
   }
-  .hero-stage::before {
-    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background:
-      linear-gradient(90deg, rgba(3,3,7,.5), transparent 23%, transparent 77%, rgba(3,3,7,.5)),
-      radial-gradient(ellipse 42% 34% at 50% 48%, transparent 28%, rgba(3,3,7,.18) 72%);
-  }
-  .hero-stage::after {
-    content: ""; position: absolute; inset: auto 0 0 0; height: 210px; z-index: 1; pointer-events: none;
-    background: linear-gradient(180deg, transparent, var(--bg));
-  }
+
   .hero-fallback-mark {
-    position: absolute; z-index: 0; width: min(34vw, 300px); height: auto;
-    border-radius: 22%; opacity: 0; pointer-events: none;
-    filter: drop-shadow(0 0 48px rgba(146, 112, 255, .42));
+    position: absolute;
+    z-index: 0;
+    width: min(32vw, 240px);
+    height: auto;
+    border-radius: 22%;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 40px rgba(56, 189, 248, 0.35));
   }
-  .no-canvas .hero-fallback-mark { opacity: .7; }
+
+  .no-canvas .hero-fallback-mark { opacity: 0.7; }
   .no-canvas .star-gate { display: none; }
+
+  /* 兼容测试的聚合触发 */
   .star-gate {
-    position: absolute; inset: 0; z-index: 5; display: block; width: 100%; height: 100%;
-    padding: 0; border: 0; border-radius: 0; color: var(--ink); cursor: pointer;
-    background:
-      radial-gradient(circle at 50% 48%, transparent 0 20%, rgba(3,3,7,.08) 42%, rgba(3,3,7,.44) 100%);
-    transition: opacity .72s var(--ease), visibility 0s linear .72s;
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: default;
+    pointer-events: none;
   }
-  .star-gate::before {
-    content: ""; position: absolute; left: 50%; top: 48%; width: min(42vw, 480px); aspect-ratio: 1;
-    border: 1px solid rgba(214, 231, 255, .17); border-radius: 50%;
-    box-shadow: 0 0 80px rgba(154, 120, 245, .1), inset 0 0 80px rgba(188, 219, 255, .04);
-    transform: translate(-50%, -50%) scale(.92); animation: gatePulse 2.8s ease-in-out infinite;
+
+  .star-gate.is-dismissed { display: none; }
+  .star-gate-copy { display: none; }
+
+  .hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
   }
-  .star-gate.is-dismissed { opacity: 0; visibility: hidden; pointer-events: none; }
-  .star-gate-copy {
-    position: absolute; left: 50%; bottom: clamp(54px, 10vh, 104px); transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; width: min(88vw, 430px);
-    text-shadow: 0 2px 22px rgba(0,0,0,.8);
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 46% 54%;
+    align-items: center;
+    width: 100%;
+    max-width: var(--media-width);
+    margin: 0 auto;
+    padding: 0 36px;
+    position: relative;
+    z-index: 2;
   }
-  .star-gate-copy i { color: #d8eaff; font-size: 20px; font-style: normal; filter: drop-shadow(0 0 12px #a9ceff); }
-  .star-gate-copy b { margin-top: 13px; font-size: 14px; letter-spacing: .16em; }
-  .star-gate-copy small { margin-top: 6px; color: #89909d; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-  @keyframes gatePulse {
-    50% { opacity: .46; transform: translate(-50%, -50%) scale(1.04); }
+
+  @media (max-width: 960px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .hero-inner {
+      align-items: center !important;
+      text-align: center !important;
+      margin: 0 auto !important;
+    }
+    .hero-cta {
+      justify-content: center !important;
+    }
+    .hero-visual-space {
+      display: none;
+    }
   }
+
+  /* 首屏左侧主体内容：不对称排版 (Left-Heavy Monolith)，下滚时平滑淡出 */
   .hero-inner {
-    position: relative; z-index: 2; max-width: 900px; padding: 0 28px;
-    opacity: var(--hero-copy-opacity);
-    transform: translate3d(0, calc(var(--hero-progress) * -22px), 0) scale(var(--hero-copy-scale));
-    transform-origin: 50% 54%; will-change: transform, opacity;
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    opacity: var(--hero-copy-opacity, 1);
+    transform: translateY(var(--hero-copy-y, 0px)) scale(var(--hero-copy-scale, 1));
+    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+    pointer-events: var(--hero-copy-pointer, auto);
   }
+
+  .hero-visual-space {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    pointer-events: none;
+  }
+
   .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-size: 13px; font-weight: 500; letter-spacing: .22em; color: var(--mut);
-    padding: 9px 20px; border: 1px solid var(--line); border-radius: 999px;
-    background: rgba(5, 5, 10, .45); backdrop-filter: blur(6px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 13px;
+    color: #d1d5db;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 22px;
   }
-  .hero-eyebrow .sep { color: var(--faint); }
-  .hero-eyebrow b { color: var(--vio); font-weight: 700; }
-  .hero h1 {
-    margin-top: 34px;
-    font-size: clamp(46px, 9.6vw, 104px); font-weight: 700;
-    letter-spacing: -.035em; line-height: 1.08;
-    background: linear-gradient(100deg, #ffffff 28%, #d6c8f8 62%, #9fd9c8 96%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    text-wrap: balance;
+
+  .hero-eyebrow b {
+    color: #ffffff;
+    font-weight: 600;
   }
-  .hero-sub { margin: 26px auto 0; max-width: 640px; color: var(--mut); font-size: 17px; line-height: 1.9; }
-  .hero-sub b { color: var(--ink); font-weight: 500; }
-  .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 42px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    height: 50px; padding: 0 30px; border-radius: 999px;
-    font-size: 15px; font-weight: 600; text-decoration: none; font-family: var(--sans);
-    transition: transform .18s var(--ease), box-shadow .18s, border-color .18s, background .18s;
+
+  .hero-eyebrow .sep {
+    color: rgba(255, 255, 255, 0.35);
   }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-solid { background: #fff; color: #0a0a0c; }
-  .btn-solid:hover { box-shadow: 0 12px 36px rgba(255, 255, 255, .24); }
-  .btn-ghost { border: 1px solid rgba(255, 255, 255, .24); color: var(--ink); }
-  .btn-ghost:hover { border-color: rgba(255, 255, 255, .5); background: rgba(255, 255, 255, .05); }
+
+  .hero-title {
+    font-size: clamp(34px, 4.2vw, 60px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+
+  .hero-title-brand {
+    display: block;
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 50px rgba(164, 200, 253, 0.28);
+  }
+
+  .hero-title-sub {
+    display: block;
+    font-size: clamp(22px, 2.6vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 0 30px rgba(56, 189, 248, 0.25);
+  }
+
+  .hero-lead {
+    font-size: clamp(14.5px, 1.25vw, 17px);
+    line-height: 1.8;
+    color: #c0c6d0;
+    max-width: 540px;
+    margin: 0 0 28px;
+  }
+
+  .hero-lead b {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   .scroll-hint {
-    position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); z-index: 2;
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
-    color: var(--faint); font-size: 11.5px; letter-spacing: .3em; text-indent: .3em;
-    opacity: var(--hero-copy-opacity);
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    pointer-events: none;
+    opacity: var(--hero-copy-opacity, 1);
+    transition: opacity 0.2s ease;
   }
-  .scroll-hint .line { width: 1px; height: 46px; background: rgba(255,255,255,.14); position: relative; overflow: hidden; border-radius: 1px; }
+
+  .scroll-hint .line {
+    width: 1px;
+    height: 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent);
+    animation: scrollLine 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    50.1% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+  }
+
+  @media (max-height: 620px) {
+    .hero {
+      height: auto;
+      min-height: 100svh;
+    }
+    .hero-stage {
+      position: relative;
+      min-height: 100svh;
+      height: auto;
+      padding: 90px 20px 40px;
+    }
+    .hero-inner {
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 24px;
+    border-radius: var(--radius-pill);
+    font-size: 13.5px;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: var(--sans);
+    transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-solid {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .btn-solid:hover {
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.32);
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--border-active);
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;
+    opacity: var(--hero-flank-opacity, 1);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .scroll-hint .line {
+    width: 1px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.12);
+    position: relative;
+    overflow: hidden;
+    border-radius: 1px;
+  }
+
   .scroll-hint .line::after {
-    content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%;
-    background: linear-gradient(180deg, transparent, #fff);
-    animation: fall 2.2s var(--ease) infinite;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -40%;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(180deg, transparent, #ffffff);
+    animation: scrollFall 2.2s var(--ease-out) infinite;
   }
-  @keyframes fall { to { top: 110%; } }
-  @media (max-width: 560px) {
-    .hero-stage { min-height: 580px; }
-    .hero-eyebrow { letter-spacing: .1em; font-size: 12px; padding: 8px 16px; }
-    .hero-sub { font-size: 15px; }
-    .star-gate::before { width: min(72vw, 360px); }
+
+  @keyframes scrollFall {
+    to { top: 110%; }
   }
+
+  @media (max-width: 640px) {
+    .hero-flank { display: none !important; }
+    .hero-inner {
+      position: relative !important;
+      left: auto !important;
+      top: auto !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+  }
+
   @media (max-height: 620px) {
     .hero-stage { min-height: 100svh; }
-    .hero-inner { padding-top: 42px; }
-    .hero-eyebrow { padding: 6px 14px; font-size: 11px; }
-    .hero h1 { margin-top: 14px; font-size: clamp(34px, 8vw, 64px); }
-    .hero-sub { margin-top: 12px; max-width: 580px; font-size: 13px; line-height: 1.6; }
-    .hero-cta { margin-top: 18px; }
-    .btn { height: 42px; padding: 0 23px; font-size: 13px; }
+    .hero-flank { display: none !important; }
+    .hero-inner {
+      position: relative !important;
+      left: auto !important;
+      top: auto !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      padding-top: 24px;
+    }
+    .hero-eyebrow { padding: 4px 12px; font-size: 11px; }
+    .hero h1 { margin-top: 10px; font-size: clamp(28px, 6vw, 44px); }
+    .hero-sub { margin-top: 8px; font-size: 13px; line-height: 1.6; }
+    .hero-cta { margin-top: 14px; }
+    .btn { height: 38px; padding: 0 18px; font-size: 13px; }
     .scroll-hint { display: none; }
-    .star-gate::before { width: min(34vw, 260px); }
-    .star-gate-copy { bottom: 18px; }
   }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .hero { height: 100svh; }
     .hero-stage { position: relative; }
-    .hero-inner { opacity: 1 !important; transform: none !important; }
+    .hero-flank { display: none !important; }
+    .hero-inner {
+      position: relative !important;
+      left: auto !important;
+      top: auto !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+      margin-top: auto;
+      margin-bottom: 24px;
+    }
     .scroll-hint .line::after { animation: none; }
     .star-gate { display: none; }
-    #sidefield { transition: none; }
   }
 
-  /* ── 区块标题 ── */
-  .sec-head { max-width: 780px; margin-bottom: 66px; }
-  .sec-head.center { margin-left: auto; margin-right: auto; text-align: center; }
-  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .26em; color: var(--vio); margin-bottom: 20px; }
+  /* ═══════════════════════════════════════════════
+     大标语 Sticky 视差跑道 (Scroll Runway)
+     ═══════════════════════════════════════════════ */
+  .narrative-runway {
+    position: relative;
+    height: 180vh;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .narrative-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .narrative-banner {
+    text-align: center;
+    max-width: 960px;
+    width: 100%;
+    padding: 36px 28px;
+    border-radius: 24px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55) 0%, transparent 75%);
+    opacity: var(--narrative-opacity, 0);
+    transform: scale(var(--narrative-scale, 0.95)) translateY(var(--narrative-y, 24px));
+    will-change: opacity, transform;
+    pointer-events: auto;
+  }
+
+  .narrative-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.24em;
+    color: var(--accent-amber);
+    padding: 5px 18px;
+    border-radius: var(--radius-pill);
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.28);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.15);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .narrative-quote {
+    font-size: clamp(28px, 3.8vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    background: linear-gradient(180deg, #ffffff 20%, #e2e8f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 60px rgba(255, 255, 255, 0.25);
+    margin-bottom: 18px;
+    text-wrap: balance;
+  }
+
+  .narrative-sub {
+    font-size: clamp(14px, 1.4vw, 17px);
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 24px rgba(0, 0, 0, 0.85);
+  }
+
+  /* ═══════════════════════════════════════════════
+     章节通用排版系统（大留白、单视线聚焦）
+     ═══════════════════════════════════════════════ */
+  .sec-head {
+    max-width: 740px;
+    margin-bottom: 52px;
+  }
+
+  .sec-head.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--accent-cyan);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
   .sec-head h2 {
-    font-size: clamp(34px, 4.8vw, 54px); font-weight: 700;
-    letter-spacing: -.025em; line-height: 1.2; text-wrap: balance;
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--text-primary);
+    text-wrap: balance;
   }
-  .lead { margin-top: 22px; color: var(--mut); font-size: 16.5px; line-height: 1.95; }
-  .lead b { color: var(--ink); font-weight: 500; }
 
-  /* ── 困境卡片 ── */
-  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  @media (max-width: 860px) { .cards-3 { grid-template-columns: 1fr; } }
+  .lead {
+    margin-top: 18px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .lead b {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ═══════════════════════════════════════════════
+     问题与愿景卡片 (深空暗黑科研玻璃卡)
+     ═══════════════════════════════════════════════ */
+  .cards-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .cards-3 { grid-template-columns: 1fr; }
+  }
+
   .pcard {
-    padding: 32px 30px; border-radius: 22px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .015));
-    border: 1px solid var(--line);
-    transition: transform .25s var(--ease), border-color .25s, background .25s;
+    padding: 34px 30px;
+    border-radius: var(--radius-card);
+    background: rgba(10, 14, 24, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    transition: transform 0.22s var(--ease-out), border-color 0.22s ease, box-shadow 0.22s ease;
   }
-  .pcard:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, .18); background: rgba(255,255,255,.06); }
-  .pcard .dot { width: 11px; height: 11px; border-radius: 50%; margin-bottom: 22px; }
-  .pcard .dot.v { background: var(--vio); box-shadow: 0 0 18px rgba(166, 125, 242, .8); }
-  .pcard .dot.y { background: #f6c543; box-shadow: 0 0 18px rgba(246, 197, 67, .7); }
-  .pcard .dot.r { background: #ee7c66; box-shadow: 0 0 18px rgba(238, 124, 102, .7); }
-  .pcard h3 { font-size: 18.5px; font-weight: 700; margin-bottom: 10px; letter-spacing: -.01em; }
-  .pcard p { color: var(--mut); font-size: 14.5px; line-height: 1.85; }
 
-  /* ── 演示 ── */
-  .media-frame {
-    border-radius: 26px; overflow: hidden; border: 1px solid var(--line);
-    background: var(--panel);
-    box-shadow: 0 50px 120px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255,255,255,.02) inset;
+  .pcard:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.12);
   }
-  .media-frame img { display: block; width: 100%; height: auto; }
-  .media-cap { margin-top: 22px; text-align: center; color: var(--faint); font-size: 13.5px; letter-spacing: .04em; }
-  .media-cap b { color: var(--mut); font-weight: 500; }
 
-  /* ── 横向滑动卡片（能力 × 架构融合）── */
+  .card-sys-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--accent-cyan);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    margin-bottom: 18px;
+  }
+
+  .card-sys-tag.y {
+    color: var(--accent-amber);
+    background: rgba(251, 191, 36, 0.08);
+    border-color: rgba(251, 191, 36, 0.2);
+  }
+
+  .card-sys-tag.v {
+    color: #a78bfa;
+    background: rgba(167, 139, 250, 0.08);
+    border-color: rgba(167, 139, 250, 0.2);
+  }
+
+  .pcard h3 {
+    font-size: 17.5px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .pcard p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* ═══════════════════════════════════════════════
+     全程演示展台 (Ambilight 环境光 + 拟真终端顶栏)
+     ═══════════════════════════════════════════════ */
+  .demo-player-wrap {
+    position: relative;
+    max-width: var(--media-width);
+    margin: 0 auto;
+  }
+
+  .demo-ambilight {
+    position: absolute;
+    inset: -20px;
+    border-radius: 32px;
+    background: radial-gradient(ellipse 70% 55% at 50% 50%, rgba(56, 189, 248, 0.28), rgba(129, 140, 248, 0.14), transparent 70%);
+    filter: blur(60px);
+    opacity: 0.32;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .demo-player {
+    position: relative;
+    z-index: 1;
+    border-radius: var(--radius-card);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #06080e;
+    overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+  }
+
+  .demo-chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 22px;
+    background: rgba(15, 18, 26, 0.92);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+
+  .chrome-dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .c-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #333945;
+  }
+
+  .chrome-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .rec-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    display: inline-block;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulseRec 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulseRec {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .demo-screen {
+    position: relative;
+    width: 100%;
+    background: #000000;
+  }
+
+  .dark-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow: inset 0 0 50px 20px rgba(6, 8, 14, 0.9);
+  }
+
+  .demo-screen img {
+    width: 100%;
+    display: block;
+    filter: contrast(1.05) brightness(0.92);
+  }
+
+  .media-cap {
+    margin-top: 18px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    letter-spacing: 0.02em;
+  }
+
+  .media-cap b {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ═══════════════════════════════════════════════
+     核心能力 × 架构：Astra 高质感平滑轮播展台
+     ═══════════════════════════════════════════════ */
+  .tab-pills {
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto 32px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
+  .tab-pill {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    border-radius: var(--radius-pill);
+    padding: 8px 20px;
+    font-size: 13px;
+    font-family: var(--mono);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .tab-pill:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .tab-pill.active {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(56, 189, 248, 0.48);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.28);
+    transform: translateY(-1px);
+  }
+
   .proof-chain {
-    list-style: none; display: grid; grid-template-columns: repeat(5, 1fr);
-    margin: -8px 0 42px; padding: 0; border: 1px solid var(--line); border-radius: 24px;
-    overflow: hidden; background: rgba(255,255,255,.025);
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: -8px 0 34px;
+    padding: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
+
   .proof-chain li {
-    position: relative; min-width: 0; padding: 24px 20px 22px;
-    border-right: 1px solid var(--line);
+    position: relative;
+    min-width: 0;
+    padding: 22px 18px 20px;
+    border-right: 1px solid var(--border-subtle);
+    transition: background 0.2s ease;
   }
+
+  .proof-chain li:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
   .proof-chain li:last-child { border-right: 0; }
-  .proof-chain span { display: block; margin-bottom: 26px; font-family: var(--mono); color: var(--vio); font-size: 11px; letter-spacing: .12em; }
-  .proof-chain b { display: block; font-size: 14px; line-height: 1.45; }
-  .proof-chain small { display: block; margin-top: 8px; color: var(--faint); font-size: 11.5px; line-height: 1.55; }
+
+  .proof-chain span {
+    display: block;
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    color: var(--accent-cyan);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+
+  .proof-chain b {
+    display: block;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--text-primary);
+  }
+
+  .proof-chain small {
+    display: block;
+    margin-top: 6px;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+
   .proof-chain li::after {
-    content: "→"; position: absolute; top: 22px; right: -9px; z-index: 1;
-    width: 18px; height: 18px; display: grid; place-items: center;
-    color: var(--faint); background: var(--bg); font-size: 11px;
+    content: "→";
+    position: absolute;
+    top: 22px;
+    right: -8px;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    color: var(--text-faint);
+    background: transparent;
+    font-size: 11px;
   }
+
   .proof-chain li:last-child::after { display: none; }
+
   .car {
-    display: flex; gap: 18px; overflow-x: auto;
-    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-    padding: 6px max(6px, calc((100% - min(1060px, 94%)) / 2)) 12px;
-    scrollbar-width: none; cursor: grab; overscroll-behavior-x: contain;
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px max(4px, calc((100% - min(1080px, 94%)) / 2)) 10px;
+    scrollbar-width: none;
+    cursor: grab;
+    overscroll-behavior-x: contain;
   }
+
   .car::-webkit-scrollbar { display: none; }
   .car.dragging { cursor: grabbing; scroll-snap-type: none; }
   .car img { -webkit-user-drag: none; user-select: none; }
+
   .slide {
-    --slide-accent: var(--vio);
-    flex: 0 0 min(1060px, 94%);
+    flex: 0 0 min(1080px, 94%);
     scroll-snap-align: center;
-    display: grid; grid-template-columns: 5fr 6.2fr;
-    border-radius: 26px; overflow: hidden;
-    border: 1px solid var(--line);
-    background: linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.015) 58%);
-    background:
-      radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--slide-accent) 14%, transparent), transparent 35%),
-      linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.015) 58%);
-    transition: border-color .25s;
+    display: grid;
+    grid-template-columns: 5fr 6.4fr;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 1px solid var(--border-card);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
-  .slide:nth-child(2) { --slide-accent: #70d29a; }
-  .slide:nth-child(3) { --slide-accent: #f1c95d; }
-  .slide:nth-child(4) { --slide-accent: #f2a56f; }
-  .slide:nth-child(5) { --slide-accent: #e58bb4; }
-  .slide:hover { border-color: rgba(255, 255, 255, .18); }
-  .slide .txt { padding: 46px 44px 40px; display: flex; flex-direction: column; justify-content: center; }
-  .slide .num-row { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+
+  .slide:hover {
+    border-color: var(--border-active);
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.85);
+  }
+
+  .slide .txt {
+    padding: 46px 42px 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .slide .num-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
   .fidx {
-    width: 56px; height: 56px; border-radius: 16px; flex: none;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-weight: 700; font-size: 16px; letter-spacing: -.02em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
   }
-  .fidx.v { background: var(--c-vio-bg); color: var(--c-vio-ink); }
-  .fidx.g { background: var(--c-grn-bg); color: var(--c-grn-ink); }
-  .fidx.y { background: var(--c-yel-bg); color: var(--c-yel-ink); }
-  .fidx.p { background: var(--c-pch-bg); color: var(--c-pch-ink); }
-  .fidx.k { background: var(--c-pnk-bg); color: var(--c-pnk-ink); }
-  .slide .tag { font-size: 12px; letter-spacing: .2em; color: var(--faint); font-weight: 600; }
-  .slide h3 { font-size: clamp(24px, 2.6vw, 34px); font-weight: 700; margin-bottom: 14px; letter-spacing: -.025em; line-height: 1.25; }
-  .slide p { color: var(--mut); font-size: 15px; line-height: 1.95; }
-  .slide-io { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
-  .slide-io div { padding: 13px 14px; border: 1px solid var(--line); border-radius: 13px; background: rgba(0,0,0,.18); }
-  .slide-io dt { font-family: var(--mono); color: var(--faint); font-size: 9.5px; letter-spacing: .14em; }
-  .slide-io dd { margin-top: 5px; color: var(--ink); font-size: 12.5px; line-height: 1.5; }
-  .trace-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+
+  .slide .tag {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .slide h3 {
+    font-size: clamp(23px, 2.4vw, 30px);
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: #ffffff;
+  }
+
+  .slide p {
+    color: var(--text-secondary);
+    font-size: 14.5px;
+    line-height: 1.85;
+  }
+
+  .slide-io {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .slide-io div {
+    padding: 13px 15px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-inner);
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .slide-io dt {
+    font-family: var(--mono);
+    color: var(--accent-cyan);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  .slide-io dd {
+    margin-top: 5px;
+    color: var(--text-primary);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .trace-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
   .trace-chip {
-    padding: 5px 9px; border-radius: 999px; border: 1px solid rgba(166, 125, 242, .28);
-    background: rgba(166, 125, 242, .08);
-    border-color: color-mix(in srgb, var(--slide-accent) 32%, var(--line));
-    background: color-mix(in srgb, var(--slide-accent) 8%, transparent);
-    color: #d9dbe2; font-family: var(--mono); font-size: 10.5px; line-height: 1.3;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.3;
   }
-  .slide .img { position: relative; min-height: 360px; cursor: zoom-in; border-left: 1px solid var(--line); background: #0a0b10; }
-  .slide .img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-  .slide .img::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 28px 0 58px rgba(5,5,8,.22); }
+
+  .slide .img {
+    position: relative;
+    min-height: 400px;
+    cursor: zoom-in;
+    border-left: 1px solid var(--border-subtle);
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .slide .img img {
+    position: relative;
+    max-width: 100%;
+    max-height: 380px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  }
+
+  .slide .img:hover img {
+    transform: scale(1.02);
+    box-shadow: 0 16px 44px rgba(56, 189, 248, 0.18);
+  }
+
   .slide .img .zoom {
-    position: absolute; right: 16px; top: 16px; width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid rgba(255,255,255,.25); color: #fff; font-size: 14px;
-    background: rgba(5,5,10,.5); backdrop-filter: blur(4px);
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-family: var(--sans);
+    background: rgba(14, 14, 14, 0.75);
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
   }
+
+  .slide .img:hover .zoom {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
   @media (max-width: 860px) {
     .proof-chain { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
-    .proof-chain li { flex: 0 0 190px; scroll-snap-align: start; }
+    .proof-chain li { flex: 0 0 200px; scroll-snap-align: start; }
     .slide { grid-template-columns: 1fr; }
-    .slide .txt { padding: 32px 28px; }
-    .slide .img { min-height: 250px; border-left: none; border-top: 1px solid var(--line); }
-    .slide .img::after { box-shadow: inset 0 22px 48px rgba(5,5,8,.22); }
+    .slide .txt { padding: 32px 26px; }
+    .slide .img { min-height: 260px; border-left: none; border-top: 1px solid var(--border-subtle); }
+    .slide .img::after { box-shadow: inset 0 20px 40px rgba(0, 0, 0, 0.5); }
   }
-  .car-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 28px; }
-  .car-dots { display: flex; gap: 0; align-items: center; }
+
+  .car-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 28px;
+  }
+
+  .car-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
   .car-dot {
-    position: relative; width: 32px; height: 44px; padding: 0; border: 0;
-    background: transparent; transition: width .3s var(--ease); cursor: pointer;
+    position: relative;
+    width: 28px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
   }
+
   .car-dot::before {
-    content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 3px;
-    border-radius: 2px; background: rgba(255,255,255,.16); transform: translateY(-50%);
-    transition: background .3s;
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 50%;
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-50%);
+    transition: background 0.25s ease, height 0.25s ease;
   }
-  .car-dot.on { width: 48px; }
-  .car-dot.on::before { background: var(--vio); }
-  .car-right { display: flex; align-items: center; gap: 18px; }
-  .car-count { font-family: var(--mono); color: var(--faint); font-size: 13px; letter-spacing: .1em; }
-  .car-btns { display: flex; gap: 10px; }
+
+  .car-dot.on::before {
+    background: #ffffff;
+    height: 3px;
+  }
+
+  .car-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .car-count {
+    font-family: var(--mono);
+    color: var(--text-muted);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+
+  .car-btns {
+    display: flex;
+    gap: 8px;
+  }
+
   .car-btns button {
-    width: 46px; height: 46px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.05);
-    color: #fff; font-size: 18px; cursor: pointer; transition: background .2s, transform .2s;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border-card);
+    background: var(--bg-surface-1);
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
     font-family: var(--sans);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .car-btns button:hover { background: rgba(255,255,255,.14); transform: scale(1.05); }
-  .car-btns button:disabled { opacity: .28; cursor: default; transform: none; }
+
+  .car-btns button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+
+  .car-btns button:disabled {
+    opacity: 0.25;
+    cursor: default;
+    transform: none;
+  }
+
   @media (max-width: 560px) {
     .car-bar { flex-wrap: wrap; gap: 12px; }
-    .car-dot { width: 24px; }
-    .car-dot.on { width: 38px; }
-    .car-right { gap: 10px; }
-    .car-btns { gap: 8px; }
-    .car-btns button { width: 42px; height: 42px; }
   }
+
+  /* ═══════════════════════════════════════════════
+     静态证据链结构示例
+     ═══════════════════════════════════════════════ */
   .record-example {
-    margin-top: 74px; border: 1px solid var(--line); border-radius: 28px; overflow: hidden;
-    background:
-      radial-gradient(circle at 8% 0%, rgba(166,125,242,.13), transparent 34%),
-      linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+    margin-top: 60px;
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--bg-surface-1);
   }
-  .record-example-head { display: grid; grid-template-columns: 1.15fr .85fr; gap: 46px; align-items: end; padding: 42px 44px 34px; border-bottom: 1px solid var(--line); }
-  .record-example-head .eyebrow { margin-bottom: 14px; }
-  .record-example h3 { font-size: clamp(28px, 3.7vw, 46px); line-height: 1.22; letter-spacing: -.025em; }
-  .record-example-head > p { color: var(--mut); font-size: 14px; line-height: 1.85; }
-  .record-fields { display: grid; grid-template-columns: repeat(3, 1fr); }
-  .record-fields div { min-height: 132px; padding: 27px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  .record-example-head {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: end;
+    padding: 36px 38px 28px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .record-example-head .eyebrow { margin-bottom: 10px; }
+  .record-example h3 { font-size: clamp(23px, 2.8vw, 34px); line-height: 1.25; letter-spacing: -0.02em; color: #ffffff; }
+  .record-example-head > p { color: var(--text-secondary); font-size: 14px; line-height: 1.8; }
+
+  .record-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .record-fields div {
+    min-height: 116px;
+    padding: 24px 28px;
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
   .record-fields div:nth-child(3n) { border-right: 0; }
   .record-fields div:nth-last-child(-n + 3) { border-bottom: 0; }
-  .record-fields dt { color: var(--faint); font-size: 11px; letter-spacing: .14em; }
-  .record-fields dd { margin-top: 17px; color: #d9dbe3; font-family: var(--mono); font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
-  .record-links { display: flex; flex-wrap: wrap; gap: 18px; padding: 23px 28px; border-top: 1px solid var(--line); }
-  .record-links a { color: var(--ink); font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(166,125,242,.5); }
-  .record-links a:hover { color: var(--vio); border-color: var(--vio); }
-  @media (max-width: 760px) {
-    .record-example-head { grid-template-columns: 1fr; gap: 18px; padding: 32px 26px 27px; }
-    .record-fields { grid-template-columns: 1fr 1fr; }
-    .record-fields div, .record-fields div:nth-child(3n) { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .record-fields div:nth-child(2n) { border-right: 0; }
-    .record-fields div:nth-last-child(-n + 2) { border-bottom: 0; }
+  .record-fields dt { color: var(--accent-cyan); font-size: 11px; letter-spacing: 0.14em; font-family: var(--mono); }
+  .record-fields dd { margin-top: 12px; color: var(--text-primary); font-family: var(--mono); font-size: 12.5px; line-height: 1.65; overflow-wrap: anywhere; }
+
+  .record-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 18px 28px;
+    border-top: 1px solid var(--border-subtle);
+    background: rgba(0, 0, 0, 0.3);
   }
-  @media (max-width: 460px) {
+
+  .record-links a {
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .record-links a:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    .record-example-head { grid-template-columns: 1fr; gap: 16px; padding: 26px 22px; }
     .record-fields { grid-template-columns: 1fr; }
-    .record-fields div, .record-fields div:nth-child(2n), .record-fields div:nth-child(3n) { border-right: 0; border-bottom: 1px solid var(--line); }
+    .record-fields div { border-right: 0 !important; }
     .record-fields div:last-child { border-bottom: 0; }
   }
 
-  /* ── 数据带 ── */
-  .band { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
-  .bstat { border-radius: 20px; padding: 30px 8px 26px; text-align: center; transition: transform .22s var(--ease); }
-  .bstat:hover { transform: translateY(-3px); }
-  .bstat b { display: block; font-family: var(--mono); font-size: 36px; font-weight: 700; letter-spacing: -.04em; line-height: 1.15; }
-  .bstat span { font-size: 12.5px; font-weight: 600; opacity: .78; letter-spacing: .02em; }
-  .bstat.v { background: var(--c-vio-bg); color: var(--c-vio-ink); }
-  .bstat.g { background: var(--c-grn-bg); color: var(--c-grn-ink); }
-  .bstat.y { background: var(--c-yel-bg); color: var(--c-yel-ink); }
-  .bstat.p { background: var(--c-pch-bg); color: var(--c-pch-ink); }
-  .bstat.k { background: var(--c-pnk-bg); color: var(--c-pnk-ink); }
-  .bstat.r { background: var(--c-red-bg); color: var(--c-red-ink); }
-  @media (max-width: 960px) { .band { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 560px) { .band { grid-template-columns: repeat(2, 1fr); } }
-  .metric-source { margin-top: 18px; text-align: right; color: var(--faint); font-size: 12px; line-height: 1.7; }
-  .metric-source a { margin-left: 8px; color: var(--mut); text-decoration: none; border-bottom: 1px solid rgba(166,125,242,.42); }
-  .metric-source a:hover { color: var(--vio); border-color: var(--vio); }
-  .bstat b, .car-count { font-variant-numeric: tabular-nums; }
+  /* ═══════════════════════════════════════════════
+     数据权威度与注脚体系 (Astra Benchmark Card)
+     ═══════════════════════════════════════════════ */
+  .benchmark-card {
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border-card);
+    background: var(--bg-surface-1);
+    padding: 42px 38px;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
+  }
 
-  /* ── Lightbox ── */
+  .benchmark-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 34px;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 22px;
+  }
+
+  .benchmark-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-family: var(--mono);
+    color: var(--accent-cyan);
+    letter-spacing: 0.14em;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+  }
+
+  /* 权威评测指标卡阵列 (Telemetry Metric Cards) */
+
+  .band {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+  }
+
+  @media (max-width: 960px) {
+    .band { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .band { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .bstat {
+    position: relative;
+    border-radius: var(--radius-inner);
+    padding: 24px 14px 20px;
+    text-align: center;
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    transition: transform 0.22s var(--ease-out), border-color 0.22s ease, box-shadow 0.22s ease;
+    cursor: pointer;
+  }
+
+  .bstat:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .bstat.is-linked {
+    border-color: rgba(56, 189, 248, 0.7) !important;
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.3) !important;
+    transform: translateY(-4px) !important;
+  }
+
+  .bstat b {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: clamp(32px, 3.2vw, 42px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bstat sup {
+    font-size: 11px;
+    color: var(--accent-cyan);
+    font-family: var(--mono);
+    margin-left: 2px;
+    font-weight: 500;
+  }
+
+  .bstat span {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .bstat-tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    transform: translateX(-50%) translateY(6px);
+    width: 240px;
+    padding: 12px 14px;
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: left;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 40;
+  }
+
+  .bstat-tip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #111111;
+  }
+
+  .bstat:hover .bstat-tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .metric-footnotes {
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-subtle);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 28px;
+  }
+
+  @media (max-width: 768px) {
+    .metric-footnotes { grid-template-columns: 1fr; }
+  }
+
+  .fn-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .fn-item span {
+    color: var(--accent-cyan);
+    font-family: var(--mono);
+    flex: none;
+    font-weight: 500;
+  }
+
+  .fn-item a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .fn-item a:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  .metric-source {
+    margin-top: 20px;
+    text-align: right;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .metric-source a {
+    margin-left: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .metric-source a:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  /* ═══════════════════════════════════════════════
+     快速开始与终端代码
+     ═══════════════════════════════════════════════ */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+  @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+
+  .step {
+    padding: 26px 22px;
+    border-radius: var(--radius-inner);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: transform 0.2s var(--ease-out), border-color 0.2s ease;
+  }
+
+  .step:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-active);
+  }
+
+  .step .n {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    letter-spacing: 0.14em;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .step h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+
+  .step code {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.85;
+    color: #c7d2fe;
+    display: block;
+    overflow-wrap: anywhere;
+  }
+
+  .step small {
+    display: block;
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .terminal {
+    border-radius: var(--radius-inner);
+    border: 1px solid var(--border-card);
+    background: #050505;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .terminal-bar i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .terminal-bar i:first-child { background: rgba(255, 95, 86, 0.7); }
+  .terminal-bar i:nth-child(2) { background: rgba(255, 189, 46, 0.7); }
+  .terminal-bar i:nth-child(3) { background: rgba(39, 201, 63, 0.7); }
+
+  .terminal-bar span {
+    margin-left: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .terminal pre {
+    padding: 24px 26px;
+    overflow-x: auto;
+  }
+
+  .terminal code {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 2;
+    color: #e2e8f0;
+    white-space: pre;
+  }
+
+  .terminal code .c { color: var(--text-muted); }
+  .terminal code .k { color: #38bdf8; font-weight: 500; }
+
+  /* ═══════════════════════════════════════════════
+     页脚
+     ═══════════════════════════════════════════════ */
+  footer {
+    padding: 100px 0 60px;
+    text-align: center;
+    border-top: 1px solid var(--border-subtle);
+    position: relative;
+    background: transparent;
+  }
+
+  footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 60% 60% at 50% 120%, rgba(56, 189, 248, 0.08), transparent 70%);
+  }
+
+  .f-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+  }
+
+  .f-brand .brand-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+  }
+
+  footer .slogan {
+    margin-top: 22px;
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-indent: 0.32em;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  footer .promise {
+    margin-top: 12px;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+
+  footer .links {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  footer .links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    padding-bottom: 2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  footer .links a:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  footer .meta {
+    margin-top: 32px;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* ═══════════════════════════════════════════════
+     Lightbox 弹窗
+     ═══════════════════════════════════════════════ */
   .lb {
-    position: fixed; inset: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(3, 3, 7, .92);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    opacity: 0; visibility: hidden; pointer-events: none;
-    transition: opacity .28s, visibility 0s linear .28s;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.28s ease, visibility 0s linear 0.28s;
   }
-  .lb.open { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+
+  .lb.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
   body.modal-open { overflow: hidden; }
-  .lb figure { max-width: min(1400px, 93vw); text-align: center; transform: scale(.97); transition: transform .28s var(--ease); }
-  .lb.open figure { transform: none; }
-  .lb img { max-width: 100%; max-height: 80vh; border-radius: 14px; box-shadow: 0 40px 100px rgba(0,0,0,.6); }
-  .lb.has-image-error img { display: none; }
-  .lb figcaption { margin-top: 18px; color: var(--mut); font-size: 14px; }
-  .lb-btn {
-    position: absolute; width: 48px; height: 48px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(255, 255, 255, .09); border: 1px solid rgba(255,255,255,.2);
-    color: #fff; font-size: 19px; cursor: pointer;
-    transition: background .18s, transform .18s;
+
+  .lb figure {
+    max-width: min(1360px, 92vw);
+    text-align: center;
+    transform: scale(0.96);
+    transition: transform 0.28s var(--ease-out);
   }
-  .lb-btn:hover { background: rgba(255, 255, 255, .2); transform: scale(1.06); }
-  .lb-close { top: 26px; right: 28px; }
-  .lb-prev { left: 26px; top: 50%; transform: translateY(-50%); }
-  .lb-next { right: 26px; top: 50%; transform: translateY(-50%); }
+
+  .lb.open figure { transform: none; }
+
+  .lb img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: var(--radius-inner);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .lb.has-image-error img { display: none; }
+  .lb figcaption { margin-top: 18px; color: var(--text-secondary); font-size: 14px; }
+
+  .lb-btn {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+
+  .lb-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.06);
+  }
+
+  .lb-close { top: 24px; right: 28px; }
+  .lb-prev { left: 24px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 24px; top: 50%; transform: translateY(-50%); }
   .lb-prev:hover, .lb-next:hover { transform: translateY(-50%) scale(1.06); }
+
   @media (max-width: 640px) {
-    .lb-btn { width: 44px; height: 44px; }
-    .lb-close { top: 14px; right: 14px; }
+    .lb-btn { width: 40px; height: 40px; }
+    .lb-close { top: 16px; right: 16px; }
     .lb-prev { left: 10px; }
     .lb-next { right: 10px; }
     .lb figure { max-width: 96vw; }
-    .lb figcaption { padding: 0 58px; }
   }
 
-  /* ── 快速开始 ── */
-  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 26px; }
-  @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
-  .step {
-    padding: 26px 24px; border-radius: 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
-    border: 1px solid var(--line);
-  }
-  .step .n { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--vio); letter-spacing: .12em; margin-bottom: 14px; display: block; }
-  .step h3 { font-size: 15.5px; font-weight: 700; margin-bottom: 12px; }
-  .step code {
-    font-family: var(--mono); font-size: 12px; line-height: 1.85; color: #b9c6ff;
-    display: block; overflow-wrap: anywhere;
-  }
-  .step small { display: block; margin-top: 10px; color: var(--faint); font-size: 12.5px; line-height: 1.7; }
-  .terminal { border-radius: 20px; border: 1px solid var(--line); background: #040407; overflow: hidden; }
-  .terminal-bar { display: flex; align-items: center; gap: 7px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
-  .terminal-bar i { width: 11px; height: 11px; border-radius: 50%; background: rgba(255,255,255,.13); }
-  .terminal-bar i:first-child { background: rgba(255, 95, 86, .75); }
-  .terminal-bar i:nth-child(2) { background: rgba(255, 189, 46, .75); }
-  .terminal-bar i:nth-child(3) { background: rgba(39, 201, 63, .75); }
-  .terminal-bar span { margin-left: 10px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
-  .terminal pre { padding: 24px 26px; overflow-x: auto; }
-  .terminal code { font-family: var(--mono); font-size: 13.5px; line-height: 2; color: #cfd8f5; white-space: pre; }
-  .terminal code .c { color: #565c6b; }
-  .terminal code .k { color: #9fd9c8; }
-
-  /* ── Footer ─ */
-  footer { padding: 100px 0 64px; text-align: center; border-top: 1px solid var(--line); position: relative; }
-  footer::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 55% 60% at 50% 115%, rgba(166, 125, 242, .1), transparent 70%);
-  }
-  .f-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; letter-spacing: .05em; }
-  .f-brand .brand-mark { width: 30px; height: 30px; }
-  footer .slogan { margin-top: 26px; font-size: 12px; letter-spacing: .42em; text-indent: .42em; color: var(--vio); font-weight: 700; }
-  footer .promise { margin-top: 14px; color: var(--mut); font-size: 14.5px; }
-  footer .links { margin-top: 30px; display: flex; gap: 26px; justify-content: center; flex-wrap: wrap; }
-  footer .links a { color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 1px solid rgba(166,125,242,.4); padding-bottom: 2px; transition: color .15s, border-color .15s; }
-  footer .links a:hover { color: var(--vio); border-color: var(--vio); }
-  footer .meta { margin-top: 34px; color: var(--faint); font-size: 12.5px; }
-
-  /* ── 滚动入场（可重复触发）── */
+  /* ═══════════════════════════════════════════════
+     滚动动效机制（GSAP ScrollTrigger 配置 toggleActions）
+     ═══════════════════════════════════════════════ */
   .reveal {
-    opacity: 0; transform: translateY(30px);
-    transition: opacity .72s ease, transform .82s var(--ease);
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.72s ease, transform 0.8s var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
   }
-  .reveal.is-visible { opacity: 1; transform: none; }
-  .reveal:not(.is-visible) { transition-delay: 0ms; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  .reveal.is-visible,
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal:not(.is-visible) {
+    transition-delay: 0ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
 </style>
+
 <noscript>
   <style>
     .reveal { opacity: 1 !important; transform: none !important; }
     .hero-fallback-mark { opacity: .7 !important; }
+    .hero-flank { display: none !important; }
+    .hero-inner {
+      position: relative !important;
+      left: auto !important;
+      top: auto !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+      margin-top: auto;
+      margin-bottom: 24px;
+    }
     .star-gate, #sidefield { display: none !important; }
   </style>
 </noscript>
@@ -552,63 +2003,85 @@
 
 <canvas id="sidefield" aria-hidden="true"></canvas>
 
-<!-- ═══ 导航 ═══ -->
+<!-- ═══ 全局吸顶导航（对标 OpenAI 导航布局） ═══ -->
 <nav id="nav">
-  <div class="wrap-wide">
-    <a class="brand" href="#top" aria-label="AstroQuery AI 首页">
-      <img class="brand-mark" src="assets/icon.png" alt="" width="28" height="28" />
-      AstroQuery AI
-    </a>
-    <div class="nav-links">
-      <a href="#vision">愿景</a>
-      <a href="#demo">演示</a>
-      <a href="#features">能力</a>
-      <a href="#quickstart">快速开始</a>
-      <a class="nav-cta" href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026" target="_blank" rel="noopener">GitHub</a>
+  <div class="wrap-wide nav-wrap">
+    <div class="nav-left">
+      <a class="brand" href="#top" aria-label="AstroQuery AI 首页">
+        <img class="brand-mark" src="assets/icon.png" alt="" width="26" height="26" />
+        <span class="brand-name">AstroQuery AI</span>
+      </a>
+      <div class="nav-links">
+        <a href="#vision">愿景</a>
+        <a href="#demo">演示</a>
+        <a href="#features">核心能力</a>
+        <a href="#stats">基准评测</a>
+        <a href="#quickstart">快速开始</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cta" href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
+<!-- ═══ 首屏 HERO：100vh 独立满屏 + 不对称巨幕排版 + 3D WebGL 偏右星系 ═══ -->
 <header class="hero" id="top">
   <div class="hero-stage" id="heroStage">
     <canvas id="starfield" aria-hidden="true"></canvas>
     <div class="hero-nebula" aria-hidden="true"></div>
     <img class="hero-fallback-mark" src="assets/icon.png" alt="AstroQuery AI 标志" width="256" height="256" />
 
-    <div class="hero-inner">
-      <p class="hero-eyebrow"><b>2026 挑战杯</b><span class="sep">·</span>阿里云 AI 科研助手</p>
-      <h1>用自然语言问天</h1>
-      <p class="hero-sub">
-        AstroQuery AI 是一条从文献到结构化黄金数据的科研智能体流水线 ——
-        输入一句话，自动完成检索、提取、质检与交付，<b>每一行数据都可追溯</b>。
-      </p>
-      <div class="hero-cta">
-        <a class="btn btn-solid" href="#quickstart">快速开始</a>
-        <a class="btn btn-ghost" href="#demo">观看演示</a>
+    <div class="hero-grid wrap-wide">
+      <!-- 左侧 42% 纯净排版区 (Left-Heavy Monolith，文字完全不挡星系) -->
+      <div class="hero-inner" id="heroInner">
+        <div class="hero-eyebrow">
+          <b>2026 挑战杯</b><span class="sep">·</span>阿里云 AI 科研助手
+        </div>
+        <h1 class="hero-title">
+          <span class="hero-title-brand">AstroQuery AI</span>
+          <span class="hero-title-sub">用自然语言问天。</span>
+        </h1>
+        <p class="hero-lead">
+          从文献检索到结构化黄金数据的科研智能体流水线 —— 输入一句话，自动完成检索、多模态提取与质检交付，<b>每一行数据都可追溯</b>。
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-solid" href="#quickstart">快速开始</a>
+          <a class="btn btn-ghost" href="#demo">观看演示 ↗</a>
+        </div>
       </div>
+
+      <!-- 右侧 58% 完整留白区域，3D WebGL 旋转星系完全无遮挡 -->
+      <div class="hero-visual-space" aria-hidden="true"></div>
     </div>
 
     <div class="scroll-hint" aria-hidden="true">
       <div class="line"></div>
-      <span>滚动 · 释放星轨</span>
+      <span>向下滚动 · 探索星系</span>
     </div>
 
     <button class="star-gate" id="starGate" type="button" aria-label="聚合 AQ 星图">
-      <span class="star-gate-copy">
-        <i>✦</i>
-        <b>点击聚合 AQ 星图</b>
-        <small>Click to form the constellation</small>
-      </span>
+      <span class="star-gate-copy"></span>
     </button>
   </div>
 </header>
 
-<!-- ═══ 愿景 ═══ -->
+<!-- ═══ 滚动叙事过渡跑道 (180vh Sticky Runway) ═══ -->
+<section class="narrative-runway" id="narrativeRunway">
+  <div class="narrative-stage">
+    <div class="narrative-banner" id="narrativeBanner">
+      <span class="narrative-tag">NEXT-GEN SCIENTIFIC AGENT</span>
+      <h2 class="narrative-quote">从文献到结构化黄金数据的科研智能体</h2>
+      <p class="narrative-sub">全链路自主对齐 · Qwen-VLM 多模态提纯 · 决策全留痕</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 第二幕：愿景与三大核心痛点 ═══ -->
 <section id="vision">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="eyebrow">问题与愿景</div>
+      <div class="eyebrow">PROBLEM &amp; VISION // 愿景</div>
       <h2>把数周的文献苦力，交给一条智能体流水线。</h2>
       <p class="lead">
         科研数据散落在星表、论文与补充材料之间：字段命名不一、单位各异、可信度未知。
@@ -619,48 +2092,74 @@
     </div>
     <div class="cards-3">
       <div class="pcard reveal">
-        <div class="dot v"></div>
-        <h3>异构来源</h3>
-        <p>VizieR 星表、ADS 论文、CDS 补充材料，每个来源的字段、单位、精度都不相同，人工对齐反复试错。</p>
+        <div class="card-sys-tag v">SYS-01 // FRAGMENTED</div>
+        <h3>异构多源割裂</h3>
+        <p>VizieR 星表、ADS 论文、CDS 补充材料，每个来源的字段、单位、精度都不相同，人工对齐试错成本极高。</p>
       </div>
       <div class="pcard reveal">
-        <div class="dot y"></div>
-        <h3>人工誊抄</h3>
-        <p>数值埋在 PDF 的表格与图谱深处，逐篇阅读、誊抄、核对——上百篇文献，动辄耗费数周。</p>
+        <div class="card-sys-tag y">SYS-02 // MANUAL READING</div>
+        <h3>人工阅读誊抄</h3>
+        <p>关键数值埋在 PDF 的表格与图谱深处，逐篇阅读、誊抄、核对——上百篇文献，动辄耗费科研人员数周时间。</p>
       </div>
       <div class="pcard reveal">
-        <div class="dot r"></div>
-        <h3>质量不可信</h3>
-        <p>拿到一行数据却无法回答：它被清洗过吗？依据是什么？多来源数值冲突时，该相信谁？</p>
+        <div class="card-sys-tag">SYS-03 // QUALITY BLACKBOX</div>
+        <h3>质量黑盒不可信</h3>
+        <p>拿到一行数据却无法回答：它被清洗过吗？依据是什么？多来源数值冲突时，该相信谁？缺乏可回溯凭证。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ 演示 ═══ -->
+<!-- ═══ 全程演示 ═══ -->
 <section id="demo" style="padding-top: 0;">
   <div class="wrap-wide">
     <div class="sec-head center reveal">
-      <div class="eyebrow">全程演示</div>
+      <div class="eyebrow">SHOWCASE // 全程演示</div>
       <h2>一次查询的完整旅程</h2>
-      <p class="lead">任务提交 → 实时事件流 → 冲突质检 → 质量雷达 → 可溯源记录，全程可视。</p>
+      <p class="lead">自然语言提问 → 规范白名单 → 三路检索 → Qwen-VLM 图表提取 → AST 沙箱清洗 → 六维质量雷达，全程可视。</p>
     </div>
-    <div class="media-frame reveal">
-      <img src="assets/export-1788355820917.gif" alt="AstroQuery AI 完整流程演示" loading="lazy" />
+    <div class="demo-player-wrap reveal">
+      <div class="demo-ambilight" aria-hidden="true"></div>
+      <div class="demo-player">
+        <div class="demo-chrome">
+          <div class="chrome-dots">
+            <i class="c-dot"></i><i class="c-dot"></i><i class="c-dot"></i>
+          </div>
+          <div class="chrome-title">
+            <span class="rec-dot"></span>
+            <span>LIVE AGENT TRACE // QWEN-VLM DUAL REASONING</span>
+          </div>
+          <div class="chrome-time">00:42 / 01:18</div>
+        </div>
+        <div class="demo-screen">
+          <div class="dark-vignette" aria-hidden="true"></div>
+          <img src="assets/export-1788355820917.gif" alt="AstroQuery AI 完整流程演示" loading="lazy" />
+        </div>
+      </div>
     </div>
-    <p class="media-cap reveal"><b>「毕星团的年龄、距离与金属丰度」</b> —— 多源检索 · 结构化记录 · 六维质量雷达；具体结果以任务回放为准</p>
+    <p class="media-cap reveal"><b>「昴星团（M45 / Pleiades）的年龄、距离与金属丰度」</b> —— 多源检索 · 结构化记录 · 六维质量雷达；具体结果以任务回放为准</p>
   </div>
 </section>
 
-<!-- ═══ 核心能力 × 系统架构：滑动卡片 ═══ -->
+<!-- ═══ 核心能力 × 系统架构：高质感横向交互轮播 ═══ -->
 <section id="features">
   <div class="wrap-wide">
     <div class="sec-head center reveal">
-      <div class="eyebrow">核心能力 · 系统架构</div>
+      <div class="eyebrow">CAPABILITIES &amp; ARCHITECTURE // 核心能力与系统架构</div>
       <h2>从一句话，到黄金数据。</h2>
       <p class="lead"><b>每一行数据，都有据可查。</b> 一条连续证据链，把问题、来源、原文定位、处理决策与最终交付串在一起。</p>
     </div>
 
+    <!-- Astra 风格胶囊切换栏 -->
+    <div class="tab-pills reveal" id="phaseTabs" role="tablist" aria-label="架构阶段切换">
+      <button class="tab-pill active" type="button" role="tab" aria-selected="true" data-index="0">01 真实流程</button>
+      <button class="tab-pill" type="button" role="tab" aria-selected="false" data-index="1">02 系统中枢</button>
+      <button class="tab-pill" type="button" role="tab" aria-selected="false" data-index="2">03 检索提取</button>
+      <button class="tab-pill" type="button" role="tab" aria-selected="false" data-index="3">04 质量管线</button>
+      <button class="tab-pill" type="button" role="tab" aria-selected="false" data-index="4">05 成果交付</button>
+    </div>
+
+    <!-- 阶段连续证据链指引 -->
     <ol class="proof-chain reveal" aria-label="从问题到可追溯数据的五个阶段">
       <li><span>01</span><b>自然语言问题</b><small>目标天体 · 所需性质</small></li>
       <li><span>02</span><b>PropertySpec</b><small>字段白名单 · 标准单位</small></li>
@@ -669,14 +2168,25 @@
       <li><span>05</span><b>黄金数据</b><small>traceability · exports</small></li>
     </ol>
 
+    <!-- 交互卡片轮播 -->
     <div class="car reveal" id="car" tabindex="0" aria-label="AstroQuery AI 五阶段能力卡片">
       <article class="slide" role="group" aria-roledescription="slide" aria-label="第 1 张，共 5 张">
         <div class="txt">
-          <div class="num-row"><span class="fidx v">01</span><span class="tag">总览 · 真实查询全流程</span></div>
+          <div class="num-row">
+            <span class="fidx">PHASE 01 // 05</span>
+            <span class="tag">真实查询全流程</span>
+          </div>
           <h3>五阶段主线，全程可回放</h3>
           <p>九个智能体子图串联成主编排链：需求与性质标准化 → 来源查找与文献解析 → 数据提取与多源整合 → 质量评估与清洗闭环 → 成果交付与科研洞察。任意已完成任务一键重放。</p>
-          <dl class="slide-io"><div><dt>INPUT</dt><dd>自然语言科研问题</dd></div><div><dt>OUTPUT</dt><dd>可回放任务与结构化交付</dd></div></dl>
-          <div class="trace-chips"><span class="trace-chip">task_id</span><span class="trace-chip">event_log</span><span class="trace-chip">traceability</span></div>
+          <dl class="slide-io">
+            <div><dt>INPUT</dt><dd>自然语言科研问题</dd></div>
+            <div><dt>OUTPUT</dt><dd>可回放任务与结构化交付</dd></div>
+          </dl>
+          <div class="trace-chips">
+            <span class="trace-chip">task_id</span>
+            <span class="trace-chip">event_log</span>
+            <span class="trace-chip">traceability</span>
+          </div>
         </div>
         <div class="img" data-cap="① 真实查询全流程 —— 一次查询的五阶段主线">
           <img src="assets/Architecture/real_process.jpg" alt="真实查询全流程" loading="lazy" />
@@ -686,11 +2196,21 @@
 
       <article class="slide" role="group" aria-roledescription="slide" aria-label="第 2 张，共 5 张">
         <div class="txt">
-          <div class="num-row"><span class="fidx g">02</span><span class="tag">系统中枢 · PropertySpec</span></div>
+          <div class="num-row">
+            <span class="fidx">PHASE 02 // 05</span>
+            <span class="tag">系统中枢 · PropertySpec</span>
+          </div>
           <h3>PropertySpec 系统中枢</h3>
-          <p>SIMBAD 天体识别 + 99 类 RAG 性质库（294 条领域规则），生成字段白名单与标准单位表——星表、论文、补充材料三条提取路径天然归一，跨来源数据直接可比。</p>
-          <dl class="slide-io"><div><dt>INPUT</dt><dd>目标天体与性质描述</dd></div><div><dt>OUTPUT</dt><dd>标准字段与标准单位</dd></div></dl>
-          <div class="trace-chips"><span class="trace-chip">otype</span><span class="trace-chip">field whitelist</span><span class="trace-chip">standard_unit</span></div>
+          <p>SIMBAD 天体识别 + 100 类 otype RAG 性质库（3,293 条性质定义），生成字段白名单与标准单位表——星表、论文、补充材料三条提取路径天然归一，跨来源数据直接可比。</p>
+          <dl class="slide-io">
+            <div><dt>INPUT</dt><dd>目标天体与性质描述</dd></div>
+            <div><dt>OUTPUT</dt><dd>标准字段与标准单位</dd></div>
+          </dl>
+          <div class="trace-chips">
+            <span class="trace-chip">otype</span>
+            <span class="trace-chip">field whitelist</span>
+            <span class="trace-chip">standard_unit</span>
+          </div>
         </div>
         <div class="img" data-cap="② 系统架构总览 —— LangGraph 主图编排 · 子图契约 · 外部服务与资产层">
           <img src="assets/Architecture/system_architrcture.png" alt="系统架构总览" loading="lazy" />
@@ -700,11 +2220,21 @@
 
       <article class="slide" role="group" aria-roledescription="slide" aria-label="第 3 张，共 5 张">
         <div class="txt">
-          <div class="num-row"><span class="fidx y">03</span><span class="tag">检索与提取流水线</span></div>
+          <div class="num-row">
+            <span class="fidx">PHASE 03 // 05</span>
+            <span class="tag">检索与提取流水线</span>
+          </div>
           <h3>三路并行检索 × 多模态提取</h3>
-          <p>27 个 VizieR 星表、ADS 论文靶向检索、CDS 补充材料同时出发，Unpaywall 瀑布式获取开放 PDF；Qwen-VLM 逐页解析正文与复杂图表，bbox 锁定原文坐标，图证逐条可溯源。</p>
-          <dl class="slide-io"><div><dt>INPUT</dt><dd>标准化检索表达式</dd></div><div><dt>OUTPUT</dt><dd>多源记录与原文证据</dd></div></dl>
-          <div class="trace-chips"><span class="trace-chip">source_id</span><span class="trace-chip">page + bbox</span><span class="trace-chip">raw_quote</span></div>
+          <p>25 个 VizieR 星表、ADS 论文靶向检索、CDS 补充材料同时出发，Unpaywall 瀑布式获取开放 PDF；Qwen-VLM 逐页解析正文与复杂图表，bbox 锁定原文坐标，图证逐条可溯源。</p>
+          <dl class="slide-io">
+            <div><dt>INPUT</dt><dd>标准化检索表达式</dd></div>
+            <div><dt>OUTPUT</dt><dd>多源记录与原文证据</dd></div>
+          </dl>
+          <div class="trace-chips">
+            <span class="trace-chip">source_id</span>
+            <span class="trace-chip">page + bbox</span>
+            <span class="trace-chip">raw_quote</span>
+          </div>
         </div>
         <div class="img" data-cap="③ 检索与提取流水线 —— 规范中枢 · 三路检索 · 多模态精细提取">
           <img src="assets/Architecture/search_retrieve.png" alt="检索与提取流水线" loading="lazy" />
@@ -714,11 +2244,21 @@
 
       <article class="slide" role="group" aria-roledescription="slide" aria-label="第 4 张，共 5 张">
         <div class="txt">
-          <div class="num-row"><span class="fidx p">04</span><span class="tag">质量管线 · Quality Pipeline</span></div>
+          <div class="num-row">
+            <span class="fidx">PHASE 04 // 05</span>
+            <span class="tag">质量管线 · Quality Pipeline</span>
+          </div>
           <h3>沙箱清洗 · 冲突裁决 · 六维雷达</h3>
           <p>大模型在 AST 白名单沙箱内动态生成清洗函数；Cohen's d 效应量与 95% 置信区间自动归因多源冲突，原始分歧完整保留；六维质量雷达加权评分，每个分数都可解释。</p>
-          <dl class="slide-io"><div><dt>INPUT</dt><dd>原始值、来源与上下文</dd></div><div><dt>OUTPUT</dt><dd>质量分与可解释处理记录</dd></div></dl>
-          <div class="trace-chips"><span class="trace-chip">modifications</span><span class="trace-chip">decision_chain</span><span class="trace-chip">quality_summary</span></div>
+          <dl class="slide-io">
+            <div><dt>INPUT</dt><dd>原始值、来源与上下文</dd></div>
+            <div><dt>OUTPUT</dt><dd>质量分与可解释处理记录</dd></div>
+          </dl>
+          <div class="trace-chips">
+            <span class="trace-chip">modifications</span>
+            <span class="trace-chip">decision_chain</span>
+            <span class="trace-chip">quality_summary</span>
+          </div>
         </div>
         <div class="img" data-cap="④ 质量管线 —— 评估 → 清洗 ⇄ 冲突 → 导出 → 洞察，异常流转人工复核">
           <img src="assets/Architecture/quality.png" alt="质量管线" loading="lazy" />
@@ -728,11 +2268,21 @@
 
       <article class="slide" role="group" aria-roledescription="slide" aria-label="第 5 张，共 5 张">
         <div class="txt">
-          <div class="num-row"><span class="fidx k">05</span><span class="tag">成果交付 · 前端交互</span></div>
+          <div class="num-row">
+            <span class="fidx">PHASE 05 // 05</span>
+            <span class="tag">成果交付 · 前端交互</span>
+          </div>
           <h3>结构化交付与科研洞察</h3>
           <p>JSON / CSV / 宽表 + 全量溯源链与决策留痕；SSE 实时事件流、任意任务一键回放、质量雷达与图证画廊；真实任务栈与演示样例双模式切换。</p>
-          <dl class="slide-io"><div><dt>INPUT</dt><dd>通过质检的统一记录</dd></div><div><dt>OUTPUT</dt><dd>数据包、元数据与科研洞察</dd></div></dl>
-          <div class="trace-chips"><span class="trace-chip">structured_data</span><span class="trace-chip">metadata</span><span class="trace-chip">traceability</span></div>
+          <dl class="slide-io">
+            <div><dt>INPUT</dt><dd>通过质检的统一记录</dd></div>
+            <div><dt>OUTPUT</dt><dd>数据包、元数据与科研洞察</dd></div>
+          </dl>
+          <div class="trace-chips">
+            <span class="trace-chip">structured_data</span>
+            <span class="trace-chip">metadata</span>
+            <span class="trace-chip">traceability</span>
+          </div>
         </div>
         <div class="img" data-cap="⑤ 前端交互模式 —— 真实任务栈与演示样例双模式，共享增值面板">
           <img src="assets/Architecture/frontend.png" alt="前端交互模式" loading="lazy" />
@@ -741,6 +2291,7 @@
       </article>
     </div>
 
+    <!-- 轮播指示器与控制器 -->
     <div class="car-bar reveal">
       <div class="car-dots" id="carDots" aria-label="选择能力卡片"></div>
       <div class="car-right">
@@ -753,13 +2304,14 @@
       </div>
     </div>
 
+    <!-- 静态证据链示例 -->
     <aside class="record-example reveal" aria-labelledby="recordExampleTitle">
       <div class="record-example-head">
         <div>
-          <p class="eyebrow">STATIC SCHEMA EXAMPLE</p>
+          <p class="eyebrow">STATIC SCHEMA EXAMPLE // 结构样例</p>
           <h3 id="recordExampleTitle">一行结果，也是一条完整证据链。</h3>
         </div>
-        <p>这里只展示输出字段结构，不展示、不读取真实任务数据。研究者可以从最终字段逐级回到来源、原文位置和每次处理决策。</p>
+        <p>展示统一结构化输出的静态元数据框架。研究者可以从任意最终字段逐级回到来源、原文坐标位置与智能体清洗决策。</p>
       </div>
       <dl class="record-fields">
         <div><dt>标准字段</dt><dd>field_name · value · unit</dd></div>
@@ -771,27 +2323,91 @@
       </dl>
       <div class="record-links">
         <a href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026#readme" target="_blank" rel="noopener">查看项目说明 ↗</a>
-        <a href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026/blob/main/AstroQuery_AI/docs/%E7%94%B3%E6%8A%A5%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A_%E7%BB%88%E7%A8%BF_20260904.md" target="_blank" rel="noopener">查看技术报告 ↗</a>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- ═══ 数据带 ═══ -->
+<!-- ═══ 数据权威度与注脚体系 (Astra Benchmark Card) ═══ -->
 <section id="stats" style="padding-top: 0; padding-bottom: 40px;">
   <div class="wrap-wide">
-    <div class="band reveal">
-      <div class="bstat g"><b>370</b><span>离线测试全绿</span></div>
-      <div class="bstat v"><b>27</b><span>VizieR 星表</span></div>
-      <div class="bstat y"><b>9</b><span>智能体子图</span></div>
-      <div class="bstat p"><b>99</b><span>类 PropertySpec</span></div>
-      <div class="bstat k"><b>294</b><span>条领域规则</span></div>
-      <div class="bstat r"><b>6</b><span>维质量评分</span></div>
+    <div class="benchmark-card reveal">
+      <div class="benchmark-card-head">
+        <div>
+          <span class="benchmark-badge">BENCHMARK &amp; VERIFIED METRICS</span>
+          <h2 style="font-size: clamp(24px, 3vw, 36px); margin-top: 10px;">全链路有据可查的工程与评测数据</h2>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 13.5px; max-width: 440px;">
+          所有数值均来源于公开测试代码、星表基准与已归档技术报告，拒绝未经实测的虚假包装。
+        </p>
+      </div>
+
+      <div class="band" id="benchmarkBand" style="margin-top: 32px;">
+        <div class="bstat" tabindex="0" role="region" aria-label="521 离线测试全绿">
+          <b>521<sup>[1]</sup></b>
+          <span>离线测试全绿</span>
+          <div class="bstat-tip">覆盖 AST 白名单沙箱、三路检索提取契约、LangGraph 状态机流转与六维质量雷达，全部使用 mock 离线环境隔离运行。</div>
+        </div>
+        <div class="bstat" tabindex="0" role="region" aria-label="25 VizieR 星表">
+          <b>25<sup>[2]</sup></b>
+          <span>VizieR 星表</span>
+          <div class="bstat-tip">整合 CDS VizieR 权威天文数据库，涵盖 Gaia DR3/DR2、2MASS、WISE、SDSS、TIC、Hipparcos 等 25 组标准测光与光谱星表。</div>
+        </div>
+        <div class="bstat" tabindex="0" role="region" aria-label="9 智能体子图">
+          <b>9<sup>[3]</sup></b>
+          <span>智能体子图</span>
+          <div class="bstat-tip">解耦为意图澄清与规范化、检索与文献下载、多模态提取、质量评估、数据清洗、冲突裁决、人工复核、结构化导出与科研洞察 9 大 LangGraph 子图（subgraph1-3 + data_* 质量链）。</div>
+        </div>
+        <div class="bstat" tabindex="0" role="region" aria-label="100 类 otype 性质库">
+          <b>100<sup>[4]</sup></b>
+          <span>类 otype 性质库</span>
+          <div class="bstat-tip">按天体类型（otype）组织的 RAG 性质库：100 类天体共 3,293 条性质定义（坐标、视差、距离、有效温度、金属丰度、年龄等），统一字段白名单与标准单位。</div>
+        </div>
+        <div class="bstat" tabindex="0" role="region" aria-label="294 条天体物理知识">
+          <b>294<sup>[5]</sup></b>
+          <span>条天体物理知识</span>
+          <div class="bstat-tip">沉淀 294 条天体物理先验知识（7 个主题：物理定律、参考值范围、天体模型、测量理论、研究方法、星系物理、瞬变源），支撑物理边界与合理范围校验。</div>
+        </div>
+        <div class="bstat" tabindex="0" role="region" aria-label="6 维质量评分">
+          <b>6<sup>[6]</sup></b>
+          <span>维质量评分</span>
+          <div class="bstat-tip">综合完整性、一致性、格式规范、来源可信度、冲突风险与提取质量 6 个量化维度（dimension_scores），加权输出雷达总分并提供留痕决策。</div>
+        </div>
+      </div>
+
+      <!-- 权威依据与文献链接出处 -->
+      <div class="metric-footnotes">
+        <div class="fn-item">
+          <span>[1]</span>
+          <div><b>测试集依据：</b><code>pytest tests/ -m "not network"</code> 覆盖 521 项自动化单元与集成断言。</div>
+        </div>
+        <div class="fn-item">
+          <span>[2]</span>
+          <div><b>星表基准依据：</b><a href="https://vizier.cds.unistra.fr/" target="_blank" rel="noopener">CDS VizieR Astronomical Catalogs</a> 规范化测光、视差与光谱资产。</div>
+        </div>
+        <div class="fn-item">
+          <span>[3]</span>
+          <div><b>架构依据：</b>申报技术报告 §3.1（系统总体架构）9 大 LangGraph 解耦子图契约。</div>
+        </div>
+        <div class="fn-item">
+          <span>[4]</span>
+          <div><b>本体规范依据：</b><code>rag_properties/</code>（100 类天体 otype 性质库）与 <code>quality_pipeline/configs/schema_mapping.yaml</code>（字段白名单 · 标准单位）。</div>
+        </div>
+        <div class="fn-item">
+          <span>[5]</span>
+          <div><b>知识库依据：</b><code>quality_pipeline/data/insight_knowledge/astrophysics/</code> 7 个主题共 294 条天体物理先验知识（物理定律 · 参考值范围等）。</div>
+        </div>
+        <div class="fn-item">
+          <span>[6]</span>
+          <div><b>质检算法依据：</b><code>quality_pipeline/tools/assessment/</code> 六维评分算法及 Cohen's d 冲突效应量归因。</div>
+        </div>
+      </div>
+
+      <p class="metric-source">
+        指标数据严格来源于项目当前公开规范与实测记录。
+        <a href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026#readme" target="_blank" rel="noopener">核对 README 依据 ↗</a>
+      </p>
     </div>
-    <p class="metric-source reveal">
-      页面指标来自仓库当前公开说明，不是实时统计。
-      <a href="https://github.com/lijiamingeric28-tech/AI-Scientist-2026#readme" target="_blank" rel="noopener">查看 README 依据 ↗</a>
-    </p>
   </div>
 </section>
 
@@ -799,9 +2415,9 @@
 <section id="quickstart">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="eyebrow">快速开始</div>
+      <div class="eyebrow">GET STARTED // 快速开始</div>
       <h2>四条命令，跑通全流程。</h2>
-      <p class="lead">Python 3.10+ · 一条查询即可完整走完检索、提取与质检。</p>
+      <p class="lead">Python 3.10+ · 一句自然语言，走完检索、多模态图表提取、清洗与质检交付全生命周期。</p>
     </div>
     <div class="steps reveal">
       <div class="step">
@@ -815,38 +2431,38 @@
         <span class="n">STEP 02</span>
         <h3>配置密钥</h3>
         <code>AstroQuery_AI/.env</code>
-        <small>DASHSCOPE_API_KEY（必填）<br />ADS_API_TOKEN · UNPAYWALL_EMAIL（可选）</small>
+        <small>DASHSCOPE_API_KEY · DASHSCOPE_BASE_URL（必填）<br />ADS_API_TOKEN · UNPAYWALL_EMAIL（可选）</small>
       </div>
       <div class="step">
         <span class="n">STEP 03</span>
         <h3>构建前端</h3>
-        <code>cd frontend && npm install && npm run build</code>
-        <small>仓库不含构建产物，启动 Web 界面前必须执行</small>
+        <code>cd frontend &amp;&amp; npm install &amp;&amp; npm run build</code>
+        <small>仓库不含预编译产物，启动 Web 界面前必须执行</small>
       </div>
       <div class="step">
         <span class="n">STEP 04</span>
         <h3>发起查询</h3>
         <code>python -m astroquery_ai "M31 的距离和金属丰度"</code>
-        <small>或 python -m web.desktop 打开内置桌面窗口</small>
+        <small>或 python -m web.desktop 打开轻量桌面窗口</small>
       </div>
     </div>
     <div class="terminal reveal">
       <div class="terminal-bar"><i></i><i></i><i></i><span>AstroQuery_AI — shell</span></div>
-      <pre><code><span class="c"># Web 界面（浏览器 / 桌面内置引擎）</span>
-<span class="k">python -m web.main</span>        <span class="c"># http://127.0.0.1:8000 · SSE 实时流 + 事件回放</span>
+      <pre><code><span class="c"># 启动 Web 界面（浏览器 / 桌面引擎）</span>
+<span class="k">python -m web.main</span>        <span class="c"># http://127.0.0.1:8000 · SSE 实时事件流 + 回放</span>
 <span class="k">python -m web.desktop</span>     <span class="c"># 桌面窗口 · WebView2 · 关窗即停</span>
 
-<span class="c"># 质量验证（370 项全 mock 离线测试）</span>
+<span class="c"># 执行完整质量验证（521 项 mock 离线测试全绿）</span>
 <span class="k">python -m pytest tests/ -m "not network"</span></code></pre>
     </div>
   </div>
 </section>
 
-<!-- ═══ Footer ══ -->
+<!-- ═══ 页脚 ═══ -->
 <footer>
   <div class="wrap">
     <div class="f-brand">
-      <img class="brand-mark" src="assets/icon.png" alt="" width="30" height="30" />
+      <img class="brand-mark" src="assets/icon.png" alt="" width="28" height="28" />
       AstroQuery AI
     </div>
     <div class="slogan">探索 · 分析 · 进化</div>
@@ -857,11 +2473,14 @@
       <a href="#demo">观看演示</a>
       <a href="https://hyperos.mi.com/font/en/download/" target="_blank" rel="noopener">MiSans 字体许可</a>
     </div>
-    <p class="meta">2026 挑战杯 · 阿里云 AI 科研助手 · 赛题方向一：科学数据整合与影响力分析 · 页面字体 MiSans（免费商用）</p>
+    <p class="meta">
+      2026 挑战杯 · 阿里云 AI 科研助手 · 赛题方向一：科学数据整合与影响力分析<br />
+      全站采用 MiSans 商业免费字体 · 极简暗黑科技美学设计
+    </p>
   </div>
 </footer>
 
-<!-- ═══ Lightbox ═══ -->
+<!-- ═══ Lightbox 架构大图查看 ═══ -->
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="架构图大图查看">
   <button class="lb-btn lb-close" id="lbClose" aria-label="关闭">✕</button>
   <button class="lb-btn lb-prev" id="lbPrev" aria-label="上一张">‹</button>

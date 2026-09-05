@@ -13,7 +13,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-实时后端-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev)
 
-[![Tests](https://img.shields.io/badge/tests-370%20passed%20FULLY-2ea44f)](#-测试与质量)
+[![Tests](https://img.shields.io/badge/tests-521%20passed%20FULLY-2ea44f)](#-测试与质量)
 [![Desktop](https://img.shields.io/badge/桌面内置引擎-WebView2-1f6feb)](#--内置窗口模式)
 [![Website](https://img.shields.io/badge/🌌-网站落地页-8b5cf6)](https://lijiamingeric28-tech.github.io/AI-Scientist-2026/)
 
@@ -66,8 +66,8 @@
 
 | # | 亮点 | 说明 |
 |---|------|------|
-| 1 | **PropertySpec 系统中枢** | 目标天体 → SIMBAD/otype → RAG 性质库（99 类 otype · 294 条领域规则）→ 字段名白名单 + 标准单位表，数据库/论文/补充材料三条提取路径全部归一 |
-| 2 | **三路并行检索** | 27 个 VizieR 星表（LLM 列名归一）+ ADS 论文检索（RAG 标准名构造查询串）+ Unpaywall → PDF 瀑布式下载 + CDS J/ 补充材料 |
+| 1 | **PropertySpec 系统中枢** | 目标天体 → SIMBAD/otype → RAG 性质库（100 类 otype · 3,293 条性质定义）→ 字段名白名单 + 标准单位表，数据库/论文/补充材料三条提取路径全部归一 |
+| 2 | **三路并行检索** | 25 个 VizieR 星表（LLM 列名归一）+ ADS 论文检索（RAG 标准名构造查询串）+ Unpaywall → PDF 瀑布式下载 + CDS J/ 补充材料 |
 | 3 | **VLM 多模态提取** | 论文 PDF → 页图/bbox 标注 → 多模态模型批量提取（prompt 注入 PropertySpec 白名单），图证→记录逐条可溯源 |
 | 4 | **三层动态工具** | 数据标准化的 Layer3（LLM 动态生成 Python 函数）在 **AST 白名单沙箱**内执行：dry-run 5 样本 → 自检 → 8s 超时 → 修复循环；生成失败安全回退 Base Tools |
 | 5 | **统计冲突检测** | Cohen's d 效应量（含 95% CI）替代传统相对差异法——组内方差小时不会漏报（\|450-500\|/std=10 仍报 LARGE） |
@@ -88,11 +88,11 @@
 
 <img src="assets/Architecture/real_process.jpg" alt="真实查询全流程" width="100%" />
 
-**② 系统架构总览** —— LangGraph 主图编排 · 子图 1-3 契约 · Web 单体流程 · 外部服务与数据源 · 资产与存储层（99 类 PropertySpec · 294 条领域规则）
+**② 系统架构总览** —— LangGraph 主图编排 · 子图 1-3 契约 · Web 单体流程 · 外部服务与数据源 · 资产与存储层（100 类 otype 性质库 · 294 条天体物理先验知识）
 
 <img src="assets/Architecture/system_architrcture.png" alt="系统架构总览" width="100%" />
 
-**③ 检索与提取流水线** —— 01 规范中枢与星表检索（PropertySpec / VizieR 27 星表 / SIMBAD）→ 02 论文与补充材料检索链（ADS / Unpaywall / CDS）→ 03 多模态精细提取（页图切片 / VLM 约束提取 / bbox 定位 / 图证抽取）
+**③ 检索与提取流水线** —— 01 规范中枢与星表检索（PropertySpec / VizieR 25 星表 / SIMBAD）→ 02 论文与补充材料检索链（ADS / Unpaywall / CDS）→ 03 多模态精细提取（页图切片 / VLM 约束提取 / bbox 定位 / 图证抽取）
 
 <img src="assets/Architecture/search_retrieve.png" alt="检索与提取流水线" width="100%" />
 
@@ -177,7 +177,7 @@ python -m web.desktop     # 内置窗口模式（WebView2，不依赖浏览器�
 |------|------|----------|
 | 意图澄清 | 结构化拆解查询（目标/性质/约束） | 子图1 + HITL 澄清卡 |
 | 性质标准化 | 天体 → 可检索性质清单 | SIMBAD + RAG 知识库（~100 otype） |
-| 检索 | 星表/论文/补充材料三路并行 | VizieR 27 表 + ADS + Unpaywall + CDS |
+| 检索 | 星表/论文/补充材料三路并行 | VizieR 25 表 + ADS + Unpaywall + CDS |
 | 提取 | PDF 图/表数值提取 | Qwen-VLM + bbox 精定位（图证可溯源） |
 | 质量评估 | 8 项检查 + Cohen's d + 自适应阈值 | 4 Stage：Profiling→评估→评分→决策 |
 | 标准化 | 别名/单位/缺失/去重/格式修正（留痕） | 6 基础工具 + LLM 自适应 + 沙箱生成工具 |
@@ -202,12 +202,12 @@ python -m web.desktop     # 内置窗口模式（WebView2，不依赖浏览器�
 # 测试/ruff 需要开发依赖（含 pytest + vcrpy）
 pip install -r requirements-dev.txt
 
-python -m pytest tests/ -m "not network"   # 370 项全 mock 离线 ✅
+python -m pytest tests/ -m "not network"   # 521 项全 mock 离线 ✅
 python -m pytest tests/                    # + 网络冒烟（需真实 API）
 python -m ruff check .
 ```
 
-- **370 项测试全绿**（全 mock、无网络、无 LLM）；全库 13 单元两阶段审计曾发现并修复 80 条确认问题（`HISTORY_VERSION/V3/docs/AUDIT_REPORT.md`）
+- **521 项测试全绿**（全 mock、无网络、无 LLM）；全库 13 单元两阶段审计曾发现并修复 80 条确认问题（`HISTORY_VERSION/V3/docs/AUDIT_REPORT.md`）
 - VCR 录制回放（`vcrpy`，见 requirements-dev.txt）支撑离线真实交互协议测试
 
 ## 📁 目录结构
@@ -220,7 +220,7 @@ AI-Scientist-2026/
 │   ├── quality_pipeline/      # 质量管线共享设施（configs/models/tools/sandbox）
 │   ├── web/                   # FastAPI 后端：任务/SSE/回放/桌面入口(desktop.py)
 │   ├── frontend/              # React + Vite（7 阶段卡片/质量雷达/溯源查看）
-│   ├── rag_properties/        # RAG 性质库（99 类 otype 标准单位）
+│   ├── rag_properties/        # RAG 性质库（100 类 otype 标准单位）
 │   ├── scripts/               # 运维/演示/实验脚本（提交任务、重建样例包等）
 │   ├── sample_pack/           # 演示回放包（内置样例库）
 │   ├── output/                # 本地运行产物（不提交）
