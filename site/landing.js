@@ -1458,22 +1458,26 @@
         var quoteOpacity = 0;
         var quoteScale = 0.95;
         var quoteY = 24;
-        if (runwayProgress >= 0.15 && runwayProgress <= 0.85) {
-          if (runwayProgress < 0.45) {
-            var t = (runwayProgress - 0.15) / 0.30;
+        if (runwayProgress <= 0.98) {
+          if (runwayProgress < 0.10) {
+            var t = runwayProgress / 0.10;
             quoteOpacity = smoothstep(0, 1, t);
             quoteScale = 0.95 + 0.05 * t;
             quoteY = 24 * (1 - t);
-          } else if (runwayProgress < 0.65) {
+          } else if (runwayProgress < 0.78) {
             quoteOpacity = 1;
             quoteScale = 1.0;
             quoteY = 0;
           } else {
-            var t = (runwayProgress - 0.65) / 0.20;
+            var t = (runwayProgress - 0.78) / 0.20;
             quoteOpacity = 1 - smoothstep(0, 1, t);
             quoteScale = 1.0 + 0.04 * t;
             quoteY = -24 * t;
           }
+        } else {
+          quoteOpacity = 0;
+          quoteScale = 1.04;
+          quoteY = -24;
         }
         if (banner) {
           banner.style.setProperty("--narrative-opacity", quoteOpacity.toFixed(3));

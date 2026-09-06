@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { fmtPair } from '@/lib/format'
+import { journalLabel } from '@/lib/journal'
+import { DUP_PRINCIPLE_TEXT, DUP_REASON_TEXT, DUP_RULE_TEXT } from '@/lib/dupMarkers'
 import SourceImageLightbox from './SourceImageLightbox'
 
 /* 记录详情弹窗（居中玻璃模态，风格对齐 SettingsDialog）：
@@ -10,6 +12,7 @@ import SourceImageLightbox from './SourceImageLightbox'
  * - 处理轨迹：output_state.traceability.per_record_trace[record_id]（原始值→最终值 + 修改步骤）
  * - 清洗路由：report_state.quality.quality_scoring.per_source_routes[source_id]
  * - 冲突标注：report_state.conflict.resolution_report.annotations（按实体+字段匹配）
+ * - 疑似重复：report_state.conflict.verification.duplicate_groups（record_ids 精确命中，见 dupMarkers）
  * - Insight 建议：report_state.insights.field_insights（按实体+字段匹配）
  * - 字段语义：output_state.metadata.field_definitions[field_name]
  * 全部数据来自 GET /quality + /sources，由 ResultTabs 惰性加载后传入。
@@ -141,7 +144,7 @@ function SectionSkeleton({ rows = 2 }) {
   )
 }
 
-export default function RecordDetailDialog({ record, quality, sources, loading, onClose }) {
+export default function RecordDetailDialog({ record, quality, sources, loading, onClose, dup = null }) {
   // Esc 关闭
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose() }
@@ -245,6 +248,11 @@ export default function RecordDetailDialog({ record, quality, sources, loading, 
               </Chip>
             )}
             {lowConf && <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">低置信度记录</Chip>}
+            {dup && (
+              dup.isRepresentative
+                ? <Chip color="var(--status-success)" bg="var(--status-success-bg)">重复组代表</Chip>
+                : <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">疑似重复</Chip>
+            )}
           </div>
         </div>
 
@@ -373,6 +381,62 @@ export default function RecordDetailDialog({ record, quality, sources, loading, 
                     )
                   })}
                 </div>
+              </Section>
+            )}
+
+            {/* ── 疑似重复：本行所在重复收录组（2026-09-06；只在行属于某组时显示） ── */}
+            {dup && dup.group && (
+              <Section label={`疑似重复 · 重复收录组（${dup.group.sourceCount} 个来源）`}>
+                <div className="hint" style={{ marginBottom: 8 }}>
+                  值 <span className="font-mono">{String(dup.group.fieldValue)}</span> 在 {dup.group.sourceCount} 个来源中完全一致
+                  （共 {dup.group.recordIds.length} 条记录），判定为重复收录。组内非代表成员在本表值单元格标有
+                  「疑似重复」徽标；本条{dup.isRepresentative ? '为该组的代表记录（保留条目）' : '为疑似重复成员'}。
+                </div>
+                {/* 组内现存成员（代表在前，本记录高亮） */}
+                {[...dup.group.members]
+                  .filter((m) => m.isLive)
+                  .sort((a, b) => Number(b.isRepresentative) - Number(a.isRepresentative))
+                  .map((m) => {
+                    const isCurrent = m.recordId === record.record_id
+                    const srcTitle = (sources || []).find((s) => s.source_id === m.sourceId)?.title
+                    return (
+                      <div
+                        key={m.recordId}
+                        className="row-item"
+                        style={isCurrent
+                          ? { borderColor: 'var(--accent)', background: 'var(--accent-light)', marginBottom: 6 }
+                          : { marginBottom: 6 }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                          {m.isRepresentative
+                            ? <Chip color="var(--status-success)" bg="var(--status-success-bg)">代表</Chip>
+                            : <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">疑似重复</Chip>}
+                          <span
+                            className="font-mono"
+                            title={m.sourceId}
+                            style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}
+                          >
+                            {journalLabel(m.sourceId) || m.sourceId}
+                          </span>
+                          <Chip>{METHOD_LABELS[m.extractionMethod] || '未知提取方式'}</Chip>
+                          {typeof m.extractionConfidence === 'number' && (
+                            <Chip color="var(--status-progress)" bg="var(--status-progress-bg)">
+                              置信度 {Math.round(m.extractionConfidence * 100)}%
+                            </Chip>
+                          )}
+                          {isCurrent && <Chip color="var(--accent-text)" bg="var(--accent-light)">本记录</Chip>}
+                        </div>
+                        {srcTitle && <div className="hint-dim" style={{ marginTop: 4 }}>{srcTitle}</div>}
+                        {m.isRepresentative && dup.group.rep && (
+                          <div className="hint-dim" style={{ marginTop: 4 }}>
+                            代表原因：{DUP_REASON_TEXT[dup.group.rep.reason] || dup.group.rep.reason}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                <div className="hint-dim" style={{ marginTop: 8 }}>{DUP_RULE_TEXT}</div>
+                <div className="hint-dim" style={{ marginTop: 4 }}>{DUP_PRINCIPLE_TEXT}</div>
               </Section>
             )}
 

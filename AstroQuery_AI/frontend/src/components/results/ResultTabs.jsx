@@ -7,6 +7,7 @@ import ExportDialog from './ExportDialog'
 import * as api from '@/services/api'
 import { useWheelHorizontal } from '@/hooks/useWheelHorizontal'
 import { journalLabel } from '@/lib/journal'
+import { buildDupIndex, DUP_REASON_TEXT } from '@/lib/dupMarkers'
 
 /* 结果组件库（契约 D7-1：主区只留记录表格；来源/质量/下载移右侧面板）
  * 导出：RecordsTable（主区全宽）/ SourcesList / OutputFiles（右侧面板）
@@ -36,6 +37,43 @@ function MethodBadge({ method }) {
   return <span style={{ ...style, background: 'var(--status-progress-bg)', color: 'var(--status-progress)' }}>VLM 文本</span>
 }
 
+/* 疑似重复徽标（2026-09-06，用户决策：重复组内仅标非代表成员行；代表行无徽标）
+ * 颜色走 --status-warn 系列（明暗自适应）；hover title 说明与谁重复、代表是谁及选取原因 */
+const DUP_BADGE_STYLE = {
+  display: 'inline-block', marginLeft: 6, padding: '1px 7px',
+  fontSize: 10, lineHeight: '15px', fontWeight: 600,
+  borderRadius: 'var(--radius-pill)', whiteSpace: 'nowrap',
+  background: 'var(--status-warn-bg)', color: 'var(--status-warn)',
+  verticalAlign: '2px',
+}
+
+/* 徽标 hover 文案（原生 title 多行）：组内其余来源 + 代表 + 规则/原则；
+ * 「共 N 条」读组对象原始规模（用户删除过的行不计入展示但口径不撒谎） */
+function dupBadgeTitle(group, selfId) {
+  const labels = []
+  for (const m of group.members) {
+    if (!m.isLive || m.recordId === selfId) continue
+    const s = journalLabel(m.sourceId) || m.sourceId
+    if (!labels.includes(s)) labels.push(s)
+  }
+  const others = labels.length > 4
+    ? `${labels.slice(0, 4).join('、')} 等 ${group.recordIds.length - 1} 条`
+    : labels.join('、')
+  const lines = [
+    `${group.entityName} · ${group.fieldName} = ${group.fieldValue}：共 ${group.recordIds.length} 条记录在 ${group.sourceCount} 个来源中完全一致（重复收录）`,
+    `本行与 ${others} 疑似重复`,
+  ]
+  if (group.rep) {
+    lines.push(`保留代表：${journalLabel(group.rep.sourceId) || group.rep.sourceId}（${DUP_REASON_TEXT[group.rep.reason] || group.rep.reason}）`)
+  }
+  lines.push('全量保留标注：未删除任何重复记录')
+  return lines.join('\n')
+}
+
+function DupBadge({ group, recordId }) {
+  return <span title={dupBadgeTitle(group, recordId)} style={DUP_BADGE_STYLE}>疑似重复</span>
+}
+
 /* 页码窗口：首尾 + 当前页 ±2，间隙以省略号折叠（1 2 3 4 5 … 11） */
 function pageItems(page, totalPages) {
   if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -51,7 +89,7 @@ function pageItems(page, totalPages) {
   return items
 }
 
-export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRecord }) {
+export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRecord, dupIndex = null }) {
   const [fieldFilter, setFieldFilter] = useState('all')
   const [sourceFilter, setSourceFilter] = useState('all')
   const [page, setPage] = useState(1)
@@ -126,7 +164,11 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
             </tr>
           </thead>
           <tbody>
-            {pageRows.map((r) => (
+            {pageRows.map((r) => {
+              const rowDup = dupIndex?.byRecordId?.[r.record_id] || null
+              // 仅非代表成员行追加徽标；组散（现存成员 <2）后不再标注
+              const showDupBadge = !!rowDup && !rowDup.isRepresentative && rowDup.group.liveCount >= 2
+              return (
               <tr
                 key={r.record_id}
                 className="record-row"
@@ -137,7 +179,10 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
                 <td style={tdStyle}>{r.entity_name}</td>
                 <td style={{ ...tdStyle, fontFamily: MONO, fontWeight: 510 }}>{r.field_name}</td>
                 {/* 用户重设计：值列左对齐等宽 */}
-                <td style={{ ...tdStyle, fontFamily: MONO, textAlign: 'left' }}>{r.field_value}</td>
+                <td style={{ ...tdStyle, fontFamily: MONO, textAlign: 'left' }}>
+                  {r.field_value}
+                  {showDupBadge && <DupBadge group={rowDup.group} recordId={r.record_id} />}
+                </td>
                 <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)' }}>{r.field_unit}</td>
                 <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)', fontSize: 12 }}>
                   {/* 用户重设计：期刊缩写+年份（完整 bibcode 见 title） */}
@@ -182,7 +227,8 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
                   )}
                 </td>
               </tr>
-            ))}
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -365,16 +411,50 @@ export default function ResultTabs({ taskId, status, readOnly = false }) {
   const { toast } = useToast()
   const [records, setRecords] = useState(null)
   const [detail, setDetail] = useState(null)          // 当前查看的记录
-  const [quality, setQuality] = useState(null)        // GET /quality（血缘/轨迹/洞察）
+  const [quality, setQuality] = useState(null)        // GET /quality（血缘/轨迹/洞察/重复标记）
+  const [qualityLoading, setQualityLoading] = useState(false)  // 表级质量拉取中
   const [sources, setSources] = useState([])          // GET /sources（来源标题）
   const [detailLoading, setDetailLoading] = useState(false)
   const lineageLoaded = useRef(false)
+  // 2026-09-06：质量报告由「开行惰性加载」升为表级挂载即拉（表格重复标记与详情弹窗共用缓存）
+  const qualityTaskRef = useRef(null)                 // 拉取所属任务（过期响应丢弃）
+  const qualityRef = useRef(null)                     // 定时补拉逻辑读最新 payload
+  const qualityInFlight = useRef(false)               // 防并发重复请求
+  const qualityRetried = useRef(false)                // completed 补拉最多一次
+  const qualityRetryPending = useRef(false)           // 补拉撞上在途请求时排一次队
   // 2026-09-02 用户重设计：搜索留在表格内；导出改专门弹窗（ExportDialog）
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [exportOpen, setExportOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState(null)  // 待确认删除的记录
   const searchRef = useRef(null)
+
+  /* 质量报告加载（表级，2026-09-06）：失败静默——表格徽标与详情弹窗均有空态兜底；
+   * 任务切换后过期响应直接丢弃；并发请求由 qualityInFlight 挡掉 */
+  const loadQuality = () => {
+    if (!taskId || qualityInFlight.current) return
+    const myTask = taskId
+    qualityTaskRef.current = myTask
+    qualityInFlight.current = true
+    setQualityLoading(true)
+    api.getQuality(taskId)
+      .then((q) => {
+        if (qualityTaskRef.current !== myTask) return    // 已切换任务，丢弃过期响应
+        const v = q && typeof q === 'object' ? q : null
+        qualityRef.current = v
+        setQuality(v)
+      })
+      .catch(() => {
+        if (qualityTaskRef.current !== myTask) return
+        qualityRef.current = null
+        setQuality(null)
+      })
+      .finally(() => {
+        qualityInFlight.current = false
+        setQualityLoading(false)
+        if (qualityRetryPending.current) { qualityRetryPending.current = false; loadQuality() }
+      })
+  }
 
   const openSearch = () => {
     setSearchOpen((v) => !v)
@@ -416,26 +496,56 @@ export default function ResultTabs({ taskId, status, readOnly = false }) {
   // 任务切换时重置血缘缓存
   useEffect(() => {
     lineageLoaded.current = false
+    qualityTaskRef.current = null
+    qualityRef.current = null
+    qualityInFlight.current = false
+    qualityRetried.current = false
+    qualityRetryPending.current = false
+    setQualityLoading(false)
     setQuality(null)
     setSources([])
     setDetail(null)
   }, [taskId])
 
+  // 质量报告：表级挂载即拉（同一缓存同时服务表格徽标与详情弹窗）
+  useEffect(() => {
+    if (!taskId) return
+    loadQuality()
+  }, [taskId])
+
+  // P0-2（quality 对齐）：done 卡呈现先于最终数据落库 → completed 后 600ms 补拉一次（不循环）
+  useEffect(() => {
+    if (!taskId || status !== 'completed' || qualityRetried.current) return
+    qualityRetried.current = true
+    const timer = setTimeout(() => {
+      if (qualityRef.current?.quality_report) return            // 期间已到位，跳过
+      if (qualityInFlight.current) { qualityRetryPending.current = true; return }  // 首次仍在途：resolve 后再补一次
+      loadQuality()
+    }, 600)
+    return () => clearTimeout(timer)
+  }, [taskId, status])
+
   const openDetail = (rec) => {
     setDetail(rec)
-    if (lineageLoaded.current || !taskId) return
+    if (!taskId) return
+    // 质量报告已由表级挂载即拉负责；此处只懒拉来源标题（每任务一次，供弹窗展示）
+    if (lineageLoaded.current) return
     lineageLoaded.current = true
     setDetailLoading(true)
-    Promise.all([
-      api.getQuality(taskId).catch(() => null),
-      api.getSources(taskId).catch(() => []),
-    ]).then(([q, s]) => {
-      setQuality(q)
-      setSources(Array.isArray(s) ? s : [])
-    }).finally(() => setDetailLoading(false))
+    api.getSources(taskId)
+      .then((s) => setSources(Array.isArray(s) ? s : []))
+      .catch(() => setSources([]))
+      .finally(() => setDetailLoading(false))
   }
 
   const total = records ? records.length : 0
+
+  // 重复收录索引：records / quality 任一更新即重算（同一份喂表格徽标与详情弹窗）
+  const dupIndex = useMemo(
+    () => buildDupIndex(records, quality?.quality_report ?? null),
+    [records, quality],
+  )
+  const detailDup = detail && dupIndex ? dupIndex.byRecordId[detail.record_id] || null : null
 
   return (
     <div style={{ border: '1px solid var(--surface-border)', borderRadius: 10, background: 'var(--surface-bg)', overflow: 'hidden', marginBottom: 8 }}>
@@ -477,7 +587,7 @@ export default function ResultTabs({ taskId, status, readOnly = false }) {
             <span style={{ fontSize: 'var(--fs-sm)' }}>本次任务未产生记录</span>
           </div>
         ) : (
-          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={readOnly ? undefined : setDeleteTarget} />
+          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={readOnly ? undefined : setDeleteTarget} dupIndex={dupIndex} />
         )}
       </div>
 
@@ -487,7 +597,8 @@ export default function ResultTabs({ taskId, status, readOnly = false }) {
           record={detail}
           quality={quality}
           sources={sources}
-          loading={detailLoading}
+          dup={detailDup}
+          loading={detailLoading || (qualityLoading && quality === null)}
           onClose={() => setDetail(null)}
         />
       )}
