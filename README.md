@@ -133,7 +133,7 @@ pip install -r requirements.txt
 ### 3. 命令行（一条查询跑全流程）
 
 ```bash
-python -m astroquery_ai "M31 的距离和金属丰度"
+python -m astroquery_ai "M45 的年龄距离和金属丰度"
 ```
 
 ### 4. 前端构建（Web 界面 / 桌面窗口必需）
