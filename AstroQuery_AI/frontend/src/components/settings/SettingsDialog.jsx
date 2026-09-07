@@ -15,7 +15,7 @@ const GROUPS = [
     name: 'Qwen 基座模型（DashScope 百炼 · 全系统统一）',
     fields: [
       { key: 'dashscope_api_key', label: 'DashScope API Key', placeholder: 'sk-…', required: true, note: '意图澄清 + 性质标准化(P1) + VLM 提取 + 质量管线（评估/清洗/冲突/洞察）共用，模型 qwen3.7-flash' },
-      { key: 'dashscope_base_url', label: 'DashScope Base URL', placeholder: 'https://…（留空用官方默认）', required: false, note: '兼容模式端点；留空 = DashScope 官方' },
+      { key: 'dashscope_base_url', label: 'DashScope Base URL', placeholder: 'https://…（留空用官方默认）', required: false, note: '如果填写了 DashScope API Key，则该部分必须填写（OpenAI 兼容接口）' },
     ],
   },
   {
