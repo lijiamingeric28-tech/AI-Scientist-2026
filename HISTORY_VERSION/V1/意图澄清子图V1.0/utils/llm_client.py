@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 # 全局客户端（使用兼容OpenAI接口的QWEN）
 # 注意：实际使用时需要配置正确的API key和base_url
 client = OpenAI(
-    api_key="sk-ws-H.EMEREIX.0cHI.MEYCIQCG51Pbp-XLPWpQ5XIT_Sw0I8x5JO48UNirZrNA5wmVjwIhALOGvIYHpvNtaJn6JezHJx7anxlA72jD_WlFaUiBjxXT",
+    api_key="",
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"  # QWEN兼容接口
 )
 
