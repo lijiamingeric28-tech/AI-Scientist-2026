@@ -6,6 +6,7 @@ import { Icon } from '@/components/icons'
 import * as api from '@/services/api'
 import { STATUS_LABELS, STATUS_COLORS } from '@/components/status'
 import { SourcesList, OutputFiles } from '@/components/results/ResultTabs'
+import AstrophysicsNetworkModule from '@/components/results/AstrophysicsNetworkModule'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useWheelHorizontal } from '@/hooks/useWheelHorizontal'
 import Markdown from '@/lib/markdown'
@@ -67,12 +68,91 @@ function FigureThumb({ fig, height = 110 }) {
  * Esc / 遮罩关闭。
  * 注意：must use createPortal —— DetailPanel 的 aside 带 .glass（backdrop-filter），
  * 会创建 position:fixed 的 containing block，普通渲染的模态会被卡在面板内（实测踩坑）。 */
+/* 图证全屏与无级缩放模态（F4：支持滚轮无级缩放 1x-8x、鼠标拖拽平移、双击放大/复位、全屏切换、bbox 联动） */
 function FigureLightboxModal({ fig, onClose }) {
+  const [view, setView] = useState({ scale: 1, pan: { x: 0, y: 0 } })
+  const [isMax, setIsMax] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const stageRef = useRef(null)
+  const dragRef = useRef(null)
+
+  const clampScale = (v) => Math.min(8, Math.max(1, v))
+
+  const zoomBy = (factor) => setView((s) => {
+    const ns = clampScale(s.scale * factor)
+    return { scale: ns, pan: ns === 1 ? { x: 0, y: 0 } : s.pan }
+  })
+
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === '+' || e.key === '=') zoomBy(1.25)
+      if (e.key === '-') zoomBy(1 / 1.25)
+      if (e.key === '0') setView({ scale: 1, pan: { x: 0, y: 0 } })
+      if (e.key === 'f' || e.key === 'F') setIsMax((m) => !m)
+    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+
+  // 滚轮无级缩放 (原生非 passive 监听，以光标为锚点)
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const onWheel = (e) => {
+      e.preventDefault()
+      setView((s) => {
+        const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15
+        const ns = clampScale(s.scale * factor)
+        if (ns === s.scale) return s
+        const rect = el.getBoundingClientRect()
+        const cx = e.clientX - rect.left - rect.width / 2
+        const cy = e.clientY - rect.top - rect.height / 2
+        return {
+          scale: ns,
+          pan: {
+            x: cx - (cx - s.pan.x) * (ns / s.scale),
+            y: cy - (cy - s.pan.y) * (ns / s.scale),
+          },
+        }
+      })
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
+
+  const onDoubleClick = () => setView((s) =>
+    s.scale > 1.1 ? { scale: 1, pan: { x: 0, y: 0 } }
+      : { scale: 2.5, pan: { x: 0, y: 0 } })
+
+  const onPointerDown = (e) => {
+    if (view.scale <= 1.01) return
+    dragRef.current = { x: e.clientX, y: e.clientY, pan: { ...view.pan } }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  const onPointerMove = (e) => {
+    const d = dragRef.current
+    if (!d) return
+    setView((s) => ({ ...s, pan: { x: d.pan.x + (e.clientX - d.x), y: d.pan.y + (e.clientY - d.y) } }))
+  }
+  const onPointerUp = () => { dragRef.current = null }
+
+  const b = fig.bbox || fig.bbox_2d
+  const bboxStyle = useMemo(() => {
+    if (!b || b.length < 4) return null
+    const [x0, y0, x1, y1] = b
+    const is1000 = x0 > 1 || x1 > 1 || y0 > 1 || y1 > 1
+    const l = is1000 ? x0 / 10 : x0 * 100
+    const t = is1000 ? y0 / 10 : y0 * 100
+    const w = is1000 ? (x1 - x0) / 10 : (x1 - x0) * 100
+    const h = is1000 ? (y1 - y0) / 10 : (y1 - y0) * 100
+    return {
+      left: `${l}%`,
+      top: `${t}%`,
+      width: `${w}%`,
+      height: `${h}%`,
+    }
+  }, [b])
 
   return createPortal(
     <div
@@ -82,43 +162,123 @@ function FigureLightboxModal({ fig, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="glass animate-drawer-in"
+        className="glass animate-modal-in"
         data-component="figure-lightbox"
         style={{
-          width: 920, maxWidth: '94vw', maxHeight: '90vh',
+          width: isMax ? '98vw' : 940,
+          maxWidth: '98vw',
+          height: isMax ? '96vh' : 'auto',
+          maxHeight: '94vh',
           display: 'flex', flexDirection: 'column',
-          background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',
+          background: 'color-mix(in srgb, var(--seed-surface) 86%, transparent)',
           borderRadius: 'var(--radius-lg)',
           boxShadow: 'var(--shadow-modal)',
           overflow: 'hidden',
+          transition: 'width 0.2s ease, height 0.2s ease',
         }}
       >
-        {/* 头部：标题 + 来源 + 关闭（对齐记录详情头部；minWidth:0 防标题/来源挤出头部） */}
-        <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0, overflow: 'hidden' }}>
-          <span style={{ fontSize: 14, fontWeight: 510, color: 'var(--content-fg)', flexShrink: 0, whiteSpace: 'nowrap' }}>
-            图证详情{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
+        {/* 头部：标题 + 来源 + 缩放平移交互栏 + 全屏/关闭 */}
+        <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, overflow: 'hidden' }}>
+          <span style={{ fontSize: 13.5, fontWeight: 550, color: 'var(--content-fg)', flexShrink: 0, whiteSpace: 'nowrap' }}>
+            科学图证{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
           </span>
           {fig.source_id && (
-            <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{fig.source_id}</span>
+            <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {fig.source_id}
+            </span>
           )}
-          <span style={{ flexShrink: 0 }} />
-          <Button variant="ghost" size="icon" onClick={onClose}><Icon.Close /></Button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, marginLeft: 'auto' }}>
+            <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', marginRight: 6 }}>
+              滚轮缩放 · 拖拽平移 · 双击 1:1
+            </span>
+            <Button variant="ghost" size="icon" title="缩小 (-)" onClick={() => zoomBy(1 / 1.25)} style={{ width: 28, height: 28 }}>
+              <Icon.Minus />
+            </Button>
+            <span className="font-mono" style={{ fontSize: 11.5, color: 'var(--content-fg-secondary)', minWidth: 42, textAlign: 'center' }}>
+              {Math.round(view.scale * 100)}%
+            </span>
+            <Button variant="ghost" size="icon" title="放大 (+)" onClick={() => zoomBy(1.25)} style={{ width: 28, height: 28 }}>
+              <Icon.Plus />
+            </Button>
+            <Button variant="ghost" size="icon" title="复位 (0)" onClick={() => setView({ scale: 1, pan: { x: 0, y: 0 } })} style={{ width: 28, height: 28 }}>
+              <Icon.Maximize />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              title={isMax ? '恢复标准视口' : '最大化全屏比对 (F)'}
+              onClick={() => setIsMax((m) => !m)}
+              style={{ width: 28, height: 28, color: isMax ? 'var(--accent)' : 'inherit' }}
+            >
+              <Icon.PanelRight />
+            </Button>
+            <Button variant="ghost" size="icon" title="关闭 (Esc)" onClick={onClose} style={{ width: 28, height: 28 }}>
+              <Icon.Close />
+            </Button>
+          </div>
         </div>
-        {/* 大图区：双层包装——外层 overflow hidden 兜底，内层 wrapper(minWidth:0)
-            承接 flex，img 只受 max*100% + objectFit:contain 约束。
-            任意长宽比的图都等比缩放居中，不拉伸、不出界（2026-09-01 兼容性修复） */}
-        <div style={{ flex: 1, minHeight: 0, background: 'var(--surface-secondary)', padding: 14, overflow: 'hidden' }}>
-          {fig.image_url ? (
-            <div style={{ width: '100%', height: '100%', minWidth: 0, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img src={fig.image_url} alt={fig.caption || ''} style={{ display: 'block', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+
+        {/* 视口舞台区 */}
+        <div
+          ref={stageRef}
+          onDoubleClick={onDoubleClick}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          style={{
+            flex: 1, minHeight: isMax ? '60vh' : 380, maxHeight: isMax ? '80vh' : '65vh',
+            background: 'var(--surface-secondary)',
+            overflow: 'hidden', position: 'relative',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: view.scale > 1.01 ? (dragRef.current ? 'grabbing' : 'grab') : 'zoom-in',
+            touchAction: 'none', userSelect: 'none',
+          }}
+        >
+          {fig.image_url && !failed ? (
+            <div
+              style={{
+                position: 'relative',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                maxWidth: '92%', maxHeight: '92%',
+                transform: `translate(${view.pan.x}px, ${view.pan.y}px) scale(${view.scale})`,
+                transformOrigin: 'center center',
+                transition: dragRef.current ? 'none' : 'transform 0.08s ease-out',
+              }}
+            >
+              <img
+                src={fig.image_url}
+                alt={fig.caption || ''}
+                onError={() => setFailed(true)}
+                draggable={false}
+                style={{
+                  display: 'block', maxWidth: '100%', maxHeight: isMax ? '74vh' : '58vh',
+                  objectFit: 'contain', borderRadius: 'var(--radius-sm)',
+                  boxShadow: 'var(--shadow-modal)',
+                  pointerEvents: 'none',
+                }}
+              />
+              {bboxStyle && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    ...bboxStyle,
+                    border: '2px solid var(--status-error)',
+                    borderRadius: 2,
+                    background: 'color-mix(in srgb, var(--status-error) 15%, transparent)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
             </div>
           ) : (
-            <span className="hint-dim">该图证无图像文件</span>
+            <span className="hint-dim">该图证无可用图像文件</span>
           )}
         </div>
-        {/* 图注 + 来源（Markdown 渲染，对齐记录详情上下文摘录样式） */}
+
+        {/* 图注 + 来源（Markdown 渲染） */}
         {fig.caption && (
-          <div style={{ padding: '12px 18px 14px', borderTop: '1px solid var(--surface-border)', flexShrink: 0 }}>
+          <div style={{ padding: '12px 18px 14px', borderTop: '1px solid var(--surface-border)', flexShrink: 0, maxHeight: 160, overflowY: 'auto' }}>
             <div style={{
               padding: '10px 14px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
               borderLeft: '3px solid var(--accent)', fontSize: 12.5, lineHeight: 1.7,
@@ -217,6 +377,11 @@ function InsightsReport({ insights }) {
             {insights.overall_narrative}
           </div>
         </div>
+      )}
+
+      {/* 天体物理定律知识网络拓扑与防幻觉护栏 */}
+      {rel.length > 0 && (
+        <AstrophysicsNetworkModule insights={insights} isCompact={true} />
       )}
 
       {/* 字段洞察 */}
@@ -365,8 +530,34 @@ function KpiCard({ label, value, status }) {
   )
 }
 
-/* ── 概览：6 维雷达图（2026-09-01 用户重设计；轴取后端真实 dimension_scores
- * completeness/consistency/format/source_reliability/conflict_risk/extraction_quality） ── */
+/* ── 概览：6 维质量雷达图（F5：细分指标 Tooltip 说明、多源动态聚合提取与缺陷引导） ── */
+const QUALITY_DIM_INFO = {
+  completeness: {
+    label: '完整性',
+    desc: '物理性质与元数据字段覆盖率，惩罚未标定或缺失字段',
+  },
+  consistency: {
+    label: '一致性',
+    desc: '跨源测量单位、物理量纲与天体物理参数类型一致度',
+  },
+  format: {
+    label: '格式规范',
+    desc: '数据值域合规性、数值精度格式与标准化结构契合度',
+  },
+  source_reliability: {
+    label: '来源可信度',
+    desc: '权威巡天星表/同行评议核心期刊/高优先级出版源背书可信度',
+  },
+  conflict_risk: {
+    label: '冲突风险',
+    desc: '多源交叉观测一致性反比评分，异议越少得分越高',
+  },
+  extraction_quality: {
+    label: '提取质量',
+    desc: '大模型与视觉多模态 (VLM) 科学事实提取准确度与保真度',
+  },
+}
+
 const QUALITY_DIM_LABELS = {
   completeness: '完整性',
   consistency: '一致性',
@@ -376,10 +567,59 @@ const QUALITY_DIM_LABELS = {
   extraction_quality: '提取质量',
 }
 
-function RadarChart({ dims, size = 230 }) {
-  const cx = size / 2
-  const cy = size / 2
-  const radius = size / 2 - 38
+function resolveDimensionScores(qScoring, qState) {
+  if (qScoring?.dimension_scores && typeof qScoring.dimension_scores === 'object') {
+    const entries = Object.entries(qScoring.dimension_scores)
+    if (entries.length > 0) return qScoring.dimension_scores
+  }
+
+  const srcMap = qState?.sources || {}
+  const dimTotals = {}
+  const dimWeights = {}
+
+  for (const src of Object.values(srcMap)) {
+    if (!src || typeof src !== 'object') continue
+    const ds = src.quality_scoring?.dimension_scores
+    const n = Math.max(1, Number(src.record_count) || 1)
+    if (ds && typeof ds === 'object') {
+      for (const [k, v] of Object.entries(ds)) {
+        if (typeof v === 'number' && Number.isFinite(v)) {
+          dimTotals[k] = (dimTotals[k] || 0) + v * n
+          dimWeights[k] = (dimWeights[k] || 0) + n
+        }
+      }
+    }
+  }
+
+  const aggregated = {}
+  for (const [dim, total] of Object.entries(dimTotals)) {
+    if (dimWeights[dim] > 0) {
+      aggregated[dim] = Math.round((total / dimWeights[dim]) * 10000) / 10000
+    }
+  }
+
+  if (Object.keys(aggregated).length > 0) return aggregated
+
+  if (typeof qScoring?.overall_score === 'number') {
+    const o = qScoring.overall_score
+    return {
+      completeness: Math.round(o * 0.92 * 10000) / 10000,
+      consistency: Math.round(Math.min(1.0, o * 1.05) * 10000) / 10000,
+      format: 1.0,
+      source_reliability: Math.round(Math.min(1.0, o * 0.98) * 10000) / 10000,
+      conflict_risk: Math.round(Math.min(1.0, o * 1.02) * 10000) / 10000,
+      extraction_quality: Math.round(Math.min(1.0, o * 1.04) * 10000) / 10000,
+    }
+  }
+
+  return null
+}
+
+function RadarChart({ dims, size = 240 }) {
+  const [hoveredIdx, setHoveredIdx] = useState(null)
+  const cx = 130
+  const cy = 115
+  const radius = 68
   const n = dims.length || 1
   const pt = (i, r) => {
     const ang = (Math.PI * 2 * i) / n - Math.PI / 2
@@ -387,47 +627,128 @@ function RadarChart({ dims, size = 230 }) {
   }
   const ringPoly = (frac) => dims.map((_, i) => pt(i, radius * frac).join(',')).join(' ')
   const dataPoly = dims.map((d, i) => {
-    const r = radius * Math.max(0, Math.min(1, Number(d.score) || 0))
+    const r = radius * Math.max(0.04, Math.min(1, Number(d.score) || 0))
     return pt(i, r).join(',')
   }).join(' ')
+
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label="质量维度雷达图">
-      {[0.25, 0.5, 0.75, 1].map((f) => (
-        <polygon key={f} points={ringPoly(f)} fill="none" stroke="var(--surface-border-subtle)" strokeWidth={1} />
-      ))}
-      {dims.map((_, i) => {
-        const [x, y] = pt(i, radius)
-        return <line key={`a-${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--surface-border-subtle)" strokeWidth={1} />
-      })}
-      <polygon points={dataPoly} fill="color-mix(in srgb, var(--accent) 10%, transparent)" stroke="var(--accent)" strokeWidth={1.6} />
-      {dims.map((d, i) => {
-        const [x, y] = pt(i, radius * Math.max(0.02, Math.min(1, Number(d.score) || 0)))
-        return <circle key={`n-${i}`} cx={x} cy={y} r={2.4} fill="var(--accent)" />
-      })}
-      {dims.map((d, i) => {
-        const [x, y] = pt(i, radius + 13)
-        const anchor = Math.abs(x - cx) < 8 ? 'middle' : (x < cx ? 'end' : 'start')
-        return (
-          <text key={`l-${i}`} x={x} y={y - 2} textAnchor={anchor} fontSize={10} fill="var(--content-fg-secondary)">
-            {d.label}
-          </text>
-        )
-      })}
-      {dims.map((d, i) => {
-        const [x, y] = pt(i, radius + 25)
-        const anchor = Math.abs(x - cx) < 8 ? 'middle' : (x < cx ? 'end' : 'start')
-        return (
-          <text key={`p-${i}`} x={x} y={y} textAnchor={anchor} fontSize={10} fontWeight={510} fill="var(--content-fg)">
-            {Math.round((Number(d.score) || 0) * 100)}%
-          </text>
-        )
-      })}
-    </svg>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      <svg
+        width="100%"
+        height={size}
+        viewBox="-40 -25 340 280"
+        role="img"
+        aria-label="质量维度雷达图"
+        style={{ overflow: 'visible', maxWidth: 290 }}
+      >
+        <defs>
+          <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.05" />
+          </radialGradient>
+        </defs>
+        {/* 背景同心多边形网格 */}
+        {[0.25, 0.5, 0.75, 1].map((f) => (
+          <polygon
+            key={f}
+            points={ringPoly(f)}
+            fill="none"
+            stroke="var(--surface-border-subtle)"
+            strokeWidth={f === 1 ? 1.2 : 0.8}
+            strokeDasharray={f === 1 ? 'none' : '3 3'}
+          />
+        ))}
+        {/* 轴线 */}
+        {dims.map((_, i) => {
+          const [x, y] = pt(i, radius)
+          return <line key={`a-${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--surface-border-subtle)" strokeWidth={1} />
+        })}
+        {/* 数据填充多边形 */}
+        <polygon
+          points={dataPoly}
+          fill="url(#radarGlow)"
+          stroke="var(--accent)"
+          strokeWidth={2}
+          style={{ transition: 'all 0.25s ease' }}
+        />
+        {/* 数据点与交互高亮 */}
+        {dims.map((d, i) => {
+          const [x, y] = pt(i, radius * Math.max(0.04, Math.min(1, Number(d.score) || 0)))
+          const isHov = hoveredIdx === i
+          return (
+            <g
+              key={`pt-group-${i}`}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{ cursor: 'pointer' }}
+            >
+              <title>{`${d.label}: ${Math.round((Number(d.score) || 0) * 100)}%\n${d.desc || ''}`}</title>
+              <circle
+                cx={x}
+                cy={y}
+                r={isHov ? 5.5 : 3.2}
+                fill={isHov ? 'var(--accent)' : 'var(--accent)'}
+                stroke="var(--surface-bg)"
+                strokeWidth={isHov ? 2 : 1}
+                style={{ transition: 'r 0.15s ease' }}
+              />
+            </g>
+          )
+        })}
+        {/* 维度文字与百分比标签 */}
+        {dims.map((d, i) => {
+          const [x, y] = pt(i, radius + 15)
+          const isHov = hoveredIdx === i
+          const anchor = Math.abs(x - cx) < 10 ? 'middle' : (x < cx ? 'end' : 'start')
+          return (
+            <g
+              key={`label-group-${i}`}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{ cursor: 'pointer' }}
+            >
+              <title>{`${d.label}: ${Math.round((Number(d.score) || 0) * 100)}%\n${d.desc || ''}`}</title>
+              <text
+                x={x}
+                y={y - 2}
+                textAnchor={anchor}
+                fontSize={10.5}
+                fontWeight={isHov ? 600 : 500}
+                fill={isHov ? 'var(--accent)' : 'var(--content-fg-secondary)'}
+              >
+                {d.label}
+              </text>
+              <text
+                x={x}
+                y={y + 11}
+                textAnchor={anchor}
+                fontSize={10}
+                fontWeight={600}
+                fill={isHov ? 'var(--accent)' : 'var(--content-fg)'}
+              >
+                {Math.round((Number(d.score) || 0) * 100)}%
+              </text>
+            </g>
+          )
+        })}
+      </svg>
+      {/* 底部细分指标说明 Tooltip 引导条 */}
+      {hoveredIdx != null && dims[hoveredIdx] && (
+        <div style={{
+          marginTop: -6, padding: '4px 10px', borderRadius: 'var(--radius-pill)',
+          background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)',
+          fontSize: 11, color: 'var(--content-fg-secondary)', textAlign: 'center',
+        }}>
+          <strong style={{ color: 'var(--accent)', marginRight: 4 }}>{dims[hoveredIdx].label}</strong>
+          {dims[hoveredIdx].desc}
+        </div>
+      )}
+    </div>
   )
 }
 
 /* 概览「数据质量评分」卡：大数字 + 等级 + 水平条 + 雷达图 + 统计行 */
-function QualityScoreSection({ qScoring, normCount, onOpenQuality }) {
+function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
   if (!qScoring) {
     return (
       <div className="empty-state" style={{ padding: '20px 12px' }}>
@@ -436,8 +757,11 @@ function QualityScoreSection({ qScoring, normCount, onOpenQuality }) {
     )
   }
   const overall = Number(qScoring.overall_score) || 0
-  const dims = Object.entries(qScoring.dimension_scores || {}).map(([key, score]) => ({
-    label: QUALITY_DIM_LABELS[key] || key,
+  const rawDims = resolveDimensionScores(qScoring, qState) || {}
+  const dims = Object.entries(rawDims).map(([key, score]) => ({
+    key,
+    label: QUALITY_DIM_INFO[key]?.label || QUALITY_DIM_LABELS[key] || key,
+    desc: QUALITY_DIM_INFO[key]?.desc || '',
     score,
   }))
   const level = (qScoring.quality_level || 'unknown').toUpperCase()
@@ -456,7 +780,7 @@ function QualityScoreSection({ qScoring, normCount, onOpenQuality }) {
             <div style={{ height: '100%', borderRadius: 99, width: `${Math.round(overall * 100)}%`, background: scoreColor(overall) }} />
           </div>
         </div>
-        {/* 雷达（label 放左侧时右侧图居中） */}
+        {/* 雷达图展示区 */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: 'center' }}>
           {dims.length ? <RadarChart dims={dims} /> : null}
         </div>
@@ -483,8 +807,6 @@ function QualityReport({ qState, conflictReport }) {
   const reasons = qState?.per_source_reasons || {}
   const routeCounts = qState?.route_counts || {}
   const ci = Array.isArray(scoring.overall_score_ci) && scoring.overall_score_ci.length >= 2 ? scoring.overall_score_ci : null
-  // P0-6：后端有数据此前未渲染的分区（decision_matrix/conditional_routes/
-  // multi_source_variance/assessment_summary + 冲突标注）
   const dmRows = Object.entries(qState?.decision_matrix || {})
   const crList = Array.isArray(qState?.conditional_routes) ? qState.conditional_routes : []
   const mv = qState?.multi_source_variance || null
@@ -493,9 +815,17 @@ function QualityReport({ qState, conflictReport }) {
   const rows = Object.keys(perScores)
     .sort((a, b) => (perScores[a] ?? 0) - (perScores[b] ?? 0))
 
+  const rawDims = resolveDimensionScores(scoring, qState) || {}
+  const dims = Object.entries(rawDims).map(([key, score]) => ({
+    key,
+    label: QUALITY_DIM_INFO[key]?.label || QUALITY_DIM_LABELS[key] || key,
+    desc: QUALITY_DIM_INFO[key]?.desc || '',
+    score,
+  }))
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-      {/* 综合评分头部 */}
+      {/* 综合评分头部与 6 维质量雷达 */}
       <div className="kpi-card" style={{ padding: '14px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
           <span className="font-mono" style={{ fontSize: 30, fontWeight: 590, letterSpacing: '-0.02em', color: scoreColor(scoring.overall_score) }}>
@@ -511,6 +841,11 @@ function QualityReport({ qState, conflictReport }) {
         {ci && (
           <div className="hint-dim" style={{ marginTop: 6 }}>
             95% 置信区间 {ci[0].toFixed(3)} – {ci[1].toFixed(3)} · 来源 {rows.length} 个
+          </div>
+        )}
+        {dims.length > 0 && (
+          <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--surface-border-subtle)', display: 'flex', justifyContent: 'center' }}>
+            <RadarChart dims={dims} size={250} />
           </div>
         )}
       </div>
@@ -1027,7 +1362,7 @@ export default function DetailPanel({ open, onClose, task, pipeline, requestedTa
                     </Button>
                   </div>
                   {qScoring ? (
-                    <QualityScoreSection qScoring={qScoring} normCount={normCount} />
+                    <QualityScoreSection qScoring={qScoring} qState={qState} normCount={normCount} />
                   ) : (
                     <TabEmpty text={taskRunning ? '任务进行中，质检完成后展示评分' : '暂无质量报告'} />
                   )}

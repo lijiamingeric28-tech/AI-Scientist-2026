@@ -89,9 +89,10 @@ function pageItems(page, totalPages) {
   return items
 }
 
-export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRecord, dupIndex = null }) {
+export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRecord, dupIndex = null, sources: allSources = [] }) {
   const [fieldFilter, setFieldFilter] = useState('all')
   const [sourceFilter, setSourceFilter] = useState('all')
+  const [yearSort, setYearSort] = useState('none') // 'none' | 'desc' | 'asc'
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)  // 用户重设计：默认 20 条/页
   const [menuFor, setMenuFor] = useState(null)  // 下拉菜单打开的 record_id
@@ -110,6 +111,31 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
   const fields = useMemo(() => [...new Set(records.map((r) => r.field_name))], [records])
   const sources = useMemo(() => [...new Set(records.map((r) => r.source_id))], [records])
 
+  // 来源年份映射（优先读取 sources 接口中的 year 字段，兜底从 bibcode 中解析前四位年份）
+  const sourceYearMap = useMemo(() => {
+    const map = {}
+    if (Array.isArray(allSources)) {
+      for (const s of allSources) {
+        if (s?.source_id && s.year) {
+          map[s.source_id] = Number(s.year)
+        }
+      }
+    }
+    return map
+  }, [allSources])
+
+  const getRecordYear = (r) => {
+    if (!r) return null
+    if (sourceYearMap[r.source_id]) return sourceYearMap[r.source_id]
+    if (typeof r.source_id === 'string') {
+      const m = r.source_id.match(/^(\d{4})/)
+      if (m) return parseInt(m[1], 10)
+      const m2 = r.source_id.match(/(?:19|20)\d{2}/)
+      if (m2) return parseInt(m2[0], 10)
+    }
+    return null
+  }
+
   const q = searchText.trim().toLowerCase()
   const filtered = records.filter(
     (r) =>
@@ -117,17 +143,31 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
       (sourceFilter === 'all' || r.source_id === sourceFilter) &&
       (!q || [r.entity_name, r.field_name, r.field_value, r.source_id].some((v) => String(v ?? '').toLowerCase().includes(q)))
   )
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
+
+  // 按来源年份排序（F3：支持无序、从新到旧最新优先、从旧到新早期优先）
+  const sortedRows = useMemo(() => {
+    if (yearSort === 'none') return filtered
+    return [...filtered].sort((a, b) => {
+      const yA = getRecordYear(a)
+      const yB = getRecordYear(b)
+      if (yA === yB) return 0
+      if (yA == null) return 1  // 无年份记录靠后
+      if (yB == null) return -1
+      return yearSort === 'desc' ? yB - yA : yA - yB
+    })
+  }, [filtered, yearSort, sourceYearMap])
+
+  const totalPages = Math.max(1, Math.ceil(sortedRows.length / pageSize))
   // records 重拉后 totalPages 可能收缩（P0-2 兜底重拉翻页在末页时）——钳制当前页
   const cur = Math.min(page, totalPages)
-  const pageRows = filtered.slice((cur - 1) * pageSize, cur * pageSize)
+  const pageRows = sortedRows.slice((cur - 1) * pageSize, cur * pageSize)
 
   const resetPage = (fn) => (v) => { setPage(1); fn(v) }
   const goto = (p) => setPage(Math.min(totalPages, Math.max(1, p)))
 
   return (
     <div>
-      {/* 筛选栏 */}
+      {/* 筛选与排序栏 */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
         <select
           value={fieldFilter}
@@ -145,9 +185,19 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
           <option value="all">全部来源 ({sources.length})</option>
           {sources.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
+        <select
+          value={yearSort}
+          onChange={(e) => resetPage(setYearSort)(e.target.value)}
+          style={selectStyle}
+          title="按文献来源发表年份排序"
+        >
+          <option value="none">来源年份：默认顺序</option>
+          <option value="desc">来源年份：最新优先 (从新到旧)</option>
+          <option value="asc">来源年份：早期优先 (从旧到新)</option>
+        </select>
         {/* 页脚信息（右上，用户重设计：第 X–Y 条，共 N 条） */}
         <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--content-fg-tertiary)' }}>
-          第 {filtered.length ? (cur - 1) * pageSize + 1 : 0}–{Math.min(cur * pageSize, filtered.length)} 条，共 {filtered.length} 条
+          第 {sortedRows.length ? (cur - 1) * pageSize + 1 : 0}–{Math.min(cur * pageSize, sortedRows.length)} 条，共 {sortedRows.length} 条
         </span>
       </div>
 
@@ -156,11 +206,42 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
         <table style={{ width: '100%', minWidth: 760, borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr style={{ background: 'var(--surface-secondary)' }}>
-              {['实体', '性质', '值', '单位', '来源', '提取方式', '操作'].map((h) => (
-                <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontWeight: 510, color: 'var(--content-fg-tertiary)', fontSize: 12, whiteSpace: 'nowrap' }}>
-                  {h}
-                </th>
-              ))}
+              {['实体', '性质', '值', '单位', '来源', '提取方式', '操作'].map((h) => {
+                if (h === '来源') {
+                  const sortIcon = yearSort === 'desc' ? ' ↓' : yearSort === 'asc' ? ' ↑' : ' ↕'
+                  const sortTip = yearSort === 'none'
+                    ? '点击按来源年份降序排序（最新优先）'
+                    : yearSort === 'desc'
+                    ? '当前最新优先，点击切换为早期优先'
+                    : '当前早期优先，点击恢复默认排序'
+                  const toggleSort = () => {
+                    setPage(1)
+                    setYearSort((curr) => (curr === 'none' ? 'desc' : curr === 'desc' ? 'asc' : 'none'))
+                  }
+                  return (
+                    <th
+                      key={h}
+                      onClick={toggleSort}
+                      title={sortTip}
+                      style={{
+                        textAlign: 'left', padding: '10px 12px', fontWeight: 510,
+                        color: yearSort !== 'none' ? 'var(--accent)' : 'var(--content-fg-tertiary)',
+                        fontSize: 12, whiteSpace: 'nowrap', cursor: 'pointer',
+                        userSelect: 'none',
+                      }}
+                    >
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                        来源年份{sortIcon}
+                      </span>
+                    </th>
+                  )
+                }
+                return (
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontWeight: 510, color: 'var(--content-fg-tertiary)', fontSize: 12, whiteSpace: 'nowrap' }}>
+                    {h}
+                  </th>
+                )
+              })}
             </tr>
           </thead>
           <tbody>
@@ -172,7 +253,11 @@ export function RecordsTable({ records, onRowClick, searchText = '', onDeleteRec
               <tr
                 key={r.record_id}
                 className="record-row"
-                onClick={() => onRowClick?.(r)}
+                onClick={() => {
+                  const sel = window.getSelection()
+                  if (sel && sel.toString().trim().length > 0) return
+                  onRowClick?.(r)
+                }}
                 title="点击查看该记录的来源与处理详情"
                 style={{ borderTop: '1px solid var(--surface-border-subtle)', cursor: 'pointer' }}
               >
@@ -271,12 +356,14 @@ function ToolBtn({ icon, title, onClick, active }) {
     <button
       onClick={onClick}
       title={title}
+      className="active-press"
       style={{
         width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         border: 'none', borderRadius: 6, background: active ? 'var(--sidebar-hover)' : 'transparent',
         cursor: onClick ? 'pointer' : 'default',
         color: active ? 'var(--accent-text)' : 'var(--content-fg-secondary)',
         padding: 0,
+        transition: 'background-color 0.14s ease, transform 0.12s ease',
       }}
     >
       {icon}
@@ -302,7 +389,12 @@ const menuItemStyle = {
   background: 'transparent', color: 'var(--content-fg-secondary)',
 }
 
-const tdStyle = { padding: '11px 12px', borderTop: '1px solid var(--surface-border-subtle)' }
+const tdStyle = {
+  padding: '11px 12px',
+  borderTop: '1px solid var(--surface-border-subtle)',
+  userSelect: 'text',
+  WebkitUserSelect: 'text',
+}
 
 export function SourcesList({ sources }) {
   const [typeFilter, setTypeFilter] = useState('all')
@@ -479,6 +571,7 @@ export default function ResultTabs({ taskId, status, readOnly = false }) {
     if (!taskId) return
     let alive = true
     api.getRecords(taskId).then((r) => alive && setRecords(r || []))
+    api.getSources(taskId).then((s) => alive && setSources(Array.isArray(s) ? s : [])).catch(() => {})
     return () => { alive = false }
   }, [taskId])
 
@@ -587,7 +680,7 @@ export default function ResultTabs({ taskId, status, readOnly = false }) {
             <span style={{ fontSize: 'var(--fs-sm)' }}>本次任务未产生记录</span>
           </div>
         ) : (
-          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={readOnly ? undefined : setDeleteTarget} dupIndex={dupIndex} />
+          <RecordsTable records={records} onRowClick={openDetail} searchText={searchText} onDeleteRecord={readOnly ? undefined : setDeleteTarget} dupIndex={dupIndex} sources={sources} />
         )}
       </div>
 

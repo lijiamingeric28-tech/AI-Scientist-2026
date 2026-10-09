@@ -264,11 +264,24 @@ class QualityScoringAgent:
                     "quality_level": _s.get("quality_level", "poor"),
                 }
 
+        # 聚合各评估维度得分 (供前端雷达图等下游可视化消费)
+        agg_dim_scores = {}
+        for dim in ("completeness", "consistency", "format", "source_reliability", "conflict_risk", "extraction_quality"):
+            d_scores = [sr.get("quality_scoring", {}).get("dimension_scores", {}).get(dim) for sr in source_reports.values()]
+            valid_pairs = [(s, n) for s, n in zip(d_scores, source_record_counts) if s is not None]
+            if valid_pairs:
+                sum_n = sum(n for _, n in valid_pairs)
+                if sum_n > 0:
+                    agg_dim_scores[dim] = round(sum(s * n for s, n in valid_pairs) / sum_n, 4)
+                else:
+                    agg_dim_scores[dim] = round(sum(s for s, _ in valid_pairs) / len(valid_pairs), 4)
+
         quality["quality_scoring"] = {
             "overall_score": overall_score,
             "overall_score_ci": overall_score_ci,  # A8: Bootstrap 95% CI (可为 None)
             "quality_level": aggregate_level,
             "weakest_source": weakest_source,  # 最差数据源（告警用，不参与等级判定）
+            "dimension_scores": agg_dim_scores,  # 6 维聚合得分
             "per_source_scores": {sid: sr.get("quality_scoring", {}).get("overall_score", 0)
                                   for sid, sr in source_reports.items()},
             "source_count": len(source_reports),
