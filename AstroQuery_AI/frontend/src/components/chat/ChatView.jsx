@@ -6,6 +6,8 @@ import * as api from '@/services/api'
 import StageCard from './StageCard'
 import ClarificationCard from './ClarificationCard'
 import ResultTabs from '@/components/results/ResultTabs'
+import ConsensusScatterModule from '@/components/results/ConsensusScatterModule'
+import AstrophysicsNetworkModule from '@/components/results/AstrophysicsNetworkModule'
 import LogDrawer from '@/components/log/LogDrawer'
 import StageDetailPanel from '@/components/workflow/StageDetailPanel'
 import { useToast } from '@/components/ui/toast'
@@ -245,8 +247,15 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                   /* 「任务完成」卡不渲染卡片本体——结果区表格直接展示在时间线对应位置；
                      LLM 总结已由 usePipeline 排到 done entry 之前（数据洞察卡与表格之间） */
                   stage.status === 'completed' && (
-                    <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
+                    <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      {/* 模块一：原始记录表格（原模块，100% 保持不动） */}
                       <ResultTabs taskId={task?.task_id} status={task?.status} readOnly={sampleLocked} />
+
+                      {/* 模块二：D1 天体多源测量共识分布图（新增独立科学数据整合模块） */}
+                      <ConsensusScatterModule taskId={task?.task_id} status={task?.status} />
+
+                      {/* 模块三：D2 天体物理定律知识关系图谱（新增独立科学规律推断模块） */}
+                      <AstrophysicsNetworkModule taskId={task?.task_id} status={task?.status} insights={pipeline?.insights} />
                     </div>
                   )
                 ) : (
@@ -345,6 +354,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
               <button
                 onClick={onSwitchToUser}
                 title="切回『我的查询』发起新的真实查询"
+                className="active-press"
                 style={{
                   border: '1px solid color-mix(in srgb, var(--accent) 45%, transparent)',
                   background: 'var(--accent-light)', color: 'var(--accent-text)',
@@ -394,12 +404,13 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                 onClick={handleSubmit}
                 disabled={!input.trim() || running || clarifying}
                 title="发送"
+                className="active-press"
                 style={{
                   width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
                   border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   background: running || clarifying ? 'var(--surface-secondary)' : !input.trim() ? 'var(--surface-secondary)' : 'var(--accent)',
                   color: running || clarifying ? 'var(--content-fg-tertiary)' : !input.trim() ? 'var(--content-fg-tertiary)' : 'var(--accent-on)',
-                  transition: 'background .15s, color .15s',
+                  transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
                 <Icon.Send />
