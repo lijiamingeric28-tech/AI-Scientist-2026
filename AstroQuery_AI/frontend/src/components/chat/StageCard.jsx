@@ -619,7 +619,12 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
     >
       {/* 头部：未展开态 = 单行卡（状态信息由状态点承载，不加彩色左边框） */}
       <div
-        onClick={() => onToggle(stage.id)}   // 2026-08-27: 传 id 使 ChatView 的 toggleStage 引用可稳定（memo 依赖）
+        onClick={() => {
+          const sel = window.getSelection()
+          if (sel && sel.toString().trim().length > 0) return
+          onToggle(stage.id)
+        }}
+        className="card-header-clickable"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -654,13 +659,13 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
             {statusText}
           </span>
         )}
-        <div style={{ color: 'var(--content-fg-tertiary)', transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.15s' }}>
+        <div style={{ color: 'var(--content-fg-tertiary)', transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)' }}>
           <Icon.ChevronDown />
         </div>
       </div>
 
-      {/* 展开态 */}
-      {isExpanded && (
+      {/* 展开态：风琴式平滑伸缩 */}
+      <div className={`smooth-collapse${isExpanded ? ' expanded' : ''}`}>
         <div style={{ padding: '4px 14px 14px 42px', borderTop: '1px solid var(--surface-border-subtle)' }}>
           {stage.substeps ? (
             <Substeps substeps={stage.substeps} />
@@ -697,7 +702,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
             </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   )
 })

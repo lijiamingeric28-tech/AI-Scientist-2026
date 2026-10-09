@@ -46,24 +46,29 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
             return (
               <div
                 key={s.task_id}
-              onClick={() => onOpen?.(s.task_id)}
-              onMouseEnter={() => setHoverId(s.task_id)}
-              onMouseLeave={() => setHoverId(null)}
-              title="查看完整运行时间线"
-              style={{
-                border: `1px solid ${hoverId === s.task_id ? 'var(--accent)' : 'var(--surface-border)'}`,
-                borderRadius: 10,
-                background: 'var(--surface-bg)',
-                padding: '12px 14px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6,
-                cursor: 'pointer',
-                transition: 'border-color .15s, box-shadow .15s',
-                boxShadow: hoverId === s.task_id
-                  ? '0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent)'
-                  : undefined,
-              }}
+                onClick={() => {
+                  const sel = window.getSelection()
+                  if (sel && sel.toString().trim().length > 0) return
+                  onOpen?.(s.task_id)
+                }}
+                onMouseEnter={() => setHoverId(s.task_id)}
+                onMouseLeave={() => setHoverId(null)}
+                className="hover-lift"
+                title="查看完整运行时间线"
+                style={{
+                  border: `1px solid ${hoverId === s.task_id ? 'var(--accent)' : 'var(--surface-border)'}`,
+                  borderRadius: 10,
+                  background: 'var(--surface-bg)',
+                  padding: '12px 14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 6,
+                  cursor: 'pointer',
+                  transition: 'border-color .15s, box-shadow .15s, transform .15s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: hoverId === s.task_id
+                    ? '0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent)'
+                    : undefined,
+                }}
             >
               {/* 首行：名称 + 质量分徽章 */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

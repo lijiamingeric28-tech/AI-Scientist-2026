@@ -163,6 +163,51 @@ html, body, #root {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* ============================================================
+ * 全站文本选中与复制支持（修复 Windows / Webview 下鼠标无法划选复制问题）
+ * ============================================================ */
+p, span, div, h1, h2, h3, h4, h5, h6,
+td, th, table, tbody, thead,
+code, pre, mark, q, blockquote,
+label, input, textarea,
+.chat-column, .msg-bubble, .record-row,
+.card, .stage-card, .trace-item, .hint, .kpi-card, .kpi-value {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 交互控制类元素保持禁止选择，避免连续点按产生误选 */
+button,
+.tab-btn,
+.pager-btn,
+.filter-chip,
+.log-chip,
+.glass-pill,
+[role="button"],
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 自定义文本选区高亮（Windows 复制体验优化：主题青绿柔光选区） */
+::selection {
+  background-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: inherit;
+}
+
+::-moz-selection {
+  background-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: inherit;
 }
 
 body {
@@ -178,6 +223,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "cv01", "ss03";
   font-variant-numeric: tabular-nums;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 /* 标题负字距（craft 规则：32px+ 负 tracking；这里标题偏小，用轻负值保持精致） */
@@ -415,11 +464,15 @@ body,
   white-space: nowrap;
   color: var(--content-fg-secondary);
   border-bottom: 2px solid transparent;
-  transition: color 0.16s ease, border-color 0.16s ease;
+  transition: color 0.16s ease, border-color 0.16s ease, transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tab-btn:hover {
   color: var(--content-fg);
+}
+
+.tab-btn:active {
+  transform: scale(0.97);
 }
 
 .tab-btn.active {
@@ -437,11 +490,15 @@ body,
   cursor: pointer;
   background: var(--surface-bg);
   color: var(--content-fg-secondary);
-  transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+  transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease, transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .filter-chip:hover {
   border-color: var(--content-fg-tertiary);
+}
+
+.filter-chip:active {
+  transform: scale(0.96);
 }
 
 .filter-chip.active {
@@ -514,11 +571,16 @@ body,
   font-size: 12px;
   color: var(--content-fg-secondary);
   cursor: pointer;
+  transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pager-btn:hover:not(:disabled) {
   border-color: var(--content-fg-tertiary);
   color: var(--content-fg);
+}
+
+.pager-btn:active:not(:disabled) {
+  transform: scale(0.94);
 }
 
 .pager-btn:disabled {
@@ -632,12 +694,81 @@ body,
   animation: tab-in 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Modal scale in (居中微缩延展入场，极具现代质感) */
+@keyframes modal-scale-in {
+  0% { transform: scale(0.96) translateY(8px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.animate-modal-in {
+  animation: modal-scale-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 平滑高度折叠展开（CSS Grid 0fr -> 1fr，无需 JS 探测 DOM 高度） */
+.smooth-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.26s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  opacity: 0;
+}
+
+.smooth-collapse.expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.smooth-collapse > div {
+  overflow: hidden;
+}
+
+/* 按压反馈与微悬浮 */
+.active-press {
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.14s ease;
+}
+.active-press:active {
+  transform: scale(0.97);
+}
+
+.hover-lift {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* 侧栏任务条目交互：平滑背景 + 悬浮右移引导 + 轻度按压 */
+.task-item {
+  transition: background-color 0.14s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.14s ease;
+}
+.task-item:hover {
+  transform: translateX(3px);
+}
+.task-item:active {
+  transform: translateX(3px) scale(0.985);
+}
+
+/* 卡片头部可点击交互 */
+.card-header-clickable {
+  transition: background-color 0.14s ease;
+  cursor: pointer;
+}
+.card-header-clickable:hover {
+  background-color: var(--sidebar-hover);
+}
+.card-header-clickable:active {
+  background-color: var(--sidebar-active);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-tab-in,
   .animate-fade-in,
   .animate-slide-in,
-  .animate-drawer-in {
+  .animate-drawer-in,
+  .animate-modal-in,
+  .smooth-collapse {
     animation: none;
+    transition: none !important;
   }
 }
 

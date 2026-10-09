@@ -199,6 +199,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
             key={m.key}
             onClick={() => onModeChange?.(m.key)}
             title={m.title}
+            className="active-press"
             style={{
               flex: 1,
               padding: '5px 0',
@@ -209,6 +210,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
               background: mode === m.key ? 'var(--accent-light)' : 'transparent',
               color: mode === m.key ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
               fontWeight: mode === m.key ? 510 : 400,
+              transition: 'background-color 0.16s ease, color 0.16s ease, transform 0.12s ease',
             }}
           >
             {m.label}
@@ -223,6 +225,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
             <button
               key={f.key}
               onClick={() => onFilterChange(f.key)}
+              className="active-press"
               style={{
                 flex: 1,
                 padding: '5px 0',
@@ -234,6 +237,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                 background: filter === f.key ? 'var(--accent-light)' : 'transparent',
                 color: filter === f.key ? 'var(--accent-text)' : 'var(--sidebar-text-secondary)',
                 fontWeight: filter === f.key ? 510 : 400,
+                transition: 'background-color 0.16s ease, color 0.16s ease, transform 0.12s ease',
               }}
             >
               {f.label}
@@ -348,15 +352,21 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
             return (
               <div
                 key={task.task_id}
-                onClick={() => (manageMode ? (active_ ? null : toggleCheck(task.task_id)) : onSelect(task.task_id))}
+                onClick={() => {
+                  const sel = window.getSelection()
+                  if (sel && sel.toString().trim().length > 0) return
+                  manageMode ? (active_ ? null : toggleCheck(task.task_id)) : onSelect(task.task_id)
+                }}
                 onMouseEnter={() => setHoveredId(task.task_id)}
                 onMouseLeave={() => setHoveredId(null)}
+                className="task-item"
                 style={{
                   padding: '8px 10px',
                   borderRadius: 8,
                   marginBottom: 2,
                   cursor: manageMode ? (active_ ? 'not-allowed' : 'pointer') : 'pointer',
                   opacity: manageMode && active_ ? 0.5 : 1,
+                  transition: 'background-color 0.15s ease, transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease',
                   // 用户重设计：选中/勾选条目淡绿底 + 左侧绿色圆角竖条
                   background: (isChecked || isActive)
                     ? 'var(--accent-light)'
