@@ -384,6 +384,7 @@ function AppInner() {
               <button
                 key={v.key}
                 onClick={() => setView(v.key)}
+                className="active-press"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
                   border: 'none', cursor: 'pointer',
@@ -391,7 +392,7 @@ function AppInner() {
                   borderRadius: 'var(--radius-pill)',
                   background: view === v.key ? 'var(--accent)' : 'transparent',
                   color: view === v.key ? 'var(--accent-on)' : 'var(--content-fg-secondary)',
-                  transition: 'background .15s, color .15s',
+                  transition: 'background .18s cubic-bezier(0.16, 1, 0.3, 1), color .18s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
                 {v.icon}{v.label}

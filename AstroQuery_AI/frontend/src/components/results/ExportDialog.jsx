@@ -177,7 +177,7 @@ export default function ExportDialog({ open, taskId, records, onClose }) {
       {/* 遮罩 */}
       <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.45)' }} />
       {/* 白色不透明面板（无玻璃/无透明度） */}
-      <div style={{ position: 'relative', width: 'min(90vw, 1080px)', height: 'min(86vh, 720px)', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: 14, boxShadow: '0 24px 64px rgba(0,0,0,.35)', display: 'flex', flexDirection: 'column', overflow: 'hidden', color: '#1f2937' }}>
+      <div className="animate-modal-in" style={{ position: 'relative', width: 'min(90vw, 1080px)', height: 'min(86vh, 720px)', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: 14, boxShadow: '0 24px 64px rgba(0,0,0,.35)', display: 'flex', flexDirection: 'column', overflow: 'hidden', color: '#1f2937' }}>
         {/* 头部 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 18px', borderBottom: '1px solid #e5e7eb', flexShrink: 0 }}>
           <Icon.Download style={{ color: 'var(--accent)' }} />

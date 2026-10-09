@@ -203,7 +203,7 @@ export default function RecordDetailDialog({ record, quality, sources, loading, 
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="glass animate-drawer-in"
+        className="glass animate-modal-in"
         data-component="record-detail"
         style={{
           width: 660, maxWidth: '94vw', maxHeight: '88vh',

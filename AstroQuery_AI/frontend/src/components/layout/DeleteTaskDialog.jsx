@@ -45,7 +45,7 @@ export default function DeleteTaskDialog({ mode = 'single', task, count = 0, onC
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="glass animate-drawer-in"
+        className="glass animate-modal-in"
         style={{
           width: 380, maxWidth: '92vw',
           background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',

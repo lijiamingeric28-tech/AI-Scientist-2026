@@ -110,11 +110,12 @@ export default function SettingsDialog({ open, onClose }) {
   return (
     <div
       onClick={onClose}
+      className="animate-fade-in"
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="glass"
+        className="glass animate-modal-in"
         style={{
           width: 520,
           maxWidth: '94vw',
