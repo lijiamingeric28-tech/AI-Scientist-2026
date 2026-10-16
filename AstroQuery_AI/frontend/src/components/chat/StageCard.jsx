@@ -1,21 +1,25 @@
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
+import { useInPlaceDisclosure } from '@/hooks/useInPlaceDisclosure'
 import { Icon } from '@/components/icons'
 import { StatusDot } from '@/components/status'
 import Markdown from '@/lib/markdown'
 import FlowBlocks from '@/components/workflow/FlowBlocks'
 import { FLOW_LABELS } from '@/lib/stages'   // 2026-08-27：卡头 statusText（runningFlow 显示"第 N 轮"）仍用——此前删 FlowNodes 时误删 import 导致 ReferenceError 白屏
 import { cleanCliQuestion, fmtPair, fmtRaDec } from '@/lib/format'
+import { ModificationTable, ResourceState } from '@/components/results/DataView'
+import { QualityScoreSection } from '@/components/layout/DetailPanel'
+import { Button } from '@/components/ui/button'
 
 /* 阶段卡片（设计文档 5.2 E7）：未展开 = 单行卡（状态点 + 阶段名 + 摘要）；
  * 展开 = 垂直子步骤时间线（竖线 + 节点 + 文字）。具体卡片具体设计：
  * 卡 1「任务理解」有子步骤时间线 + 完成态三项产出；其余卡片内容逐卡填充。
  */
 
-function Substeps({ substeps }) {
+function Substeps({ substeps, grid = false }) {
   return (
-    <div style={{ marginTop: 12 }}>
+    <div className={grid ? 'extraction-steps' : ''} style={{ marginTop: 12 }}>
       {substeps.map((ss, i) => (
-        <div key={ss.id} style={{ display: 'flex', alignItems: 'flex-start' }}>
+        <div key={ss.id} className={grid ? 'extraction-step' : ''} style={{ display: 'flex', alignItems: 'flex-start' }}>
           {/* 左侧节点列（P1-1：统一圆点不连线 7px；height 与文字行一致，
               圆点垂直居中于文字行而非整行——此前被 stretch 撑满导致偏上） */}
           <div style={{ display: 'flex', alignItems: 'center', width: 12, height: 24, flexShrink: 0 }}>
@@ -34,7 +38,7 @@ function Substeps({ substeps }) {
             {ss.progress && (
               <ProgressBar
                 label={
-                  ss.progress.current
+                  ss.status === 'completed' ? `${ss.label}已完成` : ss.progress.current
                     ? `${ss.progress.prefix || '处理'}第 ${ss.progress.completed + 1}/${ss.progress.total} — ${ss.progress.current}`
                     : '处理中…'
                 }
@@ -104,7 +108,7 @@ const OTYPE_LABELS = {
 }
 
 function UnderstandOutput({ output }) {
-  const { targetEntity, simbad, properties } = output
+  const { targetEntity, simbad = {}, properties = [] } = output
   const otype = OTYPE_LABELS[simbad.otype] || simbad.otype || null
   return (
     <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -250,6 +254,10 @@ function AgentRow({ agent, onOpen }) {
   return (
     <div
       onClick={onOpen}
+      role="button"
+      tabIndex={0}
+      aria-label={`查看 ${agent.agent} 执行详情`}
+      onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpen?.() } }}
       className="agent-row"   // 2026-08-27：hover 背景 CSS 化（滑动无 setState）
       style={{
         display: 'flex', alignItems: 'center', gap: 8,
@@ -275,7 +283,7 @@ function AgentRow({ agent, onOpen }) {
       )}
       {traceCount > 0 && (
         <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
-          {traceCount} 条修改
+          {traceCount} 条轨迹
         </span>
       )}
       <Icon.ChevronRight style={{ width: 11, height: 11, color: 'var(--content-fg-tertiary)', flexShrink: 0 }} />
@@ -283,12 +291,12 @@ function AgentRow({ agent, onOpen }) {
   )
 }
 
-function AgentTree({ agents, onOpenAgent }) {
+function AgentTree({ agents, onOpenAgent, stage }) {
   if (!agents || agents.length === 0) return null
   return (
     <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       {agents.map((a) => (
-        <AgentRow key={a.id || a.agent} agent={a} onOpen={() => onOpenAgent(a, stage)} />
+        <AgentRow key={a.id || a.agent} agent={a} onOpen={() => onOpenAgent?.(a, stage)} />
       ))}
     </div>
   )
@@ -300,11 +308,11 @@ function AgentTree({ agents, onOpenAgent }) {
  * agent 事件 flow_id + round 字段；旧任务无该字段时按子图 Agent 名单名字兜底）。
  * 未触发的块（无 flow 事件且无对应 agent）显示「未触发，按需被选」而非「等待中」。
 /* 卡 2 三路分组：每组标题 + 子步骤（状态点 + 标签 + 详情/进度条） */
-function GroupSteps({ groups }) {
+function GroupSteps({ groups, onOpenAgent, stage }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 12 }}>
+    <div className="retrieval-groups">
       {groups.map((group) => (
-        <div key={group.id}>
+        <div key={group.id} className="retrieval-group">
           <div
             style={{
               fontSize: 12,
@@ -318,10 +326,10 @@ function GroupSteps({ groups }) {
           </div>
           {/* 卡 6：组内为 agent 列表（导出/洞察） */}
           {group.agents ? (
-            <AgentTree agents={group.agents} />
+            <AgentTree agents={group.agents} onOpenAgent={onOpenAgent} stage={stage} />
           ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {group.steps.map((step) => (
+            {(group.steps || []).map((step) => (
               <div key={step.id} style={{ display: 'flex', alignItems: 'flex-start' }}>
                 {/* P1-8：圆点列高度与文字行一致（22px），垂直居中于文字行 */}
                 <div style={{ display: 'flex', alignItems: 'center', width: 18, height: 22, flexShrink: 0 }}>
@@ -336,13 +344,13 @@ function GroupSteps({ groups }) {
                   </div>
                   {step.detail && (
                     <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', lineHeight: 1.6, marginTop: 2 }}>
-                      {step.detail}
+                      {step.status === 'completed' && /^正在/.test(step.detail) ? `最后进度：${step.detail.replace(/^正在/, '')}` : step.detail}
                     </div>
                   )}
                   {step.progress && (
                     <ProgressBar
                       label={
-                        step.progress.current
+                        step.status === 'completed' ? `${step.label}已完成` : step.progress.current
                           ? `处理第 ${step.progress.completed + 1}/${step.progress.total}${STEP_UNIT[step.id]} — ${step.progress.current}`
                           : step.id === 'paper'
                             ? '正在检索论文'
@@ -350,19 +358,13 @@ function GroupSteps({ groups }) {
                               ? '正在定位补充材料'
                               : '正在检索星表'
                       }
-                      doneLabel={
-                        step.id === 'paper'
-                          ? '检索完成'
-                          : step.id === 'supplementary'
-                            ? '定位完成'
-                            : '检索完成'
-                      }
+                      doneLabel="已完成"
                       completed={step.progress.completed}
                       total={step.progress.total}
                       done={step.status === 'completed'}
                     />
                   )}
-                  {step.substatus && (
+                  {step.substatus && step.status !== 'completed' && (
                     <div style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', marginTop: 2, fontFamily: 'ui-monospace, Menlo, Consolas, monospace' }}>
                       {step.substatus}
                     </div>
@@ -461,12 +463,12 @@ const QUAL_LEVEL_COLOR = {
   fair: 'var(--status-progress)',
   poor: 'var(--status-error)',
 }
-const QUAL_LEVEL_LABEL = { excellent: '优', good: '良', fair: '中', poor: '差' }
+const QUAL_LEVEL_LABEL = { excellent: '优', good: '良', fair: '中', poor: '差', ungraded: '未分级' }
 
 function SourceQualityChart({ sourceScores }) {
   if (!sourceScores || sourceScores.length === 0) return null
   // 整体分布：按质量等级统计源数量（条形图——比较分类数量，饼图角度不精确）
-  const ORDER = ['excellent', 'good', 'fair', 'poor']
+  const ORDER = [...new Set(['excellent', 'good', 'fair', 'poor', ...sourceScores.map(source => source.level)])]
   const total = sourceScores.length
   const counts = {}
   for (const s of sourceScores) counts[s.level] = (counts[s.level] || 0) + 1
@@ -519,65 +521,20 @@ function SourceQualityChart({ sourceScores }) {
 }
 
 /* 卡「数据洞察」完成态产出（来自 /state 的 output_state.insights，结构见 hydrateInsights） */
-function InsightOutput({ insights, onOpenInsights, sourceScores }) {
-  const fi = Array.isArray(insights.field_insights) ? insights.field_insights.length : 0
-  const rel = Array.isArray(insights.cross_field_relationships) ? insights.cross_field_relationships.length : 0
-  const grade = insights.usage_recommendations?.overall_grade
-  const g = String(grade || '').toLowerCase()
-  const gradeColor = !grade ? null
-    : /excellent|good|^a$|^a[-_]/.test(g) ? 'var(--status-success)'
-    : /poor|bad|fail|^c$|^d$|^c[-_]|^d[-_]/.test(g) ? 'var(--status-error)'
-    : 'var(--status-progress)'
-  const chipStyle = {
-    fontSize: 11, padding: '2px 10px', borderRadius: 'var(--radius-pill)',
-    background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)',
-    color: 'var(--content-fg-secondary)',
-  }
-  return (
-    <div style={{ marginTop: 12 }}>
-      {insights.overall_narrative && (
-        /* P1-7：综合叙述改 Markdown 渲染（加粗/列表/引用生效） */
-        <div style={{
-          fontSize: 13, color: 'var(--content-fg-secondary)', lineHeight: 1.7, marginBottom: 10,
-          padding: '10px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
-        }}>
-          <Markdown>{insights.overall_narrative}</Markdown>
-        </div>
-      )}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-        <span style={chipStyle}>{fi} 条字段洞察</span>
-        <span style={chipStyle}>{rel} 条跨字段关系</span>
-        {grade && (
-          <span style={{ ...chipStyle, color: gradeColor, borderColor: 'transparent', background: 'color-mix(in srgb, currentColor 10%, transparent)' }}>
-            可用等级 {grade}
-          </span>
-        )}
-        {onOpenInsights && (
-          <button
-            onClick={onOpenInsights}
-            style={{
-              marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 5,
-              border: '1px solid var(--surface-border)', borderRadius: 'var(--radius-pill)',
-              background: 'transparent', color: 'var(--content-fg)',
-              fontSize: 12, padding: '4px 12px', cursor: 'pointer', fontWeight: 510,
-            }}
-          >
-            查看完整报告<Icon.ChevronRight style={{ width: 10, height: 10 }} />
-          </button>
-        )}
-      </div>
-      {/* 数据源质量分布图（per_source_scores，颜色按等级状态色） */}
-      <SourceQualityChart sourceScores={sourceScores} />
-    </div>
-  )
+function InsightOutput({ insights, onOpenInsights }) {
+  const fields = insights?.field_insights || [], relations = insights?.cross_field_relationships || insights?.relationships || []
+  return <div className="stage-insight-output"><p>已生成 {fields.length} 条性质观察与 {relations.length} 条字段关系。</p><Button variant="outline" size="sm" onClick={onOpenInsights}>查看研究洞察</Button></div>
 }
 
 /* 2026-08-27：memo——stage 引用不变时跳过重渲染。usePipeline 每 100ms 批量
  * setStages（log flush），timeline 8 卡不做 memo 会全量重渲（主区滚动卡顿元凶）。
  * stage 对象引用只在所属卡变化时改变（map 返回原对象），配合 ChatView 稳定的
  * onToggle/onOpenAgent/onOpenInsights 引用即可生效。 */
-const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent, sourceScores }) {
+const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onOpenInsights, onOpenAgent, sourceScores, data, onOpenData, presentation = 'chat' }) {
   const isExpanded = expanded
+  const bodyId = useId()
+  const toggleInPlace = useInPlaceDisclosure()
+  const insightOutput = stage.output || data?.resources.quality.data?.quality_report?.output_state?.insights || data?.resources.quality.data?.quality_report?.report_state?.insights
   // 2026-08-27：hover 已 CSS 化（.stage-card:hover）——滑动时不再触发 React 重渲染
 
   // 2026-08-14：运行中卡头显示具体子流程进度（替代笼统"进行中…"）——
@@ -588,7 +545,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
   const statusText = {
     waiting: '等待上游完成',
     running: stage.summary
-      || (runningFlow ? `${FLOW_LABELS[runningFlow.flowId] || runningFlow.flowId} 第 ${runningFlow.round} 轮` : null)
+      || (runningFlow ? `${FLOW_LABELS[runningFlow.flowId] || runningFlow.flowId} 第 ${(runningFlow.round ?? 0) + 1} 轮` : null)
       || (runningAgents.length ? `执行中：${runningAgents[runningAgents.length - 1].agent}` : null)
       || '进行中…',
     completed: stage.summary || '已完成',
@@ -609,7 +566,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
   return (
     <div
       data-component="stage-card"
-      className="stage-card"
+      className={presentation === 'workflow' ? 'stage-card stage-card-workflow' : 'stage-card'}
       style={{
         background: 'var(--surface-bg)',
         border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : 'var(--surface-border)'}`,
@@ -618,11 +575,17 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
       }}
     >
       {/* 头部：未展开态 = 单行卡（状态信息由状态点承载，不加彩色左边框） */}
+      {presentation !== 'workflow' && (
       <div
-        onClick={() => {
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        aria-controls={bodyId}
+        onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleInPlace(event, () => onToggle(stage.id)) } }}
+        onClick={e => {
           const sel = window.getSelection()
           if (sel && sel.toString().trim().length > 0) return
-          onToggle(stage.id)
+          toggleInPlace(e, () => onToggle(stage.id))
         }}
         className="card-header-clickable"
         style={{
@@ -635,7 +598,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
         <div style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, flexShrink: 0 }}>
           <StatusDot status={stage.status} size={7} />
         </div>
-        <span style={{ fontWeight: 510, fontSize: 14, color: 'var(--content-fg)' }}>{stage.name}</span>
+        <span style={{ fontWeight: 600, fontSize: 15, color: 'var(--title-section)' }}>{stage.name}</span>
         {stage.duration && (
           <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-tertiary)', marginLeft: 10 }}>{stage.duration}</span>
         )}
@@ -656,7 +619,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
               whiteSpace: 'nowrap',
             }}
           >
-            {statusText}
+            {String(statusText).replaceAll('图证', '研究图像')}
           </span>
         )}
         <div style={{ color: 'var(--content-fg-tertiary)', transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)' }}>
@@ -664,29 +627,27 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
         </div>
       </div>
 
+      )}
       {/* 展开态：风琴式平滑伸缩 */}
-      <div className={`smooth-collapse${isExpanded ? ' expanded' : ''}`}>
-        <div style={{ padding: '4px 14px 14px 42px', borderTop: '1px solid var(--surface-border-subtle)' }}>
-          {stage.substeps ? (
-            <Substeps substeps={stage.substeps} />
-          ) : Array.isArray(stage.flows) && stage.flows.length ? (
-            /* 2026-08-13：字段名修正 stage.flow → stage.flows（usePipeline 写入复数）；
-               2026-08-27：嵌套块结构——轮次块内挂所属 Agent（FlowBlocks 共享组件） */
-            <FlowBlocks flows={stage.flows} stageId={stage.id} agents={stage.agents} onOpenAgent={(a) => onOpenAgent(a, stage)} />
-          ) : stage.agents ? (
-            <AgentTree agents={stage.agents} onOpenAgent={onOpenAgent} />
-          ) : stage.groups ? (
-            <GroupSteps groups={stage.groups} />
-          ) : null /* P1-8：无内容卡（如 done）展开区为空——不再显示"阶段内容设计进行中"占位 */}
-
+      <div id={bodyId} inert={isExpanded ? undefined : ''} aria-hidden={!isExpanded} className={`smooth-collapse${isExpanded ? ' expanded' : ''}`}>
+        <div className="collapse-clip"><div className="stage-content" style={{ padding: '4px 14px 14px 42px', borderTop: '1px solid var(--surface-border-subtle)' }}>
           {stage.status === 'completed' && stage.id === 'understand' && stage.output && (
             <UnderstandOutput output={stage.output} />
           )}
-
-          {/* 数据洞察卡完成态：综合叙述 + 计数 + 完整报告入口（stage.output 来自 /state） */}
-          {stage.status === 'completed' && stage.id === 'insight' && stage.output && (
-            <InsightOutput insights={stage.output} onOpenInsights={onOpenInsights} sourceScores={sourceScores} />
+          {stage.status === 'completed' && stage.id === 'insight' && insightOutput && (
+            <InsightOutput insights={insightOutput} onOpenInsights={onOpenInsights} />
           )}
+
+          {data && stage.status === 'completed' && stage.id === 'quality_check' && <> <ResourceState resource={data.resources.quality} label="质量报告" onRetry={() => data.reload('quality')}>{data.resources.quality.data?.quality_report?.report_state?.quality?.quality_scoring ? <QualityScoreSection qScoring={data.resources.quality.data.quality_report.report_state.quality.quality_scoring} qState={data.resources.quality.data.quality_report.report_state.quality} /> : <p className="hint">该阶段未提供评分报告</p>}</ResourceState></>}
+          {data && stage.status === 'completed' && stage.id === 'clean' && <ResourceState resource={data.resources.quality} label="修改报告" onRetry={() => data.reload('quality')}><ModificationTable records={data.resources.records.data || []} quality={data.resources.quality.data} limit={5} onLocateRecord={id => onOpenData?.('records', { recordId: id })} /></ResourceState>}
+          {data && stage.status === 'completed' && stage.id === 'deliver' && <section className="delivery-files"><h3>交付文件</h3><ResourceState resource={data.resources.exports} label="文件" onRetry={() => data.reload('exports')}>{data.resources.exports.data?.length ? data.resources.exports.data.map(file => <div className="delivery-file" key={file.name}><span>{file.name}</span><small>{file.format}</small></div>) : <p className="hint">该任务未提供输出文件</p>}</ResourceState><Button variant="outline" size="sm" onClick={() => onOpenData?.('records', { export: true })}>查看文件与导出</Button></section>}
+          {stage.id === 'retrieval' && stage.groups && <details className="stage-execution" open={presentation === 'workflow' || stage.status === 'running'}><summary>检索步骤与来源分组</summary><GroupSteps groups={stage.groups} onOpenAgent={onOpenAgent} stage={stage} /></details>}
+          {stage.id === 'extraction' && stage.substeps && <details className="stage-execution" open={presentation === 'workflow' || stage.status === 'running'}><summary>转换、提取与验证步骤</summary><Substeps substeps={stage.substeps} grid /></details>}
+          {['understand', 'insight'].includes(stage.id) && stage.substeps && <details open={presentation === 'workflow' || stage.status === 'running'} className="stage-execution"><summary>处理步骤</summary><Substeps substeps={stage.substeps} /></details>}
+          {!!(stage.flows?.length || stage.agents?.length) && <details className="stage-execution" open={presentation === 'workflow' || stage.status === 'running'}><summary>执行步骤与轮次</summary>{stage.flows?.length ? <FlowBlocks flows={stage.flows} stageId={stage.id} stageStatus={stage.status} awaitingReview={stage.status === 'running' && stage.clarifications?.some(item => item.type === 'human_review_batch' && !item.answer)} agents={stage.agents} onOpenAgent={agent => onOpenAgent?.(agent, stage)} /> : <AgentTree agents={stage.agents} onOpenAgent={onOpenAgent} stage={stage} />}</details>}
+          {!['understand', 'insight', 'retrieval', 'extraction'].includes(stage.id) && stage.substeps?.length > 0 && <Substeps substeps={stage.substeps} />}
+          {!['retrieval'].includes(stage.id) && stage.groups?.length > 0 && <details className="stage-execution" open={presentation === 'workflow' || stage.status === 'running'}><summary>检索步骤与来源分组</summary><GroupSteps groups={stage.groups} onOpenAgent={onOpenAgent} stage={stage} /></details>}
+          {['done', 'quality_check', 'clean'].includes(stage.id) && <div className="workspace-chips" style={{ marginTop: 12 }}><Button variant="outline" size="sm" onClick={() => onOpenData?.(stage.id === 'done' ? 'records' : 'analysis')}>{stage.id === 'done' ? '查看数据结果' : '查看质量与修改'}</Button>{stage.id === 'done' && <Button variant="accent" size="sm" onClick={() => onOpenData?.('records', { export: true })}>导出结果</Button>}</div>}
 
           <ClarificationHistory clarifications={stage.clarifications} />
 
@@ -701,7 +662,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
               ))}
             </div>
           )}
-        </div>
+        </div></div>
       </div>
     </div>
   )

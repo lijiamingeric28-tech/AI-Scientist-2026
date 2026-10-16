@@ -1,246 +1,127 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { useToast } from '@/components/ui/toast'
+import { useDialogFocus } from '@/hooks/useDialogFocus'
+import { useDismissTransition } from '@/hooks/useDismissTransition'
+import { useSlidingPanes } from '@/hooks/useSlidingPanes'
+import { useSlidingUnderline } from '@/hooks/useSlidingUnderline'
 import * as api from '@/services/api'
 
-/* 设置对话框（契约第 10 轮：API key 对照 .env.example 全键补齐）
- * 可编辑：DashScope(key+base_url) / ADS / Unpaywall；质量管线复用 DashScope 凭证（全 Qwen）
- * 契约 D10-1/2：PUT /api/config 写回 .env（持久化）；GET 只返回是否配置（无明文）
- */
-
-const GROUPS = [
-  {
-    id: 'dashscope',
-    name: 'Qwen 基座模型（DashScope 百炼 · 全系统统一）',
-    fields: [
-      { key: 'dashscope_api_key', label: 'DashScope API Key', placeholder: 'sk-…', required: true, note: '意图澄清 + 性质标准化(P1) + VLM 提取 + 质量管线（评估/清洗/冲突/洞察）共用，模型 qwen3.7-flash' },
-      { key: 'dashscope_base_url', label: 'DashScope Base URL', placeholder: 'https://…（留空用官方默认）', required: false, note: '如果填写了 DashScope API Key，则该部分必须填写（OpenAI 兼容接口）' },
-    ],
-  },
-  {
-    id: 'papers',
-    name: '论文检索（ADS / Unpaywall）',
-    fields: [
-      { key: 'ads_api_token', label: 'ADS API Token', placeholder: '…', required: false, note: 'NASA ADS 论文检索（ui.adsabs.harvard.edu 获取）' },
-      { key: 'unpaywall_email', label: 'Unpaywall Email', placeholder: 'you@example.com', required: false, note: 'PDF 开放获取查询' },
-    ],
-  },
+const FIELDS = [
+  { key: 'dashscope_api_key', label: 'DashScope API Key', secret: true, group: '模型连接', note: '用于任务理解、提取及质量处理。空值保持原密钥。' },
+  { key: 'dashscope_base_url', label: 'DashScope Base URL', group: '模型连接', note: '填写 OpenAI 兼容地址，确保与 API Key 的服务地域一致。' },
+  { key: 'ads_api_token', label: 'ADS API Token', secret: true, group: '论文检索', note: 'NASA ADS 论文检索凭据。空值保持原 Token。' },
+  { key: 'unpaywall_email', label: 'Unpaywall Email', group: '论文检索', note: '开放获取查询使用的联系邮箱。' },
 ]
-
-/* 当前生效模型（只读，来自后端 config.py 默认值） */
-const CURRENT_MODELS = [
-  { label: '意图澄清', value: 'qwen3.7-flash' },
-  { label: '性质标准化 (P1)', value: 'qwen3.8-max' },
-  { label: 'VLM 提取', value: 'qwen3.7-plus' },
-  { label: 'BBox 标注', value: 'qwen3.7-flash' },
-  { label: '质量管线', value: 'qwen3.7-flash' },
-  { label: '研究领域', value: 'astrophysics' },
-]
-
-/* 本地 key ↔ 后端 env 键映射（契约 D10-1：PUT /api/config 写回 .env） */
-const KEY_MAP = {
-  dashscope_api_key: 'dashscope_api_key',
-  dashscope_base_url: 'dashscope_base_url',
-  ads_api_token: 'ads_api_token',
-  unpaywall_email: 'unpaywall_email',
-}
-
-/* 回放速度（2026-08-27）：localStorage 持久化，默认 10x（1-100）。
- * 注意：仅带真实时间戳的新任务按 ts/倍速压缩；历史任务（ts=NULL）走固定节奏。 */
+const MODELS = { dashscope_model: '任务理解', p1_model: '性质标准化', dashscope_vlm_model: 'VLM 提取', dashscope_bbox_model: '原文定位', dashscope_quality_model: '质量处理', default_research_domain: '研究领域' }
 export const REPLAY_SPEED_KEY = 'astro_replay_speed'
 export function loadReplaySpeed() {
-  const n = Number(localStorage.getItem(REPLAY_SPEED_KEY))
-  return Number.isFinite(n) && n >= 1 && n <= 100 ? n : 10
+  try { const n = Number(localStorage.getItem(REPLAY_SPEED_KEY)); return Number.isFinite(n) && n >= 1 && n <= 100 ? n : 10 } catch { return 10 }
 }
-export function saveReplaySpeed(v) {
-  localStorage.setItem(REPLAY_SPEED_KEY, String(Math.max(1, Math.min(100, Math.round(v)))))
+export function saveReplaySpeed(value) {
+  try { localStorage.setItem(REPLAY_SPEED_KEY, String(Math.max(1, Math.min(100, Math.round(value))))) } catch { /* preferences only */ }
 }
 
-export default function SettingsDialog({ open, onClose }) {
-  // values: 已配置的键 → ''（后端不回传明文，只表示"已配置"，D10-2）
-  const [configuredKeys, setConfiguredKeys] = useState([])
-  const [values, setValues] = useState({})
-  const [replaySpeed, setReplaySpeed] = useState(loadReplaySpeed)
+export default function SettingsDialog({ open, onClose, onboarding = false, onConfigChange, theme, onToggleTheme }) {
+  const [cfg, setCfg] = useState(null), [error, setError] = useState(''), [loading, setLoading] = useState(false)
+  const [values, setValues] = useState({}), [baseline, setBaseline] = useState({}), [revealed, setRevealed] = useState({})
+  const [saving, setSaving] = useState(false), savingRef = useRef(false)
+  const [discardOpen, setDiscardOpen] = useState(false), [tab, setTab] = useState('connections'), [speed, setSpeed] = useState(loadReplaySpeed)
   const { toast } = useToast()
-
-  // 打开时拉取配置状态（GET /api/config：只返回是否配置，无明文）
+  const changed = FIELDS.filter(field => (values[field.key] || '').trim() !== (baseline[field.key] || ''))
+  const dismissal = useDismissTransition(() => { setValues({}); setRevealed({}); setDiscardOpen(false); onClose() }, { active: open })
+  const contentRef = useRef(null), navRef = useRef(null)
+  const panes = useSlidingPanes(contentRef, tab, ['connections', 'preferences', 'system'], { active: open })
+  useSlidingUnderline(navRef, `${open}:${tab}`)
+  const close = () => {
+    if (savingRef.current) return
+    if (changed.length) { setDiscardOpen(true); return }
+    dismissal.close()
+  }
+  const discardRef = useRef(null), discardOrigin = useRef(null)
+  const dialogRef = useDialogFocus(open, () => { if (discardOpen) setDiscardOpen(false); else close() })
+  useEffect(() => {
+    if (discardOpen) {
+      discardOrigin.current = document.activeElement
+      discardRef.current?.querySelector('button')?.focus({ preventScroll: true })
+    } else if (open && discardOrigin.current?.isConnected) {
+      discardOrigin.current.focus({ preventScroll: true })
+      discardOrigin.current = null
+    }
+  }, [discardOpen, open])
+  const accept = next => {
+    const initial = { dashscope_api_key: '', ads_api_token: '', ...next.editable_values }
+    setCfg(next); setBaseline(initial); setValues(initial); onConfigChange?.(next)
+  }
+  const load = async () => {
+    setLoading(true); setError('')
+    try { accept(await api.getConfig()) } catch (err) { setError(`服务连接失败：${err.message}`) }
+    finally { setLoading(false) }
+  }
   useEffect(() => {
     if (!open) return
+    setTab('connections'); setValues({}); setBaseline({}); setCfg(null); setRevealed({}); setDiscardOpen(false)
     let alive = true
-    api.getConfig()
-      .then((cfg) => {
-        if (!alive) return
-        const keys = Object.entries(cfg.configured || {})
-          .filter(([, v]) => v)
-          .map(([k]) => k)
-        setConfiguredKeys(keys)
-      })
-      .catch(() => toast('配置状态加载失败', 'error'))
+    setLoading(true); setError('')
+    api.getConfig().then(next => { if (alive) accept(next) }).catch(err => alive && setError(`服务连接失败：${err.message}`)).finally(() => alive && setLoading(false))
     return () => { alive = false }
-  }, [open, toast])
-
-  if (!open) return null
-
-  const allFields = GROUPS.flatMap((g) => g.fields)
-  // M-01: 后端 GET /api/config 返回大写键（DASHSCOPE_API_KEY…），KEY_MAP 为
-  // 小写 → 此前 includes 恒 false，"已配置"徽标与计数永不命中
-  const isConfigured = (f) => configuredKeys.includes(KEY_MAP[f.key].toUpperCase()) || Boolean((values[f.key] || '').trim())
-  const configured = allFields.filter(isConfigured).length
-  const requiredDone = allFields.filter((f) => f.required && isConfigured(f)).length
-  const requiredTotal = allFields.filter((f) => f.required).length
-
+  }, [open])
   const save = async () => {
-    // 只提交有值的字段（空 = 不改动）
-    const body = {}
-    for (const f of allFields) {
-      const v = (values[f.key] || '').trim()
-      if (v) body[f.key] = v
+    if (savingRef.current || !changed.length) return
+    const body = Object.fromEntries(changed.map(field => [field.key, (values[field.key] || '').trim()]).filter(([, value]) => value))
+    if (!Object.keys(body).length) { setError('空值表示保持原配置，当前没有可保存的修改。'); return }
+    if (body.dashscope_base_url) {
+      try {
+        const url = new URL(body.dashscope_base_url)
+        if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash) throw new Error()
+      } catch { setError('Base URL 需要有效的 http(s) 地址，不能包含账号、密钥、查询参数或片段。'); return }
     }
-    saveReplaySpeed(replaySpeed)   // 2026-08-27：回放速度本地持久化（点击"保存"时落盘）
+    if (body.unpaywall_email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.unpaywall_email)) { setError('请填写有效邮箱。'); return }
+    if (Object.values(body).some(value => /[\r\n]/.test(value) || value.length > 512)) { setError('配置必须为单行，且不超过 512 个字符。'); return }
+    savingRef.current = true; setSaving(true); setError('')
+    let written = false
     try {
-      await api.putConfig(body)
-      toast('配置已保存（写回 .env）', 'success')
-      onClose()
-    } catch (err) {
-      toast(`保存失败：${err.message}`, 'error')
-    }
+      await api.putConfig(body); written = true
+      // Clear sensitive drafts after a confirmed write, before reading status.
+      setValues(prev => ({ ...prev, dashscope_api_key: '', ads_api_token: '' })); setRevealed({})
+      const next = await api.getConfig(); accept(next)
+      toast(next.restart_required ? '已保存，请重启服务后发起新的实操查询' : '已保存配置', 'success')
+    } catch (err) { setError(`${written ? '写入成功，但读取确认失败' : '保存失败'}：${err.message}。${written ? '请重新读取确认保存状态。' : '草稿已保留。'}`) }
+    finally { savingRef.current = false; setSaving(false) }
   }
-
-  return (
-    <div
-      onClick={onClose}
-      className="animate-fade-in"
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="glass animate-modal-in"
-        style={{
-          width: 520,
-          maxWidth: '94vw',
-          maxHeight: '88vh',
-          display: 'flex',
-          flexDirection: 'column',
-          background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',
-          borderRadius: 12,
-          boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
-          overflow: 'hidden',
-        }}
-      >
-        {/* 头部 */}
-        <div style={{ display: 'flex', alignItems: 'center', padding: '14px 18px', borderBottom: '1px solid var(--surface-border)', flexShrink: 0 }}>
-          <Icon.Settings style={{ color: 'var(--content-fg-tertiary)' }} />
-          <h2 style={{ fontSize: 15, fontWeight: 510, marginLeft: 8, flex: 1 }}>设置</h2>
-          <span style={{ fontSize: 12, color: 'var(--content-fg-tertiary)' }}>
-            {configured}/{allFields.length} 项已填 · 必填 {requiredDone}/{requiredTotal}
-          </span>
-          <Button variant="ghost" size="icon" onClick={onClose} style={{ marginLeft: 8 }}>
-            <Icon.Close />
-          </Button>
-        </div>
-
-        {/* 表单（可滚动） */}
-        <div style={{ padding: '14px 18px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {GROUPS.map((g) => (
-            <div key={g.id}>
-              <div style={{ fontSize: 12, fontWeight: 510, color: 'var(--accent-text)', marginBottom: 8, letterSpacing: '0.02em' }}>{g.name}</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {g.fields.map((f) => (
-                  <div key={f.key}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                      <label style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>{f.label}</label>
-                      {isConfigured(f) && (
-                        <span style={{ fontSize: 11, padding: '1px 8px', borderRadius: 4, background: 'var(--status-success-bg)', color: 'var(--status-success)' }}>已配置</span>
-                      )}
-                      {f.required && <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>必填</span>}
-                    </div>
-                    <input
-                      type="password"
-                      value={values[f.key] || ''}
-                      onChange={(e) => setValues((prev) => ({ ...prev, [f.key]: e.target.value }))}
-                      placeholder={f.placeholder}
-                      style={{
-                        width: '100%',
-                        padding: '8px 10px',
-                        fontSize: 13,
-                        border: '1px solid var(--surface-border)',
-                        borderRadius: 6,
-                        outline: 'none',
-                        background: 'var(--surface-secondary)',
-                        color: 'var(--content-fg)',
-                      }}
-                    />
-                    <div style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', marginTop: 3 }}>{f.note}</div>
-                  </div>
-                ))}
+  if (!open) return null
+  const count = FIELDS.filter(field => cfg?.configured?.[field.key.toUpperCase()]).length
+  return <div className="settings-overlay" data-closing={dismissal.closing || undefined} onClick={close}>
+    <section ref={dialogRef} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="settings-title" className="settings-dialog animate-modal-in" onClick={event => event.stopPropagation()}>
+      <header className="settings-header"><div><h2 id="settings-title">{onboarding ? '连接科研服务，开始你的查询' : '设置'}</h2><p>{onboarding ? '可先浏览演示样例，稍后再完成连接。' : '管理科研连接、界面偏好和系统信息。'}</p></div><Button variant="ghost" size="icon" aria-label="关闭设置" onClick={close} disabled={saving}><Icon.Close /></Button></header>
+      <div className="settings-body">
+        <nav ref={navRef} className="settings-nav" aria-label="设置分类">{[['connections', '连接与密钥'], ['preferences', '界面与回放'], ['system', '模型与系统']].map(([key, label]) => <button key={key} className={`filter-chip${tab === key ? ' active' : ''}`} aria-current={tab === key ? 'page' : undefined} onClick={() => setTab(key)}>{label}</button>)}</nav>
+        <div className="settings-content">
+          {loading && <p role="status">正在读取服务配置…</p>}
+          {error && <div className="resource-error" role="alert">{error}<Button variant="outline" size="sm" onClick={load} disabled={saving || loading}>重新读取</Button></div>}
+          <div ref={contentRef} className="settings-panes slide-panes" data-sliding={panes.moving || undefined}>
+          <div {...panes.paneProps('connections')}>{cfg && <>
+            <div className="notice">已保存 {count} / 4 项连接 · {cfg.restart_required ? '配置有更新，重启服务后生效' : cfg.setup_complete ? '已加载当前配置' : '科研连接尚未齐全'}<br /><small>保存状态不代表凭据已通过联网验证。密钥仅提交至本地服务，不回显。</small></div>
+            {['模型连接', '论文检索'].map(group => <section key={group} className="settings-group"><h3>{group}</h3>{FIELDS.filter(field => field.group === group).map(field => {
+              const configured = cfg.configured?.[field.key.toUpperCase()]
+              const edited = changed.some(item => item.key === field.key) && Boolean(values[field.key]?.trim())
+              const overridden = cfg.env_overrides?.[field.key.toUpperCase()]
+              return <div key={field.key} className="settings-field">
+                <label htmlFor={`config-${field.key}`}>{field.label}<span className={edited ? 'pending-chip' : configured ? 'saved-chip' : 'missing-chip'}>{edited ? '待保存' : configured ? '已配置' : '未填写'}</span><small>必填</small></label>
+                <div className="settings-input-row"><input id={`config-${field.key}`} autoComplete="off" spellCheck={false} type={field.secret && !revealed[field.key] ? 'password' : 'text'} value={values[field.key] || ''} disabled={saving || overridden} placeholder={configured && field.secret ? '已配置，留空保持原值' : field.key === 'dashscope_base_url' ? 'https://…/compatible-mode/v1' : field.key === 'unpaywall_email' ? 'researcher@example.com' : '输入凭据'} onChange={event => setValues(prev => ({ ...prev, [field.key]: event.target.value }))} />{field.secret && values[field.key] && <Button variant="ghost" size="sm" onClick={() => setRevealed(prev => ({ ...prev, [field.key]: !prev[field.key] }))}>{revealed[field.key] ? '隐藏' : '查看'}</Button>}</div>
+                <p>{overridden ? '由进程环境变量提供；修改 .env 不会覆盖此值。请修改启动环境并重启。' : field.note}</p>
               </div>
-            </div>
-          ))}
-
-          {/* 当前模型（只读） */}
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 510, color: 'var(--accent-text)', marginBottom: 8 }}>当前生效配置（只读，改 .env 后重启生效）</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-              {CURRENT_MODELS.map((m) => (
-                <div key={m.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: 'var(--surface-secondary)', borderRadius: 6, fontSize: 12 }}>
-                  <span style={{ color: 'var(--content-fg-secondary)' }}>{m.label}</span>
-                  <span className="font-mono" style={{ color: 'var(--content-fg)' }}>{m.value}</span>
-                </div>
-              ))}
-            </div>
+            })}</section>)}
+            <div className="notice">配置写入服务端 .env。允许部分保存；四项齐全且重启加载后可发起新实操任务。已有任务继续运行。</div>
+          </>}</div>
+          <div {...panes.paneProps('preferences')} className="settings-group"><h3>界面偏好</h3><div className="preference-row"><span>当前主题：{theme === 'dark' ? '深色' : '浅色'}</span><Button variant="outline" onClick={onToggleTheme}>切换主题</Button></div><h3>演示回放</h3><label htmlFor="replay-speed">新回放速度 · {speed}x</label><input id="replay-speed" type="range" min="1" max="100" value={speed} onChange={event => { const value = Number(event.target.value); setSpeed(value); saveReplaySpeed(value) }} /><p className="hint">偏好即时保存。已有回放速度不变；历史无时间戳事件使用固定节奏。</p></div>
+          <div {...panes.paneProps('system')}>{cfg && <div className="settings-group"><h3>当前生效模型</h3>{Object.entries(cfg.models || {}).map(([key, value]) => <div key={key} className="preference-row"><span>{MODELS[key] || key}</span><span className="model-value">{value || '未提供'}</span></div>)}<h3>系统信息</h3><div className="preference-row"><span>数据格式版本</span><span>{cfg.version || '未提供'}</span></div><div className="preference-row output-location"><span>输出目录</span><span>{cfg.output_dir || '未提供'}</span></div><p className="hint">模型信息只读；修改服务配置后重启生效。</p></div>}</div>
           </div>
-
-          {/* 回放速度（2026-08-27：演示事件级回放的压缩倍率，仅本地设置） */}
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 510, color: 'var(--accent-text)', marginBottom: 8 }}>回放速度</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <input
-                type="range"
-                min="1"
-                max="100"
-                step="1"
-                value={replaySpeed}
-                onChange={(e) => setReplaySpeed(Number(e.target.value))}
-                style={{ flex: 1, accentColor: 'var(--accent)' }}
-              />
-              <span className="font-mono" style={{ fontSize: 14, fontWeight: 590, color: 'var(--content-fg)', width: 52, textAlign: 'right' }}>
-                {replaySpeed}x
-              </span>
-            </div>
-            <div style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', lineHeight: 1.6, marginTop: 6 }}>
-              新任务（带时间戳）：按真实间隔 ÷ {replaySpeed} 压缩；历史任务：固定节奏（不受倍速影响）。保存后生效。
-            </div>
-          </div>
-
-          {/* 版本 + 输出目录（契约 D10-4） */}
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 510, color: 'var(--accent-text)', marginBottom: 8 }}>系统信息</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ display: 'flex', gap: 8, fontSize: 12 }}>
-                <span style={{ width: 64, flexShrink: 0, color: 'var(--content-fg-secondary)' }}>Schema</span>
-                <span className="font-mono" style={{ color: 'var(--content-fg)' }}>2.0.0</span>
-              </div>
-              <div style={{ display: 'flex', gap: 8, fontSize: 12 }}>
-                <span style={{ width: 64, flexShrink: 0, color: 'var(--content-fg-secondary)' }}>输出目录</span>
-                <span className="font-mono" style={{ color: 'var(--content-fg)', wordBreak: 'break-all' }}>
-                  {'E:\\work\\frontend\\astroquery_final\\output\\<query_id>\\'}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', lineHeight: 1.6, padding: '8px 10px', background: 'var(--surface-secondary)', borderRadius: 6 }}>
-            配置保存在本地浏览器（mock）。对接后端后：key 经 PUT /api/config 提交，服务端运行时注入（不回传明文）；DEFAULT_RESEARCH_DOMAIN 不在本页配置。
-          </div>
-        </div>
-
-        {/* 底部 */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '12px 18px', borderTop: '1px solid var(--surface-border)', flexShrink: 0 }}>
-          <Button variant="outline" onClick={onClose}>取消</Button>
-          <Button variant="accent" onClick={save}>保存</Button>
         </div>
       </div>
-    </div>
-  )
+      {discardOpen && <div ref={discardRef} className="discard-notice" role="alert"><span>有未保存的连接修改，是否放弃？</span><Button variant="outline" size="sm" onClick={() => setDiscardOpen(false)}>继续编辑</Button><Button variant="destructive" size="sm" onClick={dismissal.close}>放弃修改</Button></div>}
+      <footer className="settings-footer"><span className="hint">保存连接后重启服务生效</span><Button variant="outline" onClick={close} disabled={saving}>{onboarding ? '稍后设置' : '关闭'}</Button><Button variant="accent" onClick={save} disabled={saving || loading || !cfg || !changed.some(field => values[field.key]?.trim())}>{saving ? '保存中…' : '保存连接'}</Button></footer>
+    </section>
+  </div>
 }

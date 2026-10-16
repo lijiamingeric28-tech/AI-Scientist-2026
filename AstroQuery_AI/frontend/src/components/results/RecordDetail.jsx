@@ -5,6 +5,10 @@ import { fmtPair } from '@/lib/format'
 import { journalLabel } from '@/lib/journal'
 import { DUP_PRINCIPLE_TEXT, DUP_REASON_TEXT, DUP_RULE_TEXT } from '@/lib/dupMarkers'
 import SourceImageLightbox from './SourceImageLightbox'
+import { exactRecordIds, modificationReport } from '@/lib/resultData'
+import { usePropertyLabel } from '@/lib/propertyLabel'
+import { readableText, recordChanges, modificationView, sourceName, measurementText, isDatabaseRecord } from '@/lib/readableData'
+import { DefinitionNote, Prose, Excerpt } from './ReadableContent'
 
 /* 记录详情弹窗（居中玻璃模态，风格对齐 SettingsDialog）：
  * 点击记录表格某行 → 展示该记录的完整数据血缘：
@@ -82,6 +86,8 @@ function BboxSourceImage({ url, bbox, source }) {
     <>
       <div
         onClick={() => setOpen(true)}
+        role="button" tabIndex={0} aria-label="查看原文定位图"
+        onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setOpen(true) } }}
         title="点击全屏查看"
         style={{
           marginTop: 10, position: 'relative', display: 'inline-block', maxWidth: '100%',
@@ -144,342 +150,42 @@ function SectionSkeleton({ rows = 2 }) {
   )
 }
 
-export default function RecordDetailDialog({ record, quality, sources, loading, onClose, dup = null }) {
-  // Esc 关闭
+
+export default function RecordDetailDialog({ record, quality, sources = [], loading, onClose, onOpenRecord, onOpenSource, dup = null, embedded = false }) {
+  const propertyLabel = usePropertyLabel()
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    const onKey = event => { if (!embedded && event.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
-
-  const qr = quality?.quality_report || null
-
-  /* ── 数据血缘各切片 ── */
-  const trace = useMemo(
-    () => qr?.output_state?.traceability?.per_record_trace?.[record.record_id] || null,
-    [qr, record.record_id],
-  )
-  const route = useMemo(
-    () => qr?.report_state?.quality?.per_source_routes?.[record.source_id] || null,
-    [qr, record.source_id],
-  )
-  const source = useMemo(
-    () => (sources || []).find((s) => s.source_id === record.source_id) || null,
-    [sources, record.source_id],
-  )
-  // 冲突标注：实体+字段匹配；记录来源在涉事来源中则高亮
-  const conflicts = useMemo(() => {
-    const anns = qr?.report_state?.conflict?.resolution_report?.annotations
-    if (!Array.isArray(anns)) return []
-    return anns.filter((a) => a.entity_name === record.entity_name && a.field_name === record.field_name)
-  }, [qr, record.entity_name, record.field_name])
-  // Insight 字段洞察：实体+字段匹配；来源类型一致的排前
-  const fieldInsights = useMemo(() => {
-    const fi = qr?.report_state?.insights?.field_insights
-    if (!Array.isArray(fi)) return []
-    const kind = record.provenance?.source_kind || source?.type
-    return fi
-      .filter((f) => f.entity_name === record.entity_name && f.field_name === record.field_name)
-      .sort((a, b) => ((b.source_type === kind) ? 1 : 0) - ((a.source_type === kind) ? 1 : 0))
-  }, [qr, record, source])
-  const fieldDef = useMemo(
-    () => qr?.output_state?.metadata?.field_definitions?.[record.field_name] || null,
-    [qr, record.field_name],
-  )
-  const lowConf = useMemo(() => {
-    const arr = qr?.output_state?.insights?.usage_recommendations?.low_confidence_records
-    if (!Array.isArray(arr)) return false
-    return arr.some((x) => String(x).includes(record.record_id))
-  }, [qr, record.record_id])
-
-  const prov = record.provenance || {}
-  const isDb = record.extraction_method === 'database_query'
-
-  return (
-    <div
-      onClick={onClose}
-      className="animate-fade-in"
-      style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="glass animate-modal-in"
-        data-component="record-detail"
-        style={{
-          width: 660, maxWidth: '94vw', maxHeight: '88vh',
-          display: 'flex', flexDirection: 'column',
-          background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',
-          borderRadius: 'var(--radius-lg)',
-          boxShadow: 'var(--shadow-modal)',
-          overflow: 'hidden',
-        }}
-      >
-        {/* 头部：实体 + 字段 + 值 */}
-        <div style={{ padding: '14px 18px 12px', borderBottom: '1px solid var(--surface-border)', flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 15, fontWeight: 590, color: 'var(--content-fg)' }}>{record.entity_name}</span>
-                <span className="font-mono" style={{ fontSize: 13, color: 'var(--content-fg-secondary)' }}>{record.field_name}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
-                <span className="font-mono" style={{ fontSize: 22, fontWeight: 590, letterSpacing: '-0.02em', color: 'var(--content-fg)' }}>
-                  {String(record.field_value)}
-                </span>
-                {record.field_unit && <span style={{ fontSize: 13, color: 'var(--content-fg-tertiary)' }}>{record.field_unit}</span>}
-              </div>
-            </div>
-            <Button variant="ghost" size="icon" onClick={onClose}><Icon.Close /></Button>
+  }, [onClose, embedded])
+  const source = sources.find(item => item.source_id === record.source_id)
+  const prov = record.provenance || {}, qr = quality?.quality_report
+  const { trace, rows } = recordChanges(record, quality)
+  const changes = rows.map(row => modificationView(row, [record]))
+  const fieldDef = qr?.output_state?.metadata?.field_definitions?.[record.field_name]
+  const annotations = qr?.report_state?.conflict?.resolution_report?.annotations
+  const conflicts = (Array.isArray(annotations) ? annotations : []).filter(item => exactRecordIds(item).includes(record.record_id))
+  const isDb = isDatabaseRecord(record, source)
+  const isSupplement = ['supplement', 'supplementary'].includes(source?.source_type) || prov.source_kind === 'supplement'
+  const doi = source?.doi
+  return <div onClick={embedded ? undefined : onClose} className={embedded ? 'record-detail-embedded' : 'record-detail-backdrop'}>
+    <section onClick={event => event.stopPropagation()} className="record-detail-panel" data-component="record-detail">
+      <header className="record-detail-heading" data-detail-heading tabIndex={-1}><div><div className="record-property-title"><strong>{record.entity_name}</strong><span>{propertyLabel(record.field_name)}</span><DefinitionNote definition={fieldDef} /></div><p className="record-measurement"><strong>{readableText(record.field_value) || '未提供'}</strong>{record.field_unit && <span>{record.field_unit}</span>}</p></div><Button variant="ghost" size="icon" aria-label="关闭记录详情" onClick={onClose}><Icon.Close /></Button></header>
+      <div className="record-detail-body">
+        <section className="record-source"><h3>出处与证据</h3><div className="provenance-part"><h4>数据出处</h4><p className="record-source-title">{sourceName(source, record.source_id)}</p>{[source?.journal, source?.year].filter(Boolean).length > 0 && <p className="hint">{[source.journal, source.year].filter(Boolean).join(' · ')}</p>}
+          <div className="record-source-links">{doi && <a className="text-link" href={'https://doi.org/' + encodeURIComponent(doi)} target="_blank" rel="noreferrer">查看 DOI 论文 ↗</a>}
+          {source && onOpenSource && <button className="text-link record-source-action" data-detail-action="source" onClick={() => onOpenSource(source)}>查看来源详情 →</button>}</div>
           </div>
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
-            <Chip><span className="font-mono">{record.source_id}</span></Chip>
-            <Chip>{METHOD_LABELS[record.extraction_method] || record.extraction_method}</Chip>
-            {typeof record.extraction_confidence === 'number' && (
-              <Chip color="var(--status-progress)" bg="var(--status-progress-bg)">
-                置信度 {Math.round(record.extraction_confidence * 100)}%
-              </Chip>
-            )}
-            {route && (
-              <Chip
-                color={route === 'Conflict' ? 'var(--status-warn)' : 'var(--status-success)'}
-                bg={route === 'Conflict' ? 'var(--status-warn-bg)' : 'var(--status-success-bg)'}
-              >
-                路由 · {ROUTE_LABELS[route] || route}
-              </Chip>
-            )}
-            {lowConf && <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">低置信度记录</Chip>}
-            {dup && (
-              dup.isRepresentative
-                ? <Chip color="var(--status-success)" bg="var(--status-success-bg)">重复组代表</Chip>
-                : <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">疑似重复</Chip>
-            )}
-          </div>
-        </div>
-
-        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-          <div style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-            {/* ── 数据来源 ── */}
-            <Section label="数据来源">
-              <div className="row-item">
-                {source?.title && (
-                  <div style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)', marginBottom: 4 }}>{source.title}</div>
-                )}
-                {isDb ? (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '4px 12px', fontSize: 12 }}>
-                    {[
-                      ['数据表', prov.db_table], ['键', prov.key_value ? `${prov.key_column} = ${prov.key_value}` : null],
-                      ['原始列', prov.raw_column ? `${prov.raw_column}${prov.raw_unit ? `（${prov.raw_unit}）` : ''}` : null],
-                      ['行号', prov.row_index != null ? String(prov.row_index) : null],
-                    ].filter(([, v]) => v).map(([k, v]) => (
-                      <div key={k} style={{ display: 'contents' }}>
-                        <span style={{ color: 'var(--content-fg-tertiary)' }}>{k}</span>
-                        <span className="font-mono" style={{ color: 'var(--content-fg)', wordBreak: 'break-all' }}>{v}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '4px 12px', fontSize: 12 }}>
-                    {[
-                      ['页码', prov.page != null ? `第 ${prov.page} 页` : null],
-                      ['区域', Array.isArray(prov.bbox) ? `[${prov.bbox.join(', ')}]${prov.bbox_coord_system ? ` · ${prov.bbox_coord_system}` : ''}` : null],
-                      ['溯源 ID', record.trace_id || null],
-                    ].filter(([, v]) => v).map(([k, v]) => (
-                      <div key={k} style={{ display: 'contents' }}>
-                        <span style={{ color: 'var(--content-fg-tertiary)' }}>{k}</span>
-                        <span className="font-mono" style={{ color: 'var(--content-fg)', wordBreak: 'break-all' }}>{v}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {record.measurement_method && (
-                  <div className="hint" style={{ marginTop: 8 }}>测量方法：{record.measurement_method}</div>
-                )}
-                {Array.isArray(record.condition_tags) && record.condition_tags.length > 0 && (
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
-                    {record.condition_tags.map((t) => <Chip key={t}>{t}</Chip>)}
-                  </div>
-                )}
-              </div>
-              {record.context_snippet && (
-                <div style={{
-                  marginTop: 8, padding: '10px 14px',
-                  background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
-                  borderLeft: '3px solid var(--accent)',
-                  fontSize: 12.5, lineHeight: 1.7, color: 'var(--content-fg-secondary)', fontStyle: 'italic',
-                }}>
-                  {record.context_snippet}
-                </div>
-              )}
-              {!isDb && Array.isArray(prov.bbox) && prov.bbox.length === 4 && record.page_image_url && (
-                <BboxSourceImage url={record.page_image_url} bbox={prov.bbox} source={prov.bbox_source} />
-              )}
-            </Section>
-
-            {/* ── 处理轨迹 ── */}
-            <Section label="处理轨迹">
-              {loading && !trace ? <SectionSkeleton rows={2} /> : trace ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {trace.modified ? (
-                    <>
-                      <div className="row-item" style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                        <span className="font-mono" style={{ fontSize: 13, color: 'var(--content-fg-secondary)', textDecoration: 'line-through', textDecorationColor: 'var(--status-error)' }}>
-                          {String(trace.original_value)}{trace.original_unit ? ` ${trace.original_unit}` : ''}
-                        </span>
-                        <Icon.ChevronRight style={{ color: 'var(--content-fg-tertiary)' }} />
-                        <span className="font-mono" style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>
-                          {String(trace.final_value)}{trace.final_unit ? ` ${trace.final_unit}` : ''}
-                        </span>
-                        <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">已修改</Chip>
-                      </div>
-                      {(trace.modifications || []).map((m, i) => (
-                        <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline', padding: '6px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
-                          <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(m.timestamp)}</span>
-                          <Chip>{m.stage}</Chip>
-                          <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>
-                            {fmtPair(m.before, m.after)}
-                          </span>
-                          <span style={{ flex: 1, fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.reason || ''}</span>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <div className="hint" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <Icon.Check style={{ color: 'var(--status-success)' }} />
-                      该记录未经过清洗修改，原始值直接进入最终输出
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="hint-dim">无该记录的处理轨迹</div>
-              )}
-            </Section>
-
-            {/* ── 冲突标注（有匹配才显示） ── */}
-            {conflicts.length > 0 && (
-              <Section label={`冲突标注 · ${conflicts.length}`}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {conflicts.map((c, i) => {
-                    const involved = Array.isArray(c.source_ids) && c.source_ids.includes(record.source_id)
-                    return (
-                      <div key={i} className="row-item">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-                          <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">{c.annotation_type}</Chip>
-                          {c.cause_label && <Chip>{c.cause_label}</Chip>}
-                          {involved && <Chip color="var(--status-progress)" bg="var(--status-progress-bg)">本记录来源涉事</Chip>}
-                          {typeof c.confidence === 'number' && (
-                            <span className="font-mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
-                              置信度 {Math.round(c.confidence * 100)}%
-                            </span>
-                          )}
-                        </div>
-                        <div className="hint">
-                          {c.source_count} 个来源的值域 {Array.isArray(c.value_range) ? c.value_range.join(' – ') : '—'}
-                          {c.action ? ` · 处置：${c.action}` : ''}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </Section>
-            )}
-
-            {/* ── 疑似重复：本行所在重复收录组（2026-09-06；只在行属于某组时显示） ── */}
-            {dup && dup.group && (
-              <Section label={`疑似重复 · 重复收录组（${dup.group.sourceCount} 个来源）`}>
-                <div className="hint" style={{ marginBottom: 8 }}>
-                  值 <span className="font-mono">{String(dup.group.fieldValue)}</span> 在 {dup.group.sourceCount} 个来源中完全一致
-                  （共 {dup.group.recordIds.length} 条记录），判定为重复收录。组内非代表成员在本表值单元格标有
-                  「疑似重复」徽标；本条{dup.isRepresentative ? '为该组的代表记录（保留条目）' : '为疑似重复成员'}。
-                </div>
-                {/* 组内现存成员（代表在前，本记录高亮） */}
-                {[...dup.group.members]
-                  .filter((m) => m.isLive)
-                  .sort((a, b) => Number(b.isRepresentative) - Number(a.isRepresentative))
-                  .map((m) => {
-                    const isCurrent = m.recordId === record.record_id
-                    const srcTitle = (sources || []).find((s) => s.source_id === m.sourceId)?.title
-                    return (
-                      <div
-                        key={m.recordId}
-                        className="row-item"
-                        style={isCurrent
-                          ? { borderColor: 'var(--accent)', background: 'var(--accent-light)', marginBottom: 6 }
-                          : { marginBottom: 6 }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                          {m.isRepresentative
-                            ? <Chip color="var(--status-success)" bg="var(--status-success-bg)">代表</Chip>
-                            : <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">疑似重复</Chip>}
-                          <span
-                            className="font-mono"
-                            title={m.sourceId}
-                            style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}
-                          >
-                            {journalLabel(m.sourceId) || m.sourceId}
-                          </span>
-                          <Chip>{METHOD_LABELS[m.extractionMethod] || '未知提取方式'}</Chip>
-                          {typeof m.extractionConfidence === 'number' && (
-                            <Chip color="var(--status-progress)" bg="var(--status-progress-bg)">
-                              置信度 {Math.round(m.extractionConfidence * 100)}%
-                            </Chip>
-                          )}
-                          {isCurrent && <Chip color="var(--accent-text)" bg="var(--accent-light)">本记录</Chip>}
-                        </div>
-                        {srcTitle && <div className="hint-dim" style={{ marginTop: 4 }}>{srcTitle}</div>}
-                        {m.isRepresentative && dup.group.rep && (
-                          <div className="hint-dim" style={{ marginTop: 4 }}>
-                            代表原因：{DUP_REASON_TEXT[dup.group.rep.reason] || dup.group.rep.reason}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
-                <div className="hint-dim" style={{ marginTop: 8 }}>{DUP_RULE_TEXT}</div>
-                <div className="hint-dim" style={{ marginTop: 4 }}>{DUP_PRINCIPLE_TEXT}</div>
-              </Section>
-            )}
-
-            {/* ── Insight 建议 ── */}
-            <Section label="Insight 建议">
-              {loading && fieldInsights.length === 0 ? <SectionSkeleton rows={3} /> : fieldInsights.length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {fieldInsights.map((f, i) => (
-                    <div key={i} className="row-item">
-                      {f.observation && <div className="hint" style={{ marginBottom: 6 }}>{f.observation}</div>}
-                      {f.interpretation && <div className="hint-dim" style={{ marginBottom: f.typical_range || (Array.isArray(f.cause_hypotheses) && f.cause_hypotheses.length) ? 6 : 0 }}>解读：{f.interpretation}</div>}
-                      {f.typical_range && <div className="hint-dim">典型范围：{String(f.typical_range)}</div>}
-                      {Array.isArray(f.cause_hypotheses) && f.cause_hypotheses.length > 0 && (
-                        <div className="hint-dim">成因假设：{f.cause_hypotheses.join('；')}</div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="hint-dim">Insight 模块未针对该字段生成建议</div>
-              )}
-            </Section>
-
-            {/* ── 字段定义 ── */}
-            {fieldDef && (
-              <Section label="字段定义">
-                <div className="row-item">
-                  {fieldDef.description && <div className="hint" style={{ marginBottom: 6 }}>{fieldDef.description}</div>}
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    {fieldDef.standard_unit && <Chip>标准单位 {fieldDef.standard_unit}</Chip>}
-                    {fieldDef.semantic_type && <Chip>{fieldDef.semantic_type}</Chip>}
-                    {fieldDef.criticality && (
-                      <Chip color={fieldDef.criticality === 'critical' ? 'var(--status-error)' : 'var(--content-fg-secondary)'}>
-                        {fieldDef.criticality === 'critical' ? '关键字段' : fieldDef.criticality === 'important' ? '重要字段' : fieldDef.criticality}
-                      </Chip>
-                    )}
-                  </div>
-                </div>
-              </Section>
-            )}
-          </div>
-        </div>
+          {(prov.page != null || prov.db_table || prov.cds_table_id || prov.raw_column || prov.key_value != null || prov.row_index != null) && <div className="provenance-part"><h4>取值位置</h4><dl className="record-location">{isDb || isSupplement ? <>{(prov.db_table || prov.cds_table_id) && <div><dt>数据表</dt><dd>{prov.db_table || prov.cds_table_id}</dd></div>}{prov.raw_column && <div><dt>原始列</dt><dd>{prov.raw_column}{prov.raw_unit && ' (' + prov.raw_unit + ')'}</dd></div>}{prov.key_column && <div><dt>主键列</dt><dd>{prov.key_column}</dd></div>}{prov.key_value != null && <div><dt>主键值</dt><dd>{prov.key_value}</dd></div>}{prov.row_index != null && <div><dt>表内行</dt><dd>第 {prov.row_index + 1} 行（索引 {prov.row_index}）</dd></div>}{prov.parent_bibcode && <div><dt>所属论文</dt><dd>{prov.parent_bibcode}</dd></div>}</> : null}{prov.page != null && <div><dt>原文页码</dt><dd>第 {prov.page} 页</dd></div>}</dl></div>}
+          {readableText(record.context_snippet) && <div className="provenance-part"><h4>原文摘录</h4><blockquote className="source-excerpt"><Excerpt value={record.context_snippet} label="展开完整原文" disclosureKey="record-excerpt" /></blockquote></div>}
+          {!isDb && Array.isArray(prov.bbox) && prov.bbox.length === 4 && record.page_image_url && <div className="provenance-part"><h4>原文定位图</h4><BboxSourceImage key={record.record_id} url={record.page_image_url} bbox={prov.bbox} source={prov.bbox_source} /></div>}
+          {(readableText(record.measurement_method) || readableText(record.condition_tags)) && <div className="provenance-part"><h4>测量方法与条件</h4><Prose value={record.measurement_method} />{readableText(record.condition_tags) && <p className="measurement-conditions">{Array.isArray(record.condition_tags) ? record.condition_tags.join(' · ') : readableText(record.condition_tags)}</p>}</div>}
+        </section>
+        {changes.length > 0 && <section className="record-changes"><h3>处理历程 <small>{changes.length} 步</small></h3><ol className="record-history">{trace?.original_value != null && <li className="history-snapshot"><span className="history-dot" /><div><h4>原始测量</h4><p>{measurementText(trace.original_value, trace.original_unit)}</p></div></li>}{changes.map((row, index) => <li key={index}><span className="history-number">{index + 1}</span><article className="record-change"><h4>{row.operation}</h4>{row.originals.filter(name => name !== row.operation).length > 0 && <p className="operation-original">{row.originals.filter(name => name !== row.operation).join(' · ')}</p>}{(row.before || row.after) && <div className="value-change"><span>{row.before || '未提供'}</span><span aria-hidden="true">→</span><strong>{row.after || '未提供'}</strong></div>}<Excerpt value={row.reason} label="展开处理原因" disclosureKey={`change-reason-${index}`} />{(row.timestamp || row.iteration != null || row.reportOrigin === '修改报告补充') && <p className="history-meta">{[row.timestamp && (Number.isNaN(Date.parse(row.timestamp)) ? row.timestamp : new Date(row.timestamp).toLocaleString('zh-CN', { hour12: false })), row.iteration != null ? `第 ${row.iteration} 轮` : '', row.reportOrigin === '修改报告补充' ? row.reportOrigin : ''].filter(Boolean).join(' · ')}</p>}</article></li>)}<li className="history-snapshot final"><span className="history-dot" /><div><h4>当前测量</h4><p>{measurementText(record.field_value, record.field_unit)}</p></div></li></ol></section>}
+        {loading && !qr && <p className="hint" role="status">正在读取处理信息…</p>}
+        {conflicts.length > 0 && <section><h3>相关测量差异</h3>{conflicts.map((item, i) => <div key={i}><Prose value={item.description || item.reason} />{item.source_count != null && <p>该性质涉及 {item.source_count} 个来源{Array.isArray(item.value_range) && item.field_unit && item.field_unit === record.field_unit ? '，已有值域为 ' + item.value_range.join(' — ') + ' ' + item.field_unit : ''}。</p>}</div>)}</section>}
+        {dup?.group && <section className="record-duplicates"><h3>重复收录</h3><p>此数值在 {dup.group.sourceCount} 个来源中一致，当前记录{dup.isRepresentative ? '为该组代表记录' : '被标记为疑似重复'}。</p><details><summary>查看相关记录</summary>{dup.group.members.filter(item => item.isLive && item.recordId !== record.record_id).map(item => <button className="related-record" data-detail-action={'record:' + item.recordId} key={item.recordId} onClick={() => onOpenRecord?.(item.recordId)}>{sourceName(sources.find(source => source.source_id === item.sourceId), item.sourceId)} <span>查看记录 ›</span></button>)}</details></section>}
       </div>
-    </div>
-  )
+    </section>
+  </div>
 }

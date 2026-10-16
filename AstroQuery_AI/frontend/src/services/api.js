@@ -132,6 +132,10 @@ export function getQuality(taskId) {
   return request(`/tasks/${taskId}/quality`)
 }
 
+export function exportFileUrl(taskId, name) {
+  return `${BASE}/tasks/${encodeURIComponent(taskId)}/export/${encodeURIComponent(name)}`
+}
+
 export function getExports(taskId) {
   return request(`/tasks/${taskId}/exports`)
 }
@@ -174,3 +178,4 @@ export function putConfig(body) {
     headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'AstroQuery' },
   })
 }
+export const eventHistoryUrl = taskId => `${BASE}/tasks/${encodeURIComponent(taskId)}/events/history`

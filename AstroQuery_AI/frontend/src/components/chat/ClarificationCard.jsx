@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { cleanCliQuestion } from '@/lib/format'
@@ -19,19 +19,30 @@ import HumanReviewPanel from './HumanReviewPanel'
 export default function ClarificationCard({ payload, onSubmit }) {
   const [text, setText] = useState('')
   const [showRaw, setShowRaw] = useState(false)
+  const [sending, setSending] = useState(false)
+  const sendingRef = useRef(false)
 
   const submit = async (value) => {
+    const answer = value === undefined ? text : value
+    if (sendingRef.current || !String(answer ?? '').trim()) return
+    sendingRef.current = true
+    setSending(true)
     try {
-      await onSubmit(value === undefined ? text : value)
+      await onSubmit(answer)
       setText('')
     } catch {
       // H-18: resume 失败已由 usePipeline 恢复 pending 并写入 payload.error，
       // 卡内红字提示；保留输入内容允许直接重发
+    } finally {
+      sendingRef.current = false
+      setSending(false)
     }
   }
 
   const isConfirm = payload.type === 'final_confirm'
   const isBatch = payload.type === 'human_review_batch'
+  const hasFields = Array.isArray(payload.fields) && payload.fields.length > 0
+  const description = payload.description || (!isConfirm || !hasFields ? cleanCliQuestion(payload.question || '') : '')
 
   return (
     <div
@@ -99,12 +110,12 @@ export default function ClarificationCard({ payload, onSubmit }) {
 
         {/* 2026-09-02: 人工审核批量面板（忠实于冲突数据的 markdown + 逐项 1-5 选项卡 + 可选理由） */}
         {isBatch ? (
-          <HumanReviewPanel payload={payload} onSubmit={submit} />
+          <HumanReviewPanel payload={payload} onSubmit={submit} disabled={sending} />
         ) : (
           <>
         {/* final_confirm：结构化字段；human_review 系列 fields（历史任务重放）也可渲染——
             2026-09-02 fix：原 isConfirm gate 挡住 human_review_verdict 的冲突字段 */}
-        {payload.fields && payload.fields.length > 0 && (
+        {hasFields && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 }}>
             {payload.fields.map((f) => (
               <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -130,9 +141,9 @@ export default function ClarificationCard({ payload, onSubmit }) {
         )}
 
         {/* 描述文本（P1-7：pre-wrap 整段改为分段段落，不再整块原始平铺） */}
-        {payload.description && !isConfirm && (
+        {description && (
           <div style={{ fontSize: 13, color: 'var(--content-fg)', lineHeight: 1.7, marginBottom: 12 }}>
-            {String(payload.description).split(/\n+/).filter(Boolean).map((para, i) => (
+            {String(description).split(/\n+/).filter(Boolean).map((para, i) => (
               <p key={i} style={{ margin: '0 0 6px' }}>{para}</p>
             ))}
           </div>
@@ -146,6 +157,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
                 key={b.value}
                 variant="outline"
                 size="sm"
+                disabled={sending}
                 onClick={() => submit(b.value)}
                 style={{ color: 'var(--accent-text)', borderColor: 'var(--accent-light)' }}
               >
@@ -162,7 +174,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') submit()
+                if (e.key === 'Enter' && !e.nativeEvent.isComposing && e.keyCode !== 229) { e.preventDefault(); submit() }
               }}
               placeholder={payload.type === 'final_confirm_modify' ? '输入新的查询…' : '输入答案…（回车发送）'}
               style={{
@@ -176,7 +188,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
                 color: 'var(--content-fg)',
               }}
             />
-            <Button variant="accent" size="icon" onClick={() => submit()}>
+            <Button variant="accent" size="icon" aria-label="提交确认回复" disabled={sending || !text.trim()} onClick={() => submit()}>
               <Icon.Send />
             </Button>
           </div>

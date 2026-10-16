@@ -1,19 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useDismissTransition } from '@/hooks/useDismissTransition'
+import { useDialogFocus } from '@/hooks/useDialogFocus'
+import { dimensionSummary } from '@/lib/resultData'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
-import * as api from '@/services/api'
-import { STATUS_LABELS, STATUS_COLORS } from '@/components/status'
-import { SourcesList, OutputFiles } from '@/components/results/ResultTabs'
-import AstrophysicsNetworkModule from '@/components/results/AstrophysicsNetworkModule'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useWheelHorizontal } from '@/hooks/useWheelHorizontal'
 import Markdown from '@/lib/markdown'
 
 /* 右侧详情面板（块 5 定案）：
  * - 宽度 560 默认，可拖拽调宽（400-680）
- * - 分区 Tab：概览 / 质量 / 运行 / 来源 / 图证 / 轨迹 / 洞察 / 下载
+ * - 分区 Tab：概览 / 质量 / 运行 / 来源 / 研究图像 / 轨迹 / 洞察 / 下载
  * - <1280px：改覆盖式抽屉（fixed + 遮罩，CSS .detail-panel 媒体查询）
  * - 数据加载期显示骨架屏；各分区空数据有空状态提示
  */
@@ -21,15 +18,17 @@ import Markdown from '@/lib/markdown'
 const MIN_W = 400
 const MAX_W = 680
 
-/* 图证缩略图：有 image_url 走真实图（契约 D7-3），否则 SVG 占位。
+/* 研究图像缩略图：有 image_url 走真实图（契约 D7-3），否则显示缺失状态。
  * 2026-08-27：缩略图只放图（点击 → FigureLightboxModal 全屏模态），
  * caption 由调用方节流展示（一行）。 */
-function FigureThumb({ fig, height = 110 }) {
+export function FigureThumb({ fig, height = 110 }) {
+  const [failed, setFailed] = useState(false)
+  useEffect(() => setFailed(false), [fig.image_url])
   const b = fig.bbox || fig.bbox_2d
-  if (fig.image_url) {
+  if (fig.image_url && !failed) {
     return (
       <div style={{ position: 'relative', width: '100%', height, background: 'var(--surface-secondary)', borderRadius: 6, overflow: 'hidden' }}>
-        <img src={fig.image_url} alt={fig.caption || ''} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        <img onError={() => setFailed(true)} src={fig.image_url} alt={fig.caption || ''} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         {b && (
           <div style={{
             position: 'absolute',
@@ -41,35 +40,18 @@ function FigureThumb({ fig, height = 110 }) {
       </div>
     )
   }
-  return (
-    <svg width="100%" height={height} viewBox="0 0 200 130" preserveAspectRatio="none" style={{ display: 'block', borderRadius: 6 }}>
-      <defs>
-        <linearGradient id={`bg-${fig.id}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={`hsl(${fig.hue ?? 0}, 45%, 88%)`} />
-          <stop offset="100%" stopColor={`hsl(${fig.hue ?? 0}, 55%, 72%)`} />
-        </linearGradient>
-      </defs>
-      <rect width="200" height="130" fill={`url(#bg-${fig.id})`} />
-      <polyline points="20,100 60,80 100,88 140,52 180,60" fill="none" stroke="hsl(0,0%,40%)" strokeWidth="1.5" />
-      <circle cx="100" cy="88" r="3" fill="hsl(0,0%,25%)" />
-      <rect x="30" y="20" width="40" height="25" fill="hsl(0,0%,92%)" opacity="0.7" />
-      {b && (
-        <>
-          <rect x={b[0] * 200} y={b[1] * 130} width={(b[2] - b[0]) * 200} height={(b[3] - b[1]) * 130} fill="none" stroke="var(--status-error)" strokeWidth="1.5" strokeDasharray="4 3" />
-          <circle cx={b[0] * 200 + 3} cy={b[1] * 130 + 3} r="3" fill="var(--status-error)" />
-        </>
-      )}
-    </svg>
-  )
+  return <div className="evidence-missing" style={{ height }}>{failed ? '图像加载失败，请重新打开或检查文件' : '该记录未提供图像'}</div>
 }
 
-/* 图证全屏模态（2026-08-27：样式对齐 RecordDetailDialog 记录详情弹窗）：
+/* 研究图像全屏模态（2026-08-27：样式对齐 RecordDetailDialog 记录详情弹窗）：
  * 上方大图（自适应 contain）+ 下方 Markdown 渲染图注 + 来源（第 N 页 · source_id）。
  * Esc / 遮罩关闭。
  * 注意：must use createPortal —— DetailPanel 的 aside 带 .glass（backdrop-filter），
  * 会创建 position:fixed 的 containing block，普通渲染的模态会被卡在面板内（实测踩坑）。 */
-/* 图证全屏与无级缩放模态（F4：支持滚轮无级缩放 1x-8x、鼠标拖拽平移、双击放大/复位、全屏切换、bbox 联动） */
-function FigureLightboxModal({ fig, onClose }) {
+/* 研究图像全屏与无级缩放模态（F4：支持滚轮无级缩放 1x-8x、鼠标拖拽平移、双击放大/复位、全屏切换、bbox 联动） */
+export function FigureLightboxModal({ fig, onClose }) {
+  const dismissal = useDismissTransition(onClose)
+  const dialogRef = useDialogFocus(true, dismissal.close)
   const [view, setView] = useState({ scale: 1, pan: { x: 0, y: 0 } })
   const [isMax, setIsMax] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -85,7 +67,8 @@ function FigureLightboxModal({ fig, onClose }) {
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
+      if (e.defaultPrevented) return
+      if (!e.defaultPrevented && e.key === 'Escape') dismissal.close()
       if (e.key === '+' || e.key === '=') zoomBy(1.25)
       if (e.key === '-') zoomBy(1 / 1.25)
       if (e.key === '0') setView({ scale: 1, pan: { x: 0, y: 0 } })
@@ -156,13 +139,15 @@ function FigureLightboxModal({ fig, onClose }) {
 
   return createPortal(
     <div
-      onClick={onClose}
+      onClick={dismissal.close}
+      data-closing={dismissal.closing || undefined}
       className="animate-fade-in"
       style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="glass animate-modal-in"
+        ref={dialogRef} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} role="dialog" aria-modal="true" aria-label="研究图像" tabIndex={-1}
+        className="animate-modal-in"
         data-component="figure-lightbox"
         style={{
           width: isMax ? '98vw' : 940,
@@ -170,7 +155,7 @@ function FigureLightboxModal({ fig, onClose }) {
           height: isMax ? '96vh' : 'auto',
           maxHeight: '94vh',
           display: 'flex', flexDirection: 'column',
-          background: 'color-mix(in srgb, var(--seed-surface) 86%, transparent)',
+          background: 'var(--seed-surface)',
           borderRadius: 'var(--radius-lg)',
           boxShadow: 'var(--shadow-modal)',
           overflow: 'hidden',
@@ -180,7 +165,7 @@ function FigureLightboxModal({ fig, onClose }) {
         {/* 头部：标题 + 来源 + 缩放平移交互栏 + 全屏/关闭 */}
         <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, overflow: 'hidden' }}>
           <span style={{ fontSize: 13.5, fontWeight: 550, color: 'var(--content-fg)', flexShrink: 0, whiteSpace: 'nowrap' }}>
-            科学图证{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
+            科学研究图像{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
           </span>
           {fig.source_id && (
             <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -213,7 +198,7 @@ function FigureLightboxModal({ fig, onClose }) {
             >
               <Icon.PanelRight />
             </Button>
-            <Button variant="ghost" size="icon" title="关闭 (Esc)" onClick={onClose} style={{ width: 28, height: 28 }}>
+            <Button variant="ghost" size="icon" title="关闭 (Esc)" onClick={dismissal.close} style={{ width: 28, height: 28 }}>
               <Icon.Close />
             </Button>
           </div>
@@ -272,7 +257,7 @@ function FigureLightboxModal({ fig, onClose }) {
               )}
             </div>
           ) : (
-            <span className="hint-dim">该图证无可用图像文件</span>
+            <span className="hint-dim">该研究图像无可用图像文件</span>
           )}
         </div>
 
@@ -336,7 +321,7 @@ function gradeColor(grade) {
 }
 /* 置信度：0-1 小数 → 百分比；>1 原样 */
 const fmtConf = (c) => (typeof c === 'number' && c <= 1 ? `${Math.round(c * 100)}%` : String(c))
-function InsightsReport({ insights }) {
+export function InsightsReport({ insights }) {
   const fi = Array.isArray(insights.field_insights) ? insights.field_insights : []
   const rel = Array.isArray(insights.cross_field_relationships) ? insights.cross_field_relationships : []
   const rec = insights.usage_recommendations || {}
@@ -380,9 +365,6 @@ function InsightsReport({ insights }) {
       )}
 
       {/* 天体物理定律知识网络拓扑与防幻觉护栏 */}
-      {rel.length > 0 && (
-        <AstrophysicsNetworkModule insights={insights} isCompact={true} />
-      )}
 
       {/* 字段洞察 */}
       {fi.length > 0 && (
@@ -568,55 +550,12 @@ const QUALITY_DIM_LABELS = {
 }
 
 function resolveDimensionScores(qScoring, qState) {
-  if (qScoring?.dimension_scores && typeof qScoring.dimension_scores === 'object') {
-    const entries = Object.entries(qScoring.dimension_scores)
-    if (entries.length > 0) return qScoring.dimension_scores
-  }
-
-  const srcMap = qState?.sources || {}
-  const dimTotals = {}
-  const dimWeights = {}
-
-  for (const src of Object.values(srcMap)) {
-    if (!src || typeof src !== 'object') continue
-    const ds = src.quality_scoring?.dimension_scores
-    const n = Math.max(1, Number(src.record_count) || 1)
-    if (ds && typeof ds === 'object') {
-      for (const [k, v] of Object.entries(ds)) {
-        if (typeof v === 'number' && Number.isFinite(v)) {
-          dimTotals[k] = (dimTotals[k] || 0) + v * n
-          dimWeights[k] = (dimWeights[k] || 0) + n
-        }
-      }
-    }
-  }
-
-  const aggregated = {}
-  for (const [dim, total] of Object.entries(dimTotals)) {
-    if (dimWeights[dim] > 0) {
-      aggregated[dim] = Math.round((total / dimWeights[dim]) * 10000) / 10000
-    }
-  }
-
-  if (Object.keys(aggregated).length > 0) return aggregated
-
-  if (typeof qScoring?.overall_score === 'number') {
-    const o = qScoring.overall_score
-    return {
-      completeness: Math.round(o * 0.92 * 10000) / 10000,
-      consistency: Math.round(Math.min(1.0, o * 1.05) * 10000) / 10000,
-      format: 1.0,
-      source_reliability: Math.round(Math.min(1.0, o * 0.98) * 10000) / 10000,
-      conflict_risk: Math.round(Math.min(1.0, o * 1.02) * 10000) / 10000,
-      extraction_quality: Math.round(Math.min(1.0, o * 1.04) * 10000) / 10000,
-    }
-  }
-
-  return null
+  return dimensionSummary(qScoring, qState).scores
 }
 
-function RadarChart({ dims, size = 240 }) {
+function RadarChart({ dims, size = 270 }) {
   const [hoveredIdx, setHoveredIdx] = useState(null)
+  const gradientId = `radar-${useId().replace(/:/g, '')}`
   const cx = 130
   const cy = 115
   const radius = 68
@@ -639,21 +578,26 @@ function RadarChart({ dims, size = 240 }) {
         viewBox="-40 -25 340 280"
         role="img"
         aria-label="质量维度雷达图"
-        style={{ overflow: 'visible', maxWidth: 290 }}
+        style={{ overflow: 'visible', maxWidth: 330 }}
       >
         <defs>
-          <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.05" />
+          <radialGradient id={gradientId} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={radius}>
+            <stop offset="0%" stopColor="var(--radar-center)" />
+            <stop offset="18%" stopColor="var(--radar-center)" />
+            <stop offset="38%" stopColor="var(--radar-pale)" stopOpacity="0.9" />
+            <stop offset="60%" stopColor="var(--sage-soft)" stopOpacity="0.8" />
+            <stop offset="82%" stopColor="var(--sage)" stopOpacity="0.78" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.8" />
           </radialGradient>
         </defs>
+        <polygon points={dataPoly} className="radar-data" fill={`url(#${gradientId})`} />
         {/* 背景同心多边形网格 */}
         {[0.25, 0.5, 0.75, 1].map((f) => (
           <polygon
             key={f}
             points={ringPoly(f)}
             fill="none"
-            stroke="var(--surface-border-subtle)"
+            stroke="var(--chart-grid)"
             strokeWidth={f === 1 ? 1.2 : 0.8}
             strokeDasharray={f === 1 ? 'none' : '3 3'}
           />
@@ -661,15 +605,15 @@ function RadarChart({ dims, size = 240 }) {
         {/* 轴线 */}
         {dims.map((_, i) => {
           const [x, y] = pt(i, radius)
-          return <line key={`a-${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--surface-border-subtle)" strokeWidth={1} />
+          return <line key={`a-${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--chart-grid)" strokeWidth={1} />
         })}
-        {/* 数据填充多边形 */}
+        {/* Outline stays above the grid; the radial fill stays behind it. */}
         <polygon
           points={dataPoly}
-          fill="url(#radarGlow)"
+          fill="none"
           stroke="var(--accent)"
           strokeWidth={2}
-          style={{ transition: 'all 0.25s ease' }}
+          style={{ transition: 'fill 0.2s ease, stroke 0.2s ease' }}
         />
         {/* 数据点与交互高亮 */}
         {dims.map((d, i) => {
@@ -703,6 +647,9 @@ function RadarChart({ dims, size = 240 }) {
           return (
             <g
               key={`label-group-${i}`}
+              tabIndex={0}
+              onFocus={() => setHoveredIdx(i)}
+              onBlur={() => setHoveredIdx(null)}
               onMouseEnter={() => setHoveredIdx(i)}
               onMouseLeave={() => setHoveredIdx(null)}
               style={{ cursor: 'pointer' }}
@@ -712,7 +659,7 @@ function RadarChart({ dims, size = 240 }) {
                 x={x}
                 y={y - 2}
                 textAnchor={anchor}
-                fontSize={10.5}
+                fontSize={13}
                 fontWeight={isHov ? 600 : 500}
                 fill={isHov ? 'var(--accent)' : 'var(--content-fg-secondary)'}
               >
@@ -720,9 +667,9 @@ function RadarChart({ dims, size = 240 }) {
               </text>
               <text
                 x={x}
-                y={y + 11}
+                y={y + 14}
                 textAnchor={anchor}
-                fontSize={10}
+                fontSize={12.5}
                 fontWeight={600}
                 fill={isHov ? 'var(--accent)' : 'var(--content-fg)'}
               >
@@ -733,22 +680,13 @@ function RadarChart({ dims, size = 240 }) {
         })}
       </svg>
       {/* 底部细分指标说明 Tooltip 引导条 */}
-      {hoveredIdx != null && dims[hoveredIdx] && (
-        <div style={{
-          marginTop: -6, padding: '4px 10px', borderRadius: 'var(--radius-pill)',
-          background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)',
-          fontSize: 11, color: 'var(--content-fg-secondary)', textAlign: 'center',
-        }}>
-          <strong style={{ color: 'var(--accent)', marginRight: 4 }}>{dims[hoveredIdx].label}</strong>
-          {dims[hoveredIdx].desc}
-        </div>
-      )}
+      <div className="quality-dimension-description" aria-live="polite">{hoveredIdx != null && dims[hoveredIdx] && <><strong>{dims[hoveredIdx].label}</strong>{dims[hoveredIdx].desc}</>}</div>
     </div>
   )
 }
 
 /* 概览「数据质量评分」卡：大数字 + 等级 + 水平条 + 雷达图 + 统计行 */
-function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
+export function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
   if (!qScoring) {
     return (
       <div className="empty-state" style={{ padding: '20px 12px' }}>
@@ -756,7 +694,7 @@ function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
       </div>
     )
   }
-  const overall = Number(qScoring.overall_score) || 0
+  const overall = typeof qScoring.overall_score === 'number' ? qScoring.overall_score : null
   const rawDims = resolveDimensionScores(qScoring, qState) || {}
   const dims = Object.entries(rawDims).map(([key, score]) => ({
     key,
@@ -767,22 +705,22 @@ function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
   const level = (qScoring.quality_level || 'unknown').toUpperCase()
   return (
     <div>
-      <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
+      <div className="quality-score-layout" style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
             <span className="font-mono" style={{ fontSize: 40, fontWeight: 590, letterSpacing: '-0.03em', lineHeight: 1, color: 'var(--content-fg)' }}>
-              {Math.round(overall * 100)}
+              {overall == null ? '未提供' : (overall * 100).toFixed(2)}
             </span>
             <span className="font-mono" style={{ fontSize: 13, color: 'var(--content-fg-tertiary)' }}>/100</span>
           </div>
           <span style={{ fontSize: 11, fontWeight: 590, letterSpacing: '0.08em', marginTop: 4, color: gradeColor(qScoring.quality_level) }}>{level}</span>
           <div style={{ width: 84, height: 5, borderRadius: 99, background: 'var(--surface-secondary)', marginTop: 6, overflow: 'hidden' }}>
-            <div style={{ height: '100%', borderRadius: 99, width: `${Math.round(overall * 100)}%`, background: scoreColor(overall) }} />
+            <div style={{ height: '100%', borderRadius: 99, width: `${overall == null ? '未提供' : (overall * 100).toFixed(2)}%`, background: scoreColor(overall) }} />
           </div>
         </div>
         {/* 雷达图展示区 */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: 'center' }}>
-          {dims.length ? <RadarChart dims={dims} /> : null}
+          <div className="quality-dimensions">{dims.length ? <RadarChart dims={dims} /> : <p className="hint">该报告未提供质量维度分数</p>}<p className="hint">{dimensionSummary(qScoring, qState).method}</p></div>
         </div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
@@ -799,7 +737,7 @@ function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
   )
 }
 
-function QualityReport({ qState, conflictReport }) {
+export function QualityReport({ qState, conflictReport }) {
   const scoring = qState?.quality_scoring || {}
   const srcMap = qState?.sources || {}
   const perScores = scoring.per_source_scores || {}
@@ -829,7 +767,7 @@ function QualityReport({ qState, conflictReport }) {
       <div className="kpi-card" style={{ padding: '14px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
           <span className="font-mono" style={{ fontSize: 30, fontWeight: 590, letterSpacing: '-0.02em', color: scoreColor(scoring.overall_score) }}>
-            {typeof scoring.overall_score === 'number' ? (scoring.overall_score * 100).toFixed(1) : '—'}
+            {typeof scoring.overall_score === 'number' ? (scoring.overall_score * 100).toFixed(2) : '—'}
           </span>
           <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--content-fg-tertiary)' }}>/ 100 综合质量分</span>
           {scoring.quality_level && (
@@ -840,9 +778,10 @@ function QualityReport({ qState, conflictReport }) {
         </div>
         {ci && (
           <div className="hint-dim" style={{ marginTop: 6 }}>
-            95% 置信区间 {ci[0].toFixed(3)} – {ci[1].toFixed(3)} · 来源 {rows.length} 个
+            报告评分区间 {ci[0].toFixed(3)} – {ci[1].toFixed(3)} · 来源 {rows.length} 个
           </div>
         )}
+        {!dims.length && <p className="hint">该报告未提供质量维度分数</p>}
         {dims.length > 0 && (
           <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--surface-border-subtle)', display: 'flex', justifyContent: 'center' }}>
             <RadarChart dims={dims} size={250} />
@@ -1068,7 +1007,8 @@ function fmtTime(ts) {
     return new Date(ts).toLocaleTimeString('zh-CN', { hour12: false })
   } catch { return '—' }
 }
-function ExecutionReport({ workflowState, procStats }) {
+export function ExecutionReport({ workflowState, procStats }) {
+  const [historyPage, setHistoryPage] = useState(1)
   const ws = workflowState || {}
   const ps = procStats || {}
   const llm = ws.llm_call_count ?? ps.total_llm_calls ?? null
@@ -1102,7 +1042,7 @@ function ExecutionReport({ workflowState, procStats }) {
         <div>
           <div className="section-label" style={{ marginBottom: 6 }}>执行审计 · {history.length} 步</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {history.map((h, i) => (
+            {history.slice((Math.min(historyPage, Math.ceil(history.length / 20)) - 1) * 20, Math.min(historyPage, Math.ceil(history.length / 20)) * 20).map((h, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline', padding: '6px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
                 <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(h.timestamp)}</span>
                 <span className="font-mono" style={{ flexShrink: 0, fontSize: 12, fontWeight: 510, color: 'var(--content-fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '42%', minWidth: 0 }}>{h.agent || '—'}</span>
@@ -1118,6 +1058,7 @@ function ExecutionReport({ workflowState, procStats }) {
               </div>
             ))}
           </div>
+          <div className="pagination-row"><span>{history.length} 步 · 每页 20 步</span><div><Button variant="outline" size="sm" disabled={historyPage <= 1} onClick={() => setHistoryPage(page => page - 1)}>上一页</Button><span>{Math.min(historyPage, Math.ceil(history.length / 20))} / {Math.ceil(history.length / 20)}</span><Button variant="outline" size="sm" disabled={historyPage >= Math.ceil(history.length / 20)} onClick={() => setHistoryPage(page => page + 1)}>下一页</Button></div></div>
         </div>
       ) : (
         <TabEmpty text="暂无执行审计记录" />
@@ -1126,361 +1067,3 @@ function ExecutionReport({ workflowState, procStats }) {
   )
 }
 
-export default function DetailPanel({ open, onClose, task, pipeline, requestedTab }) {
-  // 2026-08-27：默认宽度改为 400（原为 560）——用户指定展开后的默认宽度
-  // 即此前的最小宽度（MIN_W），三栏更均衡
-  const [width, setWidth] = useState(400)
-  const [section, setSection] = useState('overview')
-  // 分区 Tab 条：横向溢出时鼠标滚轮左右滚动
-  const tabBarRef = useRef(null)
-  useWheelHorizontal(tabBarRef)
-  const [lightbox, setLightbox] = useState(null)
-  const dragRef = useRef(null)
-  const isDrawer = useMediaQuery('(max-width: 1279px)')
-
-  // 真实数据（契约 D1-3/D7-3/D9-2：重度数据走 HTTP 接口；概览统计全部来自真实接口）
-  const [sources, setSources] = useState([])
-  const [exports, setExports] = useState([])
-  const [figures, setFigures] = useState([])
-  // 2026-08-24: 图证渐进加载 — 首屏 12 张, 滚动到底自动续载
-  const [figVisible, setFigVisible] = useState(12)
-  const figSentinelRef = useRef(null)
-
-  // 任务切换/图证数据刷新 → 渐进计数复位
-  useEffect(() => {
-    setFigVisible(12)
-  }, [figures])
-
-  // 哨兵可见 → 续载下一批 12 张
-  useEffect(() => {
-    const el = figSentinelRef.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((en) => en.isIntersecting)) {
-          setFigVisible((n) => n + 12)
-        }
-      },
-      { rootMargin: '120px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [section, figVisible, figures.length])
-  const [quality, setQuality] = useState(null)
-  const [traces, setTraces] = useState([])
-  const [recordCount, setRecordCount] = useState(null)
-  const [loading, setLoading] = useState(false)
-  // P0-2：任务完成时数据仍空的延迟重拉触发器（递增以触发主 effect 重跑）
-  const [reloadTick, setReloadTick] = useState(0)
-  // 洞察报告来自 pipeline（usePipeline 从 /state 快照 hydrate；
-  // 后端 GET /quality 的 insights 字段恒为 null，不再消费）
-  const insights = pipeline?.insights || null
-
-  // 外部请求切 tab（洞察卡"查看完整报告"，seq 递增重复触发）
-  useEffect(() => {
-    if (requestedTab?.tab) setSection(requestedTab.tab)
-  }, [requestedTab])
-
-  useEffect(() => {
-    if (!task?.task_id) {
-      // M-02: task 为 null（点击"新建"）→ 清空旧任务数据（概览/来源/图证/质量不再残留）
-      setSources([]); setExports([]); setFigures([]); setQuality(null)
-      setTraces([]); setRecordCount(null)
-      setLoading(false)
-      return
-    }
-    let alive = true
-    setSources([]); setExports([]); setFigures([]); setQuality(null)
-    setTraces([]); setRecordCount(null)
-    setLoading(true)
-    Promise.all([
-      api.getSources(task.task_id).catch(() => []),
-      api.getExports(task.task_id).catch(() => []),
-      api.getFigures(task.task_id).catch(() => []),
-      api.getQuality(task.task_id).catch(() => null),
-      api.getRecords(task.task_id).catch(() => []),
-    ]).then(([src, ex, fig, q, recs]) => {
-      if (!alive) return
-      setSources(src)
-      setExports(ex)
-      setFigures(fig)
-      setQuality(q)
-      setTraces(q?.quality_report?.data_state?.data_trace || [])
-      setRecordCount(Array.isArray(recs) ? recs.length : null)
-      setLoading(false)
-    })
-    return () => { alive = false }
-    // task.status 变化（running→completed）时重拉：任务进行中 final_output 未生成，
-    // 完成后必须刷新右侧栏（修复"右侧栏永远 0"）
-  }, [task?.task_id, task?.status, reloadTick])
-
-  // P0-2：任务完成瞬间数据仍空（落库/网络窗口）→ 800ms 后触发一次重拉
-  useEffect(() => {
-    if (!task?.task_id || !pipeline?.taskDone) return
-    if (quality || recordCount != null || sources.length) return
-    const timer = setTimeout(() => setReloadTick((n) => n + 1), 800)
-    return () => clearTimeout(timer)
-  }, [task?.task_id, pipeline?.taskDone])
-
-  /* 拖拽调宽 */
-  const startDrag = (e) => {
-    dragRef.current = { startX: e.clientX, startW: width }
-    const onMove = (ev) => {
-      if (!dragRef.current) return
-      const next = Math.min(MAX_W, Math.max(MIN_W, dragRef.current.startW + (dragRef.current.startX - ev.clientX)))
-      setWidth(next)
-    }
-    const onUp = () => {
-      dragRef.current = null
-      document.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseup', onUp)
-    }
-    document.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseup', onUp)
-  }
-
-  /* 质量报告真实结构（契约：GET /quality → { quality_report: QualityGraphState }）：
-   * - report_state.quality.quality_scoring：综合分/等级/逐源评分/路由
-   * - workflow_state：LLM/工具调用计数 + workflow_history 审计轨迹
-   * - output_state.quality_summary.processing_statistics：总耗时/B⇄C 轮次
-   */
-  const qState = useMemo(() => quality?.quality_report?.report_state?.quality || null, [quality])
-  const qScoring = useMemo(() => qState?.quality_scoring || null, [qState])
-  // 归一化修改数（slim 响应保留 modifications 列表；概览「归一化 N」）
-  const normCount = useMemo(
-    () => (Array.isArray(quality?.quality_report?.report_state?.normalization?.modifications)
-      ? quality.quality_report.report_state.normalization.modifications.length : null),
-    [quality],
-  )
-  const workflowState = useMemo(() => quality?.quality_report?.workflow_state || null, [quality])
-  const procStats = useMemo(
-    () => quality?.quality_report?.output_state?.quality_summary?.processing_statistics || null,
-    [quality],
-  )
-  if (!open) return null
-
-  const insightCount = insights
-    ? ((Array.isArray(insights.field_insights) ? insights.field_insights.length : 0)
-      + (Array.isArray(insights.cross_field_relationships) ? insights.cross_field_relationships.length : 0))
-    : 0
-
-  const sections = [
-    { key: 'overview', label: '概览' },
-    { key: 'quality', label: '质量' },
-    { key: 'run', label: '运行' },
-    { key: 'sources', label: `来源 (${sources.length})` },
-    { key: 'figures', label: `图证 (${figures.length})` },
-    { key: 'traces', label: `轨迹 (${traces.length})` },
-    { key: 'insights', label: `洞察 (${insightCount})` },
-    { key: 'downloads', label: '任务数据包' },
-  ]
-
-  const taskRunning = task && (task.status === 'running' || task.status === 'queued')
-
-  return (
-    <>
-      {/* 窄屏覆盖式抽屉的遮罩 */}
-      {isDrawer && (
-        <div
-          onClick={onClose}
-          className="animate-fade-in"
-          style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 55 }}
-        />
-      )}
-      <aside
-        data-component="detail-panel"
-        className={`detail-panel glass${isDrawer ? ' animate-drawer-in' : ''}`}
-        style={{
-          width: isDrawer ? Math.min(width, Math.max(320, window.innerWidth - 48)) : width,
-          minWidth: isDrawer ? Math.min(width, Math.max(320, window.innerWidth - 48)) : width,
-          borderLeft: '1px solid var(--glass-border)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          position: 'relative',
-          flexShrink: 0,
-        }}
-      >
-        {/* 拖拽手柄（宽屏才有意义） */}
-        {!isDrawer && (
-          <div
-            onMouseDown={startDrag}
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: 5,
-              cursor: 'col-resize',
-              zIndex: 10,
-              background: 'transparent',
-            }}
-          />
-        )}
-
-        {/* 头部 */}
-        <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px 0', flexShrink: 0 }}>
-          <h2 style={{ fontSize: 14, fontWeight: 510, flex: 1 }}>执行详情</h2>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <Icon.Close />
-          </Button>
-        </div>
-
-        {/* 分区 Tab */}
-        <div ref={tabBarRef} style={{ display: 'flex', gap: 2, padding: '6px 10px 0', borderBottom: '1px solid var(--surface-border)', flexShrink: 0, overflowX: 'auto' }}>
-          {sections.map((s) => (
-            <button
-              key={s.key}
-              onClick={() => setSection(s.key)}
-              className={`tab-btn${section === s.key ? ' active' : ''}`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-
-        <ScrollArea className="flex-1 p-4">
-          {loading ? (
-            <PanelSkeleton />
-          ) : (
-            <div key={section} className="animate-tab-in">
-              {/* ── 概览（用户重设计：2×2 KPI + 质量评分大数字 + 6 维雷达 + 报告入口） ── */}
-              {section === 'overview' && (
-                <div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 18 }}>
-                    <KpiCard label="数据源" value={sources.length} />
-                    <KpiCard label="数据记录" value={recordCount ?? '—'} />
-                    <KpiCard label="图证" value={figures.length} />
-                    <KpiCard label="状态" value={STATUS_LABELS[task?.status] || '—'} status={task?.status} />
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                    <span className="section-label">数据质量评分</span>
-                    <span style={{ flex: 1 }} />
-                    <Button variant="outline" size="sm" onClick={() => setSection('quality')}>
-                      查看质量报告
-                    </Button>
-                  </div>
-                  {qScoring ? (
-                    <QualityScoreSection qScoring={qScoring} qState={qState} normCount={normCount} />
-                  ) : (
-                    <TabEmpty text={taskRunning ? '任务进行中，质检完成后展示评分' : '暂无质量报告'} />
-                  )}
-                </div>
-              )}
-
-              {/* ── 质量报告（report_state.quality 完整评分/路由） ── */}
-              {section === 'quality' && (
-                qState ? <QualityReport qState={qState} conflictReport={quality?.quality_report?.report_state?.conflict?.resolution_report} /> : <TabEmpty text={taskRunning ? '任务进行中，质检完成后生成质量报告' : '暂无质量报告'} />
-              )}
-
-              {/* ── 运行统计（workflow_state + processing_statistics） ── */}
-              {section === 'run' && (
-                (workflowState || procStats)
-                  ? <ExecutionReport workflowState={workflowState} procStats={procStats} />
-                  : <TabEmpty text={taskRunning ? '任务进行中，统计数据随执行累积' : '暂无运行统计'} />
-              )}
-
-              {/* ── 来源（契约 D7-6） ── */}
-              {section === 'sources' && (
-                sources.length ? <SourcesList sources={sources} /> : <TabEmpty text="暂无数据源" />
-              )}
-
-              {/* ── 图证（双列缩略图 + 全屏模态 + 渐进加载，契约 D9-4）
-                  2026-08-27：缩略图只放图 + 一行图注；点击 → 全屏模态（对齐记录详情） ── */}
-              {section === 'figures' && (
-                figures.length ? (
-                  <>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 10 }}>
-                      {figures.slice(0, figVisible).map((fig) => (
-                        <div key={fig.id} className="row-item" style={{ padding: 8 }}>
-                          <div
-                            onClick={() => setLightbox(fig)}
-                            style={{ cursor: 'zoom-in', position: 'relative' }}
-                            title="点击查看大图"
-                          >
-                            <FigureThumb fig={fig} height={110} />
-                            <span style={{
-                              position: 'absolute', right: 6, bottom: 6, fontSize: 10,
-                              padding: '1px 7px', borderRadius: 'var(--radius-pill)',
-                              color: 'var(--content-fg-secondary)', background: 'var(--surface-primary)',
-                              border: '1px solid var(--surface-border-subtle)', pointerEvents: 'none',
-                            }}>
-                              {fig.page != null ? `第 ${fig.page} 页` : ''}
-                            </span>
-                          </div>
-                          {/* 一行图注（完整内容在弹出模态中渲染） */}
-                          <div style={{
-                            marginTop: 6, fontSize: 11.5, lineHeight: 1.5, color: 'var(--content-fg-secondary)',
-                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                            fontStyle: 'italic',
-                          }} title={fig.caption || ''}>
-                            {fig.caption || '无图注'}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {/* 渐进加载哨兵 + 剩余计数 */}
-                    {figVisible < figures.length ? (
-                      <div
-                        ref={figSentinelRef}
-                        style={{ padding: '14px 0 6px', textAlign: 'center', fontSize: 11, color: 'var(--content-fg-tertiary)' }}
-                      >
-                        已显示 {figVisible} / {figures.length} 张 · 滚动加载更多
-                      </div>
-                    ) : null}
-                  </>
-                ) : <TabEmpty text="暂无图证" />
-              )}
-
-              {/* ── 修改轨迹（P0-6：字段级明细 field/before→after/tool/reason/record_id） ── */}
-              {section === 'traces' && (
-                traces.length ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {traces.map((t, i) => (
-                      <div key={i} style={{ padding: '7px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                          <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(t.timestamp)}</span>
-                          <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{t.source_id || '—'}</span>
-                          {t.tool && (
-                            <span style={{ flexShrink: 0, fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
-                              {t.tool}
-                            </span>
-                          )}
-                          <span style={{ flex: 1, fontSize: 11, color: 'var(--content-fg-tertiary)', textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.reason || ''}</span>
-                        </div>
-                        {/* 字段级明细（并行标记等无 field 的条目不渲染第二行） */}
-                        {(t.field || t.before !== undefined || t.after !== undefined) && (
-                          <div style={{ marginTop: 5, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', fontSize: 12 }}>
-                            {t.field && <span className="font-mono" style={{ fontWeight: 510, color: 'var(--content-fg)' }}>{t.field}</span>}
-                            {t.before !== undefined && (
-                              <span className="font-mono" style={{ color: 'var(--content-fg-tertiary)', fontSize: 11 }}>{String(t.before ?? '—')} → {String(t.after ?? '—')}</span>
-                            )}
-                            {t.record_id && <span className="hint-dim" style={{ marginLeft: 'auto' }}>记录 {t.record_id}</span>}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : <TabEmpty text="本次任务未产生数据修改轨迹" />
-              )}
-
-              {/* ── 洞察（完整 DataInsightsReport，来自 /state） ── */}
-              {section === 'insights' && (
-                insights ? <InsightsReport insights={insights} /> : <TabEmpty text={taskRunning ? '任务进行中，交付阶段生成洞察' : '暂无洞察报告'} />
-              )}
-
-              {/* ── 输出文件（契约 D9：本地路径 + 复制/打开） ── */}
-              {section === 'downloads' && (
-                exports.length ? <OutputFiles files={exports} taskId={task?.task_id} /> : <TabEmpty text={taskRunning ? '任务进行中，交付阶段生成导出文件' : '暂无导出文件'} />
-              )}
-            </div>
-          )}
-        </ScrollArea>
-
-        {/* 图证全屏模态（2026-08-27：对齐记录详情样式） */}
-        {lightbox && <FigureLightboxModal fig={lightbox} onClose={() => setLightbox(null)} />}
-      </aside>
-    </>
-  )
-}

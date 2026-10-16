@@ -1,4 +1,7 @@
+import { useDismissTransition } from '@/hooks/useDismissTransition'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { useDialogFocus } from '@/hooks/useDialogFocus'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 
@@ -15,6 +18,8 @@ function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)) }
 
 export default function SourceImageLightbox({ url, bbox, source, onClose }) {
   const [failed, setFailed] = useState(false)
+  const dismissal = useDismissTransition(onClose)
+  const dialogRef = useDialogFocus(true, dismissal.close)
   const [view, setView] = useState({ scale: 1, pan: { x: 0, y: 0 } })
   const stageRef = useRef(null)   // 视口容器 (缩放锚点计算用)
   const dragRef = useRef(null)
@@ -58,7 +63,7 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
 
   // Esc 关闭
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e) => { if (!e.defaultPrevented && e.key === 'Escape') dismissal.close() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
@@ -110,12 +115,11 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
   }
   const onPointerUp = () => { dragRef.current = null }
 
-  if (failed) return null
 
-  return (
-    <div
-      onClick={onClose}
-      className="animate-fade-in"
+  return createPortal(
+    <div ref={dialogRef} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} role="dialog" aria-modal="true" aria-label="原文定位图" tabIndex={-1}
+      onClick={dismissal.close}
+      className="animate-modal-in"
       style={{
         position: 'fixed', inset: 0, zIndex: 220,
         background: 'var(--overlay)',
@@ -124,7 +128,7 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
       }}
     >
       {/* 工具条 (玻璃风格, 与 RecordDetail 弹窗统一) */}
-      <div className="glass" style={{
+      <div className="image-viewer-toolbar" style={{
         display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px',
         flexShrink: 0,
         borderLeft: 'none', borderRight: 'none', borderTop: 'none',
@@ -134,13 +138,13 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
           滚轮缩放 · 拖拽平移 · 双击 1:1 · Esc 关闭
           {isTable && ' · 表格整表定位'}
         </span>
-        <Button variant="ghost" size="icon" title="缩小" onClick={() => zoomBy(1 / 1.25)}><Icon.Minus /></Button>
+        <Button variant="ghost" size="icon" title="缩小" aria-label="缩小定位图" onClick={() => zoomBy(1 / 1.25)}><Icon.Minus /></Button>
         <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg-secondary)', minWidth: 44, textAlign: 'center' }}>
           {Math.round(view.scale * 100)}%
         </span>
-        <Button variant="ghost" size="icon" title="放大" onClick={() => zoomBy(1.25)}><Icon.Plus /></Button>
-        <Button variant="ghost" size="icon" title="复位" onClick={() => setView({ scale: 1, pan: { x: 0, y: 0 } })}><Icon.Maximize /></Button>
-        <Button variant="ghost" size="icon" title="关闭" onClick={onClose}><Icon.Close /></Button>
+        <Button variant="ghost" size="icon" title="放大" aria-label="放大定位图" onClick={() => zoomBy(1.25)}><Icon.Plus /></Button>
+        <Button variant="ghost" size="icon" title="复位" aria-label="复位定位图" onClick={() => setView({ scale: 1, pan: { x: 0, y: 0 } })}><Icon.Maximize /></Button>
+        <Button variant="ghost" size="icon" title="关闭" aria-label="关闭定位图" onClick={dismissal.close}><Icon.Close /></Button>
       </div>
 
       {/* 舞台: 图片 + 标注层 */}
@@ -157,7 +161,9 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
           cursor: view.scale > 1.01 ? 'grab' : 'zoom-in', touchAction: 'none',
         }}
       >
+        {failed && <p role="alert" className="notice">定位图加载失败，可关闭后重试。记录中的原文与出处仍可查看。</p>}
         <div style={{
+          display: failed ? 'none' : undefined,
           // 显式像素尺寸（fit 计算，无 % 循环）——bbox 百分比绑定到与 img 完全一致的
           // 网格；缩放/平移仍作用于本容器（transform），红框与图永远整齐同动
           position: 'relative',
@@ -202,6 +208,6 @@ export default function SourceImageLightbox({ url, bbox, source, onClose }) {
           </div>
         </div>
       </div>
-    </div>
+    </div>, document.body
   )
 }

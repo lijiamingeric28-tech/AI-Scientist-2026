@@ -8,7 +8,7 @@ import FlowBlocks from './FlowBlocks'
 /* 工作流下钻面板（三级）：
  *   L1 阶段流程图（WorkflowView）→ 点击阶段节点
  *   L2 阶段执行明细：子步骤/检索分组进度、flow 轮次、Agent 列表、阶段日志
- *   L3 Agent 明细：耗时 / 数据修改轨迹（field before→after tool confidence）
+ *   L3 Agent 明细：耗时 / 处理与执行轨迹（field before→after tool confidence）
  *      / 执行日志（检查器评分、LLM 初始化、httpx 工具调用等节点级明细）
  *
  * 数据来源全部是后端 SSE 真实事件（usePipeline 沉淀到 stage 上的
@@ -20,7 +20,7 @@ import FlowBlocks from './FlowBlocks'
 
 const STAGE_STATUS_LABELS = {
   completed: '已完成', running: '执行中', error: '失败',
-  waiting: '等待中', skipped: '已跳过', cancelled: '已取消',
+  waiting: '未开始', skipped: '已跳过', cancelled: '已取消',
 }
 const STAGE_STATUS_COLORS = {
   completed: 'var(--status-success)', running: 'var(--status-progress)', error: 'var(--status-error)',
@@ -88,6 +88,7 @@ function AgentRow({ agent, onOpen }) {
   return (
     <div
       onClick={onOpen}
+      role="button" tabIndex={0} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpen() } }}
       className="agent-row"   // 2026-08-27：hover 背景 CSS 化（滑动无 setState）
       style={{
         display: 'flex', alignItems: 'center', gap: 10,
@@ -106,24 +107,6 @@ function AgentRow({ agent, onOpen }) {
         <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{agent.duration}</span>
       )}
       <span style={{ flex: 1 }} />
-      {logCount > 0 && (
-        <span style={{
-          fontSize: 11, color: 'var(--content-fg-secondary)',
-          background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)',
-          padding: '1px 8px', borderRadius: 'var(--radius-pill)',
-        }}>
-          {logCount} 条执行日志
-        </span>
-      )}
-      {traceCount > 0 && (
-        <span style={{
-          fontSize: 11, color: 'var(--content-fg-secondary)',
-          background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)',
-          padding: '1px 8px', borderRadius: 'var(--radius-pill)',
-        }}>
-          {traceCount} 条修改
-        </span>
-      )}
       <Icon.ChevronRight style={{ width: 11, height: 11, color: 'var(--content-fg-tertiary)', flexShrink: 0 }} />
     </div>
   )
@@ -177,7 +160,7 @@ function LogBox({ logs, maxHeight = 220 }) {
   )
 }
 
-export default function StageDetailPanel({ stage, onClose, onShowStageInChat, initialAgentKey }) {
+export default function StageDetailPanel({ stage, onClose, onShowStageInChat, initialAgentKey, embedded = false }) {
   // null = L2 阶段明细；否则为选中的 agent key（L3）
   const [agentKey, setAgentKey] = useState(null)
 
@@ -191,10 +174,10 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
 
   // Esc 关闭
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e) => { if (!embedded && e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  }, [onClose, embedded])
 
   if (!stage) return null
 
@@ -211,22 +194,22 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
   return (
     <>
       {/* 遮罩 */}
-      <div
+      {!embedded && <div
         onClick={onClose}
         className="animate-fade-in"
         style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 65 }}
-      />
+      />}
 
       {/* 下钻面板 */}
       <aside
         data-component="stage-detail-panel"
         className="glass animate-drawer-in"
         style={{
-          position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 66,
-          width: 520, maxWidth: '94vw',
+          position: embedded ? 'relative' : 'fixed', top: 0, right: 0, bottom: 0, zIndex: 66,
+          width: embedded ? '100%' : 520, maxWidth: embedded ? '100%' : '94vw', height: embedded ? '100%' : undefined,
           display: 'flex', flexDirection: 'column', overflow: 'hidden',
           borderLeft: '1px solid var(--glass-border)',
-          boxShadow: 'var(--shadow-modal)',
+          boxShadow: embedded ? 'none' : 'var(--shadow-modal)', background: 'var(--surface-bg)',
         }}
       >
         {/* 面包屑 + 关闭 */}
@@ -256,7 +239,7 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
           <button
             onClick={onClose}
             style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--content-fg-tertiary)', display: 'flex', padding: 4 }}
-            title="关闭"
+            title="关闭" aria-label="关闭执行详情"
           >
             <Icon.Close />
           </button>
@@ -284,7 +267,7 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
                   <div className="hint" style={{ marginBottom: 14 }}>{agent.reason}</div>
                 )}
 
-                <Section label="数据修改轨迹" count={(agent.traces || []).length || null}>
+                <Section label="处理与执行轨迹" count={(agent.traces || []).length || null}>
                   {(agent.traces || []).length ? (
                     agent.traces.map((t, i) => <TraceRow key={i} t={t} />)
                   ) : (Array.isArray(agent.logs) && agent.logs.length) ? (
@@ -295,12 +278,12 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
                         : '该 Agent 未修改数据'}
                     </div>
                   ) : (
-                    <div className="empty-state" style={{ padding: '24px 12px' }}>
+                    <div className="agent-empty-note">
                       <Icon.Wrench style={{ width: 16, height: 16, opacity: 0.6 }} />
                       <span style={{ fontSize: 'var(--fs-sm)' }}>
                         {stage.id === 'quality_check'
                           ? '评估 / 评分类 Agent 只读检查，不产生修改轨迹'
-                          : '后端未上报该 Agent 的修改轨迹'}
+                          : '该执行记录未提供处理轨迹'}
                       </span>
                     </div>
                   )}
@@ -312,9 +295,9 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
                   {(Array.isArray(agent.logs) && agent.logs.length) ? (
                     <LogBox logs={agent.logs} maxHeight={340} />
                   ) : (
-                    <div className="empty-state" style={{ padding: '24px 12px' }}>
+                    <div className="agent-empty-note">
                       <Icon.Wrench style={{ width: 16, height: 16, opacity: 0.6 }} />
-                      <span style={{ fontSize: 'var(--fs-sm)' }}>后端未上报该 Agent 的节点级执行日志</span>
+                      <span style={{ fontSize: 'var(--fs-sm)' }}>该执行记录未提供详细日志</span>
                     </div>
                   )}
                 </Section>
@@ -370,14 +353,14 @@ export default function StageDetailPanel({ stage, onClose, onShowStageInChat, in
                 {/* flow 轮次 + Agent 明细（2026-08-27：嵌套块结构，共享 FlowBlocks） */}
                 {flows.length > 0 && (
                   <Section label="流程轮次" count={flows.length}>
-                    <FlowBlocks flows={flows} stageId={stage.id} agents={agents} onOpenAgent={(a) => setAgentKey(a.id || a.agent)} />
+                    <FlowBlocks flows={flows} stageId={stage.id} stageStatus={stage.status} awaitingReview={stage.status === 'running' && stage.clarifications?.some(item => item.type === 'human_review_batch' && !item.answer)} agents={agents} onOpenAgent={(a) => setAgentKey(a.id || a.agent)} />
                   </Section>
                 )}
                 {flows.length === 0 && agents.length > 0 && (
                   <Section label="Agent 明细" count={agents.length}>
                     {agents.map((a) => <AgentRow key={a.id || a.agent} agent={a} onOpen={() => setAgentKey(a.id || a.agent)} />)}
                     <div className="hint-dim" style={{ marginTop: 4 }}>
-                      点击 Agent 查看其执行日志（检查器 / LLM / 工具调用）与数据修改轨迹。
+                      点击 Agent 查看其执行日志（检查器 / LLM / 工具调用）与处理与执行轨迹。
                     </div>
                   </Section>
                 )}

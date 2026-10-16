@@ -12,7 +12,7 @@ import { Icon } from '@/components/icons'
 
 function fmtScore(v) {
   if (typeof v !== 'number') return '—'
-  return String(Number(v).toFixed(4)).replace(/0+$/, '').replace(/\.$/, '')
+  return String(Number(v * 100).toFixed(2)).replace(/0+$/, '').replace(/\.$/, '')
 }
 
 export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitchToUser }) {
@@ -26,8 +26,8 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
           演示样例 <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--content-fg-tertiary)' }}>· {samples.length} 组真实查询</span>
         </div>
         <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', lineHeight: 1.6, marginTop: 4 }}>
-          这些查询曾真实运行并通过人工复核，事件流与结果已内嵌系统——点击卡片查看完整过程，
-          或点「回放」按压缩节奏重演（不消耗查询额度、无需密钥）。
+          这些已保存查询包含原始事件与结果。点击“查看成果”阅读数据、来源和处理记录，
+          或点“回放过程”重演执行步骤（不消耗查询额度、无需密钥）。
           <button
             onClick={onSwitchToUser}
             style={{
@@ -54,7 +54,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                 onMouseEnter={() => setHoverId(s.task_id)}
                 onMouseLeave={() => setHoverId(null)}
                 className="hover-lift"
-                title="查看完整运行时间线"
+                role="button" tabIndex={0} onKeyDown={event => { if (event.target === event.currentTarget && ['Enter', ' '].includes(event.key)) { event.preventDefault(); onOpen?.(s.task_id) } }} title="查看数据成果"
                 style={{
                   border: `1px solid ${hoverId === s.task_id ? 'var(--accent)' : 'var(--surface-border)'}`,
                   borderRadius: 10,
@@ -64,7 +64,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                   flexDirection: 'column',
                   gap: 6,
                   cursor: 'pointer',
-                  transition: 'border-color .15s, box-shadow .15s, transform .15s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transition: 'border-color .18s ease, box-shadow .18s ease',
                   boxShadow: hoverId === s.task_id
                     ? '0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent)'
                     : undefined,
@@ -82,7 +82,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                       padding: '2px 8px', borderRadius: 'var(--radius-pill)',
                       background: 'var(--accent-light)', color: 'var(--accent-text)', flexShrink: 0,
                     }}
-                    title="质量分（人工复核后管线输出）"
+                    title="管线输出的综合质量分；具体风险见质量报告"
                   >
                     质量 {fmtScore(s.quality_score)}
                   </span>
@@ -94,7 +94,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
               </div>
               {/* 摘要（平实一段） */}
               <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', lineHeight: 1.55, opacity: 0.92 }}>
-                {s.summary}
+                {s.summary?.split('：')[0] || s.name} · 可查看来源、处理步骤与质量报告。
               </div>
               {/* 尾行：计数 + 回放 */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
@@ -104,6 +104,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                   事件已内嵌
                 </span>
                 <span style={{ flex: 1 }} />
+                <Button variant="accent" size="sm" onClick={event => { event.stopPropagation(); onOpen?.(s.task_id) }}>查看成果</Button>
                 <Button
                   variant="outline"
                   size="sm"
@@ -115,7 +116,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                   style={{ color: 'var(--accent-text)', borderColor: 'color-mix(in srgb, var(--accent) 45%, transparent)', gap: 5, fontWeight: 500 }}
                 >
                   <Icon.Play style={{ width: 11, height: 11 }} />
-                  回放
+                  回放过程
                 </Button>
               </div>
             </div>

@@ -6,7 +6,7 @@ import { FLOW_LABELS, CLEAN_FLOW_BLOCKS, flowIdOfAgent } from '@/lib/stages'
  * 每个轮次块（数据规范化 第 N 轮 / 冲突消解 第 N 轮 / 人工审核）为容器，
  * 其下挂属于该块的 Agent（flow 上下文的权威归属来自后端：
  * agent 事件 flow_id + round 字段；旧任务无该字段时按子图 Agent 名单名字兜底）。
- * 未触发的块（无 flow 事件且无对应 agent）显示「未触发，按需被选」而非「等待中」。
+ * 未触发的块（无 flow 事件且无对应 agent）显示「可选流程」而非「等待中」。
  * round 后端 0-based → 显示 1-based；多轮循环（第 2 轮等）不再去重丢失。 */
 
 const FLOW_STATUS_LABELS = { completed: '已完成', running: '执行中', waiting: '等待中' }
@@ -58,6 +58,8 @@ function AgentItem({ agent, onOpenAgent }) {
   return (
     <div
       onClick={() => onOpenAgent(agent)}
+      role="button" tabIndex={0} aria-label={`查看 ${agent.agent} 执行详情`}
+      onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpenAgent(agent) } }}
       className="agent-row"   // 2026-08-27：hover 背景 CSS 化（滑动无 setState）
       style={{
         display: 'flex', alignItems: 'center', gap: 8,
@@ -72,22 +74,12 @@ function AgentItem({ agent, onOpenAgent }) {
       {agent.status === 'running' && <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>执行中…</span>}
       {agent.duration && <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{agent.duration}</span>}
       <span style={{ flex: 1 }} />
-      {logCount > 0 && (
-        <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
-          {logCount} 条执行日志
-        </span>
-      )}
-      {traceCount > 0 && (
-        <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
-          {traceCount} 条修改
-        </span>
-      )}
       <Icon.ChevronRight style={{ width: 11, height: 11, color: 'var(--content-fg-tertiary)', flexShrink: 0 }} />
     </div>
   )
 }
 
-export default function FlowBlocks({ flows, stageId, agents, onOpenAgent }) {
+export default function FlowBlocks({ flows, stageId, stageStatus, awaitingReview = false, agents, onOpenAgent }) {
   if (!flows || flows.length === 0) return null
   const byFlowGroup = groupAgentsByFlow(agents)
   const blocks = buildBlocks(flows, stageId)
@@ -120,7 +112,7 @@ export default function FlowBlocks({ flows, stageId, agents, onOpenAgent }) {
                 {FLOW_LABELS[b.flowId] || b.flowId || node?.name}
               </span>
               {placeholder ? (
-                <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>未触发，按需被选</span>
+                <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>可选流程</span>
               ) : (
                 <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>第 {(b.round ?? 0) + 1} 轮</span>
               )}
@@ -136,7 +128,7 @@ export default function FlowBlocks({ flows, stageId, agents, onOpenAgent }) {
                   : status === 'running' ? 'var(--status-progress)'
                   : 'var(--content-fg-tertiary)',
               }}>
-                {FLOW_STATUS_LABELS[status] || status}
+                {awaitingReview && b.flowId === 'human_review' ? '待复核' : placeholder ? (b.flowId === 'human_review' && stageStatus === 'completed' ? '无需人工复核' : stageStatus === 'completed' ? '未触发' : '按需执行') : FLOW_STATUS_LABELS[status] || status}
               </span>
             </div>
             {candidates.length > 0 && (

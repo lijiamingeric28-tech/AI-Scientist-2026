@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
+import { useDialogFocus } from '@/hooks/useDialogFocus'
+import { useDismissTransition } from '@/hooks/useDismissTransition'
 
 /* 任务清理确认弹窗（2026-08-24）：
- * - 单个任务：可勾选清理内容（论文 PDF / 图证图片 / 检查点快照 / 事件记录），
+ * - 单个任务：可勾选清理内容（论文 PDF / 研究图像图片 / 检查点快照 / 事件记录），
  *   或连同任务记录整体删除（勾选后内容项禁用，整删包含全部）
  * - 批量模式：仅整体删除，展示数量
  * 风格对齐 SettingsDialog（玻璃弹窗 + 主题变量）。
@@ -11,7 +13,7 @@ import { Icon } from '@/components/icons'
 
 const PART_LABELS = {
   pdfs: '论文 PDF 文件',
-  figures: '图证图片',
+  figures: '研究图像图片',
   checkpoints: '检查点快照',
   events: '事件记录',
 }
@@ -20,12 +22,8 @@ export default function DeleteTaskDialog({ mode = 'single', task, count = 0, onC
   const [parts, setParts] = useState({ pdfs: true, figures: true, checkpoints: true, events: true })
   const [whole, setWhole] = useState(false)
 
-  // Esc 关闭
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  const dismissal = useDismissTransition(onClose, { identity: task })
+  const dialogRef = useDialogFocus(true, dismissal.close)
 
   const togglePart = (k) => setParts((p) => ({ ...p, [k]: !p[k] }))
 
@@ -39,16 +37,22 @@ export default function DeleteTaskDialog({ mode = 'single', task, count = 0, onC
 
   return (
     <div
-      onClick={onClose}
+      onClick={dismissal.close}
+      data-closing={dismissal.closing || undefined}
       className="animate-fade-in"
       style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <div
+        ref={dialogRef} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-task-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         className="glass animate-modal-in"
         style={{
           width: 380, maxWidth: '92vw',
-          background: 'color-mix(in srgb, var(--seed-surface) 82%, transparent)',
+          background: 'var(--seed-surface)', maxHeight: '90vh', overflowY: 'auto',
           borderRadius: 'var(--radius-lg)',
           boxShadow: 'var(--shadow-modal)',
           padding: '16px 18px',
@@ -56,15 +60,15 @@ export default function DeleteTaskDialog({ mode = 'single', task, count = 0, onC
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <Icon.Wrench style={{ color: 'var(--status-warn)' }} />
-          <span style={{ fontSize: 15, fontWeight: 590, color: 'var(--content-fg)' }}>
+          <span id="delete-task-title" style={{ fontSize: 15, fontWeight: 590, color: 'var(--content-fg)' }}>
             {mode === 'batch' ? `批量删除 ${count} 个任务` : '清理任务数据'}
           </span>
-          <Button variant="ghost" size="icon" onClick={onClose} style={{ marginLeft: 'auto' }}><Icon.Close /></Button>
+          <Button variant="ghost" size="icon" aria-label="关闭清理确认" onClick={dismissal.close} style={{ marginLeft: 'auto' }}><Icon.Close /></Button>
         </div>
 
         {mode === 'batch' ? (
           <div className="hint" style={{ margin: '10px 0 4px' }}>
-            将删除所选任务的全部记录与关联数据（论文 PDF、图证、检查点、事件、导出文件）。此操作不可恢复。
+            将删除所选任务的全部记录与关联数据（论文 PDF、研究图像、检查点、事件、导出文件）。此操作不可恢复。
           </div>
         ) : (
           <>
@@ -112,7 +116,7 @@ export default function DeleteTaskDialog({ mode = 'single', task, count = 0, onC
         )}
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
-          <Button variant="ghost" onClick={onClose}>取消</Button>
+          <Button variant="ghost" onClick={dismissal.close}>取消</Button>
           <Button
             variant="destructive"
             onClick={handleConfirm}

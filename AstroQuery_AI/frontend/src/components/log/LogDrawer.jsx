@@ -11,7 +11,7 @@ import LogLine from './LogLine'
 
 const MAX_RENDER_LINES = 200
 
-export default function LogDrawer({ open, onClose, liveLogs }) {
+export default function LogDrawer({ open, onClose, liveLogs, fill = false }) {
   const [height, setHeight] = useState(240)
   const [levelFilter, setLevelFilter] = useState('all')
   const scrollRef = useRef(null)
@@ -56,9 +56,9 @@ export default function LogDrawer({ open, onClose, liveLogs }) {
   const truncated = filtered.length < (levelFilter === 'all' ? total : lines.filter((l) => l.level === levelFilter).length)
 
   return (
-    <div data-component="log-drawer" className="glass" style={{ flexShrink: 0, borderTop: '1px solid var(--surface-border)', borderLeft: 'none', borderRight: 'none', borderBottom: 'none', display: 'flex', flexDirection: 'column' }}>
+    <div data-component="log-drawer" className={fill ? "workflow-logs" : "glass"} style={{ flex: fill ? 1 : undefined, minHeight: 0, flexShrink: 0, borderTop: '1px solid var(--surface-border)', borderLeft: 'none', borderRight: 'none', borderBottom: 'none', display: 'flex', flexDirection: 'column' }}>
       {/* 拖拽手柄 */}
-      <div onMouseDown={startDrag} style={{ height: 4, cursor: 'ns-resize', background: 'transparent' }} />
+      {!fill && <div onMouseDown={startDrag} style={{ height: 4, cursor: 'ns-resize', background: 'transparent' }} />}
 
       {/* 头部 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderBottom: '1px solid var(--surface-border-subtle)' }}>
@@ -79,16 +79,16 @@ export default function LogDrawer({ open, onClose, liveLogs }) {
           ))}
         </div>
         <div style={{ flex: 1 }} />
-        <Button variant="ghost" size="icon" onClick={onClose}>
+        {!fill && <Button variant="ghost" size="icon" onClick={onClose}>
           <Icon.ChevronDown />
-        </Button>
+        </Button>}
       </div>
 
       {/* 日志区（P1-5：胶囊化结构化行，取消整块 mono/nowrap 终端风） */}
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        style={{ height, overflowY: 'auto', padding: '8px 12px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}
+        style={{ height: fill ? undefined : height, flex: fill ? 1 : undefined, minHeight: 0, overflowY: 'auto', padding: '8px 12px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}
       >
         {filtered.length === 0 && (
           <div style={{ color: 'var(--content-fg-tertiary)', padding: '20px 0', textAlign: 'center' }}>暂无日志</div>

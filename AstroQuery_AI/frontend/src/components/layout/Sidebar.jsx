@@ -51,8 +51,9 @@ const MODES = [
   { key: 'sample', label: '演示样例', title: '内嵌精选样例：浏览真实过程或回放' },
 ]
 
-export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onCollapse, onRetry, onReplay, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete, mode = 'user', onModeChange, samplesExpanded = false, onToggleSamples }) {
+export default function Sidebar({ tasks, loadingTasks = false, total, selectedId, onSelect, onNew, onCollapse, onRetry, onReplay, onOpenHelp, onOpenSettings, onLoadMore, filter, onFilterChange, onDeleteTask, onBatchDelete, mode = 'user', onModeChange, samplesExpanded = false, onToggleSamples }) {
   const [hoveredId, setHoveredId] = useState(null)
+  const [sampleSearch, setSampleSearch] = useState('')
   // 2026-08-24: 批量删除管理模式
   const [manageMode, setManageMode] = useState(false)
   const [checked, setChecked] = useState(() => new Set())
@@ -62,6 +63,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
   const dragRef = useRef(null)
 
   const startDrag = (e) => {
+    e.preventDefault()
     dragRef.current = { startX: e.clientX, startW: width }
     const onMove = (ev) => {
       if (!dragRef.current) return
@@ -81,7 +83,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
   // H-01: 失败档按 error 匹配，同时兼容旧词表 failed（存量记录防御）
   // 2026-09-02：演示样例模式忽略状态筛选（全部 completed；筛选值是『我的查询』残留）
   const filtered = mode === 'sample'
-    ? tasks
+    ? tasks.filter(task => [task.title, task.query, (SAMPLE_MANIFEST.samples || []).find(sample => sample.task_id === task.task_id)?.name].some(value => String(value || '').toLowerCase().includes(sampleSearch.trim().toLowerCase())))
     : filter === 'all'
       ? tasks
       : filter === 'running'
@@ -127,12 +129,11 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
     filtered.forEach((t) => (t.replay_of ? copies : bodies).push(t))
     bodies.sort(byManifest)
     copies.sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
-    const visible = bodies.filter((t) => pinRanks.has(t.task_id)).sort(byPin)
+    const visible = [...bodies].sort((a, b) => byPin(a, b) || byManifest(a, b))
     if (visible.length) {
-      displayRows.push({ hdr: '置顶样例' })
+      displayRows.push({ hdr: `样例库 · ${bodies.length} 项` })
       visible.forEach((t) => displayRows.push({ task: t }))
     }
-    displayRows.push({ expand: true })  // 「展开全部 / 收起画廊」（原提示语位置）
     if (copies.length) {
       displayRows.push({ hdr: `回放副本 (${copies.length})` })
       copies.forEach((t) => displayRows.push({ task: t }))
@@ -185,7 +186,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
           ) : (
             <Icon.Plus style={{ color: 'var(--accent)' }} />
           )}
-          <span>{mode === 'sample' ? '回到全部样例' : '新建提取任务'}</span>
+          <span>{mode === 'sample' ? '全部样例' : '新建提取任务'}</span>
         </Button>
         <Button variant="ghost" size="icon" onClick={onCollapse} title="收起侧边栏">
           <Icon.ChevronLeft />
@@ -279,8 +280,9 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
           </button>
         )}
       </div>
+      {mode === 'sample' && <div className="sample-sidebar-search"><input aria-label="搜索演示样例" placeholder="搜索天体或研究性质" value={sampleSearch} onChange={event => setSampleSearch(event.target.value)} /></div>}
       <ScrollArea
-        className="flex-1 px-2 pb-2"
+        className="sidebar-task-scroll flex-1 px-2 pb-2"
         onScroll={(e) => {
           // 无限滚动（契约 D8-4）：接近底部触发加载更多
           const el = e.currentTarget
@@ -293,7 +295,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
           <div style={{ padding: '16px 10px', color: 'var(--sidebar-text-secondary)', fontSize: 12, textAlign: 'center', lineHeight: 1.7 }}>
             {mode === 'sample'
               ? '暂无演示样例\n（启动服务时自动从 sample_pack/ 导入）'
-              : '无符合条件的任务'}
+              : loadingTasks ? '任务列表加载中…' : '无符合条件的任务'}
           </div>
         ) : (
           displayRows.map((item) => {
@@ -349,6 +351,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
             // 2026-09-02：样例本体（source=sample 且非回放副本）只读——隐藏清理/删除入口；
             // 回放副本（replay_of 非空）是派生演示产物，保留全部管理能力
             const lockedSample = task.source === 'sample' && !task.replay_of
+            const sampleBody = mode === 'sample' && !task.replay_of
             return (
               <div
                 key={task.task_id}
@@ -359,23 +362,19 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                 }}
                 onMouseEnter={() => setHoveredId(task.task_id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className="task-item"
+                className={`task-item${sampleBody ? ' sample-item' : ''}${isActive || isChecked ? ' selected' : ''}`} role="button" tabIndex={0} title={sampleBody ? manifestMeta.get(task.task_id)?.name || task.title || task.query : task.title || task.query} onKeyDown={event => { if (event.target === event.currentTarget && ['Enter', ' '].includes(event.key)) { event.preventDefault(); onSelect(task.task_id) } }}
                 style={{
-                  padding: '8px 10px',
+                  padding: sampleBody ? undefined : '8px 10px',
                   borderRadius: 8,
-                  marginBottom: 2,
+                  marginBottom: sampleBody ? undefined : 2,
                   cursor: manageMode ? (active_ ? 'not-allowed' : 'pointer') : 'pointer',
                   opacity: manageMode && active_ ? 0.5 : 1,
-                  transition: 'background-color 0.15s ease, transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease',
                   // 用户重设计：选中/勾选条目淡绿底 + 左侧绿色圆角竖条
                   background: (isChecked || isActive)
-                    ? 'var(--accent-light)'
+                    ? 'var(--sidebar-active)'
                     : hoveredId === task.task_id
                       ? 'var(--sidebar-hover)'
                       : 'transparent',
-                  boxShadow: (isChecked || isActive)
-                    ? 'inset 3px 0 0 0 var(--accent)'
-                    : undefined,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -391,19 +390,21 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                   )}
                   <StatusDot status={task.status} size={6} />
                   <span
+                    className="task-item-title"
                     style={{
-                      color: isActive ? 'var(--sidebar-text)' : 'var(--content-fg-secondary)',
-                      fontSize: 13,
+                      color: sampleBody ? undefined : isActive ? 'var(--sidebar-text)' : 'var(--content-fg-secondary)',
+                      fontSize: sampleBody ? undefined : 13,
                       fontWeight: isActive ? 510 : 400,
-                      whiteSpace: 'nowrap',
+                      whiteSpace: sampleBody ? undefined : 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       flex: 1,
                       minWidth: 0,
                     }}
                   >
-                    {fitTitle(task.title)}
+                    {mode === 'sample' && !task.replay_of ? manifestMeta.get(task.task_id)?.name || task.title || task.query : fitTitle(task.title || task.query)}
                   </span>
+                  {mode === 'sample' && pinRanks.has(task.task_id) && !task.replay_of && <small className="sample-recommended">推荐</small>}
                   {/* 2026-08-27：回放任务徽标（replay_of 指向源任务） */}
                   {task.replay_of && (
                     <span
@@ -418,7 +419,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                   )}
                 </div>
                 {/* 2026-09-01 用户重设计：任务条目「N 条记录 · M 个来源」（完成任务；列表接口轻量统计列） */}
-                {task.status === 'completed' && (Number(task.record_count) > 0 || Number(task.source_count) > 0) && (
+                {mode !== 'sample' && task.status === 'completed' && (Number(task.record_count) > 0 || Number(task.source_count) > 0) && (
                   <div style={{ fontSize: 11, color: 'var(--sidebar-text-secondary)', marginTop: 4, paddingLeft: 14 }}>
                     {Number(task.record_count) > 0 && <>{task.record_count} 条记录 · </>}
                     {task.source_count} 个来源
@@ -427,8 +428,8 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                 {/* 2026-08-27：操作按钮（重试/重放/清理）统一移到此行、紧挨时间——
                     「时间 + 操作」一组视觉，第一行只保留标题（用户反馈：旧版
                     按钮散在标题行/行末，根本看不见） */}
-                <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  {formatRelativeTime(task.created_at)}
+                {!sampleBody && <div style={{ color: 'var(--sidebar-text-secondary)', fontSize: 11, marginTop: 4, paddingLeft: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  {mode !== 'sample' && formatRelativeTime(task.created_at)}
                   <span style={{ flex: 1 }} />
                   {/* 清理/删除入口（样例本体只读，不渲染） */}
                   {!manageMode && !active_ && !lockedSample && (
@@ -471,7 +472,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                     </button>
                   )}
                   {/* 已完成任务：重放（2026-08-27 事件级回放；与重试互斥不共存） */}
-                  {task.status === 'completed' && (
+                  {mode !== 'sample' && task.status === 'completed' && (
                     <button
                       title="重放此任务（按压缩节奏重演历史事件）"
                       onClick={(e) => {
@@ -495,7 +496,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
                       <Icon.Play style={{ width: 9, height: 9 }} />重放
                     </button>
                   )}
-                </div>
+                </div>}
               </div>
             )
           })
@@ -503,7 +504,7 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
         {/* 无限滚动底部指示（契约 D8-4） */}
         {filtered.length > 0 && !manageMode && (
           <div style={{ padding: '10px 0 14px', textAlign: 'center', fontSize: 11, color: 'var(--sidebar-text-secondary)' }}>
-            {tasks.length < total ? '加载中…' : `共 ${total} 个任务`}
+            {mode === 'sample' ? `样例 ${tasks.filter(task => !task.replay_of).length} 项 · 回放 ${tasks.filter(task => task.replay_of).length} 项` : tasks.length < total ? '加载中…' : `共 ${total} 个任务`}
           </div>
         )}
       </ScrollArea>
@@ -529,22 +530,25 @@ export default function Sidebar({ tasks, total, selectedId, onSelect, onNew, onC
         </div>
       )}
 
+      <button className="sidebar-help" onClick={onOpenHelp}><span aria-hidden="true">ⓘ</span>使用帮助</button>
       {/* 设置入口 */}
-      <div style={{ padding: '12px 16px', borderTop: '1px solid var(--sidebar-border)' }}>
-        <div
+      <div style={{ flexShrink: 0, padding: '12px 16px', borderTop: '1px solid var(--sidebar-border)' }}>
+        <button
+          type="button"
           onClick={onOpenSettings}
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: 8,
             color: 'var(--sidebar-text-secondary)',
+            background: 'transparent', border: 'none', width: '100%', textAlign: 'left',
             fontSize: 13,
             cursor: 'pointer',
           }}
         >
           <Icon.Settings />
           <span>设置</span>
-        </div>
+        </button>
       </div>
     </aside>
   )

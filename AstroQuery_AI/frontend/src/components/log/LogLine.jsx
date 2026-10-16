@@ -16,7 +16,7 @@ export default function LogLine({ l }) {
   const level = String(l.level || 'INFO').toUpperCase()
   const ls = LEVEL_STYLE[level] || LEVEL_STYLE.INFO
   return (
-    <div style={{ display: 'flex', gap: 6, alignItems: 'flex-start', lineHeight: 1.55, fontSize: 12 }}>
+    <div className="log-line" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'flex-start', lineHeight: 1.75, fontSize: 13 }}>
       {l.time && (
         <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)', paddingTop: 1 }}>
           {l.time}
@@ -24,7 +24,7 @@ export default function LogLine({ l }) {
       )}
       <span
         style={{
-          flexShrink: 0, fontSize: 10, fontWeight: 510,
+          flexShrink: 0, fontSize: 11, fontWeight: 510,
           color: ls.color, background: ls.bg,
           padding: '0 6px', borderRadius: 'var(--radius-pill)', marginTop: 1,
         }}
@@ -34,7 +34,7 @@ export default function LogLine({ l }) {
       {l.node && (
         <span
           style={{
-            flexShrink: 0, fontSize: 10, padding: '0 6px', borderRadius: 'var(--radius-pill)',
+            flexShrink: 0, fontSize: 11, padding: '0 6px', borderRadius: 'var(--radius-pill)',
             background: 'var(--accent-light)', color: 'var(--accent-text)', marginTop: 1,
           }}
         >
@@ -43,7 +43,7 @@ export default function LogLine({ l }) {
       )}
       <span
         style={{
-          flex: 1, color: level === 'ERROR' ? 'var(--status-error)' : 'var(--content-fg-secondary)',
+          flex: '1 1 160px', minWidth: 0, color: level === 'ERROR' ? 'var(--status-error)' : 'var(--content-fg-secondary)',
           wordBreak: 'break-word',
         }}
       >

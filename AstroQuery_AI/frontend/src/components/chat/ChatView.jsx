@@ -2,16 +2,11 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import Markdown from '@/lib/markdown'
-import * as api from '@/services/api'
 import StageCard from './StageCard'
 import ClarificationCard from './ClarificationCard'
-import ResultTabs from '@/components/results/ResultTabs'
-import ConsensusScatterModule from '@/components/results/ConsensusScatterModule'
-import AstrophysicsNetworkModule from '@/components/results/AstrophysicsNetworkModule'
-import LogDrawer from '@/components/log/LogDrawer'
-import StageDetailPanel from '@/components/workflow/StageDetailPanel'
 import { useToast } from '@/components/ui/toast'
 import SampleGallery from './SampleGallery'
+import { CompletionOutcome } from '@/components/results/DataView'
 // 演示样例画廊清单（scripts/rebuild_sample_pack.py 生成：质量分/计数与结果端点同源）
 import SAMPLE_MANIFEST from '@/data/samples.json'
 
@@ -42,7 +37,7 @@ function AiMessage({ content }) {
         <Icon.Sparkle />
       </div>
       <div style={{ paddingTop: 3, flex: 1, minWidth: 0 }}>
-        <Markdown>{content}</Markdown>
+        <Markdown>{typeof content === 'string' ? content.replaceAll('图证', '研究图像') : content}</Markdown>
       </div>
     </div>
   )
@@ -66,78 +61,50 @@ const EXAMPLE_PROMPTS = [
   '收集 M31 球状星团系统的金属丰度数据',
 ]
 
-/* 顶部信息带：运行耗时（completed_at-created_at）+ 数据源/记录计数（完成时一次性拉取）
- * 2026-09-01 用户重设计 */
-function fmtDuration(sec) {
-  if (!Number.isFinite(sec) || sec < 0) return null
-  const m = Math.floor(sec / 60)
-  const s = Math.round(sec % 60)
-  return m > 0 ? `${m}m ${s}s` : `${s}s`
-}
-
-export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleLog, focusStage, onOpenInsights,
+export default function ChatView({ memory = {}, active = true, task, pipeline, data, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
   mode = 'user', samplesExpanded = false, onOpenSample, onReplaySample, onSwitchToUser }) {
-  const { messages, stages, timeline, pending, started, taskDone, logs, sourceScores, submitQuery, submitAnswer } = pipeline
+  const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const { toast } = useToast()
-  // 2026-09-02：演示样例本体（source=sample 且非回放副本）——记录只读；
-  // 回放副本与普通任务保留全部编辑能力
-  const sampleLocked = !!task && task.source === 'sample' && !task.replay_of
-  // 卡片默认展开，用户手动收起才收起（collapsed 记录用户收起过的卡）。
-  // P1-8：done 卡无展开内容（完成摘要已在卡头）→ 默认折叠
-  const [collapsedIds, setCollapsedIds] = useState(() => new Set(['done']))
+  // 历史阶段默认折叠；当前阶段自动展开，用户手动操作优先。
+  const [expandedByUser, setExpandedByUser] = useState(memory.expanded || {})
   // P1-2：Agent 侧抽屉下钻（对话卡点击 Agent 行 → StageDetailPanel L3）
-  const [agentDrill, setAgentDrill] = useState(null)   // { stage, agent } | null
+  const [readingHistory, setReadingHistory] = useState(memory.follow === false)
+  const [autoExpandedStage, setAutoExpandedStage] = useState(memory.autoExpandedStage || null)
+  useEffect(() => {
+    if (!active || readingHistory) return
+    const current = [...stages].reverse().find(stage => stage.id !== 'done' && stage.status === 'running')
+    setAutoExpandedStage(current?.id || null)
+  }, [stages, active, readingHistory])
+  useEffect(() => { memory.autoExpandedStage = autoExpandedStage }, [autoExpandedStage])
+  const initialScrollTop = useRef(memory.scrollTop || 0)
+  useEffect(() => { stickToBottomRef.current = memory.follow ?? (!!task && !['completed', 'cancelled', 'failed', 'error'].includes(task.status)); setReadingHistory(!stickToBottomRef.current); if (scrollRef.current && !initialScrollTop.current) scrollRef.current.scrollTop = 0 }, [task?.task_id])
+  useEffect(() => { memory.expanded = expandedByUser }, [expandedByUser])
+  const submitRef = useRef(false)
   const scrollRef = useRef(null)
   // 贴底跟随：用户在底部附近才自动滚动，向上翻阅时不被拽回
-  const stickToBottomRef = useRef(true)
+  const stickToBottomRef = useRef(memory.follow ?? (!!task && !['completed', 'cancelled', 'failed', 'error'].includes(task.status)))
+  const restoredRef = useRef(false)
+  useEffect(() => { if (!active || !timeline.length || restoredRef.current || !initialScrollTop.current) return; restoredRef.current = true; requestAnimationFrame(() => { if (scrollRef.current) scrollRef.current.scrollTop = initialScrollTop.current }) }, [active, timeline.length])
 
   // 顶部信息带统计（任务完成时一次性拉取并缓存；taskId 键防重复请求）
-  const [summaryStats, setSummaryStats] = useState(null)
-  const statsCacheRef = useRef({})
-  useEffect(() => {
-    if (!task?.task_id || task.status !== 'completed') return
-    const cached = statsCacheRef.current[task.task_id]
-    if (cached) { setSummaryStats(cached); return }
-    let alive = true
-    Promise.all([
-      api.getSources(task.task_id).catch(() => []),
-      api.getRecords(task.task_id).catch(() => []),
-    ]).then(([s, r]) => {
-      const d = { sources: (Array.isArray(s) ? s : []).length, records: (Array.isArray(r) ? r : []).length }
-      statsCacheRef.current[task.task_id] = d
-      if (alive) setSummaryStats(d)
-    })
-    return () => { alive = false }
-  }, [task?.task_id, task?.status])
-
   // 2026-08-27：useCallback 稳定引用——StageCard 已 memo，onToggle/onOpenAgent/
   // onOpenInsights 若不稳定（每次 render 新函数），memo 恒失效，高频 setStages
   // 场景全量重渲（主区滚动卡顿的元凶）
   const toggleStage = useCallback((id) => {
-    setCollapsedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }, [])
+    setExpandedByUser(prev => ({ ...prev, [id]: !(prev[id] ?? (stages.find(stage => stage.id === id)?.status === 'running')) }))
+  }, [stages])
 
   // 稳定引用（StageCard memo 依赖）：Agent 行点击 → L3 下钻抽屉
   const handleOpenAgent = useCallback((agent, stage) => {
-    setAgentDrill(stage ? { stage, agent } : null)
-  }, [])
+    if (stage) onOpenDetail?.({ type: 'stage', stageId: stage.id, agentKey: agent.id || agent.agent })
+  }, [onOpenDetail])
 
   // 工作流视图"在对话中查看" → 展开目标卡并滚动定位
   useEffect(() => {
     if (!focusStage?.id) return
-    setCollapsedIds((prev) => {
-      if (!prev.has(focusStage.id)) return prev
-      const next = new Set(prev)
-      next.delete(focusStage.id)
-      return next
-    })
+    setExpandedByUser(prev => ({ ...prev, [focusStage.id]: true }))
     // 等卡片展开渲染后再滚动
     const timer = setTimeout(() => {
       const el = scrollRef.current?.querySelector(`[data-stage-id="${focusStage.id}"]`)
@@ -148,8 +115,10 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
 
   const handleScroll = () => {
     const el = scrollRef.current
-    if (!el) return
+    if (!el || !active || (initialScrollTop.current && !restoredRef.current)) return
     stickToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80
+    memory.scrollTop = el.scrollTop; memory.follow = stickToBottomRef.current
+    setReadingHistory(!stickToBottomRef.current)
   }
 
   /* 运行中 = 任务已启动且未完成；澄清期 = 澄清卡挂起（寒暄除外，寒暄走主栏对话） */
@@ -160,35 +129,18 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
   // 2026-08-27：滚动性能——每 event 同步写 scrollTop 会强制浏览器同步 layout
   // 完整子树（卡顿来源）。改为 rAF 合并：一个动画帧内至多一次 scrollTop 赋值，
   // 且只有内容高度变化（增量 >0）才滚（避免用户上拉回看时被拽回）。
-  // 2026-08-27 v2：运行中（running）**强制跟随**——无论用户滚动位置，每次内容
-  // 更新都滚到底（保证最新阶段/AI 消息/进度条始终可见，真实查询与回放一致）；
-  // 完成瞬间滚一次（看到结果表格）；任务完成后恢复"贴近底部才跟随"（自由回看）。
-  const lastScrollHRef = useRef(0)
-  const wasRunningRef = useRef(false)   // 运行→完成瞬间检测（滚一次到底）
+  // 用户阅读历史时停止跟随，任务完成和晚到结果不抢夺阅读位置。
   useEffect(() => {
-    if (!scrollRef.current) return
     const el = scrollRef.current
-    // 完成瞬间：上一状态运行中、现在已完成 → 强制滚一次（结果表格/总结入视野）
-    const finishedNow = wasRunningRef.current && !running && taskDone
-    wasRunningRef.current = running
-    const force = running || finishedNow
-    if (!force && !stickToBottomRef.current) return
-    const delta = el.scrollHeight - lastScrollHRef.current
-    // 运行中/完成瞬间：无视高度增量（时间线可能只替换卡片高度不变，但内容更新了）
-    // 非运行中：仅内容真正增长才滚（用户回看不被拽回）
-    if (!force && delta <= 0) return
-    lastScrollHRef.current = el.scrollHeight
-    let raf = 0
-    const tick = () => {
-      if (force || stickToBottomRef.current) el.scrollTop = el.scrollHeight
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [messages, stages, pending, running, taskDone])
+    if (!task || !active || !running || !el || !el.getClientRects().length || !stickToBottomRef.current) return
+    const frame = requestAnimationFrame(() => { if (stickToBottomRef.current) el.scrollTop = el.scrollHeight })
+    return () => cancelAnimationFrame(frame)
+  }, [messages, stages, pending, taskDone, active, autoExpandedStage, readingHistory])
 
   const handleSubmit = async () => {
     const text = input.trim()
-    if (!text || running || clarifying || submitting) return
+    if (!text || (running && !pending) || clarifying || submitRef.current) return
+    submitRef.current = true
     setSubmitting(true)
     try {
       if (pending) {
@@ -197,6 +149,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
         setInput('')
       } else {
         // 新查询：建任务 → 打开事件流
+        if (beforeCreate && !await beforeCreate()) return
         const taskId = await submitQuery(text)
         onNewTask?.(taskId)
         // 失败（400）保留输入
@@ -205,6 +158,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
     } catch (err) {
       toast(`提交失败：${err.message}`, 'error')
     } finally {
+      submitRef.current = false
       setSubmitting(false)
     }
   }
@@ -215,71 +169,25 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
       <div ref={scrollRef} onScroll={handleScroll} className="chat-gutter" style={{ flex: 1, overflowY: 'auto', padding: '24px 24px 16px' }}>
         <div className="chat-column">
           {/* 顶部信息带（用户重设计）：耗时 · 数据源 · 记录数 + 质量总结 */}
-          {task?.status === 'completed' && summaryStats && (
-            <div style={{ marginBottom: 18 }}>
-              <div style={{ fontSize: 12, color: 'var(--content-fg-secondary)', marginBottom: 8 }}>
-                运行耗时 {fmtDuration((new Date(task.completed_at || 0) - new Date(task.created_at)) / 1000) || '—'}
-                {' · '}{summaryStats.sources} 个数据源 · {summaryStats.records} 条记录
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                <span style={{
-                  width: 20, height: 20, borderRadius: '50%', background: 'var(--status-success)',
-                  color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }}>
-                  <Icon.Check style={{ width: 10, height: 10 }} />
-                </span>
-                <span style={{ fontSize: 14, color: 'var(--content-fg)' }}>
-                  数据提取已完成，整体质量良好，可直接用于后续天文数据分析。
-                </span>
-              </div>
-            </div>
-          )}
           {timeline.map((entry) => {
             if (entry.kind === 'msg') {
               const msg = messages.find((m) => m.id === entry.id)
-              return msg ? <Message key={`m-${entry.id}`} msg={msg} /> : null
+              return msg && msg.phase !== 'completion' ? <Message key={`m-${entry.id}`} msg={msg} /> : null
             }
             const stage = stages.find((s) => s.id === entry.id)
-            if (!stage) return null
+            if (!stage || stage.id === 'done') return null
             return (
               <Fragment key={`s-${entry.id}`}>
-                {stage.id === 'done' ? (
-                  /* 「任务完成」卡不渲染卡片本体——结果区表格直接展示在时间线对应位置；
-                     LLM 总结已由 usePipeline 排到 done entry 之前（数据洞察卡与表格之间） */
-                  stage.status === 'completed' && (
-                    <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                      {/* 模块一：原始记录表格（原模块，100% 保持不动） */}
-                      <ResultTabs taskId={task?.task_id} status={task?.status} readOnly={sampleLocked} />
+                <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
+                  <StageCard stage={stage} expanded={expandedByUser[stage.id] ?? (stage.id === autoExpandedStage)} onToggle={toggleStage} onOpenInsights={onOpenInsights} onOpenAgent={handleOpenAgent} sourceScores={sourceScores} data={data} onOpenData={onOpenData} />
+                </div>
+                {pending && pending.stageId === stage.id && pending.type !== 'greeting' && <ClarificationCard payload={pending} onSubmit={submitAnswer} />}
 
-                      {/* 模块二：D1 天体多源测量共识分布图（新增独立科学数据整合模块） */}
-                      <ConsensusScatterModule taskId={task?.task_id} status={task?.status} />
-
-                      {/* 模块三：D2 天体物理定律知识关系图谱（新增独立科学规律推断模块） */}
-                      <AstrophysicsNetworkModule taskId={task?.task_id} status={task?.status} insights={pipeline?.insights} />
-                    </div>
-                  )
-                ) : (
-                  <>
-                    {/* 卡片（默认展开，用户可收起）；data-stage-id 供工作流联动定位 */}
-                    <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
-                      <StageCard
-                        stage={stage}
-                        expanded={!collapsedIds.has(stage.id)}
-                        onToggle={toggleStage}
-                        onOpenInsights={onOpenInsights}
-                        onOpenAgent={handleOpenAgent}
-                        sourceScores={sourceScores}
-                      />
-                    </div>
-                    {/* 澄清卡：挂起时渲染在所属卡片下方（greeting 走普通对话不渲染） */}
-                    {pending && pending.stageId === stage.id && pending.type !== 'greeting' && (
-                      <ClarificationCard payload={pending} onSubmit={submitAnswer} />
-                    )}
-                  </>
-                )}
               </Fragment>
             )
           })}
+
+          {data.availability === 'ready' && <CompletionOutcome data={data} onOpenData={onOpenData} />}
 
           {/* 兜底：澄清卡 stageId 未匹配时渲染在时间线末尾 */}
           {pending && pending.type !== 'greeting' && !timeline.some((t) => t.kind === 'stage' && t.id === pending.stageId) && (
@@ -300,8 +208,8 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                 </div>
               </div>
             ) : mode === 'sample' ? (
-              /* 演示样例模式：默认空白（折叠态只露侧栏置顶 3 条）；点「展开全部」才显画廊 */
-              samplesExpanded && (
+              /* 演示入口直接展示案例，侧栏折叠不隐藏主区内容。 */
+              (
                 <div style={{ padding: '24px 4px 8px' }}>
                   <SampleGallery
                     samples={SAMPLE_MANIFEST.samples || []}
@@ -338,9 +246,10 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
         </div>
       </div>
 
+      {readingHistory && running && <div className="latest-progress"><Button variant="outline" size="sm" onClick={() => { stickToBottomRef.current = true; setReadingHistory(false) }}>查看最新进展 ↓</Button></div>}
       {/* 输入栏（块 6 定案：附件 chips / 状态禁用；玻璃输入舱）
           2026-09-02：演示样例模式 → 禁发提示条（防误触发起真实计费查询） */}
-      {mode === 'sample' ? (
+      {mode === 'sample' && task ? (
         <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
           <div className="chat-column">
             <div
@@ -367,7 +276,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
             </div>
           </div>
         </div>
-      ) : (
+      ) : mode === 'user' ? (
         <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
           <div className="chat-column">
             <div
@@ -381,13 +290,13 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
+                  if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
                     e.preventDefault()
                     handleSubmit()
                   }
                 }}
-                disabled={running || clarifying}
-                placeholder={clarifying ? '请在上方澄清卡中回答' : running ? '任务进行中…' : '查询数据、筛选记录或继续分析…'}
+                disabled={(running && !pending) || clarifying || submitting}
+                placeholder={clarifying ? '请在上方确认卡中回答' : pending ? '回复当前确认问题…' : running ? '任务进行中，可向上查看历史进展' : '输入需求以发起新的科研查询…'}
                 style={{
                   flex: 1,
                   minWidth: 0,
@@ -402,7 +311,7 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
               />
               <button
                 onClick={handleSubmit}
-                disabled={!input.trim() || running || clarifying}
+                disabled={!input.trim() || (running && !pending) || clarifying || submitting}
                 title="发送"
                 className="active-press"
                 style={{
@@ -417,23 +326,11 @@ export default function ChatView({ task, pipeline, onNewTask, logOpen, onToggleL
               </button>
             </div>
             <div style={{ textAlign: 'center', marginTop: 8, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
-              AI Scientist 可能产生误差，请核实关键信息
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
-      {/* 底部日志抽屉（块 7，真实事件流日志） */}
-      <LogDrawer open={logOpen} onClose={onToggleLog} liveLogs={logs} />
-
-      {/* P1-2：Agent 明细侧抽屉（对话卡点击 Agent 行 → L3 下钻） */}
-      {agentDrill && (
-        <StageDetailPanel
-          stage={agentDrill.stage}
-          initialAgentKey={agentDrill.agent.id || agentDrill.agent.agent}
-          onClose={() => setAgentDrill(null)}
-        />
-      )}
     </div>
   )
 }

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
+import { useInPlaceDisclosure } from '@/hooks/useInPlaceDisclosure'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import Markdown from '@/lib/markdown'
@@ -20,6 +21,8 @@ const ACTION_LABELS = {
 const ACTION_KEYS = { 1: 'adopt_source_a', 2: 'adopt_source_b', 3: 'custom_value', 4: 'retain_both', 5: 'skip' }
 
 function Item({ c, index, total, onSet }) {
+  const bodyId = useId()
+  const toggleInPlace = useInPlaceDisclosure()
   const [open, setOpen] = useState(false)
   const [key, setKey] = useState('')       // '' | '1'..'5'
   const [value, setValue] = useState('')   // custom_value 输入
@@ -41,8 +44,8 @@ function Item({ c, index, total, onSet }) {
 
   return (
     <div style={{ border: '1px solid var(--surface-border-subtle)', borderRadius: 8, marginBottom: 8, background: error ? 'var(--status-error-bg)' : 'var(--surface-bg)' }}>
-      <summary style={{ cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px' }}
-        onClick={() => setOpen((v) => !v)}>
+      <button type="button" className="human-review-toggle" aria-expanded={open} aria-controls={bodyId} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, padding: '12px', width: '100%', border: 0, background: 'transparent', textAlign: 'left' }}
+        onClick={event => toggleInPlace(event, () => setOpen((v) => !v))}>
         <Icon.ChevronRight style={{ width: 10, height: 10, flexShrink: 0, color: 'var(--content-fg-tertiary)', transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .12s' }} />
         <span className="font-mono" style={{ fontSize: 12, fontWeight: 590, color: 'var(--content-fg)' }}>{c.conflict_d}</span>
         {c.field_name && <span style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>{c.field_name}</span>}
@@ -56,9 +59,9 @@ function Item({ c, index, total, onSet }) {
         ) : (
           <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', color: 'var(--content-fg-tertiary)' }}>未裁决</span>
         )}
-      </summary>
-      {open && (
-        <div style={{ padding: '0 12px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      </button>
+      <div id={bodyId} inert={open ? undefined : ''} aria-hidden={!open} className={`smooth-collapse${open ? ' expanded' : ''}`}><div className="collapse-clip">
+        <div style={{ padding: '4px 12px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* 冲突详情 markdown */}
           {c.markdown && (
             <div style={{ fontSize: 12.5 }}>
@@ -70,9 +73,10 @@ function Item({ c, index, total, onSet }) {
             {(c.options || ['1', '2', '3', '4', '5']).map((k) => (
               <button
                 key={k}
+                aria-pressed={key === k}
                 onClick={() => { setKey(k); setError(false) }}
                 style={{
-                  padding: '4px 10px', fontSize: 11.5, fontWeight: 510, borderRadius: 'var(--radius-pill)',
+                  padding: '7px 12px', fontSize: 13, fontWeight: 510, borderRadius: 'var(--radius-pill)',
                   border: '1px solid', cursor: 'pointer',
                   borderColor: key === k ? 'var(--accent)' : 'var(--surface-border)',
                   background: key === k ? 'var(--accent-light)' : 'transparent',
@@ -86,6 +90,7 @@ function Item({ c, index, total, onSet }) {
           {/* 自定义值输入（选中 3 时显示） */}
           {key === '3' && (
             <input
+              aria-label="自定义测量值"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder="请输入自定义值（数值或文本）"
@@ -94,6 +99,7 @@ function Item({ c, index, total, onSet }) {
           )}
           {/* 可选理由 */}
           <input
+            aria-label="裁决理由（可选）"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="理由（可选）"
@@ -101,12 +107,12 @@ function Item({ c, index, total, onSet }) {
           />
           <Button variant="outline" size="sm" onClick={commit} style={{ alignSelf: 'flex-end' }}>确定此项</Button>
         </div>
-      )}
+      </div></div>
     </div>
   )
 }
 
-export default function HumanReviewPanel({ payload, onSubmit }) {
+export default function HumanReviewPanel({ payload, onSubmit, disabled = false }) {
   const conflicts = payload.conflicts || []
   const [verdicts, setVerdicts] = useState({})
   const [missing, setMissing] = useState(false)
@@ -122,7 +128,7 @@ export default function HumanReviewPanel({ payload, onSubmit }) {
 
   const submit = () => {
     // 必选校验：全部冲突必须裁决
-    if (conflicts.length === 0) return
+    if (disabled || conflicts.length === 0) return
     const unresolved = conflicts.filter((c) => !verdicts[c.conflict_d])
     if (unresolved.length > 0) {
       setMissing(true)
@@ -155,6 +161,7 @@ export default function HumanReviewPanel({ payload, onSubmit }) {
         </span>
         <Button
           size="sm"
+          disabled={disabled || conflicts.length === 0}
           onClick={submit}
           style={{ background: 'var(--accent)', color: 'var(--accent-on)' }}
         >

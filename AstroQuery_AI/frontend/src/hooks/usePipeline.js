@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import * as api from '@/services/api'
 import { makeInitialStages, CLARIFICATION_QUICK_BUTTONS, STAGE_DEFS } from '@/lib/stages'
 import { fmtDuration } from '@/lib/format'
+import { timingEvent } from '@/lib/executionFacts'
 
 let seq = 0
 const nextId = () => `evt-${++seq}`
@@ -56,7 +57,10 @@ function formatStepDetail(stageId, step, data) {
     if (step === 'database/summary') return `成功 ${g('success')} 个表 · 失败 ${g('failed')} 个 · 提取 ${g('records')} 条数据`
     if (step === 'paper/build') return `构建 ${g('total')} 个查询串：${(g('groups') || []).join(' / ')}`
     if (step === 'paper/search') {
-      const per = (g('per_query') || []).map((n, i) => `查询串 ${i + 1}「${(g('groups') || [])[i] || ''}」${n} 篇`)
+      const per = (g('per_query') || []).map((n, i) => {
+        const group = (g('groups') || [])[i]
+        return `查询串 ${i + 1}${typeof group === 'string' && group.trim() ? `「${group}」` : ''} ${n} 篇`
+      })
       return `${per.join(' · ')} → 合并去重 ${g('deduped')} 篇`
     }
     if (step === 'paper/download') return `已下载 ${g('downloaded')} 篇 · 失败 ${g('failed')} 篇`
@@ -86,7 +90,7 @@ function composeStageSummary(stageId, stats, stage) {
     const dl = g('paper/download', 'downloaded')
     if (dl != null) {
       const failed = g('paper/download', 'failed')
-      parts.push(`下载论文 ${dl} 篇${failed ? `（${failed} 篇失败）` : ''}`)
+      parts.push(`已获取论文 ${dl} 篇${failed ? ` · 另 ${failed} 篇未获取` : ''}`)
     }
     const supp = g('supplementary/summary', 'records')
     if (supp) parts.push(`补充材料 ${supp} 条`)
@@ -106,7 +110,7 @@ function composeStageSummary(stageId, stats, stage) {
   }
   if (stageId === 'clean') {
     const tr = agents.reduce((n, a) => n + ((a.traces || []).length), 0)
-    return agents.length ? `${agents.length} 个清洗 Agent${tr ? ` · ${tr} 条修改轨迹` : ''}` : null
+    return agents.length ? `${agents.length} 个清洗 Agent${tr ? ` · ${tr} 条执行轨迹` : ''}` : null
   }
   if (stageId === 'deliver') {
     return agents.length ? `${agents.length} 个交付 Agent 完成` : null
@@ -168,6 +172,7 @@ function buildUnderstandOutput(state) {
 
 export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   const [messages, setMessages] = useState([])
+  const [connectionStatus, setConnectionStatus] = useState('idle')
   const [stages, setStages] = useState(makeInitialStages)
   const [timeline, setTimeline] = useState([])
   const [pending, setPending] = useState(null)
@@ -180,6 +185,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   // 洞察卡「数据源质量分布」图的数据源（[{id, score, level}]，按分数降序）
   const [sourceScores, setSourceScores] = useState(null)
 
+  const [executionFacts, setExecutionFacts] = useState([])
   const esRef = useRef(null)
   const lastSeqRef = useRef(0)
   const taskIdRef = useRef(null)
@@ -221,6 +227,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   const qcDoneTimerRef = useRef(null)
   // task_completed 后等待 LLM 总结 message（role=ai）到达的标记——到达才关 SSE 流
   const awaitSummaryRef = useRef(false)
+  const summaryTimerRef = useRef(null)
   // 转场旁白状态：卡片出现顺序 / 开场白是否已发 / 已确认目标天体
   const cardOrderRef = useRef([])             // stage_id 出现顺序（驱动「已完成 X，下面 Y」）
   const introDoneRef = useRef(false)          // 开场白只发一次（首卡理解首次 step 时）
@@ -259,12 +266,13 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     const perSource = scoring.per_source_scores || {}
     const srcMeta = quality?.sources || {}
     const list = Object.entries(perSource)
+      .filter(([, score]) => score != null && String(score).trim() !== '' && Number.isFinite(Number(score)))
       .map(([id, score]) => ({
         id,
-        score: Number(score) || 0,
-        level: srcMeta?.[id]?.quality_scoring?.quality_level || 'poor',
+        score: Number(score),
+        level: srcMeta?.[id]?.quality_scoring?.quality_level || 'ungraded',
       }))
-      .filter((x) => x.score > 0)
+      .filter((x) => x.score >= 0)
       .sort((a, b) => b.score - a.score)
     if (list.length) setSourceScores(list)
     const ins = state?.final_output?.quality_report?.output_state?.insights
@@ -342,8 +350,10 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     // H-17：事件归属校验（快照乱序返回 / 旧流残留事件不得串台到当前任务）
     if (taskId != null && taskIdRef.current !== taskId) return
     if (ev.seq) lastSeqRef.current = ev.seq
+    const fact = timingEvent(ev)
+    if (fact) setExecutionFacts(prev => [...prev, fact])
     // 终态/致命事件 → 关闭 SSE（流不会再有新事件，避免长连接悬挂 —— M-06/DP-10）
-    const closeStream = () => { if (esRef.current) { esRef.current.close(); esRef.current = null } }
+    const closeStream = () => { if (esRef.current) { esRef.current.close(); esRef.current = null }; clearTimeout(summaryTimerRef.current); summaryTimerRef.current = null }
     // H-02①③: 终态/致命事件统一清理挂起澄清——pending 置空（ChatView clarifying
     // 随之为 false，输入栏与提交恢复可用）+ 挂起澄清所属卡片置 cancelled 灰态
     const clearPending = () => {
@@ -357,7 +367,8 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
 
     if (type === 'message') {
       const id = nextId()
-      setMessages((prev) => [...prev, { id, role: ev.role, content: ev.content }])
+      const phase = awaitSummaryRef.current && ev.role === 'ai' ? 'completion' : undefined
+      setMessages((prev) => [...prev, { id, role: ev.role, content: ev.content, phase }])
       setTimeline((prev) => {
         // LLM 总结（task_completed 后异步补发）排在 done entry 之前，使渲染顺序为
         // …洞察卡 → 总结 → 结果表格（done 卡不渲染本体，表格在 done entry 处展示）
@@ -637,7 +648,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         // H-02①: fatal → 清理挂起澄清（输入栏恢复）；②: ev.message 显式追加为
         // AI 消息（D10-3 澄清超时提示）；③: 挂起澄清所属卡片置灰（clearPending）
         clearPending()
-        setMessages((prev) => [...prev, { id: nextId(), role: 'ai', content: `⚠️ ${ev.message || '任务失败'}` }])
+        pushMessage('ai', `⚠️ ${ev.message || '任务失败'}`)
         setTaskDone(true)
         onTaskDone?.()
       } else if (ev.stage_id) {
@@ -690,15 +701,18 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       activeAgentsRef.current.clear()
       // H-02①③: task_cancelled（澄清超时/用户取消）清理挂起澄清 + 卡片置灰
       if (type === 'task_cancelled') {
+        setStages(prev => prev.map(stage => stage.status === 'running' ? { ...stage, status: 'cancelled' } : stage))
+        pushMessage('ai', '任务已取消，已完成的执行内容仍可查看。')
         closeStream()
         clearPending()
       } else {
         // 不立即关流：LLM 总结（role=ai message）在 task_completed 之后异步补发，
-        // 立即关会丢总结（此前需刷新才见）。等总结 message 到达后关，20s 兜底超时。
+        // 等晚到总结后关流，最多保留 120s；定时器不能关闭后来切换任务的流。
         awaitSummaryRef.current = true
-        setTimeout(() => {
-          if (awaitSummaryRef.current) { awaitSummaryRef.current = false; closeStream() }
-        }, 20000)
+        clearTimeout(summaryTimerRef.current)
+        if (!replay) summaryTimerRef.current = setTimeout(() => {
+          if (taskIdRef.current === taskId && awaitSummaryRef.current) { awaitSummaryRef.current = false; closeStream() }
+        }, 120000)
       }
       setTaskDone(true)
       onTaskDone?.()
@@ -731,13 +745,14 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
         tryHydrate(0)
       }
     } else if (type === 'task_failed') {
+      setStages(prev => prev.map(stage => stage.status === 'running' ? { ...stage, status: 'error' } : stage))
       closeStream()
       flushLogsNow()   // P0-9：立即 flush 剩余 log 缓冲
       // P0-5：同 task_completed——保留 last/recent 承接收尾日志
       activeStagesRef.current.clear()
       activeAgentsRef.current.clear()
       clearPending()
-      setMessages((prev) => [...prev, { id: nextId(), role: 'ai', content: `⚠️ 任务失败：${ev.error || ''}` }])
+      pushMessage('ai', `⚠️ 任务失败：${ev.error || ''}`)
       setTaskDone(true)
       onTaskDone?.()
     } else if (type === 'task_title_ready') {
@@ -750,15 +765,18 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     if (!taskId) return
     taskIdRef.current = taskId
     setStarted(true)
+    setConnectionStatus('connecting')
     setTaskDone(false)
     setMessages([])
     setStages(makeInitialStages())
     setTimeline([])
     setPending(null)
     setLogs([])
+    setExecutionFacts([])
     setInsights(null)
     setSourceScores(null)
     awaitSummaryRef.current = false
+    clearTimeout(summaryTimerRef.current)
     pendingRef.current = null
     insightActiveRef.current = false
     statsRef.current = {}   // D6-5：跨任务不复用步骤累积数据
@@ -795,7 +813,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       if (snap.pending_clarification) {
         const pc = snap.pending_clarification
         const cl = {
-          ...pc, stageId: pc.stage_id,
+          ...pc, type: pc.cl_type || pc.type, stageId: pc.stage_id,
           // 2026-09-02：options 权威 → 选项卡（标签取静态映射）；无则静态映射；batch 短路
           quickButtons: pc.cl_type === 'human_review_batch' ? [] : (() => {
             const all = CLARIFICATION_QUICK_BUTTONS[pc.cl_type] || []
@@ -824,7 +842,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       }
       // D6-5：done 卡摘要 —— 快照 final_output 计数（历史任务回看时直接显示最终产出）
       const fo = (snap.state || {}).final_output
-      if (fo) {
+      if (fo && snap.task?.status === 'completed') {
         const parts = []
         if (Array.isArray(fo.records)) parts.push(`${fo.records.length} 条记录`)
         if (Array.isArray(fo.sources)) parts.push(`${fo.sources.length} 个来源`)
@@ -836,7 +854,7 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
       }
       // 数据洞察 hydration（历史任务回看直接呈现洞察报告）；
       // 终态任务无 insights（旧任务可能未跑洞察流程）→ insight 阶段优雅置 skipped
-      const insightOk = hydrateInsights(snap.state || {})
+      const insightOk = snap.task?.status === 'completed' ? hydrateInsights(snap.state || {}) : false
       if (!insightOk) {
         const st = snap.task && snap.task.status
         if (st && st !== 'queued' && st !== 'running') {
@@ -855,12 +873,13 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     let es = null
     let retries = 0
     const handlers = {
-      onEvent: (ev) => { retries = 0; applyEvent(ev, taskId) },
+      onEvent: (ev) => { retries = 0; setConnectionStatus('connected'); applyEvent(ev, taskId) },
       onError: () => {
         // EventSource 自动重连复用原 URL（after_seq=0 会全量重放）→ 关闭并按 lastSeq 重建（CR-02）
         if (taskIdRef.current !== taskId || !es || esRef.current !== es) return
         es.close()
         retries += 1
+        setConnectionStatus(retries > 8 ? 'disconnected' : 'reconnecting')
         if (retries > 8) { esRef.current = null; return }   // 连续失败放弃，避免重连死循环
         es = api.openEventStream(taskId, handlers, lastSeqRef.current)
         if (taskIdRef.current !== taskId) { es.close(); return }
@@ -901,9 +920,11 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
     setTimeline([])
     setPending(null)
     setLogs([])
+    setExecutionFacts([])
     setInsights(null)
     setSourceScores(null)
     awaitSummaryRef.current = false
+    clearTimeout(summaryTimerRef.current)
   }, [])
 
   useEffect(() => {
@@ -960,10 +981,17 @@ export function usePipeline(task, { onTaskDone, onTaskTitle } = {}) {
   }, [])
 
   /* 清理 */
-  useEffect(() => () => esRef.current?.close(), [])
+  useEffect(() => () => {
+    esRef.current?.close()
+    esRef.current = null
+    // Development refresh also runs effect cleanup while retaining refs.
+    // The next task effect must reopen from its saved event sequence/history.
+    taskIdRef.current = null
+    clearTimeout(summaryTimerRef.current)
+  }, [])
 
   return {
-    messages, stages, timeline, pending, started, taskDone, logs, insights, sourceScores,
-    submitQuery, submitAnswer,
+    taskId: taskIdRef.current, messages, stages, timeline, pending, started, taskDone, logs, insights, sourceScores, executionFacts,
+    connectionStatus, reconnect: () => taskIdRef.current && openTask(taskIdRef.current), submitQuery, submitAnswer,
   }
 }
