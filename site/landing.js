@@ -447,7 +447,7 @@
      交互式评测展台：选项卡切换与双向指标卡联动
      ═══════════════════════════════════════════════ */
   function initBenchmarks(document, window) {
-    var bstatCards = Array.prototype.slice.call(document.querySelectorAll(".bstat"));
+    var bstatCards = Array.prototype.slice.call(document.querySelectorAll(".bstat, .rigor-card"));
     if (!bstatCards.length) return;
 
     bstatCards.forEach(function (card) {
@@ -501,6 +501,136 @@
     return program;
   }
 
+  /* ═══════════════════════════════════════════════
+     四元数与 3D 矩阵数学工具集 (Virtual Arcball / Trackball Math)
+     ═══════════════════════════════════════════════ */
+  function quatIdentity() {
+    return [1, 0, 0, 0];
+  }
+
+  function quatNormalize(q) {
+    var len = Math.sqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
+    if (len > 0.000001) {
+      var inv = 1 / len;
+      q[0] *= inv; q[1] *= inv; q[2] *= inv; q[3] *= inv;
+    } else {
+      q[0] = 1; q[1] = 0; q[2] = 0; q[3] = 0;
+    }
+    return q;
+  }
+
+  function quatMultiply(out, a, b) {
+    var aw = a[0], ax = a[1], ay = a[2], az = a[3];
+    var bw = b[0], bx = b[1], by = b[2], bz = b[3];
+    out[0] = aw * bw - ax * bx - ay * by - az * bz;
+    out[1] = aw * bx + ax * bw + ay * bz - az * by;
+    out[2] = aw * by - ax * bz + ay * bw + az * bx;
+    out[3] = aw * bz + ax * by - ay * bx + az * bw;
+    return quatNormalize(out);
+  }
+
+  function quatFromAxisAngle(out, axisX, axisY, axisZ, angleRad) {
+    var half = angleRad * 0.5;
+    var s = Math.sin(half);
+    var len = Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
+    if (len > 0.00001) {
+      axisX /= len; axisY /= len; axisZ /= len;
+    }
+    out[0] = Math.cos(half);
+    out[1] = axisX * s;
+    out[2] = axisY * s;
+    out[3] = axisZ * s;
+    return out;
+  }
+
+  function quatSlerp(out, a, b, t) {
+    var aw = a[0], ax = a[1], ay = a[2], az = a[3];
+    var bw = b[0], bx = b[1], by = b[2], bz = b[3];
+    var cosHalfTheta = aw * bw + ax * bx + ay * by + az * bz;
+    if (cosHalfTheta < 0) {
+      bw = -bw; bx = -bx; by = -by; bz = -bz;
+      cosHalfTheta = -cosHalfTheta;
+    }
+    if (cosHalfTheta >= 0.9995) {
+      out[0] = aw + t * (bw - aw);
+      out[1] = ax + t * (bx - ax);
+      out[2] = ay + t * (by - ay);
+      out[3] = az + t * (bz - az);
+      return quatNormalize(out);
+    }
+    var halfTheta = Math.acos(cosHalfTheta);
+    var sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
+    var ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta;
+    var ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
+    out[0] = aw * ratioA + bw * ratioB;
+    out[1] = ax * ratioA + bx * ratioB;
+    out[2] = ay * ratioA + by * ratioB;
+    out[3] = az * ratioA + bz * ratioB;
+    return quatNormalize(out);
+  }
+
+  function quatToMat3(out, q) {
+    var w = q[0], x = q[1], y = q[2], z = q[3];
+    var x2 = x + x, y2 = y + y, z2 = z + z;
+    var xx = x * x2, xy = x * y2, xz = x * z2;
+    var yy = y * y2, yz = y * z2, zz = z * z2;
+    var wx = w * x2, wy = w * y2, wz = w * z2;
+
+    out[0] = 1 - (yy + zz);
+    out[1] = xy + wz;
+    out[2] = xz - wy;
+
+    out[3] = xy - wz;
+    out[4] = 1 - (xx + zz);
+    out[5] = yz + wx;
+
+    out[6] = xz + wy;
+    out[7] = yz - wx;
+    out[8] = 1 - (xx + yy);
+    return out;
+  }
+
+  function mat3Multiply(out, a, b) {
+    var a00 = a[0], a01 = a[1], a02 = a[2];
+    var a10 = a[3], a11 = a[4], a12 = a[5];
+    var a20 = a[6], a21 = a[7], a22 = a[8];
+
+    var b00 = b[0], b01 = b[1], b02 = b[2];
+    var b10 = b[3], b11 = b[4], b12 = b[5];
+    var b20 = b[6], b21 = b[7], b22 = b[8];
+
+    out[0] = a00 * b00 + a10 * b01 + a20 * b02;
+    out[1] = a01 * b00 + a11 * b01 + a21 * b02;
+    out[2] = a02 * b00 + a12 * b01 + a22 * b02;
+
+    out[3] = a00 * b10 + a10 * b11 + a20 * b12;
+    out[4] = a01 * b10 + a11 * b11 + a21 * b12;
+    out[5] = a02 * b10 + a12 * b11 + a22 * b12;
+
+    out[6] = a00 * b20 + a10 * b21 + a20 * b22;
+    out[7] = a01 * b20 + a11 * b21 + a21 * b22;
+    out[8] = a02 * b20 + a12 * b21 + a22 * b22;
+    return out;
+  }
+
+  function makeBaseRotMat(out, angleX, angleY) {
+    var cX = Math.cos(angleX), sX = Math.sin(angleX);
+    var cY = Math.cos(angleY), sY = Math.sin(angleY);
+
+    out[0] = cY;
+    out[1] = sY * sX;
+    out[2] = -sY * cX;
+
+    out[3] = 0;
+    out[4] = cX;
+    out[5] = sX;
+
+    out[6] = sY;
+    out[7] = -cY * sX;
+    out[8] = cY * cX;
+    return out;
+  }
+
   function initWebGLGalaxy(canvas, window) {
     if (!canvas || typeof canvas.getContext !== "function") return null;
     var gl = null;
@@ -519,10 +649,11 @@
       "",
       "attribute vec3 aPositionSpiral;",
       "attribute vec3 aPositionStream;",
+      "attribute vec3 aRandomness;",
       "attribute vec3 aColor;",
-      "attribute float aSize;",
-      "attribute float aPhase;",
-      "attribute float aTwinkleSpeed;",
+      "attribute vec3 aColorOuter;",
+      "attribute vec2 aStarProps; // x = size (0.35 ~ 50.0), y = starType (0, 1, 2, 3)",
+      "attribute vec2 aTwinkle;   // x = phase, y = speed",
       "",
       "uniform float uTime;",
       "uniform float uMorph;",
@@ -530,29 +661,54 @@
       "uniform vec2 uMouse;",
       "uniform float uDpr;",
       "uniform vec2 uResolution;",
+      "uniform vec2 uMouseCoord;",
+      "uniform vec2 uMouseVel;",
+      "uniform float uMouseActive;",
+      "uniform mat3 uRotMat;",
       "",
       "varying vec3 vColor;",
+      "varying vec3 vColorOuter;",
       "varying float vAlpha;",
+      "varying float vStarType;",
       "",
       "void main() {",
       "  vColor = aColor;",
-      "  float twinkle = 0.80 + sin(uTime * aTwinkleSpeed + aPhase) * 0.20;",
+      "  vColorOuter = aColorOuter;",
+      "  vStarType = aStarProps.y;",
+      "",
+      "  float twinkle = 0.84 + sin(uTime * aTwinkle.y + aTwinkle.x) * 0.16;",
       "  vAlpha = twinkle;",
       "",
-      "  // David Greenheck differential rotation",
+      "  // 严格复刻 threejs-galaxy-generator 差动自转绕卷公式",
+      "  // aPositionSpiral 初始位于 3 条辐射直线上 (0, 120, 240 度)",
+      "  float angle = atan(aPositionSpiral.z, aPositionSpiral.x);",
       "  float distFromCenter = length(aPositionSpiral.xz);",
-      "  float rotFactor = 1.0 / (distFromCenter * 2.5 + 0.85);",
-      "  float diffAngle = -uTime * 0.048 * rotFactor;",
-      "  float cDiff = cos(diffAngle);",
-      "  float sDiff = sin(diffAngle);",
-      "  vec3 rotatedSpiral = vec3(",
-      "    aPositionSpiral.x * cDiff - aPositionSpiral.z * sDiff,",
-      "    aPositionSpiral.y,",
-      "    aPositionSpiral.x * sDiff + aPositionSpiral.z * cDiff",
+      "",
+      "  // 中心自转速度显著快于外圈：(1.0 / dist) * uTime * 0.18",
+      "  float simonDist = max(0.14, distFromCenter * 2.8);",
+      "  float angleOffset = (1.0 / simonDist) * (uTime * 0.18);",
+      "  angle += angleOffset;",
+      "",
+      "  // 下滚初期的蓄能加速自转与星核引力汇聚 (Warp Spin Tension & Focal Attraction)",
+      "  float warpSpin = smoothstep(0.02, 0.38, uMorph) * (1.0 - smoothstep(0.38, 0.85, uMorph)) * 0.55;",
+      "  angle += angleOffset * warpSpin;",
+      "",
+      "  // 动态旋转后结合 3D 空间立体坐标与幂律扩散",
+      "  vec3 dynamicSpiral = vec3(",
+      "    distFromCenter * cos(angle) + aRandomness.x,",
+      "    aPositionSpiral.y + aRandomness.y,",
+      "    distFromCenter * sin(angle) + aRandomness.z",
       "  );",
       "",
-      "  // 自然散落星场：银河平滑散开为全屏深空星海，散开后一以贯之持续作为全局背景",
-      "  vec3 pos = mix(rotatedSpiral, aPositionStream, uMorph);",
+      "  // 电影级两翼星轨分流 (Bilateral Cosmic Rail Streaming):",
+      "  // 摒弃生硬插值，粒子沿双曲抛物线流线优雅向视口左、右两翼流淌展开",
+      "  float morphCurve = smoothstep(0.08, 0.88, uMorph);",
+      "  vec3 curvedFlight = vec3(",
+      "    dynamicSpiral.x * (1.0 + morphCurve * 0.85) + sign(dynamicSpiral.x) * (morphCurve * 0.42),",
+      "    dynamicSpiral.y + morphCurve * 0.16 * sign(dynamicSpiral.y),",
+      "    dynamicSpiral.z - morphCurve * 0.65",
+      "  );",
+      "  vec3 pos = mix(dynamicSpiral, mix(curvedFlight, aPositionStream, morphCurve), morphCurve);",
       "",
       "  // 散开后保持深空缓动自转",
       "  float streamRot = uTime * 0.006 * uMorph;",
@@ -560,31 +716,69 @@
       "  float sS = sin(streamRot);",
       "  pos.xz = vec2(pos.x * cS - pos.z * sS, pos.x * sS + pos.z * cS);",
       "",
-      "  // 3D tilt and mouse parallax",
-      "  float angleY = uMouse.x * 0.35 + (1.0 - uMorph) * (uTime * 0.015);",
-      "  float angleX = uMouse.y * 0.25 - 0.82;",
-      "  float cosY = cos(angleY);",
-      "  float sinY = sin(angleY);",
-      "  float cosX = cos(angleX);",
-      "  float sinX = sin(angleX);",
+      "  // 3D 万向球自由姿态与宏大立体矩阵变换 (3D Arcball & Volumetric Orientation)",
+      "  vec3 rotatedSpiral = uRotMat * pos;",
       "",
-      "  float x1 = pos.x * cosY + pos.z * sinY;",
-      "  float z1 = -pos.x * sinY + pos.z * cosY;",
-      "  float y2 = pos.y * cosX - z1 * sinX;",
-      "  float z2 = pos.y * sinX + z1 * cosX;",
-      "",
-      "  // 视口偏心原点偏移：在相机视角中平移，首屏精准锚定在右下方，绝不随差动自转摆动，绝不重叠左侧文字",
-      "  // 当向下滚动时，随粒子散落自然平滑过渡归中",
-      "  float pivotFade = 1.0 - smoothstep(0.0, 0.70, uMorph);",
+      "  // 视口偏心原点偏移：首屏锚定在右侧，下滚时平滑居中聚焦 (Centering Focus)",
+      "  float pivotFade = 1.0 - smoothstep(0.0, 0.55, uMorph);",
+      "  // 电影级推进推镜 (Camera Dolly-In): 产生向星核纵深穿梭的宏大景深速度感",
+      "  float dollyIn = smoothstep(0.04, 0.42, uMorph) * 0.65 - smoothstep(0.42, 0.95, uMorph) * 0.25;",
       "  vec3 rotated = vec3(",
-      "    x1 + uPivotOffset.x * pivotFade,",
-      "    y2 + uPivotOffset.y * pivotFade,",
-      "    z2 - 2.15",
+      "    rotatedSpiral.x + uPivotOffset.x * pivotFade,",
+      "    rotatedSpiral.y + uPivotOffset.y * pivotFade,",
+      "    rotatedSpiral.z - (2.15 - dollyIn)",
       "  );",
       "  float fov = 1.65;",
-      "  gl_Position = vec4(rotated.x * fov * (uResolution.y / uResolution.x), rotated.y * fov, rotated.z * 0.5, -rotated.z);",
-      "  float distScale = 2.15 / max(0.4, -rotated.z);",
-      "  gl_PointSize = clamp(aSize * uDpr * distScale * 1.35, 1.0, 14.0);",
+      "  float aspect = uResolution.y / uResolution.x;",
+      "",
+      "  // 穿梭时掠过镜头的近身消隐，防止过大星体爆屏穿模",
+      "  float nearFade = smoothstep(-0.35, -0.75, rotated.z);",
+      "  vAlpha = twinkle * nearFade;",
+      "",
+      "  // 交互流体弹性引力场：无突变硬截断，顺向速度拖拽与阻尼弹簧丝滑复位",
+      "  float interactiveInfluence = 0.0;",
+      "  if (uMouseActive > 0.001) {",
+      "    vec2 starScreenPos = vec2(rotated.x * fov * aspect, rotated.y * fov) / (-rotated.z);",
+      "    vec2 dMouse = starScreenPos - uMouseCoord;",
+      "    vec2 dAspect = vec2(dMouse.x / aspect, dMouse.y);",
+      "    float distToMouse = length(dAspect);",
+      "",
+      "    // 连续高斯弹性势井（适度展宽平滑作用半径，无生硬硬截断）",
+      "    float pullInfluence = exp(-distToMouse * distToMouse * 11.0) * uMouseActive;",
+      "",
+      "    if (pullInfluence > 0.001) {",
+      "      vec2 pullDir = normalize(dMouse);",
+      "",
+      "      // 1. 弹性橡皮筋拉扯力 (显著增强拉扯振幅，形成饱满弹性伸缩感)",
+      "      float springPull = distToMouse * pullInfluence * 0.17;",
+      "      vec2 elasticDisplace = -pullDir * springPull;",
+      "",
+      "      // 2. 随鼠标滑动的流体速度拖拽 (强化顺向跟随尾流)",
+      "      vec2 dragDisplace = uMouseVel * (pullInfluence * 0.14);",
+      "",
+      "      // 3. 阻尼波动涟漪与复位弹性振荡 (强化柔和水波回弹复位)",
+      "      float velMag = length(uMouseVel);",
+      "      float wavePhase = distToMouse * 20.0 - uTime * 4.5;",
+      "      float reboundWave = sin(wavePhase) * exp(-distToMouse * 6.0) * velMag * 0.050;",
+      "      vec2 waveDisplace = pullDir * reboundWave;",
+      "",
+      "      // 4. 三维立体位移：屏幕 2D 平移 + 深度 Z 轴引力透镜凹陷 (3D Funnel Well)",
+      "      vec2 totalScreenDisplace = (elasticDisplace + dragDisplace + waveDisplace) * (1.0 - uMorph * 0.7);",
+      "      rotated.x += totalScreenDisplace.x * (-rotated.z / (fov * aspect));",
+      "      rotated.y += totalScreenDisplace.y * (-rotated.z / fov);",
+      "      rotated.z -= pullInfluence * 0.16; // 3D 引力井下沉凸显",
+      "",
+      "      interactiveInfluence = pullInfluence;",
+      "      vAlpha = twinkle * (1.0 + pullInfluence * 0.55);",
+      "    }",
+      "  }",
+      "",
+      "  gl_Position = vec4(rotated.x * fov * aspect, rotated.y * fov, rotated.z * 0.5, -rotated.z);",
+      "  float distScale = pow(2.15 / max(0.4, -rotated.z), 1.35);",
+      "  float starSize = aStarProps.x;",
+      "  // 主力星群（1.6px ~ 2.4px），高光焦点大星（7.5px ~ 36.0px）",
+      "  float downstreamScale = mix(1.0, clamp(2.8 / max(2.8, starSize), 0.16, 1.0), uMorph);",
+      "  gl_PointSize = clamp(starSize * downstreamScale * uDpr * distScale * 1.30 * (1.0 + interactiveInfluence * 0.35), 0.5, 54.0);",
       "}"
     ].join("\n");
 
@@ -597,24 +791,68 @@
       "uniform vec2 uResolution;",
       "",
       "varying vec3 vColor;",
+      "varying vec3 vColorOuter;",
       "varying float vAlpha;",
+      "varying float vStarType;",
       "",
       "void main() {",
-      "  float dist = length(gl_PointCoord - vec2(0.5)) * 2.0;",
+      "  vec2 coord = gl_PointCoord;",
+      "  float dist = length(coord - vec2(0.5)) * 2.0;",
       "  if (dist > 1.0) discard;",
       "",
-      "  // David Greenheck smooth circular star falloff",
-      "  float shape = smoothstep(1.0, 0.0, dist) * smoothstep(1.0, 0.22, dist);",
-      "  float core = smoothstep(0.35, 0.0, dist);",
-      "  vec3 starColor = mix(vColor, vec3(1.0, 1.0, 1.0), core * 0.75);",
+      "  // 严格采用 threejs-galaxy-generator 经典 5 次幂高光平滑衰减，剔除生硬星环",
+      "  float strength = pow(max(0.0, 1.0 - dist), 5.0);",
+      "  // 核心超高温白炽钻石纯白聚光核",
+      "  float hotCore = pow(max(0.0, 1.0 - dist), 14.0);",
       "",
-      "  // Astra downstream soft edge gradient center mask",
+      "  // 单颗恒星自内向外径向渐变：钻石白炽核 (#FFFFFF) -> 主光谱色 (vColor) -> 柔和星云外晕 (vColorOuter)",
+      "  vec3 coreWhite = vec3(1.0, 0.98, 0.95);",
+      "  vec3 starColor = mix(vColor, coreWhite, hotCore * 0.92);",
+      "  float rimFactor = smoothstep(0.25, 0.95, dist);",
+      "  starColor = mix(starColor, vColorOuter, rimFactor * 0.45);",
+      "",
+      "  // 多元光芒散射样式 (vStarType): 0=纯净高光圆点, 1=多层柔光渐变日冕圆斑, 2=经典4翼衍射光芒, 3=华丽8翼超新星晶芒, 4=双层宽频弥散光晕",
+      "  float extraGlow = 0.0;",
+      "  float spikeFade = mix(1.0, 0.0, uDownstream);",
+      "  if (vStarType > 0.5 && vStarType < 1.5) {",
+      "    // Type 1: 多层柔光渐变日冕圆斑 (Soft Radial Multi-Layer Corona)",
+      "    float softCorona = exp(-dist * dist * 3.6) * 0.75;",
+      "    float outerGlow = smoothstep(0.9, 0.15, dist) * 0.35;",
+      "    extraGlow = (softCorona + outerGlow) * spikeFade;",
+      "    starColor = mix(starColor, coreWhite, softCorona * 0.45);",
+      "  } else if (vStarType >= 1.5 && vStarType < 2.5) {",
+      "    // Type 2: 经典 4 翼细致衍射星芒 (4-Point Slender Diffraction Spike)",
+      "    vec2 sCoord = abs(coord - vec2(0.5));",
+      "    float spikeX = exp(-sCoord.y * 45.0) * smoothstep(0.5, 0.0, sCoord.x);",
+      "    float spikeY = exp(-sCoord.x * 45.0) * smoothstep(0.5, 0.0, sCoord.y);",
+      "    extraGlow = max(spikeX, spikeY) * 0.85 * spikeFade;",
+      "    starColor = mix(starColor, coreWhite, extraGlow * 0.65);",
+      "  } else if (vStarType >= 2.5 && vStarType < 3.5) {",
+      "    // Type 3: 华丽 8 翼超新星晶体星芒 (8-Point Diamond Starburst)",
+      "    vec2 p0 = abs(coord - vec2(0.5));",
+      "    vec2 d = coord - vec2(0.5);",
+      "    vec2 pRot = abs(vec2(d.x * 0.7071 - d.y * 0.7071, d.x * 0.7071 + d.y * 0.7071));",
+      "    float crossMain = max(exp(-p0.y * 42.0) * smoothstep(0.5, 0.0, p0.x), exp(-p0.x * 42.0) * smoothstep(0.5, 0.0, p0.y));",
+      "    float crossDiag = max(exp(-pRot.y * 48.0) * smoothstep(0.42, 0.0, pRot.x), exp(-pRot.x * 48.0) * smoothstep(0.42, 0.0, pRot.y)) * 0.65;",
+      "    extraGlow = max(crossMain, crossDiag) * 0.90 * spikeFade;",
+      "    starColor = mix(starColor, coreWhite, extraGlow * 0.75);",
+      "  } else if (vStarType >= 3.5) {",
+      "    // Type 4: 双层宽频弥散光晕圆盘 (Broad Chromatic Halo Disc)",
+      "    float broadDisk = smoothstep(0.85, 0.05, dist) * 0.60;",
+      "    float centerBleed = exp(-dist * 4.0) * 0.50;",
+      "    extraGlow = (broadDisk + centerBleed) * spikeFade;",
+      "  }",
+      "",
+      "  float intensity = strength + hotCore * 0.50 + extraGlow;",
+      "",
+      "  // 电影级自适应中央阅读廊道 (渐进式呼吸拉开，而非生硬打孔)",
       "  float screenX = gl_FragCoord.x / uResolution.x;",
       "  float distFromCenter = abs(screenX - 0.5);",
-      "  float railMask = smoothstep(0.18, 0.42, distFromCenter);",
-      "  float mask = mix(1.0, railMask, uDownstream);",
+      "  float corridorOpen = smoothstep(0.18, 0.85, uDownstream);",
+      "  float railMask = smoothstep(0.16, 0.44, distFromCenter);",
+      "  float mask = mix(1.0, railMask, corridorOpen);",
       "",
-      "  gl_FragColor = vec4(starColor, shape * vAlpha * mask * 0.92);",
+      "  gl_FragColor = vec4(starColor, clamp(intensity, 0.0, 1.0) * vAlpha * mask * 0.95);",
       "}"
     ].join("\n");
 
@@ -622,98 +860,169 @@
     if (!program) return null;
 
     var isMobile = (window.innerWidth || 1200) < 768;
-    var count = isMobile ? 8500 : 22000;
+    var count = isMobile ? 12000 : 28000;
 
     var posSpiral = new Float32Array(count * 3);
     var posStream = new Float32Array(count * 3);
+    var randomness = new Float32Array(count * 3);
     var colors = new Float32Array(count * 3);
-    var sizes = new Float32Array(count);
-    var phases = new Float32Array(count);
-    var twinkleSpeeds = new Float32Array(count);
+    var colorsOuter = new Float32Array(count * 3);
+    var starProps = new Float32Array(count * 2);
+    var twinkles = new Float32Array(count * 2);
 
-    function gaussianVal() {
-      return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
-    }
-
-    function mixScalar(a, b, t) {
-      return a * (1.0 - t) + b * t;
-    }
-
-    var galaxyCount = Math.floor(count * 0.82);
+    var galaxyCount = Math.floor(count * 0.88);
 
     for (var i = 0; i < count; i++) {
       var sX, sY, sZ;
+      var rndX = 0, rndY = 0, rndZ = 0;
       var rCol = 1.0, gCol = 1.0, bCol = 1.0;
-      var sz = 1.2 + Math.random() * 1.5;
+      var roCol = 0.5, goCol = 0.5, boCol = 1.0;
+      var sz = 0.5;
+      var sType = 0.0;
 
       if (i < galaxyCount) {
-        // David Greenheck 2条对称宏伟旋臂 (Grand-Design 2-Arm Logarithmic Spiral)
-        var seedNorm = Math.pow(Math.random(), 0.52);
-        var maxGalaxyRadius = 0.80;
-        var radius = seedNorm * maxGalaxyRadius;
+        // 严格复刻 threejs-galaxy-generator: 初始几何为 3 条辐射直线辐条 (0, 120, 240 度)
+        var branches = 3;
+        var arm = i % branches;
+        var branchAngle = arm * (Math.PI * 2.0 / branches);
+        // 旋臂大幅延长舒展长尾
+        var normR = Math.pow(Math.random(), 1.08); // 0 ~ 1
+        var radius = normR * 1.65;
 
-        var isCore = seedNorm < 0.08;
-        var isArm = seedNorm >= 0.08 && seedNorm < 0.88;
+        // 1. 双层盘面体系：65% 薄盘核心亮星 + 35% 厚盘蓬松弥散星晕 (Thin Disk vs Thick Disk)
+        var isThickDisk = Math.random() < 0.35;
 
-        if (isCore) {
-          var cR = Math.pow(Math.random(), 1.8) * 0.12;
-          var cAngle = Math.random() * Math.PI * 2.0;
-          sX = Math.cos(cAngle) * cR;
-          sZ = Math.sin(cAngle) * cR;
-          sY = gaussianVal() * 0.038;
-          sz = 2.0 + Math.random() * 2.4;
-          rCol = 0.96; gCol = 0.98; bCol = 1.0;
-        } else if (isArm) {
-          var arm = i % 2; // 严格双旋臂
-          var armAngle = arm * Math.PI;
-          var spiralAngle = seedNorm * 1.75 * Math.PI * 2.0; // 紧致度 1.75
-          var armSpread = gaussianVal() * (0.024 + 0.082 * seedNorm);
-          var radialSpread = gaussianVal() * (0.015 + 0.045 * seedNorm);
-          var finalR = Math.max(0.018, radius + radialSpread);
-          var finalAngle = armAngle + spiralAngle + armSpread / Math.max(0.04, finalR);
+        // 2. 柱状管体横截面高斯体积分布 (Volumetric Cylindrical Arm Tubes)
+        // 随半径扩散的旋臂空间管状截面半径：厚度扩充 3~4 倍
+        var tubeRadius = (0.045 + 0.19 * Math.pow(normR, 1.2)) * (isThickDisk ? 1.55 : 0.85);
+        var tubePhi = Math.random() * Math.PI * 2.0;
+        var tubeDist = tubeRadius * Math.pow(Math.random(), isThickDisk ? 0.75 : 1.35);
+        var tubeRadialOffset = Math.cos(tubePhi) * tubeDist;
+        var tubeY = Math.sin(tubePhi) * tubeDist;
 
-          sX = Math.cos(finalAngle) * finalR;
-          sZ = Math.sin(finalAngle) * finalR;
-          sY = gaussianVal() * (0.018 + 0.032 * (1.0 - seedNorm));
-          sz = 1.1 + Math.random() * 1.8;
+        // 3. 增强型天体物理 3D S-Warp 空间立体波浪折叠 (波幅由 0.16 提升至 0.36)
+        // 各旋臂进入空间波浪相位各异，一条大幅高扬、一条大幅俯冲穿插
+        var warpAmp = 0.36 * Math.pow(normR, 1.35);
+        var warpY = Math.sin(branchAngle * 1.0 + radius * 2.0 + 0.4) * warpAmp;
 
-          // 基于密度的蓝-琥珀渐变色谱 (Greenheck #1885ff -> #ffb28a)
-          var radialSparsity = Math.abs(radialSpread) / 0.06;
-          var angularSparsity = Math.abs(armSpread) / 0.12;
-          var sparsity = Math.min(1.0, (radialSparsity + angularSparsity) * 0.5);
-          sparsity = Math.min(1.0, Math.max(0.0, sparsity * 0.72 + seedNorm * 0.35));
+        // 4. 银心核球高斯 3D 球体发光体 (Dense Bulge Volume)
+        var bulgeFactor = Math.exp(-radius * 7.0);
+        var bulgeY = bulgeFactor * (Math.random() - 0.5 + Math.random() - 0.5) * 0.18;
+        var bulgeR = bulgeFactor * (Math.random() - 0.5) * 0.06;
 
-          rCol = 0.094 + (1.0 - 0.094) * sparsity;
-          gCol = 0.522 + (0.698 - 0.522) * sparsity;
-          bCol = 1.0 + (0.541 - 1.0) * sparsity;
+        // 5. 组合空间位置
+        var effectiveR = Math.max(0.015, radius + tubeRadialOffset + bulgeR);
+        sX = Math.cos(branchAngle) * effectiveR;
+        sZ = Math.sin(branchAngle) * effectiveR;
+        sY = warpY + bulgeY + tubeY;
 
-          // 核心渐白过渡
-          var coreWhiteness = Math.max(0.0, 1.0 - seedNorm * 2.8);
-          rCol = mixScalar(rCol, 1.0, coreWhiteness * 0.85);
-          gCol = mixScalar(gCol, 1.0, coreWhiteness * 0.85);
-          bCol = mixScalar(bCol, 1.0, coreWhiteness * 0.85);
+        // 6. 旋臂内部微扰：高阶幂律聚集保持旋臂主干凝聚璀璨，同时外层形成立体羽化
+        var randPower = isThickDisk ? 4.5 : 7.8;
+        var rSpread = (0.02 + 0.14 * normR) * (isThickDisk ? 1.4 : 0.85);
+        rndX = Math.pow(Math.random(), randPower) * (Math.random() < 0.5 ? -1 : 1) * rSpread;
+        rndY = (Math.random() - 0.5) * (0.025 + 0.08 * normR) * (isThickDisk ? 1.5 : 0.75);
+        rndZ = Math.pow(Math.random(), randPower) * (Math.random() < 0.5 ? -1 : 1) * rSpread;
+
+        // 多光谱交叠色彩系统：每一条旋臂与区域均交织青蓝、紫罗兰、玫瑰粉、极光翠与金琥珀！
+        if (radius < 0.12) {
+          // 银心白炽光与太阳金色
+          if (Math.random() < 0.70) {
+            rCol = 1.0; gCol = 0.98; bCol = 1.0;
+            roCol = 0.85; goCol = 0.82; boCol = 1.0;
+          } else {
+            rCol = 1.0; gCol = 0.88; bCol = 0.60;
+            roCol = 0.75; goCol = 0.45; boCol = 0.15;
+          }
         } else {
-          // 旋臂外围稀疏星芒
-          var haloAngle = Math.random() * Math.PI * 2.0;
-          var haloR = 0.35 + Math.random() * 0.45;
-          sX = Math.cos(haloAngle) * haloR + gaussianVal() * 0.08;
-          sZ = Math.sin(haloAngle) * haloR + gaussianVal() * 0.08;
-          sY = gaussianVal() * 0.07;
-          sz = 0.9 + Math.random() * 1.2;
-          rCol = 0.65; gCol = 0.82; bCol = 1.0;
+          // 交叠波谱：多频相位混合，每一条星臂上均呈现交织融合的光谱
+          var wave = Math.sin(radius * 9.0 + branchAngle * 2.0 + (i % 17) * 0.4) * 0.5 + 0.5;
+          var pick = (Math.random() * 0.6 + wave * 0.4);
+
+          if (pick < 0.25) {
+            // 电光天青 (#00F2FE) -> 外晕深邃星蓝 (#0A2565)
+            rCol = 0.00; gCol = 0.95; bCol = 1.00;
+            roCol = 0.08; goCol = 0.22; boCol = 0.65;
+          } else if (pick < 0.50) {
+            // 深空紫罗兰 (#8B5CF6) -> 外晕星际品红 (#4A125A)
+            rCol = 0.55; gCol = 0.36; bCol = 1.00;
+            roCol = 0.35; goCol = 0.10; boCol = 0.55;
+          } else if (pick < 0.75) {
+            // 银河玫瑰品红 (#EC4899) -> 外晕暗紫晶 (#2D0845)
+            rCol = 0.93; gCol = 0.28; bCol = 0.60;
+            roCol = 0.48; goCol = 0.12; boCol = 0.70;
+          } else if (pick < 0.88) {
+            // 极光薄荷青 (#10B981) -> 外晕幽碧深空 (#04281E)
+            rCol = 0.06; gCol = 0.72; bCol = 0.50;
+            roCol = 0.02; goCol = 0.35; boCol = 0.40;
+          } else {
+            // 宇宙暖金 (#F59E0B) -> 外晕暖琥珀红 (#5C2200)
+            rCol = 0.96; gCol = 0.62; bCol = 0.04;
+            roCol = 0.60; goCol = 0.25; boCol = 0.05;
+          }
+
+          if (Math.random() < 0.08) {
+            // 超高温白炽核星
+            rCol = 1.0; gCol = 1.0; bCol = 1.0;
+            roCol = 0.70; goCol = 0.85; boCol = 1.0;
+          }
+        }
+
+        // 尺寸分配：主力星群换大至 1.6px ~ 2.4px，高光大星范围扩大至 7.5px ~ 36.0px（大小随机性更强）
+        var sizeRoll = Math.random();
+        if (sizeRoll < 0.925) {
+          // 92.5% 主力星群：1.6px ~ 2.4px（充盈饱满，星体数量感倍增）
+          sz = 1.60 + Math.random() * 0.80;
+          sType = 0.0; // Type 0: 钻石纯净高光圆点
+        } else if (sizeRoll < 0.985) {
+          // 6.0% 过渡中等亮星：2.6px ~ 6.0px（增强星系景深纵深）
+          sz = 2.60 + Math.random() * 3.40;
+          sType = Math.random() < 0.5 ? 0.0 : 1.0; // 50% 纯圆，50% 柔光日冕
+        } else {
+          // 1.5% 高光焦点大星：7.5px ~ 36.0px（大小随机性更强，非线性幂律阶梯）
+          var powerRoll = Math.pow(Math.random(), 1.55);
+          sz = 7.5 + powerRoll * 28.5; // 7.5px ~ 36.0px
+
+          // 多元光芒散射样式随机分配
+          var typePick = Math.random();
+          if (typePick < 0.30) {
+            sType = 1.0; // Type 1: 多层柔光渐变日冕圆斑
+          } else if (typePick < 0.60) {
+            sType = 2.0; // Type 2: 经典 4 翼细致衍射星芒
+          } else if (typePick < 0.85) {
+            sType = 3.0; // Type 3: 华丽 8 翼超新星晶体星芒
+          } else {
+            sType = 4.0; // Type 4: 双层宽频弥散光晕圆盘
+          }
         }
       } else {
-        // 宇宙深空背景基底星
-        sX = (Math.random() - 0.5) * 3.6;
+        // 宇宙深空背景基底星 (全屏星海分布)
+        sX = (Math.random() - 0.5) * 3.8;
         sY = (Math.random() - 0.5) * 3.4;
         sZ = -1.2 + Math.random() * 2.2;
-        sz = 0.8 + Math.random() * 1.3;
-        if (Math.random() < 0.65) {
-          rCol = 1.0; gCol = 1.0; bCol = 1.0;
-        } else if (Math.random() < 0.5) {
-          rCol = 1.0; gCol = 0.92; bCol = 0.78;
+        rndX = 0; rndY = 0; rndZ = 0;
+
+        var bgRand = Math.random();
+        if (bgRand < 0.94) {
+          sz = 1.40 + Math.random() * 0.80; // 背景微星同步微调，提升全屏星海丰满度
+          sType = 0.0;
         } else {
-          rCol = 0.75; gCol = 0.90; bCol = 1.0;
+          sz = 2.40 + Math.random() * 1.80;
+          sType = Math.random() < 0.4 ? 1.0 : 0.0;
+        }
+
+        var tempRand = Math.random();
+        if (tempRand < 0.45) {
+          rCol = 1.0; gCol = 1.0; bCol = 1.0;
+          roCol = 0.7; goCol = 0.85; boCol = 1.0;
+        } else if (tempRand < 0.70) {
+          rCol = 0.68; gCol = 0.85; bCol = 1.0;
+          roCol = 0.15; goCol = 0.35; boCol = 0.75;
+        } else if (tempRand < 0.88) {
+          rCol = 1.0; gCol = 0.90; bCol = 0.75;
+          roCol = 0.6; goCol = 0.35; boCol = 0.1;
+        } else {
+          rCol = 0.82; gCol = 0.55; bCol = 1.0;
+          roCol = 0.35; goCol = 0.12; boCol = 0.55;
         }
       }
 
@@ -721,11 +1030,25 @@
       posSpiral[i * 3 + 1] = sY;
       posSpiral[i * 3 + 2] = sZ;
 
-      // 全局深空星海粒子分布：全屏自然散落，滚动时粒子由银河平滑舒展为宇宙深空
-      // 正文中央的阅读通道由片元着色器实时线性羽化蒙版 (soft-edge center mask) 保持通透纯黑
-      var stX = (Math.random() - 0.5) * 3.8;
-      var stY = (Math.random() - 0.5) * 2.8;
-      var stZ = -1.1 + Math.random() * 2.2;
+      randomness[i * 3 + 0] = rndX;
+      randomness[i * 3 + 1] = rndY;
+      randomness[i * 3 + 2] = rndZ;
+
+      // 全局深空星海粒子分布：分流至左右两翼流光星轨（Bilateral Cosmic Rails）
+      var railSide = (i % 2 === 0 ? 1 : -1);
+      var stX, stY, stZ;
+      if (Math.random() < 0.82) {
+        // 82% 粒子流向视口两侧流光星轨（0.60 ~ 2.05 区域）
+        var edgeDist = 0.60 + Math.pow(Math.random(), 1.35) * 1.45;
+        stX = railSide * edgeDist;
+        stY = (Math.random() - 0.5) * 3.4;
+        stZ = -1.6 + Math.random() * 2.5;
+      } else {
+        // 18% 纵深远景微弱深空尘星，位于极远背景，不干扰中央阅读走廊
+        stX = (Math.random() - 0.5) * 3.6;
+        stY = (Math.random() - 0.5) * 3.0;
+        stZ = -2.4 + Math.random() * 1.0;
+      }
 
       posStream[i * 3 + 0] = stX;
       posStream[i * 3 + 1] = stY;
@@ -735,9 +1058,15 @@
       colors[i * 3 + 1] = gCol;
       colors[i * 3 + 2] = bCol;
 
-      sizes[i] = sz;
-      phases[i] = Math.random() * Math.PI * 2.0;
-      twinkleSpeeds[i] = 0.5 + Math.random() * 2.0;
+      colorsOuter[i * 3 + 0] = roCol;
+      colorsOuter[i * 3 + 1] = goCol;
+      colorsOuter[i * 3 + 2] = boCol;
+
+      starProps[i * 2 + 0] = sz;
+      starProps[i * 2 + 1] = sType;
+
+      twinkles[i * 2 + 0] = Math.random() * Math.PI * 2.0;
+      twinkles[i * 2 + 1] = 0.5 + Math.random() * 2.0;
     }
 
     function bindBuffer(data, usage) {
@@ -749,17 +1078,19 @@
 
     var bufSpiral = bindBuffer(posSpiral);
     var bufStream = bindBuffer(posStream);
+    var bufRandomness = bindBuffer(randomness);
     var bufColor = bindBuffer(colors);
-    var bufSize = bindBuffer(sizes);
-    var bufPhase = bindBuffer(phases);
-    var bufTwinkle = bindBuffer(twinkleSpeeds);
+    var bufColorOuter = bindBuffer(colorsOuter);
+    var bufStarProps = bindBuffer(starProps);
+    var bufTwinkle = bindBuffer(twinkles);
 
     var aPositionSpiral = gl.getAttribLocation(program, "aPositionSpiral");
     var aPositionStream = gl.getAttribLocation(program, "aPositionStream");
+    var aRandomness = gl.getAttribLocation(program, "aRandomness");
     var aColor = gl.getAttribLocation(program, "aColor");
-    var aSize = gl.getAttribLocation(program, "aSize");
-    var aPhase = gl.getAttribLocation(program, "aPhase");
-    var aTwinkleSpeed = gl.getAttribLocation(program, "aTwinkleSpeed");
+    var aColorOuter = gl.getAttribLocation(program, "aColorOuter");
+    var aStarProps = gl.getAttribLocation(program, "aStarProps");
+    var aTwinkle = gl.getAttribLocation(program, "aTwinkle");
 
     var uTime = gl.getUniformLocation(program, "uTime");
     var uMorph = gl.getUniformLocation(program, "uMorph");
@@ -768,12 +1099,16 @@
     var uMouse = gl.getUniformLocation(program, "uMouse");
     var uDpr = gl.getUniformLocation(program, "uDpr");
     var uResolution = gl.getUniformLocation(program, "uResolution");
+    var uMouseCoord = gl.getUniformLocation(program, "uMouseCoord");
+    var uMouseVel = gl.getUniformLocation(program, "uMouseVel");
+    var uMouseActive = gl.getUniformLocation(program, "uMouseActive");
+    var uRotMat = gl.getUniformLocation(program, "uRotMat");
 
     return {
       resize: function (w, h) {
         gl.viewport(0, 0, w, h);
       },
-      render: function (time, morph, downstream, pivotX, pivotY, mouseX, mouseY, width, height, dpr) {
+      render: function (time, morph, downstream, pivotX, pivotY, mouseX, mouseY, width, height, dpr, mouseCoordX, mouseCoordY, mouseActive, mouseVelX, mouseVelY, rotMat) {
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -791,21 +1126,25 @@
         gl.bindBuffer(gl.ARRAY_BUFFER, bufStream);
         gl.vertexAttribPointer(aPositionStream, 3, gl.FLOAT, false, 0, 0);
 
+        gl.enableVertexAttribArray(aRandomness);
+        gl.bindBuffer(gl.ARRAY_BUFFER, bufRandomness);
+        gl.vertexAttribPointer(aRandomness, 3, gl.FLOAT, false, 0, 0);
+
         gl.enableVertexAttribArray(aColor);
         gl.bindBuffer(gl.ARRAY_BUFFER, bufColor);
         gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 0, 0);
 
-        gl.enableVertexAttribArray(aSize);
-        gl.bindBuffer(gl.ARRAY_BUFFER, bufSize);
-        gl.vertexAttribPointer(aSize, 1, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(aColorOuter);
+        gl.bindBuffer(gl.ARRAY_BUFFER, bufColorOuter);
+        gl.vertexAttribPointer(aColorOuter, 3, gl.FLOAT, false, 0, 0);
 
-        gl.enableVertexAttribArray(aPhase);
-        gl.bindBuffer(gl.ARRAY_BUFFER, bufPhase);
-        gl.vertexAttribPointer(aPhase, 1, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(aStarProps);
+        gl.bindBuffer(gl.ARRAY_BUFFER, bufStarProps);
+        gl.vertexAttribPointer(aStarProps, 2, gl.FLOAT, false, 0, 0);
 
-        gl.enableVertexAttribArray(aTwinkleSpeed);
+        gl.enableVertexAttribArray(aTwinkle);
         gl.bindBuffer(gl.ARRAY_BUFFER, bufTwinkle);
-        gl.vertexAttribPointer(aTwinkleSpeed, 1, gl.FLOAT, false, 0, 0);
+        gl.vertexAttribPointer(aTwinkle, 2, gl.FLOAT, false, 0, 0);
 
         gl.uniform1f(uTime, time);
         gl.uniform1f(uMorph, morph);
@@ -814,6 +1153,25 @@
         gl.uniform2f(uMouse, mouseX, mouseY);
         gl.uniform1f(uDpr, dpr);
         gl.uniform2f(uResolution, canvas.width, canvas.height);
+
+        var mcX = mouseCoordX != null ? mouseCoordX : mouseX;
+        var mcY = mouseCoordY != null ? mouseCoordY : -mouseY;
+        var mActive = mouseActive != null ? mouseActive : 0.0;
+        var mvX = mouseVelX != null ? mouseVelX : 0.0;
+        var mvY = mouseVelY != null ? mouseVelY : 0.0;
+        gl.uniform2f(uMouseCoord, mcX, mcY);
+        gl.uniform2f(uMouseVel, mvX, mvY);
+        gl.uniform1f(uMouseActive, mActive);
+
+        if (rotMat) {
+          gl.uniformMatrix3fv(uRotMat, false, rotMat);
+        } else {
+          var defaultMat = new Float32Array(9);
+          var angleY = mouseX * 0.36 + (1.0 - morph) * (time * 0.012);
+          var angleX = mouseY * 0.24 - 0.78;
+          makeBaseRotMat(defaultMat, angleX, angleY);
+          gl.uniformMatrix3fv(uRotMat, false, defaultMat);
+        }
 
         gl.drawArrays(gl.POINTS, 0, count);
       }
@@ -858,8 +1216,22 @@
     var pointerTargetY = 0;
     var pointerX = 0;
     var pointerY = 0;
+    var springPointerX = 0;
+    var springPointerY = 0;
+    var mouseVelX = 0;
+    var mouseVelY = 0;
     var pointerClientX = -9999;
     var pointerClientY = -9999;
+    var mouseActive = 0;
+    var mouseActiveTarget = 0;
+    var isDragging = false;
+    var dragPointerId = null;
+    var dragLastX = 0;
+    var dragLastY = 0;
+    var dragLastTime = 0;
+    var trackballVelX = 0;
+    var trackballVelY = 0;
+    var trackballQuat = quatIdentity();
     var heroVisible = true;
     var rafId = 0;
     var lastTime = window.performance.now();
@@ -1178,7 +1550,7 @@
     }
 
     /* 3D 旋转与透视投影计算 */
-    function basePosition(particle, time, scale, centerX, centerY, deform) {
+    function basePosition(particle, time, scale, centerX, centerY, deform, rotMatrix) {
       var x = particle.x;
       var y = particle.y;
       var z = particle.z || 0;
@@ -1202,18 +1574,25 @@
       y = Math.sin(currentAngle) * expandR * (0.46 - deform * 0.06);
       z = (particle.z || 0) + Math.sin(currentAngle * 2) * 0.04;
 
-      // 3D 视角旋转（天然 Galaxy 3D 倾角 ~24度 + 鼠标微视差驱动 Pitch & Yaw）
-      var rotY = pointerX * 0.32 + time * 0.007;
-      var rotX = -0.38 - pointerY * 0.2;
-      var cosY = Math.cos(rotY);
-      var sinY = Math.sin(rotY);
-      var cosX = Math.cos(rotX);
-      var sinX = Math.sin(rotX);
+      // 3D 视角旋转（由万向球复合矩阵驱动，若无则采用基础倾角）
+      var x1, y2, z2;
+      if (rotMatrix) {
+        x1 = rotMatrix[0] * x + rotMatrix[3] * y + rotMatrix[6] * z;
+        y2 = rotMatrix[1] * x + rotMatrix[4] * y + rotMatrix[7] * z;
+        z2 = rotMatrix[2] * x + rotMatrix[5] * y + rotMatrix[8] * z;
+      } else {
+        var rotY = pointerX * 0.32 + time * 0.007;
+        var rotX = -0.38 - pointerY * 0.2;
+        var cosY = Math.cos(rotY);
+        var sinY = Math.sin(rotY);
+        var cosX = Math.cos(rotX);
+        var sinX = Math.sin(rotX);
 
-      var x1 = x * cosY + z * sinY;
-      var z1 = -x * sinY + z * cosY;
-      var y2 = y * cosX - z1 * sinX;
-      var z2 = y * sinX + z1 * cosX;
+        x1 = x * cosY + z * sinY;
+        var z1 = -x * sinY + z * cosY;
+        y2 = y * cosX - z1 * sinX;
+        z2 = y * sinX + z1 * cosX;
+      }
 
       // 透视投影
       var cameraDist = 2.3;
@@ -1274,20 +1653,21 @@
     }
 
     /* 贯通全站的深空星海：Astra 物理质感、十字衍射星芒与黑体辐射色温 */
-    function drawSideField(time, opacity, rawProgress, runwayProgress) {
+    function drawSideField(time, opacity, rawProgress, runwayProgress, totalRotMat) {
       if (!sideCanvas) return;
       if (webglEngine) {
         var isDesktop = window.innerWidth >= 960;
         var isWide = window.innerWidth >= 1400;
-        var pivotX = isDesktop ? (isWide ? 0.76 : 0.66) : 0.0;
-        var pivotY = isDesktop ? (isWide ? -0.18 : -0.14) : -0.06;
-        var morph = smoothstep(0.06, 0.80, (rawProgress || 0) * 0.55 + (runwayProgress || 0) * 0.65);
+        var pivotX = isDesktop ? (isWide ? 0.58 : 0.50) : 0.0;
+        var pivotY = isDesktop ? (isWide ? -0.10 : -0.06) : -0.04;
+        // 展宽人眼感知窗口：平滑渐进，提供充足的下滚仪式感与聚焦时间
+        var morph = smoothstep(0.04, 0.90, (rawProgress || 0) * 0.58 + (runwayProgress || 0) * 0.52);
 
         var scrollY = window.scrollY || 0;
         var heroH = hero ? hero.offsetHeight : (window.innerHeight || 800);
-        var downstream = clamp01((scrollY - heroH * 0.20) / (heroH * 0.60));
+        var downstream = clamp01((scrollY - heroH * 0.15) / (heroH * 0.92));
 
-        webglEngine.render(time, morph, downstream, pivotX, pivotY, pointerX, pointerY, window.innerWidth, window.innerHeight, dpr);
+        webglEngine.render(time, morph, downstream, pivotX, pivotY, pointerX, pointerY, window.innerWidth, window.innerHeight, dpr, springPointerX, -springPointerY, mouseActive, mouseVelX, -mouseVelY, totalRotMat);
         return;
       }
       if (!sideContext) return;
@@ -1446,8 +1826,22 @@
       var stages = getMotionStages(progress);
       var formation = getFormationProgress(formationStartedAt, animationTime * 1000, formationDuration, reduceMotion);
 
+      if (mouseActiveTarget > 0.5) {
+        mouseActive += (1.0 - mouseActive) * 0.12;
+      } else {
+        mouseActive *= 0.93; // 离开时光标引力丝滑阻尼衰减回弹
+      }
       pointerX += (pointerTargetX - pointerX) * 0.055;
       pointerY += (pointerTargetY - pointerY) * 0.055;
+
+      // 二级流体弹簧物理追踪器：计算平滑跟随位置与瞬时移动速度向量
+      var targetVelX = (pointerTargetX - springPointerX) * 3.0;
+      var targetVelY = (pointerTargetY - springPointerY) * 3.0;
+      mouseVelX += (targetVelX - mouseVelX) * 0.20;
+      mouseVelY += (targetVelY - mouseVelY) * 0.20;
+
+      springPointerX += (pointerTargetX - springPointerX) * 0.085;
+      springPointerY += (pointerTargetY - springPointerY) * 0.085;
 
       var runway = document.getElementById("narrativeRunway");
       var banner = document.getElementById("narrativeBanner");
@@ -1486,8 +1880,42 @@
         }
       }
 
+      if (!isDragging && !reduceMotion) {
+        // 惯性滑行 (Inertia Glide)
+        if (Math.abs(trackballVelX) > 0.0001 || Math.abs(trackballVelY) > 0.0001) {
+          var qP = [0, 0, 0, 0];
+          var qY = [0, 0, 0, 0];
+          var qI = [0, 0, 0, 0];
+          quatFromAxisAngle(qP, 1, 0, 0, trackballVelY);
+          quatFromAxisAngle(qY, 0, 1, 0, trackballVelX);
+          quatMultiply(qI, qP, qY);
+          quatMultiply(trackballQuat, qI, trackballQuat);
+          trackballVelX *= 0.93;
+          trackballVelY *= 0.93;
+        }
+
+        // 缓慢优雅弹性归位 (Damped Spherical Relaxation: ~3.5 秒平滑回归)
+        var returnRate = 0.018 + progress * 0.06;
+        var distToIdentity = Math.abs(1.0 - Math.abs(trackballQuat[0]));
+        if (distToIdentity > 0.00005) {
+          quatSlerp(trackballQuat, trackballQuat, [1, 0, 0, 0], returnRate);
+        } else {
+          trackballQuat[0] = 1; trackballQuat[1] = 0; trackballQuat[2] = 0; trackballQuat[3] = 0;
+        }
+      }
+
+      var baseRotMat = new Float32Array(9);
+      var trackMat = new Float32Array(9);
+      var totalRotMat = new Float32Array(9);
+
+      var angleY = pointerX * 0.36 + (1.0 - progress) * (animationTime * 0.012);
+      var angleX = pointerY * 0.24 - 0.78;
+      makeBaseRotMat(baseRotMat, angleX, angleY);
+      quatToMat3(trackMat, trackballQuat);
+      mat3Multiply(totalRotMat, trackMat, baseRotMat);
+
       sideOpacity = measureSideOpacity(animationTime * 1000);
-      drawSideField(animationTime, sideOpacity, rawProgress, runwayProgress);
+      drawSideField(animationTime, sideOpacity, rawProgress, runwayProgress, totalRotMat);
 
       stage.style.setProperty("--hero-progress", progress.toFixed(4));
       var copyAlpha = stages.copyOpacity * (0.18 + formation * 0.82);
@@ -1512,7 +1940,7 @@
       var centerY = height * (isSmall ? 0.48 : 0.50);
 
       particles.forEach(function (particle) {
-        var base = basePosition(particle, animationTime, scale, centerX, centerY, stages.deform);
+        var base = basePosition(particle, animationTime, scale, centerX, centerY, stages.deform, totalRotMat);
         var chaos = chaosPosition(particle, animationTime);
         var gather = particle.kind === "background" ? 1 : formation;
         var formedX = chaos.x + (base.x - chaos.x) * gather;
@@ -1541,7 +1969,7 @@
         var leadBase = basePosition({
           kind: "nebula", x: Math.cos(orbitAngle) * orbitR, y: Math.sin(orbitAngle) * orbitR,
           depth: 1.1, angle: orbitAngle, radius: orbitR, z: 0.05, drift: 1.6
-        }, animationTime, scale, centerX, centerY, stages.deform);
+        }, animationTime, scale, centerX, centerY, stages.deform, totalRotMat);
         var headFade = 1 - stages.burst;
         drawSprite(leadParticle, leadBase.x, leadBase.y, 4.2, 0.98 * headFade * formation, 0);
       }
@@ -1568,26 +1996,131 @@
       scheduleFrame();
     }
 
-    stage.addEventListener("pointermove", function (event) {
-      pointerTargetX = (event.clientX / Math.max(1, window.innerWidth) - 0.5) * 2;
-      pointerTargetY = (event.clientY / Math.max(1, window.innerHeight) - 0.5) * 2;
-      pointerClientX = event.clientX;
-      pointerClientY = event.clientY;
+    function updatePointerCoordinates(clientX, clientY) {
+      pointerTargetX = (clientX / Math.max(1, window.innerWidth) - 0.5) * 2;
+      pointerTargetY = (clientY / Math.max(1, window.innerHeight) - 0.5) * 2;
+      pointerClientX = clientX;
+      pointerClientY = clientY;
+      mouseActiveTarget = 1;
       scheduleFrame();
-    }, { passive: true });
+    }
+
+    function handlePointerDown(event) {
+      if (reduceMotion) return;
+      var target = event.target;
+      var interactive = target && target.closest && target.closest("a, button, input, textarea, select, [role='button'], .btn");
+      if (interactive) return;
+
+      isDragging = true;
+      dragPointerId = event.pointerId;
+      dragLastX = event.clientX;
+      dragLastY = event.clientY;
+      dragLastTime = window.performance.now();
+      trackballVelX = 0;
+      trackballVelY = 0;
+
+      stage.classList.add("is-grabbing");
+      if (stage.setPointerCapture && event.pointerId != null) {
+        try { stage.setPointerCapture(event.pointerId); } catch (e) {}
+      }
+      document.body.style.userSelect = "none";
+      updatePointerCoordinates(event.clientX, event.clientY);
+    }
+
+    function handlePointerMove(event) {
+      if (isDragging && event.pointerId === dragPointerId) {
+        var now = window.performance.now();
+        var dt = Math.max(1, now - dragLastTime);
+        var dx = event.clientX - dragLastX;
+        var dy = event.clientY - dragLastY;
+        dragLastX = event.clientX;
+        dragLastY = event.clientY;
+        dragLastTime = now;
+
+        var rotSens = 0.0045;
+        var deltaPitch = dy * rotSens;
+        var deltaYaw = dx * rotSens;
+
+        var qPitch = [0, 0, 0, 0];
+        var qYaw = [0, 0, 0, 0];
+        var qInc = [0, 0, 0, 0];
+        quatFromAxisAngle(qPitch, 1, 0, 0, deltaPitch);
+        quatFromAxisAngle(qYaw, 0, 1, 0, deltaYaw);
+        quatMultiply(qInc, qPitch, qYaw);
+        quatMultiply(trackballQuat, qInc, trackballQuat);
+
+        var instVelX = deltaYaw * (16.67 / dt);
+        var instVelY = deltaPitch * (16.67 / dt);
+        trackballVelX = trackballVelX * 0.35 + instVelX * 0.65;
+        trackballVelY = trackballVelY * 0.35 + instVelY * 0.65;
+
+        updatePointerCoordinates(event.clientX, event.clientY);
+        scheduleFrame();
+        return;
+      }
+
+      if (!heroVisible) {
+        mouseActiveTarget = 0;
+        return;
+      }
+      var scrollY = window.scrollY || 0;
+      var heroH = hero ? hero.offsetHeight : (window.innerHeight || 800);
+      if (scrollY < heroH * 0.90 && event.clientY <= window.innerHeight) {
+        updatePointerCoordinates(event.clientX, event.clientY);
+      } else {
+        mouseActiveTarget = 0;
+      }
+    }
+
+    function handlePointerUp(event) {
+      if (!isDragging) return;
+      if (event.pointerId != null && dragPointerId != null && event.pointerId !== dragPointerId) return;
+      isDragging = false;
+      dragPointerId = null;
+      stage.classList.remove("is-grabbing");
+      document.body.style.userSelect = "";
+
+      var maxVel = 0.032;
+      trackballVelX = Math.max(-maxVel, Math.min(maxVel, trackballVelX));
+      trackballVelY = Math.max(-maxVel, Math.min(maxVel, trackballVelY));
+      scheduleFrame();
+    }
+
+    stage.addEventListener("pointerdown", handlePointerDown);
+    stage.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
 
     stage.addEventListener("pointerleave", function () {
+      if (isDragging) return;
       pointerTargetX = 0;
       pointerTargetY = 0;
       pointerClientX = -9999;
       pointerClientY = -9999;
+      mouseActiveTarget = 0;
+    });
+
+    window.addEventListener("pointerleave", function () {
+      if (isDragging) return;
+      pointerTargetX = 0;
+      pointerTargetY = 0;
+      pointerClientX = -9999;
+      pointerClientY = -9999;
+      mouseActiveTarget = 0;
     });
 
     window.addEventListener("blur", function () {
+      if (isDragging) {
+        isDragging = false;
+        stage.classList.remove("is-grabbing");
+        document.body.style.userSelect = "";
+      }
       pointerTargetX = 0;
       pointerTargetY = 0;
       pointerClientX = -9999;
       pointerClientY = -9999;
+      mouseActiveTarget = 0;
     });
 
     window.addEventListener("resize", resize, { passive: true });
@@ -1649,6 +2182,14 @@
     nearestSlideIndex: nearestSlideIndex,
     carouselKeyTarget: carouselKeyTarget,
     applyRevealState: applyRevealState,
+    quatIdentity: quatIdentity,
+    quatNormalize: quatNormalize,
+    quatMultiply: quatMultiply,
+    quatFromAxisAngle: quatFromAxisAngle,
+    quatSlerp: quatSlerp,
+    quatToMat3: quatToMat3,
+    mat3Multiply: mat3Multiply,
+    makeBaseRotMat: makeBaseRotMat,
     init: init
   };
 });

@@ -293,3 +293,71 @@ test("keeps ids unique and all deployment-owned runtime assets present", () => {
     assert.equal(existsInSite || existsInAssembledAssets, true, relativePath);
   }
 });
+
+test("implements virtual trackball quaternion math and smooth slerp return", async () => {
+  const landing = await loadLandingModel();
+  const q0 = landing.quatIdentity();
+  assert.deepEqual(q0, [1, 0, 0, 0]);
+
+  // Axis angle rotation of 90 degrees around Y axis
+  const qYaw = [0, 0, 0, 0];
+  landing.quatFromAxisAngle(qYaw, 0, 1, 0, Math.PI / 2);
+  closeTo(qYaw[0], Math.cos(Math.PI / 4), 1e-6); // w = cos(45 deg)
+  closeTo(qYaw[2], Math.sin(Math.PI / 4), 1e-6); // y = sin(45 deg)
+
+  // Slerp from rotated state back to identity
+  const qMid = [0, 0, 0, 0];
+  landing.quatSlerp(qMid, qYaw, q0, 0.5);
+  // Halfway between 90 deg and 0 deg is 45 deg
+  closeTo(qMid[0], Math.cos(Math.PI / 8), 1e-5);
+  closeTo(qMid[2], Math.sin(Math.PI / 8), 1e-5);
+
+  // Convert quaternion to 3x3 rotation matrix and check column orthogonality
+  const m = new Float32Array(9);
+  landing.quatToMat3(m, qYaw);
+  closeTo(m[0], 0, 1e-6);
+  closeTo(m[4], 1, 1e-6);
+  closeTo(m[8], 0, 1e-6);
+
+  // makeBaseRotMat creates valid rotation matrix
+  const bMat = new Float32Array(9);
+  landing.makeBaseRotMat(bMat, 0, 0);
+  assert.equal(bMat[0], 1);
+  assert.equal(bMat[4], 1);
+  assert.equal(bMat[8], 1);
+});
+
+test("supports 3D trackball grab and grabbing cursor states in hero stage", () => {
+  const html = readPage();
+  const script = readClientScript();
+  assert.match(html, /\.hero-stage\s*\{[^}]*cursor:\s*grab/);
+  assert.match(html, /\.hero-stage\.is-grabbing[^}]*cursor:\s*grabbing/);
+  assert.match(script, /stage\.addEventListener\("pointerdown"/);
+  assert.match(script, /trackballQuat/);
+  assert.match(script, /uniform mat3 uRotMat/);
+});
+
+test("presents verified scientific rigor architecture without unverified synthetic metrics", () => {
+  const html = readPage();
+  const script = readClientScript();
+
+  // No unverified synthetic percentages or fabricated law counts
+  assert.doesNotMatch(html, /99\.4%/);
+  assert.doesNotMatch(html, /0%[^\n]*伪造引文/);
+  assert.doesNotMatch(html, /294[^\n]*物理定律/);
+  assert.doesNotMatch(html, /3,293/);
+
+  // Six rigor architecture pillars are present in #stats
+  assert.match(html, /id="stats"[\s\S]*class="rigor-grid"/);
+  for (let i = 1; i <= 6; i++) {
+    const pillarTag = `PILLAR 0${i}`;
+    assert.ok(html.includes(pillarTag), `Missing ${pillarTag} in rigor grid`);
+  }
+
+  // Cards have accessibility roles and labels
+  assert.match(html, /class="rigor-card"\s+tabindex="0"\s+role="region"/);
+
+  // Client script supports rigor cards
+  assert.match(script, /\.rigor-card/);
+});
+
