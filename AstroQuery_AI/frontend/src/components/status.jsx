@@ -2,7 +2,7 @@
 
 export const STATUS_COLORS = {
   queued: 'var(--status-waiting)',
-  running: 'var(--status-progress)',
+  running: 'var(--status-running, #5097B1)',
   completed: 'var(--status-success)',
   error: 'var(--status-error)',
   failed: 'var(--status-error)',  // H-01: 旧词表别名（存量记录防御，主词表为 error）

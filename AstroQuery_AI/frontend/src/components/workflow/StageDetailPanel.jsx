@@ -51,11 +51,11 @@ function StepRow({ step }) {
           )}
         </div>
         {pr && pr.total > 0 && (
-          <div style={{ height: 4, background: 'var(--surface-border)', borderRadius: 2, overflow: 'hidden', maxWidth: 320 }}>
+          <div style={{ height: 4, background: 'var(--progress-track, #D2E2F2)', borderRadius: 2, overflow: 'hidden', maxWidth: 320 }}>
             <div style={{
               height: '100%', borderRadius: 2, transition: 'width .3s ease',
               width: `${step.status === 'completed' ? 100 : pct}%`,
-              background: step.status === 'completed' ? 'var(--status-success)' : 'var(--status-progress)',
+              background: step.status === 'completed' ? 'var(--status-success)' : 'var(--progress-bar, #A8C1D9)',
             }} />
           </div>
         )}

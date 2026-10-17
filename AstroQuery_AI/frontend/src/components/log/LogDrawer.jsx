@@ -51,9 +51,17 @@ export default function LogDrawer({ open, onClose, liveLogs, fill = false }) {
 
   if (!open) return null
 
+  const normLevel = (lvl) => {
+    const u = String(lvl || '').toUpperCase()
+    if (u === 'WARNING' || u === 'WARN') return 'WARN'
+    if (u === 'ERR' || u === 'ERROR') return 'ERROR'
+    return u
+  }
+
   const total = lines.length
-  const filtered = lines.filter((l) => levelFilter === 'all' || l.level === levelFilter).slice(-MAX_RENDER_LINES)
-  const truncated = filtered.length < (levelFilter === 'all' ? total : lines.filter((l) => l.level === levelFilter).length)
+  const filtered = lines.filter((l) => levelFilter === 'all' || normLevel(l.level) === levelFilter).slice(-MAX_RENDER_LINES)
+  const totalMatches = levelFilter === 'all' ? total : lines.filter((l) => normLevel(l.level) === levelFilter).length
+  const truncated = filtered.length < totalMatches
 
   return (
     <div data-component="log-drawer" className={fill ? "workflow-logs" : "glass"} style={{ flex: fill ? 1 : undefined, minHeight: 0, flexShrink: 0, borderTop: '1px solid var(--surface-border)', borderLeft: 'none', borderRight: 'none', borderBottom: 'none', display: 'flex', flexDirection: 'column' }}>
@@ -72,7 +80,7 @@ export default function LogDrawer({ open, onClose, liveLogs, fill = false }) {
             <button
               key={lv}
               onClick={() => setLevelFilter(lv)}
-              className={`log-chip${levelFilter === lv ? ' active' : ''}`}
+              className={`log-chip chip-${lv.toLowerCase()}${levelFilter === lv ? ' active' : ''}`}
             >
               {lv}
             </button>

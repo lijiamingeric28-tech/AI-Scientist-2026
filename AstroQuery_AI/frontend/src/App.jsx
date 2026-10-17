@@ -153,6 +153,15 @@ function AppInner() {
     }
   }
 
+  const handleBackToSamples = () => {
+    setHelpOpen(false)
+    setMode('sample')
+    setSelectedId(null)
+    setDetail(null)
+    setView('chat')
+    setSamplesExpanded(true)
+  }
+
   const handleNew = () => {
     setHelpOpen(false)
     setSelectedId(null); setDetail(null); setView('chat')
@@ -348,6 +357,17 @@ function AppInner() {
             <div className="task-title-row">
               {!sidebarOpen && <Button variant="ghost" size="icon" aria-label="展开侧栏" onClick={() => setSidebarOpen(true)}><Icon.Menu /></Button>}
               <div className="task-title">
+                {mode === 'sample' && selected && !helpOpen && (
+                  <button
+                    type="button"
+                    aria-label="返回演示样例"
+                    title="返回演示样例"
+                    onClick={handleBackToSamples}
+                    className="back-to-samples-btn"
+                  >
+                    <Icon.ArrowLeft />
+                  </button>
+                )}
                 {editingTitle && !helpOpen ? <input aria-label="任务名称" autoFocus ref={titleInputRef} value={titleDraft} onChange={event => setTitleDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) commitTitle(); if (event.key === 'Escape') setEditingTitle(false) }} onBlur={() => setEditingTitle(false)} /> : <h1 title={selected?.title}>{helpOpen ? '使用帮助' : selected?.title || selected?.query || (mode === 'sample' ? '演示样例' : '新建科研查询')}</h1>}
               </div>
               {selected && !helpOpen && <StatusBadge status={selected.status} />}

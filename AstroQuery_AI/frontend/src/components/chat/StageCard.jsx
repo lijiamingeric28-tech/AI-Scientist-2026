@@ -208,13 +208,13 @@ function ProgressBar({ label, completed, total, done, doneLabel }) {
           {done ? doneLabel || '完成' : `${completed}/${total}`}
         </span>
       </div>
-      <div style={{ height: 5, background: 'var(--surface-border)', borderRadius: 3, overflow: 'hidden' }}>
+      <div style={{ height: 5, background: 'var(--progress-track, #D2E2F2)', borderRadius: 3, overflow: 'hidden' }}>
         <div
           style={{
             height: '100%',
             width: `${pct}%`,
             borderRadius: 3,
-            background: done ? 'var(--status-success)' : 'var(--status-progress)',
+            background: done ? 'var(--status-success)' : 'var(--progress-bar, #A8C1D9)',
             transition: 'width 0.3s ease',
           }}
         />
@@ -351,7 +351,7 @@ function GroupSteps({ groups, onOpenAgent, stage }) {
                     <ProgressBar
                       label={
                         step.status === 'completed' ? `${step.label}已完成` : step.progress.current
-                          ? `处理第 ${step.progress.completed + 1}/${step.progress.total}${STEP_UNIT[step.id]} — ${step.progress.current}`
+                          ? `处理第 ${step.progress.completed + 1}/${step.progress.total}${STEP_UNIT[step.id] || ''} — ${step.progress.current}`
                           : step.id === 'paper'
                             ? '正在检索论文'
                             : step.id === 'supplementary'
@@ -569,7 +569,7 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
       className={presentation === 'workflow' ? 'stage-card stage-card-workflow' : 'stage-card'}
       style={{
         background: 'var(--surface-bg)',
-        border: `1px solid ${stage.status === 'running' ? 'var(--status-progress)' : stage.status === 'error' ? 'var(--status-error)' : 'var(--surface-border)'}`,
+        border: `1px solid ${stage.status === 'running' ? 'var(--progress-border, #D2E2F2)' : stage.status === 'error' ? 'var(--status-error)' : 'var(--surface-border)'}`,
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
       }}

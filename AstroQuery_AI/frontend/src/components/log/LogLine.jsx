@@ -6,15 +6,22 @@
  */
 
 const LEVEL_STYLE = {
-  INFO: { color: 'var(--status-progress)', bg: 'var(--status-progress-bg)' },
+  INFO: { color: 'var(--log-info-text, #174066)', bg: 'var(--log-info-bg, #B6D2E8)' },
   DEBUG: { color: 'var(--content-fg-tertiary)', bg: 'var(--surface-secondary)' },
-  WARNING: { color: 'var(--status-warn)', bg: 'var(--status-warn-bg)' },
-  ERROR: { color: 'var(--status-error)', bg: 'var(--status-error-bg)' },
+  WARN: { color: 'var(--log-warn-text, #713f12)', bg: 'var(--log-warn-bg, #FDEB9C)' },
+  WARNING: { color: 'var(--log-warn-text, #713f12)', bg: 'var(--log-warn-bg, #FDEB9C)' },
+  ERROR: { color: 'var(--log-error-text, #991b1b)', bg: 'var(--log-error-bg, #F8C4C4)' },
+  ERR: { color: 'var(--log-error-text, #991b1b)', bg: 'var(--log-error-bg, #F8C4C4)' },
 }
 
 export default function LogLine({ l }) {
-  const level = String(l.level || 'INFO').toUpperCase()
-  const ls = LEVEL_STYLE[level] || LEVEL_STYLE.INFO
+  const rawLevel = String(l.level || 'INFO').toUpperCase()
+  const level = (rawLevel === 'WARNING' || rawLevel === 'WARN')
+    ? 'WARN'
+    : (rawLevel === 'ERROR' || rawLevel === 'ERR')
+      ? 'ERROR'
+      : rawLevel
+  const ls = LEVEL_STYLE[level] || LEVEL_STYLE[rawLevel] || LEVEL_STYLE.INFO
   return (
     <div className="log-line" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'flex-start', lineHeight: 1.75, fontSize: 13 }}>
       {l.time && (

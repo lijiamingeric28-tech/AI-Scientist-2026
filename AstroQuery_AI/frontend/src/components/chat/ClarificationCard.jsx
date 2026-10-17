@@ -49,7 +49,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
       style={{
         marginLeft: 38,
         background: 'var(--surface-bg)',
-        border: '1px solid var(--status-progress)',
+        border: '1px solid var(--progress-border, #D2E2F2)',
         borderRadius: 8,
         overflow: 'hidden',
         boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
@@ -68,7 +68,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
           color: 'var(--status-progress)',
         }}
       >
-        <span className="animate-pulse-dot">●</span>
+        <span className="animate-pulse-dot" style={{ color: 'var(--status-running, #5097B1)' }}>●</span>
         <span style={{ flex: 1 }}>{payload.title || '澄清请求'}</span>
         {payload.question && (
           <button

@@ -8,9 +8,12 @@
 .app-main { flex:1; display:flex; flex-direction:column; min-width:0; background:var(--bg-ambient),var(--content-bg); }
 .app-toolbar { border-bottom:1px solid var(--surface-border); padding:12px 24px 0; flex-shrink:0; z-index:20; }
 .task-title-row { display:flex; align-items:center; gap:12px; min-width:0; }
-.task-title { flex:1; min-width:0; }
-.task-title h1 { font-size:15px; font-weight:590; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.task-title { flex:1; min-width:0; display:flex; align-items:center; gap:8px; }
+.task-title h1 { font-size:15px; font-weight:590; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
 .task-title input { width:100%; padding:6px 10px; border:1px solid var(--accent); background:var(--surface-bg); color:var(--content-fg); border-radius:8px; }
+.back-to-samples-btn { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:var(--radius-sm, 8px); border:1px solid transparent; background:transparent; color:var(--title-strong); cursor:pointer; transition:all var(--motion-hover, 180ms) var(--motion-ease, ease); flex-shrink:0; padding:0; }
+.back-to-samples-btn:hover { background:var(--surface-secondary); color:var(--title-hover, var(--accent)); border-color:var(--surface-border-subtle); }
+.back-to-samples-btn:active { transform:scale(0.94); }
 .primary-nav { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
 .primary-tab { display:inline-flex; align-items:center; gap:6px; padding:9px 18px; border:none; border-bottom:2px solid transparent; background:transparent; font-size:13px; color:var(--content-fg-secondary); cursor:pointer; }
 .primary-tab.active { color:var(--accent-text); border-bottom-color:var(--accent); }
@@ -154,14 +157,28 @@
   /* Status: forest green success, blue progress, red error, amber warning. */
   --status-success: #44785b;
   --status-success-bg: #edf3ef;
-  --status-progress: #2563eb;
-  --status-progress-bg: #eff6ff;
+  --status-progress: #2F6FA7;
+  --status-progress-bg: #edf5fa;
+  --status-running: #5097B1;
   --status-error: #ef4146;
   --status-error-bg: #fdeeee;
   --status-warn: #f5a623;
   --status-warn-bg: #fef6e7;
   --status-waiting: #9b9b9b;
   --status-waiting-bg: #f5f5f5;
+
+  /* Active stage border & progress bar (User customized) */
+  --progress-border: #D2E2F2;
+  --progress-bar: #A8C1D9;
+  --progress-track: #D2E2F2;
+
+  /* Real-time log level badge colors */
+  --log-info-bg: #B6D2E8;
+  --log-info-text: #174066;
+  --log-warn-bg: #FDEB9C;
+  --log-warn-text: #713f12;
+  --log-error-bg: #F8C4C4;
+  --log-error-text: #991b1b;
 
   /* Accent: primary actions and selection share the forest palette. */
   --accent: var(--seed-accent);
@@ -264,14 +281,28 @@ html[data-theme='dark'] {
   /* Status（暗底下提亮 + 半透明底色） */
   --status-success: #9cc6b0;
   --status-success-bg: rgba(111, 157, 135, 0.16);
-  --status-progress: #5f9df8;
-  --status-progress-bg: rgba(95, 157, 248, 0.14);
+  --status-progress: #2F6FA7;
+  --status-progress-bg: rgba(47, 111, 167, 0.14);
+  --status-running: #5097B1;
   --status-error: #f0716f;
   --status-error-bg: rgba(240, 113, 111, 0.13);
   --status-warn: #f0a13c;
   --status-warn-bg: rgba(240, 161, 60, 0.13);
   --status-waiting: #71717a;
   --status-waiting-bg: rgba(113, 113, 122, 0.16);
+
+  /* Active stage border & progress bar (User customized) */
+  --progress-border: #D2E2F2;
+  --progress-bar: #A8C1D9;
+  --progress-track: #D2E2F2;
+
+  /* Real-time log level badge colors */
+  --log-info-bg: rgba(182, 210, 232, 0.24);
+  --log-info-text: #B6D2E8;
+  --log-warn-bg: rgba(253, 235, 156, 0.24);
+  --log-warn-text: #FDEB9C;
+  --log-error-bg: rgba(248, 196, 196, 0.22);
+  --log-error-text: #f0716f;
 
   /* 阴影（暗底：依然克制，仅弹层/输入舱需要） */
   --shadow-card: none;
@@ -652,6 +683,24 @@ body,
   border-color: transparent;
 }
 
+.log-chip.chip-info.active {
+  background: var(--log-info-bg, #B6D2E8);
+  color: var(--log-info-text, #174066);
+  border-color: transparent;
+}
+
+.log-chip.chip-warn.active {
+  background: var(--log-warn-bg, #FDEB9C);
+  color: var(--log-warn-text, #713f12);
+  border-color: transparent;
+}
+
+.log-chip.chip-error.active {
+  background: var(--log-error-bg, #F8C4C4);
+  color: var(--log-error-text, #991b1b);
+  border-color: transparent;
+}
+
 /* 数据行条目（来源/轨迹/洞察/文件） */
 .row-item {
   border: 1px solid var(--surface-border-subtle);
@@ -777,6 +826,7 @@ body,
 }
 
 .animate-pulse-dot {
+  color: var(--status-running, #5097B1);
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
