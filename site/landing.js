@@ -806,7 +806,7 @@
       "  float hotCore = pow(max(0.0, 1.0 - dist), 14.0);",
       "",
       "  // 单颗恒星自内向外径向渐变：钻石白炽核 (#FFFFFF) -> 主光谱色 (vColor) -> 柔和星云外晕 (vColorOuter)",
-      "  vec3 coreWhite = vec3(1.0, 0.98, 0.95);",
+      "  vec3 coreWhite = vec3(1.0, 1.0, 1.0);",
       "  vec3 starColor = mix(vColor, coreWhite, hotCore * 0.92);",
       "  float rimFactor = smoothstep(0.25, 0.95, dist);",
       "  starColor = mix(starColor, vColorOuter, rimFactor * 0.45);",
@@ -923,47 +923,47 @@
         rndY = (Math.random() - 0.5) * (0.025 + 0.08 * normR) * (isThickDisk ? 1.5 : 0.75);
         rndZ = Math.pow(Math.random(), randPower) * (Math.random() < 0.5 ? -1 : 1) * rSpread;
 
-        // 多光谱交叠色彩系统：每一条旋臂与区域均交织青蓝、紫罗兰、玫瑰粉、极光翠与金琥珀！
+        // Astra 色谱：冰蓝、浅蓝、暖橙、杏色与银白；只调整颜色，保留全部几何抽样。
         if (radius < 0.12) {
-          // 银心白炽光与太阳金色
+          // 银心保留银白亮核，穿插少量暖杏色恒星。
           if (Math.random() < 0.70) {
-            rCol = 1.0; gCol = 0.98; bCol = 1.0;
-            roCol = 0.85; goCol = 0.82; boCol = 1.0;
+            rCol = 245 / 255; gCol = 246 / 255; bCol = 251 / 255;
+            roCol = rCol * 0.72; goCol = gCol * 0.72; boCol = bCol * 0.72;
           } else {
-            rCol = 1.0; gCol = 0.88; bCol = 0.60;
-            roCol = 0.75; goCol = 0.45; boCol = 0.15;
+            rCol = 250 / 255; gCol = 153 / 255; bCol = 76 / 255;
+            roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
           }
         } else {
-          // 交叠波谱：多频相位混合，每一条星臂上均呈现交织融合的光谱
-          var wave = Math.sin(radius * 9.0 + branchAngle * 2.0 + (i % 17) * 0.4) * 0.5 + 0.5;
-          var pick = (Math.random() * 0.6 + wave * 0.4);
+          // 为原有 8% 白星抽样预留权重，五色总比例为 36/16/12/10/26。
+          // 沿用原有两次颜色随机调用，后续位置、尺寸与闪烁的随机序列不变。
+          var pick = Math.random() * 0.92;
 
-          if (pick < 0.25) {
-            // 电光天青 (#00F2FE) -> 外晕深邃星蓝 (#0A2565)
-            rCol = 0.00; gCol = 0.95; bCol = 1.00;
-            roCol = 0.08; goCol = 0.22; boCol = 0.65;
-          } else if (pick < 0.50) {
-            // 深空紫罗兰 (#8B5CF6) -> 外晕星际品红 (#4A125A)
-            rCol = 0.55; gCol = 0.36; bCol = 1.00;
-            roCol = 0.35; goCol = 0.10; boCol = 0.55;
-          } else if (pick < 0.75) {
-            // 银河玫瑰品红 (#EC4899) -> 外晕暗紫晶 (#2D0845)
-            rCol = 0.93; gCol = 0.28; bCol = 0.60;
-            roCol = 0.48; goCol = 0.12; boCol = 0.70;
-          } else if (pick < 0.88) {
-            // 极光薄荷青 (#10B981) -> 外晕幽碧深空 (#04281E)
-            rCol = 0.06; gCol = 0.72; bCol = 0.50;
-            roCol = 0.02; goCol = 0.35; boCol = 0.40;
+          if (pick < 0.36) {
+            // 冰蓝 #6DCBF4，同色相柔和外晕。
+            rCol = 109 / 255; gCol = 203 / 255; bCol = 244 / 255;
+            roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
+          } else if (pick < 0.52) {
+            // 浅蓝 #7AB1FE。
+            rCol = 122 / 255; gCol = 177 / 255; bCol = 254 / 255;
+            roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
+          } else if (pick < 0.64) {
+            // 暖橙 #F87915。
+            rCol = 248 / 255; gCol = 121 / 255; bCol = 21 / 255;
+            roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
+          } else if (pick < 0.74) {
+            // 杏色 #FA994C。
+            rCol = 250 / 255; gCol = 153 / 255; bCol = 76 / 255;
+            roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
           } else {
-            // 宇宙暖金 (#F59E0B) -> 外晕暖琥珀红 (#5C2200)
-            rCol = 0.96; gCol = 0.62; bCol = 0.04;
-            roCol = 0.60; goCol = 0.25; boCol = 0.05;
+            // 银白 #F5F6FB。
+            rCol = 245 / 255; gCol = 246 / 255; bCol = 251 / 255;
+            roCol = rCol * 0.72; goCol = gCol * 0.72; boCol = bCol * 0.72;
           }
 
           if (Math.random() < 0.08) {
-            // 超高温白炽核星
-            rCol = 1.0; gCol = 1.0; bCol = 1.0;
-            roCol = 0.70; goCol = 0.85; boCol = 1.0;
+            // 银白亮星；保留原有抽样，不影响后续几何与星芒分配。
+            rCol = 245 / 255; gCol = 246 / 255; bCol = 251 / 255;
+            roCol = rCol * 0.72; goCol = gCol * 0.72; boCol = bCol * 0.72;
           }
         }
 
@@ -1011,18 +1011,22 @@
         }
 
         var tempRand = Math.random();
-        if (tempRand < 0.45) {
-          rCol = 1.0; gCol = 1.0; bCol = 1.0;
-          roCol = 0.7; goCol = 0.85; boCol = 1.0;
-        } else if (tempRand < 0.70) {
-          rCol = 0.68; gCol = 0.85; bCol = 1.0;
-          roCol = 0.15; goCol = 0.35; boCol = 0.75;
-        } else if (tempRand < 0.88) {
-          rCol = 1.0; gCol = 0.90; bCol = 0.75;
-          roCol = 0.6; goCol = 0.35; boCol = 0.1;
+        // 独立背景星沿用同一组 Astra 五色，散开后不会切回旧色谱。
+        if (tempRand < 0.36) {
+          rCol = 109 / 255; gCol = 203 / 255; bCol = 244 / 255;
+          roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
+        } else if (tempRand < 0.52) {
+          rCol = 122 / 255; gCol = 177 / 255; bCol = 254 / 255;
+          roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
+        } else if (tempRand < 0.64) {
+          rCol = 248 / 255; gCol = 121 / 255; bCol = 21 / 255;
+          roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
+        } else if (tempRand < 0.74) {
+          rCol = 250 / 255; gCol = 153 / 255; bCol = 76 / 255;
+          roCol = rCol * 0.60; goCol = gCol * 0.60; boCol = bCol * 0.60;
         } else {
-          rCol = 0.82; gCol = 0.55; bCol = 1.0;
-          roCol = 0.35; goCol = 0.12; boCol = 0.55;
+          rCol = 245 / 255; gCol = 246 / 255; bCol = 251 / 255;
+          roCol = rCol * 0.72; goCol = gCol * 0.72; boCol = bCol * 0.72;
         }
       }
 
@@ -1388,18 +1392,17 @@
     }
 
     /* ═══════════════════════════════════════════════
-       Astra 物理恒星色温系统
-       - 18% 冰蓝/深空青 (#A4C8FD, #CBE3FB)
-       - 12% 暖金/琥珀色 (#FFE0B2, #FFCC80)
-       - 70% 冷白/微灰 (#E8F1FA, #B4C6DA)
+       Astra 五色色板的 Canvas 兼容映射
+       保留原有索引和抽样分支，避免影响星点大小、密度及视差。
+       第 5 项为银白的低亮度版本。
        ═══════════════════════════════════════════════ */
     var CELESTIAL_PALETTE = [
-      { r: 164, g: 200, b: 253, hex: "#A4C8FD" }, // 0: 冰蓝 (#A4C8FD)
-      { r: 203, g: 227, b: 251, hex: "#CBE3FB" }, // 1: 深空青 (#CBE3FB)
-      { r: 255, g: 224, b: 178, hex: "#FFE0B2" }, // 2: 暖金 (#FFE0B2)
-      { r: 255, g: 204, b: 128, hex: "#FFCC80" }, // 3: 暖琥珀 (#FFCC80)
-      { r: 232, g: 241, b: 250, hex: "#E8F1FA" }, // 4: 冷钻白
-      { r: 180, g: 198, b: 218, hex: "#B4C6DA" }  // 5: 深空微灰
+      { r: 109, g: 203, b: 244, hex: "#6DCBF4" }, // 0: 冰蓝
+      { r: 122, g: 177, b: 254, hex: "#7AB1FE" }, // 1: 浅蓝
+      { r: 250, g: 153, b: 76, hex: "#FA994C" },  // 2: 杏色
+      { r: 248, g: 121, b: 21, hex: "#F87915" },  // 3: 暖橙
+      { r: 245, g: 246, b: 251, hex: "#F5F6FB" }, // 4: 银白
+      { r: 181, g: 182, b: 186, hex: "#B5B6BA" }  // 5: 低亮银白
     ];
 
     function buildSideParticles() {
@@ -1409,9 +1412,9 @@
       // 6 颗带十字衍射星芒的物理焦点恒星（Alpha Stars）
       var alphas = [
         { x: 0.50, y: 0.08, color: 1, size: 2.8, spikeLen: 48 }, // 顶部深空青主星
-        { x: 0.15, y: 0.28, color: 2, size: 3.0, spikeLen: 48 }, // 左侧暖金焦点星 (#FFE0B2)
-        { x: 0.78, y: 0.32, color: 0, size: 2.8, spikeLen: 44 }, // 右侧冰蓝巨星 (#A4C8FD)
-        { x: 0.85, y: 0.78, color: 3, size: 2.9, spikeLen: 46 }, // 右下暖琥珀焦点星 (#FFCC80)
+        { x: 0.15, y: 0.28, color: 2, size: 3.0, spikeLen: 48 }, // 左侧杏色焦点星
+        { x: 0.78, y: 0.32, color: 0, size: 2.8, spikeLen: 44 }, // 右侧冰蓝巨星
+        { x: 0.85, y: 0.78, color: 3, size: 2.9, spikeLen: 46 }, // 右下暖橙焦点星
         { x: 0.20, y: 0.76, color: 0, size: 2.5, spikeLen: 40 }, // 左下冰蓝亮星
         { x: 0.44, y: 0.90, color: 2, size: 2.6, spikeLen: 42 }  // 底部暖金微星
       ];
@@ -1463,13 +1466,13 @@
         var rand = Math.random();
         var tier, size, colorIdx, baseAlpha;
         if (rand < 0.12) {
-          // 12% 暖金/琥珀色 (#FFE0B2, #FFCC80)
+          // 保留原有暖色星的尺寸与亮度分支。
           colorIdx = Math.random() < 0.5 ? 2 : 3;
           size = randomBetween(1.8, 2.5);
           baseAlpha = randomBetween(0.85, 0.98);
           tier = 1;
         } else if (rand < 0.30) {
-          // 18% 冰蓝/深空青 (#A4C8FD, #CBE3FB)
+          // 保留原有冷色星的尺寸与亮度分支。
           colorIdx = Math.random() < 0.5 ? 0 : 1;
           size = randomBetween(1.4, 2.1);
           baseAlpha = randomBetween(0.70, 0.90);
@@ -1501,11 +1504,11 @@
     function createSprites(ownerDocument) {
       // 银河核心粒子黑体色板精灵
       var specs = [
-        { core: "rgba(255,255,255,1)", mid: "rgba(210,234,255,0.85)", edge: "rgba(180,215,255,0)" }, // 0: 冰蓝
-        { core: "rgba(255,255,255,1)", mid: "rgba(252,253,255,0.92)", edge: "rgba(230,240,255,0)" }, // 1: 纯耀白
-        { core: "rgba(255,255,255,1)", mid: "rgba(255,247,232,0.88)", edge: "rgba(255,235,200,0)" }, // 2: 暖象牙
-        { core: "rgba(255,255,255,1)", mid: "rgba(255,230,198,0.85)", edge: "rgba(255,210,160,0)" }, // 3: 柔暖金
-        { core: "rgba(235,240,248,0.9)", mid: "rgba(195,210,225,0.6)", edge: "rgba(170,185,205,0)" }  // 4: 深空淡灰
+        { core: "rgba(255,255,255,1)", mid: "rgba(109,203,244,0.85)", edge: "rgba(109,203,244,0)" }, // 0: 冰蓝
+        { core: "rgba(255,255,255,1)", mid: "rgba(245,246,251,0.92)", edge: "rgba(245,246,251,0)" }, // 1: 银白
+        { core: "rgba(255,255,255,1)", mid: "rgba(122,177,254,0.88)", edge: "rgba(122,177,254,0)" }, // 2: 浅蓝
+        { core: "rgba(255,255,255,1)", mid: "rgba(248,121,21,0.85)", edge: "rgba(248,121,21,0)" },  // 3: 暖橙
+        { core: "rgba(245,246,251,0.9)", mid: "rgba(250,153,76,0.6)", edge: "rgba(250,153,76,0)" }   // 4: 杏色
       ];
 
       return specs.map(function (spec) {
