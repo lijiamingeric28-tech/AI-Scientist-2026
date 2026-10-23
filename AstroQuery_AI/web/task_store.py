@@ -187,6 +187,15 @@ class TaskStore:
             ).fetchone()
         return bool(row and row[0] > 0)
 
+    def get_active_replays(self, source_id: str) -> List[Dict[str, Any]]:
+        """获取源任务当前处于活跃（queued/running）状态的回放任务行。"""
+        with self._conn() as conn:
+            rows = conn.execute(
+                f"SELECT {_LIST_COLUMNS} FROM tasks WHERE replay_of=? AND status IN ('queued','running')",
+                (source_id,),
+            ).fetchall()
+        return [dict(r) for r in rows]
+
     def replay_ids_of(self, source_id: str) -> List[str]:
         """源任务的全部回放任务 id（删除源时级联用）。"""
         with self._conn() as conn:
@@ -240,7 +249,8 @@ class TaskStore:
         统一标记为 cancelled，返回受影响行数。"""
         with self._lock, self._conn() as conn:
             cur = conn.execute(
-                "UPDATE tasks SET status='cancelled' "
-                "WHERE status IN ('running','queued')"
+                "UPDATE tasks SET status='cancelled', completed_at=? "
+                "WHERE status IN ('running','queued')",
+                (_now(),),
             )
             return int(cur.rowcount)

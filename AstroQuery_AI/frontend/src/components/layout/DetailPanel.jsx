@@ -622,6 +622,7 @@ function RadarChart({ dims, size = 270 }) {
           return (
             <g
               key={`pt-group-${i}`}
+              onClick={() => setHoveredIdx(i)}
               onMouseEnter={() => setHoveredIdx(i)}
               onMouseLeave={() => setHoveredIdx(null)}
               style={{ cursor: 'pointer' }}
@@ -648,6 +649,7 @@ function RadarChart({ dims, size = 270 }) {
             <g
               key={`label-group-${i}`}
               tabIndex={0}
+              onClick={() => setHoveredIdx(i)}
               onFocus={() => setHoveredIdx(i)}
               onBlur={() => setHoveredIdx(null)}
               onMouseEnter={() => setHoveredIdx(i)}

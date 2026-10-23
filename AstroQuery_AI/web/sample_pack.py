@@ -23,6 +23,7 @@ import json
 import logging
 import shutil
 import sqlite3
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -96,6 +97,7 @@ def import_sample_pack(store: Any, output_root: Path,
         candidates = [pack_root]
     else:
         candidates = [
+            Path(sys.executable).parent / PACK_DIR_NAME if getattr(sys, 'frozen', False) else None,
             Path.cwd() / PACK_DIR_NAME,
             Path(__file__).resolve().parent.parent / PACK_DIR_NAME,
         ]

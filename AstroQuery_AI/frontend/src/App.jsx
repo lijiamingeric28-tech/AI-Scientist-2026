@@ -22,6 +22,7 @@ import { useSlidingPanes } from '@/hooks/useSlidingPanes'
 import { useSlidingUnderline } from '@/hooks/useSlidingUnderline'
 import { useContentTransition } from '@/hooks/useContentTransition'
 import { useClickFeedback } from '@/hooks/useClickFeedback'
+import { initPresentationDemo } from '@/lib/presentationDemo'
 
 /* ===== 主应用：三栏布局（块 1 定案）
  * 侧边栏 240px（可折叠） + 主区（工具栏 + 对话/工作流视图） + 右侧详情面板（可折叠）
@@ -83,6 +84,11 @@ function AppInner() {
     document.addEventListener('pointerdown', dismiss)
     document.addEventListener('keydown', dismiss)
     return () => { document.removeEventListener('pointerdown', dismiss); document.removeEventListener('keydown', dismiss) }
+  }, [])
+
+  // 答辩录屏自动化演示：挂载全局快捷键 (Alt+D / Esc) 与控制台接口
+  useEffect(() => {
+    initPresentationDemo()
   }, [])
 
   // 窄屏自动折叠侧边栏（回到宽屏不强制展开，尊重用户手动收起）

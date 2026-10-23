@@ -11,6 +11,7 @@
 #   · 不打包：.env（API Key 外置，放 exe 旁边）、sample_pack/（162MB 演示包，可选外置）、
 #     web/data/ 与 output/ 的本地残留
 import os
+import shutil as _sh
 
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
@@ -45,14 +46,14 @@ datas += collect_data_files("astropy", excludes=["**/tests/**", "**/__pycache__/
 
 hiddenimports = [
     # uvicorn 动态加载的协议/循环/生命周期（PyInstaller 常漏，必须显式）
-    "uvicorn.logging", "uvicorn.loops.auto", "uvicorn.lifespan.auto",
+    "uvicorn.logging", "uvicorn.loops.auto",
     "uvicorn.protocols.http.auto", "uvicorn.protocols.websockets.auto",
     # pywebview WinForms 后端 + pythonnet（CLR）
-    "pywebview.platforms.winforms", "clr",
+    "webview.platforms.winforms", "clr",
     # 动态解析的配置模块
     "quality_pipeline.configs.domain_config",
     "langgraph.checkpoint.sqlite",
-] + collect_submodules("uvicorn.protocols") + collect_submodules("uvicorn.loops")
+] + collect_submodules("uvicorn.protocols") + collect_submodules("uvicorn.loops") + collect_submodules("uvicorn.lifespan")
 
 # 环境残留大件（项目源码并不 import 它们，排除以瘦身；若运行验证发现缺包再按需补回）
 excludes = [
@@ -96,13 +97,19 @@ coll = COLLECT(
     name="AstroQueryAI",               # → dist/AstroQueryAI/
 )
 
-# ── 内建演示样例包（2026-09-04）──
-# 放到绿色包外层（exe 同级）：双击启动后 import_sample_pack 自动探测 cwd/sample_pack → 导入 17 组演示。
-# 不在 _internal（保持包内只读资源目录语义，且用户可直接看到/删除演示包）。
-import shutil as _sh
-
+# ── 内建演示样例包与配置模板 ──
+# 放到绿色包外层（exe 同级）：双击启动后 import_sample_pack 自动探测 exe/sample_pack → 导入演示样例。
+# 不在 _internal（保持包内只读资源目录语义，且用户可直接看到/管理演示包与配置）。
 _sample_src = os.path.join(ROOT, "sample_pack")
 _sample_dst = os.path.join(ROOT, "dist", "AstroQueryAI", "sample_pack")
-if os.path.isdir(_sample_src) and not os.path.isdir(_sample_dst):
+if os.path.isdir(_sample_src):
+    if os.path.isdir(_sample_dst):
+        _sh.rmtree(_sample_dst)
     _sh.copytree(_sample_src, _sample_dst)
     print(f"[spec] 内建演示样例包: {_sample_src} → {_sample_dst}")
+
+_env_ex_src = os.path.join(ROOT, ".env.example")
+_env_ex_dst = os.path.join(ROOT, "dist", "AstroQueryAI", ".env.example")
+if os.path.isfile(_env_ex_src):
+    _sh.copyfile(_env_ex_src, _env_ex_dst)
+    print(f"[spec] 模板配置: {_env_ex_src} → {_env_ex_dst}")

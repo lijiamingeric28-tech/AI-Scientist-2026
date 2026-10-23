@@ -15,8 +15,12 @@ import shutil
 import sys
 import uuid
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -144,16 +148,46 @@ def _vcr_startup_selftest() -> None:
 
 @asynccontextmanager
 async def _lifespan(_app: FastAPI):
-    # 演示样例包启动导入（2026-09-02，幂等）：全新 clone/评委机 tasks.db 为空时
+    # 1. 启动纠偏：running/queued 任务重启后已成孤儿（队列为内存态），统一标记为 cancelled
+    try:
+        n = store.update_orphan_status()
+        if n:
+            logger.info("[Web] 启动纠偏: %d 个孤儿 running/queued 任务标记为 cancelled", n)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("[Web] 孤儿任务纠偏失败: %s", e)
+
+    # 2. 启动清理：清理超过 24h 的暂存区孤儿文件
+    try:
+        import time
+        cutoff = time.time() - 24 * 3600
+        for p in UPLOAD_DIR.iterdir():
+            try:
+                if p.stat().st_mtime < cutoff:
+                    p.unlink()
+            except OSError:
+                pass
+    except Exception:
+        pass
+
+    # 3. 演示样例包启动导入（2026-09-02，幂等）：全新 clone/评委机 tasks.db 为空时
     # 把 sample_pack/catalog.db 的任务行+事件与缺失文件装进运行环境——此后回放/
     # 浏览与真实任务完全同构。AQ_SKIP_SAMPLE_IMPORT=1 跳过（测试/CI 用）。
     if os.environ.get("AQ_SKIP_SAMPLE_IMPORT") != "1":
         try:
             from .sample_pack import import_sample_pack, find_pack_root
-            _pack = find_pack_root(ROOT / "sample_pack")
+            _candidates = [
+                Path(sys.executable).parent / "sample_pack" if _FROZEN else None,
+                ROOT / "sample_pack",
+                Path.cwd() / "sample_pack",
+            ]
+            _pack = find_pack_root(*(c for c in _candidates if c is not None))
             import_sample_pack(store, OUTPUT_DIR, _pack)
         except Exception:  # noqa: BLE001 —— 样例导入失败仅告警，不阻断服务
             logger.exception("[Web] 样例包启动导入失败（跳过，服务继续）")
+
+    # 4. M-11: VCR 启动自测（import 期零网络/零阻塞/日志可控）
+    _vcr_startup_selftest()
+
     yield
 
 
@@ -1124,31 +1158,6 @@ if _FRONTEND_DIST.is_dir():
     app.mount("/", StaticFiles(directory=str(_FRONTEND_DIST), html=True), name="frontend")
 
 
-# 启动清理：暂存区孤儿（D4-4：孤儿直接删）
-@app.on_event("startup")
-async def _cleanup_orphans():
-    import time
-    cutoff = time.time() - 24 * 3600
-    for p in UPLOAD_DIR.iterdir():
-        try:
-            if p.stat().st_mtime < cutoff:
-                p.unlink()
-        except OSError:
-            pass
-    # 2026-08-24: 队列为内存态, 重启后 running/queued 任务永远无法执行 —
-    # 启动时纠偏为 cancelled, 避免卡住任务列表且不可删除
-    try:
-        n = store.update_orphan_status()
-        if n:
-            logger.info("[Web] 启动纠偏: %d 个孤儿 running/queued 任务标记为 cancelled", n)
-    except Exception as e:  # noqa: BLE001
-        logger.warning("[Web] 孤儿任务纠偏失败: %s", e)
-
-
-# M-11: VCR 启动自测移入 startup（import 期零网络/零阻塞/日志可控）
-@app.on_event("startup")
-async def _vcr_startup_diagnostic():
-    _vcr_startup_selftest()
 
 
 if __name__ == "__main__":

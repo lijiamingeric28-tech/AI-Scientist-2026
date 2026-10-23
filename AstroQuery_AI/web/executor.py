@@ -440,6 +440,11 @@ class Executor:
             self._bus.emit(task_id, "clarification_answered", answer=str(answer)[:4096])
         return ok
 
+    def is_active(self, task_id: str) -> bool:
+        """检查任务是否在 executor 活跃执行或排队中。"""
+        with self._lock:
+            return task_id in self._slots or self._current == task_id
+
     def is_waiting_clarification(self, task_id: str) -> bool:
         """H-04②：真实挂起状态（slot 存在且正等待答案），供 /state 判 pending。"""
         with self._lock:
@@ -456,16 +461,13 @@ class Executor:
             slot = self._slots.get(task_id)
             if slot:
                 slot.cancel()
-                self._store.update_task(task_id, status="cancelled", completed_at=_now_iso())
-                # H-08②：立即通知（含计算中途：wrap 边界终止前前端即可看到取消态）
-                self._bus.emit(task_id, "task_cancelled", reason="cancelled")
-                return True
-            if rec["status"] == "queued":
-                self._store.update_task(task_id, status="cancelled", completed_at=_now_iso())
-                # H-08②：queued 分支 runner 不运行，事件必须在此发出（DP-08 锚点）
-                self._bus.emit(task_id, "task_cancelled", reason="cancelled")
-                return True
-            return False
+            # 无论 slot 是否在内存中（含服务重启/断连遗留的孤儿 queued/running 任务），
+            # 只要库中任务处于 queued/running，均应支持取消纠偏为 cancelled
+            self._store.update_task(task_id, status="cancelled", completed_at=_now_iso())
+            self._bus.emit(task_id, "task_cancelled", reason="cancelled")
+            if self._current == task_id:
+                self._current = None
+            return True
 
     def stop(self, timeout: float = 2.0) -> None:
         """停止后台 loop 线程（幂等；测试回收用，生产进程退出时 daemon 自动结束）。"""

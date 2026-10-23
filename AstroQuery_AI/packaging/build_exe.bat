@@ -1,18 +1,18 @@
 @echo off
-REM ── AstroQuery AI 桌面绿色包一键构建 ──
-REM 产物: dist\AstroQueryAI\AstroQueryAI.exe（整个文件夹压缩即发布包）
-REM 首次运行需在 exe 旁边放置 .env（API Key），格式见项目根 README/AstroQuery_AI/.env 模板
+REM ── AstroQuery AI 桌面绿色包一键构建与发布 ──
+REM 产物:
+REM   1. 绿色解压目录: dist\AstroQueryAI\AstroQueryAI.exe
+REM   2. 独立发布包: release\AstroQueryAI-win64.zip
 cd /d "%~dp0.."
 
-echo [1/3] 安装 PyInstaller ...
+echo [1/2] 检查与安装必要打包依赖 ...
 "D:\miniconda\envs\py3.10\python.exe" -m pip install pyinstaller -q
 
-echo [2/3] PyInstaller 构建（10-30 分钟，请耐心等待）...
-"D:\miniconda\envs\py3.10\python.exe" -m PyInstaller --noconfirm --clean packaging\astroquery_ai.spec
+echo [2/2] 执行全自动构建与发布（前端编译 + PyInstaller + 资源校验 + Zip打包）...
+"D:\miniconda\envs\py3.10\python.exe" packaging\build_release.py
 if %errorlevel% neq 0 (
     echo [FAILED] 构建失败，见上方日志
     exit /b 1
 )
 
-echo [3/3] 完毕
-echo BUILD OK: dist\AstroQueryAI\AstroQueryAI.exe
+echo BUILD AND PACKAGING OK!
