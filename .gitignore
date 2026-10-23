@@ -226,6 +226,8 @@ AstroQuery_AI/frontend/node_modules/
 AstroQuery_AI/build_venv/
 AstroQuery_AI/build/
 AstroQuery_AI/dist/
+AstroQuery_AI/release/
+release/
 AstroQuery_AI/data/
 AstroQuery_AI/.claude/
 AstroQuery_AI/.env
