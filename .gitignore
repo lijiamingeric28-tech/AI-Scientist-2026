@@ -217,25 +217,25 @@ __marimo__/
 .streamlit/secrets.toml
 
 # ── astroquery_frontend 运行产物（子项目级，2026-08-28 加入）──
-AstroQuery_AI/output/
-AstroQuery_AI/web/data/
-AstroQuery_AI/subgraphs/data/
-AstroQuery_AI/tests/cassettes/
-AstroQuery_AI/frontend/dist/
-AstroQuery_AI/frontend/node_modules/
-AstroQuery_AI/build_venv/
-AstroQuery_AI/build/
-AstroQuery_AI/dist/
-AstroQuery_AI/release/
+HISTORY_VERSION/V4/output/
+HISTORY_VERSION/V4/web/data/
+HISTORY_VERSION/V4/subgraphs/data/
+HISTORY_VERSION/V4/tests/cassettes/
+HISTORY_VERSION/V4/frontend/dist/
+HISTORY_VERSION/V4/frontend/node_modules/
+HISTORY_VERSION/V4/build_venv/
+HISTORY_VERSION/V4/build/
+HISTORY_VERSION/V4/dist/
+HISTORY_VERSION/V4/release/
 release/
-AstroQuery_AI/data/
-AstroQuery_AI/.claude/
-AstroQuery_AI/.env
-AstroQuery_AI/*.log
-AstroQuery_AI/__pycache__/
+HISTORY_VERSION/V4/data/
+HISTORY_VERSION/V4/.claude/
+HISTORY_VERSION/V4/.env
+HISTORY_VERSION/V4/*.log
+HISTORY_VERSION/V4/__pycache__/
 
 # ── 误伤豁免：astroquery_frontend 的 PyInstaller spec 必须提交 ──
-!AstroQuery_AI/packaging/*.spec
+!HISTORY_VERSION/V4/packaging/*.spec
 
 CLAUDE.md
 .claude/
