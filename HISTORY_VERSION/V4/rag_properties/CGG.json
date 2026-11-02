@@ -1,0 +1,431 @@
+{
+  "otype": "CGG",
+  "name_cn": "致密星系群",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "group_coord_ra",
+      "name_cn": "群中心赤经",
+      "description": "致密群几何中心赤经(历元:B1950见VII/213,其余为J2000)",
+      "category": "astrometry",
+      "ucd": "POS_EQ_RA_MAIN",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_coord_dec",
+      "name_cn": "群中心赤纬",
+      "description": "致密群几何中心赤纬(历元:B1950见VII/213,其余为J2000)",
+      "category": "astrometry",
+      "ucd": "POS_EQ_DEC_MAIN",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_distance",
+      "name_cn": "群距离",
+      "description": "致密群距离(Mpc),如Jones+2023采用Cosmicflows-3,Martinez-Badenes+2012采用群红移距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_angular_extent",
+      "name_cn": "群角大小/判据半径",
+      "description": "群角大小(Hickson AngSize,角分)或Hickson判据半径(McConnachie Rad,角分)",
+      "category": "astrometry",
+      "ucd": "phys.angSize",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galaxy_size",
+      "name_cn": "成员星系尺度",
+      "description": "成员星系半长轴a/半短轴b(25.0 mag/arcsec2等照度线,VII/213)或D25等照度线直径(角分)",
+      "category": "astrometry",
+      "ucd": "phys.angSize.smajAxis",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_redshift",
+      "name_cn": "群红移",
+      "description": "群红移:成员星系平均(McConnachie)或双权中位数(Zandivarez);Hickson给出群z",
+      "category": "spectroscopy",
+      "ucd": "src.redshift;stat.median",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_radial_velocity",
+      "name_cn": "群视向速度",
+      "description": "群日心视向速度HRV(km/s),由成员星系速度综合",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galaxy_radial_velocity",
+      "name_cn": "成员星系视向速度",
+      "description": "成员星系日心视向速度RVhel(km/s)及误差与置信度码",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_disp_1d",
+      "name_cn": "群径向速度弥散",
+      "description": "致密群视线方向速度弥散log(sV)或sigma_v(km/s),衡量群内部动力学热状态的核心量",
+      "category": "spectroscopy",
+      "ucd": "src.vel.disp",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_disp_3d",
+      "name_cn": "群三维速度弥散",
+      "description": "由1D弥散假设各向同性推出的三维本征速度弥散log(V)(km/s,Hickson动力学表)",
+      "category": "spectroscopy",
+      "ucd": "src.vel.disp",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift_confidence",
+      "name_cn": "红移置信度",
+      "description": "SDSS光谱红移置信度zconf(0-1)与SDSS光谱ID,用于判定成员资格",
+      "category": "spectroscopy",
+      "ucd": "stat.confidence",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_line_intensity",
+      "name_cn": "CO谱线积分强度",
+      "description": "CO(1-0)与CO(2-1)速度积分强度ICO10/ICO21(K km/s)、谱线宽度与rms噪声",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity;em.mm",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_tot_mag",
+      "name_cn": "群总星等",
+      "description": "致密群总体积分亮度Totmag(需减去成员间空隙背景)",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.total",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "brightest_mag",
+      "name_cn": "最亮成员星等",
+      "description": "群中最亮成员星等Emag(Hickson)或r波段最亮成员星等(McConnachie)",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.max",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B星等",
+      "description": "成员星系B波段星等(24.5 mag/arcsec2等照度线内及渐近值BTmag、消光改正值BTc)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_r",
+      "name_cn": "r波段星等",
+      "description": "成员星系r波段Petrosian/model星等(消光改正,AB系统),致密群选源波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_br",
+      "name_cn": "B-R色指数",
+      "description": "成员星系B-R颜色指数(消光改正)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_gr",
+      "name_cn": "g-r色指数",
+      "description": "成员星系g-r颜色指数(消光改正,未做k改正)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.G;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sb_group_r",
+      "name_cn": "群r波段表面亮度",
+      "description": "致密群r波段表面亮度(mag/arcsec2),Hickson致密性判据的直接测量",
+      "category": "photometry",
+      "ucd": "phot.mag.sb;em.opt.R",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_abs_b",
+      "name_cn": "B绝对星等",
+      "description": "成员星系B绝对星等MB-5log(h)",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_abs_r",
+      "name_cn": "r绝对星等",
+      "description": "群中最亮及次亮成员静系r绝对星等r1MAG/r2MAG(GAMA,rest-frame)",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_blue",
+      "name_cn": "蓝光度",
+      "description": "群总蓝光度log(L)(太阳光度单位,Hickson动力学表)或星系log(LB)",
+      "category": "photometry",
+      "ucd": "phot.luminosity;em.opt.B",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_k",
+      "name_cn": "Ks波段光度",
+      "description": "成员星系Ks波段光度log(LK)(2MASS),用于恒星质量估计",
+      "category": "photometry",
+      "ucd": "phot.luminosity;em.IR.K",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_fir",
+      "name_cn": "远红外光度",
+      "description": "由IRAS 60/100um流量导出的远红外光度log(LFIR)",
+      "category": "photometry",
+      "ucd": "phot.luminosity;em.IR.60-100um",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_60",
+      "name_cn": "IRAS 60微米流量密度",
+      "description": "IRAS 60um流量密度I60(Jy,SCANPI)",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.30-60um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_100",
+      "name_cn": "IRAS 100微米流量密度",
+      "description": "IRAS 100um流量密度I100(Jy,SCANPI)",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.60-100um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_dynamic",
+      "name_cn": "动力学质量",
+      "description": "群动力学质量log(Mv/Mp/Ma/Mm/M):virial、投影、平均、中位及采用值(H0=100 km/s/Mpc假定)",
+      "category": "physical",
+      "ucd": "phys.mass.dynamics",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_to_light",
+      "name_cn": "质光比",
+      "description": "群动力学质量与蓝光度之比log(M/L)(太阳单位),指示暗物质含量",
+      "category": "physical",
+      "ucd": "phys.mass.toLightRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_density",
+      "name_cn": "群质量密度",
+      "description": "群平均质量密度log(rho)(g/cm3),致密群高密度环境的直接度量",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "g/cm^3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "crossing_time",
+      "name_cn": "穿越时标",
+      "description": "群穿越时标log(H0*tc)(1/H0单位)或无因次穿越时标tcr,表征相互作用时标的关键量",
+      "category": "physical",
+      "ucd": "time.scale",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proj_separation",
+      "name_cn": "中位投影间距",
+      "description": "成员星系间中位投影间距log(R)(kpc)或Rij(kpc/h),Hickson密度判据的直接度量",
+      "category": "physical",
+      "ucd": "pos.angDistance;stat.median",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_mass",
+      "name_cn": "HI质量",
+      "description": "群或成员星系中性氢质量log(MHI)(VLA/GBT),含预测值logMHI-pred",
+      "category": "physical",
+      "ucd": "phys.mass;em.radio.HI",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_deficiency",
+      "name_cn": "HI缺陷度",
+      "description": "HI缺陷度HIdef=log(MHI,pred)-log(MHI,obs),正值表示相对光度预期缺失HI,致密群环境作用的标志量",
+      "category": "physical",
+      "ucd": "phys.mass;em.radio.HI",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_ext_frac",
+      "name_cn": "延展结构HI质量占比",
+      "description": "星系间延展结构(潮汐尾、桥)中HI质量占群总HI比例fexfs,反映潮汐剥蚀与合并进程",
+      "category": "physical",
+      "ucd": "arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h2_mass",
+      "name_cn": "分子气体质量",
+      "description": "由CO(1-0)强度导出的H2质量log(MH2)(中心值及外推至全盘值)",
+      "category": "physical",
+      "ucd": "phys.mass;em.mm",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h2_deficiency",
+      "name_cn": "分子气体缺陷度",
+      "description": "H2质量缺陷度def(MH2)=log(MH2,pred)-log(MH2,obs)",
+      "category": "physical",
+      "ucd": "phys.mass;em.mm",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "由远红外光度导出的恒星形成率SFR(Msun/yr)",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfe",
+      "name_cn": "恒星形成效率",
+      "description": "恒星形成效率SFE=SFR/MH2(yr-1),致密群中气体转化效率是否异常的关键判据",
+      "category": "physical",
+      "ucd": "phys.SFR;arith.ratio",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ssfr",
+      "name_cn": "比恒星形成率",
+      "description": "比恒星形成率sSFR=SFR/Mstar(Mstar由Ks光度估计),衡量恒星形成活性",
+      "category": "physical",
+      "ucd": "phys.SFR;stat.specific",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fir_deficiency",
+      "name_cn": "远红外光度缺陷度",
+      "description": "FIR光度缺陷度def(LFIR)=log(LFIR,pred)-log(LFIR,obs),负值表示红外超",
+      "category": "physical",
+      "ucd": "phot.luminosity;em.IR.60-100um",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_count",
+      "name_cn": "成员星系数",
+      "description": "群成员星系数目Nmemb(4-10为Hickson判据;GAMA样本允许3个成员)",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type",
+      "name_cn": "哈勃形态类型",
+      "description": "成员星系哈勃形态类型MType及数值编码T(0-13,RC3尺度)",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "group_morph_type",
+      "name_cn": "群形态类型",
+      "description": "群级形态分类Type(如S1/E3),依成员哈勃类型组成判定",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_phase",
+      "name_cn": "HI演化相",
+      "description": "HI形态演化相(HIphase,Verdes-Montenegro+2001三阶段:未扰动-潮汐作用-合并)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_class",
+      "name_cn": "IR活动分类",
+      "description": "红外活动分类IRclass(Zucker+2016:星暴/AGN等)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "contamination_flag",
+      "name_cn": "群污染标记",
+      "description": "标记群中是否含有最初入A目录后被识别为污染的成员(McConnachie flag)",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_nearest_nonmember",
+      "name_cn": "到最近非成员星系距离",
+      "description": "群中心到最近非成员星系的距离(以群半径为单位),Hickson孤立性判据的定量测量",
+      "category": "environment",
+      "ucd": "pos.distance;stat.min",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

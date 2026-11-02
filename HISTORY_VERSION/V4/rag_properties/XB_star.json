@@ -1,0 +1,287 @@
+{
+  "otype": "XB*",
+  "name_cn": "X射线双星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经(时/度),X射线源位置,通常由X射线或光学观测确定",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(度),X射线源位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lon",
+      "name_cn": "银经",
+      "description": "银道坐标经度,表征源在银道面内的分布(HMXB集中于银盘)",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度,与HMXB/LMXB的银面高度分布相关",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "到X射线双星的距离(kpc),由视差/伴星光谱光度/爆发特征等方法估计,用于换算X射线光度",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "天体的自行(位置精度字段中P标记指示大自行天体),RKcat位置精度附带信息",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "V波段视星等",
+      "description": "光学伴星视星等(已知变化范围时取最亮值,并有最暗值字段),表征伴星光度状态",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B-V色指数",
+      "description": "光学伴星B-V色指数,用于判断伴星温度与类型",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color",
+      "name_cn": "U-B色指数",
+      "description": "光学伴星U-B色指数,对高温伴星(Be星/OB星)特别敏感",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "星际红化",
+      "description": "伴星方向星际红化E(B-V),用于去红化修正与距离估计",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_mag",
+      "name_cn": "近红外星等",
+      "description": "2MASS J/H/K近红外星等,透过尘埃观测伴星(尤其Be星/超巨星)的关键波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux",
+      "name_cn": "X射线流量",
+      "description": "2-10keV平均X射线流量(微央,1uJy=2.4e-12 erg/cm2/s/keV),存在能量范围与上下限标志",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "uJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "2-10keV X射线光度(erg/s),直接表征吸积率;由X射线流量结合距离换算,是区分HMXB/LMXB及中子星/黑洞吸积态的核心量",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spect_type",
+      "name_cn": "伴星光谱型",
+      "description": "光学伴星光谱型(如O8I、B0Ve、K5V),决定伴星质量/类型与质传输方式(HMXB的大质量伴星 vs LMXB晚型矮星)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "伴星视向速度(曲线),用于计算质量函数与轨道解",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期(天或小时),决定洛希瓣几何与吸积盘大小;HMXB通常1-1000天,LMXB通常0.2-10天,UCXB短至分钟-小时级",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulse_period",
+      "name_cn": "脉冲周期",
+      "description": "中子星X射线脉冲自转周期(秒),吸积驱动的自转演化研究关键量",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period",
+      "name_cn": "致密星自转周期",
+      "description": "白矮星/磁化中子星自转(自转-吸积)周期,含毫秒脉冲星、中间极与DQ星等子类(RKcat Period3/4)",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "compact_mass",
+      "name_cn": "致密星质量",
+      "description": "致密天体(中子星或黑洞)质量(Msun),黑洞质量>3Msun,是黑洞候选确认的决定性依据",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "donor_mass",
+      "name_cn": "伴星质量",
+      "description": "非简并伴星质量(Msun),与光谱型和质量函数交叉约束轨道解",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比",
+      "description": "主星与伴星质量比M1/M2(附误差),决定洛希瓣半径与盘结构",
+      "category": "physical",
+      "ucd": "phys.mass.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面倾角(度);高倾角产生X射线食/食缩(dips),并影响吸积盘投影与多普勒层析",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function",
+      "name_cn": "质量函数",
+      "description": "光谱质量函数f(M),由视向速度半振幅与轨道周期导出,给出致密星质量下限,是黑洞动力学确认的核心参数",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道离心率,高偏心率多见于Be/X射线双星与某些LMXB,影响脉冲星周期演化与爆发行为",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_type",
+      "name_cn": "X射线源型",
+      "description": "X射线行为型别:HMXB的P脉冲星/T暂现/E食/R射电/C回旋共振线/U超软;LMXB的A atoll/B爆发源/D食缩/G球状星团/M毫秒脉冲星/Z型等",
+      "category": "variability",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_recurrence",
+      "name_cn": "爆发间隔",
+      "description": "暂现源爆发间典型间隔(天),含矮新星型爆发周期与LMXB暂现爆发周期(RKcat Interval/Interval2)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "system_class",
+      "name_cn": "系统类型",
+      "description": "双星系统分类:HMXB/LMXB/超致密UCXB/黑洞暂现源,按伴星质量(M>8Msun为HMXB)划分",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "compact_type",
+      "name_cn": "致密天体类型",
+      "description": "致密天体身份:中子星(NS)/黑洞(BH)/白矮星(WD);黑洞需动力学质量确认,NS常以脉冲或X射线爆发识别",
+      "category": "classification",
+      "ucd": "src.class.compact",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "donor_class",
+      "name_cn": "伴星类型",
+      "description": "伴星细分类:Be/X射线星(Be星)、超巨星X射线双星(sgHMXB)、晚型矮星伴星(LMXB)、简并伴星(UCXB的白矮星/氦星/巨行星)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "globular_cluster_mem",
+      "name_cn": "球状星团成员",
+      "description": "X射线源是否为球状星团成员(LMXB的G型子类),球状星团内致密双星形成与动力学环境研究",
+      "category": "environment",
+      "ucd": "meta.id;in.src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "宿主星系:银河系/大麦哲伦云/小麦哲伦云(以及邻近星系中的源),麦哲伦云HMXB密度远高于银河系",
+      "category": "environment",
+      "ucd": "meta.id;in.src",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

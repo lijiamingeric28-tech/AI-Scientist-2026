@@ -1,0 +1,183 @@
+{
+  "research_domain": "astrophysics",
+  "generated_at": "2026-09-01T21:32:29.273000",
+  "field_insights": [
+    {
+      "entity_type": "sb*",
+      "entity_name": "Capella",
+      "field_name": "orbital_period",
+      "source_type": "paper",
+      "observation": "Values cluster tightly around 104.0 d, with high-precision measurements yielding 104.02173 ± 0.00022 d across multiple independent studies.",
+      "interpretation": "The 104-day period is characteristic of a detached double-lined spectroscopic binary (SB2) consisting of two evolved giant stars. According to Kepler's third law, this period combined with the measured masses implies a semi-major axis of roughly 0.75 AU, consistent with a non-interacting system where neither star fills its Roche lobe.",
+      "cause_hypotheses": [
+        "Consistent multi-decade observational baselines confirm stability.",
+        "Minor discrepancies in early literature resolved by combining spectroscopy with interferometric/astrometric inclination measurements."
+      ],
+      "typical_range": "~104 d",
+      "confidence": 0.96,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "kepler_orbital_mechanics",
+          "title": "开普勒轨道力学与双星质量函数",
+          "source": "二体问题教科书; Eggleton 1983, ApJ; 双星质量函数综述"
+        }
+      ]
+    },
+    {
+      "entity_type": "sb*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "source_type": "paper",
+      "observation": "Masses range from 2.443 ± 0.013 to 2.573 Msun across four major studies (2009–2023), with most precise determinations centering on ~2.45–2.47 Msun for both components.",
+      "interpretation": "These masses place both components firmly in the intermediate-mass regime, consistent with their classification as G-type giants (G8III and G1III) evolving off the main sequence. The tight agreement among recent works indicates robust determination via joint spectroscopic-astrometric solutions, breaking the sin(i) degeneracy inherent in single-line binaries.",
+      "cause_hypotheses": [
+        "Refinements in astrometric inclination constraints reduce mass uncertainties.",
+        "Improved modeling of chromospheric activity and starspot-induced RV jitter accounts for minor inter-study variations."
+      ],
+      "typical_range": "2.0 - 3.0 Msun",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "kepler_orbital_mechanics",
+          "title": "开普勒轨道力学与双星质量函数",
+          "source": "二体问题教科书; Eggleton 1983, ApJ; 双星质量函数综述"
+        }
+      ]
+    },
+    {
+      "entity_type": "sb*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "source_type": "paper",
+      "observation": "Paper-derived amplitudes span 25.96–29.94 km/s. Modern joint solutions yield K_A ≈ 26.0 km/s and K_B ≈ 26.3 km/s, while earlier spectroscopic-only fits report values up to ~29.9 km/s.",
+      "interpretation": "The velocity semi-amplitudes reflect the orbital motion projected along the line of sight. The near-equality of K_A and K_B confirms a mass ratio q ≈ 1, expected for a co-eval binary formed from the same molecular cloud. The higher historical values likely stem from uncorrected stellar activity effects or less precise orbital fitting without astrometric priors.",
+      "cause_hypotheses": [
+        "Stellar activity (chromospheric emission, spots) biases older RV measurements upward.",
+        "Modern solutions incorporate astrometric inclination and activity indicators, tightening K estimates."
+      ],
+      "typical_range": "25 - 30 km/s",
+      "confidence": 0.92,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "kepler_orbital_mechanics",
+          "title": "开普勒轨道力学与双星质量函数",
+          "source": "二体问题教科书; Eggleton 1983, ApJ; 双星质量函数综述"
+        }
+      ]
+    },
+    {
+      "entity_type": "spectroscopic_binary",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "source_type": "database",
+      "observation": "The Bright Star Catalogue (HR) lists a single rounded value of 30 km/s without error margins or component distinction.",
+      "interpretation": "This database entry represents a historical summary value intended for rapid identification rather than precision astrophysics. Rounding to 30 km/s aligns with the upper end of modern spectroscopic measurements but lacks the resolution to distinguish between the primary and secondary components or to account for modern activity corrections.",
+      "cause_hypotheses": [
+        "Catalog compilation prioritizes concise reference data over precision.",
+        "Historical era predates high-resolution spectroscopy and activity correction techniques."
+      ],
+      "typical_range": "25 - 30 km/s",
+      "confidence": 0.85,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "kepler_orbital_mechanics",
+          "title": "开普勒轨道力学与双星质量函数",
+          "source": "二体问题教科书; Eggleton 1983, ApJ; 双星质量函数综述"
+        }
+      ]
+    }
+  ],
+  "cross_field_relationships": [
+    {
+      "field_a": "orbital_period",
+      "field_b": "component_mass",
+      "relationship_type": "physical_law",
+      "description": "Kepler's Third Law ($P^2 \\propto a^3/(M_1+M_2)$) physically links the orbital period to the total system mass and semi-major axis. In resolved or astrometrically constrained binaries, simultaneous measurement of $P$ and component masses fixes the physical separation of the system.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:kepler_orbital_mechanics"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "orbital_period",
+      "field_b": "velocity_semi_amplitude",
+      "relationship_type": "physical_law",
+      "description": "The mass function equation dictates that the radial velocity semi-amplitude $K$ scales with the orbital period as $K \\propto P^{-1/3}$ for fixed masses and inclination. This arises directly from the balance of gravitational force and centripetal acceleration in Keplerian orbits.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:kepler_orbital_mechanics"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "component_mass",
+      "field_b": "velocity_semi_amplitude",
+      "relationship_type": "physical_law",
+      "description": "For double-lined spectroscopic binaries, the mass ratio is strictly determined by the inverse ratio of the velocity semi-amplitudes ($M_1/M_2 = K_2/K_1$). Together with the period, these parameters uniquely solve for the individual masses via Newtonian two-body dynamics.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:kepler_orbital_mechanics"
+      ],
+      "data_evidence": "sufficient_data"
+    }
+  ],
+  "usage_recommendations": {
+    "overall_grade": "excellent",
+    "suitable_use_cases": [
+      "Benchmarking orbital parameters for double-lined spectroscopic binaries (SB2)",
+      "Validating joint spectroscopic-astrometric orbital fitting pipelines",
+      "Studying post-main-sequence evolution of intermediate-mass G-type giants",
+      "Testing Keplerian dynamics and mass-function calculations in resolved binaries",
+      "Educational reference for resolving sin(i) degeneracy in binary systems"
+    ],
+    "limitations": [
+      "Significant coverage gaps across cited literature sources, with multiple papers missing one or more core parameters",
+      "Historical/database entries (e.g., Bright Star Catalogue) provide rounded, uncorrected values lacking error margins and component-level resolution",
+      "Dataset is restricted to a single target (Capella), limiting direct application to population-level statistical analyses",
+      "Older radial velocity measurements are susceptible to stellar activity biases (spots/chromospheric emission) not fully corrected in pre-modern datasets"
+    ],
+    "recommended_caveats": [
+      "Always distinguish between modern high-precision literature values and legacy catalog summaries; do not mix them without explicit systematic offset correction",
+      "When using older RV data, apply activity indicators or spot-correction models to mitigate upward bias in velocity semi-amplitudes",
+      "Leverage the strong physical coupling (Kepler's Third Law and mass function) to cross-validate missing parameters rather than relying on isolated measurements",
+      "Report measurement epochs and instrumentation when comparing against this dataset, as astrometric priors and activity corrections have evolved significantly since the 2000s",
+      "For multi-source integration, prioritize recent joint spectroscopic-astrometric solutions (post-2015) over single-method determinations"
+    ],
+    "low_confidence_records": [],
+    "coverage_gaps": [
+      "SRC_DB_HR: missing ['component_mass', 'orbital_period']",
+      "2013A&A...560A.113H: missing ['component_mass', 'velocity_semi_amplitude']",
+      "2023A&A...676A..19M: missing ['orbital_period', 'velocity_semi_amplitude']",
+      "2011A&A...531A..89W: missing ['orbital_period']",
+      "2006ApJ...644L.117I: missing ['component_mass', 'orbital_period']",
+      "2015ApJ...807...26T: missing ['orbital_period']"
+    ]
+  },
+  "overall_narrative": "The analysis of four primary astrophysical parameters characterizes a detached double-lined spectroscopic binary with a 104-day orbital period, comprising two co-eval, intermediate-mass G-type giants. Cross-field correlations demonstrate symmetric radial velocity semi-amplitudes that confirm a near-unity mass ratio (q ≈ 1), providing strong dynamical evidence for a shared formation history from a single molecular cloud. While the underlying database entry utilizes a historically rounded velocity metric optimized for rapid archival identification rather than high-precision modeling, it remains fully consistent with contemporary spectroscopic measurements. Synthesizing these three critical cross-parameter relationships across all four analytical domains yields an excellent overall assessment",
+  "insufficient_context_fields": []
+}

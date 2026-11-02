@@ -1,0 +1,314 @@
+{
+  "otype": "dS*",
+  "name_cn": "盾牌座δ型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "J2000历元赤经坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "J2000历元赤纬坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行(毫角秒/年)",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行(毫角秒/年)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "trigonometric_parallax",
+      "name_cn": "三角视差",
+      "description": "Gaia DR2三角视差，用于推导光度与距离",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由Gaia视差反演的距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_magnitude",
+      "name_cn": "V星等",
+      "description": "Johnson V波段平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_v_color_index",
+      "name_cn": "B-V色指数",
+      "description": "Johnson B-V颜色，用于温度与红化估计",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "i_magnitude",
+      "name_cn": "I星等",
+      "description": "OGLE I波段平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_magnitude",
+      "name_cn": "g星等",
+      "description": "ASAS-SN V/g波段监测星等(2018年后为g波段)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.g",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "strogren_b_y",
+      "name_cn": "Strömgren b-y色指数",
+      "description": "Strömgren b-y颜色，用于推导有效温度",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "strogren_m1",
+      "name_cn": "Strömgren m1金属指数",
+      "description": "Strömgren m1指数，金属丰度指示量",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "strogren_c1",
+      "name_cn": "Strömgren c1巴尔末跳变指数",
+      "description": "Strömgren c1指数，光度(表面重力)指示量",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_magnitude",
+      "name_cn": "J星等",
+      "description": "2MASS J波段星等(交叉量)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "k_magnitude",
+      "name_cn": "K星等",
+      "description": "2MASS K波段星等(交叉量)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_w1_magnitude",
+      "name_cn": "WISE W1星等",
+      "description": "WISE W1(3.4微米)波段星等(交叉量)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_magnitude",
+      "name_cn": "极大星等",
+      "description": "亮度极大时的视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "min_magnitude",
+      "name_cn": "极小星等",
+      "description": "亮度极小时的视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(典型A2-F8，主序至巨星)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "由Strömgren测光或光谱推导的有效温度",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力log g",
+      "description": "对数表面重力，区分主序/亚巨星演化状态",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "绝对光度log L/Lsun(Gaia DR2视差推导)",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absolute_magnitude",
+      "name_cn": "绝对星等",
+      "description": "V波段绝对星等Mv",
+      "category": "physical",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "由演化模型推导的恒星质量(典型1.5-2.5太阳质量)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_fe_h",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "铁金属丰度，区分富金属dSct与贫金属SX Phe型",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "主脉动周期(0.02-0.3天)，dSct的核心识别量",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_frequency",
+      "name_cn": "脉动频率",
+      "description": "脉动频率(周期倒数，天^-1)，星震学分析基本量",
+      "category": "variability",
+      "ucd": "time.frequency",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_amplitude",
+      "name_cn": "脉动振幅",
+      "description": "V波段总振幅，区分高振幅HADS(>0.1等)与低振幅LADS",
+      "category": "variability",
+      "ucd": "src.vari.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_of_maximum",
+      "name_cn": "极大光历元",
+      "description": "亮度极大时刻(儒略日)，定义光变历元",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "number_of_pulsation_modes",
+      "name_cn": "脉动模式数",
+      "description": "已检测到的独立脉动模式数目，多模态星用于星震学",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type",
+      "name_cn": "变星类型",
+      "description": "GCVS变星分类码(DSCT/DSCTC等)及调查分类标签",
+      "category": "classification",
+      "ucd": "src.class.variability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_mode_order",
+      "name_cn": "脉动模式阶数",
+      "description": "主脉动模式为基频或一阶泛音(OGLE多模态标识)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variable_star_name",
+      "name_cn": "变星命名",
+      "description": "GCVS变星命名(如V530 Sct)或调查编号(OGLE/TMTS ID)",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lmc_membership",
+      "name_cn": "大麦哲伦云成员归属",
+      "description": "OGLE样本位于大麦哲伦云，标识dSct的河外/星族II环境归属",
+      "category": "environment",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

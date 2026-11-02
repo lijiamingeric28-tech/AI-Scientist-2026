@@ -1,0 +1,461 @@
+{
+  "field_definitions": {
+    "black_hole_mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the total gravitational mass of the black hole, reported in units of solar masses (Msun)."
+    },
+    "fwhm_broad_hbeta": {
+      "standard_unit": "km/s",
+      "semantic_type": "radial_velocity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the full width at half maximum of the broad H-beta emission line, representing the velocity dispersion of the accreting gas in kilometers per second (km/s)."
+    },
+    "xray_photon_index": {
+      "standard_unit": null,
+      "semantic_type": "spectroscopy",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the spectral slope of the X-ray continuum, provided as a dimensionless parameter that characterizes the power-law distribution of emitted photon energies."
+    }
+  },
+  "source_summary": {
+    "total_sources": 28,
+    "sources_exported": 28,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "2006ApJ...651..775B",
+        "title": "A Reverberation-based Mass for the Central Black Hole in NGC 4151",
+        "year": 2006,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025ApJ...988..273L",
+        "title": "The Virial Factor f of the Hβ Broad Line for NGC 5548 and NGC 4151",
+        "year": 2025,
+        "journal": "The Astrophysical Journal",
+        "record_count": 17,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010A&A...509A.106S",
+        "title": "Long-term variability of the optical spectra of NGC 4151. II. Evolution of the broad Hα and Hβ emission-line profiles",
+        "year": 2010,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023MNRAS.520.1807C",
+        "title": "Broad-line region in NGC 4151 monitored by two decades of reverberation mapping campaigns - I. Evolution of structure and kinematics",
+        "year": 2023,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 17,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023MNRAS.521.2897W",
+        "title": "Assessing indirect methods to determine black hole masses using NGC 4151",
+        "year": 2023,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 8,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022ApJ...934..168B",
+        "title": "The Broad Line Region and Black Hole Mass of NGC 4151",
+        "year": 2022,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2021ApJ...916...25R",
+        "title": "The Black Hole Mass of NGC 4151 from Stellar Dynamical Modeling",
+        "year": 2021,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014ApJ...791...37O",
+        "title": "The Black Hole Mass of NGC 4151. II. Stellar Dynamical Measurement from Near-infrared Integral Field Spectroscopy",
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1997ApJ...487L.121W",
+        "title": "The Narrow-Line Region of NGC 4151: A Turbulent Cauldron",
+        "year": 1997,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1996ApJ...470..336K",
+        "title": "Multiwavelength Observations of Short-Timescale Variability in NGC 4151. II. Optical Observations",
+        "year": 1996,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019ApJ...877...65N",
+        "title": "Spectral Properties of NGC 4151 and the Estimation of Black Hole Mass Using TCAF Solution",
+        "year": 2019,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020MNRAS.491.5126M",
+        "title": "Discarding the disc in a changing-state AGN: the UV/X-ray relation in NGC 4151",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2000ApJ...528..260K",
+        "title": "The Resolved Narrow-Line Region in NGC 4151",
+        "year": 2000,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006ApJ...647..901M",
+        "title": "The Mass of the Central Black Hole in the Seyfert Galaxy NGC 4151",
+        "year": 2006,
+        "journal": "The Astrophysical Journal",
+        "record_count": 5,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...659..250C",
+        "title": "Mass Outflow from the Nucleus of the Seyfert 1 Galaxy NGC 4151",
+        "year": 2007,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008A&A...486...99S",
+        "title": "Long-term variability of the optical spectra of NGC 4151. I. Light curves and flux correlations",
+        "year": 2008,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007ApJ...670..105O",
+        "title": "The Black Hole Mass of NGC 4151: Comparison of Reverberation Mapping and Stellar Dynamical Measurements",
+        "year": 2007,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999ApJ...512..204A",
+        "title": "Infrared Spectroscopy of NGC 4151: Probing the Obscured Ionizing Active Galactic Nucleus Continuum",
+        "year": 1999,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015ApJ...806..149K",
+        "title": "NuSTAR and Suzaku X-ray Spectroscopy of NGC 4151: Evidence for Reflection from the Inner Accretion Disk",
+        "year": 2015,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2014MNRAS.438.2980C",
+        "title": "Modelling the broad Fe Kα reverberation in the AGN NGC 4151",
+        "year": 2014,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005AJ....130..936U",
+        "title": "VLBA Identification of the Milliarcsecond Active Nucleus in the Seyfert Galaxy NGC 4151",
+        "year": 2005,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2003MNRAS.342.1222C",
+        "title": "Variability of accretion flow in the core of the Seyfert galaxy NGC 4151",
+        "year": 2003,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1996MNRAS.283..193Z",
+        "title": "Broad-band γ-ray and X-ray spectra of NGC 4151 and their implications for physical processes and geometry.",
+        "year": 1996,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007A&A...463..903D",
+        "title": "The broad band spectrum and variability of NGC 4151 observed by BeppoSAX",
+        "year": 2007,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 16,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005ApJ...634..939B",
+        "title": "The High-Energy Spectrum of NGC 4151",
+        "year": 2005,
+        "journal": "The Astrophysical Journal",
+        "record_count": 9,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010ApJ...714.1497W",
+        "title": "Revisiting the Short-term X-ray Spectral Variability of NGC 4151 with Chandra",
+        "year": 2010,
+        "journal": "The Astrophysical Journal",
+        "record_count": 7,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010MNRAS.408.1851L",
+        "title": "Extreme flux states of NGC 4151 observed with INTEGRAL",
+        "year": 2010,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1978ApJ...225L.115M",
+        "title": "X-ray observations of a flare in NGC 4151 from OSO 8.",
+        "year": 1978,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 28,
+      "overall_quality": "good",
+      "total_issues": 36
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 47,
+      "by_layer": {
+        "base": 47,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors_count": 23,
+      "errors": [
+        {
+          "source": "2020MNRAS.491.5126M",
+          "tool": "parse_scientific_notation",
+          "kind": "out_of_range",
+          "error": "modified value 40000000.0 Msun out of feasible range for black_hole_mass"
+        },
+        {
+          "source": "2006ApJ...647..901M",
+          "tool": "parse_uncertainty_notation",
+          "kind": "out_of_range",
+          "error": "modified value 41400000.0 Msun out of feasible range for black_hole_mass"
+        },
+        {
+          "source": "2023MNRAS.520.1807C",
+          "tool": "unit_converter",
+          "kind": "unconverted_unit",
+          "error": "no conversion rule for unit 'km s¹' in categories []"
+        },
+        {
+          "source": "2023MNRAS.520.1807C",
+          "tool": "unit_converter",
+          "kind": "unconverted_unit",
+          "error": "no conversion rule for unit 'km s¹' in categories []"
+        },
+        {
+          "source": "2015ApJ...806..149K",
+          "tool": "extract_central_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2007A&A...463..903D",
+          "tool": "parse_asymmetric_uncertainty",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "1978ApJ...225L.115M",
+          "tool": "extract_uncertainty_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2023MNRAS.521.2897W",
+          "tool": "parse_scientific_notation",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2010MNRAS.408.1851L",
+          "tool": "clean_asymmetric_error_notation",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2010A&A...509A.106S",
+          "tool": "extract_central_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2023MNRAS.520.1807C",
+          "tool": "clean_uncertainty_field_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2014MNRAS.438.2980C",
+          "tool": "strip_uncertainty_notation",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2019ApJ...877...65N",
+          "tool": "parse_uncertainty_scientific",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2008A&A...486...99S",
+          "tool": "strip_uncertainty_and_numericize",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2006ApJ...651..775B",
+          "tool": "strip_uncertainty_suffix",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2003MNRAS.342.1222C",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2025ApJ...988..273L",
+          "tool": "strip_uncertainty_suffix",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2005ApJ...634..939B",
+          "tool": "clean_xray_photon_index",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2007ApJ...670..105O",
+          "tool": "parse_latex_scientific_notation",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2022ApJ...934..168B",
+          "tool": "parse_asymmetric_uncertainty",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2010ApJ...714.1497W",
+          "tool": "extract_central_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2020MNRAS.491.5126M",
+          "tool": "?",
+          "kind": "parse_error",
+          "error": "invalid JSON object: Invalid \\escape: line 3 column 42 (char 87)"
+        },
+        {
+          "source": "2020MNRAS.491.5126M",
+          "tool": "parse_scientific_notation",
+          "kind": "dry_run_failed",
+          "error": "name 'rec' is not defined"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 5,
+      "auto_resolved": 2,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T23:20:04.751489",
+    "run_id": "67eafb42-84ed-455a-a5b4-fb274f9bc874",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

@@ -1,0 +1,47 @@
+# V2: field_value 自定义解析规则
+# 添加新格式时仅需在此注册正则，无需修改代码。
+# 格式: pattern (Python re), value_group (值所在的 capture group), uncertainty_group (可选), priority
+
+custom_parsers:
+  # ── 括号不确定度变体 ──
+  # 注意: 核心括号格式已内置在 ParenUncertaintyParser 中。
+  # 此处可添加内置 parser 不覆盖的特殊变体。
+
+  # 示例: LaTeX 风格上标不确定度  "450^{+10}_{-20}"
+  latex_super_sub_uncertainty:
+    priority: 5
+    pattern: '^([\d.]+)\^\{(\+?[\d.]+)\}_\{(-?[\d.]+)\}$'
+    value_group: 1
+    description: "LaTeX superscript/subscript uncertainty: 450^{+10}_{-20}"
+
+  # 示例: 百分比不确定度 "450 ± 5%"
+  percent_uncertainty:
+    priority: 5
+    pattern: '^(.+?)\s*±\s*([\d.]+)\s*%$'
+    value_group: 1
+    uncertainty_group: 2
+    description: "Percent uncertainty: 450 ± 5%"
+
+  # 示例: 方括号不确定度 "450[10]" (某些工程/物理文献)
+  bracket_uncertainty:
+    priority: 4
+    pattern: '^([\d.]+)\[(\d+\.?\d*)\]$'
+    value_group: 1
+    uncertainty_group: 2
+    description: "Bracket uncertainty: 450[10]"
+
+  # 示例: 双竖线不确定度 "450||5"
+  double_pipe_uncertainty:
+    priority: 5
+    pattern: '^([\d.]+)\|\|(\d+\.?\d*)$'
+    value_group: 1
+    uncertainty_group: 2
+    description: "Double-pipe uncertainty: 450||5"
+
+  # 示例: 范围表达式变体 "5.8 - 6.2"
+  dash_range:
+    priority: 6
+    pattern: '^([\d.]+)\s*[-–—]\s*([\d.]+)$'
+    value_group: 1
+    range_max_group: 2
+    description: "Dash range: 5.8 - 6.2"

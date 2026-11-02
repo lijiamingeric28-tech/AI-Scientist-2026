@@ -1,0 +1,269 @@
+{
+  "otype": "St*",
+  "name_cn": "星流",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "gaia_source_id",
+      "name_cn": "Gaia源标识",
+      "description": "Gaia DR2/EDR3源标识符(source_id), 用于跨表交叉匹配",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "ICRS赤经(J2000), 成员星/迹线位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "ICRS赤纬(J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmra",
+      "name_cn": "赤经方向自行",
+      "description": "自行pmRA*cos(Dec) (mas/yr), 星流自行相干性判据的核心量",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmdec",
+      "name_cn": "赤纬方向自行",
+      "description": "自行pmDE (mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia EDR3视差(mas)及误差, 用于剔除前景并辅助距离",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gmag_gaia",
+      "name_cn": "Gaia G星等",
+      "description": "Gaia G波段平均星等(或消光改正后的G0), 用于构建星流CMD",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_rp_gaia",
+      "name_cn": "Gaia BP-RP色指数",
+      "description": "Gaia BP-RP颜色(或改正后(BP-RP)0), 星流成员筛选与CMD分析",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_multiband_mag",
+      "name_cn": "光学多波段星等",
+      "description": "DECam g/r/i/z与SkyMapper u/g/r/i/z星等, 星流主序/巨星选择与测光距离",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_mag",
+      "name_cn": "WISE红外星等",
+      "description": "unWISE W1/W2通量(FW1, FW2), 剔除类星体与红巨星判据",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ebv",
+      "name_cn": "色余E(B-V)",
+      "description": "星流视场红化E(B-V), 用于测光改正与距离估计",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "日心视向速度",
+      "description": "成员星日心视向速度(km/s): 星流轨道拟合与自行相干性验证的关键一维, 来自S5/APOGEE/GALAH/RVS/LAMOST/SEGUE/BOSS/ESPaDOnS/UVES",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc;stat",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_error",
+      "name_cn": "视向速度误差",
+      "description": "视向速度不确定度(km/s)",
+      "category": "spectroscopy",
+      "ucd": "stat.error;spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_source_ref",
+      "name_cn": "视向速度来源标识",
+      "description": "视向速度来源参考码(0-13), 指明数据出自哪个巡天/观测",
+      "category": "spectroscopy",
+      "ucd": "meta.ref;spect.dopplerVeloc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "rvspecfit后验有效温度Teff(K, 给出1/16/50/84/99百分位数), 星流前身星族刻画",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "表面重力logg(dex)后验分布, 判定巨星/矮星演化阶段",
+      "category": "spectroscopy",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feh",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "恒星金属丰度[Fe/H](dex)后验分布, 用于识别流的前身(球状星团/矮星系)与化学演化",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "heliocentric_distance",
+      "name_cn": "日心距离",
+      "description": "成员星日心距离: STREAMFINDER距离或StarHorse中位数距离(kpc), 星流轨道重建必需",
+      "category": "physical",
+      "ucd": "pos.distance;pos.heliocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_percentiles",
+      "name_cn": "距离后验百分位数",
+      "description": "StarHorse距离5/16/84/95百分位数, 星流密度与距离梯度分析",
+      "category": "physical",
+      "ucd": "pos.distance;stat.fit",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stream_track_dist",
+      "name_cn": "沿流迹线距离",
+      "description": "沿流迹线采样的距离/自行/视向速度序列(轨迹点), 描述流的三维空间构型",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stream_width",
+      "name_cn": "星流角宽度",
+      "description": "流沿其长度方向的角宽度分布, 反映前身质量与银河系引力势",
+      "category": "physical",
+      "ucd": "phys.angSize;obs",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stream_id",
+      "name_cn": "星流编号/名称",
+      "description": "星流标识(如Gaia-1..32、Sgr流、GD-1、ATLAS等), 成员星所属流的归属标签",
+      "category": "classification",
+      "ucd": "meta.id;src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stream_type",
+      "name_cn": "星流类型(前身分类)",
+      "description": "流的前身类型: 球状星团瓦解流 vs 矮星系潮汐流(含轨道方向顺行/逆行信息)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_probability",
+      "name_cn": "成员概率",
+      "description": "恒星属于目标流的成员概率/峰归属(P, Prim, Prob), 用于构造高纯成员样本",
+      "category": "classification",
+      "ucd": "stat.prob;src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sgr_membership",
+      "name_cn": "人马座星流成员标志",
+      "description": "是否为人马座(Sgr)星流候选成员及所属臂(领先臂/落后臂/Sgr矮星系核区), 由自行峰归属判定",
+      "category": "classification",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rrlyrae_flag",
+      "name_cn": "天琴RR型变星示踪",
+      "description": "变星示踪: 属RR Lyrae类且位于星流/银晕致密结构中的成员, 光度距离探针与流密度示踪",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parent_galaxy",
+      "name_cn": "宿主星系",
+      "description": "星流所在宿主星系环境(银河系银晕), 潮汐瓦解残骸形成的恒星流的环境归属",
+      "category": "environment",
+      "ucd": "meta.id;obs",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coords",
+      "name_cn": "银道坐标",
+      "description": "银经l/银纬b, 星流在银晕中的空间分布与银盘遮蔽区判断",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactocentric_distance",
+      "name_cn": "银心距",
+      "description": "银心距及银心直角坐标X/Y/Z, 刻画流在银晕中的径向分布与轨道包络",
+      "category": "environment",
+      "ucd": "pos.distance;pos.galactocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    }
+  ]
+}

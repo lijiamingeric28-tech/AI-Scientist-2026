@@ -1,0 +1,483 @@
+{
+  "research_domain": "astrophysics",
+  "generated_at": "2026-09-01T21:08:35.730726",
+  "field_insights": [
+    {
+      "entity_type": "high_proper_motion_star",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "source_type": "database",
+      "observation": "Values range from 768.07 to 772.33 mas across Gaia DR2/DR3, Hipparcos, and TIC.",
+      "interpretation": "The measured parallax of ~768-772 mas corresponds to a distance of ~1.3 pc, consistent with Proxima Centauri being the nearest star to the Sun. The spread reflects historical catalog differences and zero-point offsets between missions. Gaia DR3 provides the highest precision baseline.",
+      "cause_hypotheses": [
+        "Catalog zero-point systematics (e.g., Gaia vs Hipparcos ~0.05 mas offset)",
+        "Different observation epochs requiring proper motion corrections before cross-matching"
+      ],
+      "typical_range": "750-800 mas (nearest stars)",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_parallax_range",
+          "title": "恒星视差参考范围",
+          "source": "Gaia Collaboration 2023, A&A 674, A1"
+        },
+        {
+          "id": "gaia_astrometry_fields",
+          "title": "Gaia 天体测量字段与精度",
+          "source": "Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)"
+        },
+        {
+          "id": "hipparcos_tycho_astrometry",
+          "title": "Hipparcos/Tycho 天体测量: 精度与星等范围",
+          "source": "Perryman et al. 1997 (Hipparcos); Hog et al. 2000 (Tycho-2); van Leeuwen 2007"
+        }
+      ]
+    },
+    {
+      "entity_type": "high_proper_motion_star",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "source_type": "database",
+      "observation": "Range -3781.74 to -2944.0 mas/yr across AllWISE, Gaia, Hipparcos, and TIC.",
+      "interpretation": "Large negative proper motion in RA indicates rapid westward apparent motion. The wide dispersion across catalogs stems from differing astrometric precisions and lack of epoch alignment. Optical catalogs generally outperform mid-IR (AllWISE) for precise PM determination due to better PSF modeling and centroiding.",
+      "cause_hypotheses": [
+        "Epoch mismatch without linear extrapolation to a common reference frame",
+        "Varying instrumental PSF and centroiding accuracy across wavebands",
+        "Historical systematic biases in older catalogs"
+      ],
+      "typical_range": "100-8000 mas/yr (high proper motion stars)",
+      "confidence": 0.85,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "proper_motion_catalog_use",
+          "title": "自行与历元外推: 位置随自行变化",
+          "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+        },
+        {
+          "id": "gaia_astrometry_fields",
+          "title": "Gaia 天体测量字段与精度",
+          "source": "Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)"
+        }
+      ]
+    },
+    {
+      "entity_type": "high_proper_motion_star",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "source_type": "database",
+      "observation": "Range 768.16 to 1279.0 mas/yr across multiple databases.",
+      "interpretation": "Positive Dec proper motion is substantial. The variation (768-1279 mas/yr) mirrors the RA trend, driven primarily by older catalogs (Hipparcos, TIC statistical estimates) having larger uncertainties or systematic offsets compared to modern Gaia DR3 solutions.",
+      "cause_hypotheses": [
+        "Inconsistent reference epochs across catalogs",
+        "Lower astrometric precision in pre-Gaia catalogs",
+        "Potential unmodeled binary orbital motion contributing to apparent drift"
+      ],
+      "typical_range": "100-8000 mas/yr (high proper motion stars)",
+      "confidence": 0.85,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "proper_motion_catalog_use",
+          "title": "自行与历元外推: 位置随自行变化",
+          "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+        },
+        {
+          "id": "gaia_astrometry_fields",
+          "title": "Gaia 天体测量字段与精度",
+          "source": "Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)"
+        }
+      ]
+    },
+    {
+      "entity_type": "high_proper_motion_star",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_total",
+      "source_type": "database",
+      "observation": "Single value 3859.228 mas/yr from Gaia DR3.",
+      "interpretation": "Total proper motion of ~3.86 arcsec/yr confirms the high proper motion star classification. As a vector sum of pm_ra and pm_dec, this Gaia DR3 value represents the current best-precision baseline for space motion calculations and kinematic studies.",
+      "cause_hypotheses": [
+        "N/A (single authoritative source)"
+      ],
+      "typical_range": ">50 mas/yr (core criterion for high proper motion stars)",
+      "confidence": 0.98,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "proper_motion_catalog_use",
+          "title": "自行与历元外推: 位置随自行变化",
+          "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+        },
+        {
+          "id": "gaia_astrometry_fields",
+          "title": "Gaia 天体测量字段与精度",
+          "source": "Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)"
+        }
+      ]
+    },
+    {
+      "entity_type": "high_proper_motion_star",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "source_type": "database",
+      "observation": "Range 1.3011 to 1.3012 pc from Gaia DR3 and TIC.",
+      "interpretation": "Distance is tightly constrained to ~1.301 pc. Given the high parallax S/N (σ(π)/π << 0.2), direct inversion d=1000/π is highly reliable. TIC likely inherits these Gaia-derived distances via cross-matching and statistical inference pipelines.",
+      "cause_hypotheses": [
+        "Robust geometric distance from high-S/N Gaia parallax"
+      ],
+      "typical_range": "1-100 pc (nearby stars)",
+      "confidence": 0.99,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "gaia_astrometry_fields",
+          "title": "Gaia 天体测量字段与精度",
+          "source": "Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)"
+        },
+        {
+          "id": "stellar_parallax_range",
+          "title": "恒星视差参考范围",
+          "source": "Gaia Collaboration 2023, A&A 674, A1"
+        }
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "source_type": "paper",
+      "observation": "Range 0.2 to 768.77 mas. Samples include 771.64±2.60, 768.373, and an outlier 0.2.",
+      "interpretation": "Most literature values cluster around 768-772 mas, aligning with modern astrometry. The 0.2 mas value falls outside the typical range for this specific star and is likely an extraction artifact, unit conversion error, or refers to a different context/source in the paper.",
+      "cause_hypotheses": [
+        "Data extraction anomaly for the 0.2 mas record",
+        "Possible confusion with background noise floor or unrelated measurement in the source text"
+      ],
+      "typical_range": "750-800 mas (for Proxima Centauri specifically)",
+      "confidence": 0.9,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_parallax_range",
+          "title": "恒星视差参考范围",
+          "source": "Gaia Collaboration 2023, A&A 674, A1"
+        },
+        {
+          "id": "astrometry_parallax_principle",
+          "title": "天体测量视差原理 (Gaia)",
+          "source": "Gaia Collaboration 2023, A&A 674, A1; Lindegren et al. 2021, A&A 649, A4"
+        }
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_total",
+      "source_type": "paper",
+      "observation": "Values range from 3.78526 to 3.8517 arcsec/yr, derived via interferometric astrometry and parallax methods.",
+      "interpretation": "The total proper motion of ~3.8 arcsec/yr (3800 mas/yr) firmly classifies Proxima Centauri as a high-proper-motion star, falling within the expected 100–8000 mas/yr range for nearby kinematic populations [kb:proper_motion_catalog_use]. The narrow spread between Hipparcos (3.785\") and HST (3.852\") measurements reflects standard epoch-dependent positional drift and instrumental calibration baselines rather than intrinsic variability. Data quality is high, with extraction confidence at 0.98.",
+      "cause_hypotheses": [
+        "Epoch-dependent position shift over multi-decade baseline",
+        "Instrumental calibration differences between Hipparcos and HST astrometry"
+      ],
+      "typical_range": "100–8000 mas/yr (0.1–8.0 arcsec/yr)",
+      "confidence": 0.95,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "proper_motion_catalog_use",
+          "title": "自行与历元外推: 位置随自行变化",
+          "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+        }
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "source_type": "paper",
+      "observation": "Values span -3.781761 to 3.8508 arcsec/yr, with five records clustering near -3.78 arcsec/yr and one outlier at +3.8508 arcsec/yr.",
+      "interpretation": "Proxima Centauri exhibits a strong westward motion in right ascension. The consensus magnitude (~3.78 arcsec/yr) aligns with high proper motion expectations [kb:proper_motion_catalog_use]. The positive outlier (+3.8508) likely stems from a sign convention mismatch (reporting eastward velocity instead of westward) or omission of the cos(δ) projection factor in one extraction pipeline. Cross-source variance highlights the need for standardized coordinate frame alignment before combining astrometric catalogs.",
+      "cause_hypotheses": [
+        "Sign convention inversion (East vs West velocity reporting)",
+        "Missing cos(declination) projection factor in one source",
+        "Reference frame misalignment or uncorrected epoch drift"
+      ],
+      "typical_range": "100–8000 mas/yr (0.1–8.0 arcsec/yr)",
+      "confidence": 0.85,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "proper_motion_catalog_use",
+          "title": "自行与历元外推: 位置随自行变化",
+          "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+        }
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "source_type": "paper",
+      "observation": "Values range from -0.2624 to 0.7705 arcsec/yr, with four records near +0.77 arcsec/yr and one record at -0.2624 arcsec/yr.",
+      "interpretation": "The dominant value (~+0.77 arcsec/yr or +770 mas/yr) indicates a northward declination motion, consistent with the star's observed trajectory on the celestial sphere. The anomalous -0.2624 arcsec/yr value deviates significantly from the consensus despite high extraction confidence. This is likely a catalog-specific relative proper motion (e.g., measured against the α Centauri AB pair) or a data processing artifact rather than a true absolute measurement. Proper motion components must be verified against absolute reference frames (ICRS) to avoid mixing relative and absolute catalogs.",
+      "cause_hypotheses": [
+        "Relative proper motion against binary companion (α Cen A/B)",
+        "Data extraction or sign error in specific catalog pipeline",
+        "Different reference epoch without relativistic acceleration correction"
+      ],
+      "typical_range": "100–8000 mas/yr (0.1–8.0 arcsec/yr)",
+      "confidence": 0.8,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "proper_motion_catalog_use",
+          "title": "自行与历元外推: 位置随自行变化",
+          "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+        }
+      ]
+    },
+    {
+      "entity_type": "pm*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "source_type": "paper",
+      "observation": "Distance estimates tightly cluster between 1.295 and 1.302 pc, primarily derived from trigonometric parallax methods.",
+      "interpretation": "The distance of ~1.3 pc places Proxima Centauri as the nearest stellar neighbor to the Sun, matching established astrometric benchmarks [kb:stellar_parallax_range]. The tight agreement across eight independent sources confirms exceptional data quality and minimal systematic bias. Minor variations likely arise from modern parallax zero-point corrections (e.g., Gaia DR3 zonal errors ~0.02–0.03 mas) or epoch-dependent distance modulus updates. Since σ(π)/π is well below 0.2 for this bright nearby target, direct inverse-parallax distance conversion is reliable [kb:astrometry_parallax_principle].",
+      "cause_hypotheses": [
+        "Parallax zero-point calibration differences across missions",
+        "Epoch-dependent distance modulus updates and relativistic corrections"
+      ],
+      "typical_range": "1–100 pc for nearby stars; specifically ~1.3 pc for Proxima Cen",
+      "confidence": 0.98,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_parallax_range",
+          "title": "恒星视差参考范围",
+          "source": "Gaia Collaboration 2023, A&A 674, A1"
+        },
+        {
+          "id": "astrometry_parallax_principle",
+          "title": "天体测量视差原理 (Gaia)",
+          "source": "Gaia Collaboration 2023, A&A 674, A1; Lindegren et al. 2021, A&A 649, A4"
+        }
+      ]
+    }
+  ],
+  "cross_field_relationships": [
+    {
+      "field_a": "parallax",
+      "field_b": "distance",
+      "relationship_type": "physical_law",
+      "description": "Geometric inverse relationship defined by trigonometric parallax: d[pc] = 1000 / π[mas]. Direct inversion is highly reliable for high-S/N measurements (σ(π)/π << 0.2).",
+      "confidence": 0.99,
+      "kb_references": [
+        "kb:gaia_astrometry_fields",
+        "kb:astrometry_parallax_principle"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "pm_total",
+      "field_b": "pm_ra",
+      "relationship_type": "physical_law",
+      "description": "Vector magnitude decomposition in astrometry: μ_tot = √(μ_α*² + μ_δ*²). pm_ra is the RA component projected by cos(declination).",
+      "confidence": 0.98,
+      "kb_references": [
+        "kb:proper_motion_catalog_use",
+        "kb:gaia_astrometry_fields"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "pm_total",
+      "field_b": "pm_dec",
+      "relationship_type": "physical_law",
+      "description": "Vector magnitude decomposition in astrometry: μ_tot = √(μ_α*² + μ_δ*²). pm_dec is the orthogonal Declination component.",
+      "confidence": 0.98,
+      "kb_references": [
+        "kb:proper_motion_catalog_use",
+        "kb:gaia_astrometry_fields"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "parallax",
+      "field_b": "pm_ra",
+      "relationship_type": "no_relationship",
+      "description": "Independent astrometric observables. Parallax measures geometric distance via Earth's orbital baseline, while pm_ra measures angular sky-plane drift rate. They are only coupled when computing tangential velocity (v_t ∝ μ/π).",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "parallax",
+      "field_b": "pm_dec",
+      "relationship_type": "no_relationship",
+      "description": "Independent astrometric observables. No intrinsic physical law couples the distance indicator to the declination proper motion component.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "parallax",
+      "field_b": "pm_total",
+      "relationship_type": "no_relationship",
+      "description": "Independent astrometric observables. While combined to derive tangential speed, the measured parallax and proper motion magnitudes are statistically and physically unconstrained relative to each other.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:astrometry_parallax_principle",
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "pm_ra",
+      "field_b": "pm_dec",
+      "relationship_type": "no_relationship",
+      "description": "Orthogonal coordinate components on the celestial sphere. Their values are statistically independent and depend entirely on the chosen reference frame and epoch.",
+      "confidence": 0.9,
+      "kb_references": [
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "distance",
+      "field_b": "pm_ra",
+      "relationship_type": "no_relationship",
+      "description": "Independent parameters. Distance is a scalar radial measure, while pm_ra is an angular transverse rate. No direct physical dependency exists between them.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:gaia_astrometry_fields",
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "distance",
+      "field_b": "pm_dec",
+      "relationship_type": "no_relationship",
+      "description": "Independent parameters. Stellar distance does not dictate or constrain its specific declination proper motion value.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:gaia_astrometry_fields",
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "distance",
+      "field_b": "pm_total",
+      "relationship_type": "no_relationship",
+      "description": "Independent parameters. Tangential velocity requires both, but distance and proper motion magnitude themselves are unconstrained relative to each other across stellar populations.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:gaia_astrometry_fields",
+        "kb:proper_motion_catalog_use"
+      ],
+      "data_evidence": "sufficient_data"
+    }
+  ],
+  "usage_recommendations": {
+    "overall_grade": "good",
+    "suitable_use_cases": [
+      "Kinematic analysis and space velocity calculations for nearby high-proper-motion stars",
+      "Astrometric pipeline benchmarking using Gaia DR3 as a high-precision reference baseline",
+      "Multi-wavelength source cross-matching and positional alignment across optical/IR surveys",
+      "Validation of geometric distance-ladder methods at sub-parsec scales",
+      "Long-term trajectory forecasting with epoch-corrected proper motion vectors"
+    ],
+    "limitations": [
+      "Significant field coverage gaps in legacy catalogs (Hipparcos, TIC, AllWISE) and literature sources, restricting direct multi-era comparisons",
+      "Proper motion values exhibit epoch-dependent dispersion due to differing observation baselines and lack of linear extrapolation in raw catalog entries",
+      "Systematic zero-point offsets (~0.05 mas) exist between Gaia and older optical/IR missions, complicating direct parallax/PM fusion",
+      "Literature extractions contain documented artifacts (e.g., sign convention mismatches, unit errors, outlier values) requiring manual curation",
+      "Direct distance inversion (d=1000/π) is only reliable for high signal-to-noise measurements; low-S/N or negative parallaxes must be excluded or treated statistically"
+    ],
+    "recommended_caveats": [
+      "Normalize all astrometric parameters to a common reference epoch (e.g., J2016.0) and apply cos(δ) projection corrections before cross-catalog matching",
+      "Apply mission-specific systematic corrections (e.g., Gaia zonal errors, Hipparcos re-reduction offsets) when combining parallax or proper motion datasets",
+      "Validate literature-derived values against modern Gaia DR3 baselines; discard records with σ(π)/π > 0.2 or unexplained sign/unit discrepancies",
+      "Account for potential binary orbital motion when analyzing long-term proper motion residuals, especially for high-precision kinematic modeling",
+      "When computing tangential velocities, explicitly propagate uncertainties from both parallax and proper motion rather than treating them as independent fixed values"
+    ],
+    "low_confidence_records": [],
+    "coverage_gaps": [
+      "SRC_DB_TIC: missing ['pm_total']",
+      "SRC_DB_HIPPARCOS: missing ['distance', 'pm_total']",
+      "SRC_DB_GAIA_DR2: missing ['distance', 'pm_total']",
+      "SRC_DB_ALLWISE: missing ['distance', 'parallax', 'pm_total']",
+      "2003PASA...20..257S: missing ['parallax', 'pm_dec', 'pm_ra', 'pm_total']",
+      "2001ApJ...547L..49W: missing ['parallax', 'pm_dec', 'pm_ra', 'pm_total']",
+      "2014ApJ...782...89S: missing ['distance', 'pm_dec', 'pm_ra']",
+      "2019MNRAS.487.1653B: missing ['parallax', 'pm_dec', 'pm_ra', 'pm_total']",
+      "2016Natur.536..437A: missing ['parallax', 'pm_dec', 'pm_ra', 'pm_total']",
+      "2018MNRAS.480.2660B: missing ['distance', 'pm_total']",
+      "2014AJ....148...91L: missing ['pm_total']",
+      "1999AJ....118.1086B: missing ['distance', 'pm_dec', 'pm_ra']",
+      "2017ApJ...850L...6A: missing ['pm_total']",
+      "2025AJ....170...22L: missing ['pm_total']",
+      "2026A&A...706A.112L: missing ['pm_total']"
+    ]
+  },
+  "overall_narrative": "This analysis of ten astrometric parameters and their cross-relations confirms Proxima Centauri’s status as the nearest star to the Sun at ~1.3 pc, anchored by highly precise Gaia DR3 parallax measurements. The star’s exceptional kinematics are characterized by a total proper motion of ~3.86 arcseconds/year, driven by rapid westward and northward apparent shifts that modern space-based astrometry captures with minimal uncertainty. While legacy catalogs (e.g., Hipparcos, TIC) exhibit broader parameter dispersions due to lower precision and epoch misalignments, they reliably converge with Gaia-derived baselines through systematic cross-matching. Achieving an overall “good” analytical grade, the dataset demonstrates that contemporary high-fidelity astrometry effectively resolves historical in",
+  "insufficient_context_fields": []
+}

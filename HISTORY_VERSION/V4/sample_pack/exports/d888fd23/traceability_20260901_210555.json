@@ -1,0 +1,186 @@
+{
+  "data_lineage": {
+    "input": {
+      "sources": 16,
+      "records": 50,
+      "grounded_data_version": "2.0.0",
+      "received_at": "2026-09-01T13:03:42.493190+00:00"
+    },
+    "processing": [
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.003,
+        "reason": "8 tools, 50 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 45.589,
+        "reason": "16 sources (parallel), 93 issues, 44 anomalies, 44 variance groups"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 1.023,
+        "reason": "16 sources, overall=0.78 (fair)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.194,
+        "reason": "16 sources, distribution={'Normalization': 11, 'Conflict': 5}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=11 Conflict=5 Export=0 Human=0"
+      },
+      {
+        "stage": "SourceRouter",
+        "agent": "SourceRouterAgent",
+        "status": "Success",
+        "duration_s": 0.017,
+        "reason": "11 to normalize, 5 skipped"
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 36.678,
+        "reason": "11 sources planned (method=llm_enhanced)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.124,
+        "reason": "30 mods (PARALLEL, base=0 adapted=0 generated=30)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Success",
+        "duration_s": 0.034,
+        "reason": "Valid=True, conflicts=22, route=Conflict"
+      },
+      {
+        "stage": "Report",
+        "agent": "ReportAgent",
+        "status": "Success",
+        "duration_s": 0.01,
+        "reason": "Completed"
+      },
+      {
+        "stage": "LoopCheck",
+        "agent": "LoopController",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Iteration 1/8 → next=Conflict"
+      },
+      {
+        "stage": "Aggregation",
+        "agent": "VarianceAggregationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "5 variance groups, 22 anomalies, trigger=B→C"
+      },
+      {
+        "stage": "Classification",
+        "agent": "DifferenceClassificationAgent",
+        "status": "Success",
+        "duration_s": 27.607,
+        "reason": "Classified 5 variances (2 via LLM)"
+      },
+      {
+        "stage": "Verification",
+        "agent": "AnomalyVerificationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "17 anomalies confirmed, 0 false positives, 4 duplicate groups"
+      },
+      {
+        "stage": "Confidence",
+        "agent": "AnnotationConfidenceAgent",
+        "status": "Retry",
+        "duration_s": 0.0,
+        "reason": "cls_conf=0.867 (0 low), anom_conf=0.718 (5 unverified) → Retry"
+      },
+      {
+        "stage": "Verification",
+        "agent": "AnomalyVerificationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "17 anomalies confirmed, 0 false positives, 4 duplicate groups"
+      },
+      {
+        "stage": "Confidence",
+        "agent": "AnnotationConfidenceAgent",
+        "status": "Retry",
+        "duration_s": 0.0,
+        "reason": "cls_conf=0.867 (0 low), anom_conf=0.718 (5 unverified) → Retry"
+      },
+      {
+        "stage": "Report",
+        "agent": "AnnotationReportAgent",
+        "status": "Success",
+        "duration_s": 8.161,
+        "reason": "Annotated: 9 variance annotations, 17 anomaly flags, route=Export"
+      },
+      {
+        "stage": "LoopCheck",
+        "agent": "LoopController",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Iteration 2/8 → next=Export"
+      },
+      {
+        "stage": "DataOrganization",
+        "agent": "DataOrganizationAgent",
+        "status": "Success",
+        "duration_s": 0.01,
+        "reason": "Organized 50 records (5 standard + 0 extra fields)"
+      },
+      {
+        "stage": "SchemaFormatting",
+        "agent": "SchemaFormattingAgent",
+        "status": "Success",
+        "duration_s": 0.041,
+        "reason": "Exported 50 rows × 6 cols, 13 format issues"
+      },
+      {
+        "stage": "MetadataGeneration",
+        "agent": "MetadataGenerationAgent",
+        "status": "Success",
+        "duration_s": 11.952,
+        "reason": "Generated 5 field definitions (LLM=True)"
+      }
+    ],
+    "output": {
+      "sources": 16,
+      "records": 50,
+      "standard_compliant": true,
+      "generated_at": "2026-09-01T13:05:55.642160+00:00"
+    }
+  },
+  "trace_completeness": {
+    "records_with_trace": 30,
+    "records_with_modification_trace": 20,
+    "records_without_trace": 0,
+    "modified_count": 20,
+    "unmodified_count": 30,
+    "deleted_count": 0,
+    "records_with_trace_id": 29,
+    "paper_records_missing_trace_id": 0,
+    "database_records": 21,
+    "db_provenance_complete": 21
+  },
+  "modified_count": 20,
+  "decision_count": 22
+}

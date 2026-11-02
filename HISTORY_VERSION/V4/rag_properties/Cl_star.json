@@ -1,0 +1,296 @@
+{
+  "otype": "Cl*",
+  "name_cn": "星团通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "cluster_center_pos",
+      "name_cn": "团中心赤经赤纬",
+      "description": "星团中心 J2000 赤道坐标(时/度),五张目录均提供",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main / pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_galactic_pos",
+      "name_cn": "银经银纬",
+      "description": "团中心银道坐标,用于银盘结构分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;meta.main / pos.galactic.lat;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_parallax",
+      "name_cn": "平均视差",
+      "description": "Gaia 成员星平均视差(单位 mas),用于距离测定",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig;stat.mean",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_distance_sun",
+      "name_cn": "日心距离",
+      "description": "星团到太阳距离(pc/kpc),随附银心距及 X,Y,Z 分量",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_proper_motion",
+      "name_cn": "平均自行",
+      "description": "团成员平均自行 pmRA/pmDec(mas/yr),Gaia/UCAC 或 2MASS 依据",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra;stat.mean / pos.pm.dec;stat.mean",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_radial_velocity",
+      "name_cn": "视向速度",
+      "description": "团平均日心视向速度(km/s)及使用星数",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt;stat.mean",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_velocity_dispersion",
+      "name_cn": "中心速度弥散",
+      "description": "球状星团中心速度弥散 sigma_v(km/s),用于动力学质量估计",
+      "category": "physical",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_age",
+      "name_cn": "星团年龄",
+      "description": "等时线拟合的对数年龄 log(t/yr) 及误差;Gaia 目录基于 CMD,MWSC 基于 2MASS Ks CMD",
+      "category": "physical",
+      "ucd": "time.age;stat.mean",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_metallicity",
+      "name_cn": "金属丰度 [Fe/H]",
+      "description": "团金属丰度(对太阳),含权重/误差与使用星数;球状星团部分取自 Harris 并更新",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe;stat.mean",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_reddening",
+      "name_cn": "色余 E(B-V)",
+      "description": "前景红化 E(B-V),MWSC 另给出 E(J-Ks) 与 E(J-H) 及经验 H 带改正",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_extinction",
+      "name_cn": "星际消光",
+      "description": "视方向消光 A_V 或 Ks 带消光 A_Ks,由标准红化律换算",
+      "category": "photometry",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_distance_modulus",
+      "name_cn": "距离模数",
+      "description": "视距离模数 (m-M)_V 或 Ks 带模数,团距离的另一表达",
+      "category": "photometry",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_integrated_mag",
+      "name_cn": "积分星等与绝对星等",
+      "description": "团积分视星等 V_t 与绝对星等 M_V,t(光度)",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.mean",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_integrated_color",
+      "name_cn": "积分色指数",
+      "description": "未消光改正的积分色 U-B、B-V、V-R、V-I",
+      "category": "photometry",
+      "ucd": "phot.color;stat.mean",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_spectral_type",
+      "name_cn": "积分光谱型",
+      "description": "团积分光的光谱型(如 F5-G4),指示主序折转/团龄",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_horizontal_branch_mag",
+      "name_cn": "水平分支星等 V_HB",
+      "description": "水平分支(或 RR 天琴)视星等,球状星团距离指示器",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_mass",
+      "name_cn": "星团质量",
+      "description": "团总质量(太阳质量),Gaia DR2 目录对多数团给出;亦可用速度弥散估计",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_angular_size",
+      "name_cn": "角直径/角半径",
+      "description": "团视尺寸:MWSC 给出核 r0、中央区 r1、总 r2 三分量;B/ocl 给角直径;Hunt23 给角半径",
+      "category": "astrometry",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_core_radius",
+      "name_cn": "核半径",
+      "description": "King 模型核半径 r_c(角分/秒差距),MWSC 与 Harris 均提供",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_tidal_radius",
+      "name_cn": "潮汐半径",
+      "description": "King 模型潮汐半径 r_t(pc),反映银河潮汐截断尺度",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_half_light_radius",
+      "name_cn": "半光半径",
+      "description": "投影半光半径 r_h(角分),球状星团结构参数",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_king_concentration",
+      "name_cn": "King 集中度 c",
+      "description": "c=log(r_t/r_c),含核塌缩(core-collapse)标记",
+      "category": "physical",
+      "ucd": "phys.struct;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_ellipticity",
+      "name_cn": "等光度椭率",
+      "description": "投影椭率 e=1-(b/a),团形状参数",
+      "category": "physical",
+      "ucd": "phys.struct",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_central_surface_brightness",
+      "name_cn": "中心面亮度",
+      "description": "中心面亮度(V mag/arcsec^2)及中心光度密度 log(Lsun/pc^3)",
+      "category": "photometry",
+      "ucd": "phot.sb",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_relaxation_time",
+      "name_cn": "弛豫时间",
+      "description": "核区与中位弛豫时间 log t_r(yr),动力学演化尺度",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_member_count",
+      "name_cn": "成员星数",
+      "description": "团内成员星数量(按核/中央/全团半径分档统计),成员概率见逐星表",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_membership_probability",
+      "name_cn": "成员概率与成员星表",
+      "description": "逐颗成员星 Gaia source_id 及成员概率/空间-自行分布,用于自行成员与 CMD 分析",
+      "category": "astrometry",
+      "ucd": "stat.prob;arith.diff / meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_type_flag",
+      "name_cn": "团类型/性质标记",
+      "description": "疏散/球状/星协/移动群/嵌入团/残余团/星群等类型标记及 Trumpler 三要素分类(集中度-亮度范围-富度-星云)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_luminosity_function",
+      "name_cn": "光度函数与 IMF",
+      "description": "由成员星表构建的光度函数/初始质量函数斜率及质量分层参数(MWSC 配套工作)",
+      "category": "physical",
+      "ucd": "phot.luminosity.function",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_nebulosity_flag",
+      "name_cn": "星云/嵌入环境标记",
+      "description": "团是否与光学/红外星云成协、是否为嵌入星团(emb/OE/n 等标记),指示形成环境",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_variable_extinction_flag",
+      "name_cn": "变红化标记",
+      "description": "团内存在空间变化消光/红化(V 标记),影响 CMD 拟合需专门处理",
+      "category": "variability",
+      "ucd": "meta.code;arith.diff",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_galactocentric_distance",
+      "name_cn": "银心距与三维位置",
+      "description": "团到银心距离 R_gc 及日心 X,Y,Z 直角分量,银河结构探针",
+      "category": "physical",
+      "ucd": "pos.distance;pos.cartesian",
+      "unit": "kpc",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "otype": "BiC",
+  "name_cn": "最亮团星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "bic_pos",
+      "name_cn": "最亮团星系赤道坐标",
+      "description": "BCG 的 J2000 赤经/赤纬,常为团中心替代位置;各表均有",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_phot",
+      "name_cn": "光度红移",
+      "description": "基于 SDSS 红序拟合的光度红移,含误差 e_zph",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_spec",
+      "name_cn": "光谱红移(系统速度)",
+      "description": "BCG 光谱红移或团系统红移/速度,由光谱观测获得",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_ugriz",
+      "name_cn": "SDSS ugriz 星等",
+      "description": "消光改正后 SDSS u/g/r/i/z 模型星等及其误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_gr_ri",
+      "name_cn": "SDSS 颜色指标",
+      "description": "红序关键颜色 g-r 与 r-i,用于红序定位和成员判定",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lum_bcg_band",
+      "name_cn": "BCG r/i 波段光度",
+      "description": "BCG 与团总 r/i 带光度(10^10 太阳光度),用于 BCG 光度-富度关系",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.opt.R",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mabs_metric",
+      "name_cn": "度量半径内绝对星等",
+      "description": "rm、2rm、4rm 度量半径孔径内绝对星等(Lm, Lm-2rm, Lm-4rm),BCG 距离指标基础",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sersic_2comp",
+      "name_cn": "内外双分量 Sersic 轮廓参数",
+      "description": "内(BCG)外(ICL/晕)双分量 Sersic 指数 n、有效半径 re、有效表面亮度 mu_e 及其误差",
+      "category": "photometry",
+      "ucd": "stat.fit.param",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mtot_bcg",
+      "name_cn": "BCG 总积分星等",
+      "description": "g' 带直接积分总星等(-26.2~-21.6 mag),含总有效半径与有效表面亮度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "icl_frac",
+      "name_cn": "外分量(ICL)光占比",
+      "description": "外晕/星系际光分量光占比 f2,表征 BCG 延伸包层强度",
+      "category": "photometry",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_helio",
+      "name_cn": "日心视向速度",
+      "description": "BCG 日心速度 VBCG 与团平均速度 VCl(含误差),红移测量原始量",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;pos.heliocentric",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sigma_star",
+      "name_cn": "BCG 恒星速度弥散",
+      "description": "BCG 中心恒星速度弥散 Sigma(96-883 km/s),恒星质量与黑洞质量标度关系的输入量",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "manga_ifu",
+      "name_cn": "MaNGA 积分场光谱",
+      "description": "MaNGA IFU 二维光谱数据(经 DAP, J/AJ/154/86):恒星运动学、星族年龄/金属丰度、发射线与 AGN 反馈诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_halo",
+      "name_cn": "暗物质晕(引力)质量",
+      "description": "宿主团暗晕质量 logM(Msun, 约14-15.1)或引力质量 logMg(约13.9-15.4),BCG 与团质量关联研究的核心量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alpha_profile",
+      "name_cn": "光分布斜率 alpha",
+      "description": "度量半径处光剖面斜率(0.068-1.125),L-alpha 距离指标与 BCG 光度环境相关的参数",
+      "category": "physical",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "offset_xray",
+      "name_cn": "相对 X 射线团中心偏移",
+      "description": "BCG 相对 X 射线(ROSAT/Chandra)团中心的投影距离(kpc),探测团动力学演化与 BCG 摆动",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vel_offset_cluster",
+      "name_cn": "相对团系统速度偏移",
+      "description": "BCG 与团系统平均速度的偏移 Vsyst,检验 BCG 是否静止于团势阱底部",
+      "category": "physical",
+      "ucd": "phys.veloc;arith.diff",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "richness",
+      "name_cn": "团富度",
+      "description": "检测富度 Ngal/加权富度 Ng.W/尺度化富度 NR200/成员数 S,团大小与质量的统计量",
+      "category": "environment",
+      "ucd": "src.class.richness",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sigma_cluster",
+      "name_cn": "团速度弥散",
+      "description": "星系团(而非BCG自身)速度弥散 SigCl/sigmac,团质量的主要动力学探针",
+      "category": "environment",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "density_env",
+      "name_cn": "团中心环境密度",
+      "description": "团中心质量密度 logrho、卫星数密度 logs、质量/数相空间密度 logfM/logfs,刻画 BCG 所在环境",
+      "category": "environment",
+      "ucd": "phys.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_id",
+      "name_cn": "宿主团标识",
+      "description": "宿主星系团命名:Abell 编号、团名、GMBCG/MaxBCG 命名,用于关联团级数据",
+      "category": "classification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bcg_class",
+      "name_cn": "BCG 身份/识别标记",
+      "description": "由红序+BCG 特征算法(RSMF/GMBCG)识别为团最亮星系的分类标记及团簇强度 Scl",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_type",
+      "name_cn": "吸积特征类型",
+      "description": "BCG 外晕吸积/并合特征分类(潮汐结构、壳层、偏移等),关联延伸包层形成机制",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

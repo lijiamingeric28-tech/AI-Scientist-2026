@@ -1,0 +1,341 @@
+{
+  "otype": "sg*",
+  "name_cn": "演化超巨星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经，全部入选表均提供（Doran表为时分秒格式）",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rad_vel",
+      "name_cn": "视向速度",
+      "description": "日心视向速度(km/s)：Massey2023（含预期速度RVelExp比较）、Neugent2012（CaII三重线测量，精度~1km/s）、Bestenlehner2025",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "MK光谱型",
+      "description": "MK光谱分类（含光度级，如B0I、A0I、K5I），来源：Bonanos汇编/Neugent/Massey；Bestenlehner2025给出新定光谱型",
+      "category": "classification",
+      "ucd": "src.class.spectral",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_class",
+      "name_cn": "天体类别",
+      "description": "恒星类别：O型星、B超巨星、A超巨星、B[e]超巨星、红超巨星、LBV、WR、Of/WN等（Bonanos全类别标注）",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership",
+      "name_cn": "星系成员判定",
+      "description": "基于Gaia（Massey2023的Mm标记）或OGLE自行+系统视向速度（Neugent2012的Cat=1/2/3）的麦哲伦云成员/前景剔除判定",
+      "category": "classification",
+      "ucd": "src.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_u",
+      "name_cn": "U星等",
+      "description": "Johnson U波段视星等（Bonanos测光表）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B星等",
+      "description": "Johnson B波段视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V星等",
+      "description": "Johnson V波段视星等（Bonanos/Neugent/Massey-LGGS/Doran均提供）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_i",
+      "name_cn": "I星等",
+      "description": "Cousins I波段视星等（含OGLE I星等交叉）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_j",
+      "name_cn": "J星等",
+      "description": "2MASS J波段星等（Bonanos亦含IRSF J）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_h",
+      "name_cn": "H星等",
+      "description": "2MASS H波段星等（含IRSF H）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_ks",
+      "name_cn": "Ks星等",
+      "description": "2MASS Ks波段星等；Massey2023另给CFHT/WIRCAM与UKIRT/WFCAM K星等（RSG样本）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_irac36",
+      "name_cn": "IRAC [3.6]星等",
+      "description": "Spitzer/IRAC 3.6um星等（SAGE巡天）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_irac45",
+      "name_cn": "IRAC [4.5]星等",
+      "description": "Spitzer/IRAC 4.5um星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_irac58",
+      "name_cn": "IRAC [5.8]星等",
+      "description": "Spitzer/IRAC 5.8um星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_irac80",
+      "name_cn": "IRAC [8.0]星等",
+      "description": "Spitzer/IRAC 8.0um星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_mips24",
+      "name_cn": "MIPS [24]星等",
+      "description": "Spitzer/MIPS 24um星等（尘包层/自由-自由发射示踪）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.30-60um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_bv",
+      "name_cn": "(B-V)色指数",
+      "description": "B-V色指数（Neugent2012与Doran2013提供）",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_vr",
+      "name_cn": "(V-R)色指数",
+      "description": "V-R色指数（Massey2003系谱延续，Neugent2012提供）",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_jks",
+      "name_cn": "(J-Ks)色指数",
+      "description": "J-Ks色指数（RSG/YSG红外分类与温度相关，Massey2023、Neugent2012）",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.J;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_abs_v",
+      "name_cn": "绝对星等",
+      "description": "绝对V星等（Doran表，30 Dor恒星统一距离标定）",
+      "category": "physical",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度：Massey2023按Av修正由V-K/T-型标定（3150-4400K）；Neugent2012 logTe（10^3.4-4.1）；Doran2013（kK，O/B星）；Bestenlehner2025（FASTWIND拟合，含误差）",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力加速度",
+      "description": "log g(cm/s2)，仅XShootU管道给出（含离心力修正loggc及上下误差）——麦哲伦云超巨星样本中稀有的logg直接测量",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_lum",
+      "name_cn": "光度",
+      "description": "log(L/Lsun)：Massey2023（3.95-5.52，RSG）；Neugent2012（2.6-5.8，YSG+RSG）；Doran2013；Bestenlehner2025",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径Rstar(Rsun)，XShootU FASTWIND拟合结果",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "光谱质量Mspec、演化质量Mevol与初始质量Minit（12-117Msun(LMC)/11-74Msun(SMC)）",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "演化年龄(Myr)，由演化质量与轨道比较给出",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "质量损失率：Doran2013 dM/dt(Msun/yr，30 Dor热星)；Bestenlehner2025 logMdot(FASTWIND)；Massey2023论文级约束红超巨星时均质量损失率",
+      "category": "physical",
+      "ucd": "phys.massLoss",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vinf",
+      "name_cn": "风终端速度",
+      "description": "恒星风终端速度vinf(km/s)，Doran2013与Bestenlehner2025（注明测定谱线）",
+      "category": "physical",
+      "ucd": "phys.veloc.expansion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ion_photon_rate",
+      "name_cn": "电离光子发射率",
+      "description": "电离光子率Q0(ph/s)；Bestenlehner2025细分为912A以下logQH与504A以下logQHeI",
+      "category": "physical",
+      "ucd": "phot.flux;em.UV",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wind_momentum",
+      "name_cn": "修正风动量",
+      "description": "修正风动量Dmom=(dM/dt)*vinf*R^1/2（Kudritzki定义，cgs），评估风动量-光度关系（WLR）",
+      "category": "physical",
+      "ucd": "phys.momKin",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "投影自转速度vsini(km/s)，FASTWIND光谱拟合",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "he_fraction",
+      "name_cn": "氦丰度",
+      "description": "氦质量分数Y与氮丰度log(N/H)+12（CNO处理/演化状态诊断）",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability",
+      "name_cn": "光变信息",
+      "description": "OGLE/GCVS/ASAS光变标志与周期（Neugent2012 table5的Var列）；Massey2023含观测次数Nobs用于变率评估",
+      "category": "variability",
+      "ucd": "phot.variability;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "宿主星系/环境：LMC、SMC（Massey2023另含M31/M33），如LMC/SMC字段",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_r136",
+      "name_cn": "到R136a1投影距离",
+      "description": "距30 Dor中心星R136a1的投影距离(pc)，用于星团/星协环境研究",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    }
+  ]
+}

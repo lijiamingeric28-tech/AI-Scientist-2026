@@ -1,0 +1,269 @@
+{
+  "otype": "No*",
+  "name_cn": "经典新星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经(度或hms),现代历元坐标;由Gaia/LS等精化,识别与交叉证认的基础",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(度或dms)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon",
+      "name_cn": "银经",
+      "description": "银道坐标经度l,用于新星空间分布(盘/核球)统计",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度b,新星高度集中银盘,|b|小;用于消光与空间分布研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "新星距离(kpc),由膨胀视差/MMRD/Gaia视差获得,决定绝对星等与光度",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "peak_mag_obs",
+      "name_cn": "爆发峰值视星等(观测值)",
+      "description": "爆发极大时的观测星等及所在波段(p/j/v/r/i/B等),是速度等级与MMRD关系的输入量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_mag_true",
+      "name_cn": "归算极大星等",
+      "description": "按光变曲线外推修正后的极大星等(通常归算到V波段),用于与MMRD关系比较",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "quiescent_mag",
+      "name_cn": "静止期(极小)星等",
+      "description": "爆发前后静止态视星等;与极大之差即爆发幅度,静止态成分(白矮星+伴星+吸积盘)是复现观测目标",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.min",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_amplitude",
+      "name_cn": "爆发变幅",
+      "description": "极大与静止星等之差(通常6-12 mag),经典新星爆发判据之一",
+      "category": "photometry",
+      "ucd": "phot.mag;arith.diff",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_ebv",
+      "name_cn": "色余E(B-V)",
+      "description": "星际消光色余,用于改正峰值绝对星等与MMRD关系",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "色指数(B-V等)",
+      "description": "多波段(UBVRI/griz)色指数,表征爆发光谱能量分布与演化阶段",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "peak_abs_mag",
+      "name_cn": "峰值绝对星等",
+      "description": "消光与距离改正后的极大绝对星等M_V,max,与t2/t3构成MMRD关系(新星距离指示器)",
+      "category": "photometry",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_date",
+      "name_cn": "爆发日期/历元",
+      "description": "爆发发现日期(年或JD);对历史新星由测光板给出年份,是现代瞬变搜索(ASAS-SN/GAIA)的首要输出",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t2",
+      "name_cn": "t2(下降2星等时间)",
+      "description": "光度从极大下降2星等所需天数,新星速度等级的量化指标之一,与白矮星质量相关",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t3",
+      "name_cn": "t3(下降3星等时间)",
+      "description": "下降3星等时间(天);经典速度等级定义:t3<100天为快新星,>100天为慢新星",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "recurrence_period",
+      "name_cn": "复发周期",
+      "description": "复发新星相邻两次爆发的间隔(年,可长达数十年),用于区分经典新星与复发新星及白矮星质量估计",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ejecta_velocity",
+      "name_cn": "抛射速度",
+      "description": "抛射物膨胀速度(km/s),由谱线FWHM/蓝移吸收(P Cygni)或膨胀视差测定;快新星典型1000-3000 km/s,与WD质量、t3反相关(见Selvelli et al. 2019等文献汇编)",
+      "category": "physical",
+      "ucd": "phys.veloc.expansion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ejected_mass",
+      "name_cn": "抛射质量",
+      "description": "单次爆发抛射质量Mej(约10^-7~10^-4 Msun),由光谱/光度建模获得,是核燃烧与化学演化输入量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wd_mass",
+      "name_cn": "白矮星质量",
+      "description": "中心白矮星质量(Msun,典型0.7-1.3),由轨道观测/光变曲线模型(Hachisu-Kato)估计,决定爆发频率与强度;最新汇编含208颗新星WD质量(见Shara et al. 2018等)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ejecta_abundance",
+      "name_cn": "抛射物元素丰度",
+      "description": "抛射物元素丰度(He、C、N、O、Ne、Na、Mg、Al等相对太阳值),反映WD物质混合与热核燃烧产物;CNO/Ne富集是CO/ONe子类判别依据(见Gehrz et al. 1998, Starrfield et al. 2020汇编表)",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_formation",
+      "name_cn": "尘埃形成标志",
+      "description": "爆发后尘埃冷凝指标:红外测光增亮/光学深度下降(如DQ Her型尘埃跌陷),与慢新星及CO型WD相关(Gehrz et al. 1998)",
+      "category": "physical",
+      "ucd": "phys.dust.opacity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期(小时级),决定吸积率与爆发类型;新星轨道周期分布(周期空缺等)是双星演化研究的关键(见Ritter & Kolb目录 J/A+A/404/301)",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "hr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_features",
+      "name_cn": "光谱特征(发射线/P Cygni轮廓)",
+      "description": "爆发各阶段光谱特征:早期巴尔末宽发射+P Cygni吸收、铁幕(Fe II)、[O I]/[N II]星云线、高电离(Ne/O)线、尘埃连续谱;用于速度、丰度、密度诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.line",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_type",
+      "name_cn": "变星分类",
+      "description": "CV分类类型:N(经典新星)、NA(快)/NB(慢)/NC(极慢)、NR(复发)、NL(类新星)等;GCVS(V* N)与Duerbeck/Downes体系",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "speed_class",
+      "name_cn": "速度等级(快/中/慢新星)",
+      "description": "按t3划分的快(fast)/中(medium)/慢(slow)新星;与光变曲线形态、白矮星质量、尘埃形成倾向相关",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lc_type_class",
+      "name_cn": "光变曲线类型",
+      "description": "Strope et al.分类的光变曲线形态:S(平滑)、P(平台)、D(尘埃跌陷)、J(结状)、B(双峰)、PL(准周期振荡)等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nova_subtype",
+      "name_cn": "新星子类(CO/ONe)",
+      "description": "按WD核心成分划分:CO型(大部分,慢、富C/O、产尘)与ONe型(快、富Ne/Mg、可由Nova Mon 2012等γ射线事件代表)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rn_flag",
+      "name_cn": "复发新星标志",
+      "description": "是否为复发新星(NR)的判据(多历元爆发、CCD/光谱证认),Pagnotta & Schaefer对全部已知新星逐一判定",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "所在星系/星族",
+      "description": "宿主环境:银河系(盘/核球星族)或伴星系(LMC/SMC/M31等河外新星);银经银纬反映空间分布,新星率与星族相关(河外新星星表如Shafter et al. 2011, J/ApJS/194/24)",
+      "category": "environment",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

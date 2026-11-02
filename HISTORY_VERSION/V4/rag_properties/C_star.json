@@ -1,0 +1,233 @@
+{
+  "otype": "C*",
+  "name_cn": "碳星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "b_magnitude",
+      "name_cn": "B 星等",
+      "description": "B 波段视星等（多为照相测光，误差较大）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_magnitude",
+      "name_cn": "V 星等",
+      "description": "V 波段视星等（多为照相测光）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_magnitude",
+      "name_cn": "J 星等",
+      "description": "2MASS J 波段星等（1.25um）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "k_magnitude",
+      "name_cn": "Ks 星等",
+      "description": "2MASS Ks 波段星等（2.16um），碳星近红外最亮波段",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jk_color_index",
+      "name_cn": "J-Ks 色指数",
+      "description": "J 减 Ks 色指数，碳星选择判据（J-K>~1.5，富碳大气红外超）",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_12um_flux",
+      "name_cn": "IRAS 12um 流量",
+      "description": "IRAS 12um 波段流量密度，指示星周尘埃红外超",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.8-15um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_25um_flux",
+      "name_cn": "IRAS 25um 流量",
+      "description": "IRAS 25um 波段流量密度，用于红外双色图（VH 分区）判据",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.15-30um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型 (R/N 分类)",
+      "description": "R/N 记号及 Morgan-Keenan 体系的光谱分类（含 C 型候选标记 c）",
+      "category": "spectroscopy",
+      "ucd": "src.class.starSpectType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_lrs_class",
+      "name_cn": "IRAS LRS 光谱分类",
+      "description": "IRAS 低分辨率光谱（LRS）分类，表征星周尘埃谱型（如 11.3um SiC 特征）",
+      "category": "spectroscopy",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sic_11um_feature",
+      "name_cn": "SiC 11.3um 尘埃特征",
+      "description": "碳星富碳星周尘埃中 11.3um SiC 特征强度与发射/吸收形态",
+      "category": "spectroscopy",
+      "ucd": "spect.line.strength;em.IR.8-15um",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c2h2_75um_absorption",
+      "name_cn": "C2H2 7.5um 吸收",
+      "description": "7.5um 乙炔（C2H2）吸收强度，贫金属碳星中更强，指示 C2H2 分子层",
+      "category": "spectroscopy",
+      "ucd": "spect.line.absorption;em.IR.8-15um",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "有效温度（经 goldc 源 ID 关联 Gaia DR3 GSP-Phot，碳星 Teff 约 2500-3500K）",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_luminosity",
+      "name_cn": "热光度",
+      "description": "由中红外测光与热星等导出的热光度（太阳单位），区分 AGB 不同脉动序列",
+      "category": "physical",
+      "ucd": "phys.luminosity.bolometric",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "由尘埃产生率（DPR）等导出的质量损失率，碳星随风周期增长而增大",
+      "category": "physical",
+      "ucd": "phys.massLoss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_over_o_ratio",
+      "name_cn": "C/O 丰度比",
+      "description": "碳氧丰度比，C/O>1 是碳星判据，由第三次 dredge-up 上翻富集所致（文献值）",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "s_process_overabundance",
+      "name_cn": "s 过程元素超丰",
+      "description": "s 过程重元素（Ba、Y、Zr、La 等）超丰，指示 AGB 内 s 过程核合成产物（文献值）",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "J2000 赤经（多为多源加权平均坐标，精度 0.1 角秒至 0.1 角分）",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "J2000 赤纬，附坐标精度等级（precision class）",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3 三角视差（经 goldc 源 ID 关联），碳星多为远方巨/超巨星，视差很小",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia DR3 自行（经 goldc 源 ID 关联），用于银盘/银晕碳星种群判别",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动主周期",
+      "description": "MACHO 光变曲线傅里叶分析得到的主脉动周期（天），碳星多为长周期变星",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_amplitude",
+      "name_cn": "光变振幅",
+      "description": "B/R 波段光变振幅（mag）及周期显著性（power）与质量标记",
+      "category": "variability",
+      "ucd": "phot.mag.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "secondary_pulsation_period",
+      "name_cn": "次周期",
+      "description": "次周期（如长次周期 LSP），碳星脉动常现双周期特征",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "carbon_star_subclass",
+      "name_cn": "碳星亚型",
+      "description": "碳星亚型标签（C-N 正常巨、C-R/C-H 低温类、J 型同位素富集、dC 矮碳星等）",
+      "category": "classification",
+      "ucd": "src.class.starSpectType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "circumstellar_dust",
+      "name_cn": "星周尘埃环境",
+      "description": "星周尘埃壳层特征（硅酸盐包层、脱落尘壳、CO/脉泽发射、双极分子流等备注信息）",
+      "category": "environment",
+      "ucd": "phys.dust",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

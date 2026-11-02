@@ -1,0 +1,31 @@
+{
+  "overall_score": 0.8766,
+  "quality_level": "good",
+  "calibrated_confidence": 0.8688,
+  "confidence_breakdown": {
+    "data_volume": 0.7,
+    "agreement": 0.972,
+    "sparsity": 1.0
+  },
+  "processing_statistics": {
+    "total_llm_calls": 64,
+    "total_tool_calls": 251,
+    "total_elapsed_seconds": 225.98,
+    "b_c_loop_iterations": 2
+  },
+  "issues_summary": {
+    "assessment_issues": 55,
+    "normalization_modifications": 41,
+    "conflicts_resolved": 2,
+    "remaining_issues": 0
+  },
+  "risk_indicators": {
+    "has_human_review_items": false,
+    "has_unresolved_conflicts": false,
+    "has_unconverted_units": false,
+    "unconverted_unit_count": 0,
+    "data_completeness_warning": false,
+    "validation_passed": false
+  },
+  "recommendation": "Data exported with 1 warning(s): output validation failed. Quality level: good. Review recommended before use."
+}

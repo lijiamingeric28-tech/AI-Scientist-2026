@@ -1,0 +1,188 @@
+{
+  "otype": "Ro*",
+  "name_cn": "自转变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期",
+      "description": "星斑随恒星自转引起的周期性亮度变化周期(天),Ro*最核心物理量;McQuillan Kepler目录、Gaia DR3目录、Reinhold周期表与Ceillier红巨星表均提供。",
+      "category": "variability",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_frequency",
+      "name_cn": "自转频率",
+      "description": "自转周期倒数1/P;Balona A/B星目录以频率形式给出旋转调制信号。",
+      "category": "variability",
+      "ucd": "freq",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_amplitude",
+      "name_cn": "光度变幅",
+      "description": "旋转调制峰值变幅:McQuillan目录为ACF变幅(相对流量),Gaia DR3为G波段振幅(mag),Reinhold表为变幅范围Rvar(%);反映星斑覆盖率与温度对比。",
+      "category": "photometry",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period_min",
+      "name_cn": "最短自转周期Pmin",
+      "description": "微分自转拟合中自转周期的最小值(对应较高纬度的快速区)。",
+      "category": "variability",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period_max",
+      "name_cn": "最长自转周期Pmax",
+      "description": "微分自转拟合中自转周期的最大值(对应低纬度慢速区)。",
+      "category": "variability",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "diff_rot_shear_alpha",
+      "name_cn": "相对微分自转剪切",
+      "description": "相对剪切alpha=(Pmax-Pmin)/Pmax,无量纲的差动自转强度度量,与太阳式差动自转比较可推断星斑纬度分布。",
+      "category": "variability",
+      "ucd": "arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "diff_rot_shear_domega",
+      "name_cn": "绝对微分自转剪切",
+      "description": "绝对剪切dOmega(rad/天),不同纬度之间角速度之差,描述差动自转的绝对强度。",
+      "category": "variability",
+      "ucd": "src.veloc.ang",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_significance",
+      "name_cn": "周期检测显著性",
+      "description": "Gaia DR3目录中自转周期检测的显著性/信噪比参数,用于筛选可靠周期。",
+      "category": "variability",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "colour_variation_amplitude",
+      "name_cn": "颜色变化幅度",
+      "description": "BP-RP颜色随时间变化的幅度,与星斑温度对比相关;Gaia DR3发现颜色幅度与周期、振幅的模式关联。",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.BP-opt.RP",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_color",
+      "name_cn": "平均颜色指数",
+      "description": "恒星平均颜色(如Gaia BP-RP)或去红化颜色(B-V)0(Reinhold表),用于放置周期-颜色关系。",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.BP-opt.RP",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_magnitude",
+      "name_cn": "平均视星等",
+      "description": "平均G波段星等(Gaia DR3目录),用于振幅的星等化与光度标定。",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.G",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "恒星有效温度(开尔文),自转周期-温度关系的核心量,McQuillan与Ceillier等表均提供。",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(太阳半径),Gaia DR3目录结合光度与距离给出,用于计算赤道速度。",
+      "category": "physical",
+      "ucd": "phys.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(太阳质量),与周期结合约束恒星结构与演化状态。",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力",
+      "description": "恒星表面重力log g,标注恒星演化状态(主序vs红巨星)。",
+      "category": "physical",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gyrochronological_age",
+      "name_cn": "回转年龄",
+      "description": "基于回转年代学关系(星龄-自转周期-颜色)的年龄估计(Myr),Reinhold表给出Barnes 2007、Mamajek & Hillenbrand 2008、Meibom 2009三条关系的结果。",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Myr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "projected_rotation_velocity",
+      "name_cn": "投影自转速度",
+      "description": "投影自转速度vsini(km/s),与光变周期比较可限制恒星倾角与星斑纬度。",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rotat",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱分类类型,界定Ro*候选所在光谱范围(Balona表覆盖A/B型)。",
+      "category": "classification",
+      "ucd": "src.sp",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_flag",
+      "name_cn": "变星类型与稳定性标志",
+      "description": "周期稳定性与演化态标志(如Reinhold表Flag列,指示稳定周期与演化星),用于区分纯旋转调制与其他变星类型。",
+      "category": "classification",
+      "ucd": "src.class.star",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_source_id",
+      "name_cn": "盖亚源编号",
+      "description": "Gaia DR3 source_id,可交叉匹配获取视差、自行与天体测量解,从而将旋转调制与空间运动结合。",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

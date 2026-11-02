@@ -1,0 +1,335 @@
+{
+  "field_definitions": {
+    "distance": {
+      "standard_unit": "pc",
+      "semantic_type": "distance",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the physical separation between the observer and the celestial object, measured in parsecs (pc)."
+    },
+    "fe_h": {
+      "standard_unit": "dex",
+      "semantic_type": "metallicity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the logarithmic ratio of iron to hydrogen abundance relative to solar composition, expressed in dex."
+    },
+    "m_h": {
+      "standard_unit": "dex",
+      "semantic_type": "metallicity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Indicates the logarithmic ratio of total metal content to hydrogen abundance relative to solar values, expressed in dex."
+    },
+    "parallax": {
+      "standard_unit": "mas",
+      "semantic_type": "parallax",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the apparent angular displacement of the object against distant background sources due to Earth's orbital motion, recorded in milliarcseconds (mas)."
+    },
+    "teff": {
+      "standard_unit": "K",
+      "semantic_type": "effective_temperature",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Denotes the effective surface temperature of the star corresponding to a black body radiating the same total flux, measured in Kelvin (K)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 18,
+    "sources_exported": 18,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_TIC",
+        "title": "TESS Input Catalog (TIC)",
+        "year": null,
+        "journal": "",
+        "record_count": 6,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_HIPPARCOS",
+        "title": "The Hipparcos and Tycho Catalogues",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HR",
+        "title": "Bright Star Catalogue (HR)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2011ApJ...743..135R",
+        "title": "Fundamental Parameters and Chemical Composition of Arcturus",
+        "year": 2011,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2021A&A...645A..19F",
+        "title": "Stellar population astrophysics (SPA) with the TNG. The Arcturus Lab",
+        "year": 2021,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009MNRAS.400.1039W",
+        "title": "Differential chemical abundance analysis of a 47 Tucanæ asymptotic giant branch star with respect to Arcturus",
+        "year": 2009,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 8,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018ApJS..234...25W",
+        "title": "Vanadium Transitions in the Spectrum of Arcturus",
+        "year": 2018,
+        "journal": "The Astrophysical Journal Supplement Series",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008A&A...485..561L",
+        "title": "The limb-darkened Arcturus: imaging with the IOTA/IONIC interferometer",
+        "year": 2008,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2012A&A...548A..55A",
+        "title": "Carbon and oxygen isotopic ratios in Arcturus and Aldebaran. Constraining the parameters for non-convective mixing on the red giant branch",
+        "year": 2012,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009IAUS..254..139W",
+        "title": "The Arcturus Moving Group: Its Place in the Galaxy",
+        "year": 2009,
+        "journal": "The Galaxy Disk in Cosmological Context",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009A&A...504..543T",
+        "title": "The K giant star Arcturus: the hybrid nature of its infrared spectrum",
+        "year": 2009,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015KPCB...31..172S",
+        "title": "Iron abundance in the atmosphere of Arcturus",
+        "year": 2015,
+        "journal": "Kinematics and Physics of Celestial Bodies",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008AJ....135.1551K",
+        "title": "A New Abundance Scale for the Globular Cluster 47 Tuc",
+        "year": 2008,
+        "journal": "The Astronomical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018A&A...620A..23O",
+        "title": "Spatially resolving the thermally inhomogeneous outer atmosphere of the red giant Arcturus in the 2.3 μm CO lines",
+        "year": 2018,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013KPCB...29..176S",
+        "title": "Temperature stratification of the atmosphere of Arcturus",
+        "year": 2013,
+        "journal": "Kinematics and Physics of Celestial Bodies",
+        "record_count": 8,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2004ApJ...601L..43N",
+        "title": "The Extragalactic Origin of the Arcturus Group",
+        "year": 2004,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020ApJ...900...28C",
+        "title": "MINESweeper: Spectrophotometric Modeling of Stars in the Gaia Era",
+        "year": 2020,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1998A&A...332..204C",
+        "title": "Mixing processes during the evolution of red giants with moderate metal deficiencies: the role of molecular-weight barriers",
+        "year": 1998,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 18,
+      "overall_quality": "good",
+      "total_issues": 76
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 1,
+      "by_layer": {
+        "base": 1,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors_count": 14,
+      "errors": [
+        {
+          "source": "SRC_DB_HIPPARCOS",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2013KPCB...29..176S",
+          "tool": "extract_central_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2009IAUS..254..139W",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2009A&A...504..543T",
+          "tool": "parse_uncertainty_field_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "1998A&A...332..204C",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2011ApJ...743..135R",
+          "tool": "extract_central_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2009MNRAS.400.1039W",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2015KPCB...31..172S",
+          "tool": "parse_uncertainty_field_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2008A&A...485..561L",
+          "tool": "extract_base_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2021A&A...645A..19F",
+          "tool": "strip_uncertainty_suffix",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2018A&A...620A..23O",
+          "tool": "extract_primary_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2008AJ....135.1551K",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2020ApJ...900...28C",
+          "tool": "parse_uncertainty_values",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2018ApJS..234...25W",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 21,
+      "auto_resolved": 16,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T13:24:32.332122",
+    "run_id": "ead8444c-0a68-466e-bc59-e02c0a400c14",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

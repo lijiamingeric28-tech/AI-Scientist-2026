@@ -1,0 +1,386 @@
+{
+  "otype": "Pl",
+  "name_cn": "系外行星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pl_name",
+      "name_cn": "行星名称",
+      "description": "系外行星标准名称,如 Kepler-10b、TOI-700 d、51 Peg b",
+      "category": "classification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_name",
+      "name_cn": "宿主恒星名称",
+      "description": "宿主恒星标识(HD/Kepler/TOI/TIC 等)",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "detection_method",
+      "name_cn": "探测方法",
+      "description": "发现与确认方法:凌星、视向速度、微引力透镜、直接成像、天体测量、TTV 等",
+      "category": "classification",
+      "ucd": "meta.method",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "disposition",
+      "name_cn": "确认状态",
+      "description": "候选状态:PC=行星候选、KP/CP=已知/已确认行星、FP=证伪、FA=误报",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pl_type",
+      "name_cn": "行星类别",
+      "description": "行星类型分类:热木星、超级地球、亚海王星、冷巨行星、岩石行星等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_deg",
+      "name_cn": "赤经(J2000)",
+      "description": "行星系统赤经(J2000),来自 TIC/Gaia",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_deg",
+      "name_cn": "赤纬(J2000)",
+      "description": "行星系统赤纬(J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "plx",
+      "name_cn": "恒星视差",
+      "description": "宿主恒星视差(毫角秒,多来自 Gaia),用于距离与行星物理参数标定",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_pc",
+      "name_cn": "恒星距离",
+      "description": "宿主恒星距离(秒差距)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_period",
+      "name_cn": "轨道周期",
+      "description": "行星公转周期(天)",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sma",
+      "name_cn": "轨道半长轴",
+      "description": "行星轨道半长轴(AU)",
+      "category": "physical",
+      "ucd": "phys.size.semiMajorAxis;orbit",
+      "unit": "AU",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ecc",
+      "name_cn": "轨道偏心率",
+      "description": "行星轨道偏心率",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inc",
+      "name_cn": "轨道倾角",
+      "description": "行星轨道倾角(度),凌星系统约 90 度",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "omega",
+      "name_cn": "近星点经度",
+      "description": "近星点幅角 omega(度),RV 轨道要素之一",
+      "category": "physical",
+      "ucd": "src.orbital.longitude",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "transit_epoch",
+      "name_cn": "凌星历元",
+      "description": "首次凌星中心时刻(TOI 为 BJD-2457000),与周期构成凌星历表",
+      "category": "physical",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "periastron_epoch",
+      "name_cn": "近星点历元",
+      "description": "近星点经过时刻 Tp(JD-2440000),RV 轨道解要素",
+      "category": "physical",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pl_mass",
+      "name_cn": "行星质量",
+      "description": "行星质量(木星质量或地球质量)",
+      "category": "physical",
+      "ucd": "phys.mass.planet",
+      "unit": "M_jup",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pl_msini",
+      "name_cn": "行星最小质量",
+      "description": "RV 法测得的最小质量 M sin(i)(木星质量),轨道解直接输出量",
+      "category": "physical",
+      "ucd": "phys.mass.planet;stat.min",
+      "unit": "M_jup",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pl_radius",
+      "name_cn": "行星半径",
+      "description": "行星半径(木星/地球半径),凌星法直接测得",
+      "category": "physical",
+      "ucd": "phys.size.radius;planet",
+      "unit": "R_jup",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pl_density",
+      "name_cn": "行星密度",
+      "description": "行星体密度,由质量与半径导出",
+      "category": "physical",
+      "ucd": "phys.density;planet",
+      "unit": "g/cm^3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eq_temp",
+      "name_cn": "平衡温度",
+      "description": "行星平衡温度(K),由恒星辐照与反照率模型导出",
+      "category": "physical",
+      "ucd": "phys.temperature.mean",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "insolation_flux",
+      "name_cn": "入射辐照通量",
+      "description": "行星接收的恒星辐照通量(以地球辐照为单位),宜居带判据",
+      "category": "physical",
+      "ucd": "phot.fluence",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "transit_depth",
+      "name_cn": "凌星深度",
+      "description": "凌星深度(ppm),直接约束行星/恒星半径比",
+      "category": "photometry",
+      "ucd": "phot.flux.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "transit_dur",
+      "name_cn": "凌星持续时间",
+      "description": "凌星总持续时间(小时,一至四接触),约束轨道与纬度",
+      "category": "photometry",
+      "ucd": "time.duration",
+      "unit": "hr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tmag",
+      "name_cn": "TESS 星等",
+      "description": "宿主恒星 TESS T 波段星等(Vega 标定)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "V 星等",
+      "description": "宿主恒星 V 波段星等(Hipparcos)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kpmag",
+      "name_cn": "Kepler 星等",
+      "description": "Kepler 输入星表 Kp 星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B-V 色指数",
+      "description": "宿主恒星 B-V 色指数(Hipparcos)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_k",
+      "name_cn": "RV 半振幅",
+      "description": "恒星视向速度反射运动半振幅 K(m/s),轨道拟合直接输出",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rv;stat.fit",
+      "unit": "m/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_trend",
+      "name_cn": "RV 长期趋势",
+      "description": "视向速度线性漂移趋势(m/s/yr),指示外行星或恒星伴星",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rv;stat.fit",
+      "unit": "m/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_teff",
+      "name_cn": "恒星有效温度",
+      "description": "宿主恒星有效温度(K)",
+      "category": "environment",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_logg",
+      "name_cn": "恒星表面重力",
+      "description": "宿主恒星对数表面重力 log(g)",
+      "category": "environment",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_feh",
+      "name_cn": "恒星金属丰度",
+      "description": "宿主恒星铁丰度 [Fe/H],与巨行星发生率相关",
+      "category": "environment",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_vsini",
+      "name_cn": "恒星自转速度",
+      "description": "恒星投影自转速度 v sin(i)(km/s),与恒星活动/年龄相关",
+      "category": "environment",
+      "ucd": "phys.veloc.rotation",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_mass",
+      "name_cn": "恒星质量",
+      "description": "宿主恒星质量(太阳质量)",
+      "category": "environment",
+      "ucd": "phys.mass.star",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_radius",
+      "name_cn": "恒星半径",
+      "description": "宿主恒星半径(太阳半径),决定凌星深度标定",
+      "category": "environment",
+      "ucd": "phys.size.radius;star",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_spt",
+      "name_cn": "恒星光谱型",
+      "description": "宿主恒星光谱型(M/K/G/F 等)",
+      "category": "environment",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_age",
+      "name_cn": "恒星年龄",
+      "description": "宿主恒星年龄(十亿年)",
+      "category": "environment",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_planets",
+      "name_cn": "系统行星数",
+      "description": "该系统已确认/候选行星数目",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hz_flag",
+      "name_cn": "宜居带候选标志",
+      "description": "可宜居带(HZ)候选标志及光谱型标注,eta-Earth 样本基础",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ttv",
+      "name_cn": "凌星时间变差",
+      "description": "凌星时间变差 O-C(TTV),指示多行星系统动力学相互作用",
+      "category": "variability",
+      "ucd": "time.transit;arith.diff",
+      "unit": "min",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mes",
+      "name_cn": "凌星显著性",
+      "description": "Multiple Event Statistic(MES),凌星信号综合显著性,审定与完整性分析的关键统计量",
+      "category": "variability",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

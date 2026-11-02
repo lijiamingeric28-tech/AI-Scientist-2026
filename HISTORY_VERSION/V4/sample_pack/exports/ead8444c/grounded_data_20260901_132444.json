@@ -1,0 +1,1895 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2021A&A...645A..19F",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202039397",
+      "title": "Stellar population astrophysics (SPA) with the TNG. The Arcturus Lab",
+      "authors": [
+        "Fanelli, C.",
+        "Origlia, L.",
+        "Oliva, E.",
+        "Mucciarelli, A.",
+        "Sanna, N.",
+        "Dalessandro, E.",
+        "Romano, D."
+      ],
+      "year": 2021,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2021A&A...645A..19F.pdf",
+      "retrieval_priority": 0.6036845901415091,
+      "abstract": "Context. High-resolution spectroscopy in the near-infrared (NIR) is a powerful tool for characterising the physical and chemical properties of cool-star atmospheres. The current generation of NIR echelle spectrographs enables the sampling of many spectral features over the full 0.9-2.4 μm range for a detailed chemical tagging. <BR /> Aims: Within the Stellar Population Astrophysics Large Program at the TNG, we used a high-resolution (R = 50 000) NIR spectrum of Arcturus acquired with the GIANO-B echelle spectrograph as a laboratory to define and calibrate an optimal line list and new diagnostic tools to derive accurate stellar parameters and chemical abundances. <BR /> Methods: We inspected several hundred NIR atomic and molecular lines to derive abundances of 26 different chemical species, including CNO, iron-group, alpha, Z-odd, and neutron-capture elements. We then performed a similar analysis in the optical using Arcturus VLT-UVES spectra. <BR /> Results: Through the combined NIR and optical analysis we defined a new thermometer and a new gravitometer for giant stars, based on the comparison of carbon (for the thermometer) and oxygen (for the gravitometer) abundances, as derived from atomic and molecular lines. We then derived self-consistent stellar parameters and chemical abundances of Arcturus over the full 4800-24 500 Å spectral range and compared them with previous studies in the literature. We finally discuss a number of problematic lines that may be affected by deviations from thermal equilibrium and/or chromospheric activity, as traced by the observed variability of He I at 10 830 Å. <P />Tables A.1-A.4 are only available at the CDS via anonymous ftp to <A href=\"http://cdsarc.u-strasbg.fr\">http://cdsarc.u-strasbg.fr</A> (ftp://130.79.128.5) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/cat/J/A+A/645/A19\">http://cdsarc.u-strasbg.fr/viz-bin/cat/J/A+A/645/A19</A> <P />Based on observations made with the Italian Telescopio Nazionale Galileo (TNG) operated on the island of La Palma by the Fundación Galileo Galilei of the INAF (Istituto Nazionale di Astrofisica) at the Spanish Observatorio del Roque de los Muchachos of the Instituto de Astrofisica de Canarias. This study is part of the Large Program titled SPA - Stellar Population Astrophysics: the detailed, age-resolved chemistry of the Milky Way disk (PI: L. Origlia), granted observing time with HARPS-N and GIANO-B echelle spectrographs at the TNG.",
+      "keywords": [
+        "techniques: spectroscopic",
+        "stars: abundances",
+        "stars: individual: Arcturus",
+        "stars: late-type",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 23
+    },
+    {
+      "source_id": "2020ApJ...900...28C",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aba43b",
+      "title": "MINESweeper: Spectrophotometric Modeling of Stars in the Gaia Era",
+      "authors": [
+        "Cargile, Phillip A.",
+        "Conroy, Charlie",
+        "Johnson, Benjamin D.",
+        "Ting, Yuan-Sen",
+        "Bonaca, Ana",
+        "Dotter, Aaron",
+        "Speagle, Joshua S."
+      ],
+      "year": 2020,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2020ApJ...900...28C.pdf",
+      "retrieval_priority": 0.39994746192858904,
+      "abstract": "We present MINESweeper, a tool to measure stellar parameters by jointly fitting observed spectra and broadband photometry to model isochrones and spectral libraries. This approach enables the measurement of spectrophotometric distances, in addition to stellar parameters such as T<SUB>eff</SUB>, $\\mathrm{log}g$, [Fe/H], [α/Fe], and radial velocity. MINESweeper employs a Bayesian framework and can easily incorporate a variety of priors, including Gaia parallaxes. Mock data are fit in order to demonstrate how the precision of derived parameters depends on evolutionary phase and signal-to-noise ratio. We then fit a selection of data in order to validate the model outputs. Fits to a variety of benchmark stars including Procyon, Arcturus, and the Sun result in derived stellar parameters that are in good agreement with the literature. We then fit combined spectra and photometry of stars in the open and globular clusters M92, M13, M3, M107, M71, and M67. Derived distances, [Fe/H], [α/Fe], and $\\mathrm{log}g$-T<SUB>eff</SUB> relations are in overall good agreement with literature values, although there are trends between metallicity and $\\mathrm{log}g$ within clusters that point to systematic uncertainties at the ≍0.1 dex level. Finally, we fit a large sample of stars from the H3 Spectroscopic Survey in which high-quality Gaia parallaxes are also available. These stars are fit without the Gaia parallaxes so that the geometric parallaxes can serve as an independent test of the spectrophotometric distances. Comparison between the two reveals good agreement within their formal uncertainties after accounting for the Gaia zero-point uncertainties.",
+      "keywords": [
+        "Stellar physics",
+        "Stellar properties",
+        "Stellar spectral lines",
+        "Stellar effective temperatures",
+        "Stellar colors",
+        "Stellar ages",
+        "Stellar luminosities",
+        "Stellar masses",
+        "Stellar radii",
+        "Stellar abundances",
+        "Stellar distance",
+        "Stellar evolutionary models",
+        "1621",
+        "1624",
+        "1630",
+        "1597",
+        "1590",
+        "1581",
+        "1609",
+        "1614",
+        "1626",
+        "1577",
+        "1595",
+        "2046",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:parallax OR abs:distance)",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2018A&A...620A..23O",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201833745",
+      "title": "Spatially resolving the thermally inhomogeneous outer atmosphere of the red giant Arcturus in the 2.3 μm CO lines",
+      "authors": [
+        "Ohnaka, K.",
+        "Morales Marín, C. A. L."
+      ],
+      "year": 2018,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2018A&A...620A..23O.pdf",
+      "retrieval_priority": 0.48806188755698765,
+      "abstract": "Aim. The outer atmosphere of K giants shows thermally inhomogeneous structures consisting of the hot chromospheric gas and the cool molecular gas. We present spectro-interferometric observations of the multicomponent outer atmosphere of the well-studied K1.5 giant Arcturus (α Boo) in the CO first overtone lines near 2.3 μm. <BR /> Methods: We observed Arcturus with the AMBER instrument at the Very Large Telescope Interferometer (VLTI) at 2.28-2.31 μm with a spectral resolution of 12 000 and at projected baselines of 7.3, 14.6, and 21.8 m. <BR /> Results: The high spectral resolution of the VLTI/AMBER instrument allowed us to spatially resolve Arcturus in the individual CO lines. Comparison of the observed interferometric data with the MARCS photospheric model shows that the star appears to be significantly larger than predicted by the model. It indicates the presence of an extended component that is not accounted for by the current photospheric models for this well-studied star. We found out that the observed AMBER data can be explained by a model with two additional CO layers above the photosphere. The inner CO layer is located just above the photosphere, at 1.04 ± 0.02 R<SUB>⋆</SUB>, with a temperature of 1600 ± 400 K and a CO column density of 10<SUP>20 ± 0.3</SUP> cm<SUP>-2</SUP>. On the other hand, the outer CO layer is found to be as extended as to 2.6 ± 0.2 R<SUB>⋆</SUB> with a temperature of 1800 ± 100 K and a CO column density of 10<SUP>19 ± 0.15</SUP> cm<SUP>-2</SUP>. <BR /> Conclusions: The properties of the inner CO layer are in broad agreement with those previously inferred from the spatially unresolved spectroscopic analyses. However, our AMBER observations have revealed that the quasi-static cool molecular component extends out to 2-3 R<SUB>⋆</SUB>, within which region the chromospheric wind steeply accelerates. <P />Based on AMBER observations made with the Very Large Telescope and Very Large Telescope Interferometer of the European Southern Observatory. Program ID: 092.D-0461(A).",
+      "keywords": [
+        "infrared: stars",
+        "techniques: interferometric",
+        "stars: late-type",
+        "stars: mass-loss",
+        "stars: atmospheres",
+        "stars: individual: Arcturus",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:effective OR abs:temperature OR abs:teff)",
+      "search_rank": 52
+    },
+    {
+      "source_id": "2018ApJS..234...25W",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4365/aa9a41",
+      "title": "Vanadium Transitions in the Spectrum of Arcturus",
+      "authors": [
+        "Wood, M. P.",
+        "Sneden, C.",
+        "Lawler, J. E.",
+        "Den Hartog, E. A.",
+        "Cowan, J. J.",
+        "Nave, G."
+      ],
+      "year": 2018,
+      "journal": "The Astrophysical Journal Supplement Series",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2018ApJS..234...25W.pdf",
+      "retrieval_priority": 0.5625360438353989,
+      "abstract": "We derive a new abundance for vanadium in the bright, mildly metal-poor red giant Arcturus. This star has an excellent high-resolution spectral atlas and well-understood atmospheric parameters, and it displays a rich set of neutral vanadium lines that are available for abundance extraction. We employ a newly recorded set of laboratory FTS spectra to investigate any potential discrepancies in previously reported V I log(gf) values near 900 nm. These new spectra support our earlier laboratory transition data and the calibration method utilized in that study. We then perform a synthetic spectrum analysis of weak V I features in Arcturus, deriving log ∊(V) = 3.54 ± 0.01 (σ = 0.04) from 55 lines. There are no significant abundance trends with wavelength, line strength, or lower excitation energy.",
+      "keywords": [
+        "atomic data",
+        "line: profiles",
+        "methods: laboratory: atomic",
+        "stars: abundances",
+        "stars: individual: Arcturus",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Physics - Atomic Physics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 26
+    },
+    {
+      "source_id": "2015KPCB...31..172S",
+      "source_type": "paper",
+      "doi": "10.3103/S0884591315040078",
+      "title": "Iron abundance in the atmosphere of Arcturus",
+      "authors": [
+        "Sheminova, V. A."
+      ],
+      "year": 2015,
+      "journal": "Kinematics and Physics of Celestial Bodies",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2015KPCB...31..172S.pdf",
+      "retrieval_priority": 0.47540774529985413,
+      "abstract": "Abundance of iron in the atmosphere of Arcturus has been determined from the profiles or regions of the profiles of the weak lines sensitive to iron abundance. The selected lines of Fe I and Fe II were synthesized with the MARCS theoretical models of the atmosphere. From the observed profiles of lines available with a high spectral resolution in the atlas by Hinkle and Wallace (2005), the values of the iron abundance A = 6.95 ± 0.03 and the radial-tangential macroturbulent velocity 5.6 ± 0.2 km/s were obtained for Arcturus. The same physical quantities were found for the Sun as a star; they are 7.42 ± 0.02 and 3.4 ± 0.3 km/s, respectively. For Arcturus, the iron abundance relative to the solar one was determined with the differential method as [Fe/H] =─0.48 ± 0.02.",
+      "keywords": [
+        "Oscillator Strength",
+        "Celestial Body",
+        "Equivalent Width",
+        "Local Thermodynamic Equilib",
+        "Weak Line",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2013KPCB...29..176S",
+      "source_type": "paper",
+      "doi": "10.3103/S0884591313040041",
+      "title": "Temperature stratification of the atmosphere of Arcturus",
+      "authors": [
+        "Sheminova, V. A."
+      ],
+      "year": 2013,
+      "journal": "Kinematics and Physics of Celestial Bodies",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2013KPCB...29..176S.pdf",
+      "retrieval_priority": 0.4626719797524556,
+      "abstract": "A brief overview of the results of the study of the red giant Arcturus is given. One-dimensional LTE modeling of the atmospheres of Arcturus and the Sun as a star is carried out on the basis of calculation of the extended wings of the H and K Ca II lines. It is found that the local continuum in this spectral region is underestimated by an average of 12% in the atlases of Arcturus. The average deficit in UV absorption amounts to 43% (Arcturus) and 9% (the Sun). The correction factor to the opacity in continuum for the wavelengths of 390.0, 392.5, 395.0, 398.0, and 400.0 nm equals 2.20, 1.90, 1.70, 1.55, and 1.45 (Arcturus) and 1.20, 1.20, 1.20, 1.17, and 1.15 (the Sun), respectively. Model calculations agree completely with the estimates of the parameters of the Arcturus atmosphere (T<SUB>eff</SUB> = 4286 K and logg = 1.66) and the elemental abundances that were presented by Ramirez and Allende Prieto [56]. The obtained model of the atmosphere of Arcturus is presented in tabular form.",
+      "keywords": [
+        "Initial Model",
+        "Radiation Flux",
+        "Celestial Body",
+        "Solar Atmosphere",
+        "Temperature Stratification",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:effective OR abs:temperature OR abs:teff)",
+      "search_rank": 53
+    },
+    {
+      "source_id": "2012A&A...548A..55A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201220148",
+      "title": "Carbon and oxygen isotopic ratios in Arcturus and Aldebaran. Constraining the parameters for non-convective mixing on the red giant branch",
+      "authors": [
+        "Abia, C.",
+        "Palmerini, S.",
+        "Busso, M.",
+        "Cristallo, S."
+      ],
+      "year": 2012,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2012A&A...548A..55A.pdf",
+      "retrieval_priority": 0.5201319933138263,
+      "abstract": "Context. We re-analyzed the carbon and oxygen isotopic ratios in the atmospheres of the two bright K giants Arcturus (α Boo) and Aldebaran (α Tau). <BR /> Aims: These stars are in the evolutionary stage following the first dredge-up (FDU). Previous determinations (dating back more than 20 years) of their <SUP>16</SUP>O/<SUP>18</SUP>O ratios showed a rough agreement with FDU expectations; however, the estimated <SUP>16</SUP>O/<SUP>17</SUP>O and <SUP>12</SUP>C/<SUP>13</SUP>C ratios were lower than in the canonical predictions for red giants. Today these anomalies are interpreted as signs of the occurrence of non-convective mixing episodes. We therefore re-investigated this problem to verify whether the observed data can be reproduced in this scenario and if the fairly well determined properties of the two stars can help us in fixing the uncertain parameters that characterize non-convective mixing and in constraining its physical nature. <BR /> Methods: We used high-resolution infrared spectra from the literature to derive the <SUP>12</SUP>C/<SUP>13</SUP>C and <SUP>16</SUP>O/<SUP>17</SUP>O/<SUP>18</SUP>O ratios from CO molecular lines near 5 μm, using the local termodynamic equilibrium (LTE) spectral synthesis method. We made use of the recently published ACE-FTS atlas of the infrared solar spectrum for constructing an updated atomic and molecular line lists in this spectral range. We also reconsidered the determination of the stellar parameters to build the proper atmospheric and evolutionary models. <BR /> Results: We found that both the C and the O isotopic ratios for the two stars considered actually disagree with pure FDU predictions. This reinforces the idea that non-convective transport episodes occurred in these stars. By reproducing the observed elemental and isotopic abundances with the help of parametric models for the coupled occurrence of nucleosynthesis and mass circulation, we derived constraints on the properties of non-convective mixing, providing information on the so far elusive physics of these phenomena. We find that very slow mixing, like that associated to diffusive processes, is incapable of explaining the observed data, which require a fast transport. Circulation mechanisms with speeds intermediate between those typical of diffusive and convective mixing are necessary. We conclude with a word of caution on the conclusions possible at this stage however, as the parameters for the mass transport are fairly sensitive to the stellar mass and initial composition. At least for α Boo, reducing the uncertainty still remaining on these data would be highly desirable. <P />Table 4 is available in electronic form at <A href=\"http://www.aanda.org\">http://www.aanda.org</A>",
+      "keywords": [
+        "stars: abundances",
+        "stars: individual: Arcturus",
+        "stars: individual: Aldebaran",
+        "stars: late-type",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 27
+    },
+    {
+      "source_id": "2011ApJ...743..135R",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/743/2/135",
+      "title": "Fundamental Parameters and Chemical Composition of Arcturus",
+      "authors": [
+        "Ramírez, I.",
+        "Allende Prieto, C."
+      ],
+      "year": 2011,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2011ApJ...743..135R.pdf",
+      "retrieval_priority": 0.6712857142857143,
+      "abstract": "We derive a self-consistent set of atmospheric parameters and abundances of 17 elements for the red giant star Arcturus: T <SUB>eff</SUB> = 4286 ± 30 K, log g = 1.66 ± 0.05, and [Fe/H] = -0.52 ± 0.04. The effective temperature was determined using model atmosphere fits to the observed spectral energy distribution from the blue to the mid-infrared (0.44 to 10 μm). The surface gravity was calculated using the trigonometric parallax of the star and stellar evolution models. A differential abundance analysis relative to the solar spectrum allowed us to derive iron abundances from equivalent width measurements of 37 Fe I and 9 Fe II lines, unblended in the spectra of both Arcturus and the Sun; the [Fe/H] value adopted is derived from Fe I lines. We also determine the mass, radius, and age of Arcturus: M = 1.08 ± 0.06 M <SUB>☉</SUB>, R = 25.4 ± 0.2 R <SUB>☉</SUB>, and τ = 7.1<SUP>+1.5</SUP> <SUB>- 1.2</SUB> Gyr. Finally, abundances of the following elements are measured from an equivalent width analysis of atomic features: C, O, Na, Mg, Al, Si, K, Ca, Sc, Ti, V, Cr, Mn, Co, Ni, and Zn. We find the chemical composition of Arcturus typical of that of a local thick-disk star, consistent with its kinematics.",
+      "keywords": [
+        "stars: abundances",
+        "stars: fundamental parameters",
+        "stars: individual: Arcturus",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:parallax OR abs:distance)",
+      "search_rank": 1
+    },
+    {
+      "source_id": "2009MNRAS.400.1039W",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2009.15520.x",
+      "title": "Differential chemical abundance analysis of a 47 Tucanæ asymptotic giant branch star with respect to Arcturus",
+      "authors": [
+        "Worley, C. C.",
+        "Cottrell, P. L.",
+        "Freeman, K. C.",
+        "Wylie-de Boer, E. C."
+      ],
+      "year": 2009,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2009MNRAS.400.1039W.pdf",
+      "retrieval_priority": 0.5362294676655024,
+      "abstract": "This study resolves a discrepancy in the abundance of Zr in the 47 Tucanæ asymptotic giant branch (AGB) star Lee 2525. This star was observed using the echelle spectrograph on the 2.3-m telescope at Siding Spring Observatory. The analysis was undertaken by calibrating Lee 2525 with respect to the standard giant star Arcturus. This work emphasizes the importance of using a standard star with stellar parameters comparable to the star under analysis rather than a calibration with respect to the Sun as in Koch &amp; McWilliam. Systematic errors in the analysis process are then minimized due to the similarity in atmospheric structure between the standard and programme stars. The abundances derived for Lee 2525 were found to be in general agreement with the Brown &amp; Wallerstein values except for Zr. In this study Zr has a similar enhancement ([Zr/Fe] = +0.51 dex) to another light s-process element, Y ([Y/Fe] = +0.53 dex), which reflects current theory regarding the enrichment of s-process elements by nuclear processes within AGB stars. This is contrary to the results of Brown &amp; Wallerstein where Zr was underabundant ([Zr/Fe] = -0.51 dex) and Y was overabundant ([Y/Fe] = +0.50 dex) with respect to Fe.",
+      "keywords": [
+        "stars: abundances",
+        "stars: individual: Arcturus",
+        "globular clusters: individual: 47 Tuc",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 25
+    },
+    {
+      "source_id": "2009IAUS..254..139W",
+      "source_type": "paper",
+      "doi": "10.1017/S1743921308027518",
+      "title": "The Arcturus Moving Group: Its Place in the Galaxy",
+      "authors": [
+        "Williams, Mary E. K.",
+        "Freeman, Ken C.",
+        "Helmi, Amina",
+        "RAVE Collaboration"
+      ],
+      "year": 2009,
+      "journal": "The Galaxy Disk in Cosmological Context",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2009IAUS..254..139W.pdf",
+      "retrieval_priority": 0.4713119719106511,
+      "abstract": "The Arcturus moving group is a well-populated example of phase space substructure within the disk of our Galaxy. With its large rotational lag (V = ‒100 kms<SUP>‒1</SUP>), metal poor nature ([Fe/H] ~ ‒0.6) and significant age (10 Gyr) it belongs to the Galaxy's thick disk. Traditionally regarded as the remains of a dissolved open cluster, it has recently been suggested to be a remnant of a satellite accreted by our Galaxy.",
+      "keywords": [
+        "Galaxy: abundances",
+        "galaxy: kinematics and dynamics",
+        "galaxy: structure",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 31
+    },
+    {
+      "source_id": "2009A&A...504..543T",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200912323",
+      "title": "The K giant star Arcturus: the hybrid nature of its infrared spectrum",
+      "authors": [
+        "Tsuji, T."
+      ],
+      "year": 2009,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2009A&A...504..543T.pdf",
+      "retrieval_priority": 0.4602089492291255,
+      "abstract": "Aims: We investigate the infrared spectrum of Arcturus to clarify the nature of the cool component of its atmosphere, referred to as the CO-mosphere, and its relationship to the warm molecular envelope or the MOLsphere in cooler M (super)giant stars. <BR />Methods: We apply the standard methods of spectral analysis to the CO lines measured from the “Infrared Atlas of the Arcturus Spectrum” by Hinkle, Wallace, and Livingston. <BR />Results: We found that the intermediate-strength lines (with -4.75 &lt; log {W/ν} ⪉ -4.4: W is the equivalent width and ν the wavenumber) of CO fundamentals as well as overtones cannot be interpreted with the line-by-line analysis based on the classical line formation theory, while the weaker lines can and provide some information on the photosphere (e.g. log A<SUB>C</SUB> = 7.97/log A<SUB>H</SUB> = 12.00, ξ_micro = 1.87 km s<SUP>-1</SUP>, and ξ_macro = 3.47 km s<SUP>-1</SUP>). The nature of CO lines shows an abrupt change at log {W/ν} ≈ -4.75 and the lines stronger than this limit indicate large excess absorption that cannot be photospheric in origin. This difficulty also appears as an unpredictable upturn (at log {W/ν} ≈ -4.75) in the flat part of the curves-of-growth of CO lines. We confirm the same phenomenon in dozens of M giant stars, whose infrared spectra are known to have hybrid origins in the photosphere and extra-molecular constituent referred to as the MOLsphere. Thus the curve-of-growth analysis provides a simple means by which to recognize the hybrid nature of the infrared spectra. We note that the curves-of-growth of red supergiants and Mira variables found in the literature show similar peculiar patterns. The intermediate-strength lines of CO in Arcturus show only minor expansion (⪉0.6 km s<SUP>-1</SUP>) relative to the weak lines and only small line-asymmetry, but the strong lines of the CO fundamentals exhibit higher turbulent velocity than the other CO lines. <BR />Conclusions: The large excess absorption of the CO fundamental lines in Arcturus appears to be the same phenomenon as that found in the CO overtone lines of cooler M giant stars. Thus, molecular condensation referred to as the MOLsphere in cool luminous stars may also exist in Arcturus. The MOLsphere, however, is not necessarily a separate “sphere” but may be an aggregation of molecular clouds formed within the outer atmosphere. The formation of molecular clouds (referred to as MOLsphere in our modeling) in the outer atmosphere appears to be a basic feature of all the red giant stars from early K to late M types (and red supergiants). <P />Table 2 is only available in electronic form at the CDS via anonymous ftp to cdsarc.u-strasbg.fr (130.79.128.5) or via http://cdsweb.u-strasbg.fr/cgi-bin/qcat?J/A+A/504/543",
+      "keywords": [
+        "stars: atmospheres",
+        "stars: chromospheres",
+        "stars: individual: Acturus",
+        "stars: late-type",
+        "stars: mass-loss",
+        "line: formation",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2008AJ....135.1551K",
+      "source_type": "paper",
+      "doi": "10.1088/0004-6256/135/4/1551",
+      "title": "A New Abundance Scale for the Globular Cluster 47 Tuc",
+      "authors": [
+        "Koch, Andreas",
+        "McWilliam, Andrew"
+      ],
+      "year": 2008,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2008AJ....135.1551K.pdf",
+      "retrieval_priority": 0.4749915493925906,
+      "abstract": "We present chemical abundances for O, Na, Mg, Al, Si, Ca, Ti, and Fe in eight red giants and one turnoff star in the metal-rich globular cluster 47 Tuc, based on spectroscopy with the Magellan Inamori Kyocera Echelle high-resolution spectrograph on the Magellan 6.5 m Clay telescope. A robust line by a line differential abundance analysis technique, relative to the K-giant Arcturus, was used to reduce systematic errors from atmospheric and atomic parameters. Our derived mean LTE [Fe/H] of -0.76 ± 0.01 ± 0.04 dex (random and systematic error, respectively) is more metal poor by about 0.1 dex than recent literature results. The chemical element ratios in this nearby globular cluster most closely resemble those of the Galactic bulge, although there is a non-negligible overlap with the composition of thick-disk stars. We find that the [Al/Fe] and [Na/Fe] ratios coincide with the upper boundary of the trends seen in the bulge and thick disk. There is only a small intrinsic scatter in the majority of the abundance ratios, indicating that 47 Tuc is mostly a rather chemically homogeneous system.",
+      "keywords": [
+        "globular clusters: individual: 47 Tuc",
+        "stars: abundances",
+        "stars: atmospheres",
+        "stars: individual: Arcturus",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 36
+    },
+    {
+      "source_id": "2008A&A...485..561L",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:200809611",
+      "title": "The limb-darkened Arcturus: imaging with the IOTA/IONIC interferometer",
+      "authors": [
+        "Lacour, S.",
+        "Meimon, S.",
+        "Thiébaut, E.",
+        "Perrin, G.",
+        "Verhoelst, T.",
+        "Pedretti, E.",
+        "Schuller, P. A.",
+        "Mugnier, L.",
+        "Monnier, J.",
+        "Berger, J. P.",
+        "Haubois, X.",
+        "Poncelet, A.",
+        "Le Besnerais, G.",
+        "Eriksson, K.",
+        "Millan-Gabet, R.",
+        "Ragland, S.",
+        "Lacasse, M.",
+        "Traub, W."
+      ],
+      "year": 2008,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2008A&A...485..561L.pdf",
+      "retrieval_priority": 0.509727612094028,
+      "abstract": "Aims: We undertook an H band interferometric examination of Arcturus, a star frequently used as a spatial and spectral calibrator. <BR />Methods: Using the IOTA 3 telescope interferometer, we performed spectro-interferometric observations (R≈35) of Arcturus. Atmospheric models and prescriptions were fitted to the data to derive the brightness distribution of the photosphere. Image reconstruction was performed using two software algorithms: Wisard and Mira. <BR />Results: An achromatic power law proved to be a good model of the brightness distribution, with a limb darkening compatible with the one derived from atmospheric model simulations using our marcs model. A Rosseland diameter of 21.05±0.21 was derived, corresponding to an effective temperature of T<SUB>eff</SUB> = 4295±26 K. No companion was detected from the closure phases, with an upper limit on the brightness ratio of 8×10<SUP>-4</SUP> at 1 AU. The dynamic range at such distance from the photosphere was established as 1.5×10<SUP>-4</SUP> (1σ rms). An upper limit of 1.7×10<SUP>-3</SUP> was also derived for the level of brightness asymmetries present in the photosphere.",
+      "keywords": [
+        "techniques: interferometric",
+        "stars: fundamental parameters",
+        "infrared: stars",
+        "stars: individual: Arcturus",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:parallax OR abs:distance)",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2004ApJ...601L..43N",
+      "source_type": "paper",
+      "doi": "10.1086/381751",
+      "title": "The Extragalactic Origin of the Arcturus Group",
+      "authors": [
+        "Navarro, Julio F.",
+        "Helmi, Amina",
+        "Freeman, Kenneth C."
+      ],
+      "year": 2004,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\2004ApJ...601L..43N.pdf",
+      "retrieval_priority": 0.4621015571331238,
+      "abstract": "We reanalyze the group of stars associated kinematically with Arcturus and confirm that they constitute a peculiar grouping of metal-poor stars with similar apocentric radius, common angular momentum, and distinct metal abundance patterns. These properties are consistent with those expected for a group of stars originating from the debris of a disrupted satellite. The Arcturus group stands out clearly in the catalog of Beers et al. and in other compilations of metal-poor stars in the solar neighborhood. Its angular momentum appears too low to arise from dynamiperturbations induced by the Galactic bar and coincides with that of the kinematically peculiar population of stars identified above and below the Galactic plane by Gilmore, Wyse, &amp; Norris: the Arcturus group is in all likelihood the solar neighborhood extension of such population. Further analysis is needed to confirm our proposal that Arcturus, together with some of the brightest stars in the night sky, may have formed beyond the confines of the Galaxy. However, validating the extragalactic origin of the Arcturus group would lend support to the prevalence of accretion events envisioned in hierarchimodels of galaxy formation and would suggest that early mergers may have contributed a substantial fraction of the old and metal-deficient stars in the Galactic disk.",
+      "keywords": [
+        "Galaxy: Disk",
+        "Galaxy: Formation",
+        "Galaxy: Structure",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:\"metallicity\" OR abs:\"Fe/H\" OR abs:\"[Fe/H]\" OR abs:\"M/H\" OR abs:\"[M/H]\")",
+      "search_rank": 38
+    },
+    {
+      "source_id": "1998A&A...332..204C",
+      "source_type": "paper",
+      "doi": "10.48550/arXiv.astro-ph/9712207",
+      "title": "Mixing processes during the evolution of red giants with moderate metal deficiencies: the role of molecular-weight barriers",
+      "authors": [
+        "Charbonnel, Corinne",
+        "Brown, Jeffery A.",
+        "Wallerstein, George"
+      ],
+      "year": 1998,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\ead8444c-0a68-466e-bc59-e02c0a400c14\\1998A&A...332..204C.pdf",
+      "retrieval_priority": 0.2508543984263743,
+      "abstract": "We have assembled accurate abundance data for Li, C, and N as well as the (12}C/({13)) C ratio for five field giants with [Fe/H] =~ - 0.6 including Arcturus and two stars in the globular cluster 47 Tuc. Using their very precise M<SUB>bol</SUB> values obtained from HIPPARCOS parallaxes, we can place them into an evolutionary sequence. The sequence shows that the (12}C/({13)) C ratios drops from ~ 20 to near 7 between M<SUB>bol</SUB> =3D +1 and +0.5, while Li disappears. At the same time the (12}C/({14)) N ratio diminishes by 0.2 to 0.4 dex. The two stars in 47 Tuc with Mbol near -2.0 show even lower (12}C/({14)) N ratios by 0.4 dex indicating further mixing as they evolved to the top of the red giant branch. These observations confirm the existence of an extra-mixing process that becomes efficient on the red giant branch only when the low-mass stars reach the so-called luminosity function bump. We use the values of the carbon isotopic ratio observed in our sample to get constraints on the mu -barriers that may shield the central regions of a star from extra-mixing. We show that the same value of the critical gradient of molecular weight leads to (12}C/({13)) C ratios observed at different metallicities. This ``observational critical mu -gradient'' is in very good agreement with the one which is expected to stabilize meridional circulation. This result provides strong clues on the nature of the extra-mixing which occurs on the RGB, and indicates that it is related to rotation. Based partially on observations obtained at the Dominion Astrophysical Observatory, National Research Council, Canada",
+      "keywords": [
+        "STARS: ABUNDANCES",
+        "STARS: EVOLUTION",
+        "STARS: INTERIORS",
+        "STARS: LATE-TYPE",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Arcturus\" OR abs:\"Arcturus\") AND (abs:parallax OR abs:distance)",
+      "search_rank": 18
+    },
+    {
+      "source_id": "SRC_DB_HR",
+      "source_type": "database",
+      "title": "Bright Star Catalogue (HR)",
+      "vizier_table_id": "V/50/catalog",
+      "description": "亮星星表（原称 Yale Catalogue of Bright Stars）收录了北半球和南半球最亮的约9110颗恒星，是天文学中最常用的亮星参考表。",
+      "reference_paper": "Hoffleit, D., & Warren, W. H. 1995, Yale University Observatory",
+      "bibcode": "1995yCat.5050....0H",
+      "research_methodology": "汇集多个历史星表与光谱分类数据的综合整理",
+      "observation_facility": "Yale University Observatory (汇编)",
+      "waveband": "Optical",
+      "research_content": "约9110颗亮星(视星等亮于约6.5等)的坐标、V星等、B-V颜色和光谱型。"
+    },
+    {
+      "source_id": "SRC_DB_TIC",
+      "source_type": "database",
+      "title": "TESS Input Catalog (TIC)",
+      "vizier_table_id": "IV/38/tic",
+      "description": "凌星系外行星巡天卫星(TESS)的输入星表，综合了多项巡天数据，用于为TESS任务挑选观测目标并提供先验的恒星物理参数。",
+      "reference_paper": "Stassun, K. G., et al. 2019, AJ, 158, 138",
+      "bibcode": "2019AJ....158..138S",
+      "research_methodology": "多星表交叉匹配与天体物理参数的统计学推断",
+      "observation_facility": "Compilation (Gaia, 2MASS, ALLWISE, etc.)",
+      "waveband": "Optical to Near-Infrared (TESS band ~600-1000 nm + reference bands)",
+      "research_content": "包含数十亿个点源的坐标、自行、估计的TESS星等，及数千万恒星的有效温度、半径、质量、表面重力等物理参数。"
+    },
+    {
+      "source_id": "SRC_DB_HIPPARCOS",
+      "source_type": "database",
+      "title": "The Hipparcos and Tycho Catalogues",
+      "vizier_table_id": "I/239/hip_main",
+      "description": "依巴谷(Hipparcos)卫星星表，天体测量学的历史性里程碑，首次在太空中实现了极高精度的全天恒星视差和自行测量。",
+      "reference_paper": "ESA, 1997, ESA Special Publication, Vol. 1200",
+      "bibcode": "1997ESASP1200.....E",
+      "research_methodology": "空间高精度天体测量及双视场光电探测",
+      "observation_facility": "Hipparcos Satellite (ESA)",
+      "waveband": "Optical (Hp band, Tycho V/B bands)",
+      "research_content": "118,218颗恒星的高精度天球坐标、三角视差（毫角秒级）、自行，以及精确的Hp波段光度数据和变星信息。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1998A&A...332..204C_Arcturus_fe_h_0",
+      "source_id": "1998A&A...332..204C",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.62,
+      "field_unit": "dex",
+      "trace_id": "doc3_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          68,
+          59,
+          908,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Observed Stars ... Arcturus ... [Fe/H] -0.62",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "1998A&A...332..204C_Arcturus_teff_1",
+      "source_id": "1998A&A...332..204C",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4330,
+      "field_unit": "K",
+      "trace_id": "doc3_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          68,
+          59,
+          908,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Observed Stars ... Arcturus ... Teff 4330",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2008A&A...485..561L_Arcturus_teff_0",
+      "source_id": "2008A&A...485..561L",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4295,
+      "field_unit": "K",
+      "trace_id": "doc9_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          403,
+          592,
+          439,
+          612
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "A Rosseland diameter of 21.05 ± 0.21 was derived, corresponding to an effective temperature of Teff = 4295 ± 26 K.",
+      "measurement_method": "interferometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2008A&A...485..561L_Arcturus_teff_1",
+      "source_id": "2008A&A...485..561L",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4295,
+      "field_unit": "K",
+      "trace_id": "doc9_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          701,
+          749,
+          741,
+          771
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "we can update their calculation of Arcturus' effective temperature to Teff = 4295 ± 26 K.",
+      "measurement_method": "interferometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2008AJ....135.1551K_Arcturus_fe_h_1",
+      "source_id": "2008AJ....135.1551K",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.5,
+      "field_unit": "dex",
+      "trace_id": "doc11_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          290,
+          159,
+          361,
+          177
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Although neither Arcturus (at [Fe/H]=-0.5 dex; F06) nor any of our 47 Tuc stars (at an expected [Fe/H] of approximately -0.7 dex according to previous estimates...",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2008AJ....135.1551K_Arcturus_teff_0",
+      "source_id": "2008AJ....135.1551K",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4290,
+      "field_unit": "K",
+      "trace_id": "doc11_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          431,
+          803,
+          485,
+          821
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For the Arcturus Teff we adopted the value of 4290 K derived by F06 from the angular diameter of Perrin et al. (1998) and the bolometric flux reported by Griffin & Lynas-Gray (1999).",
+      "measurement_method": "angular diameter and bolometric flux",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009A&A...504..543T_Arcturus_fe_h_2",
+      "source_id": "2009A&A...504..543T",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.5,
+      "field_unit": "dex",
+      "trace_id": "doc1_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          64,
+          67,
+          924,
+          710
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 3. Basic stellar parameters of Arcturus ... [Fe/H] -0.5 ± 0.1",
+      "measurement_method": "spectroscopic analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009A&A...504..543T_Arcturus_parallax_0",
+      "source_id": "2009A&A...504..543T",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": 88.85,
+      "field_unit": "mas",
+      "trace_id": "doc1_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          64,
+          67,
+          924,
+          710
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 3. Basic stellar parameters of Arcturus ... parallax, 88.85 ± 0.74 (mas)",
+      "measurement_method": "Hipparcos data (ESA 1997)",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2009A&A...504..543T_Arcturus_teff_1",
+      "source_id": "2009A&A...504..543T",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4300,
+      "field_unit": "K",
+      "trace_id": "doc1_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          64,
+          67,
+          924,
+          710
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 3. Basic stellar parameters of Arcturus ... effective temperature, Teff 4300 ± 30 K",
+      "measurement_method": "angular diameter measurement and spectral energy distribution",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009IAUS..254..139W_Arcturus_fe_h_0",
+      "source_id": "2009IAUS..254..139W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.6,
+      "field_unit": "dex",
+      "trace_id": "doc7_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          175,
+          307,
+          185,
+          324
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "With its large rotational lag (V = -100 kms^-1), metal-poor nature ([Fe/H] ~ -0.6) and significant age (10 Gyr) it belongs to the Galaxy's thick disk.",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_fe_h_2",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.5,
+      "field_unit": "dex",
+      "trace_id": "doc10_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          78,
+          94,
+          892,
+          729
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Comparison of the derived light element abundances for Arcturus from Fulbright et al. (2007) and this study... Geometry Plane Parallel [Fe/H] -0.5dex",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_fe_h_3",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.6,
+      "field_unit": "dex",
+      "trace_id": "doc10_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          78,
+          94,
+          892,
+          729
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Comparison of the derived light element abundances for Arcturus from Fulbright et al. (2007) and this study... Geometry Spherical [Fe/H] -0.6dex",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_fe_h_5",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.6,
+      "field_unit": "dex",
+      "trace_id": "doc10_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          105,
+          59,
+          852,
+          271
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 4. Stellar model parameters and resulting values of [Fe I/H] and [Fe II/H] for Arcturus and range of models for Lee 2525... Star Arcturus [Fe/H] (dex) -0.60",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_fe_h_6",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.61,
+      "field_unit": "dex",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          59,
+          892,
+          694
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 6. [Fe/H], [X/Fe] and s-process abundance ratios for Arcturus... Arcturus X [X/H] Fe I -0.61",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_fe_h_7",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.56,
+      "field_unit": "dex",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          59,
+          892,
+          694
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 6. [Fe/H], [X/Fe] and s-process abundance ratios for Arcturus... Arcturus X [X/H] Fe II -0.56",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_teff_0",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4290,
+      "field_unit": "K",
+      "trace_id": "doc10_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          78,
+          94,
+          892,
+          729
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Comparison of the derived light element abundances for Arcturus from Fulbright et al. (2007) and this study... Geometry Plane Parallel Teff 4290K",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_teff_1",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4300,
+      "field_unit": "K",
+      "trace_id": "doc10_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          78,
+          94,
+          892,
+          729
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Comparison of the derived light element abundances for Arcturus from Fulbright et al. (2007) and this study... Geometry Spherical Teff 4300K",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2009MNRAS.400.1039W_Arcturus_teff_4",
+      "source_id": "2009MNRAS.400.1039W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4300,
+      "field_unit": "K",
+      "trace_id": "doc10_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          105,
+          59,
+          852,
+          271
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 4. Stellar model parameters and resulting values of [Fe I/H] and [Fe II/H] for Arcturus and range of models for Lee 2525... Star Arcturus Teff (K) 4300",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...743..135R_Arcturus_fe_h_1",
+      "source_id": "2011ApJ...743..135R",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.52,
+      "field_unit": "dex",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          733,
+          215,
+          769,
+          232
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "...and [Fe/H] = -0.52 ± 0.04. The effective temperature was determined using model atmosphere fits...",
+      "measurement_method": "differential abundance analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...743..135R_Arcturus_parallax_2",
+      "source_id": "2011ApJ...743..135R",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": 88.65,
+      "field_unit": "mas",
+      "trace_id": "doc5_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          547,
+          119,
+          670,
+          137
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Thus, we adopted the weighted average of the parallaxes listed in Table 3 as the parallax of Arcturus: π = 88.65 ± 0.40 mas.",
+      "measurement_method": "trigonometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...743..135R_Arcturus_teff_0",
+      "source_id": "2011ApJ...743..135R",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4286,
+      "field_unit": "K",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          371,
+          215,
+          463,
+          232
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We derive a self-consistent set of atmospheric parameters and abundances of 17 elements for the red giant star Arcturus: Teff = 4286 ± 30 K...",
+      "measurement_method": "model atmosphere fits",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2012A&A...548A..55A_Arcturus_fe_h_0",
+      "source_id": "2012A&A...548A..55A",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": "-0.50±0.07",
+      "field_unit": "dex",
+      "trace_id": "doc6_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          67,
+          63,
+          731,
+          370
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Stellar parameters used to derive CNO abundances and isotopic compositions in α Boo and α Tau. ... [Fe/H] -0.50±0.07",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2012A&A...548A..55A_Arcturus_teff_1",
+      "source_id": "2012A&A...548A..55A",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": "4290±50",
+      "field_unit": "K",
+      "trace_id": "doc6_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          67,
+          63,
+          731,
+          370
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Stellar parameters used to derive CNO abundances and isotopic compositions in α Boo and α Tau. ... Teff[K] 4290±50",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_distance_1",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "distance",
+      "field_value": 11.26,
+      "field_unit": "pc",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          189,
+          553,
+          234,
+          569
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "and is located at a distance of 36.7 ly or 11.26 +0.05 -0.07 pc (Perryman et al. [52]) from the earth.",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_fe_h_2",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": "-0.52",
+      "field_unit": "dex",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          756,
+          393,
+          790,
+          408
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "with the fundamental parameters Teff = 4286 K, log g = 1.66, and [Fe/H]=-0.52 derived by Ramirez and Allende Prieto (2011).",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_fe_h_5",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.52,
+      "field_unit": "dex",
+      "trace_id": "doc13_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          359,
+          816,
+          395,
+          832
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "log g = 1.66 ± 0.05, [Fe/H] = -0.52 ± 0.04, M = (1.08 ± 0.06)M_sun",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_fe_h_6",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": "-0.52",
+      "field_unit": "dex",
+      "trace_id": "doc13_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          706,
+          482,
+          743,
+          499
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The abundance of alpha elements (O, Mg, Si, S, Ca, and Ti) [alpha/Fe] = lg(N_X/N_Fe)_* - lg(N_X/N_Fe)_sun = 0.34 [55], while the abundance of iron [Fe/H] equals -0.52.",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_parallax_0",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": 88.83,
+      "field_unit": "mas",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          610,
+          551,
+          703,
+          561
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vlm_crop"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Its parallax is equal to 0''.08883 ± 0''.00053 (van Leeuwen [75]).",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_teff_3",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": "4286",
+      "field_unit": "K",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          515,
+          393,
+          569,
+          408
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "with the fundamental parameters Teff = 4286 K, log g = 1.66, and [Fe/H]=-0.52 derived by Ramirez and Allende Prieto (2011).",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_teff_4",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4286,
+      "field_unit": "K",
+      "trace_id": "doc13_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          817,
+          799,
+          841,
+          815
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "They also carried out a new spectral analysis of Arcturus on the basis of the most reliable data and techniques, and obtained the values of Teff = 4286 ± 30 K",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2013KPCB...29..176S_Arcturus_teff_7",
+      "source_id": "2013KPCB...29..176S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": "4286",
+      "field_unit": "K",
+      "trace_id": "doc13_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          551,
+          411,
+          609,
+          428
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For Arcturus the values of effective temperature (Teff = 4286 K), surface gravity acceleration (log g = 1.66)",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2015KPCB...31..172S_Arcturus_fe_h_0",
+      "source_id": "2015KPCB...31..172S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.48,
+      "field_unit": "dex",
+      "trace_id": "doc12_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          441,
+          397,
+          477,
+          413
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For Arcturus, the iron abundance relative to the solar one was determined with the differential method as [Fe/H] = -0.48 ± 0.02.",
+      "measurement_method": "spectral synthesis",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2015KPCB...31..172S_Arcturus_m_h_2",
+      "source_id": "2015KPCB...31..172S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "m_h",
+      "field_value": "-0.33",
+      "field_unit": "dex",
+      "trace_id": "doc12_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          302,
+          788,
+          341,
+          805
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For Arcturus, we assumed the effective temperature Teff = 4286 K, the acceleration of gravity log g = 1.66, the metallicity [M/H] = -0.33...",
+      "measurement_method": "model assumption",
+      "condition_tags": [
+        "scope: global",
+        "metric: m_h"
+      ]
+    },
+    {
+      "record_id": "2015KPCB...31..172S_Arcturus_teff_1",
+      "source_id": "2015KPCB...31..172S",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": "4286",
+      "field_unit": "K",
+      "trace_id": "doc12_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          472,
+          772,
+          535,
+          789
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For Arcturus, we assumed the effective temperature Teff = 4286 K, the acceleration of gravity log g = 1.66, the metallicity [M/H] = -0.33...",
+      "measurement_method": "model assumption",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2018A&A...620A..23O_Arcturus_distance_1",
+      "source_id": "2018A&A...620A..23O",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "distance",
+      "field_value": 11.3,
+      "field_unit": "pc",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          723,
+          602,
+          823,
+          618
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Because of its proximity (11.3 ± 0.1 pc based on a parallax of 88.83 ± 0.54 mas, van Leeuwen 2007) and its brightness, Arcturus has been well studied...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2018A&A...620A..23O_Arcturus_fe_h_2",
+      "source_id": "2018A&A...620A..23O",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": "-0.4",
+      "field_unit": "dex",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          469,
+          687,
+          496,
+          703
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Arcturus (α Boo) is a moderately metal-poor ([Fe/H] = −0.4) red giant star with an initial mass of approximately 1 M⊙ (Smith et al. 2013)...",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2018A&A...620A..23O_Arcturus_parallax_0",
+      "source_id": "2018A&A...620A..23O",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": 88.83,
+      "field_unit": "mas",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          564,
+          615,
+          694,
+          631
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Because of its proximity (11.3 ± 0.1 pc based on a parallax of 88.83 ± 0.54 mas, van Leeuwen 2007) and its brightness, Arcturus has been well studied...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2018ApJS..234...25W_Arcturus_fe_h_0",
+      "source_id": "2018ApJS..234...25W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.55,
+      "field_unit": "dex",
+      "trace_id": "doc14_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Recent detailed analyses include those of Ramírez & Allende Prieto (2011) who derived Teff = 4286 K, log g = 1.66, vt = 1.74 km s−1, and [Fe/H] = −0.52, and Peterson et al. (2017, and references therein), who recommend Teff = 4275 K, log g = 1.3, vt = 1.6 km s−1, and [Fe/H] = −0.55. We adopted the latter model for our abundance computations",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2018ApJS..234...25W_Arcturus_teff_1",
+      "source_id": "2018ApJS..234...25W",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4275,
+      "field_unit": "K",
+      "trace_id": "doc14_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Recent detailed analyses include those of Ramírez & Allende Prieto (2011) who derived Teff = 4286 K, log g = 1.66, vt = 1.74 km s−1, and [Fe/H] = −0.52, and Peterson et al. (2017, and references therein), who recommend Teff = 4275 K, log g = 1.3, vt = 1.6 km s−1, and [Fe/H] = −0.55. We adopted the latter model for our abundance computations",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2020ApJ...900...28C_Arcturus_fe_h_0",
+      "source_id": "2020ApJ...900...28C",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": -0.64,
+      "field_unit": "dex",
+      "trace_id": "doc4_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2 MINESweeper Parameters for Benchmark Stars ... Arcturus ... [Fe/H] -0.64 ± 0.02",
+      "measurement_method": "spectrophotometric modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2020ApJ...900...28C_Arcturus_teff_1",
+      "source_id": "2020ApJ...900...28C",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4297,
+      "field_unit": "K",
+      "trace_id": "doc4_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2 MINESweeper Parameters for Benchmark Stars ... Arcturus ... Teff (K) 4297 ± 9",
+      "measurement_method": "spectrophotometric modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2020ApJ...900...28C_Arcturus_teff_2",
+      "source_id": "2020ApJ...900...28C",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": 4297,
+      "field_unit": "K",
+      "trace_id": "doc4_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2 MINESweeper Parameters for Benchmark Stars ... Arcturus ... Teff (K) 4297 ± 9",
+      "measurement_method": "spectrophotometric modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "2021A&A...645A..19F_Arcturus_fe_h_1",
+      "source_id": "2021A&A...645A..19F",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "fe_h",
+      "field_value": "-0.57",
+      "field_unit": "dex",
+      "trace_id": "doc8_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          83,
+          645,
+          941,
+          929
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Stellar parameters for Arcturus ... [Fe/H] -0.57 dex 0.01 dex",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2021A&A...645A..19F_Arcturus_teff_0",
+      "source_id": "2021A&A...645A..19F",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": "4283",
+      "field_unit": "K",
+      "trace_id": "doc8_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          83,
+          645,
+          941,
+          929
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Stellar parameters for Arcturus ... Teff 4283 K 33 K",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: teff"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_69673_0_Plx",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": 88.849998,
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "69673",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HR_5340_0_Parallax",
+      "source_id": "SRC_DB_HR",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": "0.090000003576278687",
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "V/50/catalog",
+        "key_column": "HR",
+        "key_value": "5340",
+        "raw_column": "Parallax",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_459832522_0_Dist",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "distance",
+      "field_value": "11.2575",
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "459832522",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_471011863_0_Dist",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "distance",
+      "field_value": "11.254899999999999",
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "471011863",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_459832522_0_[M/H]",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "m_h",
+      "field_value": "-0.52500000000000002",
+      "field_unit": "log(Sun)",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "459832522",
+        "raw_column": "[M/H]",
+        "raw_unit": "log(Sun)",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_459832522_0_Plx",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": "88.829999999999998",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "459832522",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_471011863_0_Plx",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "parallax",
+      "field_value": "88.849999999999994",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "471011863",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_459832522_0_Teff",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "RG*",
+      "entity_name": "Arcturus",
+      "field_name": "teff",
+      "field_value": "4280",
+      "field_unit": "K",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "459832522",
+        "raw_column": "Teff",
+        "raw_unit": "K",
+        "row_index": 0
+      }
+    }
+  ]
+}

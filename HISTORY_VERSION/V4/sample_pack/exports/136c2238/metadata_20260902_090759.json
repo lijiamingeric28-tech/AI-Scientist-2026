@@ -1,0 +1,344 @@
+{
+  "field_definitions": {
+    "black_hole_mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the total gravitational mass of the black hole, expressed in solar masses (Msun)."
+    },
+    "eddington_ratio": {
+      "standard_unit": null,
+      "semantic_type": "physical",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the ratio of an object's observed luminosity to its theoretical Eddington limit, which is a dimensionless quantity with no physical units."
+    },
+    "radio_flux_6cm": {
+      "standard_unit": "Jy",
+      "semantic_type": "flux_density",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the spectral flux density of radio emissions at a 6-centimeter wavelength, reported in Janskys (Jy)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 22,
+    "sources_exported": 22,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_3C",
+        "title": "Third Cambridge Catalogue of Radio Sources (3C)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019MNRAS.489.1197N",
+        "title": "M87 black hole mass and spin estimate through the position of the jet boundary shape break",
+        "year": 2019,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2011ApJ...729..119G",
+        "title": "The Black Hole Mass in M87 from Gemini/NIFS Adaptive Optics Observations",
+        "year": 2011,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009ApJ...700.1690G",
+        "title": "The Black Hole Mass, Stellar Mass-to-Light Ratio, and Dark Halo in M87",
+        "year": 2009,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013ApJ...770...86W",
+        "title": "The M87 Black Hole Mass from Gas-dynamical Models of Space Telescope Imaging Spectrograph Observations",
+        "year": 2013,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024MNRAS.527.2341S",
+        "title": "Supermassive black hole mass in the massive elliptical galaxy M87 from integral-field stellar dynamics using OASIS and MUSE with adaptive optics: assessing systematic uncertainties",
+        "year": 2024,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019ApJ...875L...5E",
+        "title": "First M87 Event Horizon Telescope Results. V. Physical Origin of the Asymmetric Ring",
+        "year": 2019,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1996MNRAS.283L.111R",
+        "title": "The `quiescent' black hole in M87",
+        "year": 1996,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019ApJ...875L...6E",
+        "title": "First M87 Event Horizon Telescope Results. VI. The Shadow and Mass of the Central Black Hole",
+        "year": 2019,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023ApJ...945L..35L",
+        "title": "Keck Integral-field Spectroscopy of M87 Reveals an Intrinsically Triaxial Galaxy and a Revised Black Hole Mass",
+        "year": 2023,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015MNRAS.451..588R",
+        "title": "Inside the Bondi radius of M87",
+        "year": 2015,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2012A&A...547A..56D",
+        "title": "M 87 at metre wavelengths: the LOFAR picture",
+        "year": 2012,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1997AJ....113.1279M",
+        "title": "The Stellar Dynamics of M87",
+        "year": 1997,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020MPLA...3550291K",
+        "title": "The shadow of M87∗ black hole within rational nonlinear electrodynamics",
+        "year": 2020,
+        "journal": "Modern Physics Letters A",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023A&A...679A..37O",
+        "title": "Revisiting the black hole mass of M 87 using VLT/MUSE adaptive optics integral field unit data. I. Ionized gas kinematics",
+        "year": 2023,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025JHEAp..4700367A",
+        "title": "Shadows and parameter estimation of rotating quantum corrected black holes and constraints from EHT observation of M87* and Sgr A*",
+        "year": 2025,
+        "journal": "Journal of High Energy Astrophysics",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022ApJ...935...61B",
+        "title": "The Photon Ring in M87*",
+        "year": 2022,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018MNRAS.479L..65S",
+        "title": "Black hole spin from wobbling and rotation of the M87 jet and a sign of a magnetically arrested disc",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025ApJ...985...41Z",
+        "title": "Accessing a New Population of Supermassive Black Holes with Extensions to the Event Horizon Telescope",
+        "year": 2025,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023arXiv230602494A",
+        "title": "Comparative tests of accretion rates of quasars derived using a new empirical and an existing theoretical relation: Insights into black hole properties and growth",
+        "year": 2023,
+        "journal": "arXiv e-prints",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023arXiv230704294A",
+        "title": "Accretion rates and radiative efficiencies of Sagittarius A* and nearby supermassive black holes estimated using empirical relations: Implications for accretion models",
+        "year": 2023,
+        "journal": "arXiv e-prints",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025A&A...698A..24B",
+        "title": "Ray-tracing GR-MHD-generated outflows from AGNs hosting thin accretion disks: An analysis approaching horizon scales",
+        "year": 2025,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 22,
+      "overall_quality": "excellent",
+      "total_issues": 13
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 5,
+      "by_layer": {
+        "base": 2,
+        "adapted": 0,
+        "generated": 3
+      },
+      "errors_count": 13,
+      "errors": [
+        {
+          "source": "2023arXiv230704294A",
+          "tool": "ops_mark_missing_unit",
+          "kind": "noop",
+          "error": "ops made zero modifications on full data"
+        },
+        {
+          "source": "1996MNRAS.283L.111R",
+          "tool": "parse_scientific_notation",
+          "kind": "out_of_range",
+          "error": "modified value 3000000000.0 Msun out of feasible range for black_hole_mass"
+        },
+        {
+          "source": "2022ApJ...935...61B",
+          "tool": "unit_converter",
+          "kind": "unconverted_unit",
+          "error": "no conversion rule for unit '10^9 Msun' in categories []"
+        },
+        {
+          "source": "2019MNRAS.489.1197N",
+          "tool": "extract_mass_scientific_notation",
+          "kind": "out_of_range",
+          "error": "modified value 5000000000.0 Msun out of feasible range for black_hole_mass"
+        },
+        {
+          "source": "2023arXiv230602494A",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2025ApJ...985...41Z",
+          "tool": "parse_scientific_notation",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2022ApJ...935...61B",
+          "tool": "parse_uncertainty_format",
+          "kind": "noop",
+          "error": "dry-run made zero modifications while sample has target issue"
+        },
+        {
+          "source": "2022ApJ...935...61B",
+          "tool": "parse_uncertainty_formats",
+          "kind": "noop",
+          "error": "dry-run made zero modifications while sample has target issue"
+        },
+        {
+          "source": "2019MNRAS.489.1197N",
+          "tool": "?",
+          "kind": "parse_error",
+          "error": "invalid JSON object: Invalid \\escape: line 3 column 136 (char 179)"
+        },
+        {
+          "source": "2019MNRAS.489.1197N",
+          "tool": "clean_bh_mass_notation",
+          "kind": "self_check_failed",
+          "error": "self_check mismatch: [{'assert': 'sample_prediction', 'field': 'field_value', 'message': \"after mismatch for 2019MNRAS.489.1197N_M87_black_hole_mass_0: predicted '5000000000.0', actual 5.0\"}, {'assert"
+        },
+        {
+          "source": "2015MNRAS.451..588R",
+          "tool": "?",
+          "kind": "parse_error",
+          "error": "unbalanced braces: no complete JSON object in LLM response"
+        },
+        {
+          "source": "2015MNRAS.451..588R",
+          "tool": "parse_uncertain_scientific_notation",
+          "kind": "dry_run_failed",
+          "error": "name 'rec' is not defined"
+        },
+        {
+          "source": "2015MNRAS.451..588R",
+          "tool": "clean_black_hole_mass_notation",
+          "kind": "self_check_failed",
+          "error": "self_check mismatch: [{'assert': 'sample_prediction', 'field': 'field_value', 'message': 'after mismatch for 2015MNRAS.451..588R_M87_black_hole_mass_0: predicted 6600000000.0, actual 6.6'}] (LLM revie"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-02T09:07:48.413356",
+    "run_id": "136c2238-ee95-41cf-8e5c-b2c718905930",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

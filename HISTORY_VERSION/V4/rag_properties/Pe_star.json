@@ -1,0 +1,323 @@
+{
+  "otype": "Pe*",
+  "name_cn": "化学特殊星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000.0历元赤经,精度0.01时秒",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000.0历元赤纬,精度0.1角秒",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon",
+      "name_cn": "银经",
+      "description": "银道坐标经度l",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度b",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Hipparcos/Gaia精确视差,用于推导距离、光度与恒星物理参数",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "V视星等",
+      "description": "V波段视星等,密近双星已扣除伴星贡献",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B-V色指数",
+      "description": "B-V色指数,双星为合光值",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color",
+      "name_cn": "U-B色指数",
+      "description": "U-B色指数,双星为合光值",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "by_color",
+      "name_cn": "b-y色指数",
+      "description": "Strömgren uvby系统b-y色指数",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m1_index",
+      "name_cn": "m1金属指数",
+      "description": "Strömgren uvby系统金属指数m1=(v-b)-(b-y)",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c1_index",
+      "name_cn": "c1色指数",
+      "description": "Strömgren uvby系统c1=(u-v)-(v-b)色指数",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hbeta_index",
+      "name_cn": "Hβ谱线指数",
+      "description": "Strömgren uvby系统Hβ谱线指数",
+      "category": "photometry",
+      "ucd": "phot.color;spect.line",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abundance_el",
+      "name_cn": "元素丰度[El/H]与[El/Fe]",
+      "description": "高分辨率光谱测定的化学丰度:Fe及特殊元素(He、Mn、Hg、Cr、Sr、Eu、Si等)的[El/H]或[El/Fe],含误差与文献来源;APOGEE星表另给出[Mn/Fe]等",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "多次测量视向速度及系统速度γ(APOGEE共1590条RV测量)",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度Teff,来自光谱拟合、光度校准或自动管线",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "表面重力对数log g",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量,由光度、log g与Teff结合演化模型推导",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径,基于视差与光度校准推导",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度v sin i",
+      "description": "赤道投影自转速度,含III/260注记值(HgMn星谱线锐利,与磁性Ap星显著不同)",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rot_period",
+      "name_cn": "自转周期",
+      "description": "自转周期:mCP星因表面丰度斑块可直接由光变、磁场或谱线强度变化测量,无需校准",
+      "category": "physical",
+      "ucd": "time.period.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inclination",
+      "name_cn": "自转轴倾角",
+      "description": "自转轴与视线方向夹角i",
+      "category": "physical",
+      "ucd": "phys.angle.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vcrit",
+      "name_cn": "临界自转速度",
+      "description": "临界(破裂)自转速度v_crit,用于研究自转接近临界率的CP星",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_field",
+      "name_cn": "纵向有效磁场",
+      "description": "纵向有效磁场Be(均值与观测极值),III/260注记含纵向场(He)、场模量(M)、二次场(Q)极值;Bychkov星表给出平均二次有效场",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_phase_params",
+      "name_cn": "磁场位相曲线拟合参数",
+      "description": "Be随自转位相变化的正弦/双波最小二乘拟合参数:B0、B1振幅、位相与周期,共357星",
+      "category": "physical",
+      "ucd": "phys.magField;stat.fit",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "单线(SB1)/双线(SB2/SB3)分光双星轨道周期,HgMn星双星比例约70%",
+      "category": "physical",
+      "ucd": "time.period.orbit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率e及近星点幅角ω",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_semi_amplitude",
+      "name_cn": "视向速度半振幅K1",
+      "description": "主星视向速度半振幅K1及轨道半长轴投影a1 sin i",
+      "category": "physical",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function",
+      "name_cn": "双星质量函数",
+      "description": "分光双星质量函数f(M1,M2)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变光/变谱类型",
+      "description": "α²CVn型等磁性CP星自转调制变化性质(光变、磁变、谱线强度变化及视向速度变化)",
+      "category": "variability",
+      "ucd": "src.var.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_period",
+      "name_cn": "变化周期",
+      "description": "光度(l)、磁场(m)、谱线强度(s)、视向速度(v)的变化周期,由III/260注记P给出",
+      "category": "variability",
+      "ucd": "time.period;src.var",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型与化学特殊标记",
+      "description": "MK光谱型及特殊标记:Ap后接异常元素符号(Si、Cr、Sr、Eu、HgMn等),Am以'K线型-金属线型'双光谱型表示,δDel型标注dD",
+      "category": "classification",
+      "ucd": "src.class.spectralType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cp_class",
+      "name_cn": "CP子类",
+      "description": "Preston(1974)CP分类:CP1(Am金属线星)、CP2(磁性Ap/Bp星)、CP3(HgMn星)、CP4(He弱/He富星)",
+      "category": "classification",
+      "ucd": "src.class.peculiarity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity",
+      "name_cn": "多重性",
+      "description": "双星/聚星成分标识及ADS/BDS证认(伴星角距、星等差),及III/260注记B中的双星周期与偏心率",
+      "category": "classification",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_id",
+      "name_cn": "源编号与交叉证认",
+      "description": "Rns顺序编号及HD/HDE、HIP、HR、DM(BD/CD/CP)、TYC、GC等星表交叉证认号",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团/星协成员关系",
+      "description": "所在星团、星群或星协及星内成员编号(WEBDA编号),用于研究CP星的形成环境与年龄",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

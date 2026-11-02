@@ -1,0 +1,305 @@
+{
+  "otype": "HXB",
+  "name_cn": "高质量X射线双星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "sky_position",
+      "name_cn": "天体位置（RA/Dec J2000）",
+      "description": "源赤经赤经与赤纬（J2000），含位置误差（Fortin 2023 用 Gaia 精度，2SXPS 用 90% 置信误差半径）",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银道坐标",
+      "description": "银经 GLON 与银纬 GLAT，用于银河系分布与星族研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "crossmatch_positions",
+      "name_cn": "多波段交叉证认位置",
+      "description": "AGILE、HEAO-1、4U、Ariel-5、IGR/INTEGRAL、ROSAT、ROSAT-FSC、Fermi-LAT、BeppoSAX、Swift 2SXPS、XMM 4XMM、Chandra CSC2、2MASS、Gaia DR3 各波段独立位置与误差",
+      "category": "astrometry",
+      "ucd": "pos;meta.id.cross",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "基于 Gaia EDR3 视差的几何距离（Bailer-Jones 2021），含正负误差",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_optical_offset",
+      "name_cn": "X射线-光学/红外位置偏移",
+      "description": "X射线源与光学/红外对应体之间的角距离 dXO、dOIR，用于对应体证认可靠性判定",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_magnitudes",
+      "name_cn": "光学视星等",
+      "description": "光学 U/B/V/I 或 V 波段星等及误差（SMC 源为 UBVI，银河系源为 V）",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_colors",
+      "name_cn": "光学色指数",
+      "description": "U-B、B-V、V-I 色指数及红化不变量 Q，用于伴星光谱型与星际红化估计",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nir_magnitudes",
+      "name_cn": "近红外星等",
+      "description": "2MASS J、H、K 星等（银道表）及 J-H、H-K 色（SMC 表），受星际消光影响小，利于对应体证认",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.NIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mir_fluxes",
+      "name_cn": "中红外通量",
+      "description": "Spitzer IRAC 3.6/4.5/5.8/8.0 微米流量，探测 Be 星盘等星周物质",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.MIR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux",
+      "name_cn": "X射线流量",
+      "description": "X射线流量（银河系表为2-10 keV，SMC表为0.2-10 keV）及标注能段，上限值另标",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_count_rate",
+      "name_cn": "X射线计数率",
+      "description": "Swift 0.3-10 keV 四能段(0.3-1/1-2/2-4.5/4.5-10 keV)计数率 CR0-CR3 及误差",
+      "category": "photometry",
+      "ucd": "phot.count;em.X-ray",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_hardness_ratio",
+      "name_cn": "X射线硬度比",
+      "description": "硬度比 HR1、HR2（相邻能段计数比），区分 NS/BH 吸积态与 X射线谱硬度演化",
+      "category": "photometry",
+      "ucd": "phot.color;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening",
+      "name_cn": "星际消光 E(B-V)",
+      "description": "色余 E(B-V)（含第二消光解 E(B-V)2），用于吸收改正与距离估算",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期 Porb（天），HXB 关键物理量（Be型约10-200天，超巨星型约1-10天），含误差与参考",
+      "category": "physical",
+      "ucd": "time.period.orbit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "superorbital_period",
+      "name_cn": "超轨道周期",
+      "description": "超轨道周期 PerSupOrb（天），与伴星星风/吸积盘进动相关",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period",
+      "name_cn": "中子星自旋周期",
+      "description": "X射线脉冲自旋周期 Ppulse（秒），HXB 中多为吸积供能的磁化中子星",
+      "category": "physical",
+      "ucd": "time.period.pulse",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率 Ecc（含上限标志），与星风吸积及脉冲相位演化相关",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "compact_object_mass",
+      "name_cn": "致密天体质量",
+      "description": "致密天体（中子星/黑洞）质量 Mx（太阳质量）及误差，用于判定致密天体性质",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_mass",
+      "name_cn": "伴星质量",
+      "description": "光学伴星（OB超巨星/Be星）质量 Mo（太阳质量）及误差",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absorbing_column",
+      "name_cn": "X射线吸收柱密度",
+      "description": "X射线谱吸收柱密度 NH（cm^-2），来自幂律/APEC拟合",
+      "category": "physical",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "systemic_radial_velocity",
+      "name_cn": "系统视向速度",
+      "description": "系统视向速度 RV（km/s）及误差，联系银河系运动学",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_spectral_params",
+      "name_cn": "X射线谱拟合参数",
+      "description": "幂律光子指数 Gamma、等离子体温度 kT（APEC）及拟合统计量，来自 Swift 谱拟合",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.X-ray",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_ew",
+      "name_cn": "Hα 等值宽度",
+      "description": "Hα 等值宽度 Ha1/Ha2（埃），Be 星盘发射的判据，用于 Be/X 双星分类",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Hα",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_spectral_type",
+      "name_cn": "伴星光谱型",
+      "description": "光学伴星光谱型 SpType（如 B0.5Ve、BN0.7Ib、O8Iabfpe），区分 Be型与超巨星型 HXB",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hmxb_subclass",
+      "name_cn": "HMXB亚型",
+      "description": "HMXB 亚型 Class：Be（Be/X双星）、sg（超巨星）、SFXT（超巨星快速X射线暂现源）、WR（Wolf-Rayet）",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "compact_object_type",
+      "name_cn": "致密天体类型",
+      "description": "致密天体类型判定（中子星 NS/黑洞 BH/白矮星 WD），由质量与吸积特性推断",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "source_confidence",
+      "name_cn": "源置信等级",
+      "description": "HMXB 候选体置信等级 conf（1-3 级），综合X射线、光学与脉冲探测证据",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_variability_flags",
+      "name_cn": "X射线变异性标志",
+      "description": "基于 INTEGRAL(IGRvar)、Swift(2SXPS峰均比)、XMM、Chandra 的变异性标志及总体 Var 标志",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_flags",
+      "name_cn": "脉冲探测标志",
+      "description": "X射线脉冲探测标志 ps/px/po（探测/疑似/无），确认中子星自旋的关键证据",
+      "category": "variability",
+      "ucd": "src.var.pulse",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_probability",
+      "name_cn": "变异性概率",
+      "description": "Swift 源变异性概率（PCR、Pcst 等），判断源是否呈现显著X射线亮度变化",
+      "category": "variability",
+      "ucd": "src.var;stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux_range",
+      "name_cn": "X射线流量变化范围",
+      "description": "X射线最大/最小流量 Fmax/Fmin（erg/s/cm^2），表征爆发幅度，Be/X双星爆发活动重要参数",
+      "category": "variability",
+      "ucd": "phot.flux;src.var",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_variability_flags",
+      "name_cn": "光学变异性标志",
+      "description": "光学对应体变异性标志 oi/em/os（光学成像/发射线/光谱观测证据）",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "宿主星系归属（银河系、SMC、LMC），麦哲伦云 HXB 星族显著富集 Be 型系统",
+      "category": "environment",
+      "ucd": "meta.study",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

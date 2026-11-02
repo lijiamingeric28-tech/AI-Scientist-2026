@@ -1,0 +1,185 @@
+{
+  "field_definitions": {
+    "cooling_age": {
+      "standard_unit": "Gyr",
+      "semantic_type": "age",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Represents the time elapsed since a compact stellar remnant ceased active nuclear fusion and began its thermal cooling phase, measured in gigayears (Gyr)."
+    },
+    "mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Indicates the total gravitational mass of the stellar object, expressed in solar masses (Msun)."
+    },
+    "surface_gravity": {
+      "standard_unit": "dex",
+      "semantic_type": "surface_gravity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the base-10 logarithm of the surface gravitational acceleration, reported in decimal orders of magnitude (dex)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 11,
+    "sources_exported": 11,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "2018MNRAS.481.2361J",
+        "title": "The gravitational redshift of Sirius B",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005MNRAS.362.1134B",
+        "title": "Hubble Space Telescope spectroscopy of the Balmer lines in Sirius B<SUP>*</SUP>",
+        "year": 2005,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 6,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005ApJ...630L..69L",
+        "title": "The Age and Progenitor Mass of Sirius B",
+        "year": 2005,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2008A&A...489..651B",
+        "title": "ADONIS high contrast infrared imaging of Sirius-B",
+        "year": 2008,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026MNRAS.545f1811B",
+        "title": "New ultralight scalar particles and the mass─radius relation of white dwarfs ─ the important role of Sirius B",
+        "year": 2026,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022AJ....163...81L",
+        "title": "An Imaging Search for Post-main-sequence Planets of Sirius B",
+        "year": 2022,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019MNRAS.484.2711R",
+        "title": "The white dwarf mass-radius relation and its dependence on the hydrogen envelope",
+        "year": 2019,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018MNRAS.479.1612J",
+        "title": "Testing the white dwarf mass-radius relation and comparing optical and far-UV spectroscopic results with Gaia DR2, HST, and FUSE",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018ApJ...866...21C",
+        "title": "The White Dwarf Initial-Final Mass Relation for Progenitor Stars from 0.85 to 7.5 M <SUB>☉</SUB>",
+        "year": 2018,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006A&A...458..541B",
+        "title": "Establishing <ASTROBJ>HZ43 A</ASTROBJ>, <ASTROBJ>Sirius B</ASTROBJ>, and <ASTROBJ>RX J185635-3754</ASTROBJ> as soft X-ray standards: a cross-calibration between the Chandra LETG+HRC-S, the EUVE spectrometer, and the ROSAT PSPC",
+        "year": 2006,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017ApJ...840...70B",
+        "title": "The Sirius System and Its Astrophysical Puzzles: Hubble Space Telescope and Ground-based Astrometry",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 11,
+      "overall_quality": "good",
+      "total_issues": 21
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 23,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 23
+      },
+      "errors_count": 3,
+      "errors": [
+        {
+          "source": "2005MNRAS.362.1134B",
+          "tool": "strip_uncertainty_field_value",
+          "kind": "out_of_range",
+          "error": "modified value 8.556 dex out of feasible range for surface_gravity"
+        },
+        {
+          "source": "2006A&A...458..541B",
+          "tool": "numeric_convert",
+          "kind": "out_of_range",
+          "error": "modified value 8.6 dex out of feasible range for surface_gravity"
+        },
+        {
+          "source": "2008A&A...489..651B",
+          "tool": "numeric_convert",
+          "kind": "out_of_range",
+          "error": "modified value 8.556 dex out of feasible range for surface_gravity"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T19:01:32.682660",
+    "run_id": "5db879b9-8745-4951-9177-793ac5c11b4e",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

@@ -1,0 +1,24 @@
+{
+  "exported_at": "2026-09-01T19:23:08.751685",
+  "output_dir": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\output\\4875820b",
+  "files": [
+    "grounded_data_20260901_192308.json",
+    "data_long_20260901_192308.csv",
+    "data_wide_20260901_192308.csv",
+    "quality_summary_20260901_192308.json",
+    "metadata_20260901_192308.json",
+    "traceability_20260901_192308.json",
+    "insights_20260901_192557.json"
+  ],
+  "failed_files": [],
+  "validation_passed": true,
+  "row_count": 53,
+  "quality_level": "fair",
+  "wide_collapse": {
+    "groups": 9,
+    "overwritten_values": 9
+  },
+  "csv_encoding": "utf-8-sig",
+  "csv_encoding_note": "utf-8-sig 含 BOM (Excel 兼容); 需要无 BOM 输出请设 EXPORT_CSV_ENCODING=utf-8",
+  "insights_written": true
+}

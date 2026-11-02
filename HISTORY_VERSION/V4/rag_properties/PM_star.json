@@ -1,0 +1,260 @@
+{
+  "otype": "PM*",
+  "name_cn": "高自行星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "ICRS/J2000赤经(ICRS历元2000.0),LSPM-North精度~100mas,由Tycho-2/2MASS位置外推",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "ICRS/J2000赤纬(ICRS历元2000.0),精度~100mas",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_ra",
+      "name_cn": "赤经方向自行",
+      "description": "赤经方向绝对自行μαcosδ(arcsec/yr),LSPM-North还提供SUPERBLINK相对自行;I/279为POSS重测值,I/98为Luyten原值",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_dec",
+      "name_cn": "赤纬方向自行",
+      "description": "赤纬方向绝对自行μδ(arcsec/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_total",
+      "name_cn": "总自行",
+      "description": "总自行μ(arcsec/yr),该天体类型的核心判别量(>50mas/yr);I/298同时给出绝对(河外参考系)与相对(4角分背景)总自行",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "arcsec/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_direction",
+      "name_cn": "自行方向角",
+      "description": "自行矢量位置角(度),I/279修订LHS提供",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_source_flag",
+      "name_cn": "自行来源标志",
+      "description": "自行来源代码:T=Tycho-2,S=SUPERBLINK,A=ASCC-2.5,O=其他(NLTT/rNLTT/Bakos等),用于评估自行精度",
+      "category": "astrometry",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "三角视差",
+      "description": "文献三角视差(mas),J/AJ/130/1680给出1676颗近距LSPM星的实测视差,直接给出距离",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "近距LSPM星距离:视差距离或光度/光谱距离模数导出(pc),新候选星由(MV,V-J)关系估算;是高自行星空间速度计算的关键量",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon",
+      "name_cn": "银经",
+      "description": "银道坐标银经(度),用于高银纬样本选择与银晕/厚盘成员统计",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lat",
+      "name_cn": "银纬",
+      "description": "银道坐标银纬(度),LSPM-North在高银纬(|b|>15°)完整度>99%",
+      "category": "environment",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_pos",
+      "name_cn": "位置观测历元",
+      "description": "POSS I/II底片观测历元,用于自行测量基线(I/279提供)",
+      "category": "astrometry",
+      "ucd": "time.epoch",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V星等",
+      "description": "光学V星等(取自Tycho-2 VT/ASCC-2.5),LSPM-North同时提供对全表估计的Veff视星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B星等",
+      "description": "光学B星等(取自Tycho-2 BT/ASCC-2.5)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_bj",
+      "name_cn": "照相蓝星等",
+      "description": "照相蓝星等BJ(IIIaJ,USNO-B1.0)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_rf",
+      "name_cn": "照相红星等",
+      "description": "照相红星等RF(IIIaF,USNO-B1.0,部分由SUPERBLINK从POSS-II估计)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_in",
+      "name_cn": "照相近红外星等",
+      "description": "照相近红外星等IN(IVN,USNO-B1.0)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_j",
+      "name_cn": "J星等",
+      "description": "2MASS近红外J星等(精度~0.02mag,5<J<14)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_h",
+      "name_cn": "H星等",
+      "description": "2MASS近红外H星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_ks",
+      "name_cn": "Ks星等",
+      "description": "2MASS近红外Ks星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_vj",
+      "name_cn": "V-J色指数",
+      "description": "估计(V-J)eff颜色,与Veff配合用于高自行星初步分类(红矮星/亚矮星/白矮星候选)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V;em.IR.J",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_abs_v",
+      "name_cn": "绝对星等MV",
+      "description": "绝对V星等,由视差/光度距离模数得到,用于光度定级与邻近星确认",
+      "category": "physical",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vtan",
+      "name_cn": "切向速度",
+      "description": "切向速度(km/s,由自行与距离导出),与视向速度合成空间速度(UVW),用于银晕/厚盘运动学判别",
+      "category": "physical",
+      "ucd": "phys.veloc.transverse",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectype",
+      "name_cn": "光谱型/恒星类型",
+      "description": "恒星类型分类:矮星、亚矮星、巨星(及候选),J/AJ/130/1680基于LSPM-North的(MV,V-J)光度分类",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_class",
+      "name_cn": "估计星类",
+      "description": "由Veff与(V-J)eff估计的恒星类(如红矮星/亚矮星/白矮星候选),LSPM-North为全表61,977颗提供",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "population",
+      "name_cn": "星系成分(银晕/厚盘)",
+      "description": "薄盘/厚盘/银晕成分判别:基于折合自行(H=m+5+5logμ)与空间速度UVW、银河轨道参数判定,高自行样本富集银晕与厚盘老恒星及亚矮星",
+      "category": "environment",
+      "ucd": "phys.population",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cpm_pair_flag",
+      "name_cn": "共同自行双星标志",
+      "description": "LSPM命名后缀(N/S/E/W)标示角分尺度内共同自行对,用于识别物理双星与偶然投影;I/279的'D'标志标注双星/伴星",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_id",
+      "name_cn": "交叉证认标识",
+      "description": "多表交叉证认标识:LHS、NLTT(rNLTT)、Hipparcos、Tycho-2、ASCC-2.5、UCAC2、2MASS、USNO-B1.0及SIMBAD替代名",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

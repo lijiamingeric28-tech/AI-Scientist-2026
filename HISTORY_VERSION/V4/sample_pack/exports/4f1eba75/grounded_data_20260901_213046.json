@@ -1,0 +1,875 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2023MNRAS.522L..66B",
+      "source_type": "paper",
+      "doi": "10.1093/mnrasl/slad040",
+      "title": "A detailed analysis of X-ray emission-line velocities of Capella from over 20 yr of Chandra/HETG spectroscopy",
+      "authors": [
+        "Bozzo, E.",
+        "Huenemoerder, D. P.",
+        "Produit, N.",
+        "Falanga, M.",
+        "Paltani, S.",
+        "Costantini, E."
+      ],
+      "year": 2023,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2023MNRAS.522L..66B.pdf",
+      "retrieval_priority": 0.43441298292502584,
+      "abstract": "Capella is the brightest chromospherically active binary in the sky, hosting a cooler G8III giant (Aa) and a hotter G1III companion (Ab). The source has been extensively observed in the X-rays in the past decades not only for its astrophysical interest in the field of corona sources, but also for in-flight calibrations of space-based X-ray instruments. In 2006, it was demonstrated using Chandra/High Energy Transmission Grating (HETG) observations that Aa is the main contributor to Capella's X-ray emission, as the centroid energies of the emission lines are Doppler shifted along the orbit of the G8III giant (an aspect that has to be taken into consideration for calibration activities of X-ray instruments). In this paper, we extend the previous analysis performed in 2006 by re-analysing in a homogeneous way all Chandra/HETG observations performed in the direction of Capella. By doubling the amount of data available, we strengthened the conclusion that Capella Aa is the dominant emitter in soft X-rays. We did not find any evidence of a statistically significant contribution to this emission by the Ab giant. Our findings are discussed also in light of the incoming launch of the X-Ray Imaging and Spectroscopy Mission (XRISM) mission (spring 2023).",
+      "keywords": [
+        "instrumentation: spectrographs",
+        "stars: binaries",
+        "stars: individual: Capella",
+        "X-rays: binaries",
+        "X-rays: stars",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:radial OR abs:velocity OR abs:semi OR abs:amplitude OR abs:\"semi-amplitude\")",
+      "search_rank": 53
+    },
+    {
+      "source_id": "2023A&A...676A..19M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202346758",
+      "title": "An insight into Capella (α Aurigae): From the extent of core overshoot to its evolutionary history",
+      "authors": [
+        "Marini, E.",
+        "Ventura, C.",
+        "Tailo, M.",
+        "Ventura, P.",
+        "Dell'Agli, F.",
+        "Castellani, M."
+      ],
+      "year": 2023,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2023A&A...676A..19M.pdf",
+      "retrieval_priority": 0.5057205666733017,
+      "abstract": "Context. The binary star α Aurigae (otherwise known as Capella) is extremely important to understanding the core hydrogen and helium burning phases of stars, as its primary star is likely evolving through the core helium burning phase. Moreover, the masses of the star's two components are ∼2.5 M<SUB>☉</SUB> and ∼2.6 M<SUB>☉</SUB>, meaning they fall into a mass range in which the extension of the core overshoot during the main sequence phase is uncertain. <BR /> Aims: We aim to derive the extent of the core overshoot experienced during the core burning phases and to test the efficiency of the convective transport of energy in the external envelope of Capella by comparing results from stellar evolution modelling with the results from observations. <BR /> Methods: We considered evolutionary tracks calculated expressly for the present work, that is, for the primary and secondary stars of Capella. We determined the extent of the extra mixing from the core during the main sequence evolution and the age of the system by requiring that the effective temperatures and surface gravities of the model stars reproduce those derived from the observations at the same epoch. We further checked the consistency between the observed and predicted surface chemistry of the stars. <BR /> Results: The consistency between results from stellar evolution modelling and the observations of Capella is found when extra mixing from the core is assumed, the extent of the extra-mixed zone being of the order of 0.25 H<SUB>P</SUB>. The age of the system is estimated to be 710 Myr. These results allow the observed surface chemistry to be well reproduced, particularly the recent determination of the <SUP>12</SUP>C/<SUP>13</SUP>C ratio based on Large Binocular Telescope and Vatican Advanced Technology Telescope observations.",
+      "keywords": [
+        "binaries: general",
+        "stars: abundances",
+        "stars: interiors",
+        "stars: evolution",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:binary mass OR abs:double star mass OR abs:component mass OR abs:companion mass)",
+      "search_rank": 30
+    },
+    {
+      "source_id": "2015ApJ...807...26T",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/807/1/26",
+      "title": "Capella (α Aurigae) Revisited: New Binary Orbit, Physical Properties, and Evolutionary State",
+      "authors": [
+        "Torres, Guillermo",
+        "Claret, Antonio",
+        "Pavlovski, Krešimir",
+        "Dotter, Aaron"
+      ],
+      "year": 2015,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2015ApJ...807...26T.pdf",
+      "retrieval_priority": 0.5783955013148838,
+      "abstract": "Knowledge of the chemical composition and absolute masses of Capella are key to understanding the evolutionary state of this benchmark binary system comprising two giant stars. Previous efforts, including our own 2009 study, have largely failed to reach an acceptable agreement between the observations and current stellar evolution models, preventing us from assessing the status of the primary. Here we report a revision of the physical properties of the components incorporating recently published high-precision radial velocity measurements, and a new detailed chemical analysis providing abundances for more than 20 elements in both stars. We obtain highly precise (∼0.3%) masses of 2.5687 ± 0.0074 {M}<SUB>☉ </SUB> and 2.4828 ± 0.0067 {M}<SUB>☉ </SUB>, radii of 11.98 ± 0.57 {R}<SUB>☉ </SUB> and 8.83 ± 0.33 {R}<SUB>☉ </SUB>, effective temperatures of 4970 ± 50 and 5730 ± 60 K, and independently measured luminosities based on the orbital parallax (78.7 ± 4.2 {L}<SUB>☉ </SUB> and 72.7 ± 3.6 {L}<SUB>☉ </SUB>). We find an excellent match to stellar evolution models at the measured composition of [{Fe}/{{H}}]=-0.04+/- 0.06. Three different sets of models place the primary star firmly at the end of the core helium-burning phase (clump), while the secondary is known to be evolving rapidly across the Hertzprung gap. The measured lithium abundance, the C/N ratio, and the <SUP>12</SUP>C/<SUP>13</SUP>C isotopic carbon abundance ratio, which change rapidly in the giant phase, are broadly in agreement with expectations from models. Predictions from tidal theory for the spin rates, spin-orbit alignment, and other properties do not fare as well, requiring a 40-fold increase in the efficiency of the dissipation mechanisms in order to match the observations.",
+      "keywords": [
+        "binaries: general",
+        "binaries: spectroscopic",
+        "stars: abundances",
+        "stars: evolution",
+        "stars: fundamental parameters",
+        "stars: individual: Capella",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:binary mass OR abs:double star mass OR abs:component mass OR abs:companion mass)",
+      "search_rank": 25
+    },
+    {
+      "source_id": "2013A&A...560A.113H",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201321894",
+      "title": "FIRST, a fibered aperture masking instrument. II. Spectroscopy of the Capella binary system at the diffraction limit",
+      "authors": [
+        "Huby, E.",
+        "Duchêne, G.",
+        "Marchis, F.",
+        "Lacour, S.",
+        "Perrin, G.",
+        "Kotani, T.",
+        "Choquet, É.",
+        "Gates, E. L.",
+        "Lai, O.",
+        "Allard, F."
+      ],
+      "year": 2013,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2013A&A...560A.113H.pdf",
+      "retrieval_priority": 0.4209718620213531,
+      "abstract": "<BR /> Aims: FIRST is a prototype instrument built to demonstrate the capabilities of the pupil remapping technique, using single-mode fibers and working at visible wavelengths. Our immediate objective is to demonstrate the high angular resolution capability of the instrument and to show that the spectral resolution of the instrument enables characterization of stellar companions. <BR /> Methods: The FIRST-18 instrument is an improved version of FIRST-9 that simultaneously recombines two sets of nine fibers instead of one, thus greatly enhancing the (u, v) plane coverage. We report on observations of the binary system Capella at three epochs over a period of 14 months (≳4 orbital periods) with FIRST-18 mounted on the 3 m Shane telescope at Lick Observatory. The binary separation during our observations ranges from 0.8 to 1.2 times the diffraction limit of the telescope at the central wavelength of the spectral band. <BR /> Results: We successfully resolved the Capella binary system at all epochs, with an astrometric precision as good as 1 mas under the best observing conditions. FIRST also gives access to the spectral flux ratio between the two components directly measured with an unprecedented spectral resolution of R ~ 300 over the 600-850 nm range. In particular, our data allow detection of the well-known overall slope of the flux ratio spectrum, leading to an estimation of the \"pivot\" wavelength of 0.64 ± 0.01 μm, at which the cooler component becomes the brightest. Spectral features arising from the difference in effective temperature of the two components (specifically the Hα line, TiO, and CN bands) have been used to constrain the stellar parameters. The effective temperatures we derive for both components are slightly lower (5-7%) than the well-established properties for this system. This difference mainly comes from deeper molecular features than those predicted by state-of-the-art stellar atmospheric models, suggesting that molecular line lists used in the photospheric models are incomplete and/or oscillator strengths are underestimated, most likely concerning the CN molecule. <BR /> Conclusions: These results demonstrate the power of FIRST, which is a fibered pupil remapping-based instrument, in terms of high angular resolution and show that the direct measurement of the spectral flux ratio provides valuable information to characterize little known companions.",
+      "keywords": [
+        "instrumentation: high angular resolution",
+        "techniques: interferometric",
+        "binaries: close",
+        "binaries: visual",
+        "stars: fundamental parameters",
+        "stars: individual: Capella",
+        "Astrophysics - Instrumentation and Methods for Astrophysics"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:\"orbital period\" OR abs:\"orbit period\" OR abs:period)",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2011A&A...531A..89W",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201116885",
+      "title": "The spectroscopic orbit of Capella revisited",
+      "authors": [
+        "Weber, M.",
+        "Strassmeier, K. G."
+      ],
+      "year": 2011,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2011A&A...531A..89W.pdf",
+      "retrieval_priority": 0.585426178402383,
+      "abstract": "Context. Capella is among the few binary stars with two evolved giant components. The hotter component is a chromospherically active star within the Hertzsprung gap, while the cooler star is possibly helium-core burning. <BR /> Aims: The known inclination of the orbital plane from astrometry in combination with precise radial velocities will allow very accurate masses to be determined for the individual Capella stars. This will constrain their evolutionary stage and possibly the role of the active star's magnetic field on the dynamical evolution of the binary system. <BR /> Methods: We obtained a total of 438 high-resolution échelle spectra during the years 2007-2010 and used the measured velocities to recompute the orbital elements. Our double-lined orbital solution yields average residuals of 64 m s<SUP>-1</SUP> for the cool component and 297 m s<SUP>-1</SUP> for the more rapidly rotating hotter component. <BR /> Results: The semi-amplitude of the cool component is smaller by 0.045 km s<SUP>-1</SUP> than the orbit determination of Torres et al. from data taken during 1996-1999 but more precise by a factor of 5.5, while for the hotter component it is larger by 0.580 km s<SUP>-1</SUP> and more precise by a factor of 3.6. This corresponds to masses of 2.573 ± 0.009 M<SUB>☉</SUB> and 2.488 ± 0.008 M<SUB>☉</SUB> for the cool and hot component, respectively. Their relative errors of 0.34% and 0.30% are about half of the values given in Torres et al. for a combined literature-data solution but with absolute values different by 4% and 2% for the two components, respectively. The mass ratio of the system is therefore q = M<SUB>A</SUB>/M<SUB>B</SUB> = 0.9673 ± 0.0020. <BR /> Conclusions: Our orbit is the most precise and also likely to be the most accurate ever obtained for Capella. <P />Based on data obtained with the STELLA robotic telescope in Tenerife, an AIP facility jointly operated by AIP and IAC.Full Table 1 is only available at the CDS via anonymous ftp to cdsarc.u-strasbg.fr (130.79.128.5) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/531/A89\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/531/A89</A>",
+      "keywords": [
+        "stars: individual: Capella (αAur)",
+        "starspots",
+        "techniques: radial velocities",
+        "binaries: spectroscopic",
+        "stars: late-type",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:binary mass OR abs:double star mass OR abs:component mass OR abs:companion mass)",
+      "search_rank": 22
+    },
+    {
+      "source_id": "2009ApJ...700.1349T",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/700/2/1349",
+      "title": "Binary Orbit, Physical Properties, and Evolutionary State of Capella (α Aurigae)",
+      "authors": [
+        "Torres, Guillermo",
+        "Claret, Antonio",
+        "Young, Patrick A."
+      ],
+      "year": 2009,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2009ApJ...700.1349T.pdf",
+      "retrieval_priority": 0.3876531502976672,
+      "abstract": "We report extensive radial velocity measurements of the two giant components of the detached, 104 day period binary system of Capella. Our highly accurate three-dimensional orbital solution based on all existing spectroscopic and astrometric observations including our own yields much improved masses for the primary and secondary of 2.466 ± 0.018 M <SUB>sun</SUB> and 2.443 ± 0.013 M <SUB>sun</SUB>, with relative errors of only 0.7% and 0.5%, respectively. The mass ratio is considerably closer to unity than previously believed, which has an impact on assessing the evolutionary state of the system. Improved values are presented also for the radii (11.87 ± 0.56 R <SUB>sun</SUB> and 8.75 ± 0.32 R <SUB>sun</SUB>), effective temperatures (4920 ± 70 K and 5680 ± 70 K), and luminosities (79.5 ± 4.8 L <SUB>sun</SUB> and 72.1 ± 3.6 L <SUB>sun</SUB>). The distance is determined to be 13.042 ± 0.028 pc, based on the accurate orbital parallax. The projected rotational velocities and individual rotation periods are also known. Capella is unique among evolved stars in that, in addition to all of the above, the chemical composition is known as well. This includes the overall metallicity [m/H], the carbon isotope ratio <SUP>12</SUP>C/<SUP>13</SUP>C for the primary, and the lithium abundance and C-to-N ratios for both components. We present new or revised values for some of these. The latter three quantities are sensitive diagnostics of evolution, and change drastically for giants as a result of the deepening of the convective envelope during the first dredge-up. The secondary is crossing the Hertzprung gap, while the primary is believed to be in the longer-lived core helium-burning phase. Previous studies using only the masses, temperatures, and luminosities have found good agreement with stellar evolution models placing the primary in the clump. Here, we compare all of the constraints simultaneously against three sets of current models. We find that they are unable to match all of the observations for both components at the same time, and at a single age, for any evolutionary state of the primary. This shows the great importance of chemical information for assessing the evolutionary state of giant stars. A comparison with models of tidal evolution yields similarly disappointing results, when tested against the fact that the orbit is circular, the primary is rotating synchronously, the secondary ~12 times faster than synchronous, and the spin axes are apparently aligned with the axis of the orbit. When confronted in detail, our understanding of the advanced stages of stellar evolution is thus still very incomplete.",
+      "keywords": [
+        "binaries: general",
+        "binaries: spectroscopic",
+        "stars: abundances",
+        "stars: evolution",
+        "stars: fundamental parameters",
+        "stars: individual: Capella",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:\"orbital period\" OR abs:\"orbit period\" OR abs:period)",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2006ApJ...644L.117I",
+      "source_type": "paper",
+      "doi": "10.1086/505702",
+      "title": "Chandra/HETGS Observations of the Capella System: The Primary as a Dominating X-Ray Source",
+      "authors": [
+        "Ishibashi, Kazunori",
+        "Dewey, Daniel",
+        "Huenemoerder, David P.",
+        "Testa, Paola"
+      ],
+      "year": 2006,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\4f1eba75-8241-439e-a722-410997b5c064\\2006ApJ...644L.117I.pdf",
+      "retrieval_priority": 0.3826021396113093,
+      "abstract": "Using the Chandra/High Energy Transmission Grating Spectrometer (HETGS), we have detected the Doppler motion of Capella's X-ray emission lines in the 6-25 Å wave band. The observed motion follows the expected orbital motion of Capella's primary. This finding implies that the primary G8 III star, not the secondary G1 III star in the Hertzsprung gap, has been the dominant source of hot 10<SUP>6.8</SUP>-10<SUP>7</SUP> K plasma at least in the last 6 years. In addition, the results demonstrate the long-term stability of the HETGS, and they demonstrate small uncertainties of 25 and 33 km s<SUP>-1</SUP> in the velocity determination with the High and Medium Energy Gratings (HEG and MEG), respectively.",
+      "keywords": [
+        "Stars: Binaries: Spectroscopic",
+        "Stars: Evolution",
+        "Stars: Individual: Name: Capella",
+        "Stars: Late-Type",
+        "X-Rays: Stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Capella\" OR abs:\"Capella\") AND (abs:radial OR abs:velocity OR abs:semi OR abs:amplitude OR abs:\"semi-amplitude\")",
+      "search_rank": 52
+    },
+    {
+      "source_id": "SRC_DB_HR",
+      "source_type": "database",
+      "title": "Bright Star Catalogue (HR)",
+      "vizier_table_id": "V/50/catalog",
+      "description": "亮星星表（原称 Yale Catalogue of Bright Stars）收录了北半球和南半球最亮的约9110颗恒星，是天文学中最常用的亮星参考表。",
+      "reference_paper": "Hoffleit, D., & Warren, W. H. 1995, Yale University Observatory",
+      "bibcode": "1995yCat.5050....0H",
+      "research_methodology": "汇集多个历史星表与光谱分类数据的综合整理",
+      "observation_facility": "Yale University Observatory (汇编)",
+      "waveband": "Optical",
+      "research_content": "约9110颗亮星(视星等亮于约6.5等)的坐标、V星等、B-V颜色和光谱型。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2006ApJ...644L.117I_Capella_velocity_semi_amplitude_0",
+      "source_id": "2006ApJ...644L.117I",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": 26.05,
+      "field_unit": "km/s",
+      "trace_id": "doc5_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          107,
+          909,
+          151,
+          926
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "the velocity amplitudes K1 and K2 for the primary and secondary stars are 26.05 and 27.40 km s^-1, and the systemic velocity",
+      "measurement_method": "spectroscopic",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_component_mass_1",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.466 ± 0.018",
+      "field_unit": "Msun",
+      "trace_id": "doc6_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          428,
+          244,
+          472,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our highly accurate three-dimensional orbital solution based on all existing spectroscopic and astrometric observations including our own yields much improved masses for the primary and secondary of 2.466 ± 0.018 M_sun and 2.443 ± 0.013 M_sun",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_component_mass_2",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.443 ± 0.013",
+      "field_unit": "Msun",
+      "trace_id": "doc6_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          588,
+          244,
+          632,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our highly accurate three-dimensional orbital solution based on all existing spectroscopic and astrometric observations including our own yields much improved masses for the primary and secondary of 2.466 ± 0.018 M_sun and 2.443 ± 0.013 M_sun",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_component_mass_4",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.466 ± 0.018",
+      "field_unit": "Msun",
+      "trace_id": "doc6_p36",
+      "provenance": {
+        "page": 36,
+        "bbox": [
+          244,
+          90,
+          752,
+          619
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 9 ORBITAL SOLUTION FOR CAPELLA. ... Derived quantities ... M_A (M_sun) ... 2.466 ± 0.018",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_component_mass_5",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.443 ± 0.013",
+      "field_unit": "Msun",
+      "trace_id": "doc6_p36",
+      "provenance": {
+        "page": 36,
+        "bbox": [
+          244,
+          90,
+          752,
+          619
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 9 ORBITAL SOLUTION FOR CAPELLA. ... Derived quantities ... M_B (M_sun) ... 2.443 ± 0.013",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_component_mass_8",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.466 ± 0.018",
+      "field_unit": "Msun",
+      "trace_id": "doc6_p40",
+      "provenance": {
+        "page": 40,
+        "bbox": [
+          259,
+          404,
+          737,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 15 PHYSICAL PARAMETERS OF CAPELLA. ... Mass (M_sun) ... Primary 2.466 ± 0.018",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_component_mass_9",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.443 ± 0.013",
+      "field_unit": "Msun",
+      "trace_id": "doc6_p40",
+      "provenance": {
+        "page": 40,
+        "bbox": [
+          259,
+          404,
+          737,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 15 PHYSICAL PARAMETERS OF CAPELLA. ... Mass (M_sun) ... Secondary 2.443 ± 0.013",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_orbital_period_0",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "orbital_period",
+      "field_value": "104",
+      "field_unit": "d",
+      "trace_id": "doc6_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          826,
+          204,
+          857,
+          222
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We report extensive radial-velocity measurements of the two giant components of the detached, 104-day period binary system of Capella.",
+      "measurement_method": "spectroscopic",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_orbital_period_3",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "orbital_period",
+      "field_value": "104.02173 ± 0.00022",
+      "field_unit": "d",
+      "trace_id": "doc6_p36",
+      "provenance": {
+        "page": 36,
+        "bbox": [
+          244,
+          90,
+          752,
+          619
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 9 ORBITAL SOLUTION FOR CAPELLA. ... P (days) ... 104.02173 ± 0.00022",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_velocity_semi_amplitude_6",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": "26.005 ± 0.036",
+      "field_unit": "km/s",
+      "trace_id": "doc6_p36",
+      "provenance": {
+        "page": 36,
+        "bbox": [
+          244,
+          90,
+          752,
+          619
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 9 ORBITAL SOLUTION FOR CAPELLA. ... K_A (km s^-1) ... 26.005 ± 0.036",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2009ApJ...700.1349T_Capella_velocity_semi_amplitude_7",
+      "source_id": "2009ApJ...700.1349T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": "26.260 ± 0.087",
+      "field_unit": "km/s",
+      "trace_id": "doc6_p36",
+      "provenance": {
+        "page": 36,
+        "bbox": [
+          244,
+          90,
+          752,
+          619
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 9 ORBITAL SOLUTION FOR CAPELLA. ... K_B (km s^-1) ... 26.260 ± 0.087",
+      "measurement_method": "spectroscopic and astrometric",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2011A&A...531A..89W_Capella_component_mass_2",
+      "source_id": "2011A&A...531A..89W",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.573",
+      "field_unit": "Msun",
+      "trace_id": "doc4_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          83,
+          66,
+          950,
+          703
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 2. Spectroscopic orbital elements of Capella. ... M_A (M_sun) 2.573±0.009",
+      "measurement_method": "spectroscopic orbit fitting combined with astrometric inclination",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2011A&A...531A..89W_Capella_component_mass_3",
+      "source_id": "2011A&A...531A..89W",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": "2.488",
+      "field_unit": "Msun",
+      "trace_id": "doc4_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          83,
+          66,
+          950,
+          703
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 2. Spectroscopic orbital elements of Capella. ... M_B (M_sun) 2.488±0.008",
+      "measurement_method": "spectroscopic orbit fitting combined with astrometric inclination",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2011A&A...531A..89W_Capella_velocity_semi_amplitude_0",
+      "source_id": "2011A&A...531A..89W",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": "29.9378",
+      "field_unit": "km/s",
+      "trace_id": "doc4_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          83,
+          66,
+          950,
+          703
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 2. Spectroscopic orbital elements of Capella. ... K_A (km s^-1) 29.9378±0.0026 ... K_B (km s^-1) 26.840±0.024",
+      "measurement_method": "spectroscopic orbit fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2011A&A...531A..89W_Capella_velocity_semi_amplitude_1",
+      "source_id": "2011A&A...531A..89W",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": "26.840",
+      "field_unit": "km/s",
+      "trace_id": "doc4_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          83,
+          66,
+          950,
+          703
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 2. Spectroscopic orbital elements of Capella. ... K_B (km s^-1) 26.840±0.024",
+      "measurement_method": "spectroscopic orbit fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2013A&A...560A.113H_Capella_orbital_period_0",
+      "source_id": "2013A&A...560A.113H",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "orbital_period",
+      "field_value": 104,
+      "field_unit": "d",
+      "trace_id": "doc1_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Its orbital period is much longer than the Capella period (104 days) and makes it a suitable target for the baseline calibration.",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...807...26T_Capella_component_mass_2",
+      "source_id": "2015ApJ...807...26T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": 2.5687,
+      "field_unit": "Msun",
+      "trace_id": "doc7_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          79,
+          469,
+          921,
+          934
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 3 REVISED PHYSICAL PARAMETERS OF CAPELLA. ... Mass (M_sun) ... Primary 2.5687 ± 0.0074 ... Secondary 2.4828 ± 0.0067",
+      "measurement_method": "orbital fit and modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...807...26T_Capella_component_mass_3",
+      "source_id": "2015ApJ...807...26T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": 2.4828,
+      "field_unit": "Msun",
+      "trace_id": "doc7_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          79,
+          469,
+          921,
+          934
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 3 REVISED PHYSICAL PARAMETERS OF CAPELLA. ... Mass (M_sun) ... Secondary 2.4828 ± 0.0067",
+      "measurement_method": "orbital fit and modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...807...26T_Capella_velocity_semi_amplitude_0",
+      "source_id": "2015ApJ...807...26T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": 25.9611,
+      "field_unit": "km/s",
+      "trace_id": "doc7_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 1 REVISED ORBITAL SOLUTION FOR CAPELLA. ... K_A (km s^-1) ... 25.9611 ± 0.0044 ... K_B (km s^-1) ... 26.860 ± 0.017",
+      "measurement_method": "orbital fit",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...807...26T_Capella_velocity_semi_amplitude_1",
+      "source_id": "2015ApJ...807...26T",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": 26.86,
+      "field_unit": "km/s",
+      "trace_id": "doc7_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "TABLE 1 REVISED ORBITAL SOLUTION FOR CAPELLA. ... K_B (km s^-1) ... 26.860 ± 0.017",
+      "measurement_method": "orbital fit",
+      "condition_tags": [
+        "scope: global",
+        "metric: velocity_semi_amplitude"
+      ]
+    },
+    {
+      "record_id": "2023A&A...676A..19M_Capella_component_mass_0",
+      "source_id": "2023A&A...676A..19M",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": 2.5687,
+      "field_unit": "Msun",
+      "trace_id": "doc3_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          64,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Physical and chemical parameters of Capella ... Primary Mass (M_sun) 2.5687±0.0074",
+      "measurement_method": "joint solution",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "2023A&A...676A..19M_Capella_component_mass_1",
+      "source_id": "2023A&A...676A..19M",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "component_mass",
+      "field_value": 2.4828,
+      "field_unit": "Msun",
+      "trace_id": "doc3_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          64,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Physical and chemical parameters of Capella ... Secondary Mass (M_sun) 2.4828±0.0067",
+      "measurement_method": "joint solution",
+      "condition_tags": [
+        "scope: global",
+        "metric: component_mass"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_HR_1708_0_RadVel",
+      "source_id": "SRC_DB_HR",
+      "entity_type": "SB*",
+      "entity_name": "Capella",
+      "field_name": "velocity_semi_amplitude",
+      "field_value": 30,
+      "field_unit": "",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "V/50/catalog",
+        "key_column": "HR",
+        "key_value": "1708",
+        "raw_column": "RadVel",
+        "raw_unit": "",
+        "row_index": 0
+      }
+    }
+  ]
+}

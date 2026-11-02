@@ -1,0 +1,332 @@
+{
+  "otype": "EmG",
+  "name_cn": "发射线星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经(部分旧表为B1950),各表均提供;KISS/UCM/OSSY为精确坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(部分旧表为B1950)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon_lat",
+      "name_cn": "银经银纬",
+      "description": "Markarian星系表的银河坐标,用于前景消光与银河环境分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "光谱红移,发射线星系的本征参数;MPA-JHU基于SDSS光谱测量",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "由红移导出的视向速度(UCM/KISS及后续光谱)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_b",
+      "name_cn": "B星等",
+      "description": "Johnson B测光星等(UCM样本)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_r",
+      "name_cn": "r星等",
+      "description": "Gunn r测光星等(UCM样本)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_j",
+      "name_cn": "J星等",
+      "description": "近红外J星等,与K波段联合约束恒星质量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_ks",
+      "name_cn": "Ks星等",
+      "description": "近红外Ks星等,恒星质量代理(表含绝对Ks星等)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_continuum_code",
+      "name_cn": "UV连续谱强度代码",
+      "description": "Markarian巡天检测的UV连续谱强度等级1(强)-3(弱),分别对应O-B0、B1-B3、B5-B8星族;尾随'E'表示存在发射线",
+      "category": "classification",
+      "ucd": "phot.color;em.UV",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "axis_major_minor",
+      "name_cn": "角直径",
+      "description": "POSS底片上测量的主轴角尺寸(角秒),Markarian表提供长径与短径",
+      "category": "photometry",
+      "ucd": "phys.angSize;src",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_mag",
+      "name_cn": "Hα测光星等",
+      "description": "KISS巡天以Hα发射为选源依据给出的Hα线星等,可直接估算Hα光度",
+      "category": "photometry",
+      "ucd": "phot.mag;em.line.Halpha",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_flux",
+      "name_cn": "Hα线通量",
+      "description": "Hα发射线通量(经银河系前景红化改正),恒星形成最常用指示",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line.Halpha",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_ew",
+      "name_cn": "Hα等效宽度",
+      "description": "Hα等效宽度,区分恒星形成主导与静止星系",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hbeta_flux",
+      "name_cn": "Hβ线通量",
+      "description": "Hβ发射线通量,BPT比值分母",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line.Hbeta",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_flux",
+      "name_cn": "[O III] 5007通量",
+      "description": "[O III] λ5007通量,BPT诊断轴之一,也是AGN吸积光度代理",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nii_flux",
+      "name_cn": "[N II] 6583通量",
+      "description": "[N II] λ6583通量,BPT诊断轴之一,氮丰度敏感",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sii_flux",
+      "name_cn": "[S II] 6716,6731通量",
+      "description": "[S II] 双线通量,用于电子密度诊断与[S II]-BPT图",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_hb_ratio",
+      "name_cn": "[O III]/Hβ强度比",
+      "description": "BPT诊断图纵轴,电离源硬度指示",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nii_ha_ratio",
+      "name_cn": "[N II]/Hα强度比",
+      "description": "BPT诊断图横轴(N2诊断),区分恒星形成与AGN电离",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_decrement",
+      "name_cn": "巴耳末减缩",
+      "description": "Hα/Hβ通量比,星云消光改正的依据",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_dispersion",
+      "name_cn": "恒星速度弥散",
+      "description": "恒星吸收线展宽sigma,用于质量-弥散关系与动力学质量估计",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "d4000",
+      "name_cn": "4000Å间断指数",
+      "description": "D4000连续谱间断强度,恒星族年龄/金属度快速指示",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "absorption_indices",
+      "name_cn": "恒星吸收线指数",
+      "description": "Lick类吸收线指数系统(OSSY质量评估型测量)",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gas_metallicity",
+      "name_cn": "气体金属丰度",
+      "description": "星云气体金属丰度12+log(O/H),Tremonti+2004质量-金属度关系的基础数据",
+      "category": "physical",
+      "ucd": "phys.abund.Z",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_metallicity",
+      "name_cn": "恒星金属丰度",
+      "description": "新生恒星或整体恒星族金属丰度(UCM模型)",
+      "category": "physical",
+      "ucd": "phys.abund.Z",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "总恒星形成率,MPA-JHU按Brinchmann+2004光谱+光度联合估计",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ssfr",
+      "name_cn": "比恒星形成率",
+      "description": "SFR/M*,区分恒星形成主序星系与停滞星系",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "1/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "总恒星质量(Kauffmann+2003光谱拟合;UCM由多波段测光+恒星族模型)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_ebv",
+      "name_cn": "尘埃消光",
+      "description": "恒星有效消光A_V/E(B-V)(MPA-JHU)及星云消光(UCM巴耳末减缩)",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_age",
+      "name_cn": "恒星族年龄",
+      "description": "近期星暴年龄与整体恒星族年龄(UCM样本典型星暴约5Myr,占质量约5%)",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bpt_class",
+      "name_cn": "BPT电离分类",
+      "description": "按BPT诊断图分类:恒星形成/复合/Seyfert/LINER,发射线星系电离源分类核心",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "Markarian谱型代码",
+      "description": "S/SD/DS/D谱型(锐-弥散)+UV强度码+'E'/'E:'发射线标志;'S'/'Q'为Seyfert/QSO候选",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology_type",
+      "name_cn": "形态类型",
+      "description": "UCM样本形态分类(S0-Irr,含恒星形成区分布)",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ionization_source",
+      "name_cn": "电离源类型",
+      "description": "发射线电离源:OB恒星(恒星形成)或AGN(LINER/Seyfert),由BPT线比与[O III]光度判断",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "local_density",
+      "name_cn": "局域环境密度",
+      "description": "近邻环境密度估计,研究环境对恒星形成与活动星系核的影响",
+      "category": "environment",
+      "ucd": "phys.environment.density",
+      "unit": "Mpc^-3",
+      "_unit_filled": true
+    }
+  ]
+}

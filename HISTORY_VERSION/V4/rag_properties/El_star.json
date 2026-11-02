@@ -1,0 +1,197 @@
+{
+  "otype": "El*",
+  "name_cn": "椭球变星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "目标天球坐标赤经(历元J2000),用于位置查询与交叉证认",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "目标天球坐标赤纬(历元J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_source_id",
+      "name_cn": "Gaia源编号",
+      "description": "Gaia DR3源标识(source_id),可与I/355交叉获取视差、自行等天体测量与距离信息",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.ref",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon_glat",
+      "name_cn": "银经/银纬",
+      "description": "银河坐标位置,用于银心方向(银晕/盘)或麦哲伦云(MC)等环境归属判别",
+      "category": "environment",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "survey_field",
+      "name_cn": "巡天天区归属",
+      "description": "样本所在天区/星系环境:银晕bulge、银河系盘、LMC、SMC或全天(all-sky),决定样本的完备性与环境偏差",
+      "category": "environment",
+      "ucd": "obs.field",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "轨道周期",
+      "description": "椭球变星光变的轨道周期(等于轨道周期的一半或整周期,依谐波分析而定),椭球变星核心物理量",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_error",
+      "name_cn": "周期误差",
+      "description": "轨道周期的测量不确定度",
+      "category": "variability",
+      "ucd": "stat.error;time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t0",
+      "name_cn": "极小时刻/历元",
+      "description": "光变主极小(或G/BP/RP带参考时刻)对应的历元,用于相位折叠与历元计算",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude",
+      "name_cn": "光变振幅",
+      "description": "椭球形变调制产生的光变振幅(毫星等到百毫星等),与轨道倾角、质量比及填充因子相关",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "harmonic_params",
+      "name_cn": "光变曲线谐波系数",
+      "description": "G/BP/RP波段光变曲线的傅里叶谐波拟合参数及其误差,用于重建椭球调制形状",
+      "category": "variability",
+      "ucd": "stat.Fourier;phot.lc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_i",
+      "name_cn": "I波段星等",
+      "description": "极大/平均亮度的Cousins I波段星等(OGLE时域测光的主波段)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V波段星等",
+      "description": "Johnson V波段星等,用于色指数与红化估计",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_g_bp_rp",
+      "name_cn": "G/BP/RP平均星等",
+      "description": "Gaia G、BP、RP波段谐波模型平均星等及其误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_depth",
+      "name_cn": "食深度(主/次)",
+      "description": "I波段主/次食深度;对于带食的椭球变星(ELL+ECL)样本可用于确定轨道倾角",
+      "category": "photometry",
+      "ucd": "phot.dip.depth",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mod_min_mass_ratio",
+      "name_cn": "修正最小质量比",
+      "description": "由椭球变光振幅推导的修正最小质量比及其1σ/3σ分位数,约束伴星质量与质量比",
+      "category": "physical",
+      "ucd": "phys.mass.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_mass_min",
+      "name_cn": "伴星最小质量",
+      "description": "不可见伴星(如致密天体候选)的最小质量估计,用于识别白矮星/中子星/黑洞候选",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alpha_ellipsoidal",
+      "name_cn": "椭球变光系数α",
+      "description": "椭球形变光变幅度系数α,联系潮汐形变强度与伴星物理参数(填充因子、质量比)",
+      "category": "physical",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "光谱型",
+      "description": "目标的光谱型(GCVS提供),用于判断主星演化状态(主序/赫氏空隙/红巨星,后者构成长周期椭球变星主体)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型代码",
+      "description": "GCVS/VSX变星类型代码(如EL椭球变星、EB食双星、EC接触食双星),用于样本选择与分类归并",
+      "category": "classification",
+      "ucd": "src.var.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "class_prob",
+      "name_cn": "分类概率/置信度",
+      "description": "机器学习分类给出的变星类型概率或目视/模板拟合的置信度标志",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teo_detection",
+      "name_cn": "潮汐激发振荡检出",
+      "description": "偏心率椭球变星(heartbeat星)中潮汐激发振荡(TEO)的检出标志及其频率模式数",
+      "category": "classification",
+      "ucd": "stat.detection;time.period",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

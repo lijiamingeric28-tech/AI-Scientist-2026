@@ -1,0 +1,350 @@
+{
+  "otype": "RV*",
+  "name_cn": "金牛RV型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经(J2000)",
+      "description": "历元J2000赤经,各目录均提供,用于交叉证认",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬(J2000)",
+      "description": "历元J2000赤纬,用于交叉证认与Aladin可视化",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia视差(含误差),用于距离与光度定标",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia自行(pmRA/pmDE),用于族属判别(厚盘/晕)",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_v",
+      "name_cn": "V波段星等",
+      "description": "V波段平均星等及变幅基准(ASAS-SN Vmag;GCVS极值)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_i",
+      "name_cn": "I波段星等",
+      "description": "OGLE强度平均I波段星等,用于周期-光度图(WI韦森海特指数)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_g",
+      "name_cn": "Gaia G波段星等",
+      "description": "Gaia G/BP/RP光度,用于SED与颜色-星等图",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_wise_w1",
+      "name_cn": "WISE W1星等",
+      "description": "3.4um星等,拱星尘SED拟合输入",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_wise_w2",
+      "name_cn": "WISE W2星等",
+      "description": "4.6um星等,与W1构成盘判据主颜色",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.4-8um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_wise_w3",
+      "name_cn": "WISE W3星等",
+      "description": "12um星等,冷尘/盘信号敏感带",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.8-15um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_wise_w4",
+      "name_cn": "WISE W4星等",
+      "description": "22um星等,与IRAS 25um对接,指示盘存在",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.15-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_wise_w1w2",
+      "name_cn": "WISE W1-W2颜色",
+      "description": "盘源判据主颜色(Gezer 2015核心量),区分恒星光与热尘",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.3-4um;em.IR.4-8um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_wise_w3w4",
+      "name_cn": "WISE W3-W4颜色",
+      "description": "冷尘存在指示,IRAS两色图([12]-[25] vs [25]-[60])的WISE对应",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.8-15um;em.IR.15-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_type_mk",
+      "name_cn": "MK光谱型",
+      "description": "脉动周期内F-K型至M型变化;极大时G2(如RV Tau原型),给出温度变化窗口",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "多历元RV时序用于判别SB1双星、轨道拟合与γ速度",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "depletion_flag",
+      "name_cn": "元素耗竭标志",
+      "description": "难熔元素(Fe、Ca、Ti等)相对挥发性元素丰度降低的耗竭现象;盘是耗竭的必要非充分条件",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "约4000-7000K,随脉动相位显著变化(如RV Tau 4225-5080K)",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "数千Lsun,遵循RV Tau周期-光度关系,可定距离",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "质量",
+      "description": "低质量(<1Msun)post-AGB脉动超巨星;双星质量函数约束伴星",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_g",
+      "name_cn": "表面重力",
+      "description": "极低log g(约0.6 cgs)导致超巨星光谱光度级(Ia/Ib)",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "金属丰度",
+      "description": "多为贫金属(Pop II,如RV Tau [Fe/H]约-0.3);C、s过程元素增强",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "puls_period",
+      "name_cn": "脉动周期",
+      "description": "连续深极小间正式周期,约30-150天(ASAS-SN判据16-180d);等于基频脉动周期的2倍",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_error",
+      "name_cn": "周期误差",
+      "description": "OGLE周期不确定度",
+      "category": "variability",
+      "ucd": "stat.error",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rvb_long_period",
+      "name_cn": "RVb长周期",
+      "description": "RVb亚型平均亮度长期调制周期,数百至数千天(OGLE-BLG-T2CEP-177达7.8年),源于双星周围盘遮挡",
+      "category": "variability",
+      "ucd": "time.period;stat.max",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_v",
+      "name_cn": "V波段振幅",
+      "description": "V波段总变幅,常大于1星等,可达4星等(R Sct)",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_i",
+      "name_cn": "I波段振幅",
+      "description": "OGLE I波段振幅(最大-最小),用于周期-振幅图分类",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t0_max",
+      "name_cn": "极大时刻",
+      "description": "最大亮度时刻(HJD-2450000),用于历元订正与O-C分析",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fourier_r21",
+      "name_cn": "傅里叶系数R21",
+      "description": "光变曲线三阶傅里叶拟合的振幅比,描述深浅极小交替形状",
+      "category": "variability",
+      "ucd": "phot.mag;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fourier_phi21",
+      "name_cn": "傅里叶相位phi21",
+      "description": "三阶傅里叶相位差,光变形状诊断量",
+      "category": "variability",
+      "ucd": "stat.Fourier",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gcvs_var_type",
+      "name_cn": "GCVS变星类型",
+      "description": "GCVS类型:RV(RV Tau型,含RVA/RVB光度亚型),深/浅极小交替为定义特征",
+      "category": "classification",
+      "ucd": "src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t2cep_subtype",
+      "name_cn": "II型造父亚型",
+      "description": "OGLE II型造父四亚型:BLHer、RVTau、WVir、pWVir,与SRd密切关联",
+      "category": "classification",
+      "ucd": "src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_spectroscopic_class",
+      "name_cn": "RV Tau光谱亚型",
+      "description": "Preston光谱分类A/B/C:按温度与CH/CN线强度划分(热F型C类为贫金属Pop II)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_status",
+      "name_cn": "双星状态",
+      "description": "单线SB1双星判定;带盘RV Tau星双星比例高(Manick 2017六星全为双星;Gezer 2015盘-双星强相关)",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期(如RV Tau 1198d),与RVb长周期相关",
+      "category": "environment",
+      "ucd": "time.period;src.orbital",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_semi_amplitude",
+      "name_cn": "轨道半振幅K1",
+      "description": "主星轨道速度半振幅,约束伴星质量",
+      "category": "environment",
+      "ucd": "spect.dopplerVeloc;src.orbital",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_class",
+      "name_cn": "SED类别",
+      "description": "Gezer 2015按SED分三类:盘源/无红外超/不确定,与双星和耗竭相关",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess",
+      "name_cn": "红外超",
+      "description": "IRAS/WISE波段红外超判据;IRAS两色图[12]-[25] vs [25]-[60]经典区分区",
+      "category": "environment",
+      "ucd": "phot.color.excess",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "circ_disc_flag",
+      "name_cn": "拱星盘标志",
+      "description": "双星周围尘埃盘(距恒星数AU)的存在标志,RVb调制与耗竭的物理载体",
+      "category": "environment",
+      "ucd": "phys.dust;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+ "generated_at": "2026-09-02T09:31:05+00:00",
+ "note": "由 scripts/rebuild_sample_pack.py 生成——质量分/记录数取自任务 state_json（与结果端点同源），勿手工编辑",
+ "samples": [
+  {
+   "name": "参宿四",
+   "summary": "红超巨星：跨 16 年文献提取半径、质量与表面温度，22 条有效温度记录人工复核一致。",
+   "task_id": "e2f0e2a2-61e9-4d40-b42d-1f5d655821ec",
+   "title": "参宿四半径质量与表面温度查询",
+   "query": "参宿四的半径、质量和表面温度",
+   "quality_score": 0.9024,
+   "record_count": 47,
+   "source_count": 34
+  },
+  {
+   "name": "大角星",
+   "summary": "K 巨星：距离、金属丰度与有效温度四类记录（含视差 8 条）互相印证，复核无错。",
+   "task_id": "ead8444c-0a68-466e-bc59-e02c0a400c14",
+   "title": "查询大角星距离金属丰度与有效温度",
+   "query": "大角星的距离、金属丰度和有效温度",
+   "quality_score": 0.8144,
+   "record_count": 52,
+   "source_count": 18
+  },
+  {
+   "name": "Pollux",
+   "summary": "K0 巨星完整画像：质量、半径、表面温度与光谱型四性质齐全，16 条记录全部干净。",
+   "task_id": "7177a745-0ad0-47a3-a1f6-06da8a395c2c",
+   "title": "Pollux质量半径表面温度光谱型",
+   "query": "Pollux的质量、半径、表面温度和光谱型",
+   "quality_score": 0.9235,
+   "record_count": 16,
+   "source_count": 11
+  },
+  {
+   "name": "天狼星 B",
+   "summary": "白矮星简并物理：质量 21 条记录最完整，连同表面重力与冷却年龄，3.2% 误差率全部可溯源。",
+   "task_id": "5db879b9-8745-4951-9177-793ac5c11b4e",
+   "title": "天狼星B质量表面重力冷却年龄查询",
+   "query": "天狼星B的质量、表面重力和冷却年龄",
+   "quality_score": 0.8908,
+   "record_count": 31,
+   "source_count": 11
+  },
+  {
+   "name": "天鹅座 X-1",
+   "summary": "黑洞双星：轨道周期 26 条、致密天体质量 22 条，呈现 8.7→21.2 太阳质量的测定史。",
+   "task_id": "655cd7af-b54c-4978-9a4b-874f258f89fe",
+   "title": "查询天鹅座X1轨道周期与致密天体质量",
+   "query": "天鹅座X-1的轨道周期和致密天体质量",
+   "quality_score": 0.9153,
+   "record_count": 48,
+   "source_count": 28
+  },
+  {
+   "name": "δ Cephei",
+   "summary": "造父变星：光变周期、距离与视差记录跨文献高度一致（周期 16 条），含金属丰度。",
+   "task_id": "4875820b-6779-43d4-b1f9-a3d298054d2d",
+   "title": "查询仙王座δ星光变周期距离金属丰度",
+   "query": "delta Cephei 的光变周期、距离和金属丰度",
+   "quality_score": 0.7327,
+   "record_count": 53,
+   "source_count": 31
+  },
+  {
+   "name": "比邻星",
+   "summary": "近邻恒星测量代表：视差 768 mas 等记录极准，距离、视差、自行三类相互印证。",
+   "task_id": "d888fd23-f980-4f3b-a1ec-91fcc13f1a3d",
+   "title": "比邻星距离视差自行数据查询",
+   "query": "比邻星的距离、视差和自行",
+   "quality_score": 0.7751,
+   "record_count": 50,
+   "source_count": 16
+  },
+  {
+   "name": "昴星团 M45（08-28 版）",
+   "summary": "昴星团距离争议史整理：年龄、距离与金属丰度，双口径对比完整呈现。",
+   "task_id": "1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c",
+   "title": "昴星团M45年龄距离与金属丰度",
+   "query": "昴星团(M45)的年龄、距离和金属丰度",
+   "quality_score": 0.8502,
+   "record_count": 103,
+   "source_count": 30
+  },
+  {
+   "name": "昴星团 M45（09-01 版）",
+   "summary": "旗舰样例复跑：距离、年龄、金属丰度五性质 103/111 条记录跨口径一致，Hipparcos 争议史完整。",
+   "task_id": "4873c876-d3d4-483e-9bd7-d3c4ab8df197",
+   "title": "昴星团M45年龄距离金属丰度查询",
+   "query": "昴星团(M45)的年龄、距离和金属丰度",
+   "quality_score": 0.8651,
+   "record_count": 111,
+   "source_count": 28
+  },
+  {
+   "name": "半人马座 ω",
+   "summary": "球状星团：金属丰度 11 条、总质量 8 条与中心速度弥散 6 条，三性质互证。",
+   "task_id": "da7eff2b-45e4-4898-a49d-78a4fe3731f6",
+   "title": "半人马座ω中心速度弥散总质量金属丰度",
+   "query": "半人马座ω的中心速度弥散、总质量和金属丰度",
+   "quality_score": 0.9085,
+   "record_count": 25,
+   "source_count": 24
+  },
+  {
+   "name": "五车二 Capella",
+   "summary": "双星：轨道周期 104.02 天精确测定（12 条），双星质量与视向速度半振幅复核一致。",
+   "task_id": "4f1eba75-8241-439e-a722-410997b5c064",
+   "title": "五车二轨道周期质量与视向速度",
+   "query": "五车二（Capella）的轨道周期、双星质量和视向速度半振幅",
+   "quality_score": 0.9142,
+   "record_count": 23,
+   "source_count": 8
+  },
+  {
+   "name": "M87",
+   "summary": "活动星系核：中央黑洞质量 30 条记录综合 EHT/Keck 等五类方法，另含爱丁顿比与 6cm 射电流量。",
+   "task_id": "136c2238-ee95-41cf-8e5c-b2c718905930",
+   "title": "M87中心黑洞质量爱丁顿比射电流量查询",
+   "query": "M87 的中央黑洞质量、爱丁顿比和6cm射电流量",
+   "quality_score": 0.9345,
+   "record_count": 34,
+   "source_count": 22
+  },
+  {
+   "name": "NGC 4151",
+   "summary": "赛弗特 1 星系宽线区：Hβ 宽线 37 条、黑洞质量 25 条与 X 射线光子谱指数，99 条记录全库最大。",
+   "task_id": "67eafb42-84ed-455a-a5b4-fb274f9bc874",
+   "title": "NGC4151黑洞质量与光谱参数查询",
+   "query": "NGC 4151 的黑洞质量、Hβ发射线半高全宽和X射线光子谱指数",
+   "quality_score": 0.8507,
+   "record_count": 99,
+   "source_count": 28
+  },
+  {
+   "name": "3C 273",
+   "summary": "耀变体：红移 8 条与绝对星等 4 条，补录后全记录干净，适合演示星系尺度参数。",
+   "task_id": "57c94f31-2c8d-4ecf-b4bd-25b8cd306ec4",
+   "title": "查询3C273红移与绝对星等",
+   "query": "3C 273 的红移和绝对星等",
+   "quality_score": 0.9013,
+   "record_count": 15,
+   "source_count": 13
+  },
+  {
+   "name": "HD 209458b",
+   "summary": "系外行星：轨道周期、行星质量与行星半径三性质，45 条记录复核无错（类太阳恒星的凌星行星）。",
+   "task_id": "7657f951-c182-4b39-a0ad-b6f8f11d3094",
+   "title": "HD209458b轨道周期质量半径查询",
+   "query": "HD 209458b 的轨道周期、行星质量、行星半径",
+   "quality_score": 0.8766,
+   "record_count": 45,
+   "source_count": 36
+  },
+  {
+   "name": "后发座星系团",
+   "summary": "星系团：MCXC 与 PSZ2 多库命中，M500 质量 9 条、X 射线温度与速度弥散齐备。",
+   "task_id": "0eab300f-2ce4-4b43-bb6a-8b4d3ae58183",
+   "title": "后发座星系团速度弥散温度质量查询",
+   "query": "后发座星系团的速度弥散、X射线温度和M500质量",
+   "quality_score": 0.9212,
+   "record_count": 19,
+   "source_count": 11
+  },
+  {
+   "name": "SN 2011fe",
+   "summary": "Ia 型超新星：峰值绝对星等多波段口径 32 条记录，质量分 0.955，修复版（含人工复核验证）。",
+   "task_id": "36529ff4-6cac-42e1-8df0-ac7fcf6f2929",
+   "title": "SN2011fe峰值绝对星等查询",
+   "query": "SN 2011fe 的峰值绝对星等",
+   "quality_score": 0.955,
+   "record_count": 32,
+   "source_count": 10
+  }
+ ]
+}

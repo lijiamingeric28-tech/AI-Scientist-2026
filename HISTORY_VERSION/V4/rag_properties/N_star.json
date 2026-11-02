@@ -1,0 +1,359 @@
+{
+  "otype": "N*",
+  "name_cn": "中子星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_dec_position",
+      "name_cn": "赤经赤纬坐标",
+      "description": "中子星（脉冲星/磁星/X射线双星源）的天球位置，多为J2000历元，部分表给出B1950别名",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "脉冲星在赤经/赤纬方向的自行（mas/yr）及总自行、横向速度（km/s），由长时间定时或VLBI获得",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "年视差（mas），用于距离与横向速度的几何测定",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "日心距离（kpc），多由色散量电子密度模型估算（DM距离），少数为视差距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银道坐标",
+      "description": "银经与银纬，以及银道面垂直距离|z|（kpc），用于银河系盘/晕分布研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period",
+      "name_cn": "自转周期",
+      "description": "中子星自转（脉冲）周期P（s），射电/X射线/伽马波段定时测量，精度可达10^-8 s量级",
+      "category": "physical",
+      "ucd": "time.period",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_period_derivative",
+      "name_cn": "自转周期导数",
+      "description": "自转周期一阶导数Pdot（无量纲），与自转频率导数等价，是计算磁场与特征年龄的基础",
+      "category": "physical",
+      "ucd": "time.period.derivative",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spin_frequency",
+      "name_cn": "自转频率",
+      "description": "自转频率nu=1/P（Hz）及一阶/二阶/三阶导数，用于计时分析",
+      "category": "physical",
+      "ucd": "time.frequency",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_magnetic_field",
+      "name_cn": "偶极表面磁场",
+      "description": "由P、Pdot推导的偶极表面磁场（G），典型10^11-10^13 G（磁星10^13-10^15 G），是区分磁星与普通脉冲星的核心量",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_cylinder_field",
+      "name_cn": "光圆柱磁场",
+      "description": "光圆柱半径处的磁场强度（G），与高能辐射机制相关",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "characteristic_age",
+      "name_cn": "特征年龄",
+      "description": "自转减慢特征年龄 tau=P/(2Pdot)（yr），含自行修正后的版本",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spindown_luminosity",
+      "name_cn": "自转减慢光度",
+      "description": "自转能损率 Edot（erg/s）及太阳处能流通量 Edot/D^2，表征旋转动力中子星的可用能量",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dispersion_measure",
+      "name_cn": "色散量",
+      "description": "星际自由电子柱密度 DM（pc/cm^3）及其导数，用于距离估算与星际介质研究",
+      "category": "physical",
+      "ucd": "phys.dispersionMeasure",
+      "unit": "cm^-3 pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_measure",
+      "name_cn": "旋转量",
+      "description": "法拉第旋转量 RM（rad/m^2），反映视线上星际磁场与电子密度",
+      "category": "physical",
+      "ucd": "phys.polarization.rotationMeasure",
+      "unit": "rad/m^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "blackbody_temperature",
+      "name_cn": "黑体温度",
+      "description": "热谱成分黑体温度kT（keV）与发射半径，磁星软X射线谱以热成分为主",
+      "category": "physical",
+      "ucd": "phys.temperature",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "neutron_star_mass",
+      "name_cn": "中子星质量",
+      "description": "由相对论双星定时（Shapiro延迟/轨道后开普勒参数）或X射线热辐射拟合得出的中子星质量（Msun）及其下限/中位估计，用于约束物态方程",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_mass",
+      "name_cn": "伴星质量",
+      "description": "双星系统中伴星质量下限（i=90度）与中位估计（i=60度，假设NS质量1.35 Msun），区分NS-NS/NS-WD/NS-恒星系统",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "2-10 keV（或表内注明能段）X射线光度（erg/s），吸积中子星与磁星的基本能标量",
+      "category": "physical",
+      "ucd": "phys.luminosity.X",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux",
+      "name_cn": "X射线流量",
+      "description": "X射线流量/能流密度（2-10 keV，磁星表为0.5-10 keV），含上下限标志",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density",
+      "name_cn": "射电流量密度",
+      "description": "400/600/700/800/900/1400/1600/2000/3000 MHz 平均射电流量密度（mJy）及400/1400 MHz射电光度（mJy kpc^2）",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_spectral_index",
+      "name_cn": "射电谱指数",
+      "description": "射电平均谱指数（幂律），表征脉冲星射电辐射性质",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_flux",
+      "name_cn": "伽马射线流量",
+      "description": "30 MeV-30 GeV伽马能段流量与伽马射线光度（erg/s），费米LAT观测",
+      "category": "photometry",
+      "ucd": "phot.flux;em.gamma",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_spectral_index",
+      "name_cn": "伽马谱指数",
+      "description": "伽马波段幂律谱指数（及其误差），高能辐射性质指标",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_magnitude",
+      "name_cn": "光学星等",
+      "description": "光学对应体V星等（及范围）、B-V与U-B颜色，用于伴星性质识别",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "infrared_magnitude",
+      "name_cn": "红外星等",
+      "description": "2MASS J/H/Ks星等，受消光影响小，用于探视伴星与寄主环境",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening",
+      "name_cn": "星际红化",
+      "description": "E(B-V)色余，用于伴星固有颜色与距离修正",
+      "category": "photometry",
+      "ucd": "phot.color.reddening",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulse_width",
+      "name_cn": "脉冲宽度",
+      "description": "50%与10%峰值处脉冲宽度W50/W10（ms）及1 GHz星际散射时标，描述脉冲轮廓",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "ms",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星轨道周期（d），X射线脉冲星掩食/径向速度或定时测定，是X射线双星基本量",
+      "category": "variability",
+      "ucd": "time.period.orbit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率e及近星点经度omega、近星点历元T0等轨道参数",
+      "category": "variability",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "projected_semimajor_axis",
+      "name_cn": "投影轨道半长轴",
+      "description": "脉冲星轨道投影半长轴a1（光秒），与轨道周期共同给出质量函数",
+      "category": "variability",
+      "ucd": "pos.distance;src.orbital",
+      "unit": "km",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_pulse_period",
+      "name_cn": "X射线脉冲周期",
+      "description": "吸积X射线脉冲星的脉冲周期（s），反映自转与吸积力矩平衡",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glitch_count",
+      "name_cn": "周期突跳次数",
+      "description": "观测到的脉冲星glitch（周期突跳）次数，反映超流体内核动力学",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gamma_pulse_profile",
+      "name_cn": "伽马脉冲轮廓相位",
+      "description": "伽马射线脉冲轮廓的峰值数、峰相位与脉冲宽度等相位信息，用于辐射区几何研究",
+      "category": "variability",
+      "ucd": "time.phase",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsar_type",
+      "name_cn": "脉冲星类型",
+      "description": "脉冲星分类码（旋转动力/毫秒/X射线/伽马/自转突跳等），区分物理子类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_binary_type",
+      "name_cn": "X射线双星类型",
+      "description": "HMXB X射线类型码：P脉冲星、T暂现源、E掩食系统、R射电发射、C回旋共振散射特征、U超软谱源",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnetar_class",
+      "name_cn": "磁星类别",
+      "description": "软伽马重复源(SGR)/反常X射线脉冲星(AXP)/候选体分类，以及持久/暂现活跃状态",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_type",
+      "name_cn": "伴星类型",
+      "description": "伴星光谱型或类型码（如He星/WD/MS星等），区分HMXB与LMXB及双中子星系统",
+      "category": "classification",
+      "ucd": "src.class.spectralType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cyclotron_line_energy",
+      "name_cn": "回旋共振线能量",
+      "description": "X射线谱回旋共振散射特征(CRSF)线能量（keV），直接测量吸积柱磁场（约10^12 G），仅少数HMXB观测到",
+      "category": "spectroscopy",
+      "ucd": "spect.line.energy",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "environment_association",
+      "name_cn": "环境关联体",
+      "description": "关联的超新星遗迹(SNR)、球状星团等环境天体及发现巡天代号，用于年龄与诞生环境研究",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

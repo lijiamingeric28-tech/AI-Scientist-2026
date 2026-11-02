@@ -1,0 +1,332 @@
+{
+  "otype": "QSO",
+  "name_cn": "类星体",
+  "description": "活动星系核中最亮的一类，由超大质量黑洞吸积驱动。具有很强的宽发射线、非热连续谱和显著的多波段光变",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "宇宙学红移 z。QSO 最核心的参数，决定光度距离、视线速度和宇宙学分析",
+      "category": "physical",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift_error",
+      "name_cn": "红移误差",
+      "description": "红移测量误差",
+      "category": "physical",
+      "ucd": "stat.error;src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift_source",
+      "name_cn": "红移来源",
+      "description": "红移来源标识：PIPE=SDSS 流水线, VI=目视检查, PHOT=测光红移, EST=估计值",
+      "category": "classification",
+      "ucd": "meta.code;src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_redshift",
+      "name_cn": "测光红移",
+      "description": "基于多波段测光估计的红移。无光谱 QSO 候选体的红移估计，精确度低于光谱红移",
+      "category": "physical",
+      "ucd": "src.redshift.phot",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "black_hole_mass",
+      "name_cn": "黑洞质量",
+      "description": "中心超大质量黑洞质量 M_BH (Msun)。常用宽发射线（Hβ, MgII, CIV）的反响映射法或单历元 virial 法估计",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "black_hole_mass_error",
+      "name_cn": "黑洞质量误差",
+      "description": "黑洞质量的测量误差",
+      "category": "physical",
+      "ucd": "stat.error;phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Eddington_ratio",
+      "name_cn": "爱丁顿比",
+      "description": "λ_Edd = L_bol / L_Edd。吸积率相对于爱丁顿极限的比值。表征黑洞吸积状态：~1 为高效吸积，<0.01 为低吸积率",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_luminosity",
+      "name_cn": "热光度",
+      "description": "L_bol (erg/s)。全波段积分光度。通常通过单波段光度乘以热改正因子得到",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "continuum_luminosity_1350A",
+      "name_cn": "1350A 连续谱光度",
+      "description": "λL_λ(1350A)。远紫外连续谱光度，常用于 QSO 黑洞质量和爱丁顿比计算",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.UV",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "continuum_luminosity_3000A",
+      "name_cn": "3000A 连续谱光度",
+      "description": "λL_λ(3000A)。近紫外连续谱光度",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.UV",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "continuum_luminosity_5100A",
+      "name_cn": "5100A 连续谱光度",
+      "description": "λL_λ(5100A)。光学连续谱光度。低红移 QSO 的 Hβ 反响映射参考波长",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.opt.V",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "MgII_emission_line_EW",
+      "name_cn": "MgII 发射线等值宽度",
+      "description": "MgII λ2800 宽发射线的静止系等值宽度。用于中红移 QSO(0.4<z<2.2) 的黑洞质量估计",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line;em.UV",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "MgII_emission_line_FWHM",
+      "name_cn": "MgII 发射线半高全宽",
+      "description": "MgII λ2800 宽发射线的 FWHM。表征宽线区气体的速度弥散，用于 virial 黑洞质量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width;em.line;em.UV",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Hbeta_emission_line_EW",
+      "name_cn": "Hβ 发射线等值宽度",
+      "description": "Hβ λ4861 宽发射线的静止系等值宽度。低红移 QSO(z<0.8) 的黑洞质量首选诊断线",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Hbeta",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Hbeta_emission_line_FWHM",
+      "name_cn": "Hβ 发射线半高全宽",
+      "description": "Hβ λ4861 宽发射线的 FWHM。宽线区运动的经典探针",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width;em.line.Hbeta",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "CIV_emission_line_EW",
+      "name_cn": "CIV 发射线等值宽度",
+      "description": "CIV λ1549 宽发射线的静止系等值宽度。高红移 QSO(z>1.5) 的主要诊断线",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line;em.UV",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "CIV_emission_line_FWHM",
+      "name_cn": "CIV 发射线半高全宽",
+      "description": "CIV λ1549 宽发射线的 FWHM。高红移黑洞质量估计。注意 CIV 蓝移效应可能导致黑洞质量系统偏高",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width;em.line;em.UV",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "CIV_blueshift",
+      "name_cn": "CIV 蓝移量",
+      "description": "CIV 宽发射线相对于系统红移的蓝移量。表征宽线区外流，与爱丁顿比相关",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc;em.line;em.UV",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "narrow_line_OIII_flux",
+      "name_cn": "[OIII] 窄线流量",
+      "description": "[OIII] λ5007 窄发射线流量。窄线区物理探针。用于 QSO 光度分类和统一模型研究",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line;em.line.OIII",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "FeII_emission_strength",
+      "name_cn": "FeII 发射强度",
+      "description": "光学 FeII 发射复合体强度（通常为 4434-4684A 范围）。Eigenvector 1 的关键参数，区分 Population A/B QSO",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "power_law_continuum_slope",
+      "name_cn": "幂律连续谱斜率",
+      "description": "α_λ, F_λ ∝ λ^α 的谱指数。QSO 的 UV/光学连续谱近似为幂律。α 越小（越负）越陡",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_density",
+      "name_cn": "射电流量密度",
+      "description": "射电波段（通常 1.4 GHz 或 5 GHz）流量密度。区分射电噪（radio-loud）和射电静（radio-quiet）QSO 的判据",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_loudness_parameter",
+      "name_cn": "射电噪度参数",
+      "description": "R = f_radio / f_optical。R>10 为射电噪 QSO。表征喷流活动强度",
+      "category": "classification",
+      "ucd": "arith.ratio;phot.flux.density;em.radio;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_spectral_index",
+      "name_cn": "射电谱指数",
+      "description": "α_radio, F_ν ∝ ν^α。陡谱（α<-0.5）→ 瓣主导/年老电子；平谱（α>-0.5）→ 核主导/年轻喷流",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.radio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Xray_flux",
+      "name_cn": "X射线流量",
+      "description": "X射线波段（通常 0.5-10 keV）流量。来自吸积盘冕，反映最内区物理",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Xray_to_optical_ratio",
+      "name_cn": "X射线光学流量比",
+      "description": "α_ox = 0.384*log(f_2keV/f_2500A)。表征 X 射线冕相对于吸积盘 UV 辐射的强度。与爱丁顿比反相关",
+      "category": "classification",
+      "ucd": "arith.ratio;phot.flux;em.X-ray;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "WISE_W1_W2_color",
+      "name_cn": "WISE W1-W2 颜色",
+      "description": "WISE W1(3.4μm)-W2(4.6μm)。W1-W2>0.8 是 QSO 选择的重要判据。AGN 的热尘埃辐射使中红外偏红",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "broad_absorption_line_flag",
+      "name_cn": "宽吸收线标识",
+      "description": "BAL（Broad Absorption Line）QSO 标识。CIV BAL 等值宽度 >一定阈值。表征沿视线的外流吸收体",
+      "category": "classification",
+      "ucd": "meta.code;spect.line",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "BAL_nicety_index",
+      "name_cn": "BAL 特征指数",
+      "description": "BAL QSO 子分类：LoBAL（低电离：MgII+AlIII吸收） vs HiBAL（高电离：仅CIV吸收）",
+      "category": "classification",
+      "ucd": "spect.index;meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_amplitude_optical",
+      "name_cn": "光学光变幅度",
+      "description": "光学波段（g/r/i）光变幅度。QSO 在数月到年级时标上普遍存在 0.1-0.5 mag 的光变",
+      "category": "variability",
+      "ucd": "src.var.amplitude;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_structure_function",
+      "name_cn": "光变结构函数参数",
+      "description": "光变结构函数 A（时滞 τ=1yr 处振幅）。表征 QSO 光变强度和时标依赖性。与光度/爱丁顿比相关",
+      "category": "variability",
+      "ucd": "src.var.index;stat.fit.param",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "SDSS_ugriz_magnitudes",
+      "name_cn": "SDSS ugriz 星等",
+      "description": "SDSS 五波段 PSF 星等。QSO 基础光学测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "Gaia_G_mag_QSO",
+      "name_cn": "Gaia G 星等",
+      "description": "Gaia DR3 G 波段星等。用于天体测量和自行验证",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax_and_proper_motion",
+      "name_cn": "视差和自行",
+      "description": "Gaia 天体测量参数。QSO 是天体测量参考源（自行为零的远源）。非零自行暗示可能不是 QSO",
+      "category": "astrometry",
+      "ucd": "pos.parallax;pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "QSO_probability_score",
+      "name_cn": "QSO 概率评分",
+      "description": "光度/颜色/变星分类器给出的 QSO 概率。Milliquas 用 Gaia+WISE 特征计算。P>0.9 为高置信度",
+      "category": "classification",
+      "ucd": "stat.probability;src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates_QSO",
+      "name_cn": "赤道坐标",
+      "description": "J2000.0 赤经赤纬。QSO 的位置精度通常优于 0.1 弧秒（Gaia 时代）",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    }
+  ]
+}

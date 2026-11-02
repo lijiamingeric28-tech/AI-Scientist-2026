@@ -1,0 +1,251 @@
+{
+  "otype": "SB*",
+  "name_cn": "分光双星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星绕公共质心的轨道周期P, 单位为天, SB9与Gaia NSS均提供, 圆轨道与假设值有标志位",
+      "category": "physical",
+      "ucd": "time.period.orbit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道椭率e, 圆轨道固定为0; 含误差与假设标志, 支撑周期-偏心率关系研究",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "periastron_epoch",
+      "name_cn": "近星点时刻",
+      "description": "近星点通过时刻T0(或相位参考历元, HJD), 含历元类型标志(近星点/其他现象如掩食)",
+      "category": "physical",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "longitude_periastron",
+      "name_cn": "近星点经度",
+      "description": "近星点经度omega(度), 定义轨道空间取向, 含误差与假设标志",
+      "category": "physical",
+      "ucd": "pos.angle",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_semi_amplitude",
+      "name_cn": "视向速度半振幅",
+      "description": "主星K1与次星K2视向速度半振幅(km/s), SB1仅K1, SB2双分量均有, 含误差与不确定标志",
+      "category": "spectroscopy",
+      "ucd": "src.var.rv",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "systemic_radial_velocity",
+      "name_cn": "系统质心视向速度",
+      "description": "系统质心速度V0/Gamma(km/s), SB2中主次星独立解出时通常取主星值",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function",
+      "name_cn": "质量函数",
+      "description": "质量函数f(M)=M2^3 sin^3 i/(M1+M2)^2 (太阳质量), 由P、K、e推出, 是SB1轨道可得的唯一质量信息",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "minimum_mass",
+      "name_cn": "最小质量",
+      "description": "M sin^3 i 主次星最小质量(太阳质量), 有伴星为亚恒星候选时给出质量下限",
+      "category": "physical",
+      "ucd": "phys.mass.min",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "projected_semi_major_axis",
+      "name_cn": "投影轨道半长轴",
+      "description": "a1 sin i 轨道半长轴在视线方向投影(Gm或AU), 由K与P直接推导",
+      "category": "physical",
+      "ucd": "src.orbital.semiMajorAxis",
+      "unit": "AU",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面倾角i(度), 仅当分光轨道与天体测量轨道联合求解(如Gaia DR3 astrometric+RV解或J/A+A/684/A74)时可得, 用于解除sin i简并、求真实质量",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_mass",
+      "name_cn": "分量质量",
+      "description": "主/次星真实质量(太阳质量), 由联合解或假设主星质量模型给出",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "恒星有效温度Teff(K), 来自模板参数或Gaia光谱分析, 用于HR图定位与质量估算",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力",
+      "description": "恒星表面重力log g(cm/s^2)",
+      "category": "physical",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "金属丰度",
+      "description": "恒星金属丰度[m/H], 用于区分银盘/银晕星族, 与运动学结合判别成分归属",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotational_velocity",
+      "name_cn": "自转速度",
+      "description": "恒星投影自转速度v sin i(km/s), 可用于潮汐同步与轨道耦合研究",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity_epoch_measurement",
+      "name_cn": "逐次视向速度测量",
+      "description": "单次观测的日心视向速度(HJD历元、速度值、误差), 25,563次测量构成拟合轨道的基础数据, 可重新拟合轨道",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_residual_quality",
+      "name_cn": "轨道拟合残差与观测数",
+      "description": "轨道解的RMS残差、内外误差比、观测次数与时间跨度, 衡量轨道解质量与次星信号探测情况",
+      "category": "spectroscopy",
+      "ucd": "stat.error;spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型, SB1仅主星, SB2主次星分别给出, 用于温度定标与分类统计",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sb_type_flag",
+      "name_cn": "SB1/SB2类型标志",
+      "description": "单线(SB1)或双线(SB2)分光双星模型标志, 含光谱双线可信度等级(如S/N标志)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbit_grade",
+      "name_cn": "轨道解质量等级",
+      "description": "轨道解质量评级0(差)-5(确定性), 并关联贡献者与ADS文献引用码",
+      "category": "classification",
+      "ucd": "stat.quality",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity_hierarchy",
+      "name_cn": "多重性层级标识",
+      "description": "高阶多重系统(三星以上)的分量标识与轨道编号, 描述系统层级结构",
+      "category": "classification",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_magnitude",
+      "name_cn": "视星等",
+      "description": "各波段视星等(B、V、G、J、P、R等), SB9按分量分别给出并注明波段",
+      "category": "photometry",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "三角视差(mas)与光度距离, 来自Hipparcos/Gaia, 支撑质量函数到绝对质量的换算",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "自行分量mu_alpha、mu_delta(mas/yr), 用于空间速度与运动学成员判别",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_position",
+      "name_cn": "天体坐标",
+      "description": "J2000赤经赤道坐标, 交叉证认与检索的基础字段",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银道坐标",
+      "description": "银经银纬(l, b), 用于银盘/银晕星族统计与空间分布环境研究",
+      "category": "environment",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipsing_overlap_flag",
+      "name_cn": "掩食重叠标志",
+      "description": "分光双星与掩食双星(EA/EB/EW)的重叠标记, 可与Gaia DR3掩食双星表(约218万源)及变星分类交叉, 支持几何参数精确测定",
+      "category": "variability",
+      "ucd": "src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

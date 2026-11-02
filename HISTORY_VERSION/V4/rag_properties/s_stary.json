@@ -1,0 +1,278 @@
+{
+  "otype": "s*y",
+  "name_cn": "黄超巨星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "源赤经(J2000), 用于YSG样本交叉证认",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "源赤纬(J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "宿主星系距离(样本限于20Mpc内), 用于绝对光度与质量定标",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "宿主星系(M31/M33/近邻星系), 与星系金属丰度环境关联",
+      "category": "environment",
+      "ucd": "meta.id.parent",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership",
+      "name_cn": "星系成员资格",
+      "description": "基于视向速度与星系系统速度/自转的成员判定标志, 用于剔除前景矮星污染(YSG认证的关键步骤)",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v",
+      "name_cn": "V星等",
+      "description": "光学V波段视星等, 构建颜色-星等图以初选YSG",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_bv",
+      "name_cn": "B-V色指数",
+      "description": "B-V色指数, YSG的F/G型温度区判别(约0.5-1.1 mag)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_bvic",
+      "name_cn": "BVIc时域测光",
+      "description": "BVIc多年时域测光(约9年), 监测YSG长期光变与光谱型漂移",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_jhk",
+      "name_cn": "JHK近红外测光",
+      "description": "2MASS等JHK近红外星等, 用于SED拟合与消光估计",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.JHK",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_midir",
+      "name_cn": "中红外测光",
+      "description": "Spitzer/IRAC [3.6]/[4.5]及WISE中红外星等, 探测星周尘埃与post-RSG状态",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-4um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_hst",
+      "name_cn": "HST四波段光度",
+      "description": "HST F475W/F555W/F606W/F814W光度, 用于20Mpc内星系CMD统计识别YSG候选体",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型, 黄超巨星主要为F/G型(可含晚期A与早期K), 随脉动/演化可漂移",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "Ia/Iab/Ib超巨星光度级, 由OI 7774三重线、Ca II H&K与CaT强度等重力敏感判据确定",
+      "category": "classification",
+      "ucd": "src.class.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "post_rsg_flag",
+      "name_cn": "后红超巨星状态标志",
+      "description": "根据质量损失光谱证据与SED星周尘埃判定的post-RSG/YSG分类标志(样本中30-40%的YSG属post-RSG, 初始质量20-40Msun)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "光谱视向速度, 用于YSG成员判定与星系自转曲线再定标",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;spectroscopic",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "F/G/K型Ib超巨星投影自转速度vsini, 用于自转演化、双星潮汐与活动性研究",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_oi7774",
+      "name_cn": "OI 7774三重线等值宽度",
+      "description": "OI 777.3nm三重线等值宽度, 极强的光度敏感判据, YSG认证的核心光谱指标",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_halpha",
+      "name_cn": "Hα等值宽度/发射",
+      "description": "Hα线轮廓与发射特征(多分量发射、Ca II与[N II]发射), 指示延展大气与质量损失(YHG特征)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度T_eff(黄超巨星约4000-7000K, YHG更窄), 可由光谱拟合或SED导出, 随光谱型漂移可变化>500K",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_g",
+      "name_cn": "表面重力",
+      "description": "表面重力log g(高质星约1-2, 低质脉动黄超巨星可低至0), 大气建模与演化状态判定的核心参数",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "金属丰度",
+      "description": "铁丰度[Fe/H], 可由OI 7774+uvbybeta经验定标或光谱丰度分析获得, 黄超巨星可作为星系丰度示踪",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "log L/Lsun(约1000到>100000), 结合T_eff在HR图中定位, 检验演化模型的不稳定带与HD上限",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "初始质量",
+      "description": "恒星质量(统计样本3-20Msun; post-RSG质损星初始质量20-40Msun), 由CMD+MESA轨迹或演化模型估计",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "质量损失率或强质损证据(尘埃包层、IR超), YHG/暖超巨星near-黄空区(Yellow Void)不稳定的直接表现",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction",
+      "name_cn": "星际消光",
+      "description": "E(B-V)/A_V消光红化, 由多波段SED拟合估计, 修正后方可定标T_eff与光度",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cs_dust_ir_excess",
+      "name_cn": "星周尘埃红外超",
+      "description": "中红外[3.6]-[4.5]颜色与IR超指标, 指示星周尘埃存在, 是post-RSG与质损状态的关键环境判据",
+      "category": "environment",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型",
+      "description": "变星分类(经典造父、W Vir、BL Her、RV Tau及rho Cas型YHG等), 大量YSG位于不稳定带内",
+      "category": "variability",
+      "ucd": "src.var.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_period",
+      "name_cn": "脉动周期",
+      "description": "脉动周期, 长周期经典造父的周期-光度关系使其成为标准烛光",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amplitude",
+      "name_cn": "光变振幅",
+      "description": "光变振幅与变幅统计(如YHG候选体>0.5mag的长期变暗), 由时域测光导出",
+      "category": "variability",
+      "ucd": "phot.mag.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff_spectral_var",
+      "name_cn": "光谱型/温度长期变化",
+      "description": "多年监测显示的光谱型漂移与温度变化(如>500K下降), 揭示YSG穿越黄空区的演化与YHG脉动-质损耦合",
+      "category": "variability",
+      "ucd": "phys.temperature.effective;stat.var",
+      "unit": "K",
+      "_unit_filled": true
+    }
+  ]
+}

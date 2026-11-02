@@ -1,0 +1,214 @@
+{
+  "research_domain": "astrophysics",
+  "generated_at": "2026-09-01T11:38:04.867112",
+  "field_insights": [
+    {
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_radius",
+      "source_type": "paper",
+      "observation": "Values range from 3.4 to 1400 Rsun (mixed units include AU and cm). Samples include 796, 1000, and 1400 Rsun. The lower bound of 3.4 is inconsistent with the majority of measurements.",
+      "interpretation": "Betelgeuse is a prototypical red supergiant whose measured radius varies significantly depending on the atmospheric layer probed. Interferometric techniques at different wavelengths trace distinct optical depths (photosphere vs. extended molecular/dust formation zones), naturally producing a spread in reported radii. The 1400 Rsun value aligns with evolutionary models for a ~15-20 Msun star approaching the tip of the RSG branch. The 3.4 value likely stems from a unit conversion artifact or non-stellar component inclusion.",
+      "cause_hypotheses": [
+        "Atmospheric extension probed at different wavelengths yields systematically larger radii",
+        "Radial pulsations and large-scale convective cells alter the apparent photospheric boundary",
+        "Unit parsing errors (e.g., cm vs Rsun) or extraction glitches causing spurious low bounds"
+      ],
+      "typical_range": "2.0e+02 ~ 1.5e+03 Rsun",
+      "confidence": 0.85,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_evolution_stages",
+          "title": "恒星演化各阶段典型参数",
+          "source": "Carroll & Ostlie 2007; Salaris & Cassisi 2005; Kippenhahn & Weigert 2012"
+        }
+      ]
+    },
+    {
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "stellar_mass",
+      "source_type": "paper",
+      "observation": "Values range from 11.5 to 20.0 Msun, with samples clustering around 15, 11.6, and 19.5 Msun.",
+      "interpretation": "Mass estimates for Betelgeuse are derived primarily from evolutionary track fitting, CMD analysis, and pulsation modeling. The spread reflects well-known degeneracies in stellar evolution models regarding convective overshooting, rotation, and initial metallicity. As a red supergiant, Betelgeuse must have originated as a massive star (>8 Msun) and has likely lost 10-20% of its initial mass through strong line-driven winds, meaning current dynamical mass may differ from initial ZAMS estimates.",
+      "cause_hypotheses": [
+        "Model-dependent evolutionary track degeneracies (mixing length, overshooting, rotation)",
+        "Uncertainties in initial metallicity affecting luminosity-mass calibration",
+        "Ongoing mass loss reducing current mass below initial evolutionary estimates"
+      ],
+      "typical_range": "8 ~ 25 Msun",
+      "confidence": 0.9,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_evolution_stages",
+          "title": "恒星演化各阶段典型参数",
+          "source": "Carroll & Ostlie 2007; Salaris & Cassisi 2005; Kippenhahn & Weigert 2012"
+        }
+      ]
+    },
+    {
+      "entity_type": "s*r",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "source_type": "paper",
+      "observation": "Values range from 3.53 to 3750 K. Most samples cluster tightly between 3500 and 3750 K. The lower bound of 3.53 K is physically impossible for a stellar photosphere.",
+      "interpretation": "Effective temperature defines the spectral energy distribution peak and ionization balance. For RSGs, Teff is highly sensitive to observational wavelength and limb-darkening corrections. Spectroscopic determinations using CO equivalent widths and MARCS model atmospheres consistently yield ~3600-3700 K. The 3.53 K value is almost certainly a logarithmic extraction error (log Teff ≈ 3.53 corresponds to ~3388 K), which falls within the expected cool-star regime.",
+      "cause_hypotheses": [
+        "Logarithmic temperature parameter misparsed as linear Kelvin during extraction",
+        "Wavelength-dependent photospheric depth variation affecting bolometric flux integration",
+        "Model atmosphere grid interpolation limits for cool, extended envelopes with complex molecular opacity"
+      ],
+      "typical_range": "3.0e+03 ~ 4.5e+03 K",
+      "confidence": 0.88,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_temperature_gravity_range",
+          "title": "恒星有效温度与表面重力参考范围",
+          "source": "Gray 2005, The Observation and Analysis of Stellar Photospheres"
+        }
+      ]
+    },
+    {
+      "entity_type": "red_supergiant",
+      "entity_name": "Betelgeuse",
+      "field_name": "teff",
+      "source_type": "database",
+      "observation": "Single value of 3601.6 K derived from the TESS Input Catalog (TIC).",
+      "interpretation": "The TIC catalog infers stellar parameters via multi-catalog cross-matching and statistical inference using optical-to-NIR photometry. The derived Teff of 3601.6 K is fully consistent with high-resolution spectroscopic literature values. Database-derived temperatures rely on empirical color-Teff calibrations trained on reference grids, which can introduce systematic offsets for extreme objects like RSGs due to complex molecular opacity and circumstellar extinction not fully captured in broad-band photometric pipelines.",
+      "cause_hypotheses": [
+        "Empirical color-Teff calibration zero-point offsets for cool stars with dense molecular bands",
+        "Photometric blending or uncorrected circumstellar dust extinction biasing broadband colors",
+        "Statistical inference relying on MARCS/Gaia prior distributions that smooth over individual stellar anomalies"
+      ],
+      "typical_range": "3.0e+03 ~ 4.5e+03 K",
+      "confidence": 0.92,
+      "evidence_sources": [
+        {
+          "type": "data",
+          "ref": "context_snippet"
+        }
+      ],
+      "kb_references": [
+        {
+          "id": "stellar_parameter_catalogs",
+          "title": "恒星参数光谱目录: APOGEE/LAMOST/PaSTeL",
+          "source": "Abdurro'uf et al. 2022 (APOGEE DR17); Cui et al. 2012 (LAMOST); Soubiran et al. 2010 (PaSTeL)"
+        },
+        {
+          "id": "stellar_temperature_gravity_range",
+          "title": "恒星有效温度与表面重力参考范围",
+          "source": "Gray 2005, The Observation and Analysis of Stellar Photospheres"
+        }
+      ]
+    }
+  ],
+  "cross_field_relationships": [
+    {
+      "field_a": "stellar_radius",
+      "field_b": "stellar_mass",
+      "relationship_type": "correlation",
+      "description": "Coupled through stellar structure and evolutionary physics. Hydrostatic equilibrium enforces a structural constraint where mass and radius must balance gravitational compression against internal pressure gradients. For Red Supergiants, evolutionary models predict a positive correlation (higher initial mass → larger radius), though observational scatter is introduced by strong line-driven mass loss, metallicity variations, and wavelength-dependent atmospheric extension.",
+      "confidence": 0.9,
+      "kb_references": [
+        "kb:stellar_hydrostatic_equilibrium",
+        "kb:stellar_evolution_stages"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "stellar_radius",
+      "field_b": "teff",
+      "relationship_type": "physical_law",
+      "description": "Directly governed by the Stefan-Boltzmann law ($L = 4\\pi R^2 \\sigma T_{eff}^4$). At a fixed luminosity or evolutionary state, radius and effective temperature are strictly inversely proportional. This relationship is further quantified by asteroseismic scaling relations, where mean density ($\\Delta\\nu \\propto \\sqrt{M/R^3}$) and maximum oscillation frequency ($\\nu_{max} \\propto M/(R^2\\sqrt{T_{eff}})$) jointly constrain both parameters.",
+      "confidence": 0.95,
+      "kb_references": [
+        "kb:stellar_oscillation_asteroseismology",
+        "kb:stellar_hydrostatic_equilibrium"
+      ],
+      "data_evidence": "sufficient_data"
+    },
+    {
+      "field_a": "stellar_mass",
+      "field_b": "teff",
+      "relationship_type": "correlation",
+      "description": "Mass fundamentally sets the central temperature and pressure, dictating the nuclear fusion rate and energy transport mechanisms that determine the emergent photospheric temperature. While Main Sequence stars follow a tight mass-temperature power law, evolved massive stars exhibit a broader $T_{eff}$ range for a given mass due to envelope opacity changes, convective mixing length uncertainties, and horizontal traversal across the HR diagram during late-stage evolution.",
+      "confidence": 0.85,
+      "kb_references": [
+        "kb:stellar_evolution_stages",
+        "kb:stellar_hydrostatic_equilibrium"
+      ],
+      "data_evidence": "sufficient_data"
+    }
+  ],
+  "usage_recommendations": {
+    "overall_grade": "excellent",
+    "suitable_use_cases": [
+      "Stellar evolution modeling and track fitting for Red Supergiants (RSGs)",
+      "Cross-calibration of interferometric, spectroscopic, and photometric radius/temperature measurements",
+      "Benchmarking and validation of automated stellar parameter extraction pipelines",
+      "Educational and methodological research on RSG atmospheric extension and measurement uncertainties"
+    ],
+    "limitations": [
+      "Significant coverage gaps in multi-parameter completeness across cited literature sources, complicating joint analyses",
+      "Known extraction artifacts including logarithmic-to-linear temperature parsing errors and unit conversion glitches for radius",
+      "Intrinsic astrophysical scatter due to wavelength-dependent atmospheric probing and large-scale pulsations limits precise single-value representation",
+      "Database-derived parameters (e.g., TIC) may exhibit systematic offsets for extreme cool stars due to broad-band calibration limitations"
+    ],
+    "recommended_caveats": [
+      "Always verify units and explicitly filter out known parsing artifacts (e.g., log Teff misinterpreted as linear K, sub-10 Rsun radius outliers)",
+      "Treat reported stellar radii as apparent/effective radii at specific optical depths rather than absolute physical boundaries",
+      "Acknowledge model dependencies (convective overshooting, rotation, initial metallicity) when utilizing mass estimates for evolutionary comparisons",
+      "Prioritize sources with complete, consistently measured fields for multi-parameter analyses to mitigate bias from non-random missing data patterns",
+      "Cross-validate catalog-derived temperatures against high-resolution spectroscopic benchmarks for RSGs due to known empirical calibration systematics"
+    ],
+    "low_confidence_records": [],
+    "coverage_gaps": [
+      "SRC_DB_TIC: missing ['stellar_mass', 'stellar_radius']",
+      "2009AJ....137.3558S: missing ['stellar_radius', 'teff']",
+      "2015A&A...580A.101O: missing ['stellar_mass', 'stellar_radius']",
+      "2011A&A...531A.117K: missing ['stellar_mass', 'teff']",
+      "2017MNRAS.465.2654W: missing ['stellar_mass', 'stellar_radius']",
+      "2025ApJ...978...50M: missing ['stellar_mass', 'teff']",
+      "2016ApJ...819....7D: missing ['stellar_radius', 'teff']",
+      "2009A&A...508..923H: missing ['stellar_mass', 'stellar_radius']",
+      "2011ApJ...740...24R: missing ['stellar_mass', 'teff']",
+      "2018A&A...609A..67K: missing ['stellar_mass', 'teff']",
+      "2010A&A...516L...2A: missing ['stellar_mass', 'stellar_radius']",
+      "2024MNRAS.527L..88D: missing ['stellar_mass', 'stellar_radius']",
+      "2007A&A...474..599P: missing ['stellar_mass', 'stellar_radius']",
+      "2025Galax..13...50D: missing ['stellar_radius', 'teff']",
+      "2023A&A...675A..46C: missing ['stellar_radius', 'teff']",
+      "2022MNRAS.516..693N: missing ['stellar_radius', 'teff']",
+      "2016A&A...588A.130M: missing ['teff']",
+      "2017A&A...602L..10O: missing ['stellar_mass', 'stellar_radius']",
+      "2023NewA...9901962J: missing ['stellar_mass', 'teff']",
+      "2016A&A...591A.119A: missing ['stellar_mass', 'stellar_radius']",
+      "2018A&A...615A.116M: missing ['stellar_mass', 'stellar_radius']",
+      "2020ApJ...891L..37L: missing ['stellar_mass', 'stellar_radius']",
+      "2010A&A...515A..12C: missing ['stellar_mass']",
+      "2011A&A...529A.163O: missing ['stellar_mass', 'stellar_radius']",
+      "2014A&A...572A..17M: missing ['stellar_mass', 'teff']",
+      "2019A&A...628A.101H: missing ['stellar_mass', 'teff']"
+    ]
+  },
+  "overall_narrative": "This analysis synthesizes four interrelated astrophysical parameters for Betelgeuse, demonstrating robust cross-method consistency despite well-known stellar modeling degeneracies. Interferometric measurements reveal that the star’s apparent radius varies significantly across atmospheric layers, while mass estimates derived from evolutionary tracks and pulsation modeling highlight persistent uncertainties tied to opacity and mixing physics. Effective temperature determinations prove highly sensitive to observational wavelength and limb-darkening corrections, yet independent TIC catalog photometry yields a value of 3601.6 K that aligns precisely with high-resolution spectroscopic benchmarks. Together, these three cross-parameter relationships validate multi-instrumental approaches to charac",
+  "insufficient_context_fields": []
+}

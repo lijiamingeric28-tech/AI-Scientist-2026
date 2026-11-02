@@ -1,0 +1,188 @@
+{
+  "otype": "Ir*",
+  "name_cn": "不规则变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "variability_type",
+      "name_cn": "变光类型代码",
+      "description": "不规则变星分类代码:GCVS/VSX 的 I、IA(早型 O-A)、IB(晚型 F-M)、IS、ISA、ISB、I(?) 等;Gaia DR3 的 IRREGULAR 类;ASAS-SN 的 L 类",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "class_probability",
+      "name_cn": "分类概率/可靠性",
+      "description": "机器学习分类概率(ASAS-SN 随机森林)或 Gaia 变光分类得分,衡量不规则判定的置信度;VSX 亦给出人工核验标记",
+      "category": "classification",
+      "ucd": "stat.probability;meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "周期/伪周期",
+      "description": "不规则变星通常无稳定周期(GCVS 中该栏为空);OGLE/Gaia/ASAS-SN 对疑似半规则源给出 GLS 或傅里叶拟合周期,Ir 与 SR 的区分依赖此量",
+      "category": "variability",
+      "ucd": "phot.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_timescale",
+      "name_cn": "变光时标",
+      "description": "光变起伏的特征时标(天至数年):快速不规则(IS)与慢速不规则(I)的差异即由时标定义;由 ASAS-SN 采样历元与 Gaia 历元测光时长约束",
+      "category": "variability",
+      "ucd": "time.scale",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude",
+      "name_cn": "光变幅度",
+      "description": "不规则变光的总幅度:GCVS 为极大-极小星等差;ASAS-SN 为 2.5-97.5 百分位变幅(亮星可测至约 0.05 mag);Gaia LPV 表给出拟合变幅",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_max_min",
+      "name_cn": "极大/极小星等",
+      "description": "GCVS 给出的历史极大、极小 V 视星等与对应历元,直接刻画不规则星长期光变包络",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.max",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mean_mag",
+      "name_cn": "平均星等",
+      "description": "多历元强度平均星等:GCVS 的 Max/Min 区间均值、ASAS-SN 的 V/g 均值、OGLE 的 I/V 均值、Gaia 的 G 中位星等",
+      "category": "photometry",
+      "ucd": "phot.mag;stat.mean",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_color",
+      "name_cn": "颜色指数",
+      "description": "晚型不规则星以 M/S/C 型红巨星为主:Gaia BP-RP、2MASS J-Ks、OGLE V-I 颜色用于判别 O-rich/C-rich 与星族",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "infrared_photometry",
+      "name_cn": "红外测光",
+      "description": "2MASS JHKs 与 AllWISE W1-W4 红外测光(ASAS-SN 表内附交叉匹配),约束尘埃包层与恒星辐射主区,对晚型 Ir 尤为重要",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_photometry",
+      "name_cn": "历元测光/光变曲线",
+      "description": "Gaia DR3 历元测光(G/BP/RP 多历元序列)及 ASAS-SN/OGLE 的公开光变曲线,是不规则性判定的原始证据(时标、幅度、非周期性)",
+      "category": "photometry",
+      "ucd": "phot.mag;time.epoch",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_epochs",
+      "name_cn": "观测历元数",
+      "description": "光变曲线采样点数(ASAS-SN 每源 2,000-7,500 历元;OGLE 约 500-1000 点),决定不规则判定的可靠性——历元不足的 SR 易被误分为 Ir",
+      "category": "photometry",
+      "ucd": "obs.field;meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "GCVS/VSX 提供的光谱型(M、S、C 等晚型巨星/超巨星;IA 型对应 O-A 早型);星表光谱型多为汇编值,佐证晚型不规则星群",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "o_c_richness",
+      "name_cn": "氧丰/碳丰类型",
+      "description": "OGLE 依 WI-WJK 平面判别 LPV 的 O-rich/C-rich;碳星不规则光变更显著、常含深度不规则下降(与 R CrB 类现象相关)",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pl_sequence",
+      "name_cn": "周光关系序列",
+      "description": "OGLE 的 Wood 序列 A-E 归属:Ir 若具弱周期则落入 SR/L 序列区,是区分真实不规则与欠采样半规则的重要物理判据",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "evolutionary_status",
+      "name_cn": "演化状态",
+      "description": "OGLE 对 OSARG 的 RGB/AGB 判别及 Gaia LPV 表的 AGB/超巨星关联;不规则晚型变星主要处于红巨星分支或 AGB 演化阶段",
+      "category": "physical",
+      "ucd": "phys.evol",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_dec",
+      "name_cn": "赤经赤纬",
+      "description": "J2000 位置(GCVS 5.1 精度约 1 角秒,Gaia 亚毫角秒),五表均提供,为交叉匹配基础",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia 自行;OGLE 用自行排除前景红矮星污染,ASAS-SN 亦借 Gaia 特征提升分类,对确认银河系晚型 Ir 样本尤为关键",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax_distance",
+      "name_cn": "视差/距离",
+      "description": "Gaia 视差与 Bailer-Jones 概率距离(ASAS-SN 分类特征之一),用于绝对星等、周光关系与银河系结构分析",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系/环境归属",
+      "description": "GCVS 的银河系天区标识与银道坐标;OGLE 样本为 LMC;Gaia/ASAS-SN 为全天——不规则星空间分布示踪银河系巨星星族结构",
+      "category": "environment",
+      "ucd": "pos.galactic",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_identifiers",
+      "name_cn": "交叉标识",
+      "description": "GCVS 命名、NSV 编号、ASAS-SN/OGLE/VSX 编号及 Gaia source_id 的互认关系,保证多表合并时实体唯一性",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,359 @@
+{
+  "otype": "vid",
+  "name_cn": "宇宙低密度区",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "void_center_ra",
+      "name_cn": "空洞中心赤经",
+      "description": "空洞加权中心(最大球或体积加权)赤经 J2000，单位deg",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_center_dec",
+      "name_cn": "空洞中心赤纬",
+      "description": "空洞加权中心赤纬 J2000，单位deg",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_center_x",
+      "name_cn": "空洞中心笛卡尔x坐标",
+      "description": "空洞中心共动笛卡尔 x 坐标(按所选宇宙学换算)，单位 h^-1 Mpc",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.x",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_center_y",
+      "name_cn": "空洞中心笛卡尔y坐标",
+      "description": "空洞中心共动笛卡尔 y 坐标，单位 h^-1 Mpc",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.y",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_center_z",
+      "name_cn": "空洞中心笛卡尔z坐标",
+      "description": "空洞中心共动笛卡尔 z 坐标，单位 h^-1 Mpc",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.z",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_comoving_dist",
+      "name_cn": "空洞共动距离",
+      "description": "空洞中心到观测者的共动距离(由红移+宇宙学得出)，单位 h^-1 Mpc",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_dist",
+      "name_cn": "空洞星系距离",
+      "description": "近邻空洞星系的距离(TRGB 或速度换算)，单位 Mpc",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_redshift",
+      "name_cn": "空洞中心红移",
+      "description": "空洞加权中心红移/光谱红移(近邻空洞的星系红移中值；BOSS 空洞0.2-0.7；z~2.3 空洞为背景源光谱红移)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_vel_helio",
+      "name_cn": "空洞星系日心速度",
+      "description": "近邻空洞星系的日心径向速度，单位 km/s",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_vel_lg",
+      "name_cn": "空洞星系本星系群参考速度",
+      "description": "近邻空洞星系相对本星系群(Local Group)的径向速度，单位 km/s",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_max_radius",
+      "name_cn": "空洞最大球半径",
+      "description": "构成空洞的最大空球(最大球法)半径；VIPERS/Krolewski 亦直接给出空洞半径，单位 h^-1 Mpc 或 Mpc",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_reff",
+      "name_cn": "空洞有效半径",
+      "description": "等效球半径 Reff=(3V/4pi)^(1/3)，V 为空洞体积；BOSS 质控后 20-100 h^-1 Mpc",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_volume",
+      "name_cn": "空洞体积",
+      "description": "空洞总 Voronoi 体积，单位 (Mpc/h)^3",
+      "category": "physical",
+      "ucd": "phys.volume",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_numdens_min",
+      "name_cn": "空洞最小数密度",
+      "description": "空洞内最空 Voronoi 格的星系数密度 n_min，单位 (h/Mpc)^3",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_density_contrast",
+      "name_cn": "空洞密度对比",
+      "description": "最空格相对该红移平均星系密度的密度对比 delta_min(=n_min/n_bar-1，约-1~-0.5)，无量纲",
+      "category": "physical",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_ridge_ratio",
+      "name_cn": "空洞脊线密度比",
+      "description": "脊线上最密粒子与空洞最疏粒子密度之比(ZOBOV 空洞显著性判据)，无量纲",
+      "category": "physical",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_ell_smaj",
+      "name_cn": "空洞椭球主轴矢量",
+      "description": "拟合空洞形状椭球的第一主轴方向矢量(x1,y1,z1 共动坐标)，单位 h^-1 Mpc",
+      "category": "physical",
+      "ucd": "phys.size.smajAxis",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_ell_smed",
+      "name_cn": "空洞椭球次轴矢量",
+      "description": "拟合椭球第二主轴方向矢量(x2,y2,z2)，单位 h^-1 Mpc",
+      "category": "physical",
+      "ucd": "phys.size.smedAxis",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_ell_smin",
+      "name_cn": "空洞椭球短轴矢量",
+      "description": "拟合椭球第三主轴方向矢量(x3,y3,z3)，单位 h^-1 Mpc",
+      "category": "physical",
+      "ucd": "phys.size.sminAxis",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_ellipticity",
+      "name_cn": "空洞椭率",
+      "description": "由拟合椭球主轴导出的空洞形状椭率(形状分析用)",
+      "category": "physical",
+      "ucd": "src.ellipticity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_surface_area",
+      "name_cn": "空洞表面积",
+      "description": "V2 空洞总表面积，单位 (h^-1 Mpc)^2",
+      "category": "physical",
+      "ucd": "phys.area",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_edge_area",
+      "name_cn": "空洞边界邻接面积",
+      "description": "空洞表面与调查边界 Voronoi 格邻接的面积(用于边界空洞判定 A_edge/A_total>0.1)",
+      "category": "physical",
+      "ucd": "phys.area",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_extent",
+      "name_cn": "空洞范围尺寸",
+      "description": "近邻空洞沿超星系坐标 X/Y/Z 方向的最大延伸，单位 Mpc",
+      "category": "physical",
+      "ucd": "phys.size",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_btot",
+      "name_cn": "空洞星系B总星等",
+      "description": "近邻空洞星系的总 B 波段星等(银河系消光改正前)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_magb_abs",
+      "name_cn": "空洞星系绝对B星等",
+      "description": "近邻空洞星系绝对 B 星等(峰值约-15，可低至-7.5，多为矮星系)",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_magk_abs",
+      "name_cn": "空洞星系绝对K星等",
+      "description": "近邻空洞星系绝对 K 波段星等(定义空洞边界的明亮星系取 K<-22)",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_b_ext",
+      "name_cn": "空洞星系B带消光",
+      "description": "银河系前景 B 带消光改正值，单位 mag",
+      "category": "photometry",
+      "ucd": "phys.absorption;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_id",
+      "name_cn": "空洞编号",
+      "description": "空洞唯一标识符(如 VoidFinder void ID、VIPERS 的 Wx.VVVV.SSSS、近邻空洞编号、BOSS 空洞 ID)",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_membership",
+      "name_cn": "星系空洞归属",
+      "description": "星系所属 zone/空洞成员关系(星系→zone→空洞层级)及是否属于空洞的标志",
+      "category": "classification",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_prune_method",
+      "name_cn": "空洞剪枝方法",
+      "description": "V2 空洞的剪枝方式(VIDE 最大连接密度或 REVOLVER)，区分算法目录",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_sample",
+      "name_cn": "空洞星系样本",
+      "description": "BOSS 星系样本标识(CMASS 或 LOWZ)",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_edge_flag",
+      "name_cn": "空洞边界标志",
+      "description": "空洞是否受调查边界影响的标志(VoidFinder edge 0-2；V2 由 A_edge/A_total 判定；BOSS 用 Dbound)",
+      "category": "classification",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_cosmology",
+      "name_cn": "宇宙学模型假设",
+      "description": "计算共动距离所用宇宙学(WMAP5 或 Planck 2018，H0=100h km/s/Mpc)",
+      "category": "classification",
+      "ucd": "phys.cosmology",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_class",
+      "name_cn": "空洞星系内外分类",
+      "description": "近邻空洞星系样本分层: inner(DNN>2.0 Mpc)或 outer 空洞星系",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_ngal",
+      "name_cn": "空洞内星系数",
+      "description": "位于空洞内的星系总数(体积限样本成员数或近邻空洞成员数)",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_poisson_prob",
+      "name_cn": "空洞泊松涨落概率",
+      "description": "空洞(或最大球)由泊松涨落产生的概率，用于质控筛选真实低密度区",
+      "category": "environment",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_dbound",
+      "name_cn": "到调查边界距离",
+      "description": "空洞加权中心到最近调查边界的距离(边界效应评估)，单位 Mpc/h",
+      "category": "environment",
+      "ucd": "phys.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_dnn",
+      "name_cn": "到最近明亮星系距离",
+      "description": "空洞星系到最近明亮星系(本星系群质量级)的距离 DNN，单位 Mpc，表征空洞内部环境",
+      "category": "environment",
+      "ucd": "phys.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "void_gal_depth",
+      "name_cn": "空洞星系深度",
+      "description": "星系 Voronoi 格与其 zone 边缘之间的相邻格层数(V2 空洞成员离边界的深度)",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

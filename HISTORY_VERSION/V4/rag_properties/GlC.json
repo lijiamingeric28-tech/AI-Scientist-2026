@@ -1,0 +1,422 @@
+{
+  "otype": "GlC",
+  "name_cn": "球状星团",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "name",
+      "name_cn": "星团名称",
+      "description": "星团常用名称(NGC/Melotte/半人马ω等)及别名",
+      "category": "classification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alt_id",
+      "name_cn": "别名/交叉证认",
+      "description": "其他目录中的星团名称与交叉证认",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_type",
+      "name_cn": "星团类型",
+      "description": "天体类型判读:球状星团(glo)、疏散星团、星协、候选星团等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "core_collapse_flag",
+      "name_cn": "核坍缩标志",
+      "description": "标志可能('c')或很可能('c:')处于核坍缩状态的球状星团",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_members",
+      "name_cn": "成员星数目",
+      "description": "各形态学半径(r0/r1/r2)内最可能(1σ)成员星数量",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000星团中心赤经(精度约1-2角秒)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000星团中心赤纬",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lon",
+      "name_cn": "银经",
+      "description": "星团中心银道坐标银经l",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gal_lat",
+      "name_cn": "银纬",
+      "description": "星团中心银道坐标银纬b",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_ra",
+      "name_cn": "自行(赤经方向)",
+      "description": "平均自行 μα*cosδ (mas/yr), 主要基于Gaia EDR3成员星",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pm_dec",
+      "name_cn": "自行(赤纬方向)",
+      "description": "平均自行 μδ (mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "平均视差",
+      "description": "基于Gaia EDR3成员星的平均视差(mas)",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "日心(及LSR)视向速度 (km/s), 来自恒星光谱平均",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_sun",
+      "name_cn": "日心距离",
+      "description": "星团到太阳的距离(kpc), Harris/文献汇编或Gaia EDR3+HST精确距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_galcen",
+      "name_cn": "银心距离",
+      "description": "到银河系中心的距离(kpc, 采用R0=8.0 kpc)",
+      "category": "environment",
+      "ucd": "pos.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "x_y_z_coords",
+      "name_cn": "银河系直角坐标(X,Y,Z)",
+      "description": "以太阳为中心的X(指向银心)/Y(银心旋转方向)/Z(北银极)坐标(kpc)",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.x;pos.cartesian.y;pos.cartesian.z",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "相对太阳的星团金属丰度[Fe/H], 谱线测量平均值",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age_log",
+      "name_cn": "年龄(log t)",
+      "description": "对数年龄(年), 同质等时线拟合(2MASS光度)",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "总质量",
+      "description": "基于N体模拟拟合速度弥散与面密度剖面的星团总质量(Msun)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function_slope",
+      "name_cn": "恒星质量函数斜率",
+      "description": "恒星质量函数斜率, 自洽考虑质量分层与星团解体的拟合",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "central_velocity_dispersion",
+      "name_cn": "中心速度弥散",
+      "description": "中心(或中心附近)速度弥散σv (km/s), 由完整速度弥散剖面确定",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "escape_velocity_center",
+      "name_cn": "中心逃逸速度",
+      "description": "星团中心逃逸速度(km/s), 与第一代恒星比例相关",
+      "category": "physical",
+      "ucd": "phys.veloc.escape",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "core_radius_arcmin",
+      "name_cn": "核半径(角分)",
+      "description": "King模型核半径rc(角分)",
+      "category": "physical",
+      "ucd": "phys.angSize.radius",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "core_radius_pc",
+      "name_cn": "核半径(物理)",
+      "description": "King模型核半径rc(秒差距)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "half_light_radius",
+      "name_cn": "半光半径",
+      "description": "包含一半总光度的半径(角分或秒差距)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tidal_radius",
+      "name_cn": "潮汐半径",
+      "description": "King模型潮汐半径rt(角分/秒差距), 反映银河潮汐场环境",
+      "category": "environment",
+      "ucd": "phys.size.radius",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "king_concentration",
+      "name_cn": "King集中度",
+      "description": "King模型中心集中度 c=log(rt/rc)",
+      "category": "physical",
+      "ucd": "arith.ratio;phys.size.radius",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r0_r1_r2_radius",
+      "name_cn": "形态学半径(r0/r1/r2)",
+      "description": "径向密度剖面经验拟合的三个半径:核/中央可见/总可见半径(度)",
+      "category": "physical",
+      "ucd": "phys.angSize.radius",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "central_surface_brightness",
+      "name_cn": "中心面亮度",
+      "description": "星团中心面亮度μV (mag/arcsec^2)",
+      "category": "photometry",
+      "ucd": "phot.mag.sb",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "central_luminosity_density",
+      "name_cn": "中心光度密度",
+      "description": "对数中心光度密度 (Lsun/pc^3)",
+      "category": "physical",
+      "ucd": "phot.luminosity.density",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "relaxation_time_core",
+      "name_cn": "核弛豫时间",
+      "description": "对数核弛豫时间(年)",
+      "category": "physical",
+      "ucd": "time.scale",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "relaxation_time_hmr",
+      "name_cn": "半质量弛豫时间",
+      "description": "半光半径处中值(半质量)弛豫时间(年)",
+      "category": "physical",
+      "ucd": "time.scale",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "integrated_v_mag",
+      "name_cn": "积分V星等",
+      "description": "积分V星等Vt",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_v_mag",
+      "name_cn": "绝对V星等",
+      "description": "绝对星等 Mv,t = Vt - (m-M)V, 即星团光度",
+      "category": "photometry",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_ub",
+      "name_cn": "积分颜色(U-B)",
+      "description": "未消红修正的积分U-B颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_bv",
+      "name_cn": "积分颜色(B-V)",
+      "description": "未消红修正的积分B-V颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_vr",
+      "name_cn": "积分颜色(V-R)",
+      "description": "未消红修正的积分V-R颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_vi",
+      "name_cn": "积分颜色(V-I)",
+      "description": "未消红修正的积分V-I颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_modulus",
+      "name_cn": "视距离模数",
+      "description": "视距离模数 (m-M)V",
+      "category": "photometry",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_modulus_ks",
+      "name_cn": "Ks波段距离模数",
+      "description": "2MASS Ks波段距离模数 (m-M)Ks",
+      "category": "photometry",
+      "ucd": "phot.mag.distMod;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_ebv",
+      "name_cn": "色余E(B-V)",
+      "description": "星团方向前景消红色余E(B-V)",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_ejk",
+      "name_cn": "近红外色余E(J-Ks)/E(J-H)",
+      "description": "近红外色余E(J-Ks)与E(J-H)",
+      "category": "photometry",
+      "ucd": "phot.color.excess;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hb_v_level",
+      "name_cn": "水平支V星等",
+      "description": "水平支(或其RR天琴星变星)的V星等水平, 用于RR天琴距离/年龄基准",
+      "category": "variability",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "积分光谱型",
+      "description": "星团积分光的光谱型",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_pericenter",
+      "name_cn": "轨道近银心距",
+      "description": "基于Gaia EDR3自行与视向速度在银河系势场中积分得到的轨道近心距(kpc)",
+      "category": "environment",
+      "ucd": "src.orbital.pericenter",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_apocenter",
+      "name_cn": "轨道远银心距",
+      "description": "轨道远心距(kpc)",
+      "category": "environment",
+      "ucd": "src.orbital.apocenter",
+      "unit": "kpc",
+      "_unit_filled": true
+    }
+  ]
+}

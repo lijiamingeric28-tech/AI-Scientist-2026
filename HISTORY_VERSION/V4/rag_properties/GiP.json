@@ -1,0 +1,314 @@
+{
+  "otype": "GiP",
+  "name_cn": "星系对中的星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "对星系中分量的赤经(KPG/AM/RR95为历元1950.0, VV为J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "对星系中分量的赤纬(KPG/AM/RR95为历元1950.0, VV为J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon",
+      "name_cn": "银经",
+      "description": "银道坐标经度(度), 用于银河遮蔽带与环境分析",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glat",
+      "name_cn": "银纬",
+      "description": "银道坐标纬度(度)",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sglon",
+      "name_cn": "超星系经度",
+      "description": "超星系坐标经度(0.1度), 用于大尺度环境研究",
+      "category": "astrometry",
+      "ucd": "pos.supergalactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sglat",
+      "name_cn": "超星系纬度",
+      "description": "超星系坐标纬度(0.1度)",
+      "category": "astrometry",
+      "ucd": "pos.supergalactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_mag",
+      "name_cn": "B波段视星等",
+      "description": "分量或系统的B波段视星等: KPG为CGCG转换的Holmberg系统星等(限15.7), RR95为ESO-LV系统B总星等, VV为Bt或mpg(mb)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "b_minus_r",
+      "name_cn": "B-R色指数",
+      "description": "扣除银河消光与星云谱线后的B-R色, 反映恒星族年龄与星暴活动(RR95表2; BGK2003狭缝内色)",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r_abs_mag",
+      "name_cn": "R波段绝对星等",
+      "description": "外推到总光度的R波段绝对星等(H0相关)",
+      "category": "photometry",
+      "ucd": "phys.absMag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isophotal_diameter",
+      "name_cn": "等光度直径",
+      "description": "25 mag/arcsec2 等光度的长径: KPG MajDiam(角分, 蓝板测量), RR95 a25(角秒), VV角大小(0.1角分)",
+      "category": "photometry",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "diam_90pct_light",
+      "name_cn": "B波段90%光度直径",
+      "description": "包围B波段总光度90%的直径aB90(角秒), 与D25互补的光度尺度",
+      "category": "photometry",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "axis_ratio",
+      "name_cn": "轴比(短轴/长轴)",
+      "description": "分量的短长轴之比, 指示盘面倾角与潮汐变形",
+      "category": "classification",
+      "ucd": "phys.angSize.axisRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "分量的视向速度或系统退行速度: KPG经太阳运动改正(含来源代码), RR95系统cz, VV为RC3光学RV(光学/射电分开), BGK2003为cz",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;pos.heliocentric",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_error",
+      "name_cn": "视向速度均方误差",
+      "description": "KPG给出的视向速度测量均方误差(km/s)",
+      "category": "spectroscopy",
+      "ucd": "stat.error;phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_source",
+      "name_cn": "视向速度来源代码",
+      "description": "KPG速度来源标识(1=6米望远镜, 2=White等, 3=Tifft, 4=Palomar/Crimean, 5=Rood/RC2, 6=Huchra等)",
+      "category": "spectroscopy",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "VV表中来自NED/RC3的红移z(光学或射电测量, 有来源标记)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_rv",
+      "name_cn": "射电视向速度",
+      "description": "RC3给出的射电(HI)观测视向速度(VV表, 与光学RV分别列示)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;em.radio",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "谱线强度类型",
+      "description": "Tifft分类的谱线类型: ABS吸收线系统/WEK弱发射/MID中等发射/STG强发射, 指示电离与星暴活动",
+      "category": "spectroscopy",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ha_ew",
+      "name_cn": "Hα等值宽度",
+      "description": "Hα发射线等值宽度(0.1nm), 潮汐触发恒星形成的核心指示量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.opt.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_decrement",
+      "name_cn": "巴尔末减缩",
+      "description": "经Balmer吸收修正的Hα/Hβ比, 用于红化与尘埃校正",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt.Halpha;em.opt.Hbeta",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "angular_separation",
+      "name_cn": "分量角距",
+      "description": "两分量间角距: KPG以角分、RR95以角秒给出, 决定相互作用强度",
+      "category": "physical",
+      "ucd": "pos.angDistance",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "projected_sep_kpc",
+      "name_cn": "投影物理间距",
+      "description": "对成员在天空上的投影间距(单位kpc/h, H0相关), BGK2003给出",
+      "category": "physical",
+      "ucd": "pos.angDistance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_separation",
+      "name_cn": "分量速度差",
+      "description": "对成员视向速度差(km/s), 用于判别物理对与轨道质量估计",
+      "category": "physical",
+      "ucd": "arith.diff;phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_width",
+      "name_cn": "旋转速度宽度",
+      "description": "由Hα旋转曲线导出的旋转速度宽度Vc(km/s, 103个星系有测量), 用于质量估计",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type",
+      "name_cn": "哈勃形态类型",
+      "description": "分量形态: KPG为E/S0/Sa/Sb/Sc/Sm(含SB与Irr), VV为S/E/I粗分类, RR95给出数值哈勃阶段",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "t_stage",
+      "name_cn": "哈勃阶段数值T",
+      "description": "RC2系统的数值哈勃阶段指标(负值早型, 正值晚型), RR95给出",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vv_interaction_type",
+      "name_cn": "VV相互作用类型",
+      "description": "Vorontsov-Velyaminov相互作用阶段分类: PC接触对/PK碰撞对/PD遥远对、桥b/尾t、巢N/NN/NNN、M51型卫星M、伪环R、彗星状K等, 直接编码潮汐桥与尾",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "am_category",
+      "name_cn": "Arp-Madore扰动类别",
+      "description": "AM分类码1-25(可多值): 1相互作用伴体、2相互作用双星系、6环星系、7喷流、9M51型、12特殊盘、15潮汐尾/环/碎片、16扰动孤立星系、23密近对等, 是最细的形态扰动指数",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rot_curve_class",
+      "name_cn": "旋转曲线形态",
+      "description": "BGK2003旋转曲线描述: normal正常/marginal边缘/distorted扭曲, 作为动力学形态扰动指数",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "am_description",
+      "name_cn": "AM形态文字描述",
+      "description": "Arp-Madore对潮汐尾、桥、碎片、包层等结构的文字描述(67字节字段, 含缩写体系)",
+      "category": "classification",
+      "ucd": "meta.note",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pair_category",
+      "name_cn": "对类型判定",
+      "description": "RR95按DSS图像检验后的判定: PG可能群/PT可能三重态/S单扰动星系/OP光学投影对/NO高密度场中剔除对象",
+      "category": "environment",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isolation_flag",
+      "name_cn": "孤立判据标记",
+      "description": "Karachentsev K72孤立判据满足强度标记(+满足/-不满足), 表征对星系所处的局域环境密度",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "projected_density",
+      "name_cn": "投影面密度",
+      "description": "以对为中心1度半径内每平方度的星系数Ntot, 定量刻画局域环境",
+      "category": "environment",
+      "ucd": "src.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ngal_in_system",
+      "name_cn": "系统内星系数",
+      "description": "所在系统(对或致密群)内的星系数目NGal, 区分对与多重系统",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

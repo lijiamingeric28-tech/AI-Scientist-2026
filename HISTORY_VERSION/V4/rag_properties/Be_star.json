@@ -1,0 +1,296 @@
+{
+  "otype": "Be*",
+  "name_cn": "Be星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型(含亮度级),III/67A、III/205、J/AJ/149/7、J/AJ/155/53、BLOeM(J/A+A/707/A204)均给出。",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "be_star_catalog_id",
+      "name_cn": "Be星编号",
+      "description": "MWC/AS/Henize等经典Be星表编号,源自Mount Wilson星表系列。",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variable_star_name",
+      "name_cn": "变星名称",
+      "description": "变星命名(如γ Cas型变星),含星表编号。",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "单次视向速度(km/s),附A-F质量等级;III/205与J/AJ/149/7亦涉及RV变动的定性判断。",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度vsini",
+      "description": "投影自转速度(km/s),Be星关键参量:III/67A给出单一值及误差;BLOeM给出Fourier(FT)与FWHM两种方法结果及测量次数。",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V星等",
+      "description": "UBV系统V星等,附变星(V)/双星总光(D)标志与质量等级;III/205、J/AJ/149/7、J/AJ/155/53亦含不同系统的星等。",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B-V色指数",
+      "description": "UBV系统B-V色指数(含质量等级)。",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color",
+      "name_cn": "U-B色指数",
+      "description": "UBV系统U-B色指数(含质量等级)。",
+      "category": "photometry",
+      "ucd": "phot.color",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_mag",
+      "name_cn": "H波段星等",
+      "description": "2MASS H波段星等(1.6um),用于红外盘辐射基线。",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "G星等",
+      "description": "Gaia G波段星等,由Gaia DR3交叉证认获得。",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "coordinates",
+      "name_cn": "赤经赤纬坐标",
+      "description": "天体位置:III/67A为B1950分点;III/205与BLOeM为J2000;J/AJ/155/53无坐标列(需经星名/ABE编号交叉)。",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银经/银纬",
+      "description": "银道坐标,刻画银河系盘面分布(银盘发射线星)。",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_dr3_id",
+      "name_cn": "Gaia DR3源编号",
+      "description": "Gaia DR3源标识,便于现代天测与自行/视差交叉。",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_em_strength",
+      "name_cn": "Hα发射强度等级",
+      "description": "HBH星红敏底片目视Hα发射强度1-5级(极弱到过曝),并区分疑似发射(S)。",
+      "category": "spectroscopy",
+      "ucd": "spect.line.intensity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_continuum_class",
+      "name_cn": "连续谱强度等级",
+      "description": "Hα邻域连续谱A-D强度等级与不可分情况(--),反映发射线对比度。",
+      "category": "spectroscopy",
+      "ucd": "spect.continuum",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dvp_emission_lines",
+      "name_cn": "发射线双峰间距Δvp",
+      "description": "H波段Br11(1.6811um)、FeII 16792/16878、CI 16895及15760/16781A发射线红蓝峰速度分离,示踪盘开普勒运动与发射区位置。",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "voverr_ratio",
+      "name_cn": "发射峰V/R强度比",
+      "description": "双峰发射线紫/红峰强度比(V/R),反映盘密度波/进动,由APOGEE谱轮廓分析给出(含峰形标志:弱峰/单峰/壳吸收等)。",
+      "category": "spectroscopy",
+      "ucd": "spect.line.asymmetry",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "disc_emission_radius",
+      "name_cn": "盘发射区形成半径",
+      "description": "由Δvp推断的盘发射区半径(Br11平均约2.2 R*,Br12-20更靠内,FeII更靠外)。",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "采纳的有效温度(K),源自BLOeM系列(Bestenlehner+ 2025管线参数或Shenar+ 2024)。",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_luminosity",
+      "name_cn": "光度",
+      "description": "光度log(L/Lsun),与Teff构成HR图定位。",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "evolutionary_mass",
+      "name_cn": "演化质量",
+      "description": "演化质量(Msun)。",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(Rsun)。",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vcrit",
+      "name_cn": "临界自转速度",
+      "description": "临界(破裂)自转速度vcrit(km/s),与vsini结合评估自转占临界比v/vcrit,是Be盘抛射机制关键量。",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_status",
+      "name_cn": "双星状态",
+      "description": "分光双星状态:SB1/SB2/单星(mflag),OBe星的成双性与形成通道研究。",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_flags",
+      "name_cn": "双星标记",
+      "description": "目视双星(*)与分光双星轨道(*)标记,及uvby/UBVRIJKLMN/紫外资料可用性标志。",
+      "category": "environment",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kelt_lightcurve",
+      "name_cn": "KELT光变曲线",
+      "description": "KELT宽带(~R)仪器星等时间序列(共855040点),含JD历元与误差,用于盘增亮/瓦解监测。",
+      "category": "variability",
+      "ucd": "phot.mag;time.series",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_amplitude",
+      "name_cn": "盘爆发光变幅度",
+      "description": "盘构建爆发事件的光变振幅(0.034-0.442 mag,最大~0.5 mag),及基线/峰值亮度。",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_timescale",
+      "name_cn": "爆发上升/衰减时标",
+      "description": "爆发上升(3-169 d)与衰减(3-1281 d)持续时间,平均衰减约为涨起两倍。",
+      "category": "variability",
+      "ucd": "time.duration",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_count",
+      "name_cn": "爆发事件数",
+      "description": "每颗星光变曲线中检出的爆发次数(0-40),早型Be(57%)多于中/晚型。",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_epochs",
+      "name_cn": "爆发关键历元",
+      "description": "爆发上升开始、峰值与衰减结束的历元(JD-2450000)及不确定度。",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff_class",
+      "name_cn": "温度型类",
+      "description": "按有效温度划分的Be星类(early/mid/late),用于爆发率与盘性质分型统计。",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_identifications",
+      "name_cn": "交叉证认编号",
+      "description": "HD/HDE、BD、MWC/AS、LS、Bidelman、He3、Tonantzintla、VES及99个其他发射线星表的交叉证认。",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "otype": "EB*",
+  "name_cn": "食双星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "coordinates",
+      "name_cn": "赤道坐标",
+      "description": "J2000赤经赤纬，跨表交叉证认与搜索基础",
+      "category": "astrometry",
+      "ucd": "pos.eq",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "来自TESS输入星表(TIC)的自行分量，用于运动学甄别",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由光变+视向速度+温度推得的系统距离，用于绝对光度定标",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_magnitude",
+      "name_cn": "视星等",
+      "description": "系统视星等（如TESS星等、Kepler星等、OGLE I/V星等），决定观测选择效应",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "食双星轨道周期P（天），本类型最核心测量量，决定食事件频率与双星演化状态",
+      "category": "variability",
+      "ucd": "time.period.orbit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_primary_minimum",
+      "name_cn": "主食极小历元T0",
+      "description": "主食极小对应时刻(HJD/BJD)，与周期构成线性历元，用于预报食时刻",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_derivative",
+      "name_cn": "周期变化率(O-C)",
+      "description": "由O-C图（实测极小-历元计算极小）得到的dP/dt：二次历元项，反映第三天体光时效应、质量交换或轨道衰减",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_depth_primary",
+      "name_cn": "主食深度",
+      "description": "主食相对深度（归一化光度单位），约束两星半径比与有效温度比",
+      "category": "photometry",
+      "ucd": "phot.dip.depth",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_depth_secondary",
+      "name_cn": "次食深度",
+      "description": "次食深度，主食/次食深度比直接反映两星表面亮度（温度）差异，判定相接/半相接构型",
+      "category": "photometry",
+      "ucd": "phot.dip.depth",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_width",
+      "name_cn": "食宽度(相位)",
+      "description": "主食与次食的持续相位宽度，约束两星半径相对轨道尺度之比与轨道倾角",
+      "category": "photometry",
+      "ucd": "phot.dip.width",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "secondary_eclipse_phase",
+      "name_cn": "次食相位",
+      "description": "次食相对主食的相位（0.5为圆轨道），偏离0.5指示非零偏心率",
+      "category": "variability",
+      "ucd": "time.orbital",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology_class",
+      "name_cn": "光变形态分类",
+      "description": "连续形态系数：分离(detached)、半相接(semi-detached)、相接(overcontact)、椭球变星(ellipsoidal)，0-1连续值（Matijevic体系）",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "binary_type_gcvs",
+      "name_cn": "食类型(EA/EB/EW)",
+      "description": "GCVS食双星类型：EA(βPer型，分离)、EB(βLyr型，半相接)、EW(W UMa型，相接)，附食深与光谱信息",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "light_curve_timeseries",
+      "name_cn": "光变曲线时序",
+      "description": "分相位光变曲线原始时序（OGLE I/V波段2010-2024；TESS/Kepler短曝光），可自行建模提取物理参数",
+      "category": "photometry",
+      "ucd": "phot.mag;time",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "两子星有效温度Teff，联合光变曲线颜色/光谱定标，是光度定标与演化状态判断基础",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_component",
+      "name_cn": "子星质量",
+      "description": "两子星质量M1/M2（太阳质量），由光变曲线+双视向速度轨道联合解出，精度可达1-2%，是恒星基本参数的测定核心",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius_component",
+      "name_cn": "子星半径",
+      "description": "两子星半径R1/R2（太阳半径），由食深与食宽几何约束直接测定",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity",
+      "name_cn": "表面重力加速度",
+      "description": "两子星log g，由质量半径导出，用于恒星演化与等时线拟合",
+      "category": "physical",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面相对视线倾角i，由食持续时间与光变形状约束，食双星可精确测定",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率e，由次食相位偏移与食宽比测定，其变化可示踪拱线运动",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比",
+      "description": "两子星质量比q=M2/M1，光变曲线形态（食相对宽度）的主要约束量",
+      "category": "physical",
+      "ucd": "phys.mass.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity_amplitude",
+      "name_cn": "视向速度半振幅",
+      "description": "两子星视向速度曲线半振幅K1/K2（km/s），与轨道倾角结合直接给出系统质量",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "两子星光谱型（如F2V+G5V），与温度互为校验",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy_membership",
+      "name_cn": "宿主星系归属",
+      "description": "系统所在星系/恒星系（LMC、SMC或银河系），用于双星种群统计与演化环境研究",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

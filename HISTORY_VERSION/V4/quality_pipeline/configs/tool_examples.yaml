@@ -1,0 +1,87 @@
+# ==========================================================
+# tool_examples.yaml — Layer 3 golden few-shot (P1 d)
+# 对应 docs/NORMALIZATION_LAYER3_OPTIMIZATION.md §6(d) §4-4
+# 每条示例的 tool_code 必须与 _TOOL_CODE_TEMPLATE 契约逐字一致:
+#   - 业务逻辑 (LLM_GENERATED_LOGIC_START/END 之间内容), 4 空格缩进
+#   - 使用模板 helper: _safe_get / _is_numeric / _to_number / _log / _summary
+#   - 只改顶层键, 值变化才写回才记 _log
+# planning_agent._render_few_shots 按 issues 关键词匹配选取 ≤3 条注入 prompt。
+# ==========================================================
+
+examples:
+  - name: strip_prefix_field_value
+    keywords: ["~", "prefix"]
+    tool_name: strip_prefix_field_value
+    tool_code: |
+      for r in records:
+          val = _safe_get(r, "field_value")
+          if isinstance(val, str) and val.startswith("~"):
+              new_val = val[1:]
+              r["field_value"] = new_val
+              _log.append({"record_id": _safe_get(r, "record_id", "?"), "field": "field_value", "action": "strip_prefix", "before": str(val), "after": str(new_val)})
+      _summary = "Stripped '~' uncertainty prefixes from field_value"
+    confidence: 0.9
+    self_check:
+      assertions:
+        - field: field_value
+          assert: no_tilde_prefix
+      sample_predictions: []
+    reasoning: "Remove the ~ prefix used to mark uncertain values"
+
+  - name: numeric_convert
+    keywords: ["non-numeric", "numeric", "string"]
+    tool_name: numeric_convert
+    tool_code: |
+      for r in records:
+          val = _safe_get(r, "field_value")
+          if isinstance(val, str) and _is_numeric(val):
+              new_val = _to_number(val)
+              if new_val != val:
+                  r["field_value"] = new_val
+                  _log.append({"record_id": _safe_get(r, "record_id", "?"), "field": "field_value", "action": "numeric_convert", "before": str(val), "after": str(new_val)})
+      _summary = "Converted numeric strings to numbers"
+    confidence: 0.9
+    self_check:
+      assertions:
+        - field: field_value
+          assert: all_numeric
+      sample_predictions: []
+    reasoning: "Normalize numeric fields stored as strings to int/float"
+
+  - name: unit_normalize
+    keywords: ["unit"]
+    tool_name: unit_normalize
+    tool_code: |
+      for r in records:
+          u = _safe_get(r, "field_unit", "")
+          if isinstance(u, str) and u != u.strip():
+              new_unit = u.strip()
+              r["field_unit"] = new_unit
+              _log.append({"record_id": _safe_get(r, "record_id", "?"), "field": "field_unit", "action": "unit_normalize", "before": str(u), "after": str(new_unit)})
+      _summary = "Trimmed whitespace from unit labels"
+    confidence: 0.9
+    self_check:
+      assertions:
+        - field: field_unit
+          assert: trimmed
+      sample_predictions: []
+    reasoning: "Clean unit labels of stray whitespace"
+
+  - name: trim_strings
+    keywords: ["whitespace", "trim", "space", "trailing"]
+    tool_name: trim_strings
+    tool_code: |
+      for r in records:
+          val = _safe_get(r, "field_value")
+          if isinstance(val, str) and val != val.strip():
+              new_val = val.strip()
+              r["field_value"] = new_val
+              _log.append({"record_id": _safe_get(r, "record_id", "?"), "field": "field_value", "action": "trim", "before": str(val), "after": str(new_val)})
+      _summary = "Trimmed whitespace from field_value"
+    confidence: 0.9
+    self_check:
+      assertions:
+        - field: field_value
+          assert: trimmed
+      sample_predictions: []
+    reasoning: "Trim leading/trailing whitespace from string values"

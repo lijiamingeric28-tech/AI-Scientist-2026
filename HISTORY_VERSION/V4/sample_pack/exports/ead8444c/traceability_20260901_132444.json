@@ -1,0 +1,207 @@
+{
+  "data_lineage": {
+    "input": {
+      "sources": 18,
+      "records": 52,
+      "grounded_data_version": "2.0.0",
+      "received_at": "2026-09-01T05:21:23.149089+00:00"
+    },
+    "processing": [
+      {
+        "stage": "Profiling",
+        "agent": "ProfilingAgent",
+        "status": "Success",
+        "duration_s": 0.006,
+        "reason": "8 tools, 52 records"
+      },
+      {
+        "stage": "QualityAssessment",
+        "agent": "QualityAssessmentAgent",
+        "status": "Success",
+        "duration_s": 71.762,
+        "reason": "18 sources (parallel), 76 issues, 32 anomalies, 38 variance groups"
+      },
+      {
+        "stage": "QualityScoring",
+        "agent": "QualityScoringAgent",
+        "status": "Success",
+        "duration_s": 1.045,
+        "reason": "18 sources, overall=0.81 (fair)"
+      },
+      {
+        "stage": "DecisionReasoning",
+        "agent": "DecisionReasoningAgent",
+        "status": "Success",
+        "duration_s": 0.335,
+        "reason": "18 sources, distribution={'Conflict': 2, 'Normalization': 16}"
+      },
+      {
+        "stage": "Routing",
+        "agent": "Dispatch",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Norm=16 Conflict=2 Export=0 Human=0"
+      },
+      {
+        "stage": "SourceRouter",
+        "agent": "SourceRouterAgent",
+        "status": "Success",
+        "duration_s": 0.01,
+        "reason": "16 to normalize, 2 skipped"
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 71.804,
+        "reason": "16 sources planned (method=llm_enhanced)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.19,
+        "reason": "36 mods (PARALLEL, base=0 adapted=0 generated=36)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Retry",
+        "duration_s": 0.039,
+        "reason": "Valid=False, conflicts=16, route="
+      },
+      {
+        "stage": "ToolPlanning",
+        "agent": "ToolPlanningAgent",
+        "status": "Success",
+        "duration_s": 0.408,
+        "reason": "16 sources planned (method=rule_engine)"
+      },
+      {
+        "stage": "ToolExecution",
+        "agent": "ToolExecutorAgent",
+        "status": "Success",
+        "duration_s": 0.371,
+        "reason": "1 mods (PARALLEL, base=1 adapted=0 generated=0)"
+      },
+      {
+        "stage": "Validation",
+        "agent": "ValidationAgent",
+        "status": "Retry",
+        "duration_s": 0.053,
+        "reason": "Valid=False, conflicts=16, route="
+      },
+      {
+        "stage": "Report",
+        "agent": "ReportAgent",
+        "status": "Success",
+        "duration_s": 0.009,
+        "reason": "Completed_With_Issues"
+      },
+      {
+        "stage": "LoopCheck",
+        "agent": "LoopController",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Iteration 1/8 → next=Conflict"
+      },
+      {
+        "stage": "Aggregation",
+        "agent": "VarianceAggregationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "5 variance groups, 16 anomalies, trigger=B→C"
+      },
+      {
+        "stage": "Classification",
+        "agent": "DifferenceClassificationAgent",
+        "status": "Success",
+        "duration_s": 33.78,
+        "reason": "Classified 7 variances (5 via LLM)"
+      },
+      {
+        "stage": "Verification",
+        "agent": "AnomalyVerificationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "13 anomalies confirmed, 0 false positives, 7 duplicate groups"
+      },
+      {
+        "stage": "Confidence",
+        "agent": "AnnotationConfidenceAgent",
+        "status": "Retry",
+        "duration_s": 0.0,
+        "reason": "cls_conf=0.939 (0 low), anom_conf=0.731 (3 unverified) → Retry"
+      },
+      {
+        "stage": "Verification",
+        "agent": "AnomalyVerificationAgent",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "13 anomalies confirmed, 0 false positives, 7 duplicate groups"
+      },
+      {
+        "stage": "Confidence",
+        "agent": "AnnotationConfidenceAgent",
+        "status": "Retry",
+        "duration_s": 0.0,
+        "reason": "cls_conf=0.939 (0 low), anom_conf=0.731 (3 unverified) → Retry"
+      },
+      {
+        "stage": "Report",
+        "agent": "AnnotationReportAgent",
+        "status": "Success",
+        "duration_s": 6.705,
+        "reason": "Annotated: 14 variance annotations, 13 anomaly flags, route=Export"
+      },
+      {
+        "stage": "LoopCheck",
+        "agent": "LoopController",
+        "status": "Success",
+        "duration_s": 0.0,
+        "reason": "Iteration 2/8 → next=Export"
+      },
+      {
+        "stage": "DataOrganization",
+        "agent": "DataOrganizationAgent",
+        "status": "Success",
+        "duration_s": 0.008,
+        "reason": "Organized 52 records (5 standard + 0 extra fields)"
+      },
+      {
+        "stage": "SchemaFormatting",
+        "agent": "SchemaFormattingAgent",
+        "status": "Success",
+        "duration_s": 0.045,
+        "reason": "Exported 52 rows × 6 cols, 1 format issues"
+      },
+      {
+        "stage": "MetadataGeneration",
+        "agent": "MetadataGenerationAgent",
+        "status": "Success",
+        "duration_s": 11.911,
+        "reason": "Generated 5 field definitions (LLM=True)"
+      }
+    ],
+    "output": {
+      "sources": 18,
+      "records": 52,
+      "standard_compliant": true,
+      "generated_at": "2026-09-01T05:24:44.334608+00:00"
+    }
+  },
+  "trace_completeness": {
+    "records_with_trace": 36,
+    "records_with_modification_trace": 22,
+    "records_without_trace": 0,
+    "modified_count": 22,
+    "unmodified_count": 30,
+    "deleted_count": 0,
+    "records_with_trace_id": 44,
+    "paper_records_missing_trace_id": 0,
+    "database_records": 8,
+    "db_provenance_complete": 8
+  },
+  "modified_count": 22,
+  "decision_count": 25
+}

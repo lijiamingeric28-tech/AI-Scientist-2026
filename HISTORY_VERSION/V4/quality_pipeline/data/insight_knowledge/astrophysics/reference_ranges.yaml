@@ -1,0 +1,3073 @@
+entries:
+- id: FRB_DM_range
+  title: FRB 色散量参考范围
+  category: reference_range
+  tags:
+  - FRB
+  - DM
+  - range
+  - typical
+  - extreme
+  hypothetical_queries:
+  - FRB 色散量 DM 典型范围 100 1500 pc cm-3 中位数
+  - 快速射电暴 DM 极端值 3000 宿主贡献 银河系扣除
+  - FRB dispersion measure redshift IGM contribution
+  applies_to:
+    fields:
+    - dispersion_measure
+    entities:
+    - FRB
+  content: '已知 FRB DM 范围 (截至 2024 年, >800 FRBs):
+
+    - 典型范围: 100-1500 pc cm⁻³
+
+    - 中位数: ~500 pc cm⁻³
+
+    - 低端: ~100 pc cm⁻³ (近邻 FRB)
+
+    - 高端: ~3000 pc cm⁻³ (极端 host 环境 FRB)
+
+    - 极端 >3000 pc cm⁻³: 非常罕见, 需怀疑 host 贡献异常大 或 银河系 DM 扣除错误
+
+
+    DM 远超出典型范围 (>2000) 的情况:
+
+    1. 高红移 (z>1) → 大 DM_IGM
+
+    2. 极端 host 环境 (如 AGN 附近的致密等离子体)
+
+    3. 银河系 DM 扣除错误 (方向低银纬)
+
+    '
+  source: CHIME/FRB Catalog 2024; FRBSTATS.org
+  confidence: established
+- id: FRB_fluence_range
+  title: FRB fluence 参考范围
+  category: reference_range
+  tags:
+  - FRB
+  - fluence
+  - range
+  - detection
+  - sensitivity
+  hypothetical_queries:
+  - FRB fluence 典型范围 0.1 100 Jy ms
+  - 快速射电暴 探测下限 灵敏度 0.05 Jy ms 带宽
+  - 重复暴 fluence 变化 10 1000 倍 仪器 归一化
+  applies_to:
+    fields:
+    - fluence
+    - flux_density
+    entities:
+    - FRB
+  content: '已知 FRB fluence 范围:
+
+    - 典型: 0.1-100 Jy ms
+
+    - 检测下限: ~0.05 Jy ms (CHIME/FAST sensitivity)
+
+    - 超亮: >100 Jy ms (罕见个例可达 ~120 Jy ms)
+
+    - 重复暴 fluence 变化: 可差 10-1000 倍
+
+
+    重要: fluence 是仪器依赖的量 (取决于带宽和中心频率)。
+
+    跨仪器比较时需注意带宽归一化。
+
+    '
+  source: Petroff et al. 2019, A&ARv
+  confidence: established
+- id: high_z_quasar_range
+  title: 高红移类星体参考范围
+  category: reference_range
+  tags:
+  - quasar
+  - high_redshift
+  - z
+  - luminosity
+  - SMBH
+  hypothetical_queries:
+  - 高红移类星体 红移范围 z 5.5 7.6 黑洞质量 1e10
+  - Gunn-Peterson trough Lyα 森林 z 6 不透明
+  - high redshift quasar luminosity 1e46 1e48 erg/s
+  applies_to:
+    fields:
+    - redshift
+    - luminosity
+    - z_spec
+    - z_phot
+    - phot_redshift
+    entities:
+    - quasar
+    - high_redshift_quasar
+  content: '高红移 (z>5.5) 类星体已知范围:
+
+    - 红移: z ~5.5-7.6 (最高已知 z=7.64, 已知最高红移类星体)
+
+    - 黑洞质量: 10⁸-10¹⁰ M⊙
+
+    - 光度: 10⁴⁶-10⁴⁸ erg/s
+
+
+    高红移类星体的特殊性:
+
+    - 极其罕见 (全天空预期 ~100-200 at z>6)
+
+    - SMBH 形成时间问题: 在 <1 Gyr 内增长到 10⁹ M⊙ 对标准吸积模型构成挑战
+
+    - Lyα 森林在 z>6 处变得几乎完全不透明 (Gunn-Peterson trough)
+
+    '
+  source: Bañados et al. 2018, Nature; Fan et al. 2023, ARA&A
+  confidence: established
+- id: stellar_parallax_range
+  title: 恒星视差参考范围
+  category: reference_range
+  tags:
+  - parallax
+  - stellar
+  - mas
+  - distance
+  - Gaia
+  hypothetical_queries:
+  - 恒星视差 典型范围 mas 近邻 银河系 河外 分档
+  - 视差 距离 换算 1000/pi pc 精度 限制
+  - 负视差 sigma/pi 大于 0.2 谨慎使用 记录
+  applies_to:
+    fields:
+    - parallax
+    - distance
+    - annual_parallax
+    - trigonometric_parallax
+    - plx
+    - gaia_parallax
+    - parallax_distance
+    entities:
+    - Star
+    - star
+  content: '恒星视差已知范围:
+
+    - 近邻恒星: 10-800 mas (距离 1-100 pc)
+
+    - 典型视差: 1-100 mas (距离 10 pc - 1 kpc)
+
+    - 银河系尺度: 0.1-1 mas (距离 1-10 kpc)
+
+    - 河外: <0.05 mas (仅亮天体, Gaia 精度极限)
+
+
+    参考:
+
+    - 最近邻恒星: π ~ 750-800 mas
+
+    - 近邻亮恒星: π ~ 380 mas
+
+    - 盖亚 DR3 全天空: 中位视差 ~1-5 mas (受样本选择影响)
+
+
+    负视差或 σ(π)/π > 0.2 的记录应谨慎使用
+
+    '
+  source: Gaia Collaboration 2023, A&A 674, A1
+  confidence: established
+- id: stellar_temperature_gravity_range
+  title: 恒星有效温度与表面重力参考范围
+  category: reference_range
+  tags:
+  - Teff
+  - temperature
+  - logg
+  - surface_gravity
+  - stellar
+  hypothetical_queries:
+  - 恒星有效温度 Teff 范围 M 型 2000 K O 型 50000 K
+  - log g 表面重力 主序 4.0 巨星 2.0 白矮星 7 9
+  - 恒星物理参数 越界 复查 物理可行性 判据
+  applies_to:
+    fields:
+    - effective_temperature
+    - surface_gravity
+    - log_g
+    - surface_gravity_logg
+    - logg_corr
+    - sp_teff
+    - sp_logg
+    - spec_teff
+    - spec_logg
+    - star_teff
+    - star_logg
+    - phys_temperature_effective
+    - phys_gravity_surface
+    entities:
+    - Star
+    - star
+  ranges:
+    effective_temperature:
+      lo: 2000
+      hi: 100000
+      unit: K
+    luminosity:
+      lo: 3e29
+      hi: 4e37
+      unit: erg/s
+  content: "恒星物理参数已知范围:\n- 有效温度 Teff: 2000 K (M 型矮星) - 40000 K (O 型)\n  - M 矮星: 2400-3800 K\n  - G 型 (太阳): 5770 K\n  - B 型: 10000-30000 K\n  - O 型: 30000-50000 K\n- 表面重力 log g: 0.0 (超巨星) - 5.5 (白矮星) [cgs\
+    \ 单位]\n  - 主序: log g ~ 4.0-4.5\n  - 巨星: log g ~ 2.0-3.0\n  - 白矮星: log g ~ 7.0-9.0\n\n物理可行性: Teff 超出 2000-50000 K 或 log g 超出 0-9 的记录需复查\n"
+  source: Gray 2005, The Observation and Analysis of Stellar Photospheres
+  confidence: established
+- id: star_teff_luminosity_span
+  title: 恒星 Teff/光度全域锚点
+  category: reference_range
+  tags:
+  - star
+  - teff
+  - luminosity
+  - range
+  hypothetical_queries:
+  - 恒星光度 全域 1e-4 1e6 Lsun 超巨星 白矮星
+  - 恒星 Teff 光度 联合越界 单位混淆 对象误判
+  - O-type star effective temperature full range stellar Teff anchor
+  - L 正比 R^2 T^4 恒星 自洽 检查
+  applies_to:
+    fields:
+    - effective_temperature
+    - luminosity
+    - log_lum
+    - log_luminosity
+    - stellar_luminosity
+    - phys_luminosity
+    entities:
+    - star
+  content: '正常恒星的有效温度与光度由核燃烧产能与表面辐射平衡共同决定, 跨度极大:
+
+    - Teff 约 2000-100000 K (M 矮星低温端 → O 型/白矮星高温端)
+
+    - 光度 1e-4 ~ 1e6 Lsun (褐矮星端 → 超巨星端)
+
+    超出此全域的 ''恒星'' 值几乎必为: 单位混淆、光度/星等混用, 或对象类型误判
+
+    (如星系/AGN 的光度被标成恒星字段)。
+
+    判定线索: 恒星光度与 Teff 满足 L ∝ R^2 T^4, 两者联合越界才可信。'
+  source: UNLV 主序表; OSU 恒星物理讲义
+  confidence: established
+- id: main_sequence_spectral_sequence
+  title: 主序光谱型-温度序列
+  category: reference_range
+  tags:
+  - main_sequence
+  - spectral
+  - teff
+  hypothetical_queries:
+  - OBAFGKM 主序 光谱型 温度 序列 锚点
+  - 主序星 锚点 O 型 40000 K 40 Msun M 型 3200 K
+  - 光谱分型 吸收线 相对强度 金属丰度 影响 判型
+  applies_to:
+    fields:
+    - effective_temperature
+    - stellar_mass
+    entities:
+    - main_sequence_star
+  content: 'OBAFGKM 是纯温度序: 表面温度决定电离态与分子平衡 (H Balmer 线 A0 最强,
+
+    TiO 分子带只出现在 M 型)。主序锚点: O 型 ~40000 K / 40 Msun, G 型 (太阳) ~5770 K,
+
+    M 型 ~3200 K / 0.3 Msun。
+
+    判定原理: 分型看吸收线相对强度; 金属丰度低会使金属线变弱、误判为更热型;
+
+    双星光谱叠加 (SB2) 会模糊线型。'
+  source: UNLV/UTK 主序数据表; LCO Types of Stars
+  confidence: established
+- id: ttaauri_star_parameters
+  title: T Tauri 星与前主序参数
+  category: reference_range
+  tags:
+  - ttaauri
+  - pms
+  - yso
+  hypothetical_queries:
+  - T Tauri 星 Teff 范围 前主序 2590 5110 K
+  - CTTS WTTS 区别 Hα 等值宽度 10 埃 吸积率
+  - 年轻恒星天体 YSO 前主序 log g 4 年龄
+  applies_to:
+    fields:
+    - effective_temperature
+    - surface_gravity
+    entities:
+    - t_tauri_star
+    - young_stellar_object
+  content: 'T Tauri 星是前主序 (PMS) 恒星, 仍在引力收缩、尚未点燃氢燃烧;
+
+    中心温度低于主序同型星, Teff 约 2590-5110 K (K0-M8.5), log g ~4。
+
+    经典 T Tauri (CTTS) 与弱线 T Tauri (WTTS) 的观测分界是 Hα 等值宽度 ~10 Å,
+
+    物理本质是吸积率是否高于 ~1e-8 Msun/yr — 吸积磁层把盘物质导向恒星表面。
+
+    判定线索: PMS 星 Teff 正常但年龄异常年轻 (<10 Myr), 或与分子云成协。'
+  source: Lada 1987; Hernández 2005; T Tauri 参数综述
+  confidence: established
+- id: white_dwarf_parameters
+  title: 白矮星参数与简并本质
+  category: reference_range
+  tags:
+  - white_dwarf
+  - degenerate
+  hypothetical_queries:
+  - 白矮星 质量 分布 0.6 Msun Chandrasekhar 1.4 极限
+  - 白矮星 表面重力 log g 7.0 8.5 半径 0.01 Rsun
+  - DA DB 白矮星 大气 氢 氦 光谱型 判据
+  applies_to:
+    fields:
+    - stellar_mass
+    - surface_gravity
+    - stellar_radius
+    - effective_temperature
+    - white_dwarf_mass
+    - wd_mass
+    - white_dwarf_temperature
+    - wd_teff
+    - wd_lum
+    - cspn_teff
+    - cspn_logg
+    - cspn_mass
+    - cspn_luminosity
+    entities:
+    - white_dwarf
+  content: '白矮星由电子简并压支撑, 无核聚变、只冷却, 是可靠的宇宙时钟。
+
+    质量分布主峰 ~0.6 Msun (单星演化产物), Chandrasekhar 极限 ~1.4 Msun (超限塌缩);
+
+    半径仅 ~0.01 Rsun (类地尺度), 表面重力 log g 7.0-8.5 (远高于主序的 ~4.4)。
+
+    光谱型由大气成分定: DA=H 大气 (Balmer 线), DB=He 大气。
+
+    判定线索: 高温 + 极低光度 + 高 log g 的组合即白矮星; 质量 >1.4 Msun 的
+
+    ''白矮星'' 记录必为错误 (应为中子星/黑洞或测量混淆)。'
+  source: Liebert 2005 ApJS; SDSS DR12 白矮星研究
+  confidence: established
+- id: giant_supergiant_radius
+  title: 巨星/超巨星半径
+  category: reference_range
+  tags:
+  - giant
+  - supergiant
+  - radius
+  hypothetical_queries:
+  - 巨星 半径 10 100 Rsun 超巨星 1000 Rsun
+  - 红超巨星 半径 1500 Rsun 膨胀 演化 阶段
+  - 巨星 矮星 判别 表面重力 谱线展宽
+  applies_to:
+    fields:
+    - stellar_radius
+    entities:
+    - red_giant_star
+    - supergiant
+    - red_supergiant
+  content: '巨星/超巨星是壳层氢/氦燃烧的膨胀态: 核心致密, 外包层因低表面重力而
+
+    剧烈膨胀。巨星半径 10-100 Rsun, 超巨星 >1000 Rsun (红超巨星可达 1500)。
+
+    物理原理: 同光谱型下巨星与矮星的判别是表面重力 (线展宽), 不是温度。
+
+    判定线索: 半径 ~1 Rsun 却标注超巨星 = 单位混淆 (Rsun/km); 半径 >2000 Rsun
+
+    的 ''恒星'' 需怀疑是大质量恒星+星风包层或双星混合。'
+  source: OSU HR 图讲义; PHY213 恒星性质讲义
+  confidence: established
+- id: galaxy_redshift_span
+  title: 星系红移全域与演化
+  category: reference_range
+  tags:
+  - galaxy
+  - redshift
+  - span
+  hypothetical_queries:
+  - 星系红移 全域 z 0 10 演化 宇宙正午 2 3
+  - 负红移 蓝移 本星系群 星系 判据
+  - 高红移星系 z 6 10 photo-z 灾难性失败
+  applies_to:
+    fields:
+    - redshift
+    - z_spec
+    - z_phot
+    - z_gal
+    - phot_redshift
+    - group_redshift
+    - cluster_redshift
+    entities:
+    - galaxy
+  content: '星系红移覆盖 z 0-10: 近邻宇宙 z<0.1, 典型巡天 z~0.5-1.5, 宇宙正午 z~2-3,
+
+    亮类星体 z~6, 目前最深 z>10。
+
+    物理原理: z 由宇宙膨胀 (Hubble 流) + 光度演化共同决定; 红移本身不是距离,
+
+    距离需要宇宙学模型换算。
+
+    判定线索: 单一星系 z>10 需极高置信证据 (否则多为 photo-z 灾难性失败 —
+
+    尘埃中间红移星系可伪装成高 z 洁净星系); 负 z = 蓝移, 只可能出现在本星系群成员。'
+  source: Steed & Weinberg; SDSS downsizing; COSMOS
+  confidence: established
+- id: galaxy_stellar_mass_span
+  title: 星系恒星质量跨数量级
+  category: reference_range
+  tags:
+  - galaxy
+  - stellar_mass
+  hypothetical_queries:
+  - 星系恒星质量 范围 矮星系 1e5 巨椭圆 1e13 Msun
+  - Salpeter Kroupa IMF 质量 差异 1.55 倍 核对
+  - 恒星质量 1e11 Msun 对象类型 混淆 复核
+  applies_to:
+    fields:
+    - stellar_mass
+    - galaxy_mass
+    - mass_stellar
+    - stellar_initial_mass
+    - initial_mass
+    - dynamical_mass
+    - mass_dynamic
+    - mass_dynamical
+    - evolutionary_mass
+    - total_mass
+    - mass_total
+    - m_tot
+    entities:
+    - galaxy
+  content: '星系恒星质量跨 7 个数量级: 矮星系 1e5-1e8 Msun, 银河系级 1e10-1e12 Msun,
+
+    团内巨椭圆 1e12-1e13 Msun。
+
+    物理原理: 恒星质量由 SED 拟合 × 质量光度比 (IMF 假设) 估计 — Salpeter vs
+
+    Kroupa IMF 相差 ~1.55 倍, 跨文献比较必须核对 IMF。
+
+    判定线索: 记录为 ''恒星'' 却给 1e11 Msun = 对象类型错误 (星系质量);
+
+    >1e13 Msun 的 ''星系'' 需怀疑团内暗物质质量混入或测量错误。'
+  source: Conroy 2013; Alonso-Herrero 2008
+  confidence: established
+- id: agn_luminosity_ladder
+  title: AGN 光度阶梯
+  category: reference_range
+  tags:
+  - agn
+  - luminosity
+  - ladder
+  hypothetical_queries:
+  - AGN 光度 阶梯 X 波段 2-10 keV erg/s 类型
+  - Seyfert 类星体 光度 分界 1e45 erg/s
+  - Eddington 光度 上限 吸积率 非球对称 判据
+  applies_to:
+    fields:
+    - luminosity
+    - continuum_luminosity_5100a
+    - monochromatic_luminosity
+    - monochromatic_luminosity_1350
+    - monochromatic_luminosity_3000
+    - monochromatic_luminosity_5100
+    - mono_lum_5100
+    - ha_luminosity
+    - l_ha
+    - hb_luminosity
+    - oiii_luminosity
+    - civ_luminosity
+    - mgii_luminosity
+    - feii_optical_luminosity
+    - feii_uv_luminosity
+    - lya_luminosity
+    - balmer_line_luminosity
+    - lum_opt
+    - lum_blue
+    - lum_k
+    - lum_fir
+    - ir_luminosity
+    - uv_luminosity
+    - infrared_luminosity
+    - r_band_luminosity
+    entities:
+    - agn
+    - seyfert_galaxy
+  content: 'AGN 光度跨越 5 个数量级, 由吸积率 (Eddington 比) 决定:
+
+    - 邻近低光度 Seyfert: X 波段 (2-10 keV) 1e40-1e43 erg/s
+
+    - 典型 Seyfert: 1e42-1e44 erg/s
+
+    - 类星体: L_bol 1e45-1e47 erg/s (接近 Eddington 吸积)
+
+    物理原理: L_Edd = 1.26e38 (M/Msun) erg/s 是辐射压平衡引力的上限 —
+
+    超过 Eddington 光度数倍的持续辐射需要非球对称吸积几何。
+
+    判定线索: 光度 >1e47 erg/s 的源若红移未知, 应先怀疑距离/光度单位混淆。'
+  source: Panessa XMM; Eddington 光度讲义 (JILA)
+  confidence: established
+- id: quasar_bolometric_anchor
+  title: 类星体热光度锚点
+  category: reference_range
+  tags:
+  - quasar
+  - bolometric
+  hypothetical_queries:
+  - 类星体 热光度 log L_bol 47 1e5 倍 银河系
+  - 高红移类星体 1e47 erg/s 黑洞 1e9 Msun 形成 约束
+  - bolometric luminosity quasar Eddington accretion
+  applies_to:
+    fields:
+    - luminosity
+    - l_bol
+    - lum_bol
+    - bol_mag
+    - m_bol
+    - bolometric_magnitude
+    - source_bolometric_luminosity
+    entities:
+    - quasar
+    - blazar
+  content: '类星体是快速增长期的最亮 AGN, 热光度 log L_bol ~ 47 (1e47 erg/s) 量级,
+
+    约 1e5 倍银河系光度 — 其能量来自 SMBH 吸积盘引力势能释放。
+
+    物理原理: 峰值期吸积接近 Eddington (指数增长相), 光度函数 = Eddington 比分布
+
+    × 黑洞质量函数卷积; 高红移 (z>6) 的 1e47 erg/s 类星体要求 >1e9 Msun 黑洞
+
+    在宇宙第一十亿年内形成 (吸积物理的强约束)。
+
+    判定线索: L_bol 低于 1e43 erg/s 的 ''类星体'' 实为 Seyfert; 光度远超 1e47
+
+    需复核红移 (通常为 photo-z 低估)。'
+  source: Steed & Weinberg 2003; Shen 2009
+  confidence: established
+- id: agn_blackhole_mass_relation
+  title: AGN 黑洞质量锚点
+  category: reference_range
+  tags:
+  - blackhole
+  - mbh
+  - sigma
+  hypothetical_queries:
+  - M_BH-sigma 关系 黑洞质量 速度弥散 4 次方
+  - AGN 黑洞质量 范围 1e6 1e9 1e10 Msun
+  - 黑洞质量 宿主 速度弥散 不匹配 2 dex 复核
+  applies_to:
+    fields:
+    - stellar_mass
+    entities:
+    - agn
+    - quasar
+  content: '活动星系核的黑洞质量由 M_BH-σ 关系锚定: M_BH ≈ 1e8 (σ/200 km/s)^4 Msun,
+
+    散射 ~0.3-0.44 dex。物理机制: 动量驱动外流反馈 — 黑洞质量在反馈吹走核球气体
+
+    时被固定 (M ∝ σ^4); 或旋转坍缩模型。
+
+    典型值: 邻近 Seyfert 1e6-1e9 Msun, 亮类星体 ~1e9 Msun, 极端 >1e10。
+
+    判定线索: 记录的黑洞质量与宿主速度弥散明显不匹配 (差 >2 dex) 需复核;
+
+    >1e10 Msun 的 SMBH 极罕见 (仅 BCG/团内巨椭圆)。'
+  source: Tremaine 2002; Kormendy & Ho 2013
+  confidence: consensus
+- id: hii_region_physics
+  title: HII 区物理与电离平衡
+  category: reference_range
+  tags:
+  - hii
+  - stromgren
+  - ionization
+  hypothetical_queries:
+  - HII 区 电子温度 1e4 K 电子密度 10 100 cm-3
+  - Strömgren 半径 电离 复合 平衡 n^2 R^3 常数
+  - 超致密 HII 区 UCHII 密度 1e4 cm-3 判据
+  applies_to:
+    fields:
+    - luminosity
+    - flux_density
+    entities:
+    - hii_region
+    - star_forming_region
+  content: 'HII 区是被 O/B 星电离的氢区: 电离-复合平衡决定尺寸 —
+
+    Strömgren 半径 R_s = (3Q/4πα n^2)^(1/3), Q 为 Lyman 极限光子率, α 为 Case B
+
+    复合系数。电子温度 ~1e4 K, 典型密度 10-100 cm^-3 (致密丝可达 300+),
+
+    超致密 HII (UCHII) >1e4 cm^-3。
+
+    物理原理: 光子率固定时 n^2 R^3 = 常数 — ''小又亮'' 的 HII 区即高密度。
+
+    判定线索: HII 区尺寸与电离光度不匹配 (如 100 pc 级 HII 却只有毫级光度) 需复核。'
+  source: Kennicutt 2002; Kiel Strömgren 球讲义
+  confidence: established
+- id: snr_properties_range
+  title: 超新星遗迹演化与谱指数
+  category: reference_range
+  tags:
+  - snr
+  - remnant
+  - spectral_index
+  hypothetical_queries:
+  - 超新星遗迹 射电谱指数 壳层 -0.8 plerion 0.3
+  - SNR 演化 阶段 Sedov 年龄 上限 1e5 年
+  - 超新星遗迹 与 HII 区 混淆 谱指数 判据
+  applies_to:
+    fields:
+    - age
+    - flux_density
+    entities:
+    - supernova_remnant
+  content: '超新星遗迹经历自由膨胀 → Sedov 绝热 (R ∝ t^2/5) → 辐射冷却 → 消散,
+
+    寿命上限 ~1e5 yr。形态上分两类, 射电谱指数是核心判据 (S ∝ ν^-α):
+
+    - 壳层型 (SNR): 陡谱 α ~ -0.8, 激波同步加速
+
+    - 填充型 (plerion): 平谱 α ~ +0.3, 脉冲星驱动
+
+    判定线索: 标注 SNR 却给 >1 Myr 年龄 = 与 HII 区混淆; 谱指数 +0.3 的
+
+    ''壳层 SNR'' 实为 plerion。'
+  source: Green 850μm 谱指数; NRAO 讲义; Katsuda 2012
+  confidence: established
+- id: brown_dwarf_boundaries
+  title: 褐矮星质量边界
+  category: reference_range
+  tags:
+  - brown_dwarf
+  - boundary
+  - fusion
+  hypothetical_queries:
+  - 褐矮星 质量边界 13 Mjup 氘燃烧 73 80 Mjup 氢燃烧
+  - L 型 T 型 Y 型 褐矮星 温度 光谱 1300 600 K
+  - 锂测试 褐矮星 证认 60 65 Mjup
+  applies_to:
+    fields:
+    - effective_temperature
+    - stellar_mass
+    entities:
+    - brown_dwarf
+    - low_mass_star
+  content: '褐矮星是''失败的恒星'': 核心点燃氘 (p+d→He3, 持续 4-50 Myr) 但无法稳定
+
+    氢燃烧。两个物理边界 (IAU 定义):
+
+    - 下限 13 M_jup: 氘燃烧所需质量
+
+    - 上限 73-80 M_jup (0.07-0.08 Msun): 氢燃烧最小质量
+
+    因持续冷却, 光谱型是温度与年龄的函数: L 型 (1300-2500 K) → T 型 (600-1300 K,
+
+    CH4 带) → Y 型 (<600 K, NH3 带)。
+
+    判定线索: 质量在 13-80 M_jup 之外却标褐矮星 = 与行星/极低质量恒星混淆;
+
+    锂测试 (60-65 M_jup 以上可烧锂) 用于证认。'
+  source: Wikipedia Brown dwarf; IAU 定义; 褐矮星综述
+  confidence: established
+- id: exoplanet_radius_gap
+  title: 系外行星半径间隙
+  category: reference_range
+  tags:
+  - exoplanet
+  - radius_gap
+  hypothetical_queries:
+  - 系外行星 半径间隙 2 R_earth 光致蒸发 分界
+  - 超地球 亚海王星 半径 1.9 2 Rearth 岩石 挥发物
+  - 热木星 轨道周期 10 天 迁移 半径膨胀
+  applies_to:
+    fields:
+    - planet_radius
+    - planet_mass
+    entities:
+    - exoplanet
+  content: 'Kepler 统计发现行星半径分布存在 ~2 R_earth 间隙: 超地球 (≤1.9 R⊕, 岩石)
+
+    与亚海王星 (≥2 R⊕, 挥发物包层) 被光致蒸发/核供能大气损失分开, 间隙位置
+
+    R ∝ P^-0.11 — 半径是行星大气保持历史的探针。
+
+    质量锚点: 1 M_jup = 317.8 M_earth, 1 R_jup = 11.2 R_earth。
+
+    判定线索: 半径 2-3 R⊕ 恰好落在间隙内的行星记录本身合理 (过渡态), 但质量
+
+    缺失时应标注不确定性; 热木星 P<10 天 (形成于数 AU 外后迁移而来)。'
+  source: CKS 样本; 2016A&A 589A 75M; TOI-1075b 研究
+  confidence: consensus
+- id: galaxy_morphology_hubble
+  title: 星系形态 (Hubble T 序列)
+  category: reference_range
+  tags:
+  - galaxy
+  - morphology
+  - hubble
+  - T-type
+  - spiral
+  - elliptical
+  hypothetical_queries:
+  - Hubble 形态序列 T 值 椭圆 -5 旋涡 5 不规则 10
+  - 椭圆星系 E0 E7 扁率 旋涡星系 臂紧卷度 核球
+  - 星系形态 分类 棒旋 T 型 矮星系 dE dIrr
+  applies_to:
+    fields:
+    - morphology
+    - t_type
+    - hubble_type
+    - morph_type_hubble
+    - hubble_type_t
+    entities:
+    - galaxy
+    - G
+  content: 'Hubble 形态序列 T 值: E(-5..-3) → S0(-2) → Sa(1) → Sb(3) → Sc(5) → Sd(7) → Irr(9-10)。
+
+    - 椭圆星系 E0-E7: 扁率 e=1-b/a, E7 最扁
+
+    - 旋涡星系: 臂紧卷度 Sa>Sb>Sc>Sd, 核球占比递减
+
+    - 矮星系: dE/dSph/dIrr, 低光度低金属丰度
+
+    - 并合残留 (peculiar/Irr): 潮汐尾、双核
+
+    '
+  source: Hubble 1926; de Vaucouleurs RC3
+  ranges:
+    morphology:
+      lo: -6
+      hi: 11
+      unit: T
+- id: galaxy_sfr_typical
+  title: 星系恒星形成率 (SFR) 典型范围
+  category: reference_range
+  tags:
+  - galaxy
+  - SFR
+  - star_formation
+  - sfr
+  - star_formation_rate
+  hypothetical_queries:
+  - 星系 SFR 典型范围 静默 0.1 旋涡 1 3 星暴 1000 Msun/yr
+  - 恒星形成率 Hα 换算 7.9e-42 L(Hα) Kennicutt
+  - sSFR 比恒星形成率 星暴 判据 1e-10
+  applies_to:
+    fields:
+    - sfr
+    - star_formation_rate
+    - sfr_density
+    - ssfr
+    - specific_sfr
+    entities:
+    - galaxy
+    - G
+    - starburst
+  content: '星系 SFR 典型范围 (Msun/yr):
+
+    - 静默星系: <0.1
+
+    - 普通旋涡 (银河系): 1-3
+
+    - 恒星形成星系 (SFG): 3-30
+
+    - 星暴星系 (starburst): 30-1000+
+
+    - 高红移星暴 (z>2): 可至 1000+
+
+    SFR 密度 (Msun/yr/kpc²): 静默 ~0.001, 普通 0.01-0.1, 星暴 >1
+
+    Hα 换算: SFR ≈ 7.9e-42 × L(Hα) [erg/s] (Kennicutt 1998)
+
+    '
+  source: Kennicutt & Evans 2012, ARA&A 50, 531
+  ranges:
+    sfr:
+      lo: 0.001
+      hi: 1000
+      unit: Msun/yr
+- id: galaxy_gas_content
+  title: 星系气体含量 (HI/H2)
+  category: reference_range
+  tags:
+  - galaxy
+  - gas
+  - HI
+  - H2
+  - hydrogen
+  - gas_mass
+  - gas_content
+  hypothetical_queries:
+  - 星系 HI 质量 范围 矮不规则 1e7 富气 1e11 Msun
+  - M_HI 21cm 通量 距离 换算 2.356e5
+  - 气体分数 f_gas 矮星系 0.3 0.9 旋涡 椭圆 0.01
+  applies_to:
+    fields:
+    - hi_mass
+    - gas_mass
+    - h2_mass
+    - m_hi
+    - mass_hi
+    - m_h
+    - hi_flux
+    - f_hi
+    - hi_column_density
+    - hydrogen_column_density
+    - nh
+    - galactic_neutral_h_column
+    - gas_mass_mgas500
+    - h2_line_flux
+    entities:
+    - galaxy
+    - G
+    - dwarf_galaxy
+  content: '星系气体质量典型范围 (Msun):
+
+    - 矮不规则星系: HI 1e7-1e9
+
+    - 普通旋涡 (银河系): HI ~5e9, H2 ~1e9
+
+    - 富气旋涡: HI 1e10-1e11
+
+    - 椭圆星系: HI 通常 <1e8
+
+    气体分数 f_gas: 矮星系 0.3-0.9, 旋涡 0.1-0.3, 椭圆 <0.01
+
+    M_HI = 2.356e5 × D²[Mpc] × S_HI[Jy km/s] Msun
+
+    '
+  source: Catinella et al. 2018 (xGASS); Saintonge et al. 2017
+  ranges:
+    hi_mass:
+      lo: 10000000.0
+      hi: 100000000000.0
+      unit: Msun
+- id: cluster_velocity_dispersion
+  title: 星系团速度弥散与丰度
+  category: reference_range
+  tags:
+  - cluster
+  - galaxy_cluster
+  - velocity_dispersion
+  - richness
+  hypothetical_queries:
+  - 星系团 速度弥散 600 1500 km/s 星系群 50 300
+  - 星系团 质量 1e13 1e15 Msun 暗物质 晕
+  - 星系团 成员数 富团 X 射线光度 kT 2 10 keV
+  applies_to:
+    fields:
+    - velocity_dispersion
+    - richness
+    - n_members
+    - vel_disp
+    - vel_disp_1d
+    - vel_disp_3d
+    - vel_dispersion
+    - central_velocity_dispersion
+    - cluster_velocity_dispersion
+    - group_velocity_dispersion
+    - sigma_cluster
+    - member_count
+    - member_gal_count
+    - member_galaxy_count
+    - group_member_count
+    - cluster_member_count
+    - richness_cl
+    - group_richness
+    - group_mass
+    - cluster_mass
+    - halo_mass
+    - m_halo
+    - group_halo_mass_m200
+    entities:
+    - cluster_of_galaxies
+    - ClG
+    - rich_cluster
+  content: '星系团典型参数:
+
+    - 速度弥散 σ_v: 星系群 50-300 km/s, 富星系团 600-1500 km/s
+
+    - 成员数: 群 <50, 团 50-1000+
+
+    - 质量: 1e13-1e15 Msun (含暗物质晕)
+
+    - X 射线光度: 1e42-1e45 erg/s (kT 2-10 keV)
+
+    - 典型半径: 核心 0.1-0.5 Mpc, virial 1-2 Mpc
+
+    σ_v > 2000 km/s 需怀疑多团叠加/并合
+
+    '
+  source: Abell 1958; Bahcall 1999; Pratt et al. 2009
+  ranges:
+    velocity_dispersion:
+      lo: 50
+      hi: 1500
+      unit: km/s
+- id: xray_band_luminosity
+  title: X 射线波段天体光度范围
+  category: reference_range
+  tags:
+  - X-ray
+  - xray
+  - luminosity
+  - AGN
+  - cluster
+  - LMXB
+  hypothetical_queries:
+  - X 射线光度 典型范围 2-10 keV 恒星 1e28 AGN 1e46
+  - LMXB HMXB X 射线光度 1e36 1e39 erg/s
+  - 星系团 X 射线光度 1e42 1e45 erg/s 热气体
+  applies_to:
+    fields:
+    - xray_luminosity
+    - l_x
+    - luminosity
+    - lum_xray
+    - lx_xray
+    - xray_lum
+    - xray_lum_14_195kev
+    - xray_luminosity_14_195
+    - xray_luminosity_l500
+    - magnetar_xray_luminosity
+    entities:
+    - AGN
+    - galaxy
+    - cluster_of_galaxies
+  content: 'X 射线光度典型范围 (2-10 keV, erg/s):
+
+    - 恒星: 1e28-1e31
+
+    - LMXB: 1e36-1e38, HMXB: 1e37-1e39
+
+    - 星系整体 (旋涡): 1e39-1e41
+
+    - 星系团: 1e42-1e45
+
+    - AGN/类星体: 1e43-1e46 (Seyfert 1e43-1e44, QSO 1e44-1e46)
+
+    Eddington 判据: L_X ≲ 1.3e38 × M_BH/Msun erg/s
+
+    '
+  source: Fabbiano 1989; Brandt & Alexander 2015
+  ranges:
+    xray_luminosity:
+      lo: 1.0e+28
+      hi: 1.0e+46
+      unit: erg/s
+- id: iras_photometry_bands
+  title: IRAS 点源测光 (12/25/60/100um)
+  category: reference_range
+  tags:
+  - IRAS
+  - infrared
+  - photometry
+  - flux_density
+  - far_infrared
+  hypothetical_queries:
+  - IRAS 12 25 60 100 um 通量 典型范围 Jy
+  - IRAS 颜色 恒星 星系 AGN 区分 波长 尘埃温度
+  - 远红外光度 L_FIR 公式 2.58 F60 + F100
+  applies_to:
+    fields:
+    - fnu_12
+    - fnu_25
+    - fnu_60
+    - fnu_100
+    - flux_density
+    entities:
+    - galaxy
+    - star
+    - AGN
+  content: 'IRAS PSC 四波段通量典型范围 (Jy):
+
+    - 恒星: 12um 0.1-100 Jy, 冷星 60um 增强
+
+    - 正常星系: 60um 0.1-10 Jy, 100um 最强 (T~20-30K)
+
+    - 星暴星系: L60/L12 > 4
+
+    - AGN: 25um 相对增强 (热尘埃 T~200K)
+
+    - 12um 源多为恒星; 60/100um 源多为星系
+
+    L_FIR ≈ 1.26e39 × D²[Mpc] × (2.58×F60 + F100) [erg/s]
+
+    '
+  source: Beichman et al. 1988; Helou et al. 1988
+  ranges:
+    flux_density:
+      lo: 0.01
+      hi: 1000
+      unit: Jy
+- id: twomass_photometry
+  title: 2MASS 近红外测光 (J/H/Ks)
+  category: reference_range
+  tags:
+  - 2MASS
+  - NIR
+  - photometry
+  - J-band
+  - H-band
+  - Ks
+  hypothetical_queries:
+  - 2MASS J H Ks 星等 典型范围 恒星 8 16 星系 9 15
+  - 2MASS 10σ 深度 J 15.8 H 15.1 Ks 14.3
+  - J-H Ks 颜色 恒星 星系 消光 A_J 0.28 A_V
+  applies_to:
+    fields:
+    - j_mag
+    - h_mag
+    - ks_mag
+    - j_hmag
+    - k_mag
+    entities:
+    - star
+    - galaxy
+    - AGN
+  content: '2MASS J/H/Ks 星等典型范围 (Vega):
+
+    - 恒星: J 8-16 mag (饱和 ~8)
+
+    - 星系: J 9-15 mag
+
+    - 深度: J≈15.8, H≈15.1, Ks≈14.3 (10σ)
+
+    颜色: 恒星 J-H 0.2-0.8, 星系 J-H 0.5-1.0
+
+    消光: A_J≈0.28A_V, A_H≈0.18A_V, A_Ks≈0.11A_V
+
+    ph_qual: A>B>C>D>E>F>U>X, 仅 A 用于高精度研究
+
+    '
+  source: Skrutskie et al. 2006; Cutri et al. 2003
+  ranges:
+    j_mag:
+      lo: -5
+      hi: 16
+      unit: mag
+- id: hyperleda_kinematics
+  title: HYPERLEDA 星系运动学与口径
+  category: reference_range
+  tags:
+  - HYPERLEDA
+  - LEDA
+  - kinematics
+  - rotation
+  - velocity
+  - diameter
+  hypothetical_queries:
+  - HYPERLEDA v_helio 视向速度 范围 -1000 30000 km/s
+  - 星系 旋转速度 矮星系 20 80 旋涡 100 300 km/s
+  - HYPERLEDA D25 等光度直径 arcmin 位置精度 2 角秒
+  applies_to:
+    fields:
+    - v_helio
+    - rot_velocity
+    - d25
+    - logd25
+    - v21
+    - vel_helio
+    entities:
+    - galaxy
+    - G
+  content: 'HYPERLEDA/PGC 口径说明:
+
+    - 视向速度 v_helio: -1000 到 +30000 km/s
+
+    - 旋转速度: 矮星系 20-80, 旋涡 100-300 km/s
+
+    - 等光度直径 D25: 0.5-10 arcmin, logD25 单位 0.1 arcmin
+
+    - 位置精度优于 2 角秒 (与 RAG G.json 一致)
+
+    - 不同口径 (RC3/2MASS XSC/GZ1) 直径差异可达 10-20%
+
+    '
+  source: Paturel et al. 2003 (HYPERLEDA I); 2005
+  ranges:
+    v_helio:
+      lo: -1000
+      hi: 30000
+      unit: km/s
+- id: stellar_evolution_stages
+  title: 恒星演化各阶段典型参数
+  category: reference_range
+  tags:
+  - stellar
+  - evolution
+  - main_sequence
+  - red_giant
+  - agb
+  - white_dwarf
+  - neutron_star
+  - chandrasekhar
+  hypothetical_queries:
+  - 恒星演化 阶段 主序 红巨星 AGB 白矮星 中子星 参数
+  - 主序寿命 1e10 (M/Msun)^-2.5 年 质量 依赖
+  - Chandrasekhar 极限 白矮星 中子星 质量 1.4 2.1
+  applies_to:
+    fields:
+    - stellar_mass
+    - stellar_radius
+    - effective_temperature
+    - age
+    - star_age
+    - stellar_age
+    - age_estimate
+    - age_iso
+    - age_log
+    - isochronal_age
+    - star_mass
+    - star_radius
+    - stellar_initial_mass
+    - initial_mass
+    entities:
+    - star
+    - main_sequence_star
+    - red_giant_star
+    - asymptotic_giant_branch_star
+    - white_dwarf
+    - neutron_star
+  ranges:
+    stellar_mass:
+      lo: 0.08
+      hi: 150
+      unit: Msun
+    remnant_mass:
+      lo: 0.4
+      hi: 2.5
+      unit: Msun
+  content: '恒星演化由初始质量唯一决定, 各阶段典型参数:
+
+
+    - 主序: 质量 0.08-150 Msun (氢燃烧下限 0.08, 上限 ~100-150), 中心温度 ~1e7 K, 寿命 t_MS ~ 1e10 (M/Msun)^-2.5 yr (1 Msun 星 ~1e10 yr, 10 Msun 星 ~3e7 yr)
+
+    - 红巨星 (RGB): 半径 10-100 Rsun, 核心惰性氦而壳层氢燃烧, 核心升温至 ~1e8 K 触发氦闪 (质量 <2.25 Msun 简并核心)
+
+    - AGB 星: 半径 100-1000 Rsun, 氢氦双壳层燃烧, 热脉冲与强星风质量损失, 外层抛离成行星状星云, 遗留 C-O 白矮星
+
+    - 白矮星: 质量 ~0.6 Msun (Chandrasekhar 极限 1.4 Msun), 半径 ~0.01 Rsun
+
+    - 中子星/黑洞: 初始质量 >8 Msun 的核心坍缩产物; 中子星 1.4-2.1 Msun 半径 ~10 km, 超过 ~3 Msun 形成黑洞
+
+
+    判定线索: 各阶段质量-半径-光度组合必须自洽 (如 1 Msun 恒星不可能在 <1 Gyr 内离开主序); 初始质量 >8 Msun 却标注白矮星 = 类型混淆'
+  source: Carroll & Ostlie 2007; Salaris & Cassisi 2005; Kippenhahn & Weigert 2012
+  confidence: established
+- id: exoplanet_parameter_range
+  title: 系外行星质量与半径范围
+  category: reference_range
+  tags:
+  - exoplanet
+  - planet_mass
+  - planet_radius
+  - hot_jupiter
+  - super_earth
+  - neptune
+  hypothetical_queries:
+  - 系外行星 质量 半径 分档 超级地球 亚海王星 热木星
+  - 热木星 半径 膨胀 1.4 2 Rjup 辐照 致密
+  - 行星 褐矮星 质量边界 13 Mjup 氘燃烧 判据
+  applies_to:
+    fields:
+    - planet_mass
+    - planet_radius
+    - orbital_period
+    - pl_mass
+    - pl_radius
+    - pl_msini
+    - pl_density
+    entities:
+    - exoplanet
+    - hot_jupiter
+    - super_earth
+    - sub_neptune
+  ranges:
+    planet_mass:
+      lo: 0.3
+      hi: 4130
+      unit: M_earth
+    planet_radius:
+      lo: 0.3
+      hi: 22
+      unit: R_earth
+  content: '系外行星按质量/半径分档 (NASA Exoplanet Archive 分类):
+
+
+    - 类地/超级地球: 质量 1-10 Mearth, 半径 1-1.9 Rearth (岩石为主, 密度 ~5 g/cm3)
+
+    - 亚海王星/海王星类: 质量 6-60 Mearth (典型 ~17), 半径 2-4 Rearth (厚 H/He 包层)
+
+    - 类木/热木星: 质量 0.5-13 Mjup, 半径 ~1 Rjup; 热木星受恒星辐照膨胀可达 1.4-2 Rjup
+
+
+    锚点: 1 Mjup = 317.8 Mearth, 1 Rjup = 11.2 Rearth; 半径间隙 ~2 Rearth (超级地球与亚海王星的光致蒸发分界, 位置 R ~ P^-0.11)
+
+
+    判定线索: 质量 >13 Mjup 的"行星"实为褐矮星 (氘燃烧界); 半径 >2 Rjup 或质量 <0.3 Mearth 的极端值需复核; 热木星轨道周期 P<10 天, 若标热木星却 P>100 天 = 分类矛盾'
+  source: Fulton et al. 2017 (CKS); NASA Exoplanet Archive; exoplanet.eu
+  confidence: established
+- id: hii_region_properties
+  title: HII 区电子密度与温度范围
+  category: reference_range
+  tags:
+  - hii
+  - electron_density
+  - temperature
+  - ism
+  - star_formation
+  hypothetical_queries:
+  - HII 区 电子温度 7500 13000 K 电子密度 10 1e4 cm-3
+  - '[S II] 6716/6731 禁线比 电子密度 测定 弱温度依赖'
+  - 超致密 HII UCHII 密度 1e4 cm-3 尺寸 0.1 pc
+  applies_to:
+    fields:
+    - electron_density
+    - electron_temperature
+    - gas_temperature
+    - te_oiii
+    entities:
+    - hii_region
+    - ultracompact_hii_region
+    - star_forming_region
+  ranges:
+    electron_density:
+      lo: 10
+      hi: 10000
+      unit: cm^-3
+    electron_temperature:
+      lo: 5000
+      hi: 13000
+      unit: K
+  content: 'HII 区是被 O/B 型星 (Teff >2.5e4 K) 电离的氢等离子体, 典型参数:
+
+
+    - 电子温度 Te ~ 1e4 K (观测约束 7500-13000 K; 超致密区模型可低至 5000 K)
+
+    - 电子密度 ne: 弥散 HII 区 10-100 cm^-3, 致密区 ~1e3 cm^-3, 超致密 HII (UCHII) 1e4 cm^-3 量级
+
+    - 尺寸: 超致密 <0.1 pc 到巨 HII 区 ~100 pc; 电离气体质量 1e2-1e4 Msun
+
+    - 气体内部运动 ~10 km/s
+
+
+    物理原理: Strömgren 球电离-复合平衡 n^2 R^3 = 常数 (电离光子率固定); 电子密度由禁线比 [S II] 6716/6731 与 [O II] 3727/3729 测定, 对温度弱依赖
+
+
+    判定线索: 标注 HII 区却给 Te >2e4 K (光致电离平衡限制) 或 ne >1e5 cm^-3 (除非注明超致密/被压缩) 需复核'
+  source: Osterbrock & Ferland 2006; Draine 2011
+  confidence: established
+- id: molecular_cloud_properties
+  title: 分子云物理参数范围
+  category: reference_range
+  tags:
+  - molecular_cloud
+  - gmc
+  - ism
+  - star_formation
+  - cold_gas
+  hypothetical_queries:
+  - 巨分子云 质量 1e3 1e6 Msun 温度 10 30 K
+  - CO 1-0 115 GHz 示踪 X_CO 2e20 转换因子
+  - 分子云 致密核 密度 1e4 1e6 cm-3 恒星形成
+  applies_to:
+    fields:
+    - cloud_mass
+    - temperature
+    - number_density
+    - co_luminosity
+    - clump_mass
+    - co_line_intensity
+    - co_line_integrated_intensity
+    entities:
+    - molecular_cloud
+    - giant_molecular_cloud
+    - dense_core
+  ranges:
+    cloud_mass:
+      lo: 1000
+      hi: 1000000
+      unit: Msun
+    temperature:
+      lo: 10
+      hi: 30
+      unit: K
+    number_density:
+      lo: 100
+      hi: 1000000
+      unit: cm^-3
+  content: '巨分子云 (GMC) 是恒星形成母体, 主要成分为 H2 (CO 示踪):
+
+
+    - 质量: 1e3-1e6 Msun (典型 1e4-1e6; 银盘典型 GMC ~1e5-1e6 Msun)
+
+    - 温度: 10-30 K (致密核尘埃温度 10-12 K, 云外围 15-20 K)
+
+    - 数密度: 平均 1e2-1e3 cm^-3, 致密核 1e4-1e6 cm^-3
+
+    - 尺寸: 10-50 pc (延展可达 200 pc), 内部呈团块状结构
+
+
+    物理原理: 冷而致密使 CO J=1-0 (115 GHz) 成为标准示踪剂; CO-to-H2 转换因子 X_CO ~ 2e20 cm^-2 (K km/s)^-1 用于质量估计 (不确定 ~2 倍)
+
+
+    判定线索: 温度 >100 K 的"分子云"实为 HII 区/光解离区; 质量 <1e2 Msun 的孤立云多为小型暗云 (非 GMC); 密度 >1e7 cm^-3 需怀疑原恒星核/坍缩区'
+  source: Solomon et al. 1987; Kennicutt & Evans 2012; Swinburne COSMOS
+  confidence: established
+- id: milky_way_structure
+  title: 银河系结构参数范围
+  category: reference_range
+  tags:
+  - milky_way
+  - galaxy
+  - disk
+  - rotation_curve
+  - solar_position
+  hypothetical_queries:
+  - 银河系 结构 银盘 半径 25 kpc 薄盘 厚盘 标高
+  - 太阳 银心距 8 kpc 绕银速度 220 km/s 银河年
+  - 银河系 总质量 1e12 Msun 暗物质晕 核球 5 kpc
+  applies_to:
+    fields:
+    - disk_radius
+    - solar_radius
+    - rotation_velocity
+    - galactocentric_distance
+    - distance_galcen
+    - galactic_plane_height
+    - z_distance_galactic
+    entities:
+    - milky_way
+    - galaxy
+  ranges:
+    disk_radius:
+      lo: 12
+      hi: 25
+      unit: kpc
+    solar_radius:
+      lo: 7.5
+      hi: 8.5
+      unit: kpc
+    rotation_velocity:
+      lo: 200
+      hi: 240
+      unit: km/s
+  content: '银河系为棒旋星系, 结构参数 (IAU 1985 约定 + 现代测量):
+
+
+    - 银盘: 直径 ~25 kpc (恒星盘半径 12-15 kpc), 延展 HI 气体盘半径可达 ~25 kpc, 薄盘标高 ~0.3 kpc, 厚盘 ~1 kpc
+
+    - 太阳银心距 R0: 标准 8.0 kpc, 现代测量 8.2-8.3 kpc (容许 7.5-8.5)
+
+    - 太阳绕银心速度: 220 km/s (经典值), 现代估计 225-240 km/s; 银河年 ~2.3e8 yr
+
+    - 太阳轨道内质量 ~9e10 Msun, 银河系总质量 (含暗物质晕) ~1e12 Msun
+
+    - 核球直径 ~5 kpc; 银心方向消光极强 (A_V >20 mag)
+
+
+    判定线索: 太阳银心距 >10 kpc 或 <7 kpc 的记录需复核; "星系旋转速度" >300 km/s 多为与星系团速度弥散混淆'
+  source: Bland-Hawthorn & Gerhard 2016; Reid & Brunthaler 2020; IAU 1985
+  confidence: established
+- id: globular_cluster_range
+  title: 球状星团典型参数范围
+  category: reference_range
+  tags:
+  - globular_cluster
+  - age
+  - metallicity
+  - halo
+  hypothetical_queries:
+  - 球状星团 年龄 10 13 Gyr 金属丰度 -2.5 0 dex
+  - 球状星团 成员数 1e4 1e6 半光半径 3 pc
+  - 球状星团 与 疏散星团 区别 年龄 RR Lyrae
+  applies_to:
+    fields:
+    - age
+    - fe_h
+    - n_members
+    - half_light_radius
+    - cluster_age
+    - cluster_core_radius
+    - core_radius_pc
+    - core_radius_arcmin
+    - king_concentration
+    - king_core_radius
+    - king_tidal_radius
+    - relaxation_time_core
+    - relaxation_time_hmr
+    - crossing_time
+    - tidal_radius
+    entities:
+    - globular_cluster
+  ranges:
+    age:
+      lo: 10
+      hi: 13
+      unit: Gyr
+    fe_h:
+      lo: -2.5
+      hi: 0
+      unit: dex
+    n_members:
+      lo: 10000
+      hi: 1000000
+      unit: stars
+  content: '球状星团是银河系晕中古老恒星群, 典型参数:
+
+
+    - 年龄: 10-13 Gyr (几乎与宇宙同老, 仅晚于星系形成 ~1 Gyr)
+
+    - 金属丰度 [Fe/H]: -2.5 到 0 dex (晕星团极贫金属, 银盘星团可近太阳丰度; 年龄-金属丰度关系在 [Fe/H] ~ -1.8 处双序分叉)
+
+    - 成员数: 1e4-1e6 颗恒星, 总质量 1e4-1e6 Msun
+
+    - 尺度: 半光半径 ~3 pc, 核心 0.1-1 pc, 核心数密度可 >1e4 颗/pc^3
+
+    - 分布: 银河系约 150 个, 分布于晕与核球, 延展到 ~100 kpc
+
+
+    判定线索: 年龄 <5 Gyr 的"球状星团"多为年老疏散星团混淆; [Fe/H] >+0.5 或成员数 <1e3 与球状星团定义矛盾; RR Lyrae 成协是其经典证认特征'
+  source: Harris 1996; VandenBerg et al. 2013; Baumgardt & Hilker 2018
+  confidence: established
+- id: variable_star_period_lum
+  title: 脉动变星周期-光度范围
+  category: reference_range
+  tags:
+  - variable_star
+  - rr_lyrae
+  - cepheid
+  - mira
+  - period_luminosity
+  hypothetical_queries:
+  - 造父变星 周期光度关系 M_V = -2.43 log P - 1.62
+  - RR Lyrae 周期 0.2 1 天 M_V 0.6 PLZ 关系
+  - Mira 变星 周期 100 1000 天 变幅 K 波段
+  applies_to:
+    fields:
+    - period
+    - pulsation_period
+    - absolute_magnitude
+    - period_fundamental
+    - period_first_overtone
+    - period_primary
+    - period_secondary
+    - period_tertiary
+    - secondary_pulsation_period
+    - pulsation_periods
+    - pulsation_frequency
+    - photometric_period
+    - var_period
+    - superhump_period
+    - beat_period
+    - rot_period
+    - rotation_period
+    entities:
+    - rr_lyrae_star
+    - cepheid
+    - mira_variable
+    - variable_star
+  ranges:
+    rr_lyrae_period:
+      lo: 0.2
+      hi: 1
+      unit: day
+    cepheid_period:
+      lo: 1
+      hi: 100
+      unit: day
+    mira_period:
+      lo: 100
+      hi: 1000
+      unit: day
+  content: '脉动变星是标准烛光, 周期由平均密度决定 P ~ (G rho)^-1/2:
+
+
+    - RR Lyrae: 周期 0.2-1 天, 光度恒定 M_V ~ +0.6 (Pop II, 球状星团常见), 有周期-光度-金属丰度 (PLZ) 关系
+
+    - 经典造父变星: 周期 1-100 天 (典型 1-50), 周期-光度关系 M_V = -2.43 log10(P/天) - 1.62, P=10 天时 M_V ~ -4
+
+    - Mira 型: 周期 100-1000 天 (典型 100-700), 可见光变幅 >2.5 mag (可达 >8 mag), K 波段关系 M_K ~ -3.5 log10 P + 0.8
+
+
+    物理原理: kappa 机制 (He 电离层) 驱动径向脉动; 造父 PL 关系是距离阶梯一级台阶
+
+
+    判定线索: 周期 <0.2 天的"RR Lyrae"实为 delta Scuti 类; 周期 >1000 天或变幅 <0.5 mag 的"Mira"需复核; 造父周期与光度偏离 PL 关系 >1 mag 多为红化或类型混淆'
+  source: Catelan & Smith 2015; Freedman & Madore 2010; Gaia Collaboration 2018
+  confidence: established
+- id: solar_system_planets
+  title: 太阳系行星参数范围
+  category: reference_range
+  tags:
+  - solar_system
+  - planet
+  - mass
+  - radius
+  - orbit
+  hypothetical_queries:
+  - 太阳系行星 质量 半径 轨道半长轴 范围
+  - 行星 密度 岩石 3.9 5.5 气态巨行星 0.7 1.6 g/cm3
+  - 木星 质量 317.8 Mearth 半径 11.2 Rearth
+  applies_to:
+    fields:
+    - planet_mass
+    - planet_radius
+    - semi_major_axis
+    - orbital_period
+    entities:
+    - planet
+    - terrestrial_planet
+    - gas_giant
+    - ice_giant
+  ranges:
+    planet_mass:
+      lo: 0.055
+      hi: 317.8
+      unit: M_earth
+    planet_radius:
+      lo: 0.38
+      hi: 11.2
+      unit: R_earth
+    semi_major_axis:
+      lo: 0.39
+      hi: 30.1
+      unit: AU
+  content: '太阳系八大行星参数 (行星需满足: 绕日公转 + 流体静力平衡 + 清空轨道):
+
+
+    - 质量 (Mearth): 水星 0.055, 金星 0.815, 地球 1.0, 火星 0.107, 木星 317.8, 土星 95.2, 天王星 14.5, 海王星 17.1
+
+    - 半径 (Rearth): 0.38-11.2 (2440-69911 km); 天王星半径略大于海王星但质量更小
+
+    - 轨道半长轴: 0.39-30.1 AU; 轨道周期 88 天 (水星) 到 165 年 (海王星)
+
+
+    物理原理: 质量用轨道摄动 (天体力学) 测定, 半径用掩星/飞掠; 岩石行星密度 3.9-5.5 g/cm3, 气态巨行星 0.7-1.6 g/cm3
+
+
+    判定线索: 太阳系行星的质量/半径/轨道与上表偏离 >10% = 把系外行星或小行星误标为太阳系行星; 密度 <0.3 g/cm3 的"行星"需怀疑测量错误'
+  source: NASA Planetary Fact Sheet (Williams 2023); JPL SSD
+  confidence: established
+- id: gamma_ray_burst_energy
+  title: 伽马暴能量与持续时间范围
+  category: reference_range
+  tags:
+  - grb
+  - gamma_ray_burst
+  - energy
+  - duration
+  - t90
+  hypothetical_queries:
+  - 伽马暴 各向同性能量 E_iso 1e48 1e54 erg
+  - GRB T90 短暴 2 秒 长暴 分界 起源
+  - 伽马暴 喷流 聚束 真实能量 1e51 erg Band 谱
+  applies_to:
+    fields:
+    - isotropic_energy
+    - t90
+    - fluence
+    entities:
+    - gamma_ray_burst
+    - short_gamma_ray_burst
+    - long_gamma_ray_burst
+  ranges:
+    isotropic_energy:
+      lo: 1.0e+48
+      hi: 1.0e+54
+      unit: erg
+    t90_duration:
+      lo: 0.01
+      hi: 1000
+      unit: s
+  content: '伽马射线暴 (GRB) 是宇宙中最亮的电磁爆发:
+
+
+    - 各向同性能量 E_iso: 1e48-1e54 erg (典型 1e51-1e53)
+
+    - 峰值光度 L_iso: 1e48-1e54 erg/s
+
+    - 持续时间 T90 (累积 90% 光子的时间): 全域 0.01-1000 s
+
+    - 双峰分布 (Kouveliotou 判据): 短暴 T90<2 s (致密天体并合起源), 长暴 T90>2 s (大质量恒星坍缩, 常伴超新星)
+
+
+    物理原理: 准直相对论性喷流聚束 — 经喷流几何改正的真实能量 ~1e51 erg (各向同性值除以喷流因子); 光谱多为 Band 函数 (双幂律拼接)
+
+
+    判定线索: E_iso >1e54 erg 或 T90 >1e4 s 的"伽马暴"多为星系活动混淆; 短暴伴引力波信号 = 并合起源判据'
+  source: Kouveliotou et al. 1993; Frail et al. 2001; Zhang 2018
+  confidence: established
+- id: neutron_star_parameters
+  title: 中子星质量-半径范围
+  category: reference_range
+  tags:
+  - neutron_star
+  - pulsar
+  - mass
+  - radius
+  - eos
+  hypothetical_queries:
+  - 中子星 质量 1.4 2.1 Msun 半径 10 14 km
+  - 毫秒脉冲星 自转周期 1.4 ms 30 ms 磁场
+  - 中子星 状态方程 EOS 质量半径 关系 TOV 极限
+  applies_to:
+    fields:
+    - stellar_mass
+    - stellar_radius
+    - spin_period
+    - surface_magnetic_field
+    - neutron_star_mass
+    entities:
+    - neutron_star
+    - pulsar
+    - magnetar
+  ranges:
+    stellar_mass:
+      lo: 1.0
+      hi: 2.5
+      unit: Msun
+    stellar_radius:
+      lo: 9
+      hi: 14
+      unit: km
+    spin_period:
+      lo: 0.0014
+      hi: 8.5
+      unit: s
+  content: '中子星是大质量恒星 (初始 >8 Msun) 核心坍缩产物, 由中子简并压支撑:
+
+
+    - 质量: 典型 ~1.4 Msun, 观测全域 1-2.1 Msun (脉冲星双星定时可达 ~2.1), TOV 极限 ~2-3 Msun (超限塌缩为黑洞)
+
+    - 半径: 10-14 km (1.4 Msun 星 10-12 km; 高精度 X 射线测量对高质量星 12-14 km)
+
+    - 平均密度 ~核物质密度 (4e14 g/cm3), 表面重力 log g ~ 14 (cgs)
+
+    - 脉冲星自转周期: 普通 ~1 s 量级, 毫秒脉冲星 1.4 ms-30 ms; 磁场 1e8-1e16 G
+
+
+    物理原理: 质量-半径关系直接约束核物质状态方程 (EOS); 特征年龄 ~ P/(2 Pdot)
+
+
+    判定线索: 质量 <1 Msun 或 >3 Msun 的"中子星"需复核 (白矮星/黑洞混淆); 半径 >20 km 与 EOS 矛盾; 自转 <1 ms 或 >10 s 极端罕见'
+  source: Özel & Freire 2016; Lattimer & Prakash 2016; NICER 2021
+  confidence: established
+- id: open_cluster_range
+  title: 疏散星团典型参数范围
+  category: reference_range
+  tags:
+  - open_cluster
+  - age
+  - metallicity
+  - disk
+  - young
+  hypothetical_queries:
+  - 疏散星团 年龄 数百万年 8 Gyr 成员 100 1e4
+  - 疏散星团 金属丰度 -0.5 0.4 dex 银盘 分布
+  - 疏散星团 定龄 主序转折点 颜色星等图
+  applies_to:
+    fields:
+    - age
+    - n_members
+    - fe_h
+    - cluster_age
+    entities:
+    - open_cluster
+  ranges:
+    age:
+      lo: 1000000
+      hi: 8000000000
+      unit: yr
+    n_members:
+      lo: 100
+      hi: 10000
+      unit: stars
+    fe_h:
+      lo: -0.5
+      hi: 0.4
+      unit: dex
+  content: '疏散星团是银盘中的年轻恒星群 (Pop I), 与球状星团形成对照:
+
+
+    - 年龄: 数百万年到 ~8 Gyr (典型 ~1e8 yr; 大多数在数亿年内被潮汐瓦解)
+
+    - 成员数: 1e2-1e4 颗恒星 (典型 100-1000, 年轻富星团可上万)
+
+    - 金属丰度: 接近太阳, [Fe/H] ~ -0.5 到 +0.4 dex (随银心距有梯度)
+
+    - 尺度: 半光半径 1-5 pc, 结构松散; 分布于银盘 (集中于旋臂区)
+
+
+    物理原理: 同源成员星具有相同年龄与化学组成、不同质量 — 主序转折点定年龄 (大质量星先离开主序); 颜色-星等图拟合判据区分成员与非成员
+
+
+    判定线索: 年龄 >10 Gyr 的"疏散星团"实为球状星团 (类型混淆); 成员数 >1e5 或银纬 |b| >20 度的"疏散星团"需复核'
+  source: Dias et al. 2002; Kharchenko et al. 2013
+  confidence: established
+- id: supernova_type_ranges
+  title: 超新星类型与能量参考范围
+  category: reference_range
+  tags:
+  - supernova
+  - type_ia
+  - core_collapse
+  - luminosity
+  - energy
+  - chandrasekhar
+  hypothetical_queries:
+  - 超新星 Ia 峰值 M_B -19.3 弥散 Phillips 标准化
+  - 超新星 类型 Ia II Ib Ic 光谱 判据 氢 氦 硅 线
+  - 核心坍缩超新星 动能 1e51 erg 中微子 99% 56Ni
+  applies_to:
+    fields:
+    - peak_magnitude
+    - explosion_energy
+    - nickel_mass
+    - peak_mag_obs
+    - decline_rate_dm15
+    - stretch
+    - decline_60d_b_magnitude
+    - ejecta_velocity
+    - expansion_velocity
+    - ejected_mass
+    entities:
+    - supernova
+    - type_ia_supernova
+    - core_collapse_supernova
+  ranges:
+    peak_absolute_magnitude:
+      lo: -21.0
+      hi: -15.5
+      unit: mag
+    explosion_energy:
+      lo: 1.0e+50
+      hi: 1.0e+52
+      unit: erg
+    nickel_mass:
+      lo: 0.01
+      hi: 1.0
+      unit: Msun
+  content: '超新星按光谱分为热核型 (Ia) 与核心坍缩型 (II/Ib/Ic), 峰值星等与能量全域如下:
+
+    - Ia: 白矮星近 Chandrasekhar 极限 (~1.4 Msun) 热核爆炸, 峰值 M_B ~ -19.3 mag (弥散 <0.3 mag, 可用 Phillips 关系标准化), 峰值光度 ~1e43 erg/s, 由 ~0.6 Msun 56Ni 衰变供能 (56Ni -> 56Co -> 56Fe), 上升 ~19 天
+
+    - II-P: 最普遍核心坍缩型, 红超巨星前身, H 包层完整, 光变平台 ~100 天, 峰值 M_V ~ -17 mag (比 Ia 暗 ~2.3 mag)
+
+    - II-L: 无平台、峰值后线性衰减; IIn: 窄发射线, 激波与星周物质作用, 峰值可至 -20 mag; IIb: 薄 H 壳层, 后期演化为 Ib 型
+
+    - Ib: 失去 H 层但保留 He 层 (He I 线); Ic: H/He 均失 (Wolf-Rayet 前身, 与长暴 GRB 成协)
+
+    能量: 核心坍缩释放引力束缚能 ~1e53 erg (99% 由中微子带走), 注入包层的动能典型 ~1e51 erg (E51 单位, 全域 1e50-1e52); 喷射速度 ~1e4 km/s
+
+    56Ni 产量: Ia 0.1-1.0 Msun (典型 ~0.6), 核心坍缩型 0.01-0.5 Msun — 决定峰值光度与光变尾部
+
+    物理: 光谱型由吸收线判定 (H Balmer / He I / Si II), 光变形状由包层质量与 56Ni 量共同决定
+
+    判定线索: 峰值 M_V > -20 的 ''Ia'' 实为 IIn/超亮超新星; 动能 >1e52 erg 需复核; 无 H 谱线却标 II 型 = 类型矛盾'
+  source: Filippenko 1997, ARA&A 35, 309; Phillips 1993; Richardson et al. 2014
+  confidence: established
+- id: gravitational_wave_sources
+  title: 引力波源参考范围
+  category: reference_range
+  tags:
+  - gravitational_wave
+  - gw
+  - bbh
+  - merger_rate
+  - ligo
+  hypothetical_queries:
+  - 引力波 BBH 主星质量 5 100 Msun 分布 幂律 峰
+  - 啁啾质量 引力波 频率 演化 旋进 10 1000 Hz
+  - BNS 双中子星 并合 质量 1 2.5 Msun 千新星
+  applies_to:
+    fields:
+    - gw_frequency
+    - chirp_mass
+    - merger_rate
+    entities:
+    - gravitational_wave_source
+    - binary_black_hole
+    - binary_neutron_star
+  ranges:
+    gw_frequency:
+      lo: 10
+      hi: 1000
+      unit: Hz
+    bbh_primary_mass:
+      lo: 5
+      hi: 100
+      unit: Msun
+    bbh_merger_rate:
+      lo: 17.9
+      hi: 44
+      unit: Gpc^-3/yr
+  content: '引力波源: 致密双星并合 (BBH/BNS/NSBH) 为地面探测器 (LIGO/Virgo/KAGRA) 的主要探测源:
+
+    - 灵敏频带 ~10-1000 Hz (最优 ~100-300 Hz); 信号频率随旋进单调上升, 频率演化率由啁啾质量 M_c = (m1 m2)^(3/5) / (m1+m2)^(1/5) 决定
+
+    - BBH 主星质量 5-100 Msun 全域: GWTC-3 质量分布为幂律+峰结构 (啁啾质量峰 8.3 与 27.9 Msun), ~60 Msun 以上无强抑制, 恒星起源上限 ~120 Msun (对不稳定间隙)
+
+    - 并合总质量观测全域 ~10-150 Msun; 单次事件在带内持续 0.1-数十秒 (低质量 BNS 更长)
+
+    - BNS 质量 1-2.5 Msun (与中子星质量分布一致); 电磁对应体 (千新星) 仅 BNS/NSBH 并合产生
+
+    - 事件率 (90% CI): BBH 17.9-44 Gpc^-3 yr^-1 (z=0.2), BNS 10-1700, NSBH 7.8-140
+
+    物理: 引力波频率约为轨道频率二倍 (圆轨道 f_GW = 2 f_orb); 1e2 Hz 信号对应 ~1e2 Msun 致密双星在 ~1e3 km 尺度旋进; 应变振幅 h ~ 1e-21 量级
+
+    判定线索: 声称 GW 源却给频率 <10 Hz 或 >1e4 Hz = 与地面频带不符 (应为脉冲星计时阵或 LISA 带); BBH 总质量 >300 Msun 需怀疑非恒星起源或测量错误'
+  source: Abbott et al. 2023 (GWTC-3), PRX 13, 011048; LIGO/Virgo/KAGRA 合作
+  confidence: established
+- id: black_hole_mass_distribution
+  title: 黑洞质量分布参考范围
+  category: reference_range
+  tags:
+  - black_hole
+  - bh_mass
+  - imbh
+  - smbh
+  - stellar_mass
+  hypothetical_queries:
+  - 黑洞质量 分布 恒星质量 3 100 IMBH SMBH 分档
+  - 对不稳定 间隙 65 120 Msun 恒星黑洞 缺失
+  - SMBH 质量 1e6 1e10 Msun M_BH-sigma 关系
+  applies_to:
+    fields:
+    - black_hole_mass
+    - bh_mass
+    - compact_mass
+    - compact_object_mass
+    - m_compact
+    entities:
+    - stellar_mass_black_hole
+    - intermediate_mass_black_hole
+    - supermassive_black_hole
+  ranges:
+    stellar_bh_mass:
+      lo: 3
+      hi: 100
+      unit: Msun
+    imbh_mass:
+      lo: 100
+      hi: 100000
+      unit: Msun
+    smbh_mass:
+      lo: 1000000
+      hi: 10000000000.0
+      unit: Msun
+  content: '黑洞质量分布横跨 ~9 个数量级, 按形成通道分三档 (恒星质量/IMBH/SMBH):
+
+    - 恒星质量黑洞: 3-100 Msun, 大质量恒星 (初始 >20 Msun) 核心坍缩产物; X 射线双星动力学测量 5-20 Msun, 引力波观测延伸至 ~100 Msun
+
+    - 下限 ~3 Msun (中子星 TOV 上限 ~2-3 Msun 之上); 上限受对不稳定间隙约束 — 恒星黑洞在 ~65-120 Msun 区间应缺失 (脉冲对不稳定/对不稳定超新星)
+
+    - IMBH: 1e2-1e5 Msun, 介于恒星黑洞与 SMBH 之间, 形成通道多样 (原初核/星团动力学并合), 观测证据稀少; 引力波已见总质量 ~150 Msun 的高质量并合
+
+    - SMBH: 1e6-1e10 Msun, 存在于星系核; M_BH-sigma 关系 M_BH ~ 1e8 (sigma/200 km/s)^4 Msun 锚定, 矮星系核可低至 1e4-1e6 Msun
+
+    物理: 恒星端由恒星演化+超新星机制决定, 大端由吸积增长 (Eddington 限 L_Edd = 1.26e38 (M/Msun) erg/s) 与并合历史决定
+
+    质量函数: 恒星质量黑洞每星系数百个量级, SMBH 几乎每个星系核一个, 中间质量端 (1e2-1e6 Msun) 高度不确定
+
+    判定线索: ''恒星质量黑洞'' 给 >200 Msun = IMBH/测量混淆; ''SMBH'' 给 <1e4 Msun 需注明矮星系核候选; 1e2-1e5 Msun 区间证据稀疏, 高置信声明需独立质量测量'
+  source: Ozel et al. 2010; Abbott et al. 2023; Kormendy & Ho 2013, ARA&A
+  confidence: consensus
+- id: blazar_properties
+  title: 耀变体分类与性质参考范围
+  category: reference_range
+  tags:
+  - blazar
+  - fsrq
+  - bl_lac
+  - jet
+  - variability
+  hypothetical_queries:
+  - 耀变体 FSRQ BL Lac 分类 谱线 等值宽度 5 埃
+  - 耀变体序列 同步峰频率 LSP ISP HSP 1e14 1e15 Hz
+  - 耀变体 伽马光子指数 1.7 2.7 变光时标 天内
+  applies_to:
+    fields:
+    - synchrotron_peak_frequency
+    - photon_index
+    - variability_timescale
+    - log_nu_syn_peak
+    - sync_peak_freq
+    - gamma_photon_index
+    - gamma_ray_photon_index
+    entities:
+    - blazar
+    - fsrq
+    - bl_lac
+  ranges:
+    synchrotron_peak_frequency:
+      lo: 1000000000000.0
+      hi: 1.0e+17
+      unit: Hz
+    photon_spectral_index:
+      lo: 1.7
+      hi: 2.7
+      unit: ''
+    variability_timescale:
+      lo: 0.01
+      hi: 1000
+      unit: day
+  content: '耀变体: 喷流指向观测者的射电噪 AGN, 相对论聚束使视亮度增强 ~delta^4 (多普勒因子 delta 10-50)
+
+    分类: FSRQ (强发射线, 线等效宽度 >5 A, 高光度, 同步峰低) vs BL Lac (线弱 <5 A, 低光度, 同步峰高)
+
+    同步峰频率分档: LSP <1e14 Hz, ISP 1e14-1e15 Hz, HSP >1e15 Hz (极端可至 1e17 Hz); 耀变体序列: 光度与同步峰频率反相关
+
+    SED 双峰: 低能同步辐射 + 高能逆康普顿辐射, FSRQ 康普顿主导 (Compton dominance >1)
+
+    伽马 (0.1-100 GeV) 谱指数: FSRQ 陡 (光子指数 ~2.3-2.7), BL Lac 硬 (~1.7-2.2), 以 ~1e47 erg/s 伽马光度分界
+
+    变光时标: 小时-天-月-年多时标叠加, 日内变光 (IDV) 常见; 最短变光时标 dt 约束发射区尺寸 R < c dt delta (光速因果性)
+
+    物理: 喷流激波加速电子产生同步+逆康普顿辐射; 观测特征: 射电噪 + 高偏振 + 强变光
+
+    判定线索: 变光时标 <分钟级 = 需极端 delta 或观测伪影; 标 FSRQ 却无线宽 >5 A 谱线 = BL Lac 混淆; 同步峰 >1e17 Hz 与强发射线并存罕见'
+  source: Fossati et al. 1998; Abdo et al. 2010 (Fermi LAT); Ghisellini et al. 2017
+  confidence: established
+- id: brown_dwarf_range
+  title: 褐矮星表面温度与光谱温度标定
+  category: reference_range
+  tags:
+  - brown_dwarf
+  - spectral_type
+  - teff
+  - cooling
+  - temperature
+  - effective_temperature
+  hypothetical_queries:
+  - What is the effective temperature range of brown dwarfs compared with O-type stars?
+  applies_to:
+    fields:
+    - effective_temperature
+    - stellar_mass
+    entities:
+    - brown_dwarf
+    - l_dwarf
+    - t_dwarf
+    - y_dwarf
+  ranges:
+    mass:
+      lo: 13
+      hi: 75
+      unit: Mjup
+    surface_temperature:
+      lo: 200
+      hi: 2000
+      unit: K
+  content: '褐矮星: 质量 13-75 Mjup (0.013-0.075 Msun) 的亚恒星天体, 核心点燃氘但无法稳定氢燃烧
+
+    表面温度全域 ~200-2000 K (接 M 矮星端 ~2300-2500 K 与行星端 <200 K)
+
+    光谱型温度标定: L 型 1300-2500 K (Fe/硅酸盐尘云), T 型 600-1300 K (CH4 带), Y 型 <600 K (NH3 带, 最冷 ~250 K)
+
+    半径: 简并支撑, ~0.8-1.2 Rjup 且与质量弱相关 (几乎恒定); 表面重力 log g 4.0-5.5
+
+    冷却演化: 无稳定核能源, Teff 随年龄单调下降 — 光谱型是温度与年龄的函数, 同一 Teff 可对应不同质量-年龄组合 (质量-温度-年龄简并)
+
+    同年龄下质量越大越热: 1 Gyr 龄 0.03-0.07 Msun 褐矮星对应 Teff ~500-1000 K 量级
+
+    特征判据: 锂测试 (60-65 Mjup 以上可烧锂), L/T 转变 ~1200-1400 K (CO -> CH4), Y 型 NH3 吸收
+
+    判定线索: 标褐矮星却 Teff >2500 K = M 矮星混淆; 质量 <13 Mjup = 行星 (除非注明自由漂浮行星); T 型给 2000 K 或 Y 型给 1000 K = 温度-光谱矛盾'
+  source: Kirkpatrick 2005, ARA&A; Cushing et al. 2011; UNLV 光谱型表
+  confidence: established
+- id: white_dwarf_cooling
+  title: 白矮星冷却时标与表面温度范围
+  category: reference_range
+  tags:
+  - white_dwarf
+  - cooling
+  - teff
+  - age
+  - temperature
+  - effective_temperature
+  - chandrasekhar
+  hypothetical_queries:
+  - How does the effective temperature of white dwarfs compare with O-type stars at formation?
+  applies_to:
+    fields:
+    - effective_temperature
+    - stellar_mass
+    - cooling_age
+    entities:
+    - white_dwarf
+  ranges:
+    stellar_mass:
+      lo: 0.2
+      hi: 1.4
+      unit: Msun
+    surface_temperature:
+      lo: 5000
+      hi: 100000
+      unit: K
+    cooling_timescale:
+      lo: 1000000.0
+      hi: 10000000000.0
+      unit: yr
+  content: '白矮星: 无核燃烧、仅靠储热冷却的简并天体, 是银河系可靠的宇宙时钟
+
+    - 质量全域 0.2-1.4 Msun (单星产物主峰 ~0.6, Chandrasekhar 极限 1.4 之上塌缩), 半径 ~0.01 Rsun 与质量弱相关
+
+    - 表面温度全域 ~5000-100000 K: 新形成白矮星 (行星状星云中心星) 可至 1e5 K, 冷却 10 Gyr 后降至 ~5000-6000 K, 最冷观测 ~3000-4000 K
+
+    - 光度 L = 4 pi R^2 sigma Teff^4, 从 ~1e-1 降至 ~1e-5 Lsun
+
+    冷却时标 (Mestel 律): t_cool ~ 1e7 yr (Teff/1e4 K)^(-7/2) (CO 核), 冷却到 ~5000 K 需 ~1e10 yr — 与球状星团年龄 (10-13 Gyr) 自洽
+
+    物理: 高温端中微子能量损失主导, 低温端光子扩散; 中心 ~1e7 K 时结晶 (库仑耦合 Gamma ~ 175), 潜热+相分离释放推迟冷却 (~0.7 Msun 附近效应最强)
+
+    包层成分影响冷却: He 大气比 H 大气冷却慢 (至多 30-50%), 薄 H 层冷却更快 — 年龄估计对包层厚度敏感
+
+    判定线索: Teff >1e5 K 的 ''白矮星'' 多为中心星/热亚矮星混淆; 质量 >1.4 Msun 必错; 声称 5 Gyr 内冷却至 3000 K 与标准模型矛盾'
+  source: Bedard et al. 2020, ApJ; Salaris et al. 2022 (BaSTI); Fontaine et al. 2001
+  confidence: established
+- id: pulsar_magnetar_range
+  title: 脉冲星与磁星周期/磁场/年龄范围
+  category: reference_range
+  tags:
+  - pulsar
+  - magnetar
+  - spin_down
+  - magnetic_field
+  hypothetical_queries:
+  - 脉冲星 自转周期 1.4 ms 8.5 s 全域 毫秒脉冲星
+  - 磁星 磁场 1e14 1e15 G 量子临界场 4.4e13
+  - 脉冲星 特征年龄 P/(2Pdot) 1e3 1e10 年 死亡线
+  applies_to:
+    fields:
+    - spin_period
+    - surface_magnetic_field
+    - characteristic_age
+    - spin_down_age
+    - spin_period_deriv
+    - spin_period_derivative
+    - spin_frequency
+    - pulse_period
+    - puls_period
+    - pulse_width
+    - pulse_width_w50
+    - magnetic_field
+    - magnetic_rot_period
+    - spin_down_luminosity
+    - spindown_luminosity
+    entities:
+    - pulsar
+    - millisecond_pulsar
+    - magnetar
+  ranges:
+    spin_period:
+      lo: 0.0014
+      hi: 8.5
+      unit: s
+    surface_magnetic_field:
+      lo: 100000000.0
+      hi: 1000000000000000.0
+      unit: G
+    characteristic_age:
+      lo: 1000.0
+      hi: 10000000000.0
+      unit: yr
+  content: '脉冲星: 旋转供能的中子星, 自转周期-周期导数 (P-Pdot) 图将群体分为普通射电脉冲星、再循环毫秒脉冲星 (MSP) 与磁星
+
+    - 自转周期全域 1.4 ms (最快再循环 MSP) - 8.5 s (典型最慢射电脉冲星; 个别极端源 ~23 s)
+
+    - 表面偶极磁场 B ~ 3.2e19 (P Pdot)^(1/2) G: 再循环 MSP 1e8-1e9 G, 典型脉冲星 1e11-1e13 G (中位 ~1e12), 磁星 1e14-1e15 G (超过量子临界场 B_QED = 4.4e13 G)
+
+    - 特征年龄 tau_c = P/(2 Pdot): 典型 1e3-1e10 yr (再循环 MSP 可大于宇宙年龄, 真实年龄被低估)
+
+    - 自转能损 Edot = 4 pi^2 I Pdot / P^3 ~ 1e30-1e39 erg/s (磁星 Edot 低于其 X 射线光度, 能量来自磁场衰减)
+
+    物理: 磁偶极辐射+磁层粒子加速使自转变慢; 死亡线 (射电辐射熄灭) 位于 P ~ 1-10 s (B ~ 1e12 G) 附近
+
+    脉冲星双星定时提供最精确质量测量 (~1.4-2.1 Msun), 与周期/磁场联合可约束中子星状态方程
+
+    判定线索: 周期 <1 ms 或磁场 <1e7 G 超出已知分布需复核; 标磁星却周期 >100 s = XDINS/白矮星混淆; 标 MSP 却 B >1e11 G 矛盾 (再循环应低场)'
+  source: Manchester et al. 2005 (ATNF Pulsar Catalogue); Kaspi & Beloborodov 2017, ARA&A
+  confidence: established
+- id: exoplanet_atmosphere
+  title: 系外行星大气参数范围
+  category: reference_range
+  tags:
+  - exoplanet
+  - atmosphere
+  - hot_jupiter
+  - transmission_spectrum
+  hypothetical_queries:
+  - 热木星 大气 平衡温度 1000 3000 K 传输光谱
+  - 系外行星 大气 特征 Na K H2O CH4 CO 波长 ppm
+  - 系外行星 云层 霾 光谱变平 标高 100 1000 km
+  applies_to:
+    fields:
+    - equilibrium_temperature
+    - scale_height
+    - transit_depth
+    - eq_temp
+    entities:
+    - hot_jupiter
+    - exoplanet
+  ranges:
+    equilibrium_temperature:
+      lo: 1000
+      hi: 3000
+      unit: K
+    scale_height:
+      lo: 100
+      hi: 1000
+      unit: km
+  content: '系外行星大气探测主通道: 传输光谱 (凌星), 日食光谱与相位曲线; 热木星是信号最强的目标
+
+    - 平衡温度: 热木星 1000-3000 K (<1000 K 为暖木星, 化学与云层发生转变; 温度由恒星辐照与热量再循环决定)
+
+    - 传输光谱特征幅度: 10-1000 ppm (凌星深度 ~ (R_p/R_star)^2 基础上的大气差分), 随波长变化 — Na 0.589/K 0.77 um, H2O 1.4/1.9 um, CH4 3.3 um, CO 4.6 um, CO2 4.3 um
+
+    - 标高 H = k T / (mu g) ~ 100-1000 km (热木星), 特征强度正比于 n H R_p — 冷而重的行星信号更弱
+
+    云层与霾: 硅酸盐云 ~1500-2000 K, 铁云 ~1800-2000 K, 硫化物云 (MnS/Na2S) ~1000-1100 K — 温度决定云底; 霾使光谱变平 (吸收特征被压制)
+
+    物理: 平衡化学由温度与 C/O 比决定; 昼夜温差可达数百 K, 相位曲线测热量再分布效率; 高温 (>2000 K) 可产生热反转 (TiO/VO 吸收)
+
+    观测建议: 报道大气需同时给出温度、探测气体与云层约束; 传输光谱平坦无特征 = 云/霾遮挡或信号淹没
+
+    判定线索: 标热木星大气却 Teq <500 K = 对象分类矛盾; 特征幅度 >1e4 ppm = 系统误差; 温度与主导分子不符 (如 2500 K 仅有 CH4 特征) 需检查'
+  source: Seager 2010 (Exoplanet Atmospheres); Sing et al. 2016, Nature; A&A 2025 云/霾参数化
+  confidence: established
+- id: small_bodies_solar_system
+  title: 太阳系小天体参考范围
+  category: reference_range
+  tags:
+  - asteroid
+  - comet
+  - kuiper_belt
+  - small_body
+  hypothetical_queries:
+  - 小行星 直径 分布 1 1000 km C 型 S 型 M 型
+  - 彗星核 直径 1 50 km 脏雪球 密度 0.5 g/cm3
+  - 柯伊伯带 天体 30 55 AU 冰质盘 短周期彗星
+  applies_to:
+    fields:
+    - diameter
+    - semi_major_axis
+    - bulk_density
+    - mean_density
+    entities:
+    - asteroid
+    - comet
+    - kuiper_belt_object
+    - trans_neptunian_object
+  ranges:
+    asteroid_diameter:
+      lo: 1
+      hi: 1000
+      unit: km
+    comet_nucleus_diameter:
+      lo: 1
+      hi: 50
+      unit: km
+    kuiper_belt_distance:
+      lo: 30
+      hi: 55
+      unit: AU
+  content: '太阳系小天体: 主带小行星 (2.1-3.3 AU), 半人马 (5-30 AU), 柯伊伯带 (30-55 AU), 散射盘 (至 ~1000 AU), 奥尔特云 (2000-100000 AU)
+
+    - 小行星直径 1-1000 km (最大 ~940 km); 累计尺寸分布 N(>D) ~ D^(-2.5) (碰撞碎解级联维持)
+
+    - 成分: C 型 (碳质, 反照率 ~0.05, 密度 1.1-1.7 g/cm3), S 型 (石质, 反照率 ~0.2, 密度 2.5-3.5), M 型 (金属); 多数为碎石堆结构 (自转 <2 h 破碎限)
+
+    - 彗星核: 直径 1-50 km (典型 ~10 km), 冰+尘埃 (脏雪球), 密度 ~0.5 g/cm3, 反照率 ~0.04; 水冰升华驱动活动 (近日点 ~3 AU 内)
+
+    - 柯伊伯带: 30-55 AU 冰质盘, 经典带 42-48 AU 分冷/热双群; 最大成员直径 ~2000 km 级; 短周期彗星 (P<200 yr) 来源
+
+    - 主带小行星总质量 ~3e21 kg 量级 (最大个体占大头)
+
+    物理: 尺寸-频率分布反映碰撞演化历史; 密度区分石质/冰质/碎石堆 (低密度+大尺寸 = 碎石堆, 存在大孔隙率)
+
+    判定线索: ''彗星核'' 直径 >100 km = 与 TNO/矮行星混淆; 小行星密度 >5 g/cm3 或 <0.5 g/cm3 需复核; 柯伊伯带天体给轨道 <30 AU = 半人马/主带混淆'
+  source: NASA/JPL Small Body Database; Levison & Duncan 1997; 行星科学十年调查 2023
+  confidence: established
+- id: xray_binary_types
+  title: X 射线双星类型与轨道周期范围
+  category: reference_range
+  tags:
+  - xray_binary
+  - lmxb
+  - hmxb
+  - microquasar
+  hypothetical_queries:
+  - X 射线双星 LMXB HMXB 伴星质量 轨道周期 区分
+  - 软 X 射线暂现源 爆发 1e38 1e39 erg/s 周期
+  - 微类星体 黑洞 双星 相对论 射电喷流 0.9 c
+  applies_to:
+    fields:
+    - orbital_period
+    - donor_mass
+    - xray_luminosity
+    - companion_mass
+    - secondary_mass
+    - orbital_eccentricity
+    - orb_ecc
+    - orb_eccentricity
+    - ecc
+    - orbital_semi_amplitude
+    - rv_semi_amplitude
+    - rv_amplitude
+    - velocity_semi_amplitude
+    - k2_rv_semiamp
+    - orbital_semimajor_axis
+    - orb_period
+    - orbital_inclination
+    - orbit_inclination
+    - mass_ratio
+    - mass_function
+    entities:
+    - low_mass_xray_binary
+    - high_mass_xray_binary
+    - microquasar
+  ranges:
+    orbital_period:
+      lo: 0.0077
+      hi: 100
+      unit: day
+    donor_mass:
+      lo: 0.1
+      hi: 60
+      unit: Msun
+  content: 'X 射线双星: 致密天体 (中子星/黑洞) + 伴星, 通过洛希瓣溢流或星风吸积供能; 按伴星质量分 LMXB/HMXB, 按喷流有无分微类星体
+
+    - LMXB: 伴星 <1 Msun (晚期 K/M 矮星), 洛希瓣溢流, 轨道周期 0.008-12 小时 (典型数小时)
+
+    - 多数 LMXB 为暂现源 (软 X 射线暂现源): 爆发峰值 1e38-1e39 erg/s, 宁静期 1e30-1e33 erg/s, 周期数年-数十年; 集中于银晕/核球/球状星团
+
+    - HMXB: 伴星 >10 Msun (O/B 型), 星风吸积或瓣溢流, 轨道周期 1-100 天 (典型数天); Be 星系统偏心轨道, 周期可数百天
+
+    - HMXB 吸积体多为磁化中子星 (X 射线脉冲星, 自转周期秒-千秒级); LMXB 中吸积体可为中子星或黑洞 (由爆发态与致密体质量区分)
+
+    - 微类星体: 黑洞 X 射线双星 + 相对论射电喷流 (~0.1-0.9 c), 硬/软态转换伴随喷流淬灭与再活动
+
+    物理: 吸积功率 L_acc = G M Mdot / R; Eddington 限 L_Edd ~ 1.3e38 (M/Msun) erg/s 约束光度; 轨道周期与伴星演化决定质量转移率
+
+    判定线索: 标 LMXB 却周期 >10 天 = HMXB 混淆; 致密体质量 >3 Msun = 黑洞判据; 2-10 keV 光度 >1e39 erg/s 的 ''X 射线双星'' 多为 ULX'
+  source: Tauris & van den Heuvel 2006; Liu et al. 2007 (XRB 星表); Fender 2005
+  confidence: established
+- id: tidal_disruption_event_range
+  title: 潮汐瓦解事件 (TDE) 参考范围
+  category: reference_range
+  tags:
+  - tde
+  - tidal_disruption
+  - transient
+  - black_hole
+  hypothetical_queries:
+  - 潮汐瓦解事件 峰值光度 1e43 1e45 erg/s 黑体温度 2 5e4 K
+  - TDE 光变 衰减 t^-5/3 幂律 回吸 时标 数月至数年
+  - 恒星 潮汐撕裂 黑洞 Hills 极限 1e8 Msun
+  applies_to:
+    fields:
+    - peak_luminosity
+    - blackbody_temperature
+    - event_rate
+    entities:
+    - tidal_disruption_event
+  ranges:
+    peak_luminosity:
+      lo: 1.0e+43
+      hi: 1.0e+46
+      unit: erg/s
+    blackbody_temperature:
+      lo: 20000.0
+      hi: 50000.0
+      unit: K
+    event_rate:
+      lo: 1.0e-05
+      hi: 0.0001
+      unit: yr^-1/galaxy
+  content: '潮汐瓦解事件 (TDE): 恒星被超大质量黑洞潮汐撕裂后吸积产生的瞬变辐射, 仅当 M_BH < Hills 极限 (~1e8 Msun) 时恒星在视界外被撕裂
+
+    - 峰值光度 1e43-1e45 erg/s (光学/UV 典型 ~1e44, 另有热核成分), 峰值接近 Eddington 光度
+
+    - 黑体温度 ~2-5e4 K, 下降期几乎恒定 (与超新星冷却降温不同) — 强判别特征
+
+    - 光变: 上升数天-数十天, 衰减近似 t^(-5/3) 幂律 (恒星碎片回吸), 总持续数月-数年
+
+    - 事件率: 1e-5 至 1e-4 每星系每年 (银河系中心预期 ~1e-4/yr), 依赖核区恒星密度与黑洞质量
+
+    物理: 潮汐半径 R_t ~ R_star (M_BH/M_star)^(1/3) ~ 数十个史瓦西半径; 回吸时标 t_fb ~ (M_BH/1e6 Msun)^(1/2) 天至年
+
+    多波段: X 射线 (吸积盘热), UV/光学 (回吸流再处理), 少量 (~1-10%) 产生喷流射电辐射
+
+    判定线索: 声称 TDE 却黑体温度 >1e5 K = AGN/恒星混淆; 衰减快于 t^(-5/3) 且 <1 个月熄灭需复核; 中心黑洞 >1e8 Msun 的星系 TDE 极罕见'
+  source: Gezari 2021, ARA&A; Hinkle et al. 2020, ApJ 894, L10; van Velzen et al. 2020
+  confidence: established
+- id: diffuse_ism_phase_range
+  title: 弥散星际介质相位参数范围
+  category: reference_range
+  tags:
+  - ism
+  - interstellar_medium
+  - phase
+  - temperature
+  hypothetical_queries:
+  - 星际介质 相位 CNM WNM WIM HIM 温度 密度 范围
+  - HI 21cm 吸收 发射 冷中性 暖中性 示踪
+  - 星际介质 压力平衡 n T 1e3 K cm-3 判据
+  applies_to:
+    fields:
+    - gas_temperature
+    - number_density
+    - thermal_pressure
+    entities:
+    - interstellar_medium
+    - cold_neutral_medium
+    - warm_ionized_medium
+    - hot_ionized_medium
+  ranges:
+    gas_temperature:
+      lo: 10
+      hi: 10000000.0
+      unit: K
+    gas_density:
+      lo: 0.0001
+      hi: 1000000.0
+      unit: cm^-3
+    thermal_pressure:
+      lo: 1000.0
+      hi: 10000.0
+      unit: K cm^-3
+  content: '弥散星际介质按冷却函数平台分相, 各相近似压力平衡 (n T ~ 1e3 K cm^-3): 越冷越密, 越热越稀
+
+    - CNM 冷中性: T 50-200 K, n 20-80 cm^-3, HI 21cm 吸收线示踪; 体积占比 2-4% 但质量 ~40%
+
+    - WNM 暖中性: T 6000-10000 K, n 0.1-0.6 cm^-3, HI 21cm 发射; 体积 ~30%, 质量 ~30%
+
+    - WIM 暖电离: T ~8000 K, n ~0.1-0.5 cm^-3, 漫射 H-alpha 示踪; 体积 20-50%
+
+    - HIM 热电离: T 1e6-1e7 K (超新星遗迹/星风泡加热), n 1e-4 至 1e-2 cm^-3, X 射线示踪; 体积 ~50% 但质量仅 ~1%
+
+    - 分子相: T 10-20 K, n 1e2-1e6 cm^-3, CO 示踪; 体积 <1%
+
+    物理: 两相平衡模型 (Field 1969) + 超新星主导的热相 (McKee & Ostriker 1977); 温度 ~200-6000 K 间的中性气体极稀少 (热不稳定间隙)
+
+    判定线索: 标 ''星际气体'' 却 n T 偏离平衡 2 个数量级需复核; 同一记录同时给 CNM 密度与 HIM 温度 = 相位混淆'
+  source: McKee & Ostriker 1977; Wolfire et al. 2003; Draine 2011
+  confidence: established
+- id: herbig_haro_range
+  title: Herbig-Haro 天体参考范围
+  category: reference_range
+  tags:
+  - HH
+  - herbig_haro
+  - jet
+  - shock
+  - yso
+  hypothetical_queries:
+  - HH 天体的激波速度大概是多少？
+  - Herbig-Haro 对象和星云的区别是什么？
+  - HH 天体在什么位置观测到？离驱动源多远？
+  applies_to:
+    fields:
+    - radial_velocity
+    - proper_motion
+    - density
+    - age
+    - flux_density
+    entities:
+    - herbig_haro_object
+  ranges:
+    radial_velocity:
+      lo: 50.0
+      hi: 500.0
+      unit: km/s
+    electron_density:
+      lo: 100.0
+      hi: 10000.0
+      unit: cm^-3
+    age:
+      lo: 1000.0
+      hi: 100000.0
+      unit: yr
+  content: 'HH 天体是年轻恒星 (YSO) 喷流中的激波激发亮结, 与 HII 区/行星状星云的本质区别在于其激波起源 (非恒星光电离)
+
+    - 流动速度: 50-500 km/s (典型 100-300 km/s, 高速 HH 可达 500 km/s), 由天测自行或谱线多普勒测得
+
+    - 电子密度: 1e2-1e4 cm^-3 (激波区增强, 密度随距驱动源距离下降)
+
+    - 年龄: 1e3-1e5 年 (亮结为短寿命瞬态, 随时间演化/消失)
+
+    - 位置: 成串分布于驱动源两侧 0.1-1 pc 内, 巨喷流可延伸至 10 pc; 与分子外流 (CO) 伴生
+
+    光谱判据: 低电离禁线主导 (如 [S II] 6716/6731, [O I] 6300), [S II]/H-alpha 比 > 0.4 即激波激发; 若该比值 < 0.1 且无高自行成分, 则更可能是 HII 区或 PN
+
+    判定线索: 标 ''HH 天体'' 却无激波线比或自行数据需复核; HH 位置与 YSO 无关联 (>1 pc 孤立亮结) 多为 PN/SNR 误标'
+  source: Reipurth & Bally 2001, ARA&A 39, 403
+  confidence: established
+- id: planetary_nebula_range
+  title: 行星状星云参考范围
+  category: reference_range
+  tags:
+  - PN
+  - planetary_nebula
+  - post_AGB
+  - electron_density
+  - expansion
+  hypothetical_queries:
+  - 行星状星云的电子密度范围是多少？
+  - PN 的膨胀速度有多快？
+  - 行星状星云中心星的温度范围？
+  applies_to:
+    fields:
+    - effective_temperature
+    - density
+    - radial_velocity
+    - age
+    - stellar_mass
+    - flux_density
+    entities:
+    - planetary_nebula
+  ranges:
+    expansion_velocity:
+      lo: 10.0
+      hi: 40.0
+      unit: km/s
+    electron_density:
+      lo: 100.0
+      hi: 100000.0
+      unit: cm^-3
+    age:
+      lo: 1000.0
+      hi: 100000.0
+      unit: yr
+    central_star_teff:
+      lo: 30000.0
+      hi: 200000.0
+      unit: K
+  content: '行星状星云是后 AGB 恒星 (前身星 0.8-8 Msun) 抛射并被中心星电离的致密气体壳, 与 HII 区的区别在于中心星是热白矮星前身而非大质量 O/B 星
+
+    - 膨胀速度: 10-40 km/s (典型 ~20-30 km/s; 快风可达 100+ km/s, 仅见于最年轻壳层)
+
+    - 电子密度: 1e2-1e5 cm^-3 (年轻 PN 高密, 年老 PN 降至 1e2 量级)
+
+    - 中心星有效温度: 3e4-2e5 K (典型 5e4 K, 随演化升高)
+
+    - 年龄: 1e3-1e5 年 (超过 ~1e5 年弥散到 ISM); 直径 0.1-1 pc; 总光度 1e3-1e4 Lsun
+
+    - 银河系内已知 ~3000 个, 预期总量 ~2e4 (大部分被尘埃消光)
+
+    判定线索: 标 ''PN'' 却膨胀速度 > 60 km/s 需复核 (多为 SNR 或流出); [S II]/H-alpha < 0.1 且中心星温度 < 2e4 K 的亮结多为 HII 区; 中心星缺失的 ''PN'' 需检查是否为共生星或误标'
+  source: Balick & Frank 2002, ARA&A 40, 439; Frew & Parker 2010, PASA 27, 129
+  confidence: established
+- id: starburst_galaxy_range
+  title: 星暴星系参考范围
+  category: reference_range
+  tags:
+  - starburst
+  - SFR
+  - starburst_galaxy
+  - sfr_density
+  - infrared
+  hypothetical_queries:
+  - 星暴星系的 SFR 密度是多少？
+  - starburst 和普通星系的 SFR 区别？
+  - 星暴星系的红外光度范围？
+  applies_to:
+    fields:
+    - sfr
+    - sfr_density
+    - star_formation_rate
+    - luminosity
+    - infrared_luminosity
+    - redshift
+    entities:
+    - starburst_galaxy
+  ranges:
+    sfr:
+      lo: 30.0
+      hi: 1000.0
+      unit: Msun/yr
+    sfr_density:
+      lo: 1.0
+      hi: 100.0
+      unit: Msun/yr/kpc^2
+    infrared_luminosity:
+      lo: 100000000000.0
+      hi: 10000000000000.0
+      unit: Lsun
+  content: '星暴星系是恒星形成率远高于同质量星系平均水平的星系, 判据以 SFR 密度或比恒星形成率 (sSFR) 为主
+
+    - SFR: 30-1000+ Msun/yr (静默星系 <0.1, 普通旋涡 1-3; 高红移 z>2 星暴可 >1000)
+
+    - SFR 密度: >1 Msun/yr/kpc² (普通星系 0.01-0.1; 星暴核区可到 10-100)
+
+    - 红外光度: 1e11-1e13 Lsun (LIRG/ULIRG 范畴; 典型 ULIRG ~1e12-1e13)
+
+    - 触发机制: 并合/强相互作用为主 (约占 50%+), 也见于高红移富气盘; 星暴时标 ~1e8 年 (短于哈勃时标, 属瞬态阶段)
+
+    判定线索: 标 ''starburst'' 却 sSFR < 1e-10 yr⁻¹ 或 SFR < 10 Msun/yr 需复核 (仅为普通 SFG); 冷尘主导 (IRAS 60/100 μm 比低) 的 ''ULIRG'' 多为 AGN 主导, 需多波段甄别'
+  source: Kennicutt & Evans 2012, ARA&A 50, 531; Sanders & Mirabel 1996
+  confidence: established
+- id: low_surface_brightness_galaxy_range
+  title: 低面亮度星系参考范围
+  category: reference_range
+  tags:
+  - LSB
+  - low_surface_brightness
+  - galaxy
+  - surface_brightness
+  hypothetical_queries:
+  - LSB 星系的中心面亮度范围？
+  - 低面亮度星系和普通星系的区别？
+  - LSB 星系的恒星形成率？
+  applies_to:
+    fields:
+    - surface_brightness
+    - apparent_magnitude
+    - stellar_mass
+    - sfr
+    - redshift
+    entities:
+    - low_surface_brightness_galaxy
+  ranges:
+    central_surface_brightness:
+      lo: 23.0
+      hi: 27.0
+      unit: mag/arcsec^2
+    stellar_mass:
+      lo: 100000000.0
+      hi: 10000000000.0
+      unit: Msun
+    sfr:
+      lo: 0.001
+      hi: 1.0
+      unit: Msun/yr
+  content: '低面亮度星系 (LSB) 以中央面亮度显著低于经典盘星系为特征, 是面亮度选择效应下被严重低估的星系群体
+
+    - 中央面亮度: mu0(B) > 23 mag/arcsec² (典型 24-27; 普通盘星系 20-22; Malin 1 等极端可达 ~26.5)
+
+    - 恒星质量: 1e8-1e10 Msun (恒星质量函数低端为主; 部分 LSB 尺寸与银河系相当但面密度低)
+
+    - 恒星形成: SFR 1e-3 至 1 Msun/yr, 处于低活动状态; 气体质量占比高 (HI 可占重子物质 ~50-90%)
+
+    - 结构: 暗物质主导 (M/L 高), 低恒星密度; 数量上占星系总体的比例大但常被巡天遗漏
+
+    判定线索: 标 ''LSB'' 却 mu0 < 23 mag/arcsec² 需复核 (普通星系误标); 声称 LSB 却 SFR > 1 Msun/yr 或颜色过蓝需检查是否星暴核/矮星系混淆'
+  source: Impey & Bothun 1997, ARA&A 35, 267
+  confidence: established
+- id: galaxy_pair_range
+  title: 星系对参考范围
+  category: reference_range
+  tags:
+  - galaxy_pair
+  - pair
+  - interaction
+  - merger
+  hypothetical_queries:
+  - 星系对的判定标准是什么？分离距离多少？
+  - 星系对的速度差范围？
+  - 多少比例的星系处于星系对中？
+  applies_to:
+    fields:
+    - redshift
+    - radial_velocity
+    - distance
+    - angular_separation
+    entities:
+    - galaxy_pair
+    - galaxy_in_pair
+  ranges:
+    projected_separation:
+      lo: 10.0
+      hi: 100.0
+      unit: kpc
+    radial_velocity:
+      lo: 0.0
+      hi: 1000.0
+      unit: km/s
+    distance:
+      lo: 10.0
+      hi: 1000.0
+      unit: Mpc
+  content: '星系对 (PaG) 是宇宙中双星系系统, 成员星系标为 Galaxy in Pair (GiP); 判据以投影分离与视向速度差为主
+
+    - 投影分离: 10-100 kpc (典型 10-50 kpc; 强烈相互作用对 <50 kpc)
+
+    - 视向速度差: <500-1000 km/s (动力学上关联的判据; 超过则多为投影巧合)
+
+    - 数量占比: 局域宇宙 ~10-20% 星系处于星系对中; 并合时标 1e8-1e9 年 (密近对)
+
+    - 演化: 密近对经历潮汐作用 → 潮汐尾/桥 → 并合成单个星系; 星系对中的恒星形成增强 2-10 倍
+
+    判定线索: 标 ''星系对'' 却分离 > 100 kpc 或速度差 > 1000 km/s 需复核 (多为其周围星系/投影对); 两成员红移不一致 (z 差 > 0.01) 必为投影'
+  source: Karachentsev 1972 (CPG); Patton et al. 2000, ApJ 536, 153
+  confidence: established
+- id: galaxy_group_member_range
+  title: 星系群成员星系参考范围
+  category: reference_range
+  tags:
+  - galaxy_group
+  - galaxy_in_group
+  - group
+  - virial
+  hypothetical_queries:
+  - 星系群有多少个成员星系？
+  - 星系群的速度弥散范围？
+  - 星系群和星系团怎么区分？
+  applies_to:
+    fields:
+    - redshift
+    - radial_velocity
+    - distance
+    - velocity_dispersion
+    - n_members
+    entities:
+    - galaxy_in_group
+    - galaxy_group
+  ranges:
+    n_members:
+      lo: 3.0
+      hi: 50.0
+      unit: count
+    velocity_dispersion:
+      lo: 100.0
+      hi: 500.0
+      unit: km/s
+    virial_radius:
+      lo: 0.5
+      hi: 1.5
+      unit: Mpc
+  content: '星系群 (GrG) 是比星系团小一档的束缚结构, 成员星系标为 Galaxy towards a Group (GiG); 本星系群即典型群
+
+    - 成员数: 3-50 个亮星系 (超 50 个即星系团范畴); 本星系群 ~30 余个成员
+
+    - 速度弥散: 100-500 km/s (星系团 > 500-1000 km/s); 群质量 1e12-1e14 Msun
+
+    - 尺度: 维里半径 0.5-1.5 Mpc (典型 ~1 Mpc)
+
+    - 形态: 群内常含一个主导椭圆星系 (如 M87/室女群边界情形), 群际空间充满暖热气体 (微弱的 X 射线)
+
+    判定线索: 标 ''星系群'' 却成员数 > 50 或速度弥散 > 600 km/s 需复核 (实为星系团); 声称 GiG 的星系与群红移差 > 0.01 多为背景/前景投影'
+  source: Tully 1987, ApJ 321, 280; Girardi et al. 1993, ApJ 404, 38
+  confidence: established
+- id: bcg_properties_range
+  title: 最亮星系团星系 (BCG) 参考范围
+  category: reference_range
+  tags:
+  - BCG
+  - brightest_cluster_galaxy
+  - cD
+  - cluster
+  hypothetical_queries:
+  - BCG 的光度大约是多少？
+  - 最亮团星系的质量范围？
+  - BCG 一般位于星系团哪里？
+  applies_to:
+    fields:
+    - redshift
+    - luminosity
+    - stellar_mass
+    - apparent_magnitude
+    entities:
+    - brightest_cluster_galaxy
+  ranges:
+    luminosity:
+      lo: 100000000000.0
+      hi: 1000000000000.0
+      unit: Lsun
+    stellar_mass:
+      lo: 100000000000.0
+      hi: 1000000000000.0
+      unit: Msun
+    redshift:
+      lo: 0.0
+      hi: 2.0
+      unit: ''
+  content: 'BCG (Brightest Cluster Galaxy) 是星系团中最亮的星系, 位于团密度峰 (引力中心), 常为 cD 型
+
+    - 光度: ~10 L* (1e11-1e12 Lsun, 极端可 >1e12); M_V ~ -22 至 -24
+
+    - 恒星质量: 1e11-1e12 Msun (cD 晕可达数倍); 有效半径 10-100 kpc (cD 外晕 > 100 kpc)
+
+    - 位置: 居于团中心, 对应 X 射线峰与暗物质密度峰; 星系团质量 ~5e14 Msun 的团其 BCG 占比 1-5%
+
+    - 红移: 已发现 z ~ 2 的 BCG; 低红移 BCG 普遍处于宁静演化 (星族年老)
+
+    判定线索: 标 ''BCG'' 却非团中心/非最亮成员需复核; BCG 位置偏离 X 射线中心 > 50 kpc 多为子并合阶段 (星系团非松驰); z > 2 的 ''BCG'' 多为原星系团候选'
+  source: von der Linden et al. 2007, MNRAS 379, 867; Zhao et al. 2021
+  confidence: established
+- id: interacting_galaxy_range
+  title: 相互作用星系参考范围
+  category: reference_range
+  tags:
+  - interacting_galaxies
+  - merger
+  - tidal
+  - starburst
+  hypothetical_queries:
+  - 相互作用星系有什么特征？
+  - 并合星系的恒星形成增强多少？
+  - 潮汐尾的长度范围？
+  applies_to:
+    fields:
+    - redshift
+    - luminosity
+    - stellar_mass
+    - sfr
+    entities:
+    - interacting_galaxies
+  ranges:
+    sfr:
+      lo: 1.0
+      hi: 100.0
+      unit: Msun/yr
+    luminosity:
+      lo: 10000000000.0
+      hi: 1000000000000.0
+      unit: Lsun
+    stellar_mass:
+      lo: 1000000000.0
+      hi: 1000000000000.0
+      unit: Msun
+  content: '相互作用星系 (IG) 指受潮汐作用影响的星系系统, 含并合前/中/后各阶段; 与孤立星系的区别在于潮汐形变特征
+
+    - 潮汐特征: 潮汐尾/桥可延伸 10-100+ kpc; 扰动盘、环结构 (极环)、双核 (并合中晚期)
+
+    - 恒星形成: SFR 增强 2-10 倍 (并合触发气体入流); ULIRG (L_IR > 1e12 Lsun) 大部分为并合系统
+
+    - 时标: 并合过程 0.5-2 Gyr; 多次并合理论 (Toomre & Toomre 1972) 解释椭圆星系形成
+
+    - 投影判据: 两成员投影分离 < 50 kpc 且速度差 < 500 km/s 为强相互作用判据
+
+    判定线索: 标 ''相互作用'' 却无潮汐特征且分离 > 100 kpc 需复核; 单星系带 ''IG'' 标签而无可辨伴星 = 残余/后并合特征 (壳层结构) 才成立'
+  source: Toomre & Toomre 1972, ApJ 178, 623; Sanders & Mirabel 1996, ARA&A 34, 749
+  confidence: established
+- id: protocluster_range
+  title: 原星系团参考范围
+  category: reference_range
+  tags:
+  - protocluster
+  - PCG
+  - high_redshift
+  - overdensity
+  hypothetical_queries:
+  - 原星系团的过密度是多少？
+  - protocluster 的尺度多大？
+  - 原星系团在什么红移找到？
+  applies_to:
+    fields:
+    - redshift
+    - stellar_mass
+    - overdensity
+    - distance
+    entities:
+    - protocluster
+  ranges:
+    redshift:
+      lo: 1.5
+      hi: 6.0
+      unit: ''
+    overdensity:
+      lo: 2.0
+      hi: 10.0
+      unit: sigma
+    stellar_mass:
+      lo: 1000000000000.0
+      hi: 100000000000000.0
+      unit: Msun
+  content: '原星系团 (PCG) 是高红移 (z > 1.5) 的星系过密度区, 将演化为今日星系团; 因尚未完全引力束缚, 需以过密度而非维里结构识别
+
+    - 红移: 已发现 z ~ 1.5-6 的原星系团 (z > 6 为极早期候选)
+
+    - 过密度: 相对场星系密度增强 2-10 倍 (红移越高本底越低, 过密度判据越弱)
+
+    - 尺度: 共动尺度 5-20 Mpc; 总质量 1e14-1e15 Msun
+
+    - 恒星形成: SFR 密度为场区 10-100 倍; 常伴广域 Ly-alpha 发射或 CMB 前景源簇集 (SZ 效应)
+
+    判定线索: 标 ''PCG'' 却过密度 < 2 倍需复核 (仅为大尺度结构偶然簇集); 声称原星系团却无星系成员红移证实 = 测光候选, 需谱线确认'
+  source: Overzier 2016, A&ARv 24, 14
+  confidence: established
+- id: supercluster_range
+  title: 超星系团参考范围
+  category: reference_range
+  tags:
+  - supercluster
+  - SCG
+  - large_scale_structure
+  - Laniakea
+  hypothetical_queries:
+  - 超星系团的尺度有多大？
+  - 超星系团是束缚结构吗？
+  - 超星系团包含什么结构？
+  applies_to:
+    fields:
+    - redshift
+    - distance
+    - size
+    entities:
+    - supercluster
+  ranges:
+    size:
+      lo: 30.0
+      hi: 200.0
+      unit: Mpc
+    mass:
+      lo: 1000000000000000.0
+      hi: 1.0e+17
+      unit: Msun
+    redshift:
+      lo: 0.0
+      hi: 0.2
+      unit: ''
+  content: '超星系团 (SCG) 是宇宙大尺度结构中的最大等级, 由若干星系团、星系群与丝状结构组成, 是银河系所在的层级 (拉尼亚凯亚 ~160 Mpc)
+
+    - 尺度: 30-200 Mpc (典型 50-100 Mpc; 长城等墙状结构可更长)
+
+    - 质量: 1e15-1e17 Msun; 星系数密度为场均值 ~1.5-2 倍
+
+    - 束缚性: 大部分超星系团整体未引力束缚 (正随哈勃流膨胀), 仅内部团/群束缚; 少部分 (如 Virgo 超团核心) 部分束缚
+
+    - 组成: 星系团 + 星系群 + 丝状/片状结构 (如 CfA 长城); 富超团可含数十个星系团
+
+    判定线索: 标 ''supercluster'' 却尺度 < 30 Mpc 或密度 < 1.5 倍场均值需复核 (仅为星系群聚集); 声称束缚的''超星系团''需检查逃逸速度判据 (内禀速度弥散 < 哈勃流展布)'
+  source: Einasto 2014, IAU S308 (超星系团综述); Tully et al. 2014, Nature 513, 71 (Laniakea)
+  confidence: established
+- id: moving_group_range
+  title: 恒星移动星群参考范围
+  category: reference_range
+  tags:
+  - moving_group
+  - MGr
+  - kinematics
+  - stellar_association
+  hypothetical_queries:
+  - 移动星群的速度弥散多大？
+  - 移动星群和星协的区别？
+  - 移动星群的年龄范围？
+  applies_to:
+    fields:
+    - age
+    - distance
+    - radial_velocity
+    - proper_motion_ra
+    - proper_motion_dec
+    entities:
+    - moving_group
+  ranges:
+    age:
+      lo: 10000000.0
+      hi: 1000000000.0
+      unit: yr
+    distance:
+      lo: 20.0
+      hi: 150.0
+      unit: pc
+    velocity_dispersion:
+      lo: 1.0
+      hi: 5.0
+      unit: km/s
+  content: '移动星群 (MGr) 是共享空间运动 (速度矢量) 的共龄恒星群, 多为已瓦解疏散星团/星协残骸, 靠运动学而非空间聚集识别
+
+    - 年龄: 10 Myr - 1 Gyr (如 TW Hya 群 ~10 Myr, beta Pic 群 ~20-30 Myr, 大熊座流 ~300-500 Myr, 毕星团 ~600-800 Myr)
+
+    - 距离: 近邻 20-150 pc (可探测性随距离下降, 因自行误差放大)
+
+    - 速度: 群内速度弥散 < 5 km/s (典型 1-2 km/s); 成员星共享三维空间速度
+
+    - 成员: 10-100 颗; 以年轻群 (有 T Tauri/星周盘成员) 与年老流 (运动学成团) 两类为主
+
+    判定线索: 标 ''MGr'' 却成员星速度弥散 > 5 km/s 或年龄跨度 > 2 Gyr 需复核 (多为场星投影巧合); 声称同一移动星群的两星若年龄差 > 1 Gyr 亦需复查'
+  source: Zuckerman & Song 2004, ARA&A 42, 685
+  confidence: established
+- id: stellar_outflow_range
+  title: 恒星外流参考范围
+  category: reference_range
+  tags:
+  - outflow
+  - jet
+  - molecular_outflow
+  - YSO
+  hypothetical_queries:
+  - 分子外流的速度范围？
+  - YSO 喷流速度有多快？
+  - 外流的质量流失率？
+  applies_to:
+    fields:
+    - radial_velocity
+    - flux_density
+    - age
+    - mass_loss_rate
+    entities:
+    - outflow
+  ranges:
+    radial_velocity:
+      lo: 10.0
+      hi: 500.0
+      unit: km/s
+    mass_loss_rate:
+      lo: 1.0e-07
+      hi: 0.0001
+      unit: Msun/yr
+    age:
+      lo: 10000.0
+      hi: 100000.0
+      unit: yr
+  content: '恒星外流 (out) 是年轻恒星形成期通过喷流/外流排出角动量与多余物质的过程, 是恒星形成反馈的核心机制
+
+    - 速度: 分子外流 (CO) 10-100 km/s; 光学喷流 100-500 km/s; 致密射电喷流可达 ~1000 km/s
+
+    - 质量流失率: 1e-7 至 1e-4 Msun/yr (与吸积率同量级, Mdot_out ~ 0.1-1 × Mdot_acc)
+
+    - 尺度: 0.1-10 pc (巨流 HH 可 > 10 pc); 寿命 1e4-1e5 年
+
+    - 形态: 双极结构, 与盘吸积耦合 (喷流-盘连接); 高速致密喷流 + 低速宽分子流并存 (Bachiller 1996)
+
+    判定线索: 标 ''outflow'' 却速度 < 10 km/s 需复核 (多为云内湍流/双极泡); 声称外流的致密源若无红蓝双峰谱线或位置速度图形态证据, 需谨慎'
+  source: Bachiller 1996, ARA&A 34, 111
+  confidence: established
+- id: blue_supergiant_range
+  title: 蓝超巨星参考范围
+  category: reference_range
+  tags:
+  - blue_supergiant
+  - BSG
+  - O_B
+  - massive_star
+  hypothetical_queries:
+  - 蓝超巨星的有效温度范围？
+  - 蓝超巨星的质量多大？
+  - 蓝超巨星和红超巨星怎么区分？
+  applies_to:
+    fields:
+    - effective_temperature
+    - luminosity
+    - stellar_mass
+    - stellar_radius
+    - surface_gravity
+    entities:
+    - blue_supergiant
+  ranges:
+    effective_temperature:
+      lo: 10000.0
+      hi: 50000.0
+      unit: K
+    luminosity:
+      lo: 10000.0
+      hi: 1000000.0
+      unit: Lsun
+    stellar_mass:
+      lo: 15.0
+      hi: 60.0
+      unit: Msun
+    stellar_radius:
+      lo: 20.0
+      hi: 60.0
+      unit: Rsun
+  content: '蓝超巨星 (BSG) 是 O/B 型亮巨星, 大质量恒星主序后演化早期或回蓝阶段产物 (如参宿七 Rigel, 天津四 Deneb)
+
+    - 有效温度: 10000-50000 K (B 型 1e4-3e4, O 型 3e4-5e4)
+
+    - 光度: 1e4-1e6 Lsun (典型 ~1e5); 恒星质量 15-60 Msun; 半径 20-60 Rsun
+
+    - 表面重力: log g ~ 2.0-3.5 (低于主序, 高于红超巨星)
+
+    - 演化: 单星演化可自红超巨星回蓝 (蓝环); 大质量蓝超巨星常为超新星前身 (IIb/Ib/Ic 型 SN 前身)
+
+    判定线索: 标 ''BSG'' 却 Teff < 1e4 K 需复核 (多为 A/F 超巨星误标); 光度 > 1e6 Lsun 或质量 > 60 Msun 的 ''蓝超巨星'' 多为极亮蓝变星 (LBV) 候选'
+  source: Levesque 2017, Physics Reports; Meynet & Maeder 2003
+  confidence: established
+- id: yellow_supergiant_range
+  title: 黄超巨星参考范围
+  category: reference_range
+  tags:
+  - yellow_supergiant
+  - YSG
+  - yellow_hypergiant
+  - F_G
+  hypothetical_queries:
+  - 黄超巨星的温度范围？
+  - 黄超巨星有多亮？
+  - 黄超巨星为什么稀少？
+  applies_to:
+    fields:
+    - effective_temperature
+    - luminosity
+    - stellar_radius
+    - surface_gravity
+    entities:
+    - yellow_supergiant
+  ranges:
+    effective_temperature:
+      lo: 4500.0
+      hi: 7000.0
+      unit: K
+    luminosity:
+      lo: 10000.0
+      hi: 1000000.0
+      unit: Lsun
+    stellar_radius:
+      lo: 50.0
+      hi: 500.0
+      unit: Rsun
+  content: '黄超巨星 (YSG) 是 F/G 型 (部分 K 型) 超巨星, 介于红超巨星与蓝超巨星之间, 为蓝-红演化过渡期的短暂阶段 (典型时标 1e4-1e5 年), 故数量稀少
+
+    - 有效温度: 4500-7000 K (F/G); 极端者 (黄超巨星 YHG) 光度可达 5e5-1e6 Lsun
+
+    - 光度: 1e4-1e6 Lsun; 半径 50-500 Rsun (YHG 400-1000 Rsun)
+
+    - 质量: 10-40 Msun; log g ~ 0.5-2.0; 已知黄超巨星仅数十颗 (如仙后座 rho Cas, V509 Cas)
+
+    - 变率: 黄超巨星常呈半规则/准周期光变, 有强质量流失与大气不稳定 (铁不透明度峰驱动)
+
+    判定线索: 标 ''YSG'' 却 Teff < 4500 K 需复核 (实为红超巨星); 标 ''YSG'' 却 Teff > 7500 K = 蓝超巨星误标; 光谱型漂移 (F→G 往返) 是黄超巨星判据'
+  source: de Jager 1998, A&ARv 8, 145; Drout et al. 2009, ApJ 703, 441
+  confidence: established
+- id: void_properties_range
+  title: 宇宙空洞参考范围
+  category: reference_range
+  tags:
+  - void
+  - underdense_region
+  - large_scale_structure
+  - cosmic_web
+  hypothetical_queries:
+  - 宇宙空洞的尺度有多大？
+  - 空洞里的星系密度是平均的多少？
+  - 空洞中的星系有什么特点？
+  applies_to:
+    fields:
+    - redshift
+    - distance
+    - overdensity
+    - density
+    entities:
+    - underdense_region
+  ranges:
+    size:
+      lo: 20.0
+      hi: 100.0
+      unit: Mpc
+    overdensity:
+      lo: -0.9
+      hi: -0.5
+      unit: delta
+    redshift:
+      lo: 0.0
+      hi: 0.15
+      unit: ''
+  content: '空洞 (void, SIMBAD 码 vid) 是宇宙大尺度结构中星系密度显著低于平均的区域, 占据宇宙体积的大部
+
+    - 尺度: 直径 20-100 Mpc (典型 30-50 Mpc; 巨型空洞如 Boötes 空洞 ~200 Mpc)
+
+    - 密度: 星系密度为场均值 10-50% (密度对比 delta = -0.5 至 -0.9); 空洞体积占宇宙 ~60-80%
+
+    - 红移: 邻近空洞 z < 0.05-0.15 (红移空间畸变使空洞中心偏移, 需重建真空间)
+
+    - 空洞星系: 以蓝、富气、低质量矮星系为主; 鲜见亮椭圆/富团 (亮度分层效应); 空洞内星系形态偏晚型
+
+    判定线索: 标 ''void'' 的区域内出现亮椭圆星系或富星系团需复核 (多为丝状结构误判); delta > -0.3 的区域不算空洞 (仅为欠密场)'
+  source: van de Weygaert & Platen 2011, IJMPD 20, 2247; Pan et al. 2012, ApJ 754, 160
+  confidence: established

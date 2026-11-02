@@ -1,0 +1,1199 @@
+entries:
+- id: supernova_classification
+  title: 超新星分类判据与光谱特征
+  category: reference_range
+  tags:
+  - supernova
+  - classification
+  - spectral
+  - Si_II
+  - H_alpha
+  - light_curve
+  applies_to:
+    fields:
+    - spectral_type
+    - sn_type
+    - light_curve_shape
+    entities:
+    - supernova
+  ranges:
+    ejecta_velocity:
+      lo: 10000.0
+      hi: 30000.0
+      unit: km/s
+    si_ii_doublet_wavelength:
+      lo: 6347
+      hi: 6371
+      unit: Angstrom
+    iip_plateau_duration:
+      lo: 40
+      hi: 80
+      unit: day
+  content: '超新星分类第一判据是光谱是否含氢:
+
+    - 含 H Balmer 线 (H-alpha): II 型; 无氢线: I 型
+
+    - Ia: 无 H 但强 Si II 6347/6371 双线 (记 6355 A, 最大光时蓝移至 ~6150 A); 白矮星近 Chandrasekhar 极限热核爆炸
+
+    - Ib: 无 H 无 Si II, 但 He I 5876 A 显著; 包层失氢留氦 (Wolf-Rayet 类前身)
+
+    - Ic: H/He 均弱或缺失; 包层全剥离, 与长暴 GRB 成协
+
+    - II-P: 光变平台 (约 40-80 天); II-L: 峰值后线性衰减; IIn: 窄发射线 (激波与星周物质相互作用); IIb: 早期显 H 后期转 He
+
+    谱线均宽 (速度 >=1e4 km/s) 且呈 P Cygni 轮廓
+
+    物理: 光谱差异反映前身星包层剥离程度 (II 全保留 / Ib 失 H / Ic 失 H+He), 光变形状反映包层质量与 56Ni 产量
+
+    判定线索: Ia 缺 Si II 吸收 = 类型矛盾; 谱线半宽 <2e3 km/s 的 ''超新星'' 多为 IIn 窄线或银河系恒星光球混淆'
+  source: Filippenko 1997, ARA&A; CSEP10 超新星分类教程
+  confidence: established
+  hypothetical_queries:
+  - 如何根据光谱特征区分 Ia 型、Ib 型和 Ic 型超新星
+  - 超新星 II-P 与 II-L 的光变曲线判据是什么
+  - 哪些超新星类型与长暴伽马射线暴成协
+- id: gamma_ray_burst_taxonomy
+  title: 伽马暴长短分类与光谱硬度判据
+  category: reference_range
+  tags:
+  - GRB
+  - T90
+  - short
+  - long
+  - hardness_ratio
+  - taxonomy
+  applies_to:
+    fields:
+    - t90
+    - hardness_ratio
+    - peak_energy
+    entities:
+    - gamma_ray_burst
+    - GRB
+  ranges:
+    t90_short:
+      lo: 0.01
+      hi: 2
+      unit: s
+    t90_long:
+      lo: 2
+      hi: 1000
+      unit: s
+    short_t90_mode:
+      lo: 0.2
+      hi: 0.5
+      unit: s
+    long_t90_mode:
+      lo: 20
+      hi: 50
+      unit: s
+  content: 'GRB 经典双型分类 (Kouveliotou 判据, BATSE 双峰分布):
+
+    - T90 定义: 累积 5%-95% fluence 的观测持续时间
+
+    - 短暴: T90 0.01-2 s (分布峰 ~0.3 s), 光谱偏硬 (硬度比高); 起源: 致密双星并合 (NS-NS/NS-BH)
+
+    - 长暴: T90 2-1000 s (分布峰 ~30 s), 光谱偏软; 起源: 大质量恒星坍缩 (常伴超新星)
+
+    - 硬度比 HR = 高能带计数/低能带计数, ''短硬-长软'' 为第二判据 (两类内部 HR 与 T90 无相关)
+
+    - 光谱常为 Band 函数 (低能指数+高能指数双幂律拼接), 峰值能量 E_peak 数十-数百 keV
+
+    注意事项: 长短分布有重叠且随仪器能段变化 (Swift 与 BATSE 定界不同); 短暴可含扩展发射 (~100 s 尾); 高红移长暴固有时标可 <2 s
+
+    物理: 时标由中心引擎活动时间决定, 硬度差异源于喷流内耗与光子化效率
+
+    判定线索: 短暴却 HR 极低需复核; 短暴伴引力波 = 并合起源直接证据; 银道面附近的 ''短暴'' 需排除磁星巨耀发'
+  source: Kouveliotou et al. 1993, ApJ 413, L101; Qin et al. 2000; 长短硬度-时长统计检验 (ChinaXiv 2022)
+  confidence: consensus
+  hypothetical_queries:
+  - 短暴和长暴的 T90 分界与光谱硬度差异是什么
+  - 如何判断一个伽马暴属于短暴还是长暴
+  - 短暴的物理起源是并合还是恒星坍缩
+- id: kilonova_properties
+  title: 千新星观测性质 (r 过程供能暂现源)
+  category: reference_range
+  tags:
+  - kilonova
+  - r_process
+  - neutron_star_merger
+  - lanthanide
+  - transient
+  applies_to:
+    fields:
+    - bolometric_luminosity
+    - color
+    - timescale
+    entities:
+    - kilonova
+  ranges:
+    peak_luminosity:
+      lo: 1.0e+40
+      hi: 1.0e+42
+      unit: erg/s
+    peak_time:
+      lo: 1
+      hi: 5
+      unit: day
+    ejecta_velocity:
+      lo: 0.1
+      hi: 0.3
+      unit: c
+    ejecta_mass:
+      lo: 0.001
+      hi: 0.1
+      unit: Msun
+  content: '千新星: 双中子星 (或 NS-BH) 并合喷射的 r 过程物质放射性衰变供能暂现源:
+
+    - 峰值热光度 1e40-1e42 erg/s (典型 ~1e42, 约为超新星的 1/10, 新星的 100 倍)
+
+    - r 过程加热率 e_dot ~ 9e14 (t/1 day)^(-0.3) erg/g/s; 峰值在并合后约 1-5 天, 总持续数周
+
+    - 颜色演化蓝->红 (数天内): 低不透明度 Fe 族 (kappa~0.5 cm^2/g) 到高不透明度镧系 (kappa~10 cm^2/g) 成分先后主导
+
+    - 喷射质量 ~1e-2 Msun, 速度 0.1-0.3 c
+
+    - 光度供能: r 过程核 (锕系/镧系) 放射性衰变加热, 加热率随 t^(-1.3) 缓降, 支撑数周光变
+
+    物理: r 过程在喷出物中合成重元素 (含镧系), 镧系高不透明度延迟光子逃逸并红化 SED; 快慢双成分 (蓝/红) 反映喷射角度与成分差异
+
+    判定线索: 与短暴 GRB/引力波事件成协 (时延秒-天); 快速衰减 (数周) + 近红外红化 = 千新星判据; 峰值 >1e43 erg/s 需怀疑超新星混淆'
+  source: Cowperthwaite et al. 2017, ApJL; Metzger 2019, Living Rev. Rel. 22, 3
+  confidence: established
+  hypothetical_queries:
+  - 千新星的峰值光度和峰值时间大约是多少
+  - 千新星为什么颜色会从蓝变红
+  - 如何从光变曲线上识别千新星
+- id: tidal_disruption_event
+  title: 潮汐瓦解事件判据与吸积率
+  category: reference_range
+  tags:
+  - TDE
+  - tidal_disruption
+  - supermassive_black_hole
+  - fallback
+  - accretion
+  applies_to:
+    fields:
+    - fallback_rate
+    - accretion_rate
+    - blackbody_temperature
+    entities:
+    - tidal_disruption_event
+    - TDE
+  ranges:
+    tidal_radius_factor:
+      lo: 10
+      hi: 100
+      unit: R_schw
+    fallback_timescale:
+      lo: 30
+      hi: 3650
+      unit: day
+    peak_mdot_edd:
+      lo: 0.1
+      hi: 100
+      unit: Eddington
+    hills_mass:
+      lo: 10000000.0
+      hi: 1000000000.0
+      unit: Msun
+  content: 'TDE: 恒星被超大质量黑洞潮汐撕裂后碎片回吸产生的瞬变辐射:
+
+    - 潮汐半径判据: R_t = R_star (M_BH/M_star)^(1/3); 恒星须在视界外被撕裂, 要求 M_BH < Hills 极限 (~1e8 Msun)
+
+    - R_t 典型为数十个 Schwarzschild 半径 (10-100 R_schw)
+
+    - 回吸率 Mdot ~ t^(-5/3) (碎片轨道周期分布 + 质量平坦近似); 峰值 Mdot 可超爱丁顿 (10-100 Mdot_Edd), 1e6 Msun 黑洞 Mdot_Edd ~ 5e-2 Msun/yr
+
+    - 光变: 上升数天-数十天, 衰减 t^(-5/3) 持续数月-数年; 黑体温度 ~2-5e4 K 衰减期近乎恒定 (区分超新星冷却)
+
+    - 峰值光度 1e43-1e45 erg/s (近爱丁顿); 事件率 ~1e-5 至 1e-4 每星系每年, 依赖核区恒星密度
+
+    - 中心集中型恒星衰减更平缓, 可反推被撕裂恒星性质
+
+    物理: 潮汐能差使碎片轨道周期连续分布 -> 回吸随时间 t^(-5/3) 减少; 完全撕裂 vs 部分撕裂决定衰减形状与晚期演化
+
+    判定线索: 衰减显著快于 t^(-5/3) 且 <1 月熄灭需复核; 中心黑洞 >1e8 Msun 星系的 TDE 极罕见; 温度持续下降则更像超新星'
+  source: Rees 1988, Nature; Stone, Sari & Loeb 2013, MNRAS 435, 1809
+  confidence: established
+  hypothetical_queries:
+  - 恒星在什么条件下会被黑洞潮汐撕裂
+  - TDE 光变为什么按 t 的 -5/3 幂律衰减
+  - 潮汐瓦解事件的峰值吸积率是否超爱丁顿
+- id: fast_radio_burst_population
+  title: FRB 群体性质 (重复/非重复与事件率)
+  category: reference_range
+  tags:
+  - FRB
+  - repeater
+  - event_rate
+  - fluence
+  - population
+  applies_to:
+    fields:
+    - dispersion_measure
+    - fluence
+    - burst_width
+    entities:
+    - FRB
+  ranges:
+    sky_rate:
+      lo: 500
+      hi: 900
+      unit: sky^-1 day^-1
+    repeater_fraction:
+      lo: 0.02
+      hi: 0.1
+      unit: ''
+    energy_index_gamma:
+      lo: 1.0
+      hi: 2.0
+      unit: ''
+    fluence_power_index:
+      lo: -1.6
+      hi: -1.2
+      unit: ''
+  content: 'FRB 群体统计 (CHIME/FRB 首个大样本, 400-800 MHz):
+
+    - 天空事件率: ~500-900 每天空每天 (fluence >5 Jy ms 阈值; 不同定标版本 525-820)
+
+    - 重复源比例: 首目录 536 源含 18 个重复源 (~3-10%), 但模拟不能排除 ''所有 FRB 均重复'' 的单一群体
+
+    - 重复暴与非重复暴的 DM 分布一致, 但重复暴更宽 (时宽更长、带宽更窄)
+
+    - 累积 fluence 分布幂律 alpha ~ -1.4 (接近欧氏空间 -3/2); 能量分布 N(>E) ~ E^(-gamma), 1 < gamma < 2
+
+    - 已定位宿主: 多为低质量恒星形成矮星系 (少数早型星系), 指向磁星/中子星起源
+
+    物理: 视样本为能量分布亮端 + 体积效应; 重复性探测受仪器灵敏度与观测时长限制
+
+    判定线索: DM >2000 需核查宿主贡献或银河系扣除错误; 未见二次暴不能判定为非重复源 (采样不足)'
+  source: CHIME/FRB Collaboration 2021, ApJS 257, 59; Caleb et al. 2019, MNRAS; Ma et al. 2025, ApJ 981, 24
+  confidence: consensus
+  hypothetical_queries:
+  - FRB 重复源和非重复源的比例是多少
+  - FRB 的全天空事件率有多大
+  - 重复暴与非重复暴在观测性质上有什么差异
+- id: neutrino_astronomy_sources
+  title: 中微子天文源与通量参考
+  category: reference_range
+  tags:
+  - neutrino
+  - solar
+  - supernova
+  - IceCube
+  - diffuse_flux
+  applies_to:
+    fields:
+    - neutrino_flux
+    - neutrino_energy
+    entities:
+    - neutrino_source
+  ranges:
+    solar_pp_flux:
+      lo: 55000000000.0
+      hi: 65000000000.0
+      unit: cm^-2 s^-1
+    sn_nu_energy:
+      lo: 10
+      hi: 20
+      unit: MeV
+    sn_nu_total:
+      lo: 5.0e+57
+      hi: 2.0e+58
+      unit: count
+    diffuse_e2phi:
+      lo: 5.0e-09
+      hi: 2.0e-08
+      unit: GeV cm^-2 s^-1 sr^-1
+  content: '中微子天文三类已探测源:
+
+    - 太阳: pp 链主导, 通量 ~6e10 cm^-2 s^-1 (E < 0.5 MeV); 8B 中微子 ~5e6 cm^-2 s^-1 (~MeV) — 检验标准太阳模型
+
+    - 超新星中微子暴 (SN 1987A 类事件): 银河系内超新星释放 ~1e58 个中微子, 总能量 ~3e53 erg (引力束缚能, 占爆炸能量 99%); 单事件能量 10-20 MeV, 脉冲持续 ~10 s; 50 kpc 处水切伦科夫探测器仅见 ~20 个事件
+
+    - 高能河外弥漫流 (IceCube): TeV-PeV 能段, 谱 E^(-2.5), 每味通量 E^2 Phi ~ 1e-8 GeV cm^-2 s^-1 sr^-1 (100 TeV), 逼近 Waxman-Bahcall 上限; 到达味比 1:1:1; 候选源类: 耀变体/活动星系核/星暴星系 (宇宙线加速器)
+
+    - 超新星中微子与 GW 并合源同为银河系内事件类, 探测要求 >1e53 erg 总能量且距离 <100 kpc
+
+    - 太阳中微子另含 CNO 循环与地热中微子成分 (keV-MeV), 可用于约束太阳内部金属丰度
+
+    物理: 反贝塔衰变 nu_e_bar + p -> n + e+ (阈值 1.8 MeV) 为 MeV 段主探测道; 高能中微子产生于质子-光子/质子-质子反应
+
+    判定线索: 声称银河系超新星中微子暴但能量 >100 MeV 或事件数 >100 = 不符; 弥漫通量超 Waxman-Bahcall 上限一个量级需质疑'
+  source: Hirata et al. 1987, PRL 58, 1490; Bionta et al. 1987, PRL 58, 1494; IceCube Collab. 2015, ApJ 809, 98
+  confidence: established
+  hypothetical_queries:
+  - 太阳中微子的通量大约是多少
+  - 超新星中微子暴能探测到多少个事件
+  - IceCube 探测到的河外高能中微子通量是多少
+- id: gravitational_wave_events
+  title: 引力波事件探测参数
+  category: reference_range
+  tags:
+  - gravitational_wave
+  - LIGO
+  - Virgo
+  - SNR
+  - chirp_mass
+  - localization
+  applies_to:
+    fields:
+    - snr
+    - luminosity_distance
+    - chirp_mass
+    entities:
+    - gravitational_wave_event
+  ranges:
+    detection_snr:
+      lo: 8
+      hi: 35
+      unit: ''
+    luminosity_distance:
+      lo: 40
+      hi: 5000
+      unit: Mpc
+    sky_localization:
+      lo: 10
+      hi: 5000
+      unit: deg^2
+    bns_chirp_mass:
+      lo: 1.1
+      hi: 1.25
+      unit: Msun
+  content: '地面探测器 (LIGO/Virgo/KAGRA) 引力波事件探测参数:
+
+    - 信噪比: 探测阈值 SNR=8 (双中子星视界定义), 已测事件 SNR ~8-35 (双中子星并合首例综合 SNR ~32)
+
+    - 光度距离: 40 Mpc (近邻双中子星) 至 ~5 Gpc (高红移双黑洞)
+
+    - 天区定位: 三探测器网络 90% 区域 10-数百 deg^2; 双探测器数百-数千 deg^2
+
+    - 啁啾质量 M_c = (m1 m2)^(3/5) / (m1+m2)^(1/5): 双中子星 ~1.19 Msun; 双黑洞 5-35 Msun; 决定频率演化率 df/dt
+
+    - 波形三阶段: 旋进-并合-铃宕; 带内持续: 双中子星 ~数十秒-分钟, 大质量双黑洞亚秒-秒
+
+    物理: 应变振幅 h ~ 1e-21; 引力波频率约为轨道频率 2 倍; 距离精度 ~10-30% 受天线响应与定位限制
+
+    判定线索: SNR < 8 的 ''探测'' 多为噪声误报; 并合总质量 >300 Msun 需怀疑非恒星起源或测量错误'
+  source: Abbott et al. 2017, PRL 119, 161101; LIGO/Virgo/KAGRA GWTC-3; IGWN Public Alerts 指南
+  confidence: established
+  hypothetical_queries:
+  - 引力波事件的探测信噪比阈值是多少
+  - 双中子星并合的天区定位精度是多少
+  - 引力波事件的啁啾质量怎么计算
+- id: nova_recurrent_nova
+  title: 新星与再发新星参数
+  category: reference_range
+  tags:
+  - nova
+  - recurrent_nova
+  - thermonuclear_runaway
+  - white_dwarf
+  - accretion
+  applies_to:
+    fields:
+    - peak_luminosity
+    - recurrence_period
+    - accretion_rate
+    entities:
+    - nova
+    - recurrent_nova
+  ranges:
+    peak_luminosity:
+      lo: 1.0e+37
+      hi: 1.0e+39
+      unit: erg/s
+    cn_recurrence:
+      lo: 1000.0
+      hi: 100000.0
+      unit: yr
+    rn_recurrence:
+      lo: 10
+      hi: 100
+      unit: yr
+    accretion_rate:
+      lo: 1.0e-10
+      hi: 1.0e-07
+      unit: Msun/yr
+  content: '新星: 白矮星表面吸积氢层热核失控 (TNR) 爆发:
+
+    - 峰值光度 ~ 爱丁顿光度 (1 Msun 白矮星 ~1e38 erg/s, 早期可短暂超 10 倍); 光度跳增 ~1e5-1e6 Lsun
+
+    - 白矮星越重, 逃逸层越薄, 爆发越亮越快 (t3 数天-数月); 喷射速度 500-3000 km/s, 抛射质量 1e-7-1e-4 Msun
+
+    - 经典新星 (CN): 吸积率 1e-10-1e-8 Msun/yr, 复发周期 1e3-1e5 yr (人类时标不可观测)
+
+    - 再发新星 (RN): 吸积率 ~1e-7 Msun/yr 的近 Chandrasekhar 极限大质量白矮星, 复发 10-100 yr (典型数十年)
+
+    - 爆发后残余氢燃烧呈超软 X 射线源 (接近 L_Edd)
+
+    物理: 简并压力使燃烧压力不敏感 -> 温度失控升高; 吸积率过高则稳态燃烧而不爆发
+
+    判定线索: 复发 <10 yr 却标 ''经典新星'' = 分类混淆; 再发新星为 Ia 型超新星前身候选; 极慢新星 (t3 > 1 年) 需复核'
+  source: Bode & Evans 2008, Classical Novae; Darnley et al. 2019, Nature 565, 460; Schaefer 2010, ApJS
+  confidence: established
+  hypothetical_queries:
+  - 经典新星和再发新星的复发周期差异是什么
+  - 新星爆发峰值光度与白矮星质量的关系
+  - 再发新星为什么被认为是 Ia 型超新星前身
+- id: xray_transients
+  title: 'X 射线暂现源: 爆发时标与吸积态转换'
+  category: reference_range
+  tags:
+  - xray
+  - transient
+  - type_I_burst
+  - state_transition
+  - LMXB
+  applies_to:
+    fields:
+    - burst_duration
+    - peak_luminosity
+    - spectral_state
+    entities:
+    - xray_transient
+  ranges:
+    type_i_burst_duration:
+      lo: 10
+      hi: 100
+      unit: s
+    type_i_burst_luminosity:
+      lo: 1.0e+36
+      hi: 1.0e+38
+      unit: erg/s
+    state_transition_timescale:
+      lo: 1
+      hi: 30
+      unit: day
+    burst_recurrence:
+      lo: 0.1
+      hi: 2
+      unit: day
+  content: 'X 射线暂现源主要含两类:
+
+    - I 型 (热核) X 射线暴: 中子星表面累积 H/He 热核闪燃, 持续 10-100 s, 峰值光度 1e36-1e38 erg/s (亮暴达爱丁顿限 ~2e38), 复发小时-天; 谱为黑体 1-3 keV, 上升 1-10 s 后随冷却尾软化为铁证; 仅中子星可产生 (黑洞无表面)
+
+    - 黑洞 X 射线双星爆发: 快升慢降 (升数天, 衰减数月), 峰值 1e38-1e39 erg/s; 硬态 (幂律, 光子指数 ~1.5) <-> 软态 (热盘黑体 ~1 keV) 转换, 上升期硬->软转换光度高于衰减期软->硬 (滞后效应, q 型硬度-强度图); 粘滞时标 ~8-12 天
+
+    - 宁静期光度 1e30-1e33 erg/s, 爆发峰/宁静比可达 1e6-1e9; 另类暂现: 磁星巨耀发 (毫秒-秒级, 峰值 1e44-1e47 erg/s, 银道面方向)
+
+    - 新一类: 快速 X 射线暂现 (FXRT, 数秒-数分钟) 与超软暂现, 需多波段证认排除混叠
+
+    - 爆发类型与峰值光度组合可区分致密体: 热核暴=中子星, 周期脉冲+吸收线=吸积磁化中子星, 态转换+无表面=黑洞
+
+    物理: 吸积态由质量吸积率与内盘半径决定; L ~ G M Mdot / R; 爱丁顿限 1.3e38 (M/Msun) erg/s; 热核暴由表层燃料累积触发
+
+    判定线索: 黑体冷却尾 = I 型暴判据; 2-10 keV 峰值 >1e39 erg/s 的 ''暂现'' 多为 ULX 或河外源混淆; 持久源出现态转换仍需吸积率变化驱动'
+  source: Lewin, van Paradijs & Taam 1993, SSRv; Remillard & McClintock 2006, ARA&A; Weng et al. 2021, ApJL 915, L15
+  confidence: established
+  hypothetical_queries:
+  - I 型 X 射线暴的持续时间与峰值光度是多少
+  - 黑洞 X 射线双星硬态到软态转换的时标
+  - 哪些暂现源类型只在中子星上出现
+- id: active_galactic_nucleus_variability
+  title: AGN 变光性质 (DRW 与结构函数)
+  category: reference_range
+  tags:
+  - AGN
+  - variability
+  - DRW
+  - structure_function
+  - timescale
+  applies_to:
+    fields:
+    - variability_timescale
+    - drw_tau
+    - structure_function
+    entities:
+    - AGN
+    - quasar
+  ranges:
+    drw_timescale:
+      lo: 10
+      hi: 1000
+      unit: day
+    sf_slope:
+      lo: 0.4
+      hi: 0.6
+      unit: ''
+    sf_infinity:
+      lo: 0.1
+      hi: 0.4
+      unit: mag
+    xray_fractional_rms:
+      lo: 0.2
+      hi: 2.0
+      unit: ''
+  content: 'AGN 变光: 吸积盘+冕区固有随机涨落, 时标小时-年:
+
+    - 阻尼随机游走 (DRW) 模型: PSD 为 1/f^2 高频幂律 + 低频白噪声, 转折频率对应阻尼时标 tau (自相关 ~ exp(-dt/tau))
+
+    - 光学 tau: 10-1000 天 (Kepler 样本 10-135 天; Stripe 82 大样本 ~1 年; 20 年基线中位 ~750 天); tau ~ M_BH^0.5-1 质量标度
+
+    - 结构函数 SF ~ tau^beta, beta ~ 0.5; 渐近振幅 SF_inf ~ 0.1-0.4 mag, 与光度/爱丁顿比反相关
+
+    - X 射线涨落远大于光学: 分数 rms 可达 100-200% (光学仅 ~10%); 满足 rms-流量线性关系与流量对数正态分布
+
+    - 快速时标: 耀变体日-小时级伽马/光学耀发; 最短变时标受发射区光穿越时间限制
+
+    物理: 粘滞涨落自外向内传播并被放大 (Lyubarskii 机制)
+
+    判定线索: 光学变幅 >1 mag 的 ''AGN'' 需怀疑引力透镜或恒星混淆; 变光时标 <1 小时且偏离 DRW = 潮汐瓦解或恒星耀斑混淆'
+  source: Kelly, Bechtold & Siemiginowska 2009, ApJ; Kasliwal et al. 2015, MNRAS 451, 4328; Kozlowski 2016; Stone et al. 2022, MNRAS
+  confidence: consensus
+  hypothetical_queries:
+  - AGN 光学变光的典型时标是多少
+  - 阻尼随机游走模型的参数如何解读
+  - AGN 的 X 射线和光学变光幅度差多少
+- id: stellar_flares
+  title: 恒星耀斑能量分布与特征
+  category: reference_range
+  tags:
+  - flare
+  - stellar_activity
+  - power_law
+  - superflare
+  - space_weather
+  applies_to:
+    fields:
+    - flare_energy
+    - flare_frequency
+    - flare_temperature
+    entities:
+    - flare_star
+  ranges:
+    flare_energy:
+      lo: 1.0e+30
+      hi: 1.0e+38
+      unit: erg
+    power_law_index:
+      lo: 1.3
+      hi: 2.0
+      unit: ''
+    peak_temperature:
+      lo: 10
+      hi: 40
+      unit: MK
+    flare_duration:
+      lo: 60
+      hi: 100000
+      unit: s
+  content: '恒星耀斑: 磁场重联释放磁能加热冕区的爆发:
+
+    - 能量全域 1e30-1e38 erg: 太阳耀斑 1e24-1e32 erg; M 矮星与年轻恒星耀斑 1e30-1e36; 太阳型恒星超耀斑可达 ~1e36 erg
+
+    - 频率-能量幂律: dN/dE ~ E^(-alpha), alpha ~ 1.5-1.8 (太阳型超耀斑 1e33-1e36 erg 段 alpha ~ 1.5; 太阳-恒星联合样本 ~1.8)
+
+    - 峰值等离子体温度 10-40 MK; 硬 X 射线、射电 (微波) 与光学白光耀斑同步出现
+
+    - 持续时间 ~ 分钟-小时, 时标随能量 tau ~ E^0.39; 缓慢自转类太阳恒星 (P_rot ~ 25 天) 产生 ~1e34 erg 超耀斑频率约每 2000-3000 年一次
+
+    - 辐射机制: 冕环等离子体加热 (10-40 MK 黑体/轫致辐射) + 非热电子回旋同步辐射 (射电微波暴); 峰值 X 射线光度可达 1e27-1e33 erg/s
+
+    物理: 磁重联释放磁环中存储的自由磁能; 耀斑率与自转/发电机活动 (Rossby 数) 相关
+
+    判定线索: 能量 >1e38 erg 的 ''耀斑'' 需复核 (多为误分类); 空间天气: 太阳 X 级耀斑 ~1e32 erg 可致地球电离层扰动'
+  source: Gershberg 1972, Ap&SS; Maehara et al. 2015, Nature; Notsu et al. 2016, ApJ
+  confidence: established
+  hypothetical_queries:
+  - 恒星耀斑的能量范围与频率分布幂律指数是多少
+  - 太阳型恒星超耀斑的能量可达多少
+  - 耀斑的峰值温度与空间天气影响是什么
+- id: electromagnetic_counterparts
+  title: 多信使对应体与定位精度
+  category: reference_range
+  tags:
+  - multimessenger
+  - counterpart
+  - gravitational_wave
+  - neutrino
+  - localization
+  applies_to:
+    fields:
+    - localization_area
+    - time_delay
+    entities:
+    - multimessenger_event
+  ranges:
+    gw_localization:
+      lo: 10
+      hi: 5000
+      unit: deg^2
+    grb_localization:
+      lo: 0.01
+      hi: 15
+      unit: deg
+    neutrino_localization:
+      lo: 0.1
+      hi: 10
+      unit: deg
+    grb_time_delay:
+      lo: 0
+      hi: 5
+      unit: s
+  content: '多信使对应体: 不同信使 (引力波/中微子/电磁) 指向同一物理事件:
+
+    - 双中子星并合: 引力波 (SNR ~8-32) + 短暴 GRB (时延 ~1-2 s) + 千新星 (光学/近红外, 数小时-数天) + 余辉 (X 射线/射电, 数天-数年)
+
+    - 定位精度阶梯: 引力波 10-数千 deg^2 (三探测器 10-数百, 双探测器数百-数千) -> 伽马暴仪器定位 ~1-15 deg (大面积监视器) 或 ~arcmin (成像望远镜) -> 余辉/宿主星系亚角秒
+
+    - 中微子定位: 径迹事件 ~0.1-1 deg, 级联事件 ~10 deg; 高能中微子与耀变体耀发成协显著性 ~3 sigma 级, 需结合时间窗与背景统计
+
+    - 时间符合: 引力波-短暴时延秒级 (光速同源); 电磁后随需覆盖 ~90% 定位区 (数十-数百平方度巡天)
+
+    - 警报链路: 引力波低延迟管道秒-分钟级发布 skymap; 伽马暴监视器秒级即时警报; 中微子实时警报小时级
+
+    物理: 信使速度一致 (光速) -> 时间延迟约束源区尺度; 不同信使穿透与产生环境互补
+
+    判定线索: 声称 GW 对应体但定位完全不重叠或时延超分钟级 (对 BNS) 需复核; 无电磁证认的单一信使发现不算多信使事件'
+  source: Abbott et al. 2017, ApJL 848, L12; Metzger 2019, Living Rev. Rel. 22, 3; IceCube Collab. 2018, Science 361, eaat1378
+  confidence: established
+  hypothetical_queries:
+  - 引力波事件的天区定位精度与电磁后随观测如何衔接
+  - 双中子星并合会产生哪些电磁对应体
+  - 中微子事件与耀变体耀发的成协显著性怎么评估
+- id: supernova_remnant_evolution
+  title: 超新星残余演化阶段 (自由膨胀-Sedov-辐射) 与观测判据
+  category: reference_range
+  tags:
+  - supernova_remnant
+  - sedov
+  - free_expansion
+  - radiative_phase
+  - blast_wave
+  - ejecta
+  - shock
+  applies_to:
+    fields:
+    - shock_velocity
+    - supernova_type
+    - xray_flux
+    entities:
+    - supernova_remnant
+    - supernova
+  ranges:
+    ejecta_velocity:
+      lo: 5000.0
+      hi: 30000.0
+      unit: km/s
+    explosion_energy:
+      lo: 1.0e+50
+      hi: 1.0e+52
+      unit: erg
+    sedov_transition_timescale:
+      lo: 100.0
+      hi: 1000.0
+      unit: yr
+    sedov_radius:
+      lo: 10.0
+      hi: 20.0
+      unit: pc
+    radiative_timescale:
+      lo: 10000.0
+      hi: 30000.0
+      unit: yr
+    shock_temperature:
+      lo: 0.1
+      hi: 3.0
+      unit: keV
+  content: '超新星残余 (SNR) 标准三阶段演化 (单星爆炸, E~1e51 erg):
+
+
+    - 自由膨胀阶段: 抛射物质量 >> 扫过星际介质质量, 激波速度近似恒定 (5e3-3e4 km/s), 持续约百年-千年 (扫过质量约等于抛射物质量时结束, Ia 型在 n~1 cm^-3 介质中约 200-500 年)
+
+
+    - Sedov-Taylor 绝热阶段: 能量守恒自相似膨胀, R ~ t^(2/5), 激波速度 ~ t^(-3/5); 前向激波加热星际介质至 keV 温度, 后向激波反向加热抛射物; 该阶段持续约 1e4-3e4 年, 结束半径约 10-20 pc
+
+
+    - 辐射 (雪犁) 阶段: 冷却效率超过膨胀损失 (激波温度降至 ~1e6 K 以下), 壳层坍缩为致密冷壳, R ~ t^(1/4) 动量守恒推进, 最终与星际介质融合 (约 1e5-1e6 年)
+
+
+    观测特征: 热 X 射线 (激波加热等离子体, kT 0.1-3 keV) + 非热射电同步辐射 (前向激波 Fermi 加速的相对论电子) + 光学辐射激波; 含年轻脉冲星时形成脉冲星风云 (同步辐射频谱, 射电-X 射线-伽马)
+
+
+    物理: 阶段判据由扫过质量与抛射物质量之比、辐射冷却时标决定; Sedov 半径 R ~ (E/rho)^(1/5) t^(2/5); 激波温度 kT ~ 3/16 m_p v^2 (v~1000 km/s 时约 2 keV)
+
+
+    判定线索: 声称 ''处于自由膨胀阶段'' 但年龄 >1e4 年需复核; X 射线温度 >10 keV 的 ''SNR'' 多为河外源或仪器混淆; 半径 >20 pc 仍标 Sedov 阶段需核对介质密度'
+  source: Truelove & McKee 1999, ApJS 120, 299; Vink 2012, A&ARv 20, 49; CSEP10 超新星残余教程
+  confidence: established
+  hypothetical_queries:
+  - 超新星残余从自由膨胀到 Sedov 阶段的转变时标是多少
+  - SNR 进入辐射冷却阶段的典型年龄和半径是多少
+  - 超新星残余的激波温度与激波速度有什么关系
+- id: gamma_ray_afterglow
+  title: 伽马暴余辉光变 (正幂律衰减与射电余辉)
+  category: reference_range
+  tags:
+  - GRB
+  - afterglow
+  - synchrotron
+  - power_law
+  - xray
+  - radio
+  - forward_shock
+  applies_to:
+    fields:
+    - xray_flux
+    - gamma_flux
+    - gamma_energy_flux
+    entities:
+    - gamma_ray_burst
+    - GRB
+    - afterglow
+  ranges:
+    xray_decay_index:
+      lo: 1.0
+      hi: 1.5
+      unit: ''
+    optical_decay_index:
+      lo: 0.8
+      hi: 1.2
+      unit: ''
+    spectral_index:
+      lo: 0.5
+      hi: 1.0
+      unit: ''
+    plateau_duration:
+      lo: 1000.0
+      hi: 100000.0
+      unit: s
+    radio_peak_time:
+      lo: 1.0
+      hi: 30.0
+      unit: day
+    early_xray_luminosity:
+      lo: 1.0e+44
+      hi: 1.0e+49
+      unit: erg/s
+  content: 'GRB 余辉: 相对论喷流与星际介质作用的前向激波同步辐射 (F_nu ~ t^(-alpha) nu^(-beta)):
+
+
+    - 典型 X 射线衰减指数 alpha ~ 1.2 (Swift 大样本主流值 1.0-1.5), 光学 alpha ~ 0.8-1.2, 谱指数 beta ~ 0.6-1.0 (同步辐射冷却段)
+
+
+    - 标准光变四段: 极陡早期衰减 (t^-3, 高纬发射, 持续数百秒) -> 浅衰减平台 (alpha ~ 0.5, 能量注入或结构喷流) -> 正常衰减 (alpha ~ 1.1-1.4, 持续至数天) -> 晚期射电/X 射线 (数天-数年)
+
+
+    - X 射线平台持续 1e3-1e5 s, 平台期与末段之间常伴随再耀发 (alpha 阶跃); 平台亮度与喷流能量和介质密度相关
+
+
+    - 射电余辉: 早期自吸收抑制, 通量先升 (F ~ t^(1/2)) 数天-数周达峰 (典型 1-30 天, 低频更晚), 之后按 alpha ~ 1.2 衰减; 射电峰值时间反推介质密度与喷流开角
+
+
+    - 早期 X 射线光度 1e44-1e49 erg/s (秒-小时标度), 与爆发能量 E_iso 相关性弱
+
+
+    物理: 同步辐射冷却与绝热衰减共同决定幂律指数; 衰减与谱指数满足闭包关系 (ISM 介质: alpha = (3 beta + 1)/2 无冷却段), 偏离闭包关系提示能量注入或介质结构
+
+
+    判定线索: 无平台/无陡早期段的 ''余辉'' 需复核; X 射线衰减 alpha > 2 持续数天的 ''余辉'' 多为 AGN 或银河系源混淆; 射电峰值早于 1 天需检查自吸收或同步自康普顿贡献'
+  source: Sari, Piran & Narayan 1998, ApJL 497, L17; Zhang et al. 2006, ApJ 642, 354; Granot & Sari 2002, ApJ 568, 820
+  confidence: consensus
+  hypothetical_queries:
+  - GRB 余辉 X 射线光变的典型衰减指数是多少
+  - 射电余辉为什么先上升后衰减且峰值时标更长
+  - 如何从余辉光变判断能量注入是否存在
+- id: xray_flare_mechanism
+  title: X 射线耀斑机制 (磁重联与日冕加热)
+  category: reference_range
+  tags:
+  - flare
+  - magnetic_reconnection
+  - coronal_heating
+  - GOES
+  - neupert
+  - xray
+  - CSHKP
+  applies_to:
+    fields:
+    - xray_soft_flux
+    - xray_flux_band
+    - xray_kt
+    - xray_plasma_temp
+    entities:
+    - flare_star
+    - star
+  ranges:
+    goes_x_class_flux:
+      lo: 0.0001
+      hi: 0.001
+      unit: W/m^2
+    flare_emission_measure:
+      lo: 1.0e+48
+      hi: 1.0e+51
+      unit: cm^-3
+    flare_rise_timescale:
+      lo: 60.0
+      hi: 3600.0
+      unit: s
+    coronal_heating_flux:
+      lo: 1000000.0
+      hi: 10000000.0
+      unit: erg/cm^2/s
+  content: 'X 射线耀斑物理: 日冕磁环内存储的自由磁能在电流片处磁重联释放 (CSHKP 标准耀斑模型):
+
+
+    - 重联产生向外/向下的高速出流与快激波, 加速非热电子 (硬 X 射线轫致辐射) 并加热等离子体; 热等离子体通过色球蒸发填充磁环, 辐射热软 X 射线
+
+
+    - GOES 软 X 射线 (1-8 A) 分级: A/B/C/M/X 类, X 类峰值通量 1e-4-1e-3 W/m^2, 相邻级差 10 倍; M 级以下为常见小耀斑
+
+
+    - Neupert 效应: 硬 X 射线 (非热) 的时间积分与软 X 射线上升相相关 — 非热电子加热主导软 X 射线上升 (色球蒸发延迟数十秒-分钟)
+
+
+    - 耀斑等离子体: 温度 10-40 MK (热软 X 射线谱拟合 kT 1-3 keV), 发射量度 1e48-1e51 cm^-3; 上升相 1-10 分钟 (长时耀斑可达小时), 衰减由传导冷却转辐射冷却主导
+
+
+    - 日冕加热 (非耀斑背景): 纳米耀斑 (微重联叠加) 与波加热 (Alfven 波耗散) 两种主流机制; 活动区加热通量 ~1e6-1e7 erg/cm^2/s, 磁环定标律 T ~ (p L)^(1/3)
+
+
+    物理: 重联率决定能量释放率; 电流片厚度与磁场梯度控制加速效率; 加热-辐射平衡由辐射损失函数与传导通量决定
+
+
+    判定线索: 软 X 射线通量超 1e-3 W/m^2 的 ''X 级耀斑'' 需复核 (超出历史分级上限); 无 Neupert 关系的耀斑可能为微波主导或加热机制不同; GOES 级与光变形态应一致, 类 X 级却无硬 X 射线需检查仪器能段'
+  source: Kopp & Pneuman 1976, Sol. Phys. 50, 85; Neupert 1968, ApJL 153, L59; Benz 2017, Living Rev. Sol. Phys. 14, 2
+  confidence: established
+  hypothetical_queries:
+  - X 射线耀斑的磁重联机制是怎样的
+  - GOES 软 X 射线耀斑分级的通量阈值是多少
+  - Neupert 效应说明硬 X 射线与软 X 射线有什么关系
+- id: fast_transient_detection
+  title: 快速暂现源检测 (单脉冲搜寻与巡天策略)
+  category: reference_range
+  tags:
+  - fast_transient
+  - single_pulse
+  - FRB
+  - giant_pulse
+  - RRAT
+  - search_strategy
+  - dispersion_measure
+  - RFI
+  applies_to:
+    fields:
+    - burst_width
+    - xray_burst
+    - outburst_duration
+    entities:
+    - FRB
+    - pulsar
+    - xray_transient
+  ranges:
+    detection_significance:
+      lo: 6.0
+      hi: 10.0
+      unit: sigma
+    dm_trial_max:
+      lo: 1000.0
+      hi: 5000.0
+      unit: pc/cm^3
+    burst_width_trial:
+      lo: 0.01
+      hi: 100.0
+      unit: ms
+    alert_latency:
+      lo: 1.0
+      hi: 300.0
+      unit: s
+    lfbot_peak_luminosity:
+      lo: 1.0e+42
+      hi: 1.0e+44
+      unit: erg/s
+  content: '快速暂现源检测: 毫秒-秒级单脉冲/短暴事件的搜寻与证认:
+
+
+    - 射电单脉冲搜寻: 对去色散 (DM 网格扫描, 典型 0-5000 pc/cm^3) 后时间序列做匹配滤波, 宽度模板 0.01-100 ms (巨脉冲可达 ns-mu s, FRB 典型 1-10 ms, RRAT 2-30 ms); 阈值 6-10 sigma, 再经 RFI 抑制与重复性检查
+
+
+    - 目标类: FRB (河外, 重复/非重复), 脉冲星巨脉冲 (能量 1e3-1e6 倍平均脉冲), 旋转射电暂现源 RRAT (仅在爆发时可见, 推断数量可与普通脉冲星相当), 快速射电暂现 (秒级)
+
+
+    - 光学快速暂现 (FOT/LFBOT): 上升 ~1 天, 峰值光度 1e42-1e44 erg/s, 蓝而快衰 (数天); 高光度快速蓝暂现源需宽视场巡天 (秒-天级巡天相机) 捕获
+
+
+    - X 射线快速暂现 (FXRT): 数秒-数分钟事件, 宽视场监视器发现后需多波段证认 (排除脉冲星耀发、X 射线双星混淆)
+
+
+    - 巡天策略: 大视场 + 高频次 (每小时-每天重访), 实时处理流水线秒-分钟级发布警报; 事件率与灵敏度幂律相关, 搜寻深度不足会系统性低估短时标事件率
+
+
+    物理: 色散使宽频脉冲随频率延迟 (dt ~ DM/f^2), 去色散正确性由 S/N-DM 峰值验证; 单脉冲探测概率受散射与采样率限制
+
+
+    判定线索: DM 与银河系模型不符且无宿主贡献的 ''河外单脉冲'' 需复核; 仅见一次而声称 ''新重复源'' 需更长监视; 爆发宽度小于采样时间的 ''探测'' 受灵敏度衰减影响, 应检查 S/N 定义'
+  source: Cordes & McLaughlin 2003, ApJ 596, 1142; Keane & Petroff 2015, MNRAS 447, 2852; CHIME/FRB Collaboration 2021, ApJS 257, 59
+  confidence: consensus
+  hypothetical_queries:
+  - 射电单脉冲搜寻的色散量扫描范围和阈值是多少
+  - 快速光学暂现源与 LFBOT 的峰值光度是多少
+  - 如何区分 FRB、巨脉冲和旋转射电暂现源
+- id: orphan_afterglow
+  title: 孤儿余辉 (无伽马暴的余辉) 搜寻与判据
+  category: reference_range
+  tags:
+  - orphan_afterglow
+  - off_axis
+  - jet
+  - GRB
+  - radio
+  - optical
+  - transient
+  applies_to:
+    fields:
+    - xray_flux
+    - gamma_flux
+    - xray_optical_offset
+    entities:
+    - gamma_ray_burst
+    - GRB
+    - afterglow
+  ranges:
+    off_axis_rise_timescale:
+      lo: 3.0
+      hi: 30.0
+      unit: day
+    orphan_grb_rate_ratio:
+      lo: 10.0
+      hi: 1000.0
+      unit: ''
+    radio_peak_flux:
+      lo: 0.1
+      hi: 10.0
+      unit: mJy
+    afterglow_isotropy_angle:
+      lo: 0.1
+      hi: 1.0
+      unit: rad
+  content: '孤儿余辉: 只观测到余辉而无对应瞬时伽马暴的暂现源, 预期来自偏离视线 (off-axis) 或弱内禀伽马辐射的喷流:
+
+
+    - 喷流伽马辐射严格束束 (半开角 0.03-0.2 rad, 几度-十几度), 视线落在束束外时看不到暴; 但余辉随喷流减速, 视束 1/Gamma 增大 (0.1-1 rad 标度), 辐射逐渐进入视线 -> 缓升后衰减的光变
+
+
+    - 光变特征: 上升时标数天-数十天 (远慢于 on-axis 余辉的秒-小时), 峰值较同能量 on-axis 事件暗, 射电最易探测 (辐射近各向同性); 无伽马暴在时间窗内成协
+
+
+    - 事件率: 每个 on-axis 可测 GRB 对应数十-上千个 off-axis 事件 (比例 ~ (2/theta_j)^2), 但观测上需深巡天, 射电孤儿候选率远低于此几何上限
+
+
+    - 搜寻途径: 深射电巡天 (自吸收峰后数周-数年可见) + 光学大视场暂现巡天 + 宽视场 X 射线监视; 候选需排除 AGN 变源、超新星残余与恒星活动混淆 (位置/光谱/射电谱指数判定)
+
+
+    - 物理意义: 孤儿余辉样本可约束喷流开角分布与伽马辐射各向同性等价, 检验结构喷流模型
+
+
+    物理: off-axis 同步辐射的 Doppler 因子 gamma ~ (1 - beta cos theta_v)^(-1) 变化, 上升段通量随视线角敏感变化; 射电自吸收与横向扩展决定晚期演化
+
+
+    判定线索: 快速上升 (小时-天) 的 ''孤儿余辉'' 更可能是 on-axis 低峰暴或超新星混淆; 射电谱指数非负幂律且位置与已知天体重合需复核; 无多波段后续的候选不能定论'
+  source: Rhoads 1997, ApJL 487, L1; Nakar & Piran 2003, NewA 8, 141; Granot, Panaitescu, Kumar & Woosley 2002, ApJL 570, L61
+  confidence: consensus
+  hypothetical_queries:
+  - 孤儿余辉为什么没有对应的伽马暴
+  - off-axis 喷流余辉的光变上升时标是多少
+  - 如何用射电巡天搜寻孤儿余辉
+- id: jet_break_lightcurve
+  title: '喷流拐折: 余辉光变曲线 break 时标与喷流开角'
+  category: reference_range
+  tags:
+  - jet_break
+  - afterglow
+  - opening_angle
+  - light_curve
+  - GRB
+  - achromatic
+  applies_to:
+    fields:
+    - xray_flux
+    - gamma_flux
+    - gamma_ray_photon_flux
+    entities:
+    - gamma_ray_burst
+    - GRB
+    - afterglow
+  ranges:
+    jet_opening_angle:
+      lo: 2.0
+      hi: 10.0
+      unit: deg
+    jet_break_time:
+      lo: 0.1
+      hi: 30.0
+      unit: day
+    break_slope_change:
+      lo: 0.5
+      hi: 1.0
+      unit: ''
+    corrected_jet_energy:
+      lo: 1.0e+50
+      hi: 1.0e+52
+      unit: erg
+  content: '喷流拐折 (jet break): 当喷流洛伦兹因子衰减至 Gamma ~ 1/theta_j (视束角等于喷流开角) 时光变曲线斜率增大的时标:
+
+
+    - 开角典型值 2-10 度 (0.03-0.2 rad), 对应拐折时标约 0.1-30 天 (典型数小时-数天); 未观测到拐折只能给开角下限 (视束未出射)
+
+
+    - 拐折后衰减指数增大 Δalpha ~ 0.5-1.0 (顶帽喷流 + 星际介质典型 ~0.75); 理想情形拐折为无色差 (光学/X 射线/射电同时变陡), 但能量注入、观测覆盖或喷流横向扩展可使之色差或模糊
+
+
+    - 时标-开角定标: theta_j ~ (t_j/E/n)^(1/8) 弱依赖, 由拐折时标可反推几何开角: theta_j ~ 0.06 (t_j/1 天)^(3/8) (E_52/n_1)^(-1/8) rad
+
+
+    - 拐折后能量修正: E_j = E_iso (1 - cos theta_j) ~ 1e50-1e52 erg, 消除 E_iso 跨 5 个量级的表观弥散 (准直修正); 长暴修正能量分布窄 (喷流能量近标准烛光)
+
+
+    - 与 X 射线平台的区分: 平台期后 alpha 阶跃是能量注入结束而非喷流拐折; 拐折要求色差性检验与多波段同时覆盖
+
+
+    物理: 视束角 1/Gamma 随时间增大 (减速), 出射视束超过开角后横向扩展与边缘发射主导, 辐射由球对称近似转入喷流几何
+
+
+    判定线索: 声称拐折但无多波段同步变陡需复核; 拐折时标与平台跃变混淆是常见错误; 拐折前衰减 alpha < 0.5 的 ''拐折'' 多为能量注入末段'
+  source: Sari, Piran & Halpern 1999, ApJL 519, L17; Frail et al. 2001, Nature 413, 499; Ghirlanda, Ghisellini & Lazzati 2004, ApJ 616, 331
+  confidence: established
+  hypothetical_queries:
+  - 喷流拐折时标与喷流开角如何换算
+  - jet break 前后光变衰减指数变化多少
+  - 如何区分喷流拐折与 X 射线平台结束
+- id: magnetar_giant_flare
+  title: 磁星巨耀斑能量与时标 (2004 类事件)
+  category: reference_range
+  tags:
+  - magnetar
+  - giant_flare
+  - SGR
+  - AXP
+  - neutron_star
+  - burst
+  - magnetic_field
+  applies_to:
+    fields:
+    - magnetar_class
+    - xray_burst
+    - xray_flux
+    entities:
+    - magnetar
+    - neutron_star
+  ranges:
+    surface_field:
+      lo: 100000000000000.0
+      hi: 1000000000000000.0
+      unit: G
+    giant_flare_energy:
+      lo: 1.0e+44
+      hi: 1.0e+46
+      unit: erg
+    burst_tail_duration:
+      lo: 100.0
+      hi: 1000.0
+      unit: s
+    short_burst_energy:
+      lo: 1.0e+38
+      hi: 1.0e+43
+      unit: erg
+    giant_flare_recurrence:
+      lo: 1000.0
+      hi: 10000.0
+      unit: yr
+  content: '磁星巨耀斑: 超强磁场中子星 (表面偶极场 1e14-1e15 G, SGR/AXP 类) 罕见的极端爆发:
+
+
+    - 能量: 巨耀斑各向同性能量 1e44-1e46 erg, 比常规短暴大 3-4 个量级; 2004 年银河系外事件为迄今最强 (接近上限), 银河系内事件更弱
+
+
+    - 光变: 初始尖锐硬脉冲 (0.1-1 s, 内含毫秒结构) + 随旋转周期调制的振荡尾 (指数衰减, 持续 100-1000 s); 尾部为被磁束缚火球 (tau ~ 1e4-1e5 s 冷却, 光度近爱丁顿) 的泄漏辐射
+
+
+    - 触发机制: 全球性磁层重排/地壳破裂释放磁能; 诱发模 (coupled crust-core modes) 使尾部出现准周期振荡 (数十-数百 Hz, 与星体整体振荡模相关)
+
+
+    - 常规活动: 同一类源持续发射短暴 (能量 1e38-1e43 erg, 毫秒-秒级, 峰值光度 1e38-1e41 erg/s), 频率数天-数月; 巨耀斑复发时标 1e3-1e4 年 (每源/每星系), 历史记录极少
+
+
+    - 静止期: 软 X 射线热辐射 (kT 0.3-0.7 keV) + 幂律非热成分, 光度 1e33-1e36 erg/s; 长期自转减慢 ~ 1e-11 s/s 量级 (磁场制动)
+
+
+    物理: 磁能密度 B^2/8pi 远超引力束缚能; 巨耀斑释放的磁场自由能 (~1e44-1e46 erg) 与 1e15 G 量级磁场储能自洽
+
+
+    判定线索: 峰值能量 >1e46 erg 的 ''磁星巨耀斑'' 需复核 (超越已知上限, 疑为短暴混淆); 无旋转周期调制的尾部或能量在短暴量级的 ''巨耀斑'' 分类存疑; 银道面外的短暴若谱与时标特征相似需做磁星巨耀斑鉴别'
+  source: Hurley et al. 2005, Nature 434, 1098; Mereghetti 2008, A&ARv 15, 225; Kaspi & Beloborodov 2017, ARAA 55, 261
+  confidence: established
+  hypothetical_queries:
+  - 磁星巨耀斑的峰值能量范围是多少
+  - 巨耀斑的初始尖峰与振荡尾的持续时间是多少
+  - 如何区分磁星巨耀斑与短暴伽马射线暴
+- id: gravitational_wave_followup
+  title: 引力波后随观测策略 (定位巡天与证认流程)
+  category: reference_range
+  tags:
+  - gravitational_wave
+  - followup
+  - kilonova
+  - tiling
+  - survey
+  - localization
+  - galaxy_catalog
+  applies_to:
+    fields:
+    - localization_area
+    - xray_optical_offset
+    - xray_flux
+    entities:
+    - gravitational_wave_event
+    - kilonova
+    - multimessenger_event
+  ranges:
+    search_depth:
+      lo: 20.0
+      hi: 24.0
+      unit: mag
+    alert_latency:
+      lo: 1.0
+      hi: 60.0
+      unit: min
+    kilonova_detect_window:
+      lo: 6.0
+      hi: 48.0
+      unit: h
+    localization_prob_covered:
+      lo: 0.5
+      hi: 0.9
+      unit: ''
+    candidate_host_offset:
+      lo: 0.1
+      hi: 10.0
+      unit: kpc
+  content: '引力波后随观测: 从低延迟警报 (分钟级) 到多波段证认的完整策略:
+
+
+    - 警报与定位: 探测器网络发布 90% 概率 skymap (10-数千 deg^2), 公共警报滞后分钟级; 三探测器可压缩至 10-数百 deg^2, 双探测器数百-数千 deg^2
+
+
+    - 巡天策略: 按概率密度排序分块 tiling, 优先覆盖高概率像素; 对双中子星并合, 光学深度需求 20-24 mag (40 Mpc 千新星峰值 ~17 mag, 200 Mpc ~ 20 mag, 覆盖视界内 90% 事件); 星系目录加权 (光度距离先验) 显著提升证认效率
+
+
+    - 时间线: 千新星峰值在并合后约 1 天 (蓝成分 ~12 h 内), 可探测窗口 6-48 h; 射电余辉数天-数年, X 射线数小时-数天; 快速响应 (<12-24 h) 对光学证认关键
+
+
+    - 候选证认: 亮度/颜色 (千新星偏红, 温度 5000-10000 K)、位置相对宿主星系偏移 (0.1-10 kpc 量级)、与已知天体 (AGN/恒星活动) 排除、光谱特征; 覆盖率 (探测到候选的概率) 典型 50-90%
+
+
+    - 网络协同: 广角监视器 (伽马/X 射线) 秒-分钟级、窄视场望远镜小时级、光谱仪天级; 分层覆盖提高发现率
+
+
+    物理: 千新星亮度由 r 过程加热率与喷射质量决定; 宿主偏移反映并合前双星空间分布与踢速度
+
+
+    判定线索: 声称 ''后随证认'' 但候选位于低概率像素且无星系关联需复核; 光学深度不足 20 mag 对 >100 Mpc 事件大概率漏检; 与宿主偏移 >10 kpc 且光度过亮的 ''千新星'' 需怀疑背景超新星混淆'
+  source: Singer & Price 2016, PRD 93, 024013; Abbott et al. 2017, ApJL 848, L12; Coughlin et al. 2019, ApJL 885, L19
+  confidence: consensus
+  hypothetical_queries:
+  - 引力波警报发布后电磁后随的巡天深度要求是多少
+  - 千新星在并合后多久达到可观测峰值
+  - 如何按概率图分块巡天并选择候选宿主星系

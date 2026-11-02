@@ -1,0 +1,269 @@
+{
+  "otype": "LSB",
+  "name_cn": "低表面亮度星系",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "源赤经(J2000/ICRS),来自巡天检测坐标",
+      "category": "astrometry",
+      "ucd": "POS_EQ_RA_MAIN",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "源赤纬(J2000/ICRS)",
+      "category": "astrometry",
+      "ucd": "POS_EQ_DEC_MAIN",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移/系统视向速度",
+      "description": "系统红移或HI 21cm系统速度(Vhel)换算值;深巡天表中为测光红移",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "光度距离或由红移/群成员推导的距离,用于尺度与质量换算",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_apparent",
+      "name_cn": "视星等",
+      "description": "ugri(B/K)多波段总视星等,深巡天为PSF匹配测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_abs",
+      "name_cn": "绝对星等",
+      "description": "B波段等绝对星等,用于光度函数与暗弱端统计",
+      "category": "photometry",
+      "ucd": "phys.magAbs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sb_central",
+      "name_cn": "中心面亮度",
+      "description": "外推中心面亮度mu0(mag/arcsec2),LSB判据核心量(mu0>22.7-24),含指数盘外推值",
+      "category": "photometry",
+      "ucd": "phot.mag.sb",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sb_mean_eff",
+      "name_cn": "有效面亮度",
+      "description": "有效半径内平均面亮度<mu>_eff,与有效半径联合刻画弥散程度",
+      "category": "photometry",
+      "ucd": "phot.mag.sb",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "颜色指数",
+      "description": "g-r、B-V等多波段颜色,指示恒星族群年龄与金属丰度",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.R;em.opt.I",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_fuv_nuv",
+      "name_cn": "GALEX紫外星等",
+      "description": "FUV/NUV紫外流量,用于星形成率诊断",
+      "category": "photometry",
+      "ucd": "phot.mag;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sersic_index",
+      "name_cn": "Sérsic指数",
+      "description": "单分量Sérsic拟合的轮廓指数n,区分指数盘(n~1)与类球核",
+      "category": "photometry",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eff_radius",
+      "name_cn": "有效半径",
+      "description": "半光半径Re,延展LSBG的尺度指标(典型数kpc至数十kpc)",
+      "category": "photometry",
+      "ucd": "phys.angSize.smajAxis",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "scale_length",
+      "name_cn": "指数盘标长",
+      "description": "指数面亮度轮廓标长h,LSB盘结构基本参数",
+      "category": "photometry",
+      "ucd": "phys.angSize.smajAxis",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "axis_ratio",
+      "name_cn": "轴比",
+      "description": "短长轴比b/a,由轮廓拟合给出,关联倾角与盘厚度",
+      "category": "photometry",
+      "ucd": "phys.angSize.axisRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_angle",
+      "name_cn": "位置角",
+      "description": "长轴位置角,用于动力学建模与形态研究",
+      "category": "photometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inclination",
+      "name_cn": "盘倾角",
+      "description": "由轴比推算的盘倾角,旋转速度投影校正必需",
+      "category": "astrometry",
+      "ucd": "pos.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_flux",
+      "name_cn": "HI 21cm积分流量",
+      "description": "中性氢21cm线积分流量(Jy km/s),气体含量原始测量",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;em.radio.21cm",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_linewidth",
+      "name_cn": "HI谱线宽度",
+      "description": "HI谱线W50/W20宽度,结合倾角给出旋转速度上限",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_velocity",
+      "name_cn": "旋转速度",
+      "description": "旋转曲线及平坦速度Vflat(HI或Hα),直接探测暗物质主导的引力势",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_hi",
+      "name_cn": "HI质量",
+      "description": "中性氢质量M_HI,LSB星系重子物质以气体为主",
+      "category": "physical",
+      "ucd": "phys.mass;em.radio.21cm",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_stellar",
+      "name_cn": "恒星质量",
+      "description": "由光度与质光比推断的恒星质量,质量分解组分之一",
+      "category": "physical",
+      "ucd": "phys.mass.stellar",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_dynamical",
+      "name_cn": "动力学质量",
+      "description": "由旋转曲线在特征半径内积分的总质量,LSB星系中心区即暗物质主导",
+      "category": "physical",
+      "ucd": "phys.mass.dynamicalMass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_light_ratio",
+      "name_cn": "质光比",
+      "description": "恒星盘质光比与总体M/L,LSB星系M/L极高(>10)的量化指标",
+      "category": "physical",
+      "ucd": "phys.composition.massLightRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gas_fraction",
+      "name_cn": "气体质量分数",
+      "description": "气体(主要为HI)占重子质量比例,LSB星系典型值高于正常盘星系",
+      "category": "physical",
+      "ucd": "phys.mass.gas;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halo_params",
+      "name_cn": "暗物质晕参数",
+      "description": "晕模型拟合参数:核半径与中心密度(等温/核模型)或NFW特征半径c、rs、V200;core-cusp之争的核心约束量",
+      "category": "physical",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morph_type",
+      "name_cn": "形态类型",
+      "description": "目视/机器学习形态分类(延展弥散、盘、矮椭球等)及LSBG/非LSBG判定",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lsbg_flag",
+      "name_cn": "LSBG分类标志",
+      "description": "机器学习分类评分与目视确认标志(如extended/compact),含质量旗标",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_density",
+      "name_cn": "环境密度",
+      "description": "局域星系数密度/邻近星系计数,LSB星系以场环境为主",
+      "category": "environment",
+      "ucd": "phys.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership",
+      "name_cn": "团/群成员标志",
+      "description": "所属星系团/群成员判定(如Virgo),用于环境效应研究",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

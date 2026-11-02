@@ -1,0 +1,269 @@
+{
+  "otype": "OpC",
+  "name_cn": "疏散星团",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "name",
+      "name_cn": "名称",
+      "description": "星团常用名称(NGC、IC、Messier、Collinder 等),用于跨目录交叉认证",
+      "category": "classification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "星团中心赤经(ICRS/J2000),由成员星空间分布确定",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "星团中心赤纬(ICRS/J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glon",
+      "name_cn": "银经",
+      "description": "星团中心银心坐标银经,用于银河系盘结构研究",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "glat",
+      "name_cn": "银纬",
+      "description": "星团中心银心坐标银纬",
+      "category": "environment",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "日心距离",
+      "description": "星团到太阳的距离(秒差距),MWSC 精度约 ±16%;年轻星团因主序垂直误差较大",
+      "category": "physical",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dist_modulus",
+      "name_cn": "距离模数",
+      "description": "Ks 波段视距离模数 5logD-5+A_Ks,精度约 ±0.35 mag",
+      "category": "photometry",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "平均视差",
+      "description": "成员星平均三角视差(mas),源自 Gaia DR2/DR3,替代传统光度距离",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmra",
+      "name_cn": "自行赤经分量",
+      "description": "星团平均自行 μα·cosδ(mas/yr),由成员星自行加权平均",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmdec",
+      "name_cn": "自行赤纬分量",
+      "description": "星团平均自行 μδ(mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "平均视向速度",
+      "description": "星团平均视向速度(km/s)及误差,用于三维空间运动学(如 Tarricq 2022 的 U,V,W)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_bv",
+      "name_cn": "色余 E(B-V)",
+      "description": "星团方向星际红化色余(星等),精度约 ±0.06 mag;年轻星团精度较低",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "e_jk",
+      "name_cn": "色余 E(J-Ks)",
+      "description": "近红外色余 E(J-Ks) 与 E(J-H),源自 2MASS 测光,对年轻星团消光更稳健",
+      "category": "photometry",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "年龄(log t)",
+      "description": "星团对数年龄 log t(年),由等龄线拟合主序拐点得到;年轻星团(主序近垂直)精度低,常为手动等龄线拟合",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "金属丰度 [Fe/H]",
+      "description": "星团铁金属丰度 [Fe/H](dex),经文献高分辨率光谱值同质化标定,用于化学演化与年龄-金属丰度关系",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_mass",
+      "name_cn": "星团质量",
+      "description": "星团总质量(太阳质量),UCC 从成员星计数与光度函数同质推导;年轻星团质量用于研究星团形成效率",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r0_core_radius",
+      "name_cn": "角核半径 r0",
+      "description": "径向密度剖面拐点对应的角核半径(度),r0<rc<r1 经验关系",
+      "category": "physical",
+      "ucd": "pos.angSize",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r1_central_radius",
+      "name_cn": "中央区角半径 r1",
+      "description": "星团中心可见部分角半径(度),密度陡降边界",
+      "category": "physical",
+      "ucd": "pos.angSize",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r2_cluster_radius",
+      "name_cn": "视半径 r2",
+      "description": "星团总可见角半径(度),表面密度等于背景场密度处",
+      "category": "physical",
+      "ucd": "pos.angSize",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "king_core_radius",
+      "name_cn": "King 核半径 rc",
+      "description": "King 模型拟合径向密度剖面的核半径(秒差距)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "king_tidal_radius",
+      "name_cn": "King 潮汐半径 rt",
+      "description": "King 模型拟合的潮汐半径(秒差距),表征银河系潮汐场束缚边界",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "r50_radius",
+      "name_cn": "半数半径 r50",
+      "description": "包含 50% 最可能成员星的半径,Gaia 时代同质定义的结构参数",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_members",
+      "name_cn": "成员星数量",
+      "description": "1σ 概率成员星数(核内/中央区/全星团三档),衡量星团富集度与样本质量",
+      "category": "classification",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_prob",
+      "name_cn": "成员概率",
+      "description": "单颗星属于该星团的成员概率(基于空间+自行+视差,Gaia 时代),用于成员筛选与污染控制",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "星团积分光谱型或最亮成员光谱型,指示星团年龄与主序上端点",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "trumpler_class",
+      "name_cn": "Trumpler 形态分类",
+      "description": "Trumpler 分类(集中度 I-III + 富集度 p/m/r),描述星团形态;B/ocl 亦含存在性状态标志(可疑/非存在等)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "broad_type",
+      "name_cn": "天体类型标志",
+      "description": "星团类型标志:开放星团、星协、球状星团、移动群、遗迹星团、星群等,用于样本分类与杂散源剔除",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multi_band_mag",
+      "name_cn": "多波段测光",
+      "description": "UCC 汇编的 Gaia G/BP/RP 与 2MASS J/H/Ks 等波段成员星合成测光,支持 CMD 拟合与 SED 分析",
+      "category": "photometry",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactocentric_distance",
+      "name_cn": "银心距",
+      "description": "星团到银河系中心的距离(与银盘方位角),用于盘结构、旋臂与银盘径向分布研究",
+      "category": "environment",
+      "ucd": "pos.distance;pos.galactocentric",
+      "unit": "kpc",
+      "_unit_filled": true
+    }
+  ]
+}

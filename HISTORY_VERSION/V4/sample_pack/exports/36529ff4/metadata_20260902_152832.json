@@ -1,0 +1,142 @@
+{
+  "field_definitions": {
+    "peak_absolute_magnitude": {
+      "standard_unit": "mag",
+      "semantic_type": "apparent_magnitude",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Peak absolute magnitude measures the maximum intrinsic brightness of an astronomical object at a standard reference distance of 10 parsecs, expressed in magnitudes (mag)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 10,
+    "sources_exported": 10,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "2013A&A...554A..27P",
+        "title": "Spectrophotometric time series of SN 2011fe from the Nearby Supernova Factory",
+        "year": 2013,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2012ApJ...754...19M",
+        "title": "The Infrared Light Curve of SN 2011fe in M101 and the Distance to M101",
+        "year": 2012,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2016ApJ...820...67Z",
+        "title": "Optical Observations of the Type Ia Supernova SN 2011fe in M101 for Nearly 500 Days",
+        "year": 2016,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2012A&A...546A..12V",
+        "title": "Testing supernovae Ia distance measurement methods with SN 2011fe",
+        "year": 2012,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2017MNRAS.468.3798D",
+        "title": "The late-time light curve of the Type Ia supernova SN 2011fe",
+        "year": 2017,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2012JAVSO..40..872R",
+        "title": "BVRI Photometry of SN 2011fe in M101",
+        "year": 2012,
+        "journal": "Journal of the American Association of Variable Star Observers (JAAVSO)",
+        "record_count": 12,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2013NewA...20...30M",
+        "title": "BVRI lightcurves of supernovae SN 2011fe in M101, SN 2012aw in M95, and SN 2012cg in NGC 4424",
+        "year": 2013,
+        "journal": "New Astronomy",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2012ApJ...760L..14L",
+        "title": "The Distance to M101 Hosting Type Ia Supernova 2011fe Based on the Tip of the Red Giant Branch",
+        "year": 2012,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 7,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2020MNRAS.491.5991F",
+        "title": "Significant luminosity differences of two twin Type Ia supernovae",
+        "year": 2020,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      },
+      {
+        "source_id": "2015MNRAS.446.2073G",
+        "title": "Twins for life? A comparative analysis of the Type Ia supernovae 2011fe and 2011by",
+        "year": 2015,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "HumanReview"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 10,
+      "overall_quality": "excellent",
+      "total_issues": 14
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 1,
+      "by_layer": {
+        "base": 1,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors_count": 0,
+      "errors": []
+    },
+    "conflict": {
+      "status": "Unknown",
+      "total_conflicts": 0,
+      "auto_resolved": 0,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-02T15:28:21.723575",
+    "run_id": "36529ff4-6cac-42e1-8df0-ac7fcf6f2929",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

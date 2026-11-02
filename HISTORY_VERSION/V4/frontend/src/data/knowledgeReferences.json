@@ -1,0 +1,1178 @@
+{
+  "NE2001_model": {
+    "title": "NE2001 银河系自由电子密度模型",
+    "source": "Cordes & Lazio 2002, astro-ph/0207156"
+  },
+  "YMW16_model": {
+    "title": "YMW16 银河系电子密度模型",
+    "source": "Yao, Manchester & Wang 2017, ApJ"
+  },
+  "Macquart_relation": {
+    "title": "Macquart DM-z 关系",
+    "source": "Macquart et al. 2020, Nature"
+  },
+  "LambdaCDM_cosmology": {
+    "title": "ΛCDM 标准宇宙学模型参数",
+    "source": "Planck Collaboration 2020, A&A"
+  },
+  "stellar_evolution_pathway": {
+    "title": "恒星结构与演化路径",
+    "source": "恒星结构教科书; 演化路径综述"
+  },
+  "ms_lifetime_mass_relation": {
+    "title": "主序寿命-质量关系",
+    "source": "质光关系教科书推论; UNLV 主序表"
+  },
+  "chandrasekhar_limit": {
+    "title": "Chandrasekhar 极限",
+    "source": "Chandrasekhar 1931; SN Ia 物理综述"
+  },
+  "neutron_star_structure": {
+    "title": "中子星结构",
+    "source": "GW170817 约束; PSR J0348+0432 等; 中子星综述"
+  },
+  "agn_unified_model": {
+    "title": "AGN 统一模型",
+    "source": "Antonucci 1993; Urry & Padovani 1995; Netzer"
+  },
+  "eddington_accretion": {
+    "title": "爱丁顿吸积与光度上限",
+    "source": "JILA Eddington 讲义; Trinity 模型; Alonso-Herrero 2008"
+  },
+  "galactic_chemical_evolution": {
+    "title": "星系化学演化",
+    "source": "Asplund 2009; 化学演化综述; 氧丰度转换讨论"
+  },
+  "stromgren_sphere_model": {
+    "title": "Strömgren 球与 HII 区",
+    "source": "Strömgren 1939; Kiel 讲义; Kennicutt 2002"
+  },
+  "snr_sedov_expansion": {
+    "title": "SNR Sedov 膨胀演化",
+    "source": "Sedov 1959; SNR 演化讲义 (Oregon); Katsuda 2012"
+  },
+  "hierarchical_galaxy_formation": {
+    "title": "星系等级形成 (ΛCDM)",
+    "source": "ΛCDM 综述; Trinity; Boettner 2025"
+  },
+  "imf_initial_mass_function": {
+    "title": "初始质量函数 IMF",
+    "source": "Salpeter 1955; Kroupa 2001; Conroy 2013"
+  },
+  "ism_three_phase_model": {
+    "title": "ISM 三相模型",
+    "source": "McKee & Ostriker 1977; Begelman & McKee; ISM 讲义"
+  },
+  "mass_luminosity_relation": {
+    "title": "主序星质光关系",
+    "source": "Eddington 1924; 质光关系分段拟合综述 (UNLV 主序表)"
+  },
+  "schechter_luminosity_function": {
+    "title": "Schechter 星系光度函数",
+    "source": "Schechter 1976; Blanton et al. 2003, ApJ 592, 819"
+  },
+  "lambda_cdm_parameters": {
+    "title": "ΛCDM 参数与暗能量状态方程",
+    "source": "Planck Collaboration 2020, A&A; SH0ES 2025; DESI DR2 2025 (BAO)"
+  },
+  "shakura_sunyaev_disk": {
+    "title": "Shakura-Sunyaev 标准薄吸积盘",
+    "source": "Shakura & Sunyaev 1973, A&A 24, 337; 吸积盘理论综述 (arXiv 1201.2060)"
+  },
+  "eddington_limit": {
+    "title": "爱丁顿极限 (推导与应用)",
+    "source": "Eddington 1926; JILA 爱丁顿讲义"
+  },
+  "gravitational_lensing": {
+    "title": "引力透镜与爱因斯坦角",
+    "source": "Einstein 1936; Narayan & Bartelmann 1999 引力透镜综述"
+  },
+  "jeans_mass_stability": {
+    "title": "金斯质量与引力坍缩判据",
+    "source": "Jeans 1902; 恒星形成讲义 (Stony Brook)"
+  },
+  "solar_stellar_dynamo": {
+    "title": "恒星发电机与太阳 11 年周期",
+    "source": "Parker 1955; Babcock 1961; Charbonneau 2020, Living Rev. Solar Phys."
+  },
+  "neutron_star_max_mass": {
+    "title": "中子星最大质量 (TOV 极限)",
+    "source": "Romani et al. 2022; Koehn et al. 2025, PRX; GW170817 多信使综述"
+  },
+  "virial_theorem_cluster_mass": {
+    "title": "维里定理与星系团质量",
+    "source": "维里定理讲义; Kravtsov & Borgani 2012, ARA&A (星系团物理综述)"
+  },
+  "nfw_halo_profile": {
+    "title": "NFW 暗晕密度剖面",
+    "source": "Navarro, Frenk & White 1997, ApJ 490, 493"
+  },
+  "stellar_wind_mass_loss": {
+    "title": "恒星风质量损失",
+    "source": "Vink, de Koter & Lamers 2000/2001, A&A; Castor, Abbott & Klein 1975"
+  },
+  "madau_star_formation": {
+    "title": "Madau 图: 宇宙恒星形成率密度演化",
+    "source": "Madau & Dickinson 2014, ARA&A 52, 415; Bouwens et al. 2015, ApJ 803, 34"
+  },
+  "weak_lensing_theory": {
+    "title": "弱引力透镜理论: 剪切、收敛与相关函数",
+    "source": "Bartelmann & Schneider 2001, Phys. Rep. 340, 291; Kilbinger 2015, Rep. Prog. Phys. 78, 086901"
+  },
+  "cmb_power_spectrum": {
+    "title": "CMB 功率谱与声学峰",
+    "source": "Planck Collaboration 2020, A&A 641, A6"
+  },
+  "reionization_epoch": {
+    "title": "宇宙再电离纪元 (EoR)",
+    "source": "Planck Collaboration 2020, A&A 641, A6; Fan et al. 2006, ARA&A 44, 415; Zaroubi 2013 (EoR 综述)"
+  },
+  "r_process_nucleosynthesis": {
+    "title": "r 过程核合成 (快中子俘获)",
+    "source": "Burbidge et al. 1957 (B2FH); Arnould, Goriely & Takahashi 2007, Phys. Rep. 450, 97; Metzger 2019 (千新星综述)"
+  },
+  "s_process_nucleosynthesis": {
+    "title": "s 过程核合成 (慢中子俘获)",
+    "source": "Burbidge et al. 1957; Busso, Gallino & Wasserburg 1999, ARA&A 37, 239; Karakas & Lattanzio 2014"
+  },
+  "stellar_feedback_model": {
+    "title": "恒星反馈模型 (能量与动量注入)",
+    "source": "McKee & Ostriker 2007, ARA&A 45, 565; Agertz et al. 2013, ApJ 770, 25; Krumholz 2014, Phys. Rep. 539, 49"
+  },
+  "galaxy_merger_evolution": {
+    "title": "星系并合演化与类星体触发",
+    "source": "Toomre & Toomre 1972; Barnes & Hernquist 1996; Hopkins et al. 2008, ApJS 175, 356; Fakhouri & Ma 2007"
+  },
+  "cluster_mass_estimation": {
+    "title": "星系团质量估计: 三种方法对比",
+    "source": "Lovisari et al. 2020, A&A 644, A78; Kravtsov & Borgani 2012, ARA&A 50, 353; Hoekstra et al. 2013, Space Sci. Rev. 177, 75"
+  },
+  "mond_modified_gravity": {
+    "title": "MOND 修正引力 (星系旋转曲线)",
+    "source": "Milgrom 1983, ApJ 270, 365; Famaey & McGaugh 2012, Living Rev. Rel. 15, 10"
+  },
+  "pulsar_spin_down_model": {
+    "title": "脉冲星磁偶极自转减慢模型",
+    "source": "Pacini 1967; Ostriker & Gunn 1969, ApJ 157, 1395; Lorimer & Kramer, Handbook of Pulsar Astronomy"
+  },
+  "mri_accretion_disk": {
+    "title": "磁旋转不稳定性 MRI 与吸积盘粘滞",
+    "source": "Balbus & Hawley 1991, ApJ 376, 214; Balbus & Hawley 1998, Rev. Mod. Phys. 70, 1"
+  },
+  "agn_variability_model": {
+    "title": "AGN 变光模型 (阻尼随机游走 DRW)",
+    "source": "Kelly, Bechtold & Siemiginowska 2009, ApJ 698, 895; MacLeod et al. 2010, ApJ 721, 1014; Kozlowski 2016, ApJ 826, 118"
+  },
+  "galaxy_quenching_models": {
+    "title": "星系熄灭机制 (环境/反馈/时标)",
+    "source": "Peng et al. 2010, ApJ 721, 193; Wright et al. 2019, MNRAS 484, 3022; Bluck et al. 2020, MNRAS"
+  },
+  "star_formation_efficiency": {
+    "title": "恒星形成效率 (SFE/每自由落体时标)",
+    "source": "Krumholz & McKee 2005, ApJ 630, 250; Krumholz & Tan 2007, ApJ 654, 304; Utomo et al. 2018, ApJ 861, L18"
+  },
+  "black_hole_growth_history": {
+    "title": "黑洞增长历史 (Soltan 论证/吸积主导)",
+    "source": "Soltan 1982, MNRAS 200, 115; Yu & Tremaine 2002, MNRAS 335, 965; Fabian & Iwasawa 1999, MNRAS 303, L34"
+  },
+  "snia_light_curve_model": {
+    "title": "SN Ia 光变曲线模型 (Arnett 规则/56Ni)",
+    "source": "Arnett 1982, ApJ 253, 785; Branch 1992, ApJ 392, 35; Dhawan et al. 2016, A&A 588, A84"
+  },
+  "tde_fallback_model": {
+    "title": "潮汐瓦解事件回落模型 (t^-5/3)",
+    "source": "Rees 1988, Nature 333, 523; Phinney 1989; van Velzen et al. 2020, Space Sci. Rev. 216, 4"
+  },
+  "galaxy_absolute_magnitude": {
+    "title": "星系绝对星等与距离换算",
+    "source": "Binggeli 1987; Faber & Gallagher 1979; Blanton & Moustakas 2009"
+  },
+  "interstellar_extinction_av": {
+    "title": "星际消光 A_V 与波段换算",
+    "source": "Cardelli, Clayton & Mathis 1989; Schlegel et al. 1998; 2MASS 文档"
+  },
+  "galaxy_redshift_typical": {
+    "title": "星系红移典型范围与距离换算",
+    "source": "Steed & Weinberg; SDSS 巡天文献; COSMOS 深场"
+  },
+  "gaia_astrometry_fields": {
+    "title": "Gaia 天体测量字段与精度",
+    "source": "Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)"
+  },
+  "photometric_redshift_precision": {
+    "title": "测光红移精度与判据",
+    "source": "Hildebrandt et al. 2012; Ilbert et al. 2009; Salvato et al. 2019"
+  },
+  "galaxy_rotation_curve": {
+    "title": "旋涡星系旋转曲线与 Tully-Fisher",
+    "source": "Sofue & Rubin 2001; Courteau et al. 2007; Tully & Fisher 1977"
+  },
+  "stellar_metallicity_dex": {
+    "title": "恒星金属丰度 [Fe/H] 范围",
+    "source": "Beers & Christlieb 2005; McWilliam 1997; Freeman & Bland-Hawthorn 2002"
+  },
+  "quasar_luminosity_range": {
+    "title": "类星体光度与 Eddington 上限",
+    "source": "Richards et al. 2006; Shen et al. 2011; Vanden Berk et al. 2001"
+  },
+  "radio_flux_typical": {
+    "title": "射电 1.4 GHz 通量典型范围",
+    "source": "Condon 1992, ARA&A 30; NVSS/TGSS 巡天文档"
+  },
+  "galaxy_distance_ladder": {
+    "title": "河外距离阶梯",
+    "source": "Freedman & Madore 2010; Riess et al. 2022 (SH0ES); Beaton et al. 2016"
+  },
+  "iras_color_color": {
+    "title": "IRAS 颜色-颜色图分区判据",
+    "source": "Helou et al. 1988; Spinoglio & Malkan 1989; Soifer et al. 1987"
+  },
+  "hyperleda_field_semantics": {
+    "title": "HYPERLEDA 常用列语义与单位",
+    "source": "Paturel et al. 2003 (HYPERLEDA I); Makarov et al. 2014 (PGC); RC3"
+  },
+  "sdss_photometry_fields": {
+    "title": "SDSS 测光: ugriz 波段深度与星等口径",
+    "source": "Abazajian et al. 2009 (SDSS DR7); Stoughton et al. 2002; SDSS 巡天文档"
+  },
+  "wise_photometry_bands": {
+    "title": "WISE 四波段测光: 波长/深度/系统",
+    "source": "Wright et al. 2010; Cutri et al. 2021 (AllWISE Explanatory Supplement); Mainzer et al. 2011"
+  },
+  "hipparcos_tycho_astrometry": {
+    "title": "Hipparcos/Tycho 天体测量: 精度与星等范围",
+    "source": "Perryman et al. 1997 (Hipparcos); Hog et al. 2000 (Tycho-2); van Leeuwen 2007"
+  },
+  "catalog_crossmatch_practice": {
+    "title": "目录 cross-match 规范: 匹配半径与自行外推",
+    "source": "Marrese et al. 2019 (Gaia 预计算交叉匹配); Pineau et al. 2017; TOPCAT/STILTS 文档"
+  },
+  "ab_vega_conversion": {
+    "title": "AB 与 Vega 星等系统转换",
+    "source": "Oke & Gunn 1983; Fukugita et al. 1996; Blanton & Roweis 2007; Reach et al. 2005 (IRAC); Jarrett et al. 2011 (WISE)"
+  },
+  "catalog_flag_semantics": {
+    "title": "目录标志位语义: 缺测/上限/质量标志",
+    "source": "2MASS All-Sky Explanatory Supplement (Cutri et al. 2003); Cutri et al. 2021 (AllWISE); SDSS 文档"
+  },
+  "sed_construction_bands": {
+    "title": "多波段 SED 构建: 波段覆盖与流量单位统一",
+    "source": "Blanton & Roweis 2007 (kcorrect); Ilbert et al. 2009; Galametz et al. 2013 (CIGALE); Gwyn 2008 (CFHTLS)"
+  },
+  "proper_motion_catalog_use": {
+    "title": "自行与历元外推: 位置随自行变化",
+    "source": "Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)"
+  },
+  "galaxy_catalog_photometry_units": {
+    "title": "星系目录测光单位与口径 (等光度 vs 总量)",
+    "source": "Jarrett et al. 2000 (2MASS XSC); Kron 1980; Blanton et al. 2001 (Petrosian); Paturel et al. 2003 (HYPERLEDA)"
+  },
+  "ukidss_near_infrared_photometry": {
+    "title": "UKIDSS 近红外巡天测光 (YJHK)",
+    "source": "Lawrence et al. 2007 (UKIDSS 设计); Warren et al. 2007 (DR2); UKIDSS DR8/DR9"
+  },
+  "twomass_photometry_fields": {
+    "title": "2MASS 点源目录测光字段与完备限",
+    "source": "Skrutskie et al. 2006; Cutri et al. 2003 (2MASS All-Sky Explanatory Supplement)"
+  },
+  "galex_uv_photometry": {
+    "title": "GALEX 紫外测光: FUV/NUV 波段、深度与口径",
+    "source": "Morrissey et al. 2007 (ApJS 173, 682); Gil de Paz et al. 2007; Bianchi et al. 2014 (GALEX DR6/7)"
+  },
+  "spitzer_irac_bands": {
+    "title": "Spitzer IRAC 四波段测光: 波长/灵敏度/系统",
+    "source": "Fazio et al. 2004 (IRAC 仪器论文); Reach et al. 2005; IRAC Instrument Handbook"
+  },
+  "vla_radio_survey": {
+    "title": "VLA 射电巡天: NVSS 1.4 GHz 参数与字段",
+    "source": "Condon et al. 1998 (AJ 115, 1693); NVSS Explanatory Supplement; Lacy et al. 2020 (VLASS)"
+  },
+  "redshift_survey_fields": {
+    "title": "红移巡天: SDSS/2dF/6dF 深度与覆盖",
+    "source": "Jones et al. 2009 (6dFGS); Colless et al. 2001 (2dFGRS); Strauss et al. 2002 (SDSS MGS); Abazajian et al. 2009"
+  },
+  "gaia_dr3_astrophysical_params": {
+    "title": "Gaia DR3 天体物理参数: 来源口径与精度",
+    "source": "Gaia Collaboration 2023 (A&A 674, A1); Fouesneau et al. 2023 (GSP-Phot); Recio-Blanco et al. 2023 (GSP-Spec)"
+  },
+  "stellar_parameter_catalogs": {
+    "title": "恒星参数光谱目录: APOGEE/LAMOST/PaSTeL",
+    "source": "Abdurro'uf et al. 2022 (APOGEE DR17); Cui et al. 2012 (LAMOST); Soubiran et al. 2010 (PaSTeL)"
+  },
+  "galex_sdss_wise_multiwavelength": {
+    "title": "多波段组合: GALEX+SDSS+WISE 的 SED 覆盖",
+    "source": "Salim et al. 2007; Gil de Paz et al. 2007; Wright et al. 2010 (WISE); Bianchi et al. 2007"
+  },
+  "source_catalog_quality_metrics": {
+    "title": "源目录质量指标: SNR/混淆度/天测精度列",
+    "source": "Cutri et al. 2003 (2MASS Explanatory Supplement); SDSS 文档; Gaia Collaboration 2023; Condon et al. 1998"
+  },
+  "photometric_redshift_catalogs": {
+    "title": "测光红移目录: 误差列/PDZ/离群率",
+    "source": "Ilbert et al. 2009; Hildebrandt et al. 2012; Salvato et al. 2019; Weaver et al. 2022 (COSMOS2020)"
+  },
+  "morphological_catalogs": {
+    "title": "形态分类目录: Galaxy Zoo 投票分数与标志",
+    "source": "Lintott et al. 2008 (GZ1); Willett et al. 2013 (GZ2); Darg et al. 2010 (合并); Walmsley et al. 2023 (GZ DESI)"
+  },
+  "akari_ir": {
+    "title": "AKARI 红外巡天: 6 波段覆盖与灵敏度",
+    "source": "Murakami et al. 2007 (PASJ 59, S369); Ishihara et al. 2010 (IRC PSC); Yamamura et al. 2010 (FIS BSC)"
+  },
+  "first_radio_catalog": {
+    "title": "FIRST 射电目录: 高分辨 1.4 GHz 与 NVSS 配合",
+    "source": "Becker et al. 1995 (ApJ 450, 559); White et al. 1997; Helfand et al. 2015 (FIRST 目录)"
+  },
+  "radio_dm_measurement": {
+    "title": "射电 DM 测量原理与精度",
+    "source": "Lorimer & Kramer 2004, Handbook of Pulsar Astronomy"
+  },
+  "spectroscopic_redshift_method": {
+    "title": "光谱红移测量原理",
+    "source": "Dawson et al. 2016, AJ"
+  },
+  "photometric_redshift_method": {
+    "title": "测光红移原理与局限性",
+    "source": "Salvato et al. 2019, Nature Astronomy"
+  },
+  "interferometry_basics": {
+    "title": "射电干涉测量基本原理",
+    "source": "Thompson, Moran & Swenson 2017, Interferometry and Synthesis in Radio Astronomy"
+  },
+  "astrometry_parallax_principle": {
+    "title": "天体测量视差原理 (Gaia)",
+    "source": "Gaia Collaboration 2023, A&A 674, A1; Lindegren et al. 2021, A&A 649, A4"
+  },
+  "photometric_system_differences": {
+    "title": "测光系统差异 (G/BP/RP, J/H/K)",
+    "source": "Jordi et al. 2010, A&A; Cutri et al. 2003, 2MASS Explanatory Supplement"
+  },
+  "mk_spectral_classification": {
+    "title": "MK 光谱分类原理",
+    "source": "Gray 2005; MK 分类原始文献"
+  },
+  "agn_emission_line_diagnostics": {
+    "title": "AGN 谱线诊断 (BPT 图)",
+    "source": "Kewley 2001; Kauffmann 2003; 两类 LINER (0902.1023)"
+  },
+  "sersic_profile_fitting": {
+    "title": "Sérsic 剖面拟合",
+    "source": "Sérsic 1963; GALFIT 文档; UTK 星系讲义"
+  },
+  "iras_farir_photometry": {
+    "title": "IRAS 远红外测光口径",
+    "source": "IRAS Explanatory Supplement 1988; Helou; de Grijp"
+  },
+  "extragalactic_distance_ladder": {
+    "title": "河外距离阶梯",
+    "source": "距离阶梯综述; McConnachie 2012; Benedict 2002"
+  },
+  "radial_velocity_measurement": {
+    "title": "径向速度测量",
+    "source": "RV 测量方法文献; HARPS/ESPRESSO 综述"
+  },
+  "2mass_jhk_photometry": {
+    "title": "2MASS JHK 测光列语义",
+    "source": "Cutri 2003 2MASS Explanatory Supplement; VizieR VII/233"
+  },
+  "metallicity_measurement": {
+    "title": "金属丰度测量与双标尺",
+    "source": "Asplund 2009; 氧丰度转换讨论; 谱线分析文献"
+  },
+  "galaxy_kinematics_measurement": {
+    "title": "星系动力学测量",
+    "source": "星系动力学讲义; HI 21cm 观测文献"
+  },
+  "photometric_redshift_galaxy": {
+    "title": "星系测光红移",
+    "source": "Ilbert 2009 COSMOS; EDisCS; PAU; Conroy 2013"
+  },
+  "photometric_system_ugriz": {
+    "title": "SDSS ugriz 测光系统与 AB 零点",
+    "source": "Fukugita et al. 1996, AJ 111, 1748; Oke & Gunn 1983, ApJ 266, 713"
+  },
+  "spectral_line_measurement": {
+    "title": "谱线参数测量 (中心波长/等值宽度/FWHM)",
+    "source": "Cayrel de Strobel 1988; Vollmann & Eversberg 2006, AN 327, 12"
+  },
+  "radial_velocity_precision": {
+    "title": "径向速度测量精度与抖动源",
+    "source": "Dumusque et al. 2021 (HARPS-N solar decade); Pepe et al. 2021, A&A 645, A96 (ESPRESSO)"
+  },
+  "stokes_polarimetry": {
+    "title": "偏振测量与 Stokes 参数",
+    "source": "Serkowski 1958; Simmons & Stewart 1985, A&A 142, 100; Myserlis et al. 2018"
+  },
+  "light_curve_phase_folding": {
+    "title": "光变曲线相位折叠与周期搜索",
+    "source": "Lomb 1976; Scargle 1982; VanderPlas 2018, ApJS 236, 16"
+  },
+  "astrometric_precession_nutation": {
+    "title": "岁差/章动/自行修正与历元转换",
+    "source": "IAU 2006 岁差模型 (Capitaine et al. 2003); Astronomical Almanac; Lieske et al. 1977"
+  },
+  "radio_interferometry_uv": {
+    "title": "干涉测量 uv 覆盖与综合孔径",
+    "source": "Thompson, Moran & Swenson 2017, Interferometry and Synthesis in Radio Astronomy"
+  },
+  "error_propagation_weighted": {
+    "title": "误差传播与加权平均",
+    "source": "Taylor 1997, An Introduction to Error Analysis; Hogg et al. 2010, arXiv:1008.4686"
+  },
+  "spectral_index_measurement": {
+    "title": "谱指数测量 (连续谱幂律斜率)",
+    "source": "Condon 1992, ARA&A 30, 575; MIGHTEE-COSMOS 2023"
+  },
+  "stromgren_photometry": {
+    "title": "Strömgren uvby 中间带测光",
+    "source": "Strömgren 1966, ARA&A 4, 433; Önehag et al. 2009, A&A 498, 527; Twarog et al. 2023, AJ 165, 105"
+  },
+  "sed_fitting_method": {
+    "title": "SED 拟合方法 (模板网格/χ² 最小化)",
+    "source": "Boquien et al. 2019, A&A 622, A103 (CIGALE); da Cunha, Charlot & Elbaz 2008, MNRAS 388, 1595 (MAGPHYS); Conroy 2013, ARA&A 51, 393"
+  },
+  "aperture_photometry": {
+    "title": "孔径测光 (孔径半径/天空扣除/孔径改正)",
+    "source": "Stetson 1987, PASP 99, 191; Bertin & Arnouts 1996, A&AS 117, 393; Naylor 1998, MNRAS 296, 339"
+  },
+  "surface_brightness_measure": {
+    "title": "表面亮度测量与单位 (mag/arcsec²)",
+    "source": "Jedrzejewski 1987, MNRAS 226, 747; RC3 (de Vaucouleurs et al. 1991); Disney 1976, Nature 263, 573"
+  },
+  "ccd_calibration": {
+    "title": "CCD 校准 (偏置/暗流/平场/非线性)",
+    "source": "Howell 2006, Handbook of CCD Astronomy (2nd ed.); Janesick 2001, Scientific Charge-Coupled Devices"
+  },
+  "flux_calibration_standards": {
+    "title": "流量定标 (标准星/大气消光/仪器响应)",
+    "source": "Landolt 1992, AJ 104, 340; Bohlin et al. 2020, AJ 160, 21 (CALSPEC); Harris, Fitzgerald & Reed 1981, PASP 93, 507"
+  },
+  "time_resolution_sampling": {
+    "title": "时间分辨率与采样 (Nyquist 与混叠)",
+    "source": "Kurtz 1983, IBVS 2285; VanderPlas 2018, ApJS 236, 16; Murphy, Shibahashi & Kurtz 2013, MNRAS 430, 2986"
+  },
+  "isophotal_analysis": {
+    "title": "等光度分析 (椭圆拟合/位置角/轮廓)",
+    "source": "Jedrzejewski 1987, MNRAS 226, 747; Sérsic 1963; Ciotti & Bertin 1999, A&A 352, 447; RC3"
+  },
+  "narrowband_imaging": {
+    "title": "窄带成像 (发射线滤光片/连续谱扣除)",
+    "source": "Kennicutt 1998, ARA&A 36, 189; Baldwin, Phillips & Terlevich 1981, PASP 93, 5; 窄带巡天方法 (NBS)"
+  },
+  "spectrum_snr_optimization": {
+    "title": "光谱信噪比优化 (曝光/拼接/抖动)",
+    "source": "STIS Instrument Handbook (exposure-time 计算); ESO ETC 公式书; Cayrel de Strobel 1988"
+  },
+  "astrometry_plate_solution": {
+    "title": "天体测量板解 (切点投影/参考星/畸变)",
+    "source": "Servillat et al. 2011, arXiv:1102.4874 (DASCH); Lang et al. 2010, AJ 139, 1782 (astrometry.net); Bertin 2006 (SCAMP)"
+  },
+  "psf_fitting_photometry": {
+    "title": "PSF 拟合测光 (拥挤场点源)",
+    "source": "Stetson 1987, PASP 99, 191; Anderson & King 2000, PASP 112, 1360; Trujillo et al. 2001, MNRAS 328, 977"
+  },
+  "lucky_imaging": {
+    "title": "幸运成像 (短曝光选帧叠加)",
+    "source": "Fried 1978, JOSA 68, 1651; Baldwin et al. 2001, A&A 368, L1; Tubbs 2003, lucky exposures (剑桥学位论文)"
+  },
+  "spectral_resolution_rvalue": {
+    "title": "光谱分辨率 R 值与仪器轮廓",
+    "source": "光谱仪设计教科书 (Schroeder); echelle 设计文献; 光谱分辨率综述"
+  },
+  "twod_spectroscopy": {
+    "title": "二维光谱 (长缝与积分视场单元)",
+    "source": "Allington-Smith 2006, New Astron. Rev. 50, 244; Bacon et al. 2010 (MUSE); Bundy et al. 2015 (MaNGA)"
+  },
+  "sky_background_estimation": {
+    "title": "天光背景估计与扣除",
+    "source": "Benn & Ellison 1998, New Astron. Rev. 42, 503; Patat 2008, A&A 481, 575; ESO Paranal 天光测量文档"
+  },
+  "radio_channel_dm_smearing": {
+    "title": "射电通道内色散涂抹",
+    "source": "Lorimer & Kramer 2004 脉冲星天文手册; Swinburne COSMOS: Pulsar Dispersion Measure"
+  },
+  "faraday_rotation_measurement": {
+    "title": "法拉第旋转与旋转量测量",
+    "source": "Burn 1966, MNRAS 133, 67; Brentjens & de Bruyn 2005, A&A 441, 1217 (RM 合成)"
+  },
+  "pulsar_timing_method": {
+    "title": "脉冲星计时方法 (TOA 与计时模型)",
+    "source": "Lorimer & Kramer 2004 脉冲星天文手册; Hobbs, Edwards & Manchester 2006, MNRAS 369, 655 (TEMPO2)"
+  },
+  "multi_object_spectroscopy": {
+    "title": "多目标光谱观测 (光纤/多缝)",
+    "source": "York et al. 2000 (SDSS); DESI Collaboration 2016 (DESI 设计报告); 多目标光谱综述"
+  },
+  "cross_instrument_dm_comparison": {
+    "title": "跨仪器 DM 比较方法论",
+    "source": "Cordes & Shannon 2010, astro-ph; Petroff et al. 2016, PASA"
+  },
+  "frb_statistical_guidelines": {
+    "title": "FRB 数据统计分析指南",
+    "source": "Petroff et al. 2019, A&ARv; CHIME/FRB Collaboration 2021, ApJS"
+  },
+  "data_quality_interpretation": {
+    "title": "天体物理数据质量评分解读指南",
+    "source": "Internal methodology"
+  },
+  "catalog_cross_match_guidelines": {
+    "title": "星表交叉证认方法论",
+    "source": "Pineau et al. 2017, A&A; Gaia Collaboration 2023, A&A"
+  },
+  "database_source_reliability": {
+    "title": "数据库来源可信度评估",
+    "source": "Gaia Collaboration 2023, A&A; IRAS Explanatory Supplement 1988"
+  },
+  "simbad_otype_classification_rule": {
+    "title": "Simbad 对象类型分类规则",
+    "source": "Simbad guide chF; Oberto 2018; IVOA Object Types Vocabulary"
+  },
+  "extragalactic_catalog_crossmatch": {
+    "title": "河外多目录交叉证认",
+    "source": "VizieR 目录文档; 交叉证认方法文献; Contini 1998"
+  },
+  "sample_selection_bias": {
+    "title": "样本选择效应",
+    "source": "Helou; Stern 2012; Markarian 星系光谱分类"
+  },
+  "photometric_system_conversion": {
+    "title": "测光系统转换",
+    "source": "Jordi 2010; 2MASS Explanatory Supplement; SDSS 文档"
+  },
+  "multi_source_redshift_compare": {
+    "title": "多来源红移比较",
+    "source": "COSMOS/EDisCS photo-z 研究; PAU 窄带"
+  },
+  "agn_host_galaxy_interpretation": {
+    "title": "AGN 宿主星系解读",
+    "source": "Alonso-Herrero 2008; Kormendy & Ho 2013"
+  },
+  "catalog_documentation_check": {
+    "title": "目录文档核对",
+    "source": "VizieR 文档; IRAS Explanatory Supplement; 2MASS XSC"
+  },
+  "bayesian_inference_astro": {
+    "title": "贝叶斯推断在天文中的应用",
+    "source": "Trotta 2008, Contemporary Physics; Foreman-Mackey et al. 2013, PASP"
+  },
+  "least_squares_fitting": {
+    "title": "最小二乘与卡方拟合",
+    "source": "Andrae, Schulze-Hartung & Melchior 2010, arXiv:1012.3754; Bevington & Robinson, Data Reduction and Error Analysis"
+  },
+  "cross_match_angular": {
+    "title": "角距匹配与误差椭圆",
+    "source": "Pineau et al. 2011/2017, A&A; CDS xMatch 文档; Budavari & Szalay 2008, ApJ"
+  },
+  "spectral_classification_mk": {
+    "title": "MK 光谱分类体系 (应用与校验)",
+    "source": "Morgan, Keenan & Kellman 1943; Gray & Corbally 2009, Stellar Spectral Classification; Pecaut & Mamajek 2013, ApJS"
+  },
+  "stellar_mass_function_imf": {
+    "title": "恒星初始质量函数 (IMF)",
+    "source": "Salpeter 1955, ApJ; Kroupa 2001, MNRAS; Chabrier 2003, PASP; La Barbera et al. 2013, MNRAS"
+  },
+  "source_detection_deblend": {
+    "title": "源检测与去混叠 (deblending)",
+    "source": "Bertin & Arnouts 1996, A&AS; SExtractor v2.x 文档"
+  },
+  "lomb_scargle_periodogram": {
+    "title": "Lomb-Scargle 周期图",
+    "source": "Lomb 1976, Ap&SS; Scargle 1982, ApJ; VanderPlas 2018, ApJS; Baluev 2008, MNRAS"
+  },
+  "extinction_correction_method": {
+    "title": "消光改正方法",
+    "source": "Cardelli, Clayton & Mathis 1989, ApJ; Rieke & Lebofsky 1985, ApJ; Fitzpatrick 1999, PASP; Schlafly et al. 2016, ApJ"
+  },
+  "mcmc_sampling_astro": {
+    "title": "马尔可夫链蒙特卡洛 (MCMC) 参数采样",
+    "source": "Foreman-Mackey et al. 2013, PASP (emcee); Hogg & Foreman-Mackey 2018, ApJS"
+  },
+  "pca_dimensionality_reduction": {
+    "title": "数据降维与可视化 (PCA)",
+    "source": "Jolliffe 2002, Principal Component Analysis; McInnes et al. 2018 (UMAP); VanderPlas 2018, ApJS"
+  },
+  "selection_bias_correction": {
+    "title": "选择偏差 (Malmquist 偏差) 识别与改正",
+    "source": "Malmquist 1920; Schmidt 1968, ApJ 151; Sandage, Tammann & Yahil 1979, ApJ; Lauer et al. 2021, ApJ"
+  },
+  "volume_limited_sample": {
+    "title": "体积受限样本与 V/Vmax 检验",
+    "source": "Schmidt 1968, ApJ 151; Avni & Bahcall 1980, ApJ 235"
+  },
+  "cluster_analysis_method": {
+    "title": "聚类分析方法 (DBSCAN/FoF/层次聚类)",
+    "source": "Ester et al. 1996, KDD (DBSCAN); Huchra & Geller 1982, ApJ (FoF); Castro-Ginard et al. 2018, A&A; Hunt & Reffert 2021, A&A"
+  },
+  "robust_fitting_outliers": {
+    "title": "鲁棒拟合与离群值处理",
+    "source": "Huber 1964, Ann. Math. Statist.; Hampel et al. 1986, Robust Statistics; astropy.stats 文档; Martin & Mortlock 2024, MNRAS"
+  },
+  "monte_carlo_simulation": {
+    "title": "蒙特卡洛模拟 (不确定度传播与合成观测)",
+    "source": "Metropolis & Ulam 1949, JASA; Andrae 2010, arXiv:1009.2755; Norberg et al. 2009, MNRAS 396"
+  },
+  "k_correction_method": {
+    "title": "K 改正 (波段平移改正)",
+    "source": "Oke & Sandage 1968, ApJ; Hogg et al. 2002, PASP 114; Blanton & Roweis 2007, AJ"
+  },
+  "spectral_template_fitting": {
+    "title": "光谱模板拟合 (红移/恒星参数/发射线分解)",
+    "source": "Arnouts et al. 1999, MNRAS; Benitez 2000, ApJ (BPZ); Ilbert et al. 2006, A&A; Brammer et al. 2008, ApJ (EAzY); Cavuoti et al. 2017, MNRAS"
+  },
+  "photometry_astrometry_quality_control": {
+    "title": "测光/天测数据质量控制",
+    "source": "2MASS Explanatory Supplement; Magnier et al. 2020, ApJS (Pan-STARRS1); Gaia Collaboration 2023, A&A"
+  },
+  "machine_learning_classification": {
+    "title": "机器学习分类 (随机森林/神经网络/不平衡处理)",
+    "source": "Breiman 2001, Machine Learning; Chawla et al. 2002, JAIR (SMOTE); Ball et al. 2006, ApJ"
+  },
+  "bootstrap_resampling": {
+    "title": "Bootstrap/Jackknife 重采样误差估计",
+    "source": "Efron 1979, Ann. Statist.; Barrow, Bhavsar & Sonoda 1984, MNRAS; Norberg et al. 2009, MNRAS 396"
+  },
+  "censored_data_upper_limits": {
+    "title": "上限值 (未检出) 数据处理 — 生存分析",
+    "source": "Kaplan & Meier 1958, JASA; Feigelson & Nelson 1985, ApJ; Isobe, Feigelson & Nelson 1986, ApJ; ASURV (LaValley, Isobe & Feigelson 1992)"
+  },
+  "limiting_magnitude_estimation": {
+    "title": "极限星等估计 (曝光/口径/天光公式)",
+    "source": "McLean 1997; LSST Science Requirements SM TN-016; INGRID/LIRIS 灵敏度文档"
+  },
+  "signal_noise_trading": {
+    "title": "信噪比权衡 (时间/波段/空间分辨率分配)",
+    "source": "LSST SM TN-016; 曝光时间计算器文档; 观测策略文献"
+  },
+  "astrometric_calibration_method": {
+    "title": "天体测量校准 (参考网/畸变模型/内部一致性)",
+    "source": "Zheng, Peng & Lin 2021, MNRAS; Lindegren et al. 2021, A&A (Gaia EDR3); NAROO 项目"
+  },
+  "spectroscopy_template_redshift": {
+    "title": "光谱红移模板匹配 (交叉相关/发射线红移)",
+    "source": "Tonry & Davis 1979, AJ 84, 1511; Kurtz & Mink 1998, PASP (RVSAO); SDSS 光谱处理文档"
+  },
+  "photometric_variability_detect": {
+    "title": "变光检测 (统计显著性/超额方差/结构函数)",
+    "source": "Vaughan et al. 2003, MNRAS 345, 1271; Kozlowski 2016, ApJ 826, 118; Sesar et al. 2010, ApJ"
+  },
+  "multi_epoch_combination": {
+    "title": "多历元合并 (加权平均/去趋势/系统差处理)",
+    "source": "LSST DRP coadd 文档; DES DR1 校准; 2MASS Explanatory Supplement"
+  },
+  "survey_completeness": {
+    "title": "巡天完备性 (完备函数/注入-回收/选择函数)",
+    "source": "Hopkins et al. 2003 (Phoenix Deep Survey); 注入-回收完备性范式综述"
+  },
+  "DM_redshift_relation": {
+    "title": "色散量-红移关系 (Macquart Relation)",
+    "source": "Macquart et al. 2020, Nature, DOI:10.1038/s41586-020-2300-2"
+  },
+  "scattering_frequency_relation": {
+    "title": "散射时标-频率关系",
+    "source": "Rickett 1990, ARA&A; Cordes & Lazio 2002, astro-ph/0207156"
+  },
+  "fluence_energy_relation": {
+    "title": "fluence-能量关系",
+    "source": "Petroff et al. 2019, A&ARv"
+  },
+  "photo_z_vs_spec_z": {
+    "title": "测光红移 vs 光谱红移精度对比",
+    "source": "Salvato et al. 2019, Nature Astronomy"
+  },
+  "dm_galactic_contribution": {
+    "title": "银河系 DM 贡献模型",
+    "source": "Cordes & Lazio 2002; Yao et al. 2017, ApJ"
+  },
+  "blackbody_radiation_law": {
+    "title": "黑体辐射定律",
+    "source": "恒星物理教科书; OSU HR 图讲义"
+  },
+  "mass_luminosity_law": {
+    "title": "主序质光关系",
+    "source": "质光关系教科书; UNLV 主序表"
+  },
+  "eddington_luminosity": {
+    "title": "爱丁顿光度界限",
+    "source": "JILA 讲义; Eddington 1916 原始推导"
+  },
+  "hubble_flow_law": {
+    "title": "Hubble 流与距离-红移",
+    "source": "Planck 2020; 宇宙学教科书"
+  },
+  "doppler_redshift_law": {
+    "title": "多普勒红移与视向速度",
+    "source": "多普勒效应讲义; RV 测量方法文献"
+  },
+  "virial_mass_theorem": {
+    "title": "维里定理与动力学质量",
+    "source": "维里定理讲义; 星系团质量综述 (Peterson)"
+  },
+  "radius_temp_luminosity": {
+    "title": "恒星半径-温度-光度关系",
+    "source": "恒星物理教科书; HR 图讲义"
+  },
+  "schwarzschild_radius": {
+    "title": "Schwarzschild 半径",
+    "source": "JILA 黑洞讲义; Schwarzschild 1916"
+  },
+  "stellar_hydrostatic_equilibrium": {
+    "title": "恒星流体静力平衡与维里定理",
+    "source": "恒星结构与演化标准教科书; Kippenhahn & Weigert 恒星结构与演化"
+  },
+  "stellar_nucleosynthesis_pp_cno": {
+    "title": "氢燃烧: pp 链与 CNO 循环",
+    "source": "Clayton 恒星结构与演化; Carroll & Ostlie 现代天体物理导论"
+  },
+  "synchrotron_radiation": {
+    "title": "同步辐射与谱指数",
+    "source": "Rybicki & Lightman 辐射过程; Longair 高能天体物理"
+  },
+  "inverse_compton_scattering": {
+    "title": "逆康普顿散射与 IC 损失",
+    "source": "Blumenthal & Gould 1970, Rev. Mod. Phys.; Rybicki & Lightman"
+  },
+  "free_free_radiation": {
+    "title": "自由-自由辐射 (热轫致辐射)",
+    "source": "Altenhoff et al. 1960; Rybicki & Lightman; Wilson 射电天文"
+  },
+  "hydrogen_21cm_line": {
+    "title": "中性氢 21cm 谱线",
+    "source": "Field 1958; 中性氢天文学教科书; 21cm 专题综述 (Wouthuysen-Field)"
+  },
+  "kepler_orbital_mechanics": {
+    "title": "开普勒轨道力学与双星质量函数",
+    "source": "二体问题教科书; Eggleton 1983, ApJ; 双星质量函数综述"
+  },
+  "degenerate_gas_equation": {
+    "title": "简并气体状态方程与钱德拉塞卡极限",
+    "source": "Chandrasekhar 1931/1935; Shapiro & Teukolsky 黑洞、白矮星与中子星"
+  },
+  "plasma_frequency_debye_shielding": {
+    "title": "等离子体频率与德拜屏蔽",
+    "source": "Chen 等离子体物理导论; 射电天文学方法 (Taylor, Carilli, Perley)"
+  },
+  "jeans_instability": {
+    "title": "金斯不稳定性与金斯质量",
+    "source": "Jeans 1902; 恒星形成综述 (Shu, McKee); 分子云物理教科书"
+  },
+  "radiation_transfer_equation": {
+    "title": "辐射转移方程与光深",
+    "source": "Rybicki & Lightman 辐射过程; Mihalas 恒星大气物理"
+  },
+  "stellar_oscillation_asteroseismology": {
+    "title": "恒星振荡与星震学 (p 模/g 模)",
+    "source": "Kjeldsen & Bedding 1995, A&A; Huber et al. 2011, ApJ 743, 143"
+  },
+  "acoustic_wave_plasma": {
+    "title": "等离子体中的声波与磁声波 (阿尔芬波)",
+    "source": "Chen 等离子体物理导论; Aschwanden 日冕波与日震学综述"
+  },
+  "eddington_approximation": {
+    "title": "爱丁顿近似与辐射扩散近似",
+    "source": "Mihalas 恒星大气物理; MESA 灰大气模型文档"
+  },
+  "tidal_forces_roche": {
+    "title": "潮汐力与洛希极限 (潮汐瓦解)",
+    "source": "Roche 1848; Rees 1988, Nature; TDE 综述 (Gezari 2021)"
+  },
+  "atomic_transition_probability": {
+    "title": "原子跃迁概率与谱线强度 (爱因斯坦系数)",
+    "source": "Rybicki & Lightman 辐射过程; Draine 天体物理辐射过程; NIST 原子光谱数据库"
+  },
+  "relativistic_beaming": {
+    "title": "相对论聚束效应 (多普勒因子)",
+    "source": "Urry & Padovani 1995, PASP 107, 803; Rybicki & Lightman 辐射过程"
+  },
+  "gravitational_redshift": {
+    "title": "引力红移",
+    "source": "爱因斯坦 1916; Holberg 2010, JHA 41 (白矮星引力红移); 广义相对论教科书"
+  },
+  "jeans_mass_star_formation": {
+    "title": "恒星形成的坍缩时标与吸积率",
+    "source": "Shu 1977, ApJ 214, 488; McKee & Ostriker 2007, ARA&A 45, 565; Krumholz 恒星形成"
+  },
+  "magnetic_reconnection": {
+    "title": "磁重联 (Sweet-Parker 与 Petschek 速率)",
+    "source": "Sweet 1958; Parker 1957; Petschek 1964; Priest & Forbes 磁重联综述"
+  },
+  "rayleigh_jeans_wien": {
+    "title": "瑞利-金斯与维恩极限 (亮温度)",
+    "source": "Rybicki & Lightman 辐射过程; Wilson 射电天文 (亮温度换算)"
+  },
+  "planck_law_numerical": {
+    "title": "普朗克定律的数值形式与计算要点",
+    "source": "CODATA 物理常数; Rybicki & Lightman 辐射过程; 黑体辐射数值表"
+  },
+  "radiation_pressure_force": {
+    "title": "辐射压力 (光子动量与辐射压梯度)",
+    "source": "Rybicki & Lightman 辐射过程; Maeder 恒星结构与演化; Eddington 1916"
+  },
+  "electron_scattering_depth": {
+    "title": "电子散射光深 (Thomson 光深)",
+    "source": "Rybicki & Lightman 辐射过程; Planck Collaboration 2018, A&A 641, A6; Sunyaev & Zeldovich 1972"
+  },
+  "saha_ionization_equation": {
+    "title": "Saha 电离方程与恒星光谱温度序",
+    "source": "Saha 1920, Phil. Mag. 40, 472; Gray 恒星光谱分类; Carroll & Ostlie 现代天体物理导论"
+  },
+  "line_formation_curve_growth": {
+    "title": "谱线形成与生长曲线",
+    "source": "Strömgren 1948, ApJ 108, 242; Rybicki & Lightman 辐射过程; Draine 天体物理辐射过程"
+  },
+  "orbital_resonance_mechanics": {
+    "title": "轨道共振与潮汐锁定",
+    "source": "Peale 1977, Icarus 32, 76; Murray & Dermott 太阳系动力学; Barnes 2017, CeMDA 129, 509"
+  },
+  "fluid_dynamics_shock": {
+    "title": "流体动力学激波 (Rankine-Hugoniot 跳跃条件)",
+    "source": "Rankine 1870; Hugoniot 1887; Draine 天体物理辐射过程; Vink 2012, A&ARv 20, 49 (超新星遗迹)"
+  },
+  "heat_capacity_degenerate": {
+    "title": "简并物质热容与白矮星冷却",
+    "source": "Mestel 1952, MNRAS 112, 583; Shapiro & Teukolsky 黑洞、白矮星与中子星; Fontaine, Brassard & Bergeron 2001, PASP 113, 409"
+  },
+  "radiative_cooling_function": {
+    "title": "等离子体辐射冷却函数",
+    "source": "Sutherland & Dopita 1993, ApJS 88, 253; Draine 2011 天体物理辐射过程"
+  },
+  "FRB_DM_range": {
+    "title": "FRB 色散量参考范围",
+    "source": "CHIME/FRB Catalog 2024; FRBSTATS.org"
+  },
+  "FRB_fluence_range": {
+    "title": "FRB fluence 参考范围",
+    "source": "Petroff et al. 2019, A&ARv"
+  },
+  "high_z_quasar_range": {
+    "title": "高红移类星体参考范围",
+    "source": "Bañados et al. 2018, Nature; Fan et al. 2023, ARA&A"
+  },
+  "stellar_parallax_range": {
+    "title": "恒星视差参考范围",
+    "source": "Gaia Collaboration 2023, A&A 674, A1"
+  },
+  "stellar_temperature_gravity_range": {
+    "title": "恒星有效温度与表面重力参考范围",
+    "source": "Gray 2005, The Observation and Analysis of Stellar Photospheres"
+  },
+  "star_teff_luminosity_span": {
+    "title": "恒星 Teff/光度全域锚点",
+    "source": "UNLV 主序表; OSU 恒星物理讲义"
+  },
+  "main_sequence_spectral_sequence": {
+    "title": "主序光谱型-温度序列",
+    "source": "UNLV/UTK 主序数据表; LCO Types of Stars"
+  },
+  "ttaauri_star_parameters": {
+    "title": "T Tauri 星与前主序参数",
+    "source": "Lada 1987; Hernández 2005; T Tauri 参数综述"
+  },
+  "white_dwarf_parameters": {
+    "title": "白矮星参数与简并本质",
+    "source": "Liebert 2005 ApJS; SDSS DR12 白矮星研究"
+  },
+  "giant_supergiant_radius": {
+    "title": "巨星/超巨星半径",
+    "source": "OSU HR 图讲义; PHY213 恒星性质讲义"
+  },
+  "galaxy_redshift_span": {
+    "title": "星系红移全域与演化",
+    "source": "Steed & Weinberg; SDSS downsizing; COSMOS"
+  },
+  "galaxy_stellar_mass_span": {
+    "title": "星系恒星质量跨数量级",
+    "source": "Conroy 2013; Alonso-Herrero 2008"
+  },
+  "agn_luminosity_ladder": {
+    "title": "AGN 光度阶梯",
+    "source": "Panessa XMM; Eddington 光度讲义 (JILA)"
+  },
+  "quasar_bolometric_anchor": {
+    "title": "类星体热光度锚点",
+    "source": "Steed & Weinberg 2003; Shen 2009"
+  },
+  "agn_blackhole_mass_relation": {
+    "title": "AGN 黑洞质量锚点",
+    "source": "Tremaine 2002; Kormendy & Ho 2013"
+  },
+  "hii_region_physics": {
+    "title": "HII 区物理与电离平衡",
+    "source": "Kennicutt 2002; Kiel Strömgren 球讲义"
+  },
+  "snr_properties_range": {
+    "title": "超新星遗迹演化与谱指数",
+    "source": "Green 850μm 谱指数; NRAO 讲义; Katsuda 2012"
+  },
+  "brown_dwarf_boundaries": {
+    "title": "褐矮星质量边界",
+    "source": "Wikipedia Brown dwarf; IAU 定义; 褐矮星综述"
+  },
+  "exoplanet_radius_gap": {
+    "title": "系外行星半径间隙",
+    "source": "CKS 样本; 2016A&A 589A 75M; TOI-1075b 研究"
+  },
+  "galaxy_morphology_hubble": {
+    "title": "星系形态 (Hubble T 序列)",
+    "source": "Hubble 1926; de Vaucouleurs RC3"
+  },
+  "galaxy_sfr_typical": {
+    "title": "星系恒星形成率 (SFR) 典型范围",
+    "source": "Kennicutt & Evans 2012, ARA&A 50, 531"
+  },
+  "galaxy_gas_content": {
+    "title": "星系气体含量 (HI/H2)",
+    "source": "Catinella et al. 2018 (xGASS); Saintonge et al. 2017"
+  },
+  "cluster_velocity_dispersion": {
+    "title": "星系团速度弥散与丰度",
+    "source": "Abell 1958; Bahcall 1999; Pratt et al. 2009"
+  },
+  "xray_band_luminosity": {
+    "title": "X 射线波段天体光度范围",
+    "source": "Fabbiano 1989; Brandt & Alexander 2015"
+  },
+  "iras_photometry_bands": {
+    "title": "IRAS 点源测光 (12/25/60/100um)",
+    "source": "Beichman et al. 1988; Helou et al. 1988"
+  },
+  "twomass_photometry": {
+    "title": "2MASS 近红外测光 (J/H/Ks)",
+    "source": "Skrutskie et al. 2006; Cutri et al. 2003"
+  },
+  "hyperleda_kinematics": {
+    "title": "HYPERLEDA 星系运动学与口径",
+    "source": "Paturel et al. 2003 (HYPERLEDA I); 2005"
+  },
+  "stellar_evolution_stages": {
+    "title": "恒星演化各阶段典型参数",
+    "source": "Carroll & Ostlie 2007; Salaris & Cassisi 2005; Kippenhahn & Weigert 2012"
+  },
+  "exoplanet_parameter_range": {
+    "title": "系外行星质量与半径范围",
+    "source": "Fulton et al. 2017 (CKS); NASA Exoplanet Archive; exoplanet.eu"
+  },
+  "hii_region_properties": {
+    "title": "HII 区电子密度与温度范围",
+    "source": "Osterbrock & Ferland 2006; Draine 2011"
+  },
+  "molecular_cloud_properties": {
+    "title": "分子云物理参数范围",
+    "source": "Solomon et al. 1987; Kennicutt & Evans 2012; Swinburne COSMOS"
+  },
+  "milky_way_structure": {
+    "title": "银河系结构参数范围",
+    "source": "Bland-Hawthorn & Gerhard 2016; Reid & Brunthaler 2020; IAU 1985"
+  },
+  "globular_cluster_range": {
+    "title": "球状星团典型参数范围",
+    "source": "Harris 1996; VandenBerg et al. 2013; Baumgardt & Hilker 2018"
+  },
+  "variable_star_period_lum": {
+    "title": "脉动变星周期-光度范围",
+    "source": "Catelan & Smith 2015; Freedman & Madore 2010; Gaia Collaboration 2018"
+  },
+  "solar_system_planets": {
+    "title": "太阳系行星参数范围",
+    "source": "NASA Planetary Fact Sheet (Williams 2023); JPL SSD"
+  },
+  "gamma_ray_burst_energy": {
+    "title": "伽马暴能量与持续时间范围",
+    "source": "Kouveliotou et al. 1993; Frail et al. 2001; Zhang 2018"
+  },
+  "neutron_star_parameters": {
+    "title": "中子星质量-半径范围",
+    "source": "Özel & Freire 2016; Lattimer & Prakash 2016; NICER 2021"
+  },
+  "open_cluster_range": {
+    "title": "疏散星团典型参数范围",
+    "source": "Dias et al. 2002; Kharchenko et al. 2013"
+  },
+  "supernova_type_ranges": {
+    "title": "超新星类型与能量参考范围",
+    "source": "Filippenko 1997, ARA&A 35, 309; Phillips 1993; Richardson et al. 2014"
+  },
+  "gravitational_wave_sources": {
+    "title": "引力波源参考范围",
+    "source": "Abbott et al. 2023 (GWTC-3), PRX 13, 011048; LIGO/Virgo/KAGRA 合作"
+  },
+  "black_hole_mass_distribution": {
+    "title": "黑洞质量分布参考范围",
+    "source": "Ozel et al. 2010; Abbott et al. 2023; Kormendy & Ho 2013, ARA&A"
+  },
+  "blazar_properties": {
+    "title": "耀变体分类与性质参考范围",
+    "source": "Fossati et al. 1998; Abdo et al. 2010 (Fermi LAT); Ghisellini et al. 2017"
+  },
+  "brown_dwarf_range": {
+    "title": "褐矮星表面温度与光谱温度标定",
+    "source": "Kirkpatrick 2005, ARA&A; Cushing et al. 2011; UNLV 光谱型表"
+  },
+  "white_dwarf_cooling": {
+    "title": "白矮星冷却时标与表面温度范围",
+    "source": "Bedard et al. 2020, ApJ; Salaris et al. 2022 (BaSTI); Fontaine et al. 2001"
+  },
+  "pulsar_magnetar_range": {
+    "title": "脉冲星与磁星周期/磁场/年龄范围",
+    "source": "Manchester et al. 2005 (ATNF Pulsar Catalogue); Kaspi & Beloborodov 2017, ARA&A"
+  },
+  "exoplanet_atmosphere": {
+    "title": "系外行星大气参数范围",
+    "source": "Seager 2010 (Exoplanet Atmospheres); Sing et al. 2016, Nature; A&A 2025 云/霾参数化"
+  },
+  "small_bodies_solar_system": {
+    "title": "太阳系小天体参考范围",
+    "source": "NASA/JPL Small Body Database; Levison & Duncan 1997; 行星科学十年调查 2023"
+  },
+  "xray_binary_types": {
+    "title": "X 射线双星类型与轨道周期范围",
+    "source": "Tauris & van den Heuvel 2006; Liu et al. 2007 (XRB 星表); Fender 2005"
+  },
+  "tidal_disruption_event_range": {
+    "title": "潮汐瓦解事件 (TDE) 参考范围",
+    "source": "Gezari 2021, ARA&A; Hinkle et al. 2020, ApJ 894, L10; van Velzen et al. 2020"
+  },
+  "diffuse_ism_phase_range": {
+    "title": "弥散星际介质相位参数范围",
+    "source": "McKee & Ostriker 1977; Wolfire et al. 2003; Draine 2011"
+  },
+  "herbig_haro_range": {
+    "title": "Herbig-Haro 天体参考范围",
+    "source": "Reipurth & Bally 2001, ARA&A 39, 403"
+  },
+  "planetary_nebula_range": {
+    "title": "行星状星云参考范围",
+    "source": "Balick & Frank 2002, ARA&A 40, 439; Frew & Parker 2010, PASA 27, 129"
+  },
+  "starburst_galaxy_range": {
+    "title": "星暴星系参考范围",
+    "source": "Kennicutt & Evans 2012, ARA&A 50, 531; Sanders & Mirabel 1996"
+  },
+  "low_surface_brightness_galaxy_range": {
+    "title": "低面亮度星系参考范围",
+    "source": "Impey & Bothun 1997, ARA&A 35, 267"
+  },
+  "galaxy_pair_range": {
+    "title": "星系对参考范围",
+    "source": "Karachentsev 1972 (CPG); Patton et al. 2000, ApJ 536, 153"
+  },
+  "galaxy_group_member_range": {
+    "title": "星系群成员星系参考范围",
+    "source": "Tully 1987, ApJ 321, 280; Girardi et al. 1993, ApJ 404, 38"
+  },
+  "bcg_properties_range": {
+    "title": "最亮星系团星系 (BCG) 参考范围",
+    "source": "von der Linden et al. 2007, MNRAS 379, 867; Zhao et al. 2021"
+  },
+  "interacting_galaxy_range": {
+    "title": "相互作用星系参考范围",
+    "source": "Toomre & Toomre 1972, ApJ 178, 623; Sanders & Mirabel 1996, ARA&A 34, 749"
+  },
+  "protocluster_range": {
+    "title": "原星系团参考范围",
+    "source": "Overzier 2016, A&ARv 24, 14"
+  },
+  "supercluster_range": {
+    "title": "超星系团参考范围",
+    "source": "Einasto 2014, IAU S308 (超星系团综述); Tully et al. 2014, Nature 513, 71 (Laniakea)"
+  },
+  "moving_group_range": {
+    "title": "恒星移动星群参考范围",
+    "source": "Zuckerman & Song 2004, ARA&A 42, 685"
+  },
+  "stellar_outflow_range": {
+    "title": "恒星外流参考范围",
+    "source": "Bachiller 1996, ARA&A 34, 111"
+  },
+  "blue_supergiant_range": {
+    "title": "蓝超巨星参考范围",
+    "source": "Levesque 2017, Physics Reports; Meynet & Maeder 2003"
+  },
+  "yellow_supergiant_range": {
+    "title": "黄超巨星参考范围",
+    "source": "de Jager 1998, A&ARv 8, 145; Drout et al. 2009, ApJ 703, 441"
+  },
+  "void_properties_range": {
+    "title": "宇宙空洞参考范围",
+    "source": "van de Weygaert & Platen 2011, IJMPD 20, 2247; Pan et al. 2012, ApJ 754, 160"
+  },
+  "supernova_classification": {
+    "title": "超新星分类判据与光谱特征",
+    "source": "Filippenko 1997, ARA&A; CSEP10 超新星分类教程"
+  },
+  "gamma_ray_burst_taxonomy": {
+    "title": "伽马暴长短分类与光谱硬度判据",
+    "source": "Kouveliotou et al. 1993, ApJ 413, L101; Qin et al. 2000; 长短硬度-时长统计检验 (ChinaXiv 2022)"
+  },
+  "kilonova_properties": {
+    "title": "千新星观测性质 (r 过程供能暂现源)",
+    "source": "Cowperthwaite et al. 2017, ApJL; Metzger 2019, Living Rev. Rel. 22, 3"
+  },
+  "tidal_disruption_event": {
+    "title": "潮汐瓦解事件判据与吸积率",
+    "source": "Rees 1988, Nature; Stone, Sari & Loeb 2013, MNRAS 435, 1809"
+  },
+  "fast_radio_burst_population": {
+    "title": "FRB 群体性质 (重复/非重复与事件率)",
+    "source": "CHIME/FRB Collaboration 2021, ApJS 257, 59; Caleb et al. 2019, MNRAS; Ma et al. 2025, ApJ 981, 24"
+  },
+  "neutrino_astronomy_sources": {
+    "title": "中微子天文源与通量参考",
+    "source": "Hirata et al. 1987, PRL 58, 1490; Bionta et al. 1987, PRL 58, 1494; IceCube Collab. 2015, ApJ 809, 98"
+  },
+  "gravitational_wave_events": {
+    "title": "引力波事件探测参数",
+    "source": "Abbott et al. 2017, PRL 119, 161101; LIGO/Virgo/KAGRA GWTC-3; IGWN Public Alerts 指南"
+  },
+  "nova_recurrent_nova": {
+    "title": "新星与再发新星参数",
+    "source": "Bode & Evans 2008, Classical Novae; Darnley et al. 2019, Nature 565, 460; Schaefer 2010, ApJS"
+  },
+  "xray_transients": {
+    "title": "X 射线暂现源: 爆发时标与吸积态转换",
+    "source": "Lewin, van Paradijs & Taam 1993, SSRv; Remillard & McClintock 2006, ARA&A; Weng et al. 2021, ApJL 915, L15"
+  },
+  "active_galactic_nucleus_variability": {
+    "title": "AGN 变光性质 (DRW 与结构函数)",
+    "source": "Kelly, Bechtold & Siemiginowska 2009, ApJ; Kasliwal et al. 2015, MNRAS 451, 4328; Kozlowski 2016; Stone et al. 2022, MNRAS"
+  },
+  "stellar_flares": {
+    "title": "恒星耀斑能量分布与特征",
+    "source": "Gershberg 1972, Ap&SS; Maehara et al. 2015, Nature; Notsu et al. 2016, ApJ"
+  },
+  "electromagnetic_counterparts": {
+    "title": "多信使对应体与定位精度",
+    "source": "Abbott et al. 2017, ApJL 848, L12; Metzger 2019, Living Rev. Rel. 22, 3; IceCube Collab. 2018, Science 361, eaat1378"
+  },
+  "supernova_remnant_evolution": {
+    "title": "超新星残余演化阶段 (自由膨胀-Sedov-辐射) 与观测判据",
+    "source": "Truelove & McKee 1999, ApJS 120, 299; Vink 2012, A&ARv 20, 49; CSEP10 超新星残余教程"
+  },
+  "gamma_ray_afterglow": {
+    "title": "伽马暴余辉光变 (正幂律衰减与射电余辉)",
+    "source": "Sari, Piran & Narayan 1998, ApJL 497, L17; Zhang et al. 2006, ApJ 642, 354; Granot & Sari 2002, ApJ 568, 820"
+  },
+  "xray_flare_mechanism": {
+    "title": "X 射线耀斑机制 (磁重联与日冕加热)",
+    "source": "Kopp & Pneuman 1976, Sol. Phys. 50, 85; Neupert 1968, ApJL 153, L59; Benz 2017, Living Rev. Sol. Phys. 14, 2"
+  },
+  "fast_transient_detection": {
+    "title": "快速暂现源检测 (单脉冲搜寻与巡天策略)",
+    "source": "Cordes & McLaughlin 2003, ApJ 596, 1142; Keane & Petroff 2015, MNRAS 447, 2852; CHIME/FRB Collaboration 2021, ApJS 257, 59"
+  },
+  "orphan_afterglow": {
+    "title": "孤儿余辉 (无伽马暴的余辉) 搜寻与判据",
+    "source": "Rhoads 1997, ApJL 487, L1; Nakar & Piran 2003, NewA 8, 141; Granot, Panaitescu, Kumar & Woosley 2002, ApJL 570, L61"
+  },
+  "jet_break_lightcurve": {
+    "title": "喷流拐折: 余辉光变曲线 break 时标与喷流开角",
+    "source": "Sari, Piran & Halpern 1999, ApJL 519, L17; Frail et al. 2001, Nature 413, 499; Ghirlanda, Ghisellini & Lazzati 2004, ApJ 616, 331"
+  },
+  "magnetar_giant_flare": {
+    "title": "磁星巨耀斑能量与时标 (2004 类事件)",
+    "source": "Hurley et al. 2005, Nature 434, 1098; Mereghetti 2008, A&ARv 15, 225; Kaspi & Beloborodov 2017, ARAA 55, 261"
+  },
+  "gravitational_wave_followup": {
+    "title": "引力波后随观测策略 (定位巡天与证认流程)",
+    "source": "Singer & Price 2016, PRD 93, 024013; Abbott et al. 2017, ApJL 848, L12; Coughlin et al. 2019, ApJL 885, L19"
+  }
+}

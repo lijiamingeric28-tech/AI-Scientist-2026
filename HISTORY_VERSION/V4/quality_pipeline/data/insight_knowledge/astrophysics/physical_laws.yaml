@@ -1,0 +1,1775 @@
+entries:
+- id: DM_redshift_relation
+  title: 色散量-红移关系 (Macquart Relation)
+  category: empirical_relation
+  tags:
+  - DM
+  - dispersion_measure
+  - redshift
+  - z
+  - Macquart
+  - IGM
+  - cosmology
+  hypothetical_queries:
+  - 为什么DM和红移有关系？
+  - DM随红移怎么变化？
+  - 如何用DM估计FRB的红移？
+  applies_to:
+    fields:
+    - dispersion_measure
+    - redshift
+    entities:
+    - FRB
+    - fast_radio_burst
+  content: 'DM 与红移 z 的物理关系:
+
+    DM = DM_MW + DM_halo + DM_IGM(z) + DM_host/(1+z)
+
+
+    其中 DM_IGM(z) 是主要的 cosmology-dependent 项:
+
+    DM_IGM(z) ≈ 800-1200 pc cm⁻³ at z~1 (Macquart et al. 2020)
+
+
+    关键性质:
+
+    - DM 随 z 增大单调递增 (主要趋势)
+
+    - Host galaxy DM 贡献 ~50-200 pc cm⁻³ (较大散点)
+
+    - Milky Way DM 贡献 ~20-200 pc cm⁻³ (NE2001/YMW16 可扣除)
+
+    - 因此 DM-z 的散点主要来自 host 和 MW 的不确定性
+
+    '
+  related_entries:
+  - kb:NE2001_model
+  - kb:YMW16_model
+  - kb:Macquart_relation
+  - kb:radio_dm_measurement
+  source: Macquart et al. 2020, Nature, DOI:10.1038/s41586-020-2300-2
+  confidence: established
+  version: 1.0.0
+  last_updated: '2026-07-28'
+- id: scattering_frequency_relation
+  title: 散射时标-频率关系
+  category: physical_law
+  tags:
+  - scattering
+  - timescale
+  - frequency
+  - tau
+  - Kolmogorov
+  - turbulence
+  hypothetical_queries:
+  - 散射时标与观测频率的关系
+  - 为什么低频射电脉冲散射更严重
+  - 跨频段比较散射时标要注意什么
+  applies_to:
+    fields:
+    - scattering_timescale
+    - observing_frequency
+    entities:
+    - FRB
+    - pulsar
+  content: '脉冲散射展宽 tau_scat 与观测频率 nu 的关系:
+
+    tau_scat ∝ nu^(-alpha)
+
+
+    对于 Kolmogorov 湍流谱: alpha ≈ 4.0-4.4
+
+    因此 C-band (5 GHz) 的散射约为 L-band (1.3 GHz) 的 (1.3/5)^4 ≈ 0.0045 倍
+
+
+    重要推论:
+
+    - L-band 散射严重, C-band 几乎无散射 → 跨频段 tau 差异可达 200 倍
+
+    - 跨来源比较 tau 时必须考虑频率依赖性
+
+    - 同频段 tau 差异 < 30% 可能来自视线方向星际介质差异
+
+    '
+  source: Rickett 1990, ARA&A; Cordes & Lazio 2002, astro-ph/0207156
+  confidence: established
+- id: fluence_energy_relation
+  title: fluence-能量关系
+  category: physical_law
+  tags:
+  - fluence
+  - energy
+  - flux
+  - FRB
+  - radio
+  - isotropic
+  hypothetical_queries:
+  - FRB的fluence怎么换算成各向同性能量
+  - 射电暴流量密度与能量的关系
+  - 如何由fluence估算FRB能量
+  applies_to:
+    fields:
+    - fluence
+    - flux_density
+    - energy
+    entities:
+    - FRB
+  content: 'FRB 的 fluence F (Jy ms) 与各向同性能量 E 的关系:
+
+    E = 4π D_L² Δν F / (1+z)
+
+
+    其中 D_L 为光度距离, Δν 为观测带宽。
+
+
+    关键性质:
+
+    - fluence 取决于仪器带宽和中心频率 → 跨仪器比较需归一化
+
+    - 同一 FRB 不同爆发间 fluence 可差 10-100 倍
+
+    - fluence 与 DM 无强相关性 (弱正相关, ρ~0.3)
+
+    '
+  source: Petroff et al. 2019, A&ARv
+  confidence: established
+- id: photo_z_vs_spec_z
+  title: 测光红移 vs 光谱红移精度对比
+  category: method_comparison
+  tags:
+  - redshift
+  - photometric
+  - spectroscopic
+  - photo-z
+  - spec-z
+  - precision
+  hypothetical_queries:
+  - 测光红移与光谱红移的精度对比
+  - photo-z和spec-z差多少算正常
+  - 跨来源红移比较为什么要区分测量方法
+  applies_to:
+    fields:
+    - redshift
+    methods:
+    - photometry
+    - spectroscopy
+  content: '红移测量精度对比:
+
+    - 光谱红移 (spec-z): Δz/(1+z) ~ 0.0001 (高分辨率光谱 R>10000)
+
+    - 测光红移 (photo-z): Δz/(1+z) ~ 0.03-0.06 (取决于滤光片数量和S/N)
+
+
+    关键推论:
+
+    - spec-z 与 photo-z 间 3-5% 的差异是测量方法的系统差异, 不是数据错误
+
+    - 对高红移 (z>4) 天体, photo-z 的绝对误差可能 > 0.2
+
+    - 跨来源红移比较时, 必须区分测量方法
+
+    '
+  source: Salvato et al. 2019, Nature Astronomy
+  confidence: established
+- id: dm_galactic_contribution
+  title: 银河系 DM 贡献模型
+  category: galactic_model
+  tags:
+  - DM
+  - Milky_Way
+  - NE2001
+  - YMW16
+  - galactic
+  - foreground
+  hypothetical_queries:
+  - 银河系星际介质对DM的贡献有多大
+  - NE2001模型怎么扣除银河系色散量
+  - 如何从总DM中分离银河系成分
+  applies_to:
+    fields:
+    - dispersion_measure
+    entities:
+    - FRB
+    - pulsar
+  content: '银河系星际介质对 DM 的贡献:
+
+    - 典型值: 20-200 pc cm⁻³ (取决于视线方向)
+
+    - 高银纬 (|b|>30°): ~20-50 pc cm⁻³
+
+    - 低银纬 (|b|<10°): ~100-200+ pc cm⁻³
+
+
+    常用模型:
+
+    - NE2001 (Cordes & Lazio 2002): 广泛使用, ~30% 不确定度
+
+    - YMW16 (Yao, Manchester & Wang 2017): 更新但可能 overfit
+
+
+    关键: 扣除银河系 DM 后, 剩余 DM_excess 才可用于红移推断
+
+    '
+  source: Cordes & Lazio 2002; Yao et al. 2017, ApJ
+  confidence: established
+- id: blackbody_radiation_law
+  title: 黑体辐射定律
+  category: physical_law
+  tags:
+  - blackbody
+  - stefan
+  hypothetical_queries:
+  - 斯特藩-玻尔兹曼定律是什么
+  - 维恩位移定律怎么由温度求峰值波长
+  - 如何由有效温度和半径估计恒星光度
+  applies_to:
+    fields:
+    - effective_temperature
+    - luminosity
+    entities:
+    - star
+  content: '斯特藩-玻尔兹曼定律: L = 4πR^2 σ T^4 — 恒星/尘埃的连续谱辐射基础;
+
+    维恩位移: λ_max ∝ 1/T (热源越热峰值越短)。
+
+    物理原理: 黑体辐射是热平衡辐射场, 光度=表面积×单位面积辐射功率。
+
+    应用: 由 (Teff, 半径) 或 (Teff, 光度) 推第三者; SED 拟合定 Teff。
+
+    判定线索: Teff 与颜色矛盾 (如 5000 K 却标为蓝源) = 消光未修正或字段错位;
+
+    恒星 SED 明显偏离黑体 (红外超) 提示尘埃盘/星风包层。'
+  source: 恒星物理教科书; OSU HR 图讲义
+  confidence: established
+- id: mass_luminosity_law
+  title: 主序质光关系
+  category: empirical_relation
+  tags:
+  - mass_luminosity
+  hypothetical_queries:
+  - 主序星的质光关系是什么
+  - 由恒星质量如何估算光度与寿命
+  - 质光关系明显偏离说明什么问题
+  applies_to:
+    entities:
+    - main_sequence_star
+  content: '主序质光关系 L ∝ M^3.5 (约 0.5-10 Msun 区间近似): 大质量端辐射压主导
+
+    趋向 L ∝ M^3, 低质量端对流主导斜率变平。
+
+    物理原理: 流体静力学平衡 + 辐射扩散近似 (光度 ∝ 内部温度梯度 × 半径)。
+
+    应用: 由质量估光度/寿命 (τ ∝ M^-2.5), 或反之;
+
+    判定线索: 主序星质量-光度组合明显偏离关系 (>1 dex) = 双星混合、
+
+    非主序成员, 或单位错误。'
+  source: 质光关系教科书; UNLV 主序表
+  confidence: established
+- id: eddington_luminosity
+  title: 爱丁顿光度界限
+  category: physical_law
+  tags:
+  - eddington
+  hypothetical_queries:
+  - 爱丁顿光度怎么计算
+  - 黑洞质量与爱丁顿光度有什么关系
+  - 天体光度超过爱丁顿极限怎么解释
+  applies_to:
+    entities:
+    - star
+    - black_hole
+    - agn
+  content: '爱丁顿光度 L_Edd = 4πGMm_p c/σ_T ≈ 1.26e38 (M/Msun) erg/s: 辐射压
+
+    (电子 Thomson 散射) 平衡引力的上限, 与距离无关。
+
+    物理原理: 超过 L_Edd 时辐射压驱动外流, 吸积被截断 (对球对称吸积)。
+
+    应用: 恒星/黑洞质量的下限锚点; AGN 与 X 射线双星的 sanity check;
+
+    判定线索: L > L_Edd 数倍的持续辐射需要超 Eddington 几何解释 (盘风、
+
+    喷流) 或复核光度/质量 — 这是数据质量核查的第一性工具。'
+  source: JILA 讲义; Eddington 1916 原始推导
+  confidence: established
+- id: hubble_flow_law
+  title: Hubble 流与距离-红移
+  category: empirical_relation
+  tags:
+  - hubble
+  - redshift
+  hypothetical_queries:
+  - 哈勃定律与距离红移关系
+  - 红移大于0.1后如何换算距离
+  - 星系红移与距离矛盾怎么排查
+  applies_to:
+    fields:
+    - redshift
+    - distance
+    entities:
+    - galaxy
+  content: 'Hubble-Lemaître 定律: v = H0 d (H0 ≈ 67-73 km/s/Mpc); z << 1 时 cz ≈ H0 d。
+
+    物理原理: 宇宙膨胀使星系退行, 红移是尺度因子之比 z = a(t_obs)/a(t_emit) - 1;
+
+    z > 0.1 后线性近似失效, 需宇宙学模型 (ΛCDM) 换算距离。
+
+    判定线索: z 与距离明显矛盾 (如 z=0.5 却标 10 Mpc) = 单位/换算错误;
+
+    同一对象的多个红移源差异 >3-5% 属测量系统差, 更大差异提示双星/并合/透镜。'
+  source: Planck 2020; 宇宙学教科书
+  confidence: established
+- id: doppler_redshift_law
+  title: 多普勒红移与视向速度
+  category: empirical_relation
+  tags:
+  - doppler
+  - radial_velocity
+  hypothetical_queries:
+  - 多普勒效应怎么由谱线位移算视向速度
+  - 双星系统的视向速度测量
+  - 蓝移天体可能是什么情况
+  applies_to:
+    fields:
+    - radial_velocity
+    entities:
+    - star
+    - galaxy
+  content: '多普勒效应: 谱线位移 Δλ/λ = v/c (非相对论) — 视向速度测量的基础。
+
+    物理原理: 光源沿视线运动压缩/拉伸波长; 热运动与湍流展宽限制精度。
+
+    应用: 恒星/星系 RV 测量 (精度 ~0.1-10 km/s 视谱分辨率);
+
+    双星轨道 (SB1 只给 m sin^3 i, SB2 可得两星质量 — 倾角需食/天体测量)。
+
+    判定线索: 负 RV (蓝移) 只可能来自本星系群成员 (宇宙学红移恒为正);
+
+    RV 与星系 z 矛盾 = 星系内运动 vs 宇宙学红移混淆。'
+  source: 多普勒效应讲义; RV 测量方法文献
+  confidence: established
+- id: virial_mass_theorem
+  title: 维里定理与动力学质量
+  category: physical_law
+  tags:
+  - virial
+  - dynamics
+  hypothetical_queries:
+  - 维里定理怎么估算星系团质量
+  - 速度弥散与动力学质量的关系
+  - 动力学质量远大于光度质量说明什么
+  applies_to:
+    entities:
+    - galaxy
+    - galaxy_cluster
+    - galaxy_group
+  content: '维里定理: 束缚系统的 2⟨T⟩ + ⟨U⟩ = 0 → 动力学质量 M ≈ σ^2 R / G
+
+    (σ 速度弥散, R 特征半径)。
+
+    物理原理: 平衡系统的动能与势能之比固定 (各向同性无碰撞气体)。
+
+    应用: 星系团/椭圆星系质量估计 — 团质量 ~1e14-1e15 Msun 中 ~84% 是暗物质,
+
+    ~13% 热 ICM, 星系本身仅 ~1%。
+
+    判定线索: 动力学质量与光度质量差异 >10 倍 = 暗物质主导 (正常) 或
+
+    非平衡态 (并合中, 维里定理失效); 团 X 光度与温度应满足 L_X ∝ T^3。'
+  source: 维里定理讲义; 星系团质量综述 (Peterson)
+  confidence: established
+- id: radius_temp_luminosity
+  title: 恒星半径-温度-光度关系
+  category: physical_law
+  tags:
+  - radius
+  - teff
+  - luminosity
+  hypothetical_queries:
+  - 恒星半径温度光度三者如何互推
+  - 由有效温度和半径计算恒星光度
+  - 恒星参数组合不自洽怎么排查单位错误
+  applies_to:
+    fields:
+    - stellar_radius
+    - effective_temperature
+    - luminosity
+    entities:
+    - star
+  content: 'L = 4πR^2 σ T^4 联立 Teff/半径/光度: 任取两者可推第三者 — 恒星参数的
+
+    一致性校验基础 (HR 图的坐标即 T 与 L)。
+
+    物理原理: 黑体辐射 + 几何 (光度=表面积×表面辐射通量)。
+
+    判定线索: 三者矛盾 (如 1 Rsun + 5000 K 却标 1e5 Lsun) = 单位混用
+
+    (常见: Rsun↔km、Lsun↔erg/s、Teff↔K 混淆);
+
+    红超巨星: 3000-4500 K + 200-1500 Rsun + 1e4-1e6 Lsun 的组合应自洽。'
+  source: 恒星物理教科书; HR 图讲义
+  confidence: established
+- id: schwarzschild_radius
+  title: Schwarzschild 半径
+  category: physical_law
+  tags:
+  - blackhole
+  - schwarzschild
+  hypothetical_queries:
+  - 史瓦西半径怎么计算
+  - 不同质量黑洞的事件视界大小
+  - 黑洞质量与半径组合如何做自洽性检查
+  applies_to:
+    entities:
+    - black_hole
+  content: 'Schwarzschild 半径 r_s = 2GM/c^2 ≈ 2.95 (M/Msun) km — 事件视界尺度。
+
+    物理原理: 牛顿逃逸速度 v = (2GM/r)^(1/2) 达光速的半径 (广义相对论精确解)。
+
+    尺度: 恒星质量 BH (5-100 Msun) → 15-300 km (与中子星同尺度);
+
+    SMBH (1e6-1e10 Msun) → 0.02-200 AU。
+
+    判定线索: 黑洞''密度'' ∝ 1/M^2 — 大质量黑洞是低密度物体 (可低于水),
+
+    这是常见直觉误区; 记录的黑洞质量与半径组合不满足 r_s 关系 = 单位错误。'
+  source: JILA 黑洞讲义; Schwarzschild 1916
+  confidence: established
+- id: stellar_hydrostatic_equilibrium
+  title: 恒星流体静力平衡与维里定理
+  category: physical_law
+  tags:
+  - hydrostatic
+  - virial
+  - stellar_structure
+  - equilibrium
+  - pressure
+  hypothetical_queries:
+  - 恒星流体静力平衡方程是什么
+  - 恒星中心压力与温度怎么估算
+  - 动力学时标是什么量级
+  applies_to:
+    fields:
+    - stellar_mass
+    - stellar_radius
+    - luminosity
+    entities:
+    - star
+    - main_sequence_star
+  content: '流体静力平衡方程: dP/dr = -G m(r) ρ(r) / r^2 (压力梯度平衡引力);
+
+    结合质量守恒 d m/dr = 4π r^2 ρ, 积分得中心压力下限 (Milne 不等式)
+
+    P_c > G M^2 / (8π R^4) ≈ 4.5e13 Pa (1 Msun 恒星), 与状态方程无关。
+
+    维里定理: 2⟨T⟩ + ⟨U⟩ = 0 → 恒星引力势能的一半被辐射, 一半转为热能;
+
+    动力学时标 t_dyn ≈ (R^3/(GM))^(1/2), 1 Msun 恒星约 0.5-1 小时。
+
+    标准恒星模型 (1 Msun): T_c ≈ 1.57e7 K, ρ_c ≈ 150 g/cm^3, P_c ≈ 2.5e16 Pa。
+
+    物理原理: 恒星是压力支撑的静态流体, 引力求平衡于气体压+辐射压+简并压;
+
+    太阳质量恒星内部辐射压占比 < 1%。
+
+    判定线索: 中心温度/密度与质量半径组合矛盾 (如 1 Msun 却标 T_c = 1e9 K)
+
+    = 单位错误或对象类型混淆; 纯转动支撑的结构在动力学时标内不稳定。'
+  source: 恒星结构与演化标准教科书; Kippenhahn & Weigert 恒星结构与演化
+  confidence: established
+- id: stellar_nucleosynthesis_pp_cno
+  title: '氢燃烧: pp 链与 CNO 循环'
+  category: physical_law
+  tags:
+  - nucleosynthesis
+  - pp_chain
+  - cno
+  - fusion
+  - energy_generation
+  hypothetical_queries:
+  - pp链与CNO循环的区别是什么
+  - 恒星核聚变能量产生率与温度的关系
+  - 主序星质量如何决定氢燃烧机制
+  applies_to:
+    fields:
+    - stellar_mass
+    - luminosity
+    - effective_temperature
+    entities:
+    - star
+    - main_sequence_star
+  content: "氢燃烧能量产生率 (单位质量) 幂律近似 ε = ε_0 ρ^α T^ν:\n- pp 链: ε_pp ∝ ρ X^2 T^4 (ν≈4), ε_pp ≈ 1.05e-5 ρ X^2 T6^4 erg/g/s (T6 = T/1e6 K)\n- CNO 循环: ε_CNO ∝ ρ X X_CNO T^17-20 (ν 极陡), 限速步骤 14N(p,γ)15O\n- 两机制交叉温度\
+    \ T ≈ 1.6-1.7e7 K: 1 Msun 恒星核 (1.57e7 K) 以 pp 为主,\n  M > ~1.3 Msun 的恒星核 CNO 主导。\n物理原理: 库仑隧穿概率 ∝ exp(-b/E^(1/2)) → 反应率对温度极端敏感;\n4H → He 每反应释放 Q ≈ 26.7 MeV (pp 链), 主序寿命 τ ∝ M/L ∝ M^-2.5。\n判定线索: 主序星质量-光度组合与\
+    \ ε 定标矛盾 (偏离 >1 dex) = 非主序成员\n或单位错误; 极低金属丰度 (Pop II) 恒星 CNO 效率下降, 同温光度应偏低。"
+  source: Clayton 恒星结构与演化; Carroll & Ostlie 现代天体物理导论
+  confidence: established
+- id: synchrotron_radiation
+  title: 同步辐射与谱指数
+  category: physical_law
+  tags:
+  - synchrotron
+  - spectral_index
+  - magnetic_field
+  - nonthermal
+  - polarization
+  hypothetical_queries:
+  - synchrotron emission spectral index
+  - 射电辐射机制 同步辐射
+  - radio spectrum from relativistic electrons
+  applies_to:
+    fields:
+    - flux_density
+    - spectral_index
+    - polarization
+    entities:
+    - agn
+    - pulsar
+    - supernova_remnant
+    - galaxy
+  content: '相对论电子在磁场中的磁轫致辐射: 单电子临界频率
+
+    ν_c = 3 γ^2 e B sinθ / (4π m_e c) ≈ 4.2e6 γ^2 B sinθ Hz (B 单位 gauss),
+
+    谱峰值位于 ~0.29 ν_c; 单电子辐射功率 ∝ γ^2 B^2。
+
+    功率律电子分布 N(E) dE ∝ E^-p dE → 叠加谱 S_ν ∝ ν^-α, α = (p-1)/2:
+
+    典型观测谱指数 α ≈ 0.7-0.8 (对应 p ≈ 2.4-2.6, 范围 0.5-0.8);
+
+    平谱 (α < 0.5) 提示粒子注入/冷却平衡或电子谱老化。
+
+    物理原理: 非热辐射 — 磁化等离子体中高能电子的回旋加速辐射;
+
+    冷却时标 t_sync ∝ 1/(γ B^2), 高频端先冷却 → 谱变陡/截断。
+
+    判定线索: α > 1.5 或低频 ν^(5/2) 上升段 = 同步自吸收 (SSA) 或热谱混淆;
+
+    线偏振度可达 ~70% (均匀场) — 高偏振是同步辐射的强证据。
+
+    典型环境: 射电星系喷流 B ≈ 1e-5-1e-4 gauss, 星系团介质 μG 量级。'
+  source: Rybicki & Lightman 辐射过程; Longair 高能天体物理
+  confidence: established
+  ranges:
+    spectral_index:
+      lo: 0.5
+      hi: 0.8
+      unit: dimensionless
+- id: inverse_compton_scattering
+  title: 逆康普顿散射与 IC 损失
+  category: physical_law
+  tags:
+  - compton
+  - inverse_compton
+  - ic
+  - cooling
+  - gamma_ray
+  - xray
+  hypothetical_queries:
+  - 逆康普顿散射的物理过程是什么
+  - IC冷却与同步辐射冷却哪个占主导
+  - 逆康普顿散射在AGN多波段SED中的作用
+  applies_to:
+    fields:
+    - luminosity
+    - flux_density
+    entities:
+    - agn
+    - black_hole
+    - pulsar
+    - star
+  content: '高能电子与低能光子碰撞将其升频 (逆康普顿散射, IC):
+
+    Thomson 区内单电子能量损失率 -dE/dt = (4/3) σ_T c U_ph γ^2
+
+    (U_ph 为辐射能量密度, σ_T ≈ 6.65e-25 cm^2); 上散射光子能量 hν'' ≈ γ^2 hν。
+
+    IC 与同步辐射冷却之比 = U_ph / U_B (U_B = B^2/(8π)):
+
+    辐射场强于磁场的源区 IC 主导; U_ph >> U_B 时冷却过快出现 Compton 灾难。
+
+    物理原理: 光子被相对论电子弹性散射升频 — 电子动能转化为高能光子;
+
+    Klein-Nishina 区 (hν'' ~ m_e c^2 ≈ 511 keV) 截面下降, 冷却率低于
+
+    Thomson 外推, 高能段谱软化。
+
+    应用: X 射线双星/AGN 多波段 SED 建模; SSC (同步自康普顿) 联合
+
+    射电-高能谱拟合定磁场与电子能量分布。
+
+    判定线索: 单波段不能区分同步与 IC — 同一电子群两机制峰位不同,
+
+    把硬 X 射线超简单当同步幂律延伸会系统性误判谱指数与磁场。'
+  source: Blumenthal & Gould 1970, Rev. Mod. Phys.; Rybicki & Lightman
+  confidence: established
+- id: free_free_radiation
+  title: 自由-自由辐射 (热轫致辐射)
+  category: physical_law
+  tags:
+  - bremsstrahlung
+  - free_free
+  - thermal
+  - emission_measure
+  - hii
+  hypothetical_queries:
+  - 自由-自由辐射的谱形特征
+  - 热轫致辐射与同步辐射如何区分
+  - HII区射电连续谱的典型谱指数
+  applies_to:
+    fields:
+    - flux_density
+    - spectral_index
+    entities:
+    - hii_region
+    - star_forming_region
+    - galaxy
+  content: '电离气体中电子被离子库仑散射的加速辐射 (热轫致):
+
+    - 光学薄 (高频): S_ν ∝ ν^-0.1 (近平坦谱) — HII 区与热气体的射电指纹
+
+    - 光学厚 (低频): S_ν ∝ ν^2 (Rayleigh-Jeans 段), 转折处 τ = 1
+
+    自由-自由光深 (Altenhoff 1960): τ_ν ≈ 0.082 (T_e/K)^-1.35 (ν/GHz)^-2.1 (EM/pc cm^-6),
+
+    EM = ∫ n_e^2 dl 为发射量度; 转折频率 ν_turn ∝ (EM)^0.48 (T_e)^-0.64 —
+
+    典型 HII 区 ~0.5-1 GHz (EM ~ 1e6 pc cm^-6), 致密区数 GHz 以上。
+
+    X 射线轫致辐射: 1e7-1e8 K 热气体连续谱, 光度 ∝ n_e^2 T^(-1/2) V。
+
+    物理原理: 非相对论电子在离子库仑场中的加速辐射, 单电子谱近平坦
+
+    (量子修正 Gaunt 因子缓变)。
+
+    判定线索: α ≈ -0.1 平坦谱 + 零圆偏振 = 热自由-自由; 与同步辐射
+
+    (α ≈ 0.7) 易混淆, 用偏振与谱弯曲区分; 毫米/亚毫米谱不弯折则
+
+    非纯自由-自由。'
+  source: Altenhoff et al. 1960; Rybicki & Lightman; Wilson 射电天文
+  confidence: established
+  ranges:
+    turnover_frequency:
+      lo: 0.5
+      hi: 15.0
+      unit: GHz
+- id: hydrogen_21cm_line
+  title: 中性氢 21cm 谱线
+  category: physical_law
+  tags:
+  - 21cm
+  - hydrogen
+  - spin_temperature
+  - neutral_hydrogen
+  - radio
+  hypothetical_queries:
+  - 21cm谱线观测中性氢的原理
+  - 由21cm亮温度怎么换算柱密度
+  - HI自旋温度与光深的关系
+  applies_to:
+    fields:
+    - flux_density
+    - redshift
+    - velocity
+    entities:
+    - galaxy
+    - ism_object
+    - galaxy_cluster
+  content: '中性氢 (HI) 基态超精细跃迁: 电子与质子自旋翻转 (F=1→F=0),
+
+    静止频率 ν = 1420.405751786 MHz (λ ≈ 21.1 cm), 能量差 5.9e-6 eV,
+
+    自发辐射寿命 ~1.1e7 yr (爱因斯坦 A10 ≈ 2.85e-15 s^-1) — 光学薄。
+
+    辐射转移: 亮温度 T_B = T_s (1 - e^-τ), 光深 τ ∝ N_HI / (T_s Δv);
+
+    自旋温度 T_s 由碰撞 + 21cm 辐射场 + Lyα (Wouthuysen-Field 效应)
+
+    三通道耦合, 冷中性相 ~100-300 K, 暖中性相 ~6000-8000 K。
+
+    柱密度换算 (光学薄): N_HI ≈ 1.823e18 ∫ T_B dv cm^-2 (dv 单位 km/s),
+
+    即每 K·km/s 对应 ~1.82e18 原子/cm^2; 光学厚时此式只给下限。
+
+    物理原理: 21cm 光子能量远小于热动能 → 谱线极窄, 是中性气体运动学
+
+    (旋转曲线/潮汐作用) 与气体质量的示踪; 吸收线可直接测 T_s。
+
+    判定线索: T_B > T_s 或负 T_B = 非平衡态 (受激发射/放大) 需复核;
+
+    源内谱宽与形态不匹配 (> 500 km/s) = 多重成分或并合。'
+  source: Field 1958; 中性氢天文学教科书; 21cm 专题综述 (Wouthuysen-Field)
+  confidence: established
+  ranges:
+    rest_frequency:
+      lo: 1420.4057
+      hi: 1420.4058
+      unit: MHz
+- id: kepler_orbital_mechanics
+  title: 开普勒轨道力学与双星质量函数
+  category: physical_law
+  tags:
+  - kepler
+  - orbit
+  - binary
+  - orbital_elements
+  - mass_function
+  - roche
+  hypothetical_queries:
+  - 双星质量函数怎么计算
+  - 开普勒第三定律在双星系统中的应用
+  - 由视向速度半振幅估算伴星质量下限
+  applies_to:
+    fields:
+    - radial_velocity
+    - stellar_mass
+    - orbital_period
+    - eccentricity
+    entities:
+    - binary_star
+    - star
+    - pulsar
+    - exoplanet
+  content: '开普勒三定律: 椭圆轨道 (主星在焦点), 掠面速度守恒, 广义第三定律
+
+    P^2 = 4π^2 a^3 / (G (M1+M2)); 大质量中心极限 P[yr]^2 = a[AU]^3。
+
+    轨道根数: 半长轴 a, 偏心率 e, 倾角 i, 升交点经度 Ω, 近星点幅角 ω,
+
+    历元 T0 — 6 根数完全描述二体轨道。
+
+    单线双星 (SB1, 只测 K1 视向速度半振幅) → 质量函数
+
+    f(M) = P K1^3 (1-e^2)^(3/2) / (2πG) = M2^3 sin^3 i / (M1+M2)^2
+
+    ≈ 1.04e-7 (1-e^2)^(3/2) K1^3 P (K1: km/s, P: 天, 结果 Msun):
+
+    f(M) 是不见伴星质量的严格下限, 与 sin i 简并 — 无独立倾角测量
+
+    (SB2/食/天体测量) 无法解出真实质量。
+
+    洛希瓣 (Eggleton 1983): R_L/a = 0.49 q^(2/3) / (0.6 q^(2/3) + ln(1+q^(1/3))),
+
+    q = M1/M2; 恒星充满洛希瓣 → 质量转移 (半相接双星)。
+
+    物理原理: 二体引力问题; 视向速度是轨道速度在视线方向的投影。
+
+    判定线索: K1、P、a 与质量函数自洽性检查 (a 与 P 可推 M1+M2);
+
+    SB1 声称给出 M2 精确值而无倾角测量 = 数据不可靠。'
+  source: 二体问题教科书; Eggleton 1983, ApJ; 双星质量函数综述
+  confidence: established
+- id: degenerate_gas_equation
+  title: 简并气体状态方程与钱德拉塞卡极限
+  category: physical_law
+  tags:
+  - degeneracy
+  - white_dwarf
+  - chandrasekhar
+  - equation_of_state
+  - fermi
+  - pauli
+  hypothetical_queries:
+  - 钱德拉塞卡极限是多少
+  - 白矮星质量与半径的关系
+  - 简并压为什么与温度无关
+  applies_to:
+    fields:
+    - stellar_mass
+    - stellar_radius
+    - effective_temperature
+    entities:
+    - white_dwarf
+    - neutron_star
+    - star
+  content: '电子简并压 (Pauli 不相容原理 + Fermi 统计, 与温度无关):
+
+    - 非相对论: P = K1 ρ^(5/3) → 白矮星半径 R ∝ M^(-1/3) (典型 ~0.01 Rsun)
+
+    - 极端相对论: P = K2 ρ^(4/3) → 结构临界, 质量存在上限
+
+    钱德拉塞卡极限: M_Ch = 1.44 (2/μ_e)^2 Msun (μ_e 为每电子核子数),
+
+    C/O 白矮星 μ_e = 2 → 1.44 Msun; 计入库仑/广义相对论修正后实际极限
+
+    约 1.37-1.38 Msun; 超过极限 → 电子俘获/坍缩 (超新星或中子星)。
+
+    物理原理: 高密度下 Fermi 能远超热动能, 电子动量由不确定原理支撑;
+
+    γ = 4/3 多方指数结构对质量敏感, 相对论化使简并压失效。
+
+    判定线索: 记录的白矮星质量 > 1.44 Msun = 必为错误或并合产物 (需复核);
+
+    质量-半径偏离 R ∝ M^(-1/3) 提示温度/磁场/旋转贡献;
+
+    中子星 (简并中子气 + 强作用) 质量上限由 TOV 方程给出 ~2.1-2.3 Msun。'
+  source: Chandrasekhar 1931/1935; Shapiro & Teukolsky 黑洞、白矮星与中子星
+  confidence: established
+  ranges:
+    chandrasekhar_mass:
+      lo: 1.37
+      hi: 1.44
+      unit: Msun
+- id: plasma_frequency_debye_shielding
+  title: 等离子体频率与德拜屏蔽
+  category: physical_law
+  tags:
+  - plasma
+  - debye
+  - plasma_frequency
+  - dispersion
+  - cutoff
+  - propagation
+  hypothetical_queries:
+  - 等离子体频率怎么计算
+  - 射电信号色散延迟的物理原理
+  - 德拜屏蔽长度与什么有关
+  applies_to:
+    fields:
+    - dispersion_measure
+    - flux_density
+    - electron_density
+    entities:
+    - ism_object
+    - pulsar
+    - star
+  content: '等离子体电子振荡固有频率: ω_pe = (n_e e^2/(ε_0 m_e))^(1/2),
+
+    f_pe ≈ 8.98 sqrt(n_e) kHz (n_e 单位 cm^-3):
+
+    星际介质 (n_e ~ 0.03 cm^-3) → f_p ~ 1.5 kHz; 电离层 → 3-10 MHz;
+
+    低于 f_p 的电磁波被反射, 高于则传播 (折射率 n = sqrt(1 - f_p^2/f^2))。
+
+    色散关系 ω^2 = ω_pe^2 + k^2 c^2: f < f_p 时波截止/反射 (短波被
+
+    电离层反射回地面的原理); f > f_p 时群速度延迟 ∝ DM/f^2 —
+
+    脉冲星/FRB 色散延迟测量的基础。
+
+    德拜屏蔽: 热等离子体中点电荷库仑势被指数屏蔽
+
+    φ(r) = (q/(4πε_0 r)) exp(-r/λ_D),
+
+    德拜长度 λ_D = (ε_0 k_B T/(n_e e^2))^(1/2) ≈ 6.9 sqrt(T/n_e) cm
+
+    (T 单位 K, n_e 单位 cm^-3): 尺度大于 λ_D 处等离子体近似电中性。
+
+    物理原理: 电子集体振荡 + 电荷屏蔽 — 等离子体与真空传播的本质差异。
+
+    判定线索: 观测频率低于 f_p 的''信号''多为本地干扰; 色散延迟与 f^-2
+
+    不吻合 = 折射/散射混入或频谱仪校准错误。'
+  source: Chen 等离子体物理导论; 射电天文学方法 (Taylor, Carilli, Perley)
+  confidence: established
+  ranges:
+    ism_plasma_frequency:
+      lo: 1.0
+      hi: 5.0
+      unit: kHz
+- id: jeans_instability
+  title: 金斯不稳定性与金斯质量
+  category: physical_law
+  tags:
+  - jeans
+  - instability
+  - star_formation
+  - gravitational_collapse
+  - molecular_cloud
+  hypothetical_queries:
+  - 金斯质量怎么估算分子云坍缩条件
+  - 分子云在什么条件下开始坍缩
+  - 恒星形成区的温度密度与金斯质量关系
+  applies_to:
+    fields:
+    - stellar_mass
+    - temperature
+    - density
+    entities:
+    - molecular_cloud
+    - ism_object
+    - star
+  content: '自引力介质中密度扰动的稳定性判据: 色散关系 ω^2 = k^2 c_s^2 - 4πGρ,
+
+    波数 k < k_J = (4πGρ/c_s^2)^(1/2) 时 ω^2 < 0 → 扰动指数增长 (坍缩)。
+
+    金斯波长 λ_J = (π c_s^2/(Gρ))^(1/2); 金斯质量 M_J ≈ (π/6) ρ λ_J^3:
+
+    等温情形 M_J ∝ T^(3/2) ρ^(-1/2) (c_s^2 = kT/(μ m_H)) —
+
+    典型分子云 (T ≈ 10 K, n_H2 ≈ 1e2-1e4 cm^-3) → λ_J ~ 0.1-2 pc,
+
+    M_J ~ 1-100 Msun; 自由落体时标 t_ff = (3π/(32Gρ))^(1/2) ~ 1e5-1e6 yr。
+
+    物理原理: 引力时标与声波穿越时标的竞争 — 压力响应速度决定稳定性;
+
+    临界多方指数 γ = 4/3: γ < 4/3 时压缩加剧不稳定性 (等温云)。
+
+    判定线索: 云质量远超 M_J 却无恒星形成活动 = 存在外部支撑
+
+    (磁场/湍流/加热), 不能直接判为稳定; 温度-密度与 M_J 明显矛盾 =
+
+    数密度与质量密度混淆等单位错误。'
+  source: Jeans 1902; 恒星形成综述 (Shu, McKee); 分子云物理教科书
+  confidence: established
+  ranges:
+    jeans_mass_typical:
+      lo: 1.0
+      hi: 100.0
+      unit: Msun
+- id: radiation_transfer_equation
+  title: 辐射转移方程与光深
+  category: physical_law
+  tags:
+  - radiation_transfer
+  - optical_depth
+  - source_function
+  - intensity
+  - lte
+  hypothetical_queries:
+  - 辐射转移方程的基本形式
+  - 光深与源函数如何决定出射强度
+  - 光学薄与光学厚谱形有什么区别
+  applies_to:
+    fields:
+    - specific_intensity
+    - optical_depth
+    - flux_density
+    entities:
+    - star
+    - ism_object
+    - hii_region
+  content: '辐射转移方程: dI_nu/ds = j_nu - kappa_nu I_nu — 光强沿视线被发射系数 j_nu 增加、被吸收系数 kappa_nu 衰减; 定义光深 dtau_nu = kappa_nu ds 与源函数 S_nu = j_nu/kappa_nu 后化为 dI_nu/dtau_nu = S_nu - I_nu (tau 向内计), 平面平行几何写作 mu dI/dtau
+    = I - S (mu = cos(theta))。
+
+
+    形式解 (tau = 0 处出射): I(0) = I_bg e^(-tau) + ∫_0^∞ S(t) e^(-t) dt — 出射强度 = 背景衰减 + 沿途源函数的指数加权积分。
+
+
+    LTE 下源函数即普朗克函数 S_nu = B_nu(T); 纯吸收无发射时 I = I_bg e^(-tau) (指数衰减); 光学厚 (tau >> 1) 时 I -> S, 逃逸光子来自 tau ~ 1 层。
+
+
+    Eddington-Barbier 近似: 法向出射强度 I(0) ≈ S(tau = 1), 通量 F ≈ S(tau = 2/3) (源函数线性时严格成立) — 观测『看到』的是 tau ~ 1 层的源函数, 也是临边昏暗 (mu 小 → 采样浅层) 的直接解释。
+
+
+    物理原理: 光子守恒方程, 一切连续谱/谱线辐射观测分析的基础。
+
+
+    判定线索: 光学薄谱形 ∝ 发射系数 (如轫致辐射近平坦谱), 光学厚谱形 → 源函数; 吸收线深度偏离 e^(-tau) 外推 = 光学厚/部分覆盖需复核。'
+  source: Rybicki & Lightman 辐射过程; Mihalas 恒星大气物理
+  confidence: established
+- id: stellar_oscillation_asteroseismology
+  title: 恒星振荡与星震学 (p 模/g 模)
+  category: physical_law
+  tags:
+  - asteroseismology
+  - oscillation
+  - p_mode
+  - g_mode
+  - frequency_separation
+  - seismic
+  hypothetical_queries:
+  - 星震学如何由振荡频率测恒星质量半径
+  - 频率大间隔与恒星平均密度的关系
+  - 红巨星与矮星的Δν量级差异
+  applies_to:
+    fields:
+    - oscillation_frequency
+    - frequency_separation
+    - stellar_mass
+    - stellar_radius
+    - effective_temperature
+    entities:
+    - star
+    - main_sequence_star
+    - red_giant
+    - white_dwarf
+  content: '恒星振荡按恢复力分类: 压力模 (p 模, 声波驻波, 高频) 与重力模 (g 模, 浮力/密度分层, 低频, 仅在对流稳定区存在); 主序类日恒星 p 模周期 3-10 分钟, 红巨星/白矮星 g 模周期小时量级。
+
+
+    渐近关系: 同角阶 l、相邻径向序 n 的 p 模频率差 (大间隔) Δν ≈ (2∫ dr/c_s)^(-1), 模式位置 ν_nl ≈ Δν(n + l/2 + ε) 加小间隔修正。
+
+
+    定标关系 (以太阳归一): Δν ∝ (M/R^3)^(1/2) (平均密度定标), ν_max ∝ (M/R^2)/sqrt(T_eff) (Brown 1991) — 太阳 Δν ≈ 135.1 μHz, ν_max ≈ 3090 μHz (Huber 2011 基准); 红巨星 Δν 降至 0.5-10 μHz。
+
+
+    由 (Δν, ν_max, T_eff) 反解 R ∝ ν_max Δν^-2 T_eff^0.5, M ∝ ν_max^3 Δν^-4 T_eff^1.5 (精度 ~5-10%, 计入 Γ1 与平均分子量修正后更高)。
+
+
+    g 模周期间隔 ΔP 近似常数 → 红巨星核区自转与氢壳层结构诊断; Cepheid/RR Lyrae/δ Scuti 属径向基模脉动 (周期小时-天)。
+
+
+    物理原理: 恒星是声学与浮力共振腔, 本征频率编码密度、温度剖面与内部结构 — 观测恒星内部的唯一直接手段。
+
+
+    判定线索: 红巨星与矮星 Δν 差两个量级, 混淆即系统性参数错误; Δν 与 (M/R^3)^(1/2) 定标明显矛盾 = 质量/半径单位错误。'
+  source: Kjeldsen & Bedding 1995, A&A; Huber et al. 2011, ApJ 743, 143
+  confidence: established
+  ranges:
+    solar_large_frequency_separation:
+      lo: 134.9
+      hi: 135.3
+      unit: uHz
+- id: acoustic_wave_plasma
+  title: 等离子体中的声波与磁声波 (阿尔芬波)
+  category: physical_law
+  tags:
+  - sound_speed
+  - alfven_wave
+  - magnetosonic
+  - mhd
+  - wave_speed
+  hypothetical_queries:
+  - 阿尔芬波速度与磁场密度的关系
+  - 等离子体声速怎么计算
+  - 磁声波快模与慢模的区别
+  applies_to:
+    fields:
+    - sound_speed
+    - magnetic_field_strength
+    - electron_density
+    entities:
+    - star
+    - ism_object
+    - molecular_cloud
+    - hii_region
+  content: '等离子体特征波速 (cgs):
+
+    - 绝热声速 c_s = (γP/ρ)^(1/2) = (γkT/(μ m_H))^(1/2): 冷中性介质 (100 K) ~0.5 km/s, 热气体/电离氢区 (1e4 K) ~10-15 km/s, 日冕 (1e6 K) ~100-200 km/s;
+
+    - 阿尔芬波速 v_A = B/sqrt(4πρ) ≈ 2.18e11 B(Gauss)/sqrt(n_e(cm^-3)) cm/s: 星际介质 (B ~ 3-6 μG) ~5-10 km/s, 日冕 ~1000-2000 km/s;
+
+    - 磁声波 (快/慢模): 垂直磁场传播的快模 c_f = sqrt(c_s^2 + v_A^2), 慢模沿场 ~ c_s 且不能垂直传播; 等离子体 β = P_gas/P_mag ∝ (c_s/v_A)^2 决定主导波型。
+
+
+    物理原理: 恢复力由压力梯度 (声波) 或磁场张力 (阿尔芬波) 或两者 (磁声波) 提供; v_A ∝ B/sqrt(ρ), 与 B 成正比、与密度平方根成反比。
+
+
+    应用: 由快模波速/激波速度反推磁场 (日冕磁震学), 星际介质湍流与磁支撑诊断, 等离子体折射与低频截止判别。
+
+
+    判定线索: 波动/激波速度显著超过热声速 (>2-3 倍 c_s) = 磁声波或非热驱动; 速度与 v_A ∝ B/sqrt(n) 定标矛盾 = 磁场/密度单位错误 (常见 Gauss↔Tesla 混淆, 差 1e4 倍)。'
+  source: Chen 等离子体物理导论; Aschwanden 日冕波与日震学综述
+  confidence: established
+  ranges:
+    coronal_alfven_speed:
+      lo: 1000.0
+      hi: 2000.0
+      unit: km/s
+- id: eddington_approximation
+  title: 爱丁顿近似与辐射扩散近似
+  category: physical_law
+  tags:
+  - radiative_transfer
+  - diffusion_approximation
+  - gray_atmosphere
+  - radiative_flux
+  - stellar_atmosphere
+  hypothetical_queries:
+  - 爱丁顿近似是什么
+  - 灰大气温度与光深的关系
+  - 辐射扩散近似适用条件
+  applies_to:
+    fields:
+    - effective_temperature
+    - radiative_flux
+    - optical_depth
+    entities:
+    - star
+    - ism_object
+  content: '爱丁顿近似 (双流近似): 辐射强度角度分布取两半空间各向同性, 辐射场仅用 J、F 两矩描述并令 K = J/3 → 灰大气温度-光深关系 T^4 = (3/4) T_eff^4 (tau + 2/3): 光球 (tau = 2/3) 处 T = T_eff, 表面 (tau = 0) T = 0.841 T_eff (不为零, 由外部辐射场维持)。
+
+
+    辐射扩散近似 (光学厚极限): 辐射通量 F = -(c/(3κρ)) ∇U_rad = -(16σT^3/(3κρ)) ∇T, U_rad = aT^4 — 恒星辐射区能量输运的基本方程, 与 Rosseland 平均不透明度 κ_R (按 1/κ 加权) 联用。
+
+
+    物理原理: 光学厚介质中光子平均自由程 l = 1/(κρ) 远小于系统尺度, 辐射输运退化为热传导 (光子扩散); 爱丁顿近似只取角度矩前两阶, 为大气边界提供封边关系。
+
+
+    应用: 恒星结构与大气模型 (灰大气 T(τ) 关系用于恒星演化代码边界), 吸积盘垂向结构, 辐射流体模拟 (flux-limited diffusion)。
+
+
+    判定线索: 扩散近似要求 tau >> 1 — 光学薄区 (星系际介质、恒星外部大气) 直接套用会系统性低估温度; 外推表面温度与 0.84 T_eff 明显不符 = 非灰大气 (谱线/外部加热) 或参数错误。'
+  source: Mihalas 恒星大气物理; MESA 灰大气模型文档
+  confidence: established
+- id: tidal_forces_roche
+  title: 潮汐力与洛希极限 (潮汐瓦解)
+  category: physical_law
+  tags:
+  - tidal
+  - roche_limit
+  - tidal_disruption
+  - tde
+  - tidal_force
+  hypothetical_queries:
+  - 洛希极限怎么计算
+  - 潮汐瓦解事件需要什么条件
+  - 行星环为什么位于洛希极限之内
+  applies_to:
+    fields:
+    - orbital_period
+    - orbital_separation
+    - density
+    - stellar_mass
+    entities:
+    - binary_star
+    - star
+    - exoplanet
+    - black_hole
+  content: '潮汐力: 主星引力梯度产生的差动力, 对尺度 d 的伴体 ΔF ≈ 2GM_p m d/r^3 (r 为轨道距离) — 近侧引力强于远侧, 天体被拉伸; 潮汐加速度 ∝ M_p/d^3, 衰减比引力本身快 (1/r^3 vs 1/r^2)。
+
+
+    洛希极限 (流体天体自引力与潮汐拉伸平衡的距离): d_R = 2.44 R_p (ρ_p/ρ_s)^(1/3) (R_p、ρ_p 为主星半径/密度, ρ_s 为伴星密度; 刚体极限 ~1.26 R_p, 实际天体介于两者之间) — 进入此距离伴星无法保持完整形态。
+
+
+    黑洞潮汐瓦解半径: R_t ≈ R_* (M_BH/M_*)^(1/3) — 太阳型恒星被 1e6 Msun 黑洞瓦解于 ~100 Rsun; 与事件视界之比 R_t/r_s ≈ 2.4e5 (M_BH/Msun)^(-2/3): 质量 > ~1e8 Msun 的黑洞 R_t < r_s, 恒星整体落入视界而无瓦解耀发。
+
+
+    物理原理: 瓦解是自引力与潮汐拉伸的竞争, 洛希极限处两者相等; 决定瓦解的是密度而非质量。
+
+
+    应用: 行星环形成 (环位于主星洛希极限内), 潮汐瓦解事件 (TDE, X 射线/光学耀发, 发生率 ~1e-5/星系/年), 密近双星质量转移 (洛希瓣是等势面概念, 勿与洛希极限混淆)。
+
+
+    判定线索: 伴星/卫星轨道半径小于洛希极限却形态完整 = 主/伴星密度或半径单位错误; TDE 要求 R_t > r_s, 对超巨黑洞的『TDE』记录需复核 (物理上不可能)。'
+  source: Roche 1848; Rees 1988, Nature; TDE 综述 (Gezari 2021)
+  confidence: established
+  ranges:
+    roche_limit_factor:
+      lo: 1.26
+      hi: 2.456
+      unit: dimensionless
+- id: atomic_transition_probability
+  title: 原子跃迁概率与谱线强度 (爱因斯坦系数)
+  category: physical_law
+  tags:
+  - einstein_coefficients
+  - oscillator_strength
+  - line_intensity
+  - radiative_transition
+  - equivalent_width
+  hypothetical_queries:
+  - 爱因斯坦系数与振子强度的关系
+  - 巴耳末递减的正常值是多少
+  - 由谱线等值宽度估算柱密度
+  applies_to:
+    fields:
+    - line_flux
+    - equivalent_width
+    - flux_density
+    entities:
+    - star
+    - hii_region
+    - ism_object
+    - agn
+  content: '两能级原子 (下能级 l, 上能级 u, 简并度 g): 自发辐射 A_ul、受激辐射 B_ul、吸收 B_lu 三系数由细致平衡联系: g_l B_lu = g_u B_ul 与 A_ul = (2hν^3/c^2) B_ul — 只取决于原子结构与跃迁频率, 与辐射场无关。
+
+
+    振子强度 f (吸收): A_ul = (2πe^2ν^2/(m_e c^3)) (g_l/g_u) f_lu (cgs) — 经典谐振子归一化: Lyα (1216 Å) f = 0.416, A = 6.27e8 s^-1; Hα f = 0.641, A = 4.4e7 s^-1。
+
+
+    谱线强度 (光学薄): I ∝ n_u A_ul hν/(4π) — 上能级布居由碰撞/辐射平衡决定; 禁线 (E2/M1, A ~ 1e-3-1e1 s^-1, 如 [OIII] 5007 Å) 只能靠碰撞激发 → 密度敏感诊断。
+
+
+    能级寿命 tau = 1/ΣA, 自然线宽 Δν = A/(2π); 光学薄吸收线柱密度 (曲线增长线性段): N_l ≈ 1.13e20 W_λ/(λ^2 f) cm^-2 (W_λ、λ 单位 Å)。
+
+
+    物理原理: 跃迁概率决定谱线强度比例、能级寿命与线宽 — 一切谱线诊断 (丰度、温度、密度、柱密度) 的基础。
+
+
+    判定线索: Balmer 递减 Hα/Hβ ~ 2.9 (case B) 明显偏离 = 消光或光学厚; 记录中 A 与 f、g 比例不自洽 = 原子数据错误; 禁线强度反常先怀疑密度/温度假设而非数据。'
+  source: Rybicki & Lightman 辐射过程; Draine 天体物理辐射过程; NIST 原子光谱数据库
+  confidence: established
+- id: relativistic_beaming
+  title: 相对论聚束效应 (多普勒因子)
+  category: physical_law
+  tags:
+  - beaming
+  - doppler_factor
+  - superluminal
+  - blazar
+  - jet
+  - lorentz_factor
+  hypothetical_queries:
+  - 相对论聚束效应如何解释视超光速
+  - 多普勒因子怎么计算
+  - blazar高偏振快时变的原因
+  applies_to:
+    fields:
+    - flux_density
+    - brightness_temperature
+    - spectral_index
+    - apparent_velocity
+    entities:
+    - agn
+    - black_hole
+    - pulsar
+  content: '相对论多普勒因子: δ = 1/(γ(1 - β cosθ)) (β = v/c, γ = (1-β^2)^(-1/2), θ 为视线与运动方向夹角): θ = 0 时 δ_max = (1+β)γ ≈ 2γ, θ = 90° 时 δ = 1/γ, 退行半球辐射被削弱 (de-beaming)。
+
+
+    观测效应: ν_obs = δ ν_em; 连续喷流通量增强 ~ δ^(2+α), 离散源团 ~ δ^(3+α) (α 为谱指数) — 朝向观测者的喷流可比固有亮度亮数个量级 → 单侧喷流、counter-jet 不可见、快速时变与高偏振 (blazar 现象)。
+
+
+    视超光速运动: β_app = β sinθ/(1 - β cosθ) — β > 1/sqrt(2) ≈ 0.71 时表观速度可超光速; β_app 最大 ≈ γ (θ = 1/γ 处), 由观测 β_app 推 γ_min = sqrt(1 + β_app^2) (β_app = 5 → γ ≥ 5.1); 聚束锥角 ~ 1/γ (γ = 10 → 锥角 ~6°)。
+
+
+    物理原理: 接近光速的辐射源把光子『扫』向前方且光子到达时间被压缩 — 纯几何 + 狭义相对论效应, 无真实超光速。
+
+
+    判定线索: β_app > 1 = 聚束的强证据; 亮温度 T_B > 1e12 K (逆康普顿灾变极限) 必须用 δ > 1 解释; 声称的倾角/γ/β_app 组合与 δ 关系不自洽 = 参数错误。'
+  source: Urry & Padovani 1995, PASP 107, 803; Rybicki & Lightman 辐射过程
+  confidence: established
+- id: gravitational_redshift
+  title: 引力红移
+  category: physical_law
+  tags:
+  - gravitational_redshift
+  - general_relativity
+  - white_dwarf
+  - neutron_star
+  - einstein
+  hypothetical_queries:
+  - 引力红移怎么计算
+  - 白矮星引力红移的量级
+  - 中子星表面引力红移需要相对论修正吗
+  applies_to:
+    fields:
+    - redshift
+    - radial_velocity
+    - stellar_mass
+    - stellar_radius
+    entities:
+    - white_dwarf
+    - neutron_star
+    - star
+  content: '引力红移: 光子逃出引力势井损失能量, 频率降低; 弱场近似 z = GM/(r c^2) = v_esc^2/(2c^2) (v_esc 为逃逸速度); 严格 Schwarzschild 形式 z = (1 - 2GM/(R c^2))^(-1/2) - 1 (R → r_s 时发散)。
+
+
+    数值: 太阳表面 z = 2.1e-6 (等效 ~0.6 km/s); 白矮星 (0.6 Msun, 0.01 Rsun) z ≈ 1.3e-4 ≈ 38 km/s; 中子星 (1.4 Msun, 12 km) z ≈ 0.17-0.25, 弱场公式偏差 ~30% 必须用严格式; 星系团核 ~1e-5。
+
+
+    物理原理: 引力时间膨胀使远离引力源的观测者测得光子频率降低; 效应与波长无关, 是广义相对论三大经典检验之一。
+
+
+    应用: 白矮星质量-半径关系观测检验 (z 同时编码 M 与 R), 中子星致密度的独立探针, 光谱建模前需扣除引力红移。
+
+
+    判定线索: 白矮星视向速度相对星团/场参考系系统性偏红 ~30-50 km/s = 引力红移未扣除而非反常运动; 声称的中子星 z > 0.7 需极软状态方程, 通常提示拟合错误; 把引力红移当多普勒速度会高估动力学质量。'
+  source: 爱因斯坦 1916; Holberg 2010, JHA 41 (白矮星引力红移); 广义相对论教科书
+  confidence: established
+  ranges:
+    white_dwarf_gravitational_shift:
+      lo: 5.0e-05
+      hi: 0.0003
+      unit: dimensionless
+- id: jeans_mass_star_formation
+  title: 恒星形成的坍缩时标与吸积率
+  category: physical_law
+  tags:
+  - star_formation
+  - free_fall_time
+  - accretion_rate
+  - collapse
+  - protostar
+  hypothetical_queries:
+  - 自由落体时标怎么估算
+  - 恒星形成吸积率由什么决定
+  - 分子云坍缩的典型时标
+  applies_to:
+    fields:
+    - stellar_mass
+    - density
+    - temperature
+    entities:
+    - molecular_cloud
+    - protostar
+    - star
+  content: '自由落体时标 (无压坍缩): t_ff = (3π/(32Gρ))^(1/2) ≈ 4.4e7 n_H^(-1/2) yr (n_H 为总氢数密度 cm^-3): 致密核 (n_H2 ~ 1e4 cm^-3) ~2-3e5 yr, 弥散分子云 (n_H2 ~ 1e2 cm^-3) ~3e6 yr — 恒星形成过程的零阶时标。
+
+
+    与观测对照: 分子云寿命 (~10-30 Myr) 远长于 t_ff → 湍流/磁场/加热必须持续支撑; 观测恒星形成效率 ε_ff ≈ 0.01-0.1/自由落体时标; Kennicutt-Schmidt 定标 Σ_SFR ∝ Σ_gas^1.4。
+
+
+    等温自相似坍缩 (Shu 1977 由内向外): 膨胀波以声速外传, 中心吸积率恒定 Ṁ = 0.975 c_s^3/G ≈ 1.5e-6 (T/10K)^(3/2) Msun/yr — 10 K 时成长 1 Msun 恒星约 6e5 yr; 大质量恒星 (含盘外流) 1e-4-1e-3 Msun/yr。
+
+
+    Bondi-Hoyle 吸积: Ṁ = 4πρ G^2 M^2/(c_s^2 + v^2)^(3/2) — 运动天体在介质中的气体吸积率。
+
+
+    物理原理: 坍缩时标只由密度决定 (自引力坍缩无质量尺度); 吸积率由声速 (温度) 决定, 温度越高坍缩越慢 (M_J ∝ T^(3/2) ρ^(-1/2))。
+
+
+    判定线索: 声称的恒星形成效率 >> 0.1/自由落体时标 = 星暴或质量/密度单位错误; 吸积时标 t = M/Ṁ 与年龄观测矛盾 = 吸积率或质量换算错误。'
+  source: Shu 1977, ApJ 214, 488; McKee & Ostriker 2007, ARA&A 45, 565; Krumholz 恒星形成
+  confidence: established
+  ranges:
+    shu_accretion_rate_10k:
+      lo: 1.0e-06
+      hi: 2.0e-06
+      unit: Msun/yr
+- id: magnetic_reconnection
+  title: 磁重联 (Sweet-Parker 与 Petschek 速率)
+  category: physical_law
+  tags:
+  - reconnection
+  - sweet_parker
+  - petschek
+  - current_sheet
+  - flare
+  - lundquist
+  hypothetical_queries:
+  - 磁重联是什么物理过程
+  - 太阳耀斑的能量来源
+  - Sweet-Parker与Petschek重联速率的区别
+  applies_to:
+    fields:
+    - magnetic_field_strength
+    - luminosity
+    entities:
+    - star
+    - ism_object
+    - pulsar
+    - agn
+  content: '磁重联: 电流片内磁力线断裂并重新连接, 磁能转化为粒子动能/热/辐射 — 太阳耀斑、磁层亚暴、吸积盘冕加热的核心机制; 理想 MHD 冻结定理在扩散区内被电阻打破。
+
+
+    Sweet-Parker 模型: 入流速度 v_in/v_A = S^(-1/2) (S 为 Lundquist 数 = v_A L/η, L 为电流片长度): 日冕 S ~ 1e12-1e14 → v_in/v_A ~ 1e-6-1e-7, 能量释放时标比观测的耀发时标 (1e2-1e3 s) 长 4-6 个量级 — 慢重联困境。
+
+
+    Petschek 模型: 慢激波对把扩散区限制在 X 点附近, v_in ≈ v_A/ln(S) ~ 0.01-0.1 v_A (几乎与电阻率无关) — 与耀斑观测一致; 高 S 数值模拟显示 Sweet-Parker 电流片对撕裂模 (plasmoid) 不稳定, 级联触发快重联。
+
+
+    能量标度: 太阳耀斑释放 1e29-1e32 erg, 上限为活动区磁能 B^2/(8π) × 体积; 重联速率 = 入流速度/阿尔芬速度。
+
+
+    物理原理: 磁张力与电阻耗散的竞争决定重联速率; 快重联需缩短扩散区或增强有效电阻 (反常电阻/湍流)。
+
+
+    判定线索: 时标与源区尺度用 Sweet-Parker 外推矛盾数级 = 存在快重联 (Petschek/plasmoid); 耀发能量超过源区磁能上限 = 磁场或体积单位错误。'
+  source: Sweet 1958; Parker 1957; Petschek 1964; Priest & Forbes 磁重联综述
+  confidence: established
+  ranges:
+    petschek_reconnection_rate:
+      lo: 0.01
+      hi: 0.1
+      unit: dimensionless
+- id: rayleigh_jeans_wien
+  title: 瑞利-金斯与维恩极限 (亮温度)
+  category: physical_law
+  tags:
+  - rayleigh_jeans
+  - wien_approximation
+  - brightness_temperature
+  - planck
+  - radio
+  hypothetical_queries:
+  - 瑞利-金斯近似的适用条件
+  - 射电亮温度怎么计算
+  - 亮温度能超过物理温度吗
+  applies_to:
+    fields:
+    - brightness_temperature
+    - flux_density
+    - observing_frequency
+    entities:
+    - star
+    - ism_object
+    - galaxy
+  content: '普朗克函数渐近极限, 判据 x = hν/(kT) = 1.439e4/(λ[μm] T[K]) (x << 1 瑞利-金斯, x >> 1 维恩):
+
+    - 瑞利-金斯 (射电/微波): B_ν ≈ 2kTν^2/c^2 = 2kT/λ^2 — 与温度线性、谱形 ν^2 的经典极限 (紫外灾变即其非法外推);
+
+    - 维恩 (紫外/高频): B_ν ≈ (2hν^3/c^2) e^(-hν/kT) — 指数衰减。
+
+
+    射电亮温度: T_B = (c^2/(2k)) S_ν/(ν^2 Ω) (S 为流量密度, Ω 为立体角) — 高斯波束实用式 T_B [K] ≈ 340 S[Jy]/(θ_arcmin^2 ν_GHz^2): 1.4 GHz 下 1 Jy/1 角分波束 ≈ 170 K; RJ 区亮温度可线性叠加。
+
+
+    物理原理: hν << kT 时光子能量连续化, 玻色分布退化为经典极限; 亮温度 = 把观测流量反推的等效黑体温度, 非物理温度 (T_B 可远大于或远小于物理温度)。
+
+
+    应用: 射电-亚毫米热辐射温度标度 (CMB 2.725 K 背景), HI 21cm 吸收要求背景 T_B 低于气体自旋温度。
+
+
+    判定线索: T_B 超过源物理温度 10 倍以上 = 非热辐射 (同步辐射上限 ~1e11-1e12 K, 更高需聚束); 流量 ∝ ν^2 上升段是光学厚热谱指纹; x > 1 波段误用 RJ 会低估亮温度/流量。'
+  source: Rybicki & Lightman 辐射过程; Wilson 射电天文 (亮温度换算)
+  confidence: established
+  ranges:
+    cmb_brightness_temperature:
+      lo: 2.72
+      hi: 2.73
+      unit: K
+- id: planck_law_numerical
+  title: 普朗克定律的数值形式与计算要点
+  category: physical_law
+  tags:
+  - planck_function
+  - blackbody_spectrum
+  - sed
+  - radiation_constants
+  - photometry
+  hypothetical_queries:
+  - 普朗克函数数值形式怎么用
+  - 黑体辐射峰值波长与温度的关系
+  - 射电流量单位Jy怎么换算
+  applies_to:
+    fields:
+    - flux_density
+    - effective_temperature
+    - luminosity
+    entities:
+    - star
+    - ism_object
+    - galaxy
+  content: '普朗克函数数值形式 (cgs, T 单位 K):
+
+    - 频率: B_ν [erg s^-1 cm^-2 Hz^-1 sr^-1] = 1.4744e-47 ν^3/(e^(4.799e-11 ν/T) - 1) (ν 单位 Hz);
+
+    - 波长: B_λ [erg s^-1 cm^-2 sr^-1 cm^-1] = 1.1910e-5 λ^-5/(e^(1.4388/(λ T)) - 1) (λ 单位 cm);
+
+    - 换算: B_λ = (c/λ^2) B_ν; 1 Jy = 1e-23 erg s^-1 cm^-2 Hz^-1; 光子能量 E[eV] = 1.240/λ[μm]。
+
+
+    峰位置: λ_max T = 0.2898 cm K (x = 4.965), ν_max/T = 5.879e10 Hz/K (x = 2.821) — B_λ 峰与 B_ν 峰不对应同一频率 (差因子 1.76), 这是常见误区。
+
+
+    积分: 辐射通量 F = σT^4 (σ = 5.670e-5 erg cm^-2 s^-1 K^-4), 能量密度 u = aT^4 (a = 7.566e-15 erg cm^-3 K^-4), 光子数密度 ∝ T^3。
+
+
+    物理原理: 黑体谱是热平衡辐射场的普适函数, 只由温度决定 — SED 拟合与颜色-温度转换的基础。
+
+
+    判定线索: B_ν/B_λ 形式混用使拟合温度偏差 20-30%; 峰值波长与 T 违反维恩位移 = 消光/红移未修正或单位错误; 流量单位混淆 (Jy vs μJy, per Hz vs per Å) 是 SED 错误的首要来源。'
+  source: CODATA 物理常数; Rybicki & Lightman 辐射过程; 黑体辐射数值表
+  confidence: established
+- id: radiation_pressure_force
+  title: 辐射压力 (光子动量与辐射压梯度)
+  category: physical_law
+  tags:
+  - radiation_pressure
+  - photon_momentum
+  - eddington_ratio
+  - dust_opacity
+  - stellar_wind
+  applies_to:
+    fields:
+    - luminosity
+    - effective_temperature
+    entities:
+    - star
+    - agn
+    - ism_object
+  hypothetical_queries:
+  - 辐射压力怎么计算
+  - 光压在大质量恒星里有多重要
+  - 太阳辐射压在地球轨道处有多大
+  content: '辐射压力: 光子动量 p = E/c = h nu/c, 垂直入射动量流密度即压力 — 完全吸收面 P = F/c, 完全反射面 P = 2F/c (F 为辐射通量)。
+
+    各向同性辐射场 (热平衡): P_rad = u/3 = a T^4/3 (a = 7.566e-15 erg cm^-3 K^-4)。
+
+    来自光度 L 的通量 F = L/(4 pi r^2), 距源 r 处辐射压 P = L/(4 pi r^2 c): 太阳常数 1361 W/m^2 在 1 AU 处对应 ~4.5e-5 dyn/cm^2 (吸收面, 反射面翻倍)。
+
+    对物质的作用: 单位质量辐射压力加速度 = kappa F/c (kappa 为不透明度), 与引力加速度之比即爱丁顿比 Gamma = kappa L/(4 pi G M c) — Gamma -> 1 时辐射压驱动外流 (星风/吸积盘风)。
+
+    不透明度对比: 电子散射 kappa_es ~ 0.4 cm^2/g (完全电离等离子体, 与温度无关); 星际尘埃对光学/紫外 kappa_dust ~ 1e2-1e3 cm^2/g (大 2-3 个量级)。
+
+    尘埃主导的辐射压是恒星形成区电离氢区膨胀与盘尘埃迁移的关键; AGN 环状尘埃的辐射压影响 SED 与视线遮蔽。
+
+    恒星结构: 大质量星 (M > ~30 Msun) 内部辐射压占比 > 50%, 结构接近 Eddington 极限; 日型星中心辐射压占比 < 1%。
+
+    物理原理: 光子携带动量 E/c, 被吸收/散射时把动量转移给介质 — 辐射压与气体压共同支撑恒星与吸积盘; 吸收 (动量 c) 与反射 (2c) 的差异决定尘埃-气体耦合强度。
+
+    判定线索: 持续辐射的 L 远超 Eddington 极限 (Gamma > 1 且无聚束/几何解释) = 光度或质量字段错误; 尘埃辐射压估算误用电子散射 kappa 会低估 2-3 个量级; 星风外流速度与 L/kappa 组合违反动量驱动标定需复核。'
+  source: Rybicki & Lightman 辐射过程; Maeder 恒星结构与演化; Eddington 1916
+  confidence: established
+- id: electron_scattering_depth
+  title: 电子散射光深 (Thomson 光深)
+  category: physical_law
+  tags:
+  - thomson_scattering
+  - optical_depth
+  - electron_scattering
+  - reionization
+  - free_electron
+  applies_to:
+    fields:
+    - electron_density
+    - optical_depth
+    entities:
+    - star
+    - galaxy_cluster
+    - ism_object
+  hypothetical_queries:
+  - 电子散射光深怎么算
+  - 星系团的Thomson光深是多少
+  - 再电离时代的电子散射光深有多大
+  content: '电子散射光深: tau_es = sigma_T ∫ n_e dl, Thomson 截面 sigma_T = 6.65e-25 cm^2。
+
+    适用条件: 光子能量 h nu << m_e c^2 (511 keV) 时为弹性散射, 截面与频率无关; 高能端需 Klein-Nishina 修正 (截面下降)。
+
+    柱密度换算: 每单位光深对应电子柱密度 N_e = tau/sigma_T = 1.5e24 tau cm^-2 — 由 tau 反推电子柱密度的一阶换算。
+
+    平均自由程 l = 1/(n_e sigma_T): 星系团介质 (n_e ~ 1e-3 cm^-3) ~500 Mpc 量级; 恒星光球 (n_e ~ 1e17-1e18 cm^-3) 仅 ~10-150 km; 星际介质 (n_e ~ 0.03 cm^-3) ~1.5 Gpc。
+
+    典型光深: 再电离后 IGM tau_es ~ 0.05 (Planck 2018: 0.054 ± 0.007, 约束再电离红移 ~6-8)。
+
+    星系团核心 tau ~ 0.005-0.02 (SZ 效应强度正比 tau); 大质量星稠密星风 (WR 型) tau ~ 0.1-1 (光学厚散射包层); 恒星光球 tau ~ 1。
+
+    物理原理: 电子散射不改变光子能量只改变方向 — 辐射压、SZ 效应、临边散射偏振与连续谱光深的共同基础; 恒星大气中 tau_es 是有效温度/光度推导的输入。
+
+    应用: 再电离历史 (CMB 偏振), 星系团质量 (SZ), 星风连续谱, 激波电离前区 (X 射线散射/反射)。判定线索: 声称 n_e 与 l 违反 tau = sigma_T n_e l 量级 = 密度单位错误 (cm^-3 vs m^-3 差 1e6 倍); 电子柱密度与 tau 不满足 1.5e24 换算因子 = 字段错位; 光学厚散射介质中谱线被抹平, 强窄线记录需复核散射光深假设。'
+  source: Rybicki & Lightman 辐射过程; Planck Collaboration 2018, A&A 641, A6; Sunyaev & Zeldovich 1972
+  confidence: established
+  ranges:
+    reionization_tau:
+      lo: 0.04
+      hi: 0.07
+      unit: dimensionless
+- id: saha_ionization_equation
+  title: Saha 电离方程与恒星光谱温度序
+  category: physical_law
+  tags:
+  - saha
+  - ionization
+  - boltzmann
+  - spectral_classification
+  - balmer
+  - recombination
+  applies_to:
+    fields:
+    - effective_temperature
+    - electron_density
+    entities:
+    - star
+    - main_sequence_star
+  hypothetical_queries:
+  - Saha电离方程是什么
+  - 氢在什么温度下开始电离
+  - 为什么A型星巴耳末线最强
+  content: 'Saha 电离方程: N_{i+1} n_e / N_i = (2 pi m_e kT/h^2)^(3/2) (2 U_{i+1}/U_i) e^(-chi_i/kT) — 温度、电子密度与电离态布居的平衡关系。
+
+    常数 (2 pi m_e k/h^2)^(3/2) = 2.41e15 cm^-3 K^(-3/2); 电离度 ∝ T^1.5 e^(-chi/kT)/n_e, 指数因子对温度极端敏感 (T 变化 ~10% → 布居变化 e 倍量级)。
+
+    氢 (chi = 13.6 eV): N_HII/N_HI = 2.41e15 T^1.5 e^(-1.58e5/T) / n_e — 恒星大气 (n_e ~ 1e13-1e16 cm^-3) 中氢在 ~8e3-1.2e4 K 迅速电离, 半电离温度 ~1e4 K (随 n_e 变化 ~1e3 K)。
+
+    谱型物理: Balmer 线强度在 ~9.9e3 K (A 型) 达峰 — 更热氢几乎全电离 (n=2 布居下降), 更冷激发不足 (n=2 布居低) — OBAFGKM 温度序与 H 线强度反转的根源。
+
+    多重电离: He II (chi ~ 54 eV)、C IV/O VI 等高电离线要求 T > ~3e4-1e5 K — 恒星分类与星云诊断 (O 星、行星状星云、AGN 宽线区) 的依据。
+
+    物理原理: 电离平衡 = 光电离与复合的细致平衡, 谱线强度 = Boltzmann 激发 × Saha 电离度。
+
+    应用: 由谱线强度反推 Teff 与电子压力; 恒星大气模型边界条件; 光谱分类的一致性核查。
+
+    判定线索: 光谱型与 Teff 违反 Saha 外推 (M 型 3000 K 却报强 H-alpha 吸收、A 型却报中性金属线强) = 分类或温度字段错误; He II 与 H I 线同时强 = 双温度介质/多星混合; 6000 K 源出现 O VI 需复核波长定标 (其双线 1032/1038 A 易与红移谱线混淆)。'
+  source: Saha 1920, Phil. Mag. 40, 472; Gray 恒星光谱分类; Carroll & Ostlie 现代天体物理导论
+  confidence: established
+  ranges:
+    balmer_peak_temperature:
+      lo: 9000.0
+      hi: 10500.0
+      unit: K
+- id: line_formation_curve_growth
+  title: 谱线形成与生长曲线
+  category: physical_law
+  tags:
+  - curve_of_growth
+  - equivalent_width
+  - line_saturation
+  - voigt_profile
+  - column_density
+  - abundance
+  applies_to:
+    fields:
+    - equivalent_width
+    - spectral_line_width
+    entities:
+    - star
+    - ism_object
+    - hii_region
+  hypothetical_queries:
+  - 谱线生长曲线是什么
+  - 饱和谱线为什么不能直接算柱密度
+  - 阻尼翼怎么定中性氢柱密度
+  content: '生长曲线: 等值宽度 W 随吸收原子柱密度 N 的增长分三段 — 线性段: W ∝ N (光学薄); 平段 (饱和): W 仅随 ln N 缓慢增长; 阻尼段: W ∝ (N gamma/f)^(1/2)。
+
+    线性段公式: 柱密度 N ≈ 1.13e20 W/(lambda^2 f) cm^-2 (W/lambda 单位 A) — 光学薄极限下由 EW 直接定柱密度。
+
+    饱和起点: 线心光深 tau_0 ~ 1 即进入平段 — 强共振线 (Ly-alpha, f = 0.416) N ~ 1e13-1e14 cm^-2 即饱和; 弱线 (f ~ 1e-3, 如多数 Fe I 线) 线性段可延伸至 N ~ 1e17 cm^-2。
+
+    平段特征: W ~ (2 b/c) lambda sqrt(ln(...)) 量级 (b 为多普勒宽度), 对 N 极不敏感 — 丰度变化 10 倍 W 仅变 ~20-30%, 该区丰度精度严重下降。
+
+    阻尼段: 由自然展宽/Stark/范德瓦尔斯展宽驱动, W ∝ (N gamma)^(1/2) — Ly-alpha 阻尼翼直接定中性氢柱密度 N_HI ~ 1e20-1e21 cm^-2, 该区柱密度恢复精度最好。
+
+    物理原理: 线心先饱和后光子从线翼逃逸; 曲线形状由多普勒宽度 b (热+湍流)、振子强度 f 与阻尼常数 gamma 决定。
+
+    应用: 双线法 (同元素强弱线对) 同时解 N 与 b; 恒星丰度与星际柱密度测量。
+
+    判定线索: 用线性段公式反推饱和线柱密度严重低估 (可差 1-2 个量级); 同一元素强线与弱线丰度系统性差异 = 饱和未处理; 等效宽度列不标分辨率与 S/N 时弱线 EW 不可跨谱比较; 阻尼翼展宽与 N_HI 不自洽 = 分辨率或连续谱归一错误。'
+  source: Strömgren 1948, ApJ 108, 242; Rybicki & Lightman 辐射过程; Draine 天体物理辐射过程
+  confidence: established
+- id: orbital_resonance_mechanics
+  title: 轨道共振与潮汐锁定
+  category: physical_law
+  tags:
+  - resonance
+  - mean_motion
+  - spin_orbit
+  - tidal_locking
+  - libration
+  - laplace_resonance
+  applies_to:
+    fields:
+    - orbital_period
+    - eccentricity
+    entities:
+    - exoplanet
+    - binary_star
+  hypothetical_queries:
+  - 轨道共振是什么意思
+  - 潮汐锁定需要多长时间
+  - 2:1轨道共振有什么后果
+  content: '平均运动共振: 两天体公转周期整数比 (p:q 共振, 如 2:1、3:2), 共振摄动长期同相叠加使轨道能量与角动量持续交换。
+
+    观测后果: 行星盘环隙、轨道离心率激发与轨道迁移; 会合点位于远心点的保护机制使某些构型长期稳定。
+
+    共振宽度与天平动: 共振半宽 ∝ (m_perturber/M)^(1/2) 量级; 共振角在 Libration 区内振荡, 天平动时标 ~ 1e2-1e3 轨道周期。
+
+    自转-轨道共振: 自转被潮汐锁定为轨道周期整数比 — 1:1 (圆轨道, 行星-卫星/热行星) 与 3:2 (离心轨道)。
+
+    锁定时标: t_lock ∝ a^6 (Q/k_2) m_p/(m_s^2 R^3) (Peale 1977; Q 品质因子 10-500, k_2 Love 数), 距离六次方标度 — 距离翻倍时标 ×64。
+
+    典型量级 (类日恒星): 热类木行星 (a ~ 0.02-0.05 AU) ~1e5-1e6 yr; ~0.1 AU ~1e7-1e8 yr; 宜居带 (a ~ 1 AU) ~1e10-1e12 yr, 通常超过系统年龄 — 不必然锁定 (依赖 Q/k_2 有 1-2 个量级不确定)。
+
+    共振链: 多体系统可形成拉普拉斯型共振链 (1:2:4 模式), 单环偏离共振 → 迁移/潮汐演化历史或测量错误。物理原理: 共振是摄动频率匹配 — 能量交换长期累积 vs 非共振摄动平均抵消; 潮汐锁定是自转动能耗散使自转趋同轨道角速度。
+
+    判定线索: 行星周期精确落在 2:1/3:2 共振比而无天平动/相位证据 = 周期混叠 (谐波混淆, 见周期搜索条目); 声称潮汐锁定却给非 1:1/3:2 自转比 = 参数错误; 共振判定对周期精度敏感, 周期列须给足有效数字。'
+  source: Peale 1977, Icarus 32, 76; Murray & Dermott 太阳系动力学; Barnes 2017, CeMDA 129, 509
+  confidence: established
+- id: fluid_dynamics_shock
+  title: 流体动力学激波 (Rankine-Hugoniot 跳跃条件)
+  category: physical_law
+  tags:
+  - shock
+  - rankine_hugoniot
+  - mach_number
+  - compression_ratio
+  - supernova_remnant
+  - post_shock_temperature
+  applies_to:
+    fields:
+    - temperature
+    - density
+    - velocity
+    entities:
+    - supernova_remnant
+    - ism_object
+    - star
+  hypothetical_queries:
+  - 激波后的温度怎么算
+  - Rankine-Hugoniot条件是什么
+  - 强激波压缩比为什么是4
+  content: '激波: 超声速流 (马赫数 M = v/c_s > 1) 在间断面上满足 Rankine-Hugoniot 跳跃条件 (质量/动量/能量守恒), 下游密度、压力、温度突增。
+
+    强激波极限 (M >> 1): 压缩比 r = rho_2/rho_1 = (gamma+1)/(gamma-1) → 单原子理想气体 (gamma = 5/3) r -> 4。
+
+    压力比 P_2/P_1 ∝ M^2; 激波系内下游流速 v_2 = v_1/4; 磁化介质 (阿尔芬马赫数) 与辐射冷却 (压缩比可 >> 4) 修正。
+
+    激波后温度: T_2 = 2.25e7 mu (v_s/1000 km/s)^2 K (mu 为平均分子量, 完全电离宇宙丰度 mu ~ 0.6) → T_2 ≈ 1.4e7 (v_s/1000 km/s)^2 K, kT ≈ 1.2 (v_s/1000)^2 keV。
+
+    应用: 超新星遗迹 (v ~ 100-1000 km/s) 产生 1e5-1e8 K 的 X 射线等离子体, 由温度反推激波速度与动力学年龄; 辐射主导的激波突破阶段温度远低 (T ∝ rho^(1/4) v^(1/2))。
+
+    恒星风-ISM 相互作用 (弓形激波); 粒子加速 (扩散激波加速 → 同步辐射)。
+
+    物理原理: 信息以声速传播, 超声速扰动堆积成间断; 跳跃条件只依赖上下游热力学态, 与内部耗散机制无关。
+
+    判定线索: 激波速度与后激波温度违反 T ∝ v^2 关系 (差 >2-3 倍) = 速度单位错误 (km/s vs m/s) 或冷却/磁场修正未计; 无冷却/磁场证据却声称压缩比 >> 4 = 模型错误; 遗迹 X 射线温度与射电形态的激波位置不自洽需复核。'
+  source: Rankine 1870; Hugoniot 1887; Draine 天体物理辐射过程; Vink 2012, A&ARv 20, 49 (超新星遗迹)
+  confidence: established
+  ranges:
+    strong_shock_compression:
+      lo: 3.5
+      hi: 4.0
+      unit: dimensionless
+- id: heat_capacity_degenerate
+  title: 简并物质热容与白矮星冷却
+  category: physical_law
+  tags:
+  - heat_capacity
+  - white_dwarf
+  - cooling
+  - fermi
+  - mestel
+  - specific_heat
+  - crystallization
+  applies_to:
+    fields:
+    - luminosity
+    - effective_temperature
+    entities:
+    - white_dwarf
+    - neutron_star
+  hypothetical_queries:
+  - 白矮星为什么冷却那么慢
+  - 简并电子热容和温度什么关系
+  - 白矮星冷却时标是多少
+  content: '简并电子热容: 强简并 Fermi 气 (T << T_F) 只有 Fermi 面附近 kT 壳层电子可激发, c_v^e = (pi^2/2) k_B N (T/T_F) — 与 T 成正比, 远小于经典值 (3/2 N k_B)。
+
+    白矮星内部 T_F ~ 1e9 K (rho ~ 1e6 g/cm^3), T_c ~ 1e7 K 时电子热容仅 ~经典值的 1%。
+
+    储热来源: 白矮星热容由离子晶格主导 (近经典 3 k_B/离子, Debye 温度 theta_D ~ 1e6-1e7 K); 电子热容仅在低质量/高光度端重要 (0.5 Msun、T_c ~ 1e7 K 时约 0.25 倍离子热容)。
+
+    Mestel 冷却律 (1952): L ∝ M T_c^(7/2) (等温简并核 + Kramers 不透明包层)。
+
+    冷却时标: t ≈ (1e8/A) (M/Msun)^(5/7) (L/Lsun)^(-5/7) yr (A 为核离子平均原子量): 0.6 Msun 白矮星冷却至 ~1.24e4 K (L ~ 1.3e-3 Lsun) 约 1 Gyr; 至 ~3.5e3 K (L ~ 1e-5 Lsun) 需 10-12 Gyr — 银河系宇宙学时钟。
+
+    修正: 高光度端 (L > 1e-1.5 Lsun) 中微子冷却主导; T < ~6e3 K 结晶释放潜热使冷却暂缓; T < 0.1 theta_D 时 Debye 热容 ∝ T^3 加速冷却。
+
+    物理原理: Pauli 不相容使绝大多数电子无法参与热激发 — 简并压与热容解耦, 储热在离子晶格; 冷却速率 = 离子储热/表面光度。
+
+    判定线索: 白矮星 (L, T_eff, 年龄) 组合违反 Mestel 外推 (高亮却标古老年龄) = 冷却模型/质量错误或未计中微子项; 声称简并气 T_c > T_F 需复核密度; 中子星热容由超流隙决定且更小、冷却更快, 与白矮星冷却时标混用会差数量级。'
+  source: Mestel 1952, MNRAS 112, 583; Shapiro & Teukolsky 黑洞、白矮星与中子星; Fontaine, Brassard & Bergeron 2001, PASP 113, 409
+  confidence: established
+  ranges:
+    wd_fermi_temperature:
+      lo: 500000000.0
+      hi: 2000000000.0
+      unit: K
+- id: radiative_cooling_function
+  title: 等离子体辐射冷却函数
+  category: physical_law
+  tags:
+  - cooling_function
+  - radiative_cooling
+  - bremsstrahlung
+  - line_cooling
+  - cooling_time
+  applies_to:
+    fields:
+    - temperature
+    - electron_density
+    entities:
+    - ism_object
+    - galaxy_cluster
+    - hii_region
+  hypothetical_queries:
+  - 等离子体冷却函数是什么
+  - 星系团气体冷却时标怎么估算
+  - 为什么1e5 K附近气体冷却最快
+  content: '冷却函数 Lambda(T) [erg cm^3 s^-1]: 单位体积辐射冷却率 q = n_e n_H Lambda(T) — 气体冷却与温度演化的基本输入。
+
+    温度分段 (太阳丰度): T > 1e7 K 轫致辐射主导, Lambda ∝ T^(1/2), 1e7 K 时 ~1e-23。
+
+    1e5-1e7 K 金属线冷却 (O/Fe/Ne 禁线) 主导, Lambda ~ 1e-23-1e-22 且随 T 振荡, ~1e5 K 附近峰区可达 ~1e-21 量级 — 该温度区气体冷却最快。
+
+    T < 1e4 K 中性区 CII 158 um 精细结构线与 H2 转动线冷却, Lambda 降至 ~1e-26-1e-24, 尘埃红外辐射成为重要通道。
+
+    金属丰度依赖: 线冷却区 Lambda ∝ Z 近似线性 (低金属度气体冷却率大幅下降), 轫致区无 Z 依赖 — 丰度未知时用太阳丰度冷却率有 2-3 倍不确定。
+
+    冷却时标: t_cool = (5/2) n_tot k T / (n_e n_H Lambda) ∝ T/(Lambda n): 星系团热气体 (T ~ 1e7-1e8 K, n ~ 1e-3 cm^-3) ~1e9-1e10 yr (团核密度高时短至 ~1e8 yr — 冷流问题)。
+
+    1e4 K 分子云 t_cool ~ 1e5-1e6 yr 与自由落体时标可比, 是恒星形成的必要条件。物理原理: 冷却率 = 碰撞激发线辐射 + 复合 + 轫致 + 尘埃辐射之和; 平衡温度由加热 (光致电离/激波/宇宙线) 与冷却竞争决定。
+
+    判定线索: 声称冷却时标与 T/n 违反 t_cool ∝ T/(Lambda n) 量级 = 密度或温度单位错误 (cm^-3 vs m^-3 差 1e6 倍); 未标金属丰度假设的冷却时标跨文献差 2-3 倍属正常; 团核 t_cool 远短于哈勃时间而无加热机制 = 复核密度/温度字段。'
+  source: Sutherland & Dopita 1993, ApJS 88, 253; Draine 2011 天体物理辐射过程
+  confidence: consensus

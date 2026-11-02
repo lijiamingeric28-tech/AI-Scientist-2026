@@ -1,0 +1,2376 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026MNRAS.545f2232O",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/staf2232",
+      "title": "X-ray reverberation black hole mass and distance estimates of Cygnus X-1",
+      "authors": [
+        "O'Neill, Patrick",
+        "Ingram, Adam",
+        "Nathan, Edward",
+        "Mastroserio, Guglielmo",
+        "van der Klis, Michiel",
+        "Lucchini, Matteo",
+        "Mitchell, Jake"
+      ],
+      "year": 2026,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2026MNRAS.545f2232O.pdf",
+      "retrieval_priority": 0.6480215032611484,
+      "abstract": "We fit X-ray reverberation models to Rossi X-ray Timing Explorer data from the X-ray binary Cygnus X-1 in its hard state to yield estimates for the black hole mass and the distance to the system. The rapid variability observed in the X-ray signal from accreting black holes provides a powerful diagnostic to indirectly map the ultra-compact region in the vicinity of the black hole horizon. X-ray reverberation mapping exploits the light crossing delay between X-rays that reach us directly from the hard X-ray emitting 'corona', and those that first reflect off the accretion disc. Here, we build upon a previous reverberation mass measurement of Cygnus X-1 that used the RELTRANS software package. Our new analysis enhances signal to noise with an improved treatment of the statistics, and implements new RELTRANS models that are sensitive to distance. The reduced uncertainties uncover evidence of mass accretion rate variability in the inner region of the disc that propagates towards the corona, which we approximate as a point-like 'lamppost' source. Our best-fitting model returns a mass of <inline-formula><tex-math>$M=15\\pm 4 ~M_\\odot$</tex-math></inline-formula> and a distance of <inline-formula><tex-math>$D=3.4_{-1.2}^{+1.6}$</tex-math></inline-formula> kpc (90 per cent uncertainties), which are consistent with the most recent dynamical and parallax measurements, respectively.",
+      "keywords": [
+        "accretion",
+        "accretion discs",
+        "black hole physics",
+        "X-rays: binaries",
+        "X-rays: individual: Cygnus X-1",
+        "High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 25
+    },
+    {
+      "source_id": "2025A&A...696A.237F",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202453523",
+      "title": "A hidden quasi-periodic oscillation in Cygnus X-1 revealed by NICER",
+      "authors": [
+        "Fogantini, Federico A.",
+        "García, Federico",
+        "Méndez, Mariano",
+        "König, Ole",
+        "Wilms, Joern"
+      ],
+      "year": 2025,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2025A&A...696A.237F.pdf",
+      "retrieval_priority": 0.6066898333927346,
+      "abstract": "Context. Cygnus X-1 is a high-mass black hole binary system that has been extensively studied across multiple wavelengths since its discovery in 1964. Its rapid temporal and spectral variability in X-rays offer critical insights into the physics of accretion and the dynamics around black hole systems. The power spectra of Cygnus X-1 are generally featureless and often modelled with two broad Lorentzian functions without the need for narrow quasi-periodic oscillations, which are prevalent in other black hole X-ray binaries. Aims. We explore this phenomenon in light of the recent proposal that some variability components that are not detected in the power spectra may be significantly detected in the imaginary part of the cross spectra between two different energy bands and the coherence function. Specifically, we study the power, cross, and lag spectra and the coherence function of all available observations of Cygnus X-1 from the NICER mission up to Cycle 6 while looking for the so-called imaginary components. Methods. We simultaneously fitted the power spectra of the source in two energy bands, 0.3−2 keV and 2−12 keV, and the real and imaginary parts of the cross spectrum between the same energy bands with a multi-Lorentzian model. Under the assumption that each Lorentzian is coherent between the two energy bands while the Lorentzians are incoherent with one another, our fits predict the intrinsic coherence and phase lags. Results. The intrinsic coherence shows a narrow dip at a frequency that increases from ∼1 Hz to ∼6 Hz as the power-law index of the Comptonized component increases from ∼1.8 to ∼2.4. Simultaneously, the phase lags show a sudden and steep increase (hereafter referred to as the cliff) at the same frequencies. The dip and the cliff disappear if we use energy bands similar to those of the Rossi X-ray Timing Explorer mission (e.g. 3−5 keV and 5−12 keV) to compute the coherence and phase-lag spectrum. A narrow Lorentzian component with a low fractional root mean square amplitude and a large phase lag is required to effectively reproduce the drop of the intrinsic coherence. The rms and phase-lag spectra of this component change in a systematic way as the source moves in the hardness-intensity diagram. Conclusions. This component, referred to as the imaginary QPO, exhibits behaviour consistent with the canonical type-C QPO despite being undetectable in the power spectra alone. Comparison with a similar QPO found in MAXI J1348─630 and MAXI J1820+070 further supports this identification. If our interpretation is correct, this would be the first time that the type-C QPO is detected in Cygnus X-1.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "black hole physics",
+        "X-rays: individuals: Cygnus X-1",
+        "High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 33
+    },
+    {
+      "source_id": "2025A&A...701A.115K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202555411",
+      "title": "Variability of X-ray polarization of Cyg X-1",
+      "authors": [
+        "Kravtsov, Vadim",
+        "Bocharova, Anastasiia",
+        "Veledina, Alexandra",
+        "Poutanen, Juri",
+        "Hughes, Andrew K.",
+        "Dovčiak, Michal",
+        "Egron, Elise",
+        "Muleri, Fabio",
+        "Podgorny, Jakub",
+        "Svoboda, Jiři",
+        "Forsblom, Sofia V.",
+        "Berdyugin, Andrei V.",
+        "Blinov, Dmitry",
+        "Bright, Joe S.",
+        "Carotenuto, Francesco",
+        "Green, David A.",
+        "Ingram, Adam",
+        "Liodakis, Ioannis",
+        "Mandarakas, Nikos",
+        "Nitindala, Anagha P.",
+        "Rhodes, Lauren",
+        "Trushkin, Sergei A.",
+        "Tsygankov, Sergey S.",
+        "Brigitte, Maïmouna",
+        "Di Marco, Alessandro",
+        "Iacolina, Noemi",
+        "Krawczynski, Henric",
+        "La Monaca, Fabio",
+        "Loktev, Vladislav",
+        "Mastroserio, Guglielmo",
+        "Petrucci, Pierre-Olivier",
+        "Pilia, Maura",
+        "Tombesi, Francesco",
+        "Zdziarski, Andrzej A."
+      ],
+      "year": 2025,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2025A&A...701A.115K.pdf",
+      "retrieval_priority": 0.6786798403828693,
+      "abstract": "We present the results of a three-year X-ray, optical, and radio polarimetric monitoring campaign of the prototypical black hole X-ray binary Cyg X-1, conducted from 2022 to 2024. The X-ray polarization of Cyg X-1 was measured 13 times with the Imaging X-ray Polarimetry Explorer (IXPE), covering both hard and soft spectral states. The X-ray polarization degree (PD) in the hard state was found to be ≍4.0%, roughly twice as high as in the soft state, where it was around 2.2%. In both states, a statistically significant increase in PD with the energy was found. Moreover, a linear relation between PD and spectral hardness suggests a gradual and continuous evolution of the polarization properties, rather than an abrupt change of polarization production mechanism between states. The polarization angle (PA) was independent of the spectral state and showed no trend with the photon energy. The X-ray PA is well aligned with the orientation of the radio jet, as well as the optical and radio PAs. We find significant orbital changes of PA in the hard state, which we attribute to scattering of X-ray emission at the intrabinary structure. No significant superorbital variability in PD or PA was found at the period P<SUB>so</SUB> = 294 d. We detect, for the first time in this source, polarization of the radio emission, with the PA aligned with the jet, and a strong increase of the PD at a transition to the soft state. We also find no correlation between the X-ray and optical polarization; if any, there is a long-term anti-correlation between the X-ray PD and the radio PD.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "polarization",
+        "stars: black holes",
+        "stars: individual: Cyg X-1",
+        "X-rays: binaries",
+        "High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2024A&A...691A..78L",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202451043",
+      "title": "Characterisation of the stellar wind in Cyg X-1 via modelling of colour-colour diagrams",
+      "authors": [
+        "Lai, E. V.",
+        "De Marco, B.",
+        "Cavecchi, Y.",
+        "El Mellah, I.",
+        "Cinus, M.",
+        "Diez, C. M.",
+        "Grinberg, V.",
+        "Zdziarski, A. A.",
+        "Uttley, P.",
+        "Bachetti, M.",
+        "José, J.",
+        "Sala, G.",
+        "Różańska, A.",
+        "Wilms, J."
+      ],
+      "year": 2024,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2024A&A...691A..78L.pdf",
+      "retrieval_priority": 0.6064531892718767,
+      "abstract": "Context. Cygnus X-1 (Cyg X-1) is a high-mass X-ray binary where accretion onto the black hole (BH) is mediated by the stellar wind from the blue supergiant companion star HDE 226868. Due to its inclination, the system is a perfect laboratory to study the not yet well-understood stellar wind structure. In fact, depending on the position of the BH along the orbit, X-ray observations can probe different layers of the stellar wind. Deeper wind layers can be investigated at superior conjunction (i.e. null orbital phases). Aims. We aim to characterise the stellar wind in the Cyg X-1/HDE 226868 system, analysing one passage at superior conjunction covered by XMM-Newton during the 'Cyg X-1 Hard state Observations of a Complete Binary Orbit in X-rays' (CHOCBOX) campaign. Methods. To analyse the properties of the stellar wind, we computed colour-colour diagrams. Since X-ray absorption is energy-dependent, colour indices provide information on the parameters of the stellar wind, such as the column density, N<SUB>H, w</SUB>, and the covering factor, f<SUB>c</SUB>. We fitted colour-colour diagrams with models that include both a continuum and a stellar wind component. We used the kernel density estimation method to infer the unknown probability distribution of the data points in the colour-colour diagram, and selected the model corresponding to the highest likelihood. In order to study the temporal evolution of the wind around superior conjunction, we extracted and fitted time-resolved colour-colour diagrams. Results. We found that the model that best describes the shape of the colour-colour diagram of Cyg X-1 at superior conjunction requires the wind to be partially ionised. The shape of the colour-colour diagram strongly varies during the analysed observation, due to concurrent changes of the mean N<SUB>H, w</SUB> and the f<SUB>c</SUB> of the wind. Our results suggest the existence of a linear scaling between the rapid variability amplitude of N<SUB>H, w</SUB> (on timescales between 10 s and 11 ks) and its long-term variations (on timescales &gt; 11 ks). Using the inferred best-fit values, we estimated the stellar mass loss rate to be ∼7 × 10<SUP>−6</SUP> M<SUB>⊙</SUB> yr<SUP>−1</SUP> and the clumps to have a characteristic mass of ∼10<SUP>17</SUP> g.",
+      "keywords": [
+        "black hole physics",
+        "stars: winds",
+        "outflows",
+        "X-rays: binaries",
+        "X-rays: individuals: Cyg X-1",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 29
+    },
+    {
+      "source_id": "2024A&A...687A.284K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202449333",
+      "title": "Long term variability of Cygnus X-1. VIII. A spectral-timing look at low energies with NICER",
+      "authors": [
+        "König, Ole",
+        "Mastroserio, Guglielmo",
+        "Dauser, Thomas",
+        "Méndez, Mariano",
+        "Wang, Jingyi",
+        "García, Javier A.",
+        "Steiner, James F.",
+        "Pottschmidt, Katja",
+        "Ballhausen, Ralf",
+        "Connors, Riley M.",
+        "García, Federico",
+        "Grinberg, Victoria",
+        "Horn, David",
+        "Ingram, Adam",
+        "Kara, Erin",
+        "Kallman, Timothy R.",
+        "Lucchini, Matteo",
+        "Nathan, Edward",
+        "Nowak, Michael A.",
+        "Thalhammer, Philipp",
+        "van der Klis, Michiel",
+        "Wilms, Jörn"
+      ],
+      "year": 2024,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2024A&A...687A.284K.pdf",
+      "retrieval_priority": 0.5977931903059368,
+      "abstract": "The Neutron Star Interior Composition Explorer (NICER) monitoring campaign of Cyg X-1 allows us to study its spectral-timing behavior at energies &lt; 1 keV across all states. The hard state power spectrum can be decomposed into two main broad Lorentzians with a transition at around 1 Hz. The lower-frequency Lorentzian is the dominant component at low energies. The higher-frequency Lorentzian begins to contribute significantly to the variability above 1.5 keV and dominates at high energies. We show that the low- and high-frequency Lorentzians likely represent individual physical processes. The lower-frequency Lorentzian can be associated with a (possibly Comptonized) disk component, while the higher-frequency Lorentzian is clearly associated with the Comptonizing plasma. At the transition of these components, we discover a low-energy timing phenomenon characterized by an abrupt lag change of hard (≳2 keV) with respect to soft (≲1.5 keV) photons, accompanied by a drop in coherence, and a reduction in amplitude of the second broad Lorentzian. The frequency of the phenomenon increases with the frequencies of the Lorentzians as the source softens and cannot be seen when the power spectrum is single-humped. A comparison to transient low-mass X-ray binaries shows that this feature does not only appear in Cyg X-1, but that it is a general property of accreting black hole binaries. In Cyg X-1, we find that the variability at low and high energies is overall highly coherent in the hard and intermediate states. The high coherence shows that there is a process at work which links the variability, suggesting a physical connection between the accretion disk and Comptonizing plasma. This process fundamentally changes in the soft state, where strong red noise at high energies is incoherent to the variability at low energies.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "stars: black holes",
+        "stars: individual: Cyg X-1",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "High Energy Physics - Experiment",
+        "High Energy Physics - Phenomenology"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2023A&A...678A..58K",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202346932",
+      "title": "Peering into the tilted heart of Cyg X-1 with high-precision optical polarimetry",
+      "authors": [
+        "Kravtsov, Vadim",
+        "Veledina, Alexandra",
+        "Berdyugin, Andrei V.",
+        "Zdziarski, Andrzej A.",
+        "Henson, Gary D.",
+        "Piirola, Vilppu",
+        "Sakanoi, Takeshi",
+        "Kagitani, Masato",
+        "Berdyugina, Svetlana V.",
+        "Poutanen, Juri"
+      ],
+      "year": 2023,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2023A&A...678A..58K.pdf",
+      "retrieval_priority": 0.594578801238338,
+      "abstract": "We present high-precision optical polarimetric observations of the black hole X-ray binary Cygnus X-1 that span several cycles of its 5.6-day orbital period. The week-long observations on two telescopes located in opposite hemispheres allowed us to track the evolution of the polarization within one orbital cycle with the highest temporal resolution to date. Using the field stars, we determined the interstellar polarization in the source direction and subsequently its intrinsic polarization P<SUB>int</SUB> = 0.82%±0.15% with a polarization angle θ<SUB>int</SUB> = 155° ±5°. The optical polarization angle is aligned with that in the X-rays recently obtained with the Imaging X-ray Polarimetry Explorer. Furthermore, it is consistent within the uncertainties with the position angle of the radio ejections. We show that the intrinsic polarization degree is variable with the orbital period with an amplitude of ∼0.2% and discuss various sites of its production. Assuming that the polarization arises from a single Thomson scattering of the primary star radiation by the matter that follows the black hole in its orbital motion, we constrained the inclination of the binary orbit i &gt; 120° and its eccentricity e &lt; 0.08. The asymmetric shape of the orbital profiles of the Stokes parameters also implies the asymmetry of the scattering matter distribution in the orbital plane, which may arise from the tilted accretion disk. We compared our data to the polarimetric observations made in 1975-1987 and find good agrement within 1° between the intrinsic polarization angles. On the other hand, the polarization degree decreased by 0.4% over half a century, suggesting secular changes in the geometry of the accreting matter.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "black hole physics",
+        "polarization",
+        "stars: black holes",
+        "stars: individual: Cyg X-1",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2017PASJ...69...52S",
+      "source_type": "paper",
+      "doi": "10.1093/pasj/psx028",
+      "title": "Orbital modulations of X-ray light curves of Cygnus X-1 in its low/hard and high/soft states",
+      "authors": [
+        "Sugimoto, Juri",
+        "Kitamoto, Shunji",
+        "Mihara, Tatehiro",
+        "Matsuoka, Masaru"
+      ],
+      "year": 2017,
+      "journal": "Publications of the Astronomical Society of Japan",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2017PASJ...69...52S.pdf",
+      "retrieval_priority": 0.5383055380013992,
+      "abstract": "The black hole binary Cygnus X-1 has a 5.6-d orbital period. We first detected a clear intensity modulation with the orbital period in its high/soft state with six-year MAXI data, as well as in its low/hard state. In the low/hard state, the folded light curves showed an intensity drop at the superior conjunction of the black hole by a modulation factor (MF), which is the amplitude divided by the average, of 8 ± 1%, 4 ± 1%, and 3 ± 2% for 2-4, 4-10, and 10-20 keV bands, respectively, showing a spectral hardening at the superior conjunction of the black hole. Spectral analysis in the low/hard state, with a model consisting of a power law and a photoelectric absorption, showed that the hydrogen column density, N<SUB>H</SUB>, increased from (2.9 ± 0.4) × 10<SUP>21</SUP> cm<SUP>-2</SUP> to (4.7 ± 1.1) × 10<SUP>21</SUP> cm<SUP>-2</SUP> around the superior conjunction. The flux of the power-law component decreased by 6 ± 1%. On the other hand, MFs for the folded light curves in the high/soft state, were 4 ± 1% and 4 ± 2% for the 2-4 keV and 4-10 keV bands, respectively. We applied a model consisting of a power law and a disk blackbody with a photoelectric absorption. A modulation of the flux of the power-law component was found to be 7 ± 5% in MF, while the modulation of N<SUB>H</SUB> was less than 1 × 10<SUP>21</SUP> cm<SUP>-2</SUP>. These results can be interpreted as follows: the modulation of both states can be mainly explained by scattering of X-rays by an ionized stellar wind, but, only at the superior conjunction in the low/hard state, a large photoelectric absorption appears because of the low ionization state of the wind in the line of sight at phase 0. Such a condition can be established by reasonable parameters of an inhomogeneous wind and the observed luminosities.",
+      "keywords": [
+        "black hole physics",
+        "stars: individual (Cygnus X-1)",
+        "X-rays: general",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 16
+    },
+    {
+      "source_id": "2015A&A...584A..95P",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201527156",
+      "title": "Lepto-hadronic model for the broadband emission of Cygnus X-1",
+      "authors": [
+        "Pepe, Carolina",
+        "Vila, Gabriela S.",
+        "Romero, Gustavo E."
+      ],
+      "year": 2015,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2015A&A...584A..95P.pdf",
+      "retrieval_priority": 0.5525946595091501,
+      "abstract": "Context. Cygnus X-1 is a well-observed microquasar. Broadband observations at all wavelengths have been collected over the years. The origin of the MeV tail observed with COMPTEL and INTEGRAL is still under debate and it has mostly been attributed to the corona, although its high degree of polarization suggests that it is synchrotron radiation from a jet. The origin of the transient emission above ~100 GeV is also unclear. <BR /> Aims: We aim to clarify the origin of the broadband spectral energy distribution (SED) of Cygnus X-1, focusing particularly on the gamma-ray emission, and to gain information on the physical conditions inside the jets. <BR /> Methods: We developed a lepto-hadronic, inhomogeneous jet model and applied it to the non-thermal SED of Cygnus X-1. We calculated the contributions to the SED of both protons and electrons accelerated in an extended region of the jet. We also estimated the radiation of charged secondaries produced in hadronic interactions through several radiative processes. Absorption effects were considered. We produced synthetic maps of the jets at radio wavelengths. <BR /> Results: We find two sets of model parameters that lead to good fits of the SED. One of the models fits all the observations, including the MeV tail. This model also predicts hadronic gamma-ray emission slightly below the current upper limits. The flux predicted at 8.4 GHz is in agreement with the observations available in the literature, although the synthetic source is more compact than the imaged radio jet. <BR /> Conclusions: Our results show that the MeV emission in Cygnus X-1 may be jet synchrotron radiation. This depends mainly on the strength of the jet magnetic field and the location of the injection region of the relativistic particles. Our calculations show that there must be energetic electrons in the jets quite far from the black hole.",
+      "keywords": [
+        "gamma rays: general",
+        "radiation mechanisms: non-thermal",
+        "X-rays: binaries",
+        "X-rays: individuals: Cygnus X-1",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2015A&A...576A.117G",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201425418",
+      "title": "Long term variability of Cygnus X-1. VII. Orbital variability of the focussed wind in Cyg X-1/HDE 226868 system",
+      "authors": [
+        "Grinberg, V.",
+        "Leutenegger, M. A.",
+        "Hell, N.",
+        "Pottschmidt, K.",
+        "Böck, M.",
+        "García, J. A.",
+        "Hanke, M.",
+        "Nowak, M. A.",
+        "Sundqvist, J. O.",
+        "Townsend, R. H. D.",
+        "Wilms, J."
+      ],
+      "year": 2015,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2015A&A...576A.117G.pdf",
+      "retrieval_priority": 0.569771237145908,
+      "abstract": "Binary systems with an accreting compact object offer a unique opportunity to investigate the strong, clumpy, line-driven winds of early-type supergiants by using the compact object's X-rays to probe the wind structure. We analyze the two-component wind of HDE 226868, the O9.7Iab giant companion of the black hole Cyg X-1, using 4.77 Ms Rossi X-ray Timing Explorer (RXTE) observations of the system taken over the course of 16 years. Absorption changes strongly over the 5.6 d binary orbit, but also shows a large scatter at a given orbital phase, especially at superior conjunction. The orbital variability is most prominent when the black hole is in the hard X-ray state. Our data are poorer for the intermediate and soft state, but show signs for orbital variability of the absorption column in the intermediate state. We quantitatively compare the data in the hard state to a toy model of a focussed Castor-Abbott-Klein wind: as it does not incorporate clumping, the model does not describe the observations well. A qualitative comparison to a simplified simulation of clumpy winds with spherical clumps shows good agreement in the distribution of the equivalent hydrogen column density for models with a porosity length on the order of the stellar radius at inferior conjunction; we conjecture that the deviations between data and model at superior conjunction could either be due to lack of a focussed wind component in the model or to a more complicated clump structure. <P />Appendix A is available in electronic form at <A href=\"http://www.aanda.org/10.1051/0004-6361/201425418/olm\">http://www.aanda.org</A>",
+      "keywords": [
+        "stars: individual: Cyg X-1",
+        "X-rays: binaries",
+        "binaries : close",
+        "stars: winds",
+        "outflows",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 28
+    },
+    {
+      "source_id": "2012MNRAS.419.3194R",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2011.19959.x",
+      "title": "A weak compact jet in a soft state of Cygnus X-1",
+      "authors": [
+        "Rushton, A.",
+        "Miller-Jones, J. C. A.",
+        "Campana, R.",
+        "Evangelista, Y.",
+        "Paragi, Z.",
+        "Maccarone, T. J.",
+        "Pooley, G. G.",
+        "Tudose, V.",
+        "Fender, R. P.",
+        "Spencer, R. E.",
+        "Dhawan, V."
+      ],
+      "year": 2012,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2012MNRAS.419.3194R.pdf",
+      "retrieval_priority": 0.5311164217337092,
+      "abstract": "We present evidence for the presence of a weak compact jet during a soft X-ray state of Cygnus X-1. Very-high-resolution radio observations were taken with the VLBA, EVN and MERLIN during a hard-to-soft spectral state change, showing the hard state jet to be suppressed by a factor of about 3-5 in radio flux and unresolved to direct imaging observations (i.e. ≲1 mas at 4 cm). High time-resolution X-ray observations with the RXTE-PCA were also taken during the radio monitoring period, showing the source to make the transition from the hard state to a softer state (via an intermediate state), although the source may never have reached the canonical soft state. Using astrometric very long baseline interferometry (VLBI) analysis and removing proper motion, parallax and orbital motion signatures, the residual positions show a scatter of ∼0.2 mas (at 4 cm) and ∼3 mas (at 13 cm) along the position angle of the known jet axis; these residuals suggest that there is a weak unresolved outflow, with varying size or opacity, during intermediate and soft X-ray states. Furthermore, no evidence was found for extended knots or shocks forming within the jet during the state transition, suggesting that the change in outflow rate may not be sufficiently high to produce superluminal knots.",
+      "keywords": [
+        "stars: individual: Cygnus X-1",
+        "ISM: jets and outflows",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 13
+    },
+    {
+      "source_id": "2012ApJ...747..111W",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/747/2/111",
+      "title": "Understanding Compact Object Formation and Natal Kicks. III. The Case of Cygnus X-1",
+      "authors": [
+        "Wong, Tsing-Wai",
+        "Valsecchi, Francesca",
+        "Fragos, Tassos",
+        "Kalogera, Vassiliki"
+      ],
+      "year": 2012,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2012ApJ...747..111W.pdf",
+      "retrieval_priority": 0.5892544568911947,
+      "abstract": "In recent years, accurate observational constraints have become available for an increasing number of Galactic X-ray binaries (XRBs). Together with proper-motion measurements, we could reconstruct the full evolutionary history of XRBs back to the time of compact object formation. In this paper, we present the first study of the persistent X-ray source Cygnus X-1 that takes into account all available observational constraints. Our analysis accounts for three evolutionary phases: orbital evolution and motion through the Galactic potential after the formation of a black hole (BH), and binary orbital dynamics at the time of core collapse. We find that the mass of the BH immediate progenitor is 15.0-20.0 M <SUB>☉</SUB>, and at the time of core collapse, the BH has potentially received a small kick velocity of &lt;=77 km s<SUP>-1</SUP> at 95% confidence. If the BH progenitor mass is less than ~17 M <SUB>☉</SUB>, a non-zero natal kick velocity is required to explain the currently observed properties of Cygnus X-1. Since the BH has only accreted mass from its companion's stellar wind, the negligible amount of accreted mass does not explain the observationally inferred BH spin of a <SUB>*</SUB> &gt; 0.95, and the origin of this extreme BH spin must be connected to the BH formation itself. Right after the BH formation, we find that the BH companion is a 19.8-22.6 M <SUB>☉</SUB> main-sequence star, orbiting the BH at a period of 4.7-5.2 days. Furthermore, recent observations show that the BH companion is currently super-synchronized. This super-synchronism indicates that the strength of tides exerted on the BH companion should be weaker by a factor of at least two compared to the usually adopted strength.",
+      "keywords": [
+        "binaries: close",
+        "X-rays: binaries",
+        "X-rays: individual: Cygnus X-1",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 8
+    },
+    {
+      "source_id": "2011ApJ...736...63R",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/736/1/63",
+      "title": "A Multiwavelength Study of Cygnus X-1: The First Mid-infrared Spectroscopic Detection of Compact Jets",
+      "authors": [
+        "Rahoui, Farid",
+        "Lee, Julia C.",
+        "Heinz, Sebastian",
+        "Hines, Dean C.",
+        "Pottschmidt, Katja",
+        "Wilms, Jörn",
+        "Grinberg, Victoria"
+      ],
+      "year": 2011,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2011ApJ...736...63R.pdf",
+      "retrieval_priority": 0.5492053603953839,
+      "abstract": "We report on a Spitzer/InfraRed Spectrograph (mid-infrared), RXTE/PCA+HEXTE (X-ray), and Ryle (radio) simultaneous multiwavelength study of the microquasar Cygnus X-1, which aimed at an investigation of the origin of its mid-infrared emission. Compact jets were present in two out of three observations, and we show that they strongly contribute to the mid-infrared continuum. During the first observation, we detect the spectral break—where the transition from the optically thick to the optically thin regime takes place—at about 2.9 × 10<SUP>13</SUP> Hz. We then show that the jet's optically thin synchrotron emission accounts for Cygnus X-1's emission beyond 400 keV, although it cannot alone explain its 3-200 keV continuum. A compact jet was also present during the second observation, but we do not detect the break, since it has likely shifted to higher frequencies. In contrast, the compact jet was absent during the last observation, and we show that the 5-30 μm mid-infrared continuum of Cygnus X-1 stems from the blue supergiant companion star HD 226868. Indeed, the emission can then be understood as the combination of the photospheric Rayleigh-Jeans tail and the bremsstrahlung from the expanding stellar wind. Moreover, the stellar wind is found to be clumpy, with a filling factor f <SUB>∞</SUB> ≈ 0.09-0.10. Its bremsstrahlung emission is likely anti-correlated to the soft X-ray emission, suggesting an anti-correlation between the mass-loss and mass-accretion rates. Nevertheless, we do not detect any mid-infrared spectroscopic evidence of interaction between the jets and Cygnus X-1's environment and/or the companion star's stellar wind.",
+      "keywords": [
+        "binaries: close",
+        "dust",
+        "extinction",
+        "infrared: stars",
+        "stars: individual: Cygnus X-1",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 31
+    },
+    {
+      "source_id": "2011ApJ...742...85G",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/742/2/85",
+      "title": "The Extreme Spin of the Black Hole in Cygnus X-1",
+      "authors": [
+        "Gou, Lijun",
+        "McClintock, Jeffrey E.",
+        "Reid, Mark J.",
+        "Orosz, Jerome A.",
+        "Steiner, James F.",
+        "Narayan, Ramesh",
+        "Xiang, Jingen",
+        "Remillard, Ronald A.",
+        "Arnaud, Keith A.",
+        "Davis, Shane W."
+      ],
+      "year": 2011,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2011ApJ...742...85G.pdf",
+      "retrieval_priority": 0.6447205620366382,
+      "abstract": "The compact primary in the X-ray binary Cygnus X-1 was the first black hole to be established via dynamical observations. We have recently determined accurate values for its mass and distance, and for the orbital inclination angle of the binary. Building on these results, which are based on our favored (asynchronous) dynamical model, we have measured the radius of the inner edge of the black hole's accretion disk by fitting its thermal continuum spectrum to a fully relativistic model of a thin accretion disk. Assuming that the spin axis of the black hole is aligned with the orbital angular momentum vector, we have determined that Cygnus X-1 contains a near-extreme Kerr black hole with a spin parameter a <SUB>*</SUB> &gt; 0.95 (3σ). For a less probable (synchronous) dynamical model, we find a <SUB>*</SUB> &gt; 0.92 (3σ). In our analysis, we include the uncertainties in black hole mass, orbital inclination angle, and distance, and we also include the uncertainty in the calibration of the absolute flux via the Crab. These four sources of uncertainty totally dominate the error budget. The uncertainties introduced by the thin-disk model we employ are particularly small in this case given the extreme spin of the black hole and the disk's low luminosity.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "black hole physics",
+        "stars: individual: Cygnus X-1",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena",
+        "General Relativity and Quantum Cosmology",
+        "High Energy Physics - Phenomenology"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 24
+    },
+    {
+      "source_id": "2011ApJ...742...84O",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/742/2/84",
+      "title": "The Mass of the Black Hole in Cygnus X-1",
+      "authors": [
+        "Orosz, Jerome A.",
+        "McClintock, Jeffrey E.",
+        "Aufdenberg, Jason P.",
+        "Remillard, Ronald A.",
+        "Reid, Mark J.",
+        "Narayan, Ramesh",
+        "Gou, Lijun"
+      ],
+      "year": 2011,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2011ApJ...742...84O.pdf",
+      "retrieval_priority": 0.6945295217396323,
+      "abstract": "Cygnus X-1 is a binary star system that is comprised of a black hole and a massive giant companion star in a tight orbit. Building on our accurate distance measurement reported in the preceding paper, we first determine the radius of the companion star, thereby constraining the scale of the binary system. To obtain a full dynamical model of the binary, we use an extensive collection of optical photometric and spectroscopic data taken from the literature. By using all of the available observational constraints, we show that the orbit is slightly eccentric (both the radial velocity and photometric data independently confirm this result) and that the companion star rotates roughly 1.4 times its pseudosynchronous value. We find a black hole mass of M = 14.8 ± 1.0 M <SUB>☉</SUB>, a companion mass of M <SUB>opt</SUB> = 19.2 ± 1.9 M <SUB>☉</SUB>, and the angle of inclination of the orbital plane to our line of sight of i = 27.1 ± 0.8 deg.",
+      "keywords": [
+        "binaries: general",
+        "black hole physics",
+        "stars: individual: Cygnus X-1",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 23
+    },
+    {
+      "source_id": "2011MNRAS.412.1985Z",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2010.18034.x",
+      "title": "The doubling of the superorbital period of Cyg X-1",
+      "authors": [
+        "Zdziarski, Andrzej A.",
+        "Pooley, Guy G.",
+        "Skinner, Gerald K."
+      ],
+      "year": 2011,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2011MNRAS.412.1985Z.pdf",
+      "retrieval_priority": 0.5459097302571072,
+      "abstract": "We study properties of the superorbital modulation of the X-ray emission of Cyg X-1. We find that it has had a stable period of ∼300 d in soft and hard X-rays and in radio since 2005 until at least 2010, which is about double the previously seen period. This new period, seen in the hard spectral state only, is detected not only in the light curves but also in soft X-ray hardness ratios and in the amplitude of the orbital modulation. On the other hand, the spectral slope in hard X-rays, ≳20 keV, averaged over superorbital bins is constant, and the soft and hard X-rays and the radio emission change in phase. This shows that the superorbital variability consists of changing the normalization of an intrinsic spectrum of a constant shape and of changes of the absorbing column density with the phase. The maximum column density is achieved at the superorbital minimum. The amplitude changes are likely to be caused by a changing viewing angle of an anisotropic emitter, most likely a precessing accretion disc. The constant shape of the intrinsic spectrum shows that this modulation is not caused by a changing accretion rate. The modulated absorbing column density shows the presence of a bulge at the disc edge, as proposed previously. We also find the change of the superorbital period from ∼150 to ∼300 d to be associated with almost unchanged average X-ray fluxes, making the period change difficult to explain in the framework of disc-irradiation models. Finally, we find no correlation of the X-ray and radio properties with the reported detections in the GeV and TeV γ-ray range.",
+      "keywords": [
+        "accretion",
+        "accretion discs",
+        "stars: individual: Cyg X-1",
+        "stars: individual: HDE 226868",
+        "radio continuum: stars",
+        "X-rays: binaries",
+        "X-rays: stars",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 10
+    },
+    {
+      "source_id": "2010ApJ...710..197B",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/710/1/197",
+      "title": "X-ray Variations at the Orbital Period from Cygnus X-1 IN the High/Soft State",
+      "authors": [
+        "Boroson, Bram",
+        "Vrtilek, Saeqa Dil"
+      ],
+      "year": 2010,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2010ApJ...710..197B.pdf",
+      "retrieval_priority": 0.5805894991341658,
+      "abstract": "Orbital variability has been found in the X-ray hardness of the black hole candidate Cygnus X-1 during the soft/high X-ray state using light curves provided by the Rossi X-ray Timing Explorer's All-Sky Monitor. We are able to set broad limits on how the mass-loss rate and X-ray luminosity vary between the hard and soft states. The folded light curve shows diminished flux in the soft X-ray band at phi = 0 (defined as the time of the superior conjunction of the X-ray source). Models of the orbital variability provide slightly superior fits when the absorbing gas is concentrated in neutral clumps and better explain the strong variability in hardness. In combination with the previously established hard/low state dips, our observations give a lower limit to the mass-loss rate in the soft state (\\dot{M}&lt;2× 10^{-6} M_{☉} yr<SUP>-1</SUP>) than the limit in the hard state (\\dot{M}&lt;4× 10^{-6} M_{☉} yr<SUP>-1</SUP>). Without a change in the wind structure between X-ray states, the greater mass-loss rate during the low/hard state would be inconsistent with the increased flaring seen during the high-soft state.",
+      "keywords": [
+        "stars: individual: Cygnus X-1",
+        "X-rays: binaries",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2008Ap&SS.315..335I",
+      "source_type": "paper",
+      "doi": "10.1007/s10509-008-9839-y",
+      "title": "On the orbital and physical parameters of the HDE 226868/Cygnus X-1 binary system",
+      "authors": [
+        "Iorio, Lorenzo"
+      ],
+      "year": 2008,
+      "journal": "Astrophysics and Space Science",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2008Ap&SS.315..335I.pdf",
+      "retrieval_priority": 0.5915935748097283,
+      "abstract": "In this paper we explore the consequences of the recent determination of the mass m=(8.7±0.8)M<SUB>⊙</SUB> of Cygnus X-1, obtained from the Quasi-Periodic Oscillation (QPO)-photon index correlation scaling, on the orbital and physical properties of the binary system HDE 226868/Cygnus X-1. By using such a result and the latest spectroscopic optical data of the HDE 226868 supergiant star we get M=(24±5)M<SUB>⊙</SUB> for its mass. It turns out that deviations from the third Kepler law significant at more than 1-sigma level would occur if the inclination i of the system's orbital plane to the plane of the sky falls outside the range ≍41─56 deg: such deviations cannot be due to the first post-Newtonian (1PN) correction to the orbital period because of its smallness; interpreted in the framework of the Newtonian theory of gravitation as due to the stellar quadrupole mass moment Q, they are unphysical because Q would take unreasonably large values. By conservatively assuming that the third Kepler law is an adequate model for the orbital period we obtain i=(48±7) deg which yields for the relative semimajor axis a=(42±9)R<SUB>⊙</SUB> (≍0.2 AU).",
+      "keywords": [
+        "Black holes: individual (Cyg X-1)",
+        "Stars: individual (HDE 226868)",
+        "X-rays: binaries",
+        "X-rays: individual (Cyg X-1)",
+        "General Relativity and Quantum Cosmology",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2008AJ....136..631Y",
+      "source_type": "paper",
+      "doi": "10.1088/0004-6256/136/2/631",
+      "title": "Optical Spectroscopic Observations of Cyg X-1 = HDE 226868",
+      "authors": [
+        "Yan, Jingzhi",
+        "Liu, Qingzhong",
+        "Hadrava, Petr"
+      ],
+      "year": 2008,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2008AJ....136..631Y.pdf",
+      "retrieval_priority": 0.5087536956031983,
+      "abstract": "We present the results of the spectroscopic observations of HDE 226868, the optical counterpart to the black hole X-ray binary Cyg X-1, from 2001 to 2006. We analyze the variabilities of the two components in the complex Hα line: one P-Cygni shaped component which follows the motion of the supergiant and another emission component moving with an antiphase orbital motion relative to the supergiant, which is attributed to a focused stellar wind. The results of KOREL disentangling of our spectra indicate that the focused stellar wind is responsible for the major part of the variability of the Hα emission line. The emission of the supergiant component had a small difference between the low/hard and high/soft states, while the focused-wind component became strong in the low/hard state and weak in the high/soft state. The wind is nearly undisturbed by the X-ray photoionization during the low/hard state. However, during the high/soft state, the X-rays from the compact object could decelerate the line-driven wind and result in a high-mass accretion rate, due to the effect of the X-ray photoionization. The X-ray illuminating could also change the temperature profile of the stellar wind and increase its temperature, and thus decrease the Hα emissivity of the wind, which could explain the Hα variabilities of Cyg X-1 during different X-ray states.",
+      "keywords": [
+        "binaries: spectroscopic",
+        "stars: early-type",
+        "stars: individual: HDE 226868: Cygnus X-1",
+        "stars: winds",
+        "outflows",
+        "X-rays: binaries",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 40
+    },
+    {
+      "source_id": "2007ApJ...663..445S",
+      "source_type": "paper",
+      "doi": "10.1086/518110",
+      "title": "Determination of Black Hole Mass in Cygnus X-1 by Scaling of Spectral Index-QPO Frequency Correlation",
+      "authors": [
+        "Shaposhnikov, Nickolai",
+        "Titarchuk, Lev"
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2007ApJ...663..445S.pdf",
+      "retrieval_priority": 0.5250205117420554,
+      "abstract": "It is well established that timing and spectral properties of Galactic black hole (BH) X-ray binaries (XRB) are strongly correlated. In particular, it has been shown that low-frequency quasi-periodic oscillation (QPO) logν<SUB>low</SUB>-photon index Γ correlation curves have a specific pattern. In a number of sources the shape of the index-low-frequency QPO correlations are self-similar with a position offset in the logν<SUB>low</SUB>-Γ plane. Titarchuk &amp; Fiorito presented strong theoretical and observational arguments that the QPO frequency values in this logν<SUB>low</SUB>-Γ correlation should be inversely proportional to M<SUB>BH</SUB>. A simple translation of the correlation for a given source along the frequency axis leads to the observed correlation for another source. As a result of this translation one can obtain a scaling factor that is simply a BH mass ratio for these particular sources. This property of the correlations offers a fundamentally new method for BH mass determination in XRBs. Here we use the observed QPO-index correlations observed in three BH sources: GRO J1655-40, GRS 1915+105, and Cyg X-1. The BH mass of 6.3+/-0.5 M<SUB>solar</SUB> in GRO J1655-40 is obtained using optical observations. RXTE observations during the recent 2005 outburst yielded sufficient data to establish the correlation pattern during both the rise and decay of the event. We use GRO J1655-40 as a standard reference source to measure the BH mass in Cyg X-1. We also revisit the GRS 1915+105 data as a further test of our scaling method. We infer the value of BH mass of 15.6+/-1.5 M<SUB>solar</SUB> in this source, which is consistent with the previous BH mass estimate in GRS 1915 of 13.3+/-4 M<SUB>solar</SUB>. We obtain the BH mass in Cyg X-1 in the range of 8.7+/-0.8 M<SUB>solar</SUB>.",
+      "keywords": [
+        "Accretion",
+        "Accretion Disks",
+        "Black Hole Physics",
+        "Radiation Mechanisms: Nonthermal",
+        "Stars: Individual: Constellation Name: Cygnus X-1",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 39
+    },
+    {
+      "source_id": "2007MNRAS.375..793S",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2006.11346.x",
+      "title": "Jet radio emission in Cygnus X-1 and its orbital modulation",
+      "authors": [
+        "Szostek, Anna",
+        "Zdziarski, Andrzej A."
+      ],
+      "year": 2007,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2007MNRAS.375..793S.pdf",
+      "retrieval_priority": 0.5963846447166047,
+      "abstract": "We present results of our detailed theoretical study of the observed orbital modulation of the radio emission in Cygnus X-1 (Cyg X-1). The modulation occurs due to free-free absorption in the wind from the companion star varying with the orbital phase, and our results put strong constraints on the spatial distribution of the jet radio emission at the frequencies of 2-15 GHz. A crucial role in enhancing the asymmetry of the wind absorption suffered by the jet emission is played by the irradiation by X-rays emitted in the vicinity of the black hole. This increases the wind temperature by more than an order of magnitude with respect to that of the wind of an isolated supergiant. The observed phase lags of the minima of the radio emission with respect to the spectroscopic zero phase strongly imply that the bulk of the mass of the jet is non-relativistic (~ 5 × 10<SUP>8</SUP> cm s<SUP>-1</SUP>) within the jet core. The jet can, however, become relativistic outside the core. Also, the jet can have a two-component structure, being slow on the outside and fast inside, in which case its synchrotron-emitting part may be relativistic already in the core. We also consider the observed superorbital modulation of the radio emission (with the period of ~150 d) and find that it can be explained by a jet precession both causing variable wind absorption and changing the jet Doppler factor. Finally, we consider the case of Cyg X-3, and show that its lack of observable orbital radio modulation (in spite of strong modulation of X-rays) is explained by that system being both much more compact and much more luminous than Cyg X-1.",
+      "keywords": [
+        "acceleration of particles",
+        "binaries: general",
+        "stars: individual: Cyg X-1",
+        "stars: individual: HDE 226868",
+        "stars: individual: Cyg X-3",
+        "radio continuum: stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2007ApJ...665L..51A",
+      "source_type": "paper",
+      "doi": "10.1086/521145",
+      "title": "Very High Energy Gamma-Ray Radiation from the Stellar Mass Black Hole Binary Cygnus X-1",
+      "authors": [
+        "Albert, J.",
+        "Aliu, E.",
+        "Anderhub, H.",
+        "Antoranz, P.",
+        "Armada, A.",
+        "Baixeras, C.",
+        "Barrio, J. A.",
+        "Bartko, H.",
+        "Bastieri, D.",
+        "Becker, J. K.",
+        "Bednarek, W.",
+        "Berger, K.",
+        "Bigongiari, C.",
+        "Biland, A.",
+        "Bock, R. K.",
+        "Bordas, P.",
+        "Bosch-Ramon, V.",
+        "Bretz, T.",
+        "Britvitch, I.",
+        "Camara, M.",
+        "Carmona, E.",
+        "Chilingarian, A.",
+        "Coarasa, J. A.",
+        "Commichau, S.",
+        "Contreras, J. L.",
+        "Cortina, J.",
+        "Costado, M. T.",
+        "Curtef, V.",
+        "Danielyan, V.",
+        "Dazzi, F.",
+        "De Angelis, A.",
+        "Delgado, C.",
+        "de los Reyes, R.",
+        "De Lotto, B.",
+        "Domingo-Santamaría, E.",
+        "Dorner, D.",
+        "Doro, M.",
+        "Errando, M.",
+        "Fagiolini, M.",
+        "Ferenc, D.",
+        "Fernández, E.",
+        "Firpo, R.",
+        "Flix, J.",
+        "Fonseca, M. V.",
+        "Font, L.",
+        "Fuchs, M.",
+        "Galante, N.",
+        "García-López, R. J.",
+        "Garczarczyk, M.",
+        "Gaug, M.",
+        "Giller, M.",
+        "Goebel, F.",
+        "Hakobyan, D.",
+        "Hayashida, M.",
+        "Hengstebeck, T.",
+        "Herrero, A.",
+        "Höhne, D.",
+        "Hose, J.",
+        "Hsu, C. C.",
+        "Jacon, P.",
+        "Jogler, T.",
+        "Kosyra, R.",
+        "Kranich, D.",
+        "Kritzer, R.",
+        "Laille, A.",
+        "Lindfors, E.",
+        "Lombardi, S.",
+        "Longo, F.",
+        "López, J.",
+        "López, M.",
+        "Lorenz, E.",
+        "Majumdar, P.",
+        "Maneva, G.",
+        "Mannheim, K.",
+        "Mansutti, O.",
+        "Mariotti, M.",
+        "Martínez, M.",
+        "Mazin, D.",
+        "Merck, C.",
+        "Meucci, M.",
+        "Meyer, M.",
+        "Miranda, J. M.",
+        "Mirzoyan, R.",
+        "Mizobuchi, S.",
+        "Moralejo, A.",
+        "Nieto, D.",
+        "Nilsson, K.",
+        "Ninkovic, J.",
+        "Oña-Wilhelmi, E.",
+        "Otte, N.",
+        "Oya, I.",
+        "Panniello, M.",
+        "Paoletti, R.",
+        "Paredes, J. M.",
+        "Pasanen, M.",
+        "Pascoli, D.",
+        "Pauss, F.",
+        "Pegna, R.",
+        "Persic, M.",
+        "Peruzzo, L.",
+        "Piccioli, A.",
+        "Prandini, E.",
+        "Puchades, N.",
+        "Raymers, A.",
+        "Rhode, W.",
+        "Ribó, M.",
+        "Rico, J.",
+        "Rissi, M.",
+        "Robert, A.",
+        "Rügamer, S.",
+        "Saggion, A.",
+        "Saito, T.",
+        "Sánchez, A.",
+        "Sartori, P.",
+        "Scalzotto, V.",
+        "Scapin, V.",
+        "Schmitt, R.",
+        "Schweizer, T.",
+        "Shayduk, M.",
+        "Shinozaki, K.",
+        "Shore, S. N.",
+        "Sidro, N.",
+        "Sillanpää, A.",
+        "Sobczynska, D.",
+        "Stamerra, A.",
+        "Stark, L. S.",
+        "Takalo, L.",
+        "Temnikov, P.",
+        "Tescaro, D.",
+        "Teshima, M.",
+        "Torres, D. F.",
+        "Turini, N.",
+        "Vankov, H.",
+        "Vitale, V.",
+        "Wagner, R. M.",
+        "Wibig, T.",
+        "Wittek, W.",
+        "Zandanel, F.",
+        "Zanin, R.",
+        "Zapatero, J."
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2007ApJ...665L..51A.pdf",
+      "retrieval_priority": 0.6047576816646321,
+      "abstract": "We report on the results from the observations in the very high energy band (VHE; E<SUB>γ</SUB>&gt;=100 GeV) of the black hole X-ray binary (BHXB) Cygnus X-1. The observations were performed with the MAGIC telescope, for a total of 40 hr during 26 nights, spanning the period between 2006 June and November. Searches for steady γ-ray signals yielded no positive result, and upper limits to the integral flux ranging between 1% and 2% of the Crab Nebula flux, depending on the energy, have been established. We also analyzed each observation night independently, obtaining evidence of γ-ray signals at the 4.0 σ significance level (3.2 σ after trial correction) for 154 minutes of effective on-time (EOT) on September 24 between 20:58 and 23:41 UTC, coinciding with an X-ray flare seen by RXTE, Swift, and INTEGRAL. A search for faster-varying signals within a night resulted in an excess with a significance of 4.9 σ (4.1 σ after trial correction) for 79 minutes EOT between 22:17 and 23:41 UTC. The measured excess is compatible with a pointlike source at the position of Cygnus X-1 and excludes the nearby radio nebula powered by its relativistic jet. The differential energy spectrum is well fitted by an unbroken power law described as dN/(dAdtdE)=(2.3+/-0.6)×10<SUP>-12</SUP>(E/1 TeV)<SUP>-3.2+/-0.6</SUP>. This is the first experimental evidence of VHE emission from a stellar mass black hole and therefore from a confirmed accreting X-ray binary.",
+      "keywords": [
+        "Acceleration of Particles",
+        "Stars: Binaries: General",
+        "Gamma Rays: Observations",
+        "X-Rays: Individual: Constellation Name: Cygnus X-1",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 30
+    },
+    {
+      "source_id": "2007A&A...464..437B",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20065945",
+      "title": "Very high energy gamma-ray production inside the massive binary system Cyg X-1/HDE 226868",
+      "authors": [
+        "Bednarek, W.",
+        "Giovannelli, F."
+      ],
+      "year": 2007,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2007A&A...464..437B.pdf",
+      "retrieval_priority": 0.49784422577161935,
+      "abstract": "TeV γ-ray emission has recently been discovered by Cherenkov telescopes from two microquasars, LS 5039 and LS I +61^o303. This emission is likely to be produced inside the binary system since in both cases variability with the orbital period of the binary has been discovered. In fact, such emission features have recently been predicted by the inverse Compton (IC) e^± pair cascade model. In this model, electrons accelerated in the jet develop a cascade in the anisotropic radiation of the massive star. The γ-ray spectra emerging from the cascade strongly depends on the location of the observer with respect to the orbital plane of the binary. Here we apply this model to investigate the possible γ-ray emission features from another compact massive binary of the microquasar type, Cyg X-1. We conclude that the observational constraints at lower energies (from MeV to GeV) suggest that the spectrum of electrons injected in the jet is likely steeper than in other TeV γ-ray microquasars. The cascade γ-ray spectrum produced by electrons with such a spectrum in Cyg X-1 should be below the sensitivities of the MAGIC and VERITAS class Cherenkov telescopes. However, if the electron spectrum is flatter, then the highest TeV γ-ray fluxes are predicted at ~7 h before and after the phase when the compact object is in front of the massive star. We suggest that Cherenkov telescopes should concentrate on these ranges of phases since the TeV flux can vary by a factor of ~20 with the period of the Cyg X-1 binary system. Moreover, the model predicts clear anticorrelation of the GeV and TeV γ-ray emission. This feature can be tested by the future multiwavelength observations with the AGILE and GLAST telescopes in the GeV energy range and the MAGIC and VERITAS telescopes in the TeV energy range.",
+      "keywords": [
+        "gamma-rays: theory",
+        "radiation mechanisms: non-thermal",
+        "stars: binaries: close",
+        "stars: individual: Cyg X-1",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 19
+    },
+    {
+      "source_id": "2006MNRAS.368.1025L",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2006.10219.x",
+      "title": "Periodic long-term X-ray and radio variability of Cygnus X-1",
+      "authors": [
+        "Lachowicz, Paweł",
+        "Zdziarski, Andrzej A.",
+        "Schwarzenberg-Czerny, Alex",
+        "Pooley, Guy G.",
+        "Kitamoto, Shunji"
+      ],
+      "year": 2006,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\2006MNRAS.368.1025L.pdf",
+      "retrieval_priority": 0.554542697457356,
+      "abstract": "We present a comprehensive analysis of long-term periodic variability of Cyg X-1 using the method of multiharmonic analysis of variance applied to available monitoring data since 1969, in X-rays from Vela 5B, Ariel 5, Ginga, CGRO and RXTE satellites and in radio from the Ryle and Green Bank telescopes. We confirm a number of previously obtained results, and, for the first time, find an orbital modulation at 15GHz in the soft state and show the detailed non-sinusoidal shape of that modulation in the hard state of both the 15-GHz emission and the X-rays from the RXTE/All-Sky Monitors (ASM). We find the CGRO/BATSE data are consistent with the presence of a weak orbital modulation, in agreement with its theoretical modelling as due to Compton scattering in the companion wind. We then confirm the presence of a ~150-d superorbital period in all of the data since ~1976, finding it in particular for the first time in the Ariel 5 data. Those data sets, covering &gt;65 superorbital cycles, show a remarkable constancy of both the period and the phase. On the other hand, we confirm the presence of a ~290-d periodicity in the 1969-1979 Vela 5B data, indicating a switch from that period to its first harmonic at some time &lt;~1980. We find the superorbital modulation is compatible with accretion disc precession. Finally, we find a significant modulation in the RXTE/ASM data at a period of 5.82d, which corresponds to the beat between the orbital and superorbital modulations provided the latter is prograde.",
+      "keywords": [
+        "accretion",
+        "accretion discs: binaries: general: stars: individual: Cyg X-1: radio continuum: stars: X-rays: binaries: X-rays: stars",
+        "accretion discs",
+        "binaries: general",
+        "stars: individual: Cyg X-1",
+        "radio continuum: stars",
+        "X-rays: binaries",
+        "X-rays: stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 7
+    },
+    {
+      "source_id": "1999A&A...343..861B",
+      "source_type": "paper",
+      "doi": "10.48550/arXiv.astro-ph/9812077",
+      "title": "An improved orbital ephemeris for Cygnus X-1",
+      "authors": [
+        "Brocksopp, C.",
+        "Tarasov, A. E.",
+        "Lyuty, V. M.",
+        "Roche, P."
+      ],
+      "year": 1999,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\1999A&A...343..861B.pdf",
+      "retrieval_priority": 0.5452155247209305,
+      "abstract": "By accumulating all available radial velocity data and combining it with our own spectroscopy we present a new and improved ephemeris for Cygnus X-1 (V1357 Cygni/HDE226868). We initially calculate an orbital period of 5.599847+/-0.000018 days and then, by including the more recent radial velocities of LaSala et al. (1998) and Sowers et al. (1998) we refine this to 5.599829+/-0.000016 days. Using 27 years' worth of photometry, we also calculate a photometric period of 5.599836+/-0.000024 - remarkably similar to the spectroscopic one.",
+      "keywords": [
+        "X-RAYS: STARS",
+        "STARS: INDIVIDUAL: CYGNUS X-1",
+        "STARS: BINARIES: SPECTROSCOPIC",
+        "EPHEMERIDES",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 9
+    },
+    {
+      "source_id": "1999MNRAS.302L...1P",
+      "source_type": "paper",
+      "doi": "10.1046/j.1365-8711.1999.02225.x",
+      "title": "Orbital modulation and longer term variability in the radio emission from Cygnus X-1",
+      "authors": [
+        "Pooley, G. G.",
+        "Fender, R. P.",
+        "Brocksopp, C."
+      ],
+      "year": 1999,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\1999MNRAS.302L...1P.pdf",
+      "retrieval_priority": 0.48113558143243157,
+      "abstract": "20 months of observations of the radio emission at 15 GHz from Cygnus X-1, starting in 1996 October, show variations at the binary period of 5.6 d, but with a phase offset from those at X-ray wavelengths. There are also longer term variations on a time-scale of 150 d, which are only loosely related to the soft X-ray flux. The source was in the hard/low X-ray state throughout this period. The mean 15-GHz flux density is 13 mJy, the radio spectrum is flat and the semi-amplitude of the orbital modulation is about 2 mJy. We discuss the possible origins of the modulation and the relationship to the soft X-ray emission.",
+      "keywords": [
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 20
+    },
+    {
+      "source_id": "1999MNRAS.309.1063B",
+      "source_type": "paper",
+      "doi": "10.1046/j.1365-8711.1999.02919.x",
+      "title": "Orbital, precessional and flaring variability of Cygnus X-1",
+      "authors": [
+        "Brocksopp, C.",
+        "Fender, R. P.",
+        "Larionov, V.",
+        "Lyuty, V. M.",
+        "Tarasov, A. E.",
+        "Pooley, G. G.",
+        "Paciesas, W. S.",
+        "Roche, P."
+      ],
+      "year": 1999,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\1999MNRAS.309.1063B.pdf",
+      "retrieval_priority": 0.5297138551509294,
+      "abstract": "We present the results of a 2.5-yr multiwavelength monitoring programme of Cygnus X-1, making use of hard and soft X-ray data, optical spectroscopy, UBVJHK photometry and radio data. In particular, we confirm that the 5.6-d orbital period is apparent in all wavebands, and note the existence of a wavelength dependence to the modulation, in the sense that higher energies reach minimum first. We also find a strong modulation at a period of 142+/-7d, which we suggest is caused by precession and/or radiative warping of the accretion disc. Strong modulation of the hard and soft X-ray flux at this long period may not be compatible with simple models of an optically thin accretion flow and corona in the low state. We present the basic components required for more detailed future modelling of the system - including a partially optically thick jet, quasi-continuous in the low state, the base of which acts as the Comptonizing corona. In addition, we find that there are a number of flares that appear to be correlated in at least two wavebands and generally in more. We choose two of these flares to study in further detail, and find that the hard and soft X-rays are well correlated in the first, and that the soft X-rays and radio are correlated in the second. In general, the optical and infrared show similar behaviour to each other, but are not correlated with the X-rays or radio.",
+      "keywords": [
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 17
+    },
+    {
+      "source_id": "1998MNRAS.301..285L",
+      "source_type": "paper",
+      "doi": "10.1046/j.1365-8711.1998.02064.x",
+      "title": "The orbital period of HDE 226868/Cyg X-1",
+      "authors": [
+        "LaSala, J.",
+        "Charles, P. A.",
+        "Smith, R. A. D.",
+        "Balucinska-Church, M.",
+        "Church, M. J."
+      ],
+      "year": 1998,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\1998MNRAS.301..285L.pdf",
+      "retrieval_priority": 0.5125127472797725,
+      "abstract": "We present epoch 1996, high-quality radial velocity data for HDE 226868, the optical counterpart of Cygnus X-1. Combining our results with all published historical data, we have derived a new ephemeris for the system of HJD 2450235.29 +nx5.5998, which allows accurate orbital phase calculations to be made for any X-ray observations over the last 30 years. We find no evidence for any period change such as that suggested by Ninkov, Walker &amp; Yang. We discuss the shortcomings of previous work in establishing the period and orbital elements.",
+      "keywords": [
+        "ACCRETION",
+        "ACCRETION DISCS",
+        "BINARIES: CLOSE",
+        "STARS: INDIVIDUAL: CYG X-1",
+        "X-RAYS: STARS",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:orbital period OR abs:orbit period)",
+      "search_rank": 11
+    },
+    {
+      "source_id": "1997ApJ...477L..95Z",
+      "source_type": "paper",
+      "doi": "10.1086/310530",
+      "title": "The 1996 Soft State Transition of Cygnus X-1",
+      "authors": [
+        "Zhang, S. N.",
+        "Cui, W.",
+        "Harmon, B. A.",
+        "Paciesas, W. S.",
+        "Remillard, R. E.",
+        "van Paradijs, J."
+      ],
+      "year": 1997,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\655cd7af-b54c-4978-9a4b-874f258f89fe\\1997ApJ...477L..95Z.pdf",
+      "retrieval_priority": 0.5324944862935541,
+      "abstract": "We report continuous monitoring of Cygnus X-1 in the 1.3-200 keV band using All-Sky Monitor/Rossi X-Ray Timing Explorer and BATSE/Compton Gamma Ray Observatory for about 200 days from 1996 February 21 to early September. During this period, Cygnus X-1 experienced a hard-to-soft and then a soft-to-hard state transition. The low-energy X-ray (1.3-12 keV) and high-energy X-ray (20-200 keV) fluxes are strongly anticorrelated during this period. During the state transitions, flux variations of about a factor of 5 and 15 were seen in the 1.3-3.0 keV and 100-200 keV bands, respectively, while the average 4.8-12 keV flux remains almost unchanged. The net effect of this pivoting is that the total 1.3-200 keV luminosity remained unchanged to within ~15%. The bolometric luminosity in the soft state may be as high as 50%-70% above the hard state luminosity, after color corrections for the luminosity below 1.3 keV. The blackbody component flux and temperature increase in the soft state are probably caused by a combination of the optically thick disk mass accretion rate increase and a decrease of the inner disk radius.",
+      "keywords": [
+        "STARS: INDIVIDUAL CONSTELLATION NAME: CYGNUS X-1",
+        "X-RAYS: STARS",
+        "BLACK HOLE PHYSICS",
+        "ACCRETION",
+        "ACCRETION DISKS",
+        "Accretion",
+        "Accretion Disks",
+        "Black Hole Physics",
+        "Stars: Individual: Constellation Name: Cygnus X-1",
+        "X-Rays: Stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Cyg X-1\" OR abs:\"Cyg X-1\") AND (abs:compact OR abs:object OR abs:mass OR abs:\"compact object mass\" OR abs:\"compact star mass\" OR abs:\"compact remnant mass\")",
+      "search_rank": 36
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1997ApJ...477L..95Z_Cyg_X-1_compact_object_mass_0",
+      "source_id": "1997ApJ...477L..95Z",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 16,
+      "field_unit": "Msun",
+      "trace_id": "doc24_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          242,
+          494,
+          268,
+          514
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "...concluded that the mass of the compact object in Cyg X-1 is greater than 7 M_sun, but more probably 16 M_sun, far exceeding the theoretical...",
+      "measurement_method": "dynamical mass estimate",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "1998MNRAS.301..285L_Cyg_X-1_orbital_period_0",
+      "source_id": "1998MNRAS.301..285L",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.5998",
+      "field_unit": "d",
+      "trace_id": "doc23_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          790,
+          358,
+          842,
+          375
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "we have derived a new ephemeris for the system of HJD2450235.29 + P x 5.5998, which allows accurate orbital phase calculations to be made for any X-ray observations over the last 30 years.",
+      "measurement_method": "radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1998MNRAS.301..285L_Cyg_X-1_orbital_period_1",
+      "source_id": "1998MNRAS.301..285L",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.5998 ± 0.0001",
+      "field_unit": "d",
+      "trace_id": "doc23_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          536,
+          356,
+          561,
+          372
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The results are summarized in Table 2 and plotted in figure 2. The best fixed period is 5.5998 ± 0.0001 days, with a χ² of 4284",
+      "measurement_method": "radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1998MNRAS.301..285L_Cyg_X-1_orbital_period_2",
+      "source_id": "1998MNRAS.301..285L",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.5998(1)",
+      "field_unit": "d",
+      "trace_id": "doc23_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          65,
+          633,
+          496,
+          859
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Orbital Solutions for HDE226868. Fixed Period Model P0 (days) 5.5998(1)",
+      "measurement_method": "radial velocity",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_0",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599829 ± 0.000016",
+      "field_unit": "d",
+      "trace_id": "doc15_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          391,
+          410,
+          414,
+          427
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "We initially calculate an orbital period of 5.599847±0.000018 days and then, by including the more recent radial velocities of LaSala et al. (1998) and Sowers et al.(1998) we refine this to 5.599829 ± 0.000016 days.",
+      "measurement_method": "radial velocity spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_1",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599836 ± 0.000024",
+      "field_unit": "d",
+      "trace_id": "doc15_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          279,
+          443,
+          347,
+          460
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Using 27 years' worth of photometry, we also calculate a photometric period of 5.599836 ± 0.000024 — remarkably similar to the spectroscopic one.",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_2",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599829 ± 0.000016",
+      "field_unit": "d",
+      "trace_id": "doc15_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          136,
+          842,
+          204,
+          860
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "We calculate the orbital period to be P_{orb,sp} = 5.599829 ± 0.000016 and define T_0 as the time of superior conjunction of the black hole.",
+      "measurement_method": "radial velocity spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_3",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599836 ± 0.000024",
+      "field_unit": "d",
+      "trace_id": "doc15_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          684,
+          760,
+          705,
+          777
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "The mean for the three filters, P_{orb,phot} = 5.599836 ± 0.000024 days, is in remarkable agreement with the spectroscopic period.",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_4",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599829",
+      "field_unit": "d",
+      "trace_id": "doc15_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          211,
+          857,
+          295,
+          875
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Our value of 5.599829 days for the orbital period also provides an accurate fit to 27 years' worth of photometry.",
+      "measurement_method": "combined spectroscopy and photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_5",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599829±0.000016",
+      "field_unit": "d",
+      "trace_id": "doc15_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          65,
+          634,
+          905,
+          961
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 3. The Orbital Elements of Cygnus X-1 | Element | Spectroscopic | Photometric | Period (days) | 5.599829±0.000016 | 5.599836±0.000037",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999A&A...343..861B_Cyg_X-1_orbital_period_6",
+      "source_id": "1999A&A...343..861B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599836±0.000037",
+      "field_unit": "d",
+      "trace_id": "doc15_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          65,
+          634,
+          905,
+          961
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 3. The Orbital Elements of Cygnus X-1 | Element | Spectroscopic | Photometric | Period (days) | 5.599829±0.000016 | 5.599836±0.000037",
+      "measurement_method": "photometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999MNRAS.302L...1P_Cyg_X-1_orbital_period_0",
+      "source_id": "1999MNRAS.302L...1P",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.599847,
+      "field_unit": "d",
+      "trace_id": "doc30_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          53,
+          714,
+          189,
+          731
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vlm_crop"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In displaying the 5.6 period, we have used the spectroscopic ephemeris recently derived by A.E. Tarasov (Brocksopp et al. 1998): P = 5.599847 ± 0.000018",
+      "measurement_method": "spectroscopic ephemeris",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999MNRAS.309.1063B_Cyg_X-1_orbital_period_0",
+      "source_id": "1999MNRAS.309.1063B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.6",
+      "field_unit": "d",
+      "trace_id": "doc25_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          399,
+          837,
+          437,
+          853
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "It has been particularly interesting as it provided the first observational evidence for the existence of black holes when it was found to be a spectroscopic binary with an orbital period of 5.6 days.",
+      "measurement_method": "spectroscopic binary",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "1999MNRAS.309.1063B_Cyg_X-1_orbital_period_1",
+      "source_id": "1999MNRAS.309.1063B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.599829,
+      "field_unit": "d",
+      "trace_id": "doc25_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          162,
+          439,
+          180,
+          455
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.99,
+      "context_snippet": "We use the ephemeris of Brocksopp et al. (1999) with P_orb=5.599829±0.000016 days.",
+      "measurement_method": "ephemeris",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2006MNRAS.368.1025L_Cyg_X-1_orbital_period_0",
+      "source_id": "2006MNRAS.368.1025L",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.6",
+      "field_unit": "d",
+      "trace_id": "doc19_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          65,
+          797,
+          103,
+          813
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Its orbital period is Porb = 5.6 d and the optical component, HDE 226868/V1357 Cygni...",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2007A&A...464..437B_Cyg_X-1_orbital_period_0",
+      "source_id": "2007A&A...464..437B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.6,
+      "field_unit": "days",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          841,
+          620,
+          905,
+          637
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Hjellming & Wade (1971) identified Cyg X-1 with the optical star HDE 226868, which is an O9.7 Iab type massive star inside a binary system with a period of 5.6 days",
+      "measurement_method": "optical identification",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...663..445S_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2007ApJ...663..445S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "8.7 ± 0.8",
+      "field_unit": "M_sun",
+      "trace_id": "doc22_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          489,
+          748,
+          520,
+          768
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We obtain the BH mass in Cyg X-1 in the range (8.7 ± 0.8)M_sun.",
+      "measurement_method": "QPO-spectral index correlation scaling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...663..445S_Cyg_X-1_compact_object_mass_1",
+      "source_id": "2007ApJ...663..445S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "8.7 ± 0.8",
+      "field_unit": "M_sun",
+      "trace_id": "doc22_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          614,
+          835,
+          645,
+          855
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For the mass of BH in Cyg X-1 we have: M_CygX-1 = B_CygX-1 × M_J1655 / B_J1655 = (8.7 ± 0.8)M_sun",
+      "measurement_method": "QPO-spectral index correlation scaling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...663..445S_Cyg_X-1_compact_object_mass_2",
+      "source_id": "2007ApJ...663..445S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "8.7 ± 0.8",
+      "field_unit": "M_sun",
+      "trace_id": "doc22_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          372,
+          505,
+          403,
+          526
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our scaling method along with the observed index-QPO correlation give for the BH mass in Cyg X-1 M_CygX-1 = (8.7 ± 0.8)M_sun",
+      "measurement_method": "QPO-spectral index correlation scaling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...665L..51A_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2007ApJ...665L..51A",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 21,
+      "field_unit": "Msun",
+      "trace_id": "doc11_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          317,
+          779,
+          337,
+          797
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Located at a distance of 2.2 ± 0.2 kpc, it is composed of a 21 ± 8 M_sun BH turning around an O9.7 lab companion of 40 ± 10 M_sun",
+      "measurement_method": "dynamical mass estimation",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2007MNRAS.375..793S_Cyg_X-1_orbital_period_0",
+      "source_id": "2007MNRAS.375..793S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.6,
+      "field_unit": "d",
+      "trace_id": "doc3_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          114,
+          722,
+          154,
+          739
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Cyg X-1 is a high-mass X-ray binary with the orbital period of P = 5.6 d (Gies & Bolton 1982), containing a black hole...",
+      "measurement_method": "literature reference (Gies & Bolton 1982)",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2008AJ....136..631Y_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2008AJ....136..631Y",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 8.7,
+      "field_unit": "Msun",
+      "trace_id": "doc17_p25",
+      "provenance": {
+        "page": 25,
+        "bbox": [
+          114,
+          624,
+          696,
+          889
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2: Parameters of Cyg X-1 ... Mx 8.7±0.8 Msun Shaposhnikov & Titarchuk (2007)",
+      "measurement_method": "dynamical determination",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2008Ap&SS.315..335I_Cyg_X-1_orbital_period_0",
+      "source_id": "2008Ap&SS.315..335I",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.599829,
+      "field_unit": "d",
+      "trace_id": "doc2_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          80,
+          105,
+          892,
+          742
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1 Relevant orbital parameters of the HDE 226868/Cygnus X-1 binary system. P is the orbital period (Brocksopp et al. 1999)... P (d) 5.599829(16)",
+      "measurement_method": "optical spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...710..197B_Cyg_X-1_orbital_period_0",
+      "source_id": "2010ApJ...710..197B",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.599829,
+      "field_unit": "d",
+      "trace_id": "doc4_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          158,
+          669,
+          336,
+          689
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The binary orbital period of P = 5.6 days was first discovered by Bolton (1972) and refined by Brocksopp et al. (1999b) using radial velocities of the O-star. Brocksopp et al. found P = 5.599829±0.000016d, with an epoch of the inferior conjunction of the O-star of T0=41874.207±0.009MJD and we use their values.",
+      "measurement_method": "radial velocities",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...736...63R_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2011ApJ...736...63R",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 12,
+      "field_unit": "Msun",
+      "trace_id": "doc32_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          646,
+          688,
+          662,
+          708
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Among microquasars, Cygnus X-1 (Bowyer et al. 1965) is one of the few classified as a high mass X-ray binary (HMXB). It is composed of an 8-16 M_sun black hole (Shaposhnikov & Titarchuk 2007; Caballero-Nieves et al. 2009)...",
+      "measurement_method": "literature review",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...742...84O_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2011ApJ...742...84O",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.8,
+      "field_unit": "Msun",
+      "trace_id": "doc9_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          523,
+          240,
+          564,
+          260
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We find a black hole mass of M = 14.8 ± 1.0 M_sun, a companion mass of M_opt = 19.2 ± 1.9 M_sun...",
+      "measurement_method": "dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...742...84O_Cyg_X-1_compact_object_mass_1",
+      "source_id": "2011ApJ...742...84O",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.81,
+      "field_unit": "Msun",
+      "trace_id": "doc9_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          616,
+          399,
+          666,
+          419
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We find masses of M_opt = 19.16 ± 1.90 M_sun and M = 14.81 ± 0.98 M_sun for the O-star and black hole, respectively.",
+      "measurement_method": "dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...742...84O_Cyg_X-1_compact_object_mass_2",
+      "source_id": "2011ApJ...742...84O",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.81,
+      "field_unit": "Msun",
+      "trace_id": "doc9_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          182,
+          346,
+          817,
+          760
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Cygnus X-1 Model Parameters ... M (M_sun) ... Model D 14.69 ± 0.70 ... adopted 14.81 ± 0.98",
+      "measurement_method": "dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...742...84O_Cyg_X-1_compact_object_mass_3",
+      "source_id": "2011ApJ...742...84O",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.81,
+      "field_unit": "Msun",
+      "trace_id": "doc9_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          329,
+          427,
+          670,
+          670
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Cygnus X-1 Final Parameters ... M (M_sun) 14.81 ± 0.98",
+      "measurement_method": "dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...742...85G_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2011ApJ...742...85G",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.8,
+      "field_unit": "Msun",
+      "trace_id": "doc29_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          160,
+          468,
+          196,
+          485
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For our favored asynchronous model, Model D, we find: M = 14.8 ± 1.0 M_sun and i = 27.1 ± 0.8 deg (Orosz et al. 2011).",
+      "measurement_method": "dynamical model",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011ApJ...742...85G_Cyg_X-1_compact_object_mass_1",
+      "source_id": "2011ApJ...742...85G",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.8,
+      "field_unit": "Msun",
+      "trace_id": "doc29_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          357,
+          647,
+          393,
+          664
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Throughout this paper, we have used M = 14.8 ± 1.0 M_sun and i = 27.1 ± 0.8 deg from Model D, an asynchronous model with a rotational frequency for the O-star that is 40% greater than the orbital frequency.",
+      "measurement_method": "dynamical model",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2011MNRAS.412.1985Z_Cyg_X-1_orbital_period_0",
+      "source_id": "2011MNRAS.412.1985Z",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.6,
+      "field_unit": "d",
+      "trace_id": "doc8_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          614,
+          579,
+          651,
+          599
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "we take a value of the SO period within the uncertainties of the periods found in the data but equal to a multiple of the orbital period, P_orb = 5.6 d. This results in the ephemeris, min[MJD] = 53275.8 + 313.6E",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...747..111W_Cyg_X-1_compact_object_mass_1",
+      "source_id": "2012ApJ...747..111W",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "14.81 ± 0.98",
+      "field_unit": "Msun",
+      "trace_id": "doc13_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          79,
+          87,
+          922,
+          726
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1 Properties of Cygnus X-1 ... Black hole mass (M_sun) ... 14.81 ± 0.98",
+      "measurement_method": "spectroscopy/dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2012ApJ...747..111W_Cyg_X-1_orbital_period_0",
+      "source_id": "2012ApJ...747..111W",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.599829 ± 0.000016",
+      "field_unit": "d",
+      "trace_id": "doc13_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          79,
+          87,
+          922,
+          726
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1 Properties of Cygnus X-1 ... Orbital period (days) ... 5.599829 ± 0.000016",
+      "measurement_method": "spectroscopy/timing",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2012MNRAS.419.3194R_Cyg_X-1_orbital_period_0",
+      "source_id": "2012MNRAS.419.3194R",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.6,
+      "field_unit": "d",
+      "trace_id": "doc14_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          335,
+          474,
+          361,
+          490
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "This system contains a black hole candidate with a mass of 14.8 ± 1.0 M_sun in a 5.6-day orbit with a supergiant star of mass 19.2 ± 1.9 M_sun (Orosz et al. 2011; Kemp et al. 1987).",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2015A&A...576A.117G_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2015A&A...576A.117G",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.8,
+      "field_unit": "Msun",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          511,
+          850,
+          547,
+          866
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Orosz et al. (2011) determine the inclination of the binary system to i = 27.1 ± 0.8, the black hole mass to M_BH = (14.8 ± 1.0) M_sun, and the companion mass to M_* = (19.2 ± 1.9) M_sun",
+      "measurement_method": "dynamical modeling (Orosz et al. 2011)",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2015A&A...584A..95P_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2015A&A...584A..95P",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.8,
+      "field_unit": "Msun",
+      "trace_id": "doc18_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          118,
+          681,
+          142,
+          702
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "A high-mass stellar companion of spectral type O9.7 Iab and mass ~ 20 M_sun and a black hole of 14.8 M_sun (Orosz et al. 2011) form the binary system.",
+      "measurement_method": "literature reference (Orosz et al. 2011)",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2015A&A...584A..95P_Cyg_X-1_compact_object_mass_1",
+      "source_id": "2015A&A...584A..95P",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 14.8,
+      "field_unit": "Msun",
+      "trace_id": "doc18_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          66,
+          63,
+          951,
+          704
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Values of the model parameters. ... Black hole mass M_BH 14.8 M_sun",
+      "measurement_method": "literature reference (Orosz et al. 2011)",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69...52S_Cyg_X-1_orbital_period_0",
+      "source_id": "2017PASJ...69...52S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.6",
+      "field_unit": "d",
+      "trace_id": "doc21_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          390,
+          591,
+          434,
+          609
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The black hole binary Cygnus X-1 has a 5.6 day orbital period.",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69...52S_Cyg_X-1_orbital_period_1",
+      "source_id": "2017PASJ...69...52S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": "5.6",
+      "field_unit": "days",
+      "trace_id": "doc21_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          557,
+          537,
+          631,
+          558
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "An orbital period of the binary is 5.6 days (Mason et al. 1974; Bolton 1975)",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69...52S_Cyg_X-1_orbital_period_2",
+      "source_id": "2017PASJ...69...52S",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.599829,
+      "field_unit": "d",
+      "trace_id": "doc21_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          454,
+          842,
+          554,
+          862
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We use the orbital period, P_orb = 5.599829 ± 0.000016 d, and an epoch of the inferior conjunction of the O-star",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2023A&A...678A..58K_Cyg_X-1_orbital_period_0",
+      "source_id": "2023A&A...678A..58K",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.6,
+      "field_unit": "d",
+      "trace_id": "doc27_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          96,
+          415,
+          133,
+          432
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We present the high-precision optical polarimetric observations of black hole X-ray binary Cyg X-1, spanning several cycles of its 5.6 day orbital period.",
+      "measurement_method": "polarimetric observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2024A&A...687A.284K_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2024A&A...687A.284K",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 21.2,
+      "field_unit": "Msun",
+      "trace_id": "doc26_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          177,
+          156,
+          201,
+          175
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Cyg X-1 (Bowyer et al. 1965) is a high-mass X-ray binary (HMXB) with a (21.2 ± 2.2) M_sun black hole (Miller-Jones et al. 2021) that accretes matter from the stellar wind of the supergiant HDE 226868 (Walborn 1973).",
+      "measurement_method": "text",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2024A&A...691A..78L_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2024A&A...691A..78L",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": 21.2,
+      "field_unit": "Msun",
+      "trace_id": "doc6_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          329,
+          275,
+          365,
+          291
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The system hosts a BH with M_BH = 21.2 ± 2.2 M_sun (Miller-Jones et al. 2021) in a ~ 5.6 d quasi-circular orbit (Gies et al. 2003).",
+      "measurement_method": "literature reference (Miller-Jones et al. 2021)",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2025A&A...696A.237F_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2025A&A...696A.237F",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "21.2 ± 2.2",
+      "field_unit": "Msun",
+      "trace_id": "doc10_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          131,
+          66,
+          167,
+          83
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Hosting a 21.2±2.2 M_sun black hole (Miller-Jones et al. 2021), Cygnus X-1 is key to understanding accretion physics and jet launching processes.",
+      "measurement_method": "literature reference (Miller-Jones et al. 2021)",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2025A&A...701A.115K_Cyg_X-1_orbital_period_0",
+      "source_id": "2025A&A...701A.115K",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "orbital_period",
+      "field_value": 5.6,
+      "field_unit": "d",
+      "trace_id": "doc31_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          763,
+          705,
+          803,
+          724
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "It orbits a supergiant O-type donor star in a 5.6 d orbit. The donor star in this system nearly fills its Roche lobe...",
+      "measurement_method": "literature",
+      "condition_tags": [
+        "scope: global",
+        "metric: orbital_period"
+      ]
+    },
+    {
+      "record_id": "2026MNRAS.545f2232O_Cyg_X-1_compact_object_mass_0",
+      "source_id": "2026MNRAS.545f2232O",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "15 ± 4",
+      "field_unit": "Msun",
+      "trace_id": "doc20_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          552,
+          500,
+          575,
+          518
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our best fitting model returns a mass of M = 15 ± 4 M_sun and a distance of D = 3.4^{+1.6}_{-1.2} kpc (90 per cent uncertainties), which are consistent with the most recent dynamical and parallax measurements respectively.",
+      "measurement_method": "X-ray reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    },
+    {
+      "record_id": "2026MNRAS.545f2232O_Cyg_X-1_compact_object_mass_1",
+      "source_id": "2026MNRAS.545f2232O",
+      "entity_type": "HXB",
+      "entity_name": "Cyg X-1",
+      "field_name": "compact_object_mass",
+      "field_value": "15^{+4}_{-4}",
+      "field_unit": "Msun",
+      "trace_id": "doc20_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          67,
+          514,
+          924,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Best fitting parameters obtained from chi^2 minimization from the cross spectrum in 10 frequency ranges (0.98 mHz - 32 Hz) and the time-average spectrum... Model B... M / M_sun 15^{+4}_{-4}",
+      "measurement_method": "X-ray reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: compact_object_mass"
+      ]
+    }
+  ]
+}

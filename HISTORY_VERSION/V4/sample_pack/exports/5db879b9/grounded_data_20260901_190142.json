@@ -1,0 +1,1213 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026MNRAS.545f1811B",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/staf1811",
+      "title": "New ultralight scalar particles and the mass─radius relation of white dwarfs ─ the important role of Sirius B",
+      "authors": [
+        "Bartnick, Kai",
+        "Koester, Detlev",
+        "Kudritzki, Rolf-Peter",
+        "Springmann, Konstantin",
+        "Stelzl, Stefan",
+        "Weiler, Andreas"
+      ],
+      "year": 2026,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2026MNRAS.545f1811B.pdf",
+      "retrieval_priority": 0.5080854986797361,
+      "abstract": "We present the equation of state for two classes of new ultralight particles, a scalar field coupling to electrons and a light <inline-formula><tex-math>$\\mathbb {Z}_\\mathcal {N}$</tex-math></inline-formula> QCD axion field coupling to nucleons. Both are potential candidates for dark matter. Using the scalar modified equations of state, we calculate models for white dwarf stars and compare their radii and masses with observed mass─radius data. The comparison results in stringent constraints on the masses of the particles and the coupling parameters. For a wide range of particle masses and coupling parameters, constraints from the white dwarf equation of state surpass existing limits, outperforming also dedicated laboratory searches. The remarkable accuracy of modern white-dwarf mass─radius relation data, exemplified by Sirius B, now allows stringent tests of dense-matter physics and constraints on new particle scenarios.",
+      "keywords": [
+        "astroparticle physics",
+        "white dwarfs",
+        "dark matter",
+        "High Energy Astrophysical Phenomena",
+        "Solar and Stellar Astrophysics",
+        "High Energy Physics - Phenomenology"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 8
+    },
+    {
+      "source_id": "2022AJ....163...81L",
+      "source_type": "paper",
+      "doi": "10.3847/1538-3881/ac4032",
+      "title": "An Imaging Search for Post-main-sequence Planets of Sirius B",
+      "authors": [
+        "Lucas, Miles",
+        "Bottom, Michael",
+        "Ruane, Garreth",
+        "Ragland, Sam"
+      ],
+      "year": 2022,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2022AJ....163...81L.pdf",
+      "retrieval_priority": 0.446105212736838,
+      "abstract": "We present deep imaging of Sirius B, the closest and brightest white dwarf, to constrain post-main-sequence planetary evolution in the Sirius system. We use Keck/NIRC2 in L' band (3.776 μm) across three epochs in 2020 using the technique of angular differential imaging. Our observations are speckle-limited out to 1 au and background-limited beyond. The 5σ detection limits from our best-performing epoch are 17-20.4 L' absolute magnitude. We consider multiple planetary formation pathways in the context of Sirius B's evolution to derive mass sensitivity limits, and achieve sub-Jupiter sensitivities at sub-astronomical unit separations, reaching 1.6-2.4 M <SUB>J</SUB> at 0.5 au down to a sensitivity of 0.7-1.2 M <SUB>J</SUB> at &gt;1 au. Consistent with previous results, we do not detect any companions around Sirius B. Our strong detection limits demonstrate the potential of using high-contrast imaging to characterize nearby white dwarfs.",
+      "keywords": [
+        "498",
+        "387",
+        "1799",
+        "786",
+        "481",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 14
+    },
+    {
+      "source_id": "2019MNRAS.484.2711R",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stz160",
+      "title": "The white dwarf mass-radius relation and its dependence on the hydrogen envelope",
+      "authors": [
+        "Romero, Alejandra D.",
+        "Kepler, S. O.",
+        "Joyce, S. R. G.",
+        "Lauffer, G. R.",
+        "Córsico, A. H."
+      ],
+      "year": 2019,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2019MNRAS.484.2711R.pdf",
+      "retrieval_priority": 0.42948317877367853,
+      "abstract": "We present a study of the dependence of the mass-radius relation for DA white dwarf stars on the hydrogen envelope mass and the impact on the value of log g, and thus the determination of the stellar mass. We employ a set of full evolutionary carbon-oxygen core white dwarf sequences with white dwarf mass between 0.493 and 1.05 M<SUB>☉</SUB>. Computations of the pre-white-dwarf evolution uncovers an intrinsic dependence of the maximum mass of the hydrogen envelope on the stellar mass; i.e. it decreases when the total mass increases. We find that a reduction of the hydrogen envelope mass can lead to a reduction in the radius of the model of up to {∼ } 12{{ per cent}}. This translates directly to an increase in log g for a fixed stellar mass, which can reach up to 0.11 dex, mainly overestimating the determinations of stellar mass from atmospheric parameters. Finally, we find a good agreement between the results from the theoretical mass-radius relation and observations from white dwarfs in binary systems. In particular, we find a thin hydrogen mass of M<SUB>H</SUB> ∼ 2 × 10<SUP>-8</SUP> M<SUB>☉</SUB> for 40 Eridani B, in agreement with previous determinations. For Sirius B, the spectroscopic mass is 4.3 per cent lower than the dynamical mass. However, the values of mass and radius from gravitational redshift observations are compatible with the theoretical mass-radius relation for a thick hydrogen envelope of M<SUB>H</SUB> = 2 × 10<SUP>-6</SUP> M<SUB>☉</SUB>.",
+      "keywords": [
+        "binaries: general",
+        "stars: interiors",
+        "white dwarfs",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 15
+    },
+    {
+      "source_id": "2018MNRAS.479.1612J",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/sty1425",
+      "title": "Testing the white dwarf mass-radius relation and comparing optical and far-UV spectroscopic results with Gaia DR2, HST, and FUSE",
+      "authors": [
+        "Joyce, S. R. G.",
+        "Barstow, M. A.",
+        "Casewell, S. L.",
+        "Burleigh, M. R.",
+        "Holberg, J. B.",
+        "Bond, H. E."
+      ],
+      "year": 2018,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2018MNRAS.479.1612J.pdf",
+      "retrieval_priority": 0.393427215162259,
+      "abstract": "Observational tests of the white dwarf mass-radius relationship have always been limited by the uncertainty in the available distance measurements. Most studies have focused on Balmer line spectroscopy because these spectra can be obtained from ground-based observatories, while the Lyman lines are only accessible to space-based UV telescopes. We present results using parallax data from Gaia DR2 combined with space-based spectroscopy from HST and FUSE covering the Balmer and Lyman lines. We find that our sample supports the theoretical relation, although there is at least one star which is shown to be inconsistent. Comparison of results between Balmer and Lyman line spectra shows they are in agreement when the latest broadening tables are used. We also assess the factors which contribute to the error in the mass-radius calculations and confirm the findings of other studies which show that the spread in results for targets where multiple spectra are available is larger than the statistical error. The uncertainty in the spectroscopically derived log g parameter is now the main source of error rather than the parallax. Finally, we present new results for the radius and spectroscopic mass of Sirius B which agree with the dynamical mass and mass-radius relation within 1σ.",
+      "keywords": [
+        "binaries: general",
+        "white dwarfs",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 17
+    },
+    {
+      "source_id": "2018ApJ...866...21C",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aadfd6",
+      "title": "The White Dwarf Initial-Final Mass Relation for Progenitor Stars from 0.85 to 7.5 M <SUB>☉</SUB>",
+      "authors": [
+        "Cummings, Jeffrey D.",
+        "Kalirai, Jason S.",
+        "Tremblay, P.-E.",
+        "Ramirez-Ruiz, Enrico",
+        "Choi, Jieun"
+      ],
+      "year": 2018,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2018ApJ...866...21C.pdf",
+      "retrieval_priority": 0.47683269837559394,
+      "abstract": "We present the initial-final mass relation (IFMR) based on the self-consistent analysis of Sirius B and 79 white dwarfs from 13 star clusters. We have also acquired additional signal on eight white dwarfs previously analyzed in the NGC 2099 cluster field, four of which are consistent with membership. These re-observed white dwarfs have masses ranging from 0.72 to 0.97 M <SUB>☉</SUB>, with initial masses from 3.0 to 3.65 M <SUB>☉</SUB>, where the IFMR has an important change in slope that these new data help to observationally confirm. In total, this directly measured IFMR has small scatter (σ = 0.06 M <SUB>☉</SUB>) and spans from progenitors of 0.85 to 7.5 M <SUB>☉</SUB>. Applying two different stellar evolutionary models to infer two different sets of white dwarf progenitor masses shows that, when the same model is also used to derive the cluster ages, the resulting IFMR has weak sensitivity to the adopted model at all but the highest initial masses (&gt;5.5 M <SUB>☉</SUB>). The nonlinearity of the IFMR is also clearly observed with moderate slopes at lower masses (0.08 M <SUB>final</SUB>/M <SUB>initial</SUB>) and higher masses (0.11 M <SUB>final</SUB>/M <SUB>initial</SUB>) that are broken up by a steep slope (0.19 M <SUB>final</SUB>/M <SUB>initial</SUB>) between progenitors from 2.85 to 3.6 M <SUB>☉</SUB>. This IFMR shows total stellar mass loss ranges from 33% of M <SUB>initial</SUB> at 0.83 M <SUB>☉</SUB> to 83% of M <SUB>initial</SUB> at 7.5 M <SUB>☉</SUB>. Testing this total mass loss for dependence on progenitor metallicity, however, finds no detectable sensitivity across the moderate range of -0.15 &lt; [Fe/H] &lt; +0.15. <P />Based on observations with the W.M. Keck Observatory, which is operated as a scientific partnership among the California Institute of Technology, the University of California, and NASA, was made possible by the generous financial support of the W.M. Keck Foundation.",
+      "keywords": [
+        "globular clusters: individual: M4",
+        "open clusters and associations: general",
+        "stars: evolution",
+        "stars: mass-loss",
+        "white dwarfs",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 19
+    },
+    {
+      "source_id": "2018MNRAS.481.2361J",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/sty2404",
+      "title": "The gravitational redshift of Sirius B",
+      "authors": [
+        "Joyce, S. R. G.",
+        "Barstow, M. A.",
+        "Holberg, J. B.",
+        "Bond, H. E.",
+        "Casewell, S. L.",
+        "Burleigh, M. R."
+      ],
+      "year": 2018,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2018MNRAS.481.2361J.pdf",
+      "retrieval_priority": 0.6305808971018421,
+      "abstract": "Einstein's general theory of relativity predicts that the light from stars will be gravitationally shifted to longer wavelengths. We previously used this effect to measure the mass of the white dwarf Sirius B from the wavelength shift observed in its Hα line based on spectroscopic data from the Space Telescope Imaging Spectrograph (STIS) on the Hubble Space Telescope (HST), but found that the results did not agree with the dynamical mass determined from the visual-binary orbit. We have devised a new observing strategy using STIS, where the shift is measured relative to the Hα line of Sirius A rather than comparing it to a laboratory based rest wavelength. Sirius A was observed during the same orbit with HST. This strategy circumvents the systematic uncertainties which have affected previous attempts to measure Sirius B. We measure a gravitational redshift of 80.65 ± 0.77 km s<SUP>-1</SUP>. From the measured gravitational redshift and the known radius, we find a mass of 1.017 ± 0.025 M<SUB>☉</SUB> which is in agreement with the dynamical mass and the predictions of a C/O white dwarf mass-radius relation with a precision of 2.5 per cent.",
+      "keywords": [
+        "binaries: general",
+        "Stars: Individual: Sirius B",
+        "white dwarfs",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2017ApJ...840...70B",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aa6af8",
+      "title": "The Sirius System and Its Astrophysical Puzzles: Hubble Space Telescope and Ground-based Astrometry",
+      "authors": [
+        "Bond, Howard E.",
+        "Schaefer, Gail H.",
+        "Gilliland, Ronald L.",
+        "Holberg, Jay B.",
+        "Mason, Brian D.",
+        "Lindenblad, Irving W.",
+        "Seitz-McLeese, Miranda",
+        "Arnett, W. David",
+        "Demarque, Pierre",
+        "Spada, Federico",
+        "Young, Patrick A.",
+        "Barstow, Martin A.",
+        "Burleigh, Matthew R.",
+        "Gudehus, Donald"
+      ],
+      "year": 2017,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2017ApJ...840...70B.pdf",
+      "retrieval_priority": 0.3046300467681428,
+      "abstract": "Sirius, the seventh-nearest stellar system, is a visual binary containing the metallic-line A1 V star Sirius A, the brightest star in the sky, orbited in a 50.13 year period by Sirius B, the brightest and nearest white dwarf (WD). Using images obtained over nearly two decades with the Hubble Space Telescope (HST), along with photographic observations covering almost 20 years and nearly 2300 historical measurements dating back to the 19th century, we determine precise orbital elements for the visual binary. Combined with the parallax and the motion of the A component, these elements yield dynamical masses of 2.063+/- 0.023 {M}<SUB>☉ </SUB> and 1.018+/- 0.011 {M}<SUB>☉ </SUB> for Sirius A and B, respectively. Our precise HST astrometry rules out third bodies orbiting either star in the system, down to masses of ∼15-25 {M}<SUB>{Jup</SUB>}. The location of Sirius B in the Hertzsprung-Russell diagram is in excellent agreement with theoretical cooling tracks for WDs of its dynamical mass, and implies a cooling age of ∼126 Myr. The position of Sirius B on the mass-radius plane is also consistent with WD theory, assuming a carbon-oxygen core. Including the pre-WD evolutionary timescale of the assumed progenitor, the total age of Sirius B is about 228 ± 10 Myr. We calculated evolutionary tracks for stars with the dynamical mass of Sirius A, using two independent codes. We find it necessary to assume a slightly subsolar metallicity, of about 0.85 {Z}<SUB>☉ </SUB>, to fit its location on the luminosity-radius plane. The age of Sirius A based on these models is about 237-247 Myr, with uncertainties of ±15 Myr, consistent with that of the WD companion. We discuss astrophysical puzzles presented by the Sirius system, including the probability that the two stars must have interacted in the past, even though there is no direct evidence for this and the orbital eccentricity remains high. <P />Based in part on observations with the NASA/ESA Hubble Space Telescope obtained at the Space Telescope Science Institute, and from the Mikulski Archive for Space Telescopes at STScI, which are operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS5-26555.",
+      "keywords": [
+        "astrometry",
+        "binaries: visual",
+        "stars: fundamental parameters",
+        "stars: individual: Sirius",
+        "white dwarfs",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:\"cooling age\")",
+      "search_rank": 42
+    },
+    {
+      "source_id": "2008A&A...489..651B",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20078937",
+      "title": "ADONIS high contrast infrared imaging of Sirius-B",
+      "authors": [
+        "Bonnet-Bidaud, J. M.",
+        "Pantin, E."
+      ],
+      "year": 2008,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2008A&A...489..651B.pdf",
+      "retrieval_priority": 0.3908061472544743,
+      "abstract": "Context: Sirius is the brightest star in the sky and a strong source of diffuse light for modern telescopes so that the immediate surroundings of the star are still poorly known. <BR />Aims: We study the close surroundings of the star (2 to 25́́) by means of adaptive optics and coronographic device in the near-infrared, using the ESO/ADONIS system. <BR />Methods: The resulting high contrast images in the JHKs bands have a resolution of ~0.2́́ and limiting apparent magnitude ranging from m_K=9.5 at 3́́ from Sirius-A to m_K=13.1 at 10́́. These are the first and deepest images of the Sirius system in this infrared range. <BR />Results: From these observations, accurate infrared photometry of the Sirius-B white dwarf companion is obtained. The JH magnitudes of Sirius-B are found to agree with expectations for a DA white dwarf of temperature (T=25 000 K) and gravity (log g = 8.5), consistent with the characteristics determined from optical observations. However, a small, significant excess is measurable for the K band, similar to that detected for “dusty” isolated white dwarfs harbouring suspected planetary debris. The possible existence of such circumstellar material around Sirius-B has still to be confirmed by further observations. <BR />Conclusions: These deep images allow us to search for small but yet undetected companions to Sirius. Apart from Sirius-B, no other source is detected within the total 25́́ field. A comparison of the flux expected from the faintest known brown dwarfs at the distance of Sirius demonstrates that the above limiting magnitudes correspond to a star of spectral type later than T5 at 5́́ and T7 at 10́́. Using theoretical spectra of brown dwarfs and planet-size objects, we also show that the end of the brown dwarf sequence is reached in the outer part of the image. The minimum detectable mass is around 10 M_Jup inside the planetary limit, indicating that an extrasolar planet at a projected distance of ~25 AU from Sirius would have been detected.",
+      "keywords": [
+        "binaries: visual",
+        "stars: individual: Sirius",
+        "white dwarfs",
+        "stars: law-mass",
+        "brown dwarfs",
+        "planetary systems",
+        "infrared: stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2006A&A...458..541B",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20065478",
+      "title": "Establishing <ASTROBJ>HZ43 A</ASTROBJ>, <ASTROBJ>Sirius B</ASTROBJ>, and <ASTROBJ>RX J185635-3754</ASTROBJ> as soft X-ray standards: a cross-calibration between the Chandra LETG+HRC-S, the EUVE spectrometer, and the ROSAT PSPC",
+      "authors": [
+        "Beuermann, K.",
+        "Burwitz, V.",
+        "Rauch, T."
+      ],
+      "year": 2006,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2006A&A...458..541B.pdf",
+      "retrieval_priority": 0.3344301386650056,
+      "abstract": "Context: .The absolute calibration of space-borne instruments in the soft X-ray regime rests strongly on model spectra of hot white dwarfs.<BR /> Aims: .We analyze the Chandra LETG+HRC observations of the white dwarfs <ASTROBJ>HZ43 A</ASTROBJ> and <ASTROBJ>Sirius B</ASTROBJ> and of the neutron star <ASTROBJ>RX J185635-3754</ASTROBJ> with the aim of resolving current uncertainties in the soft X-ray spectral fluxes and photospheric parameters of the three stars. We apply the derived photon spectra to a cross-calibration of the LETG+HRC-S with the short-wavelength EUVE spectrometer and the ROSAT PSPC.<BR /> Methods: .We tie <ASTROBJ>HZ43 A</ASTROBJ> to the flux of RX J1856 in the 44-48 Å range and perform a simultaneous least squares fit to the LETG+HRC spectra of the three stars. This allows us to determine an internally consistent set of spectral energy distributions and an empirically derived wavelength-dependent correction to the LETG+HRC-S effective area. We employ NLTE model atmospheres calculated with TMAP for the white dwarfs and a two-blackbody model for RX J1856, tied to the respective optical fluxes.<BR /> Results: .The two-blackbody model for RX J1856 features a hot spot on a cooler star and yields kT_spot=62.8±0.4 eV and kT_star=32.3±0.7 eV with a stellar angular radius as seen from infinity of 0.1371±0.0010 km pc<SUP>-1</SUP>. For <ASTROBJ>HZ43 A</ASTROBJ>, our fit yields T_eff = 51 126± 660 K and log g=7.90±0.080 (cgs) with anti-correlated errors (1-σ) which include not only the statistical but also the systematic uncertainties of the fit. HZ43AB displays a previously detected bremsstrahlung component with a temperature kT≃ 0.6 keV. For <ASTROBJ>Sirius B</ASTROBJ>, we find T_eff = 24 923± 115 K for fixed log g = 8.6. The calibration of the short-wavelength EUVE spectrometer differs from that of the LETG+HRC-S by 15± 7%. The ROSAT PSPC is found to be correctly calibrated within a few percent and reports of a major miscalibration are unfounded. <BR /> Conclusions: .We have obtained improved parameters for <ASTROBJ>RX J185635-3754</ASTROBJ>, <ASTROBJ>HZ43 A</ASTROBJ>, and <ASTROBJ>Sirius B</ASTROBJ> which fit the observations from the optical to the soft X-ray regime. Our approach allows us to quote their absolute spectral fluxes at selected wavelengths which may aid the calibration of other space-borne instruments.",
+      "keywords": [
+        "methods: data analysis",
+        "white dwarfs",
+        "stars: neutron",
+        "stars: fundamental parameters",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:surface OR abs:gravity OR abs:\"log g\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2005MNRAS.362.1134B",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2005.09359.x",
+      "title": "Hubble Space Telescope spectroscopy of the Balmer lines in Sirius B<SUP>*</SUP>",
+      "authors": [
+        "Barstow, M. A.",
+        "Bond, Howard E.",
+        "Holberg, J. B.",
+        "Burleigh, M. R.",
+        "Hubeny, I.",
+        "Koester, D."
+      ],
+      "year": 2005,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2005MNRAS.362.1134B.pdf",
+      "retrieval_priority": 0.5957929322803335,
+      "abstract": "Sirius B is the nearest and brightest of all white dwarfs, but it is very difficult to observe at visible wavelengths due to the overwhelming scattered light contribution from Sirius A. However, from space we can take advantage of the superb spatial resolution of the Hubble Space Telescope (HST) to resolve the A and B components. Since the closest approach in 1993, the separation between the two stars has become increasingly favourable and we have recently been able to obtain a spectrum of the complete Balmer line series for Sirius B using the HST Space Telescope Imaging Spectrograph (STIS). The quality of the STIS spectra greatly exceeds that of previous ground-based spectra, and can be used to provide an important determination of the stellar temperature (T<SUB>eff</SUB>= 25193 K) and gravity (logg= 8.556). In addition, we have obtained a new, more accurate, gravitational redshift of 80.42 +/- 4.83 km s<SUP>-1</SUP> for Sirius B. Combining these results with the photometric data and the Hipparcos parallax, we obtain new determinations of the stellar mass for comparison with the theoretical mass-radius relation. However, there are some disparities between the results obtained independently from logg and the gravitational redshift which may arise from flux losses in the narrow 50 × 0.2 arcsec<SUP>2</SUP> slit. Combining our measurements of T<SUB>eff</SUB> and logg with the Wood evolutionary mass-radius relation, we obtain a best estimate for the white dwarf mass of 0.978 M<SUB>solar</SUB>. Within the overall uncertainties, this is in agreement with a mass of 1.02 M<SUB>solar</SUB> obtained by matching our new gravitational redshift to the theoretical mass-radius relation.",
+      "keywords": [
+        "stars: abundances",
+        "stars: individual: Sirius B",
+        "white dwarfs",
+        "ultraviolet: stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2005ApJ...630L..69L",
+      "source_type": "paper",
+      "doi": "10.1086/462419",
+      "title": "The Age and Progenitor Mass of Sirius B",
+      "authors": [
+        "Liebert, James",
+        "Young, Patrick A.",
+        "Arnett, David",
+        "Holberg, J. B.",
+        "Williams, Kurtis A."
+      ],
+      "year": 2005,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\5db879b9-8745-4951-9177-793ac5c11b4e\\2005ApJ...630L..69L.pdf",
+      "retrieval_priority": 0.4480744854121908,
+      "abstract": "The Sirius AB binary system has masses that are well determined from many decades of astrometric measurements. Because of the well-measured radius and luminosity of Sirius A, we employed the TYCHO stellar evolution code to determine the age of the Sirius AB binary system accurately, at 225-250 Myr. Note that this fit requires the assumption of solar abundance and the use of the new Asplund et al. primordial solar metallicity. No fit to Sirius A's position is possible using the old Grevesse &amp; Sauval scale. Because the Sirius B white dwarf parameters have also been determined accurately from space observations, the cooling age could be determined from recent calculations by Fontaine et al. or Wood to be 124+/-10 Myr. The difference in the two ages yields the nuclear lifetime and mass of the original primary star, 5.056<SUP>+0.374</SUP><SUB>-0.276</SUB> M<SUB>solar</SUB>. This result yields, in principle, the most accurate data point at relatively high masses for the initial-to-final mass relation. However, the analysis relies on the assumption that the primordial abundance of the Sirius stars was solar, based on membership in the Sirius supercluster. A recent study suggests that its membership in the group is by no means certain.",
+      "keywords": [
+        "Stars: Atmospheres",
+        "Stars: Fundamental Parameters",
+        "Stars: White Dwarfs",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Sirius B\" OR abs:\"Sirius B\") AND (abs:mass OR abs:\"white dwarf mass\" OR abs:\"wd mass\")",
+      "search_rank": 6
+    }
+  ],
+  "records": [
+    {
+      "record_id": "2005ApJ...630L..69L_Sirius_B_cooling_age_0",
+      "source_id": "2005ApJ...630L..69L",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "cooling_age",
+      "field_value": 124,
+      "field_unit": "Myr",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          295,
+          450,
+          406,
+          470
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Because the Sirius B white dwarf parameters have also been determined accurately from space observations, the cooling age could be determined from recent calculations by Fontaine et al. or Wood to be 124±10 Myr.",
+      "measurement_method": "theoretical cooling models",
+      "condition_tags": [
+        "scope: global",
+        "metric: cooling_age"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...630L..69L_Sirius_B_cooling_age_3",
+      "source_id": "2005ApJ...630L..69L",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "cooling_age",
+      "field_value": 123.6,
+      "field_unit": "Myr",
+      "trace_id": "doc5_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          356,
+          528,
+          482,
+          548
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Having said this, it is interesting and reassuring that the 1.00 M_sun C,O sequence of Wood (2005, private communication) reaches a cooling age of 123.3 Myr at 25,000 K, while the Fontaine et al. (2001) sequence with identical parameters reaches 123.6±10 Myr.",
+      "measurement_method": "theoretical cooling models",
+      "condition_tags": [
+        "scope: global",
+        "metric: cooling_age"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...630L..69L_Sirius_B_mass_1",
+      "source_id": "2005ApJ...630L..69L",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 5.056,
+      "field_unit": "Msun",
+      "trace_id": "doc5_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          552,
+          470,
+          602,
+          490
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The difference of the two ages yields the nuclear lifetime and mass of the original primary star, 5.056+0.374-0.276 M_sun.",
+      "measurement_method": "derived from age difference",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...630L..69L_Sirius_B_mass_2",
+      "source_id": "2005ApJ...630L..69L",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.0,
+      "field_unit": "Msun",
+      "trace_id": "doc5_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          241,
+          867,
+          282,
+          887
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Note that these mass determinations are generally below previous estimates in earlier literature. For this study, we shall adopt 1.00±0.02M_sun for Sirius B.",
+      "measurement_method": "astrometric analysis and gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2005MNRAS.362.1134B_Sirius_B_mass_1",
+      "source_id": "2005MNRAS.362.1134B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": "0.978",
+      "field_unit": "Msun",
+      "trace_id": "doc4_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          839,
+          491,
+          879,
+          508
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "we get a best estimate for the white dwarf mass of 0.978 M_sun.",
+      "measurement_method": "evolutionary mass-radius relation",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2005MNRAS.362.1134B_Sirius_B_mass_2",
+      "source_id": "2005MNRAS.362.1134B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": "1.02",
+      "field_unit": "Msun",
+      "trace_id": "doc4_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          686,
+          504,
+          719,
+          520
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "this is in agreement with a mass of 1.02 M_sun obtained by matching our new gravitational red-shift to the theoretical M/R relation.",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2005MNRAS.362.1134B_Sirius_B_mass_4",
+      "source_id": "2005MNRAS.362.1134B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": "0.978 ± 0.005",
+      "field_unit": "Msun",
+      "trace_id": "doc4_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          731,
+          885,
+          776,
+          903
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our best estimates of M and R from this approach are 0.978 ± 0.005 M_sun and 0.00864 ± 0.00012 R_sun, respectively.",
+      "measurement_method": "spectroscopy and theoretical mass-radius relation",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2005MNRAS.362.1134B_Sirius_B_mass_5",
+      "source_id": "2005MNRAS.362.1134B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": "1.02 ± 0.02",
+      "field_unit": "Msun",
+      "trace_id": "doc4_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          369,
+          694,
+          405,
+          711
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The gravitational red-shift gives us an estimate of M/R directly, which can also be compared to the Wood (1995) models, yielding M = 1.02 ± 0.02 and R = 0.0081 ± 0.0002.",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2005MNRAS.362.1134B_Sirius_B_surface_gravity_0",
+      "source_id": "2005MNRAS.362.1134B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "surface_gravity",
+      "field_value": "8.556",
+      "field_unit": "dex",
+      "trace_id": "doc4_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          734,
+          418,
+          774,
+          434
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "determination of the stellar temperature (Teff = 25193K) and gravity (log g = 8.556).",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: surface_gravity"
+      ]
+    },
+    {
+      "record_id": "2005MNRAS.362.1134B_Sirius_B_surface_gravity_3",
+      "source_id": "2005MNRAS.362.1134B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "surface_gravity",
+      "field_value": "8.556",
+      "field_unit": "dex",
+      "trace_id": "doc4_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          57,
+          138,
+          911,
+          328
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Summary of the physical parameters of Sirius B... HST Results... log g 8.556",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: surface_gravity"
+      ]
+    },
+    {
+      "record_id": "2006A&A...458..541B_Sirius_B_surface_gravity_0",
+      "source_id": "2006A&A...458..541B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "surface_gravity",
+      "field_value": "8.6",
+      "field_unit": "dex",
+      "trace_id": "doc10_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          83,
+          119,
+          906,
+          760
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Parameters of HZ43 A, Sirius B, and RX J1856 based on the simultaneous fit... (b) Sirius B (λ = 74 – 160 Å) ... log g 8.6 f 1",
+      "measurement_method": "simultaneous fit",
+      "condition_tags": [
+        "scope: global",
+        "metric: surface_gravity"
+      ]
+    },
+    {
+      "record_id": "2008A&A...489..651B_Sirius_B_surface_gravity_0",
+      "source_id": "2008A&A...489..651B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "surface_gravity",
+      "field_value": "8.556",
+      "field_unit": "dex",
+      "trace_id": "doc9_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          406,
+          838,
+          450,
+          855
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The optical photometry as well as the temperature and gravity of the white dwarf (logT=25 190K, logg=8.556) were determined accurately using HST Balmer lines spectroscopy (Barstow et al. 2005).",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: surface_gravity"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...840...70B_Sirius_B_cooling_age_0",
+      "source_id": "2017ApJ...840...70B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "cooling_age",
+      "field_value": 126,
+      "field_unit": "Myr",
+      "trace_id": "doc3_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          238,
+          337,
+          273,
+          357
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The location of Sirius B in the H-R diagram is in excellent agreement with theoretical cooling tracks for WDs of its dynamical mass, and implies a cooling age of ~126 Myr.",
+      "measurement_method": "theoretical cooling tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: cooling_age"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...840...70B_Sirius_B_cooling_age_1",
+      "source_id": "2017ApJ...840...70B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "cooling_age",
+      "field_value": 126,
+      "field_unit": "Myr",
+      "trace_id": "doc3_p15",
+      "provenance": {
+        "page": 15,
+        "bbox": [
+          563,
+          427,
+          641,
+          447
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "By interpolation in the theoretical data, we estimate the cooling age of Sirius B to be 126 Myr. This agrees very well with an earlier determination of 124 Myr in a study of the Sirius system by Liebert et al. (2005, hereafter L05).",
+      "measurement_method": "interpolation in theoretical data",
+      "condition_tags": [
+        "scope: global",
+        "metric: cooling_age"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...840...70B_Sirius_B_cooling_age_2",
+      "source_id": "2017ApJ...840...70B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "cooling_age",
+      "field_value": 126,
+      "field_unit": "Myr",
+      "trace_id": "doc3_p23",
+      "provenance": {
+        "page": 23,
+        "bbox": [
+          536,
+          157,
+          613,
+          177
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Taking the YREC age, and subtracting the 126 Myr cooling age of Sirius B (§8), we find a pre-WD evolutionary timescale for the progenitor of about 111 Myr.",
+      "measurement_method": "theoretical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: cooling_age"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...840...70B_Sirius_B_cooling_age_3",
+      "source_id": "2017ApJ...840...70B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "cooling_age",
+      "field_value": 126,
+      "field_unit": "Myr",
+      "trace_id": "doc3_p24",
+      "provenance": {
+        "page": 24,
+        "bbox": [
+          743,
+          267,
+          820,
+          287
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The position of Sirius B in the H-R diagram is in excellent agreement with a theoretical cooling track for a WD of its measured mass, and implies a cooling age of 126 Myr.",
+      "measurement_method": "theoretical cooling track",
+      "condition_tags": [
+        "scope: global",
+        "metric: cooling_age"
+      ]
+    },
+    {
+      "record_id": "2018ApJ...866...21C_Sirius_B_mass_0",
+      "source_id": "2018ApJ...866...21C",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": "1.02",
+      "field_unit": "Msun",
+      "trace_id": "doc1_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          156,
+          75,
+          844,
+          710
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "TABLE 1 - continued from previous page ... Sirius B 26000±400 8.57±0.04 0.982±0.024 99+10 -10 4.58+0.41 -0.41 4.88+0.35 -0.35 -",
+      "measurement_method": "spectroscopic and cooling model analysis",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.479.1612J_Sirius_B_mass_0",
+      "source_id": "2018MNRAS.479.1612J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.018,
+      "field_unit": "Msun",
+      "trace_id": "doc7_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          797,
+          266,
+          838,
+          282
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Bond et al. (2017a) used 150 years of observations to determine the orbit of Sirius B and calculate its mass (1.018 ± 0.011 Msun).",
+      "measurement_method": "dynamical",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.479.1612J_Sirius_B_mass_1",
+      "source_id": "2018MNRAS.479.1612J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 0.927,
+      "field_unit": "Msun",
+      "trace_id": "doc7_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 4. Mass and radius values calculated using the spectroscopic parameters listed in Table 3. ... Sirius B Average HST ... Mass (Msun) 0.927 ± 0.107",
+      "measurement_method": "spectroscopic",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.479.1612J_Sirius_B_mass_2",
+      "source_id": "2018MNRAS.479.1612J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.018,
+      "field_unit": "Msun",
+      "trace_id": "doc7_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          592,
+          169,
+          633,
+          186
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In Fig. 9 we have combined the Bond et al. (2017a) dynamical mass (1.018 ± 0.011 Msun) with the radius measured from our spectral fitting...",
+      "measurement_method": "dynamical",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.479.1612J_Sirius_B_mass_3",
+      "source_id": "2018MNRAS.479.1612J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.018,
+      "field_unit": "Msun",
+      "trace_id": "doc7_p15",
+      "provenance": {
+        "page": 15,
+        "bbox": [
+          151,
+          131,
+          806,
+          268
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 6. Comparison of mass and radius results for Sirius B... Dynamical mass, (Bond et al. 2017a) ... Mass (Msun) 1.018 ± 0.011",
+      "measurement_method": "dynamical",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.481.2361J_Sirius_B_mass_0",
+      "source_id": "2018MNRAS.481.2361J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.017,
+      "field_unit": "Msun",
+      "trace_id": "doc6_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          629,
+          526,
+          673,
+          544
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "From the measured gravitational redshift and the known radius, we find a mass of 1.017 ± 0.025 M_sun which is in agreement with the dynamical mass...",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.481.2361J_Sirius_B_mass_1",
+      "source_id": "2018MNRAS.481.2361J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.017,
+      "field_unit": "Msun",
+      "trace_id": "doc6_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          65,
+          113,
+          775,
+          357
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Measured wavelength, velocity and mass. ... Differential ... 1.017 ± 0.025",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.481.2361J_Sirius_B_mass_2",
+      "source_id": "2018MNRAS.481.2361J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.036,
+      "field_unit": "Msun",
+      "trace_id": "doc6_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          65,
+          113,
+          775,
+          357
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Measured wavelength, velocity and mass. ... Centre ... Differential ... 1.036 ± 0.025",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.481.2361J_Sirius_B_mass_3",
+      "source_id": "2018MNRAS.481.2361J",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.017,
+      "field_unit": "Msun",
+      "trace_id": "doc6_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          166,
+          720,
+          207,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "5 CONCLUSIONS The mass of Sirius B as measured by the gravitational redshift method is 1.017 ± 0.025 M_sun. This matches the dynamical mass 1.018 ± 0.011 M_sun of Bond et al. (2017b) almost exactly.",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2019MNRAS.484.2711R_Sirius_B_mass_0",
+      "source_id": "2019MNRAS.484.2711R",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 0.974,
+      "field_unit": "Msun",
+      "trace_id": "doc8_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          67,
+          123,
+          918,
+          336
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Stellar mass determinations for different hydrogen envelope layers, considering the spectroscopic atmospheric parameters for 40 Eridani B (left) and Sirius B (right)... 2.02 x 10^-6 0.974 ± 0.013",
+      "measurement_method": "spectroscopic and evolutionary tracks",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2019MNRAS.484.2711R_Sirius_B_mass_1",
+      "source_id": "2019MNRAS.484.2711R",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.018,
+      "field_unit": "Msun",
+      "trace_id": "doc8_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          85,
+          451,
+          918,
+          957
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... Bond et al. (2017a) 1.018 ± 0.011",
+      "measurement_method": "dynamical",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2019MNRAS.484.2711R_Sirius_B_mass_2",
+      "source_id": "2019MNRAS.484.2711R",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.017,
+      "field_unit": "Msun",
+      "trace_id": "doc8_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          85,
+          451,
+          918,
+          957
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... Joyce et al. (2018b) 1.017 ± 0.025",
+      "measurement_method": "gravitational redshift",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2019MNRAS.484.2711R_Sirius_B_mass_3",
+      "source_id": "2019MNRAS.484.2711R",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 0.978,
+      "field_unit": "Msun",
+      "trace_id": "doc8_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          85,
+          451,
+          918,
+          957
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... Barstow et al. (2005) 0.978 ± 0.005",
+      "measurement_method": "fully spectroscopical",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2022AJ....163...81L_Sirius_B_mass_0",
+      "source_id": "2022AJ....163...81L",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.018,
+      "field_unit": "Msun",
+      "trace_id": "doc2_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          79,
+          81,
+          922,
+          717
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Parameters of the Sirius system adopted in this study. ... Sirius B ... M* 1.018 ± 0.011 M_sun B17",
+      "measurement_method": "dynamical mass derivation",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    },
+    {
+      "record_id": "2026MNRAS.545f1811B_Sirius_B_mass_0",
+      "source_id": "2026MNRAS.545f1811B",
+      "entity_type": "WD*",
+      "entity_name": "Sirius B",
+      "field_name": "mass",
+      "field_value": 1.018,
+      "field_unit": "Msun",
+      "trace_id": "doc0_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          67,
+          72,
+          924,
+          707
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.99,
+      "context_snippet": "Table 1. Observed data for the white dwarf mass radius relation ... 0.008098 ± 0.000046 1.018 ± 0.011 25369 ± 63 d Sirius B",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: mass"
+      ]
+    }
+  ]
+}

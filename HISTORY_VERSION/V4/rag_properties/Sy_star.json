@@ -1,0 +1,332 @@
+{
+  "otype": "Sy*",
+  "name_cn": "共生星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "radec",
+      "name_cn": "赤经赤纬",
+      "description": "J2000天体坐标,全部表的基础字段",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ident",
+      "name_cn": "交叉证认标识符",
+      "description": "Gaia DR3、2MASS、WISE、IRAS及VSX/GCVS命名,用于多表交叉匹配",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_parallax",
+      "name_cn": "Gaia视差",
+      "description": "Gaia DR2/DR3视差及其误差,确定几何距离",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_dist",
+      "name_cn": "距离",
+      "description": "Gaia几何/光度距离;用于判别薄盘/厚盘星族归属(S型两盘均有,S+IR与D型以薄盘为主)",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia自行分量(μRA, μDec)",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_galaxy",
+      "name_cn": "宿主星系",
+      "description": "所属星系:银河系、LMC、SMC、M31、M33、IC10、NGC 6822、NGC 185/205/55/300、矮星系等16个宿主星系",
+      "category": "environment",
+      "ucd": "meta.id.parent",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sy_status",
+      "name_cn": "共生性质确认状态",
+      "description": "confirmed/likely/possible/suspected/misclassified五级,统一依据(冷巨星存在+吸积证据)评定而非沿用文献标签",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_type",
+      "name_cn": "红外形态类型",
+      "description": "S型(恒星型,近IR由巨星光球主导,约77%)、D型(尘埃型,含Mira,尘温约700-1000K)、D'型(冷尘埃,约3%),由SED峰位判定",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_type",
+      "name_cn": "致密伴星属性",
+      "description": "壳层燃烧白矮星、纯吸积白矮星、中子星(如V934 Her、V2116 Oph)三类;与爆发与X射线行为直接相关",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_type",
+      "name_cn": "X射线谱型",
+      "description": "Luna 2013/Muerset方案α、β、γ、δ及β/δ复合型;β型(约1/3)为星风碰撞热辐射<2.4keV,δ型为吸积盘边界层硬辐射>2.4keV",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outburst_type",
+      "name_cn": "爆发类型",
+      "description": "类Z And型爆发、慢共生新星爆发(持续数十年)、再发新星(RS Oph型,WD质量1.2-1.4Mo)、脉动驱动爆发;约1/4银河系确认源观测到至少一次爆发",
+      "category": "variability",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变光形态",
+      "description": "巨星半规则/ Mira脉动、轨道反射效应、椭球调制、吸积盘分钟级闪烁(flickering,纯吸积型诊断)、日食",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amplitude",
+      "name_cn": "变幅",
+      "description": "各波段光变幅值,用于区分爆发与轨道/脉动调制",
+      "category": "variability",
+      "ucd": "phot.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_period",
+      "name_cn": "轨道周期与历元",
+      "description": "轨道周期(数百至数千天;S型集中于300-1100天,中值约698天)、掩食/合次历元;D型周期异常长;已知140个确认系统(约39%)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orb_eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率;周期低于约900天的S型系统轨道基本近圆",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "puls_period",
+      "name_cn": "巨星脉动周期",
+      "description": "冷巨星脉动周期:SR型约40-200天(中值约92.5天),Mira型数百天(约400天)",
+      "category": "variability",
+      "ucd": "phot.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_type_giant",
+      "name_cn": "冷巨星光谱型",
+      "description": "冷子星光谱型与演化阶段:以M型巨星为主(M3-M6,峰值M5),另有K型黄共生、S型巨星、碳星(银道面仅10颗确认);Mira为M7-M8;已知325个确认系统(约90%)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spec_type_hot",
+      "name_cn": "热成分光谱型",
+      "description": "热子星性质:白矮星或中子星;由UV/X射线与发射线电离诊断约束",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "emiss_lines",
+      "name_cn": "发射线证认与强度",
+      "description": "Hα、He II 4686、[O III] 5007、[Fe VII] 5727/6087、[Fe VI]等;确认样本中67%有[O III]、80%有He II;He II 4686是O VI线验证的关键诊断线",
+      "category": "spectroscopy",
+      "ucd": "spect.line;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_ion_pot",
+      "name_cn": "最大电离电位",
+      "description": "谱线所达最大电离电位,>35 eV(如[O III]、He II、[Fe VI])为传统确认判据之一",
+      "category": "spectroscopy",
+      "ucd": "phys.atmol.ionization",
+      "unit": "eV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "raman_ovi",
+      "name_cn": "Raman散射O VI线",
+      "description": "Raman散射O VI λ6830/7088线,共生星独有诊断特征(约一半系统可见);约22%系统He II无[O III],几乎无系统O VI无He II;仅α/β型X射线源检出λ6830",
+      "category": "spectroscopy",
+      "ucd": "spect.line;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_opt",
+      "name_cn": "光学测光",
+      "description": "B、V、R等经典波段及Gaia G波段星等与误差",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_nir",
+      "name_cn": "近红外测光",
+      "description": "2MASS JHKs星等(含误差),S型近IR峰位于1.0-1.1μm,D型2-2.5μm;J-H/H-Ks色图是S/D型判别基础",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.NIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_midir",
+      "name_cn": "中红外测光",
+      "description": "AllWISE W1-W4及IRAS流量,追踪尘埃壳辐射与D'/D型冷尘埃成分",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.MIR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "uv_excess",
+      "name_cn": "紫外超量",
+      "description": "GALEX FUV-NUV颜色指数(小于1指示热伴星存在),用于发现纯吸积型(Hα弱或无)共生星如SU Lyn",
+      "category": "photometry",
+      "ucd": "phot.color;em.UV",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_peak",
+      "name_cn": "SED峰值波长",
+      "description": "光谱能量分布峰值位置:S型0.8-1.7μm、D型2-4μm、D'型近平坦(SED峰约20-30μm冷尘埃)",
+      "category": "photometry",
+      "ucd": "phot.flux.density;spectral",
+      "unit": "um",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wd_teff",
+      "name_cn": "热星有效温度",
+      "description": "热成分有效温度约10^4-10^5 K(壳层燃烧型);含Gaia导出有效温度",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wd_lum",
+      "name_cn": "热星光度",
+      "description": "壳层燃烧WD光度约10^2-10^4 Lsun;纯吸积型光度低得多",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wd_mass",
+      "name_cn": "白矮星质量",
+      "description": "已知50个WD质量,中值约0.6 Mo;再发新星共生星WD质量约1.2-1.4 Mo(SN Ia前身星候选)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "giant_mass",
+      "name_cn": "巨星质量",
+      "description": "冷巨星质量(66个系统已知),中值约1.5 Mo",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "giant_radius",
+      "name_cn": "巨星半径",
+      "description": "冷巨星半径,决定星风与Roche瓣填充程度",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity",
+      "name_cn": "金属丰度",
+      "description": "[Fe/H]:M巨星中值约-0.18,K巨星中值约-1.15(麦哲伦云碳星共生星更多与低金属丰度相关)",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率/星风参数",
+      "description": "红巨星星风质量损失率与尘埃壳参数;D型色面分布对应不同dM/dt(硅酸盐尘埃、最高温约800K);决定吸积率与X射线星风碰撞特性",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "accretion_rate",
+      "name_cn": "吸积率",
+      "description": "白矮星表面吸积率:高吸积率维持稳定核燃烧(壳层燃烧型),低吸积率对应纯吸积型;吸积率决定UV/X射线表现与爆发行为",
+      "category": "physical",
+      "ucd": "phys.accretion",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nebula_morph",
+      "name_cn": "星云/喷流结构",
+      "description": "扩展星云、喷流(jets)、双尘埃壳结构形态;D型可含两层不同温度尘埃壳",
+      "category": "environment",
+      "ucd": "morph.physical",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux",
+      "name_cn": "射电辐射",
+      "description": "射电探测(热/非热成分),反映星风碰撞与电离区,作为相互作用补充诊断",
+      "category": "environment",
+      "ucd": "phot.flux;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    }
+  ]
+}

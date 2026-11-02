@@ -1,0 +1,323 @@
+{
+  "otype": "Pu*",
+  "name_cn": "脉动变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pos_eq_ra",
+      "name_cn": "赤经 (J2000)",
+      "description": "天球坐标赤经 (J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_eq_dec",
+      "name_cn": "赤纬 (J2000)",
+      "description": "天球坐标赤纬 (J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_distance",
+      "name_cn": "距离",
+      "description": "由视差/光度推导的距离 (pc), 用于脉动周期-光度关系",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_kepler",
+      "name_cn": "Kepler Kp 星等",
+      "description": "Kepler 输入星表宽带 Kp 星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_tess",
+      "name_cn": "TESS 星等",
+      "description": "TESS 输入星表 (TIC) 星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_g_ztf",
+      "name_cn": "g 波段平均星等",
+      "description": "ZTF/Sloan g 波段平均星等 (12.4-20.6 mag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_r_ztf",
+      "name_cn": "r 波段平均星等",
+      "description": "ZTF/Sloan r 波段平均星等 (12.4-20 mag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type",
+      "name_cn": "光谱型",
+      "description": "MK 光谱型, 区分 A/F 主序脉动带与 B 型 (BCEP/SPB) 及 Ap 特殊星",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_teff",
+      "name_cn": "有效温度",
+      "description": "光谱法与测光法独立推导的有效温度 (K), 用于判定脉动不稳定带",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_logg",
+      "name_cn": "表面重力 log g",
+      "description": "光谱法/测光法表面重力 (cm/s2), 约束主序位置",
+      "category": "spectroscopy",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_vsini",
+      "name_cn": "投影自转速度",
+      "description": "v sin i (km/s), 自转对低频模激发与振幅有重要影响",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_feh",
+      "name_cn": "金属丰度 [Fe/H]",
+      "description": "铁金属丰度, 影响脉动驱动效率",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量 (Msun), 由等时线/演化模型推导",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径 (Rsun)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_luminosity",
+      "name_cn": "光度",
+      "description": "恒星光度 (Lsun), 与脉动周期构成周期-光度关系",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型",
+      "description": "GCVS 变星类型代号: DSCT/GDOR/BCEP/SPB(LPB)/roAp(ACV)/ZZ Cet/DBV/GW Vir 等全部脉动亚型",
+      "category": "classification",
+      "ucd": "src.class.variable",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_class_dsgd",
+      "name_cn": "脉动分类 (delta Sct/gamma Dor/混合)",
+      "description": "dSct (p模)、gDor (高序g模)、hybrid 三类判定, 依据独立频率在 g 模/ p 模频段的分佈",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_mode_id",
+      "name_cn": "径向阶模态识别",
+      "description": "模态标记: 基频 F 与一/二/三阶泛音 1O/2O/3O (delta Sct); 对应 p模/高序g模等物理模态",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_period",
+      "name_cn": "光变周期",
+      "description": "主脉动周期 (d): 短周期 0.02-0.3 d (delta Sct) 至数天 (gamma Dor/SPB), GCVS 收录主周期",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_epoch_max",
+      "name_cn": "最大光变时刻",
+      "description": "最大光 (或最小光) 时刻 (HJD), 用于相位折叠与 O-C 分析",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_frequency",
+      "name_cn": "振荡频率",
+      "description": "傅里叶分解得到的振荡频率 (uHz 或 d-1), 频率模式分析的原始量",
+      "category": "variability",
+      "ucd": "em.freq",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_freq_real",
+      "name_cn": "真实振荡频率 (去混叠)",
+      "description": "由超奈奎斯特频率还原的真实频率 fR, 消除采样混叠",
+      "category": "variability",
+      "ucd": "em.freq",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amplitude",
+      "name_cn": "振幅",
+      "description": "各模态振幅 (mag 或 ppm/ppt), r/g 双波段分别给出, 反映脉动能量",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_n_freq",
+      "name_cn": "独立频率个数",
+      "description": "独立振荡频率总数及其在 gamma Dor 频段 (Ng) 与 delta Sct 频段 (Nd) 的分配",
+      "category": "variability",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_freq_range",
+      "name_cn": "频率范围边界",
+      "description": "gamma Dor 型与 delta Sct 型频率各自的检测范围下/上界 (d-1)",
+      "category": "variability",
+      "ucd": "em.freq;stat.min",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_mode_period_f",
+      "name_cn": "基频模周期 F",
+      "description": "基频模态周期 (d, 0.04-0.22 r 波段)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_mode_period_1o",
+      "name_cn": "一阶泛音周期 1O",
+      "description": "一阶泛音周期 (d, 0.03-0.22)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_mode_period_2o",
+      "name_cn": "二阶泛音周期 2O",
+      "description": "二阶泛音周期 (d, 0.03-0.2)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_mode_period_3o",
+      "name_cn": "三阶泛音周期 3O",
+      "description": "三阶泛音周期 (d, 0.02-0.16)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_period_ratio",
+      "name_cn": "周期比",
+      "description": "相邻模态周期比 (如 P2/P1), 径向阶识别与恒星参数诊断关键量",
+      "category": "variability",
+      "ucd": "time.period;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_psd",
+      "name_cn": "功率谱密度 (PSD)",
+      "description": "各模态最大功率谱密度, 频率检测显著性表征",
+      "category": "variability",
+      "ucd": "stat.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_fap",
+      "name_cn": "假警报概率",
+      "description": "模态检测的假警报概率 (log FAP, 负值), 验证频率真实性",
+      "category": "variability",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_snr",
+      "name_cn": "信噪比 SNR",
+      "description": "频率检测信噪比 (FELIX 显著性及 sLSP 频率调制显著性)",
+      "category": "variability",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_nyquist_flag",
+      "name_cn": "奈奎斯特/超奈奎斯特标志",
+      "description": "分类标志 C (0/1) 与奈奎斯特区间标志、短曝光 (SC) 标志",
+      "category": "variability",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "env_binary",
+      "name_cn": "双星状态",
+      "description": "双星/单星判定, 双星潮汐作用会调制脉动并与脉动模式竞争",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

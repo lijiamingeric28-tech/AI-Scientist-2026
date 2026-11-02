@@ -1,0 +1,3783 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2025ApJ...988..273L",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/adea4b",
+      "title": "The Virial Factor f of the Hβ Broad Line for NGC 5548 and NGC 4151",
+      "authors": [
+        "Li, Shao-Jun",
+        "Ning, Xiang-Wei",
+        "Ma, Yan-Song",
+        "Tang, Yi",
+        "Bian, Wei-Hao"
+      ],
+      "year": 2025,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2025ApJ...988..273L.pdf",
+      "retrieval_priority": 0.6910761904761905,
+      "abstract": "The variability of virial factor f is investigated for two active galactic nuclei, NGC 5548 and NGC 4151, which had been previously reverberation mapped (RM) over 20 times in the past 30 yr. Using four velocity tracers from the broad Hβ width at half-maximum (FWHM<SUB>Hβ</SUB>) or the line dispersion from the mean or rms spectra, f for each RM epoch is calculated. Significant correlations are found between f and observational parameters, such as the broad-line widths, the Eddington ratios, and the line profile shapes. For NGC 5548, <inline-formula> <mml:math><mml:mi>f</mml:mi><mml:mo>∝</mml:mo><mml:msubsup><mml:mrow><mml:mi>FWHM</mml:mi></mml:mrow><mml:mrow><mml:mi>mean</mml:mi></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>0.70</mml:mn><mml:mo>±</mml:mo><mml:mn>0.13</mml:mn></mml:mrow></mml:msubsup></mml:math> </inline-formula> and for NGC 4151, <inline-formula> <mml:math><mml:mi>f</mml:mi><mml:mo>∝</mml:mo><mml:msubsup><mml:mrow><mml:mi>FWHM</mml:mi></mml:mrow><mml:mrow><mml:mi>mean</mml:mi></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>3.31</mml:mn><mml:mo>±</mml:mo><mml:mn>0.59</mml:mn></mml:mrow></mml:msubsup></mml:math> </inline-formula>. This suggests that a variable f should be included to weight the virial supermassive black hole mass. Using a simple model of thick-disk broad-line regions (BLRs), we show that changes in mean inclination can explain f variation. The inclination range is 14<inline-formula> <mml:math><mml:mover><mml:mrow><mml:mo>.</mml:mo></mml:mrow><mml:mrow><mml:mtext>°</mml:mtext></mml:mrow></mml:mover></mml:math> </inline-formula>1−40<inline-formula> <mml:math><mml:mover><mml:mrow><mml:mo>.</mml:mo></mml:mrow><mml:mrow><mml:mtext>°</mml:mtext></mml:mrow></mml:mover></mml:math> </inline-formula>6 for NGC 5548 and 14<inline-formula> <mml:math><mml:mover><mml:mrow><mml:mo>.</mml:mo></mml:mrow><mml:mrow><mml:mtext>°</mml:mtext></mml:mrow></mml:mover></mml:math> </inline-formula>0−55<inline-formula> <mml:math><mml:mover><mml:mrow><mml:mo>.</mml:mo></mml:mrow><mml:mrow><mml:mtext>°</mml:mtext></mml:mrow></mml:mover></mml:math> </inline-formula>1 for NGC 4151. Modeling the light curves of f with a damped random walk process yields mean timescales of 638 and 668 days, consistent with BLR dynamical timescales within uncertainties. This indicates that f variations are linked to BLR dynamics, likely due to changes in geometry or inclination.",
+      "keywords": [
+        "Supermassive black holes",
+        "Active galactic nuclei",
+        "Reverberation mapping",
+        "1663",
+        "16",
+        "2019",
+        "Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 21
+    },
+    {
+      "source_id": "2023MNRAS.521.2897W",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stad718",
+      "title": "Assessing indirect methods to determine black hole masses using NGC 4151",
+      "authors": [
+        "Williams, James K.",
+        "Gliozzi, Mario",
+        "Bockwoldt, Kyle A.",
+        "Shuvo, Onic I."
+      ],
+      "year": 2023,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2023MNRAS.521.2897W.pdf",
+      "retrieval_priority": 0.5395651616355368,
+      "abstract": "Accurately determining the black hole mass (M<SUB>BH</SUB>) in active galactic nuclei (AGNs) is crucial to constraining their properties and to studying their evolution. While direct methods yield reliable measurements of M<SUB>BH</SUB> in unobscured type 1 AGNs, where the dynamics of stellar or gas components can be directly observed, only indirect methods can be applied to the vast majority of heavily absorbed type 2 AGNs, which represent most of the AGN population. Since it is difficult to evaluate the accuracy and precision of these indirect methods, we utilize the nearby X-ray bright Seyfert galaxy NGC 4151, whose M<SUB>BH</SUB> has been tightly constrained with several independent direct methods, as a laboratory to assess the reliability of three indirect methods that have been applied to obscured AGNs. All three, the X-ray scaling method, the Fundamental Plane of BH activity, and the M-σ correlation, yield M<SUB>BH</SUB> values consistent with those inferred from direct methods and can therefore be considered accurate. However, only the X-ray scaling method and the M-σ correlation are precise because the substantial scatter in the Fundamental Plane of BH activity allows only for crude estimates. Of the four M-σ correlations we used, only the one from Kormendy and Ho yields a value consistent with the dynamical estimates. This study suggests that the best approach to estimating the BH mass in systems where direct dynamical methods cannot be applied is to utilize a combination of indirect methods, taking into account their different ranges of applicability.",
+      "keywords": [
+        "black hole physics",
+        "galaxies: active",
+        "galaxies: Seyfert",
+        "X-rays: galaxies",
+        "galaxies: individual: NGC 4151",
+        "radio continuum: galaxies",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2023MNRAS.520.1807C",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stad051",
+      "title": "Broad-line region in NGC 4151 monitored by two decades of reverberation mapping campaigns - I. Evolution of structure and kinematics",
+      "authors": [
+        "Chen, Yong-Jie",
+        "Bao, Dong-Wei",
+        "Zhai, Shuo",
+        "Fang, Feng-Na",
+        "Hu, Chen",
+        "Du, Pu",
+        "Yang, Sen",
+        "Yao, Zhu-Heng",
+        "Li, Yan-Rong",
+        "Brotherton, Michael S.",
+        "McLane, Jacob N.",
+        "Zastrocky, T. E.",
+        "Olson, Kianna A.",
+        "Bon, Edi",
+        "Bai, Hua-Rui",
+        "Fu, Yi-Xin",
+        "Liu, Jun-Rong",
+        "Wang, Yi-Lin",
+        "Maithil, Jaya",
+        "Kobulnicky, H. A.",
+        "Dale, D. A.",
+        "Adelman, C.",
+        "Caradonna, M. J.",
+        "Carter, Z.",
+        "Favro, J.",
+        "Ferguson, A. J.",
+        "Gonzalez, I. M.",
+        "Hadding, L. M.",
+        "Hagler, H. D.",
+        "Murphree, G.",
+        "Oeur, M.",
+        "Rogers, C. J.",
+        "Roth, T.",
+        "Schonsberg, S.",
+        "Stack, T. R.",
+        "Wang, Jian-Min"
+      ],
+      "year": 2023,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2023MNRAS.520.1807C.pdf",
+      "retrieval_priority": 0.6005624064294856,
+      "abstract": "We report the results of long-term reverberation mapping campaigns of the nearby active galactic nuclei (AGNs) NGC 4151, spanning from 1994 to 2022, based on archived observations of the FAST Spectrograph Publicly Archived Programs and our new observations with the 2.3 m telescope at the Wyoming Infrared Observatory. We reduce and calibrate all the spectra in a consistent way, and derive light curves of the broad H β line and 5100 Å continuum. Continuum light curves are also constructed using public archival photometric data to increase sampling cadences. We subtract the host galaxy contamination using Hubble Space Telescope imaging to correct fluxes of the calibrated light curves. Utilizing the long-term archival photometric data, we complete the absolute flux-calibration of the AGN continuum. We find that the H β time delays are correlated with the 5100 Å luminosities as $\\tau _{\\rm H\\beta }\\propto L_{5100}^{0.46\\pm 0.16}$. This is remarkably consistent with Bentz et al. (2013)'s global size-luminosity relationship of AGNs. Moreover, the data sets for five of the seasons allow us to obtain the velocity-resolved delays of the H β line, showing diverse structures (outflows, inflows, and discs). Combining our results with previous independent measurements, we find the measured dynamics of the H β broad-line region (BLR) are possibly related to the long-term trend of the luminosity. There is also a possible additional ~1.86 yr time lag between the variation in BLR radius and luminosity. These results suggest that dynamical changes in the BLR may be driven by the effects of radiation pressure.",
+      "keywords": [
+        "galaxies: individual: NGC 4151",
+        "galaxies: kinematics and dynamics",
+        "galaxies: nuclei",
+        "galaxies: photometry",
+        "(galaxies:) quasars: emission lines",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 24
+    },
+    {
+      "source_id": "2022ApJ...934..168B",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ac7c0a",
+      "title": "The Broad Line Region and Black Hole Mass of NGC 4151",
+      "authors": [
+        "Bentz, Misty C.",
+        "Williams, Peter R.",
+        "Treu, Tommaso"
+      ],
+      "year": 2022,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2022ApJ...934..168B.pdf",
+      "retrieval_priority": 0.5456412126632978,
+      "abstract": "We present a reanalysis of reverberation mapping data from 2005 for the Seyfert galaxy NGC 4151, supplemented with additional data from the literature to constrain the continuum variations over a significantly longer baseline than the original monitoring program. Modeling of the continuum light curve and the velocity-resolved variations across the Hβ emission line constrains the geometry and kinematics of the broad line region (BLR). The BLR is well described by a very thick disk with similar opening angle (θ <SUB> o </SUB> ≍ 57°) and inclination angle (θ <SUB> i </SUB> ≍ 58°), suggesting that our sight line toward the innermost central engine skims just above the surface of the BLR. The inclination is consistent with constraints from geometric modeling of the narrow-line region, and the similarity between the inclination and opening angles is intriguing given previous studies of NGC 4151 that suggest BLR gas has been observed temporarily eclipsing the X-ray source. The BLR kinematics are dominated by eccentric bound orbits, with ~10% of the orbits preferring near-circular motions. With the BLR geometry and kinematics constrained, the models provide an independent and direct black hole mass measurement of $\\mathrm{log}{M}_{\\mathrm{BH}}/{M}_{\\odot }={7.22}_{-0.10}^{+0.11}$ or ${M}_{\\mathrm{BH}}={1.66}_{-0.34}^{+0.48}\\times {10}^{7}$ M <SUB>☉</SUB>, which is in good agreement with mass measurements from stellar dynamical modeling and gas dynamical modeling. NGC 4151 is one of the few nearby broad-lined Seyferts where the black hole mass may be measured via multiple independent techniques, and it provides an important test case for investigating potential systematics that could affect the black hole mass scales used in the local universe and for high-redshift quasars.",
+      "keywords": [
+        "Seyfert galaxies",
+        "Supermassive black holes",
+        "Reverberation mapping",
+        "1447",
+        "1663",
+        "2019",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 3
+    },
+    {
+      "source_id": "2021ApJ...916...25R",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ac05b6",
+      "title": "The Black Hole Mass of NGC 4151 from Stellar Dynamical Modeling",
+      "authors": [
+        "Roberts, Caroline A.",
+        "Bentz, Misty C.",
+        "Vasiliev, Eugene",
+        "Valluri, Monica",
+        "Onken, Christopher A."
+      ],
+      "year": 2021,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2021ApJ...916...25R.pdf",
+      "retrieval_priority": 0.5161910441508613,
+      "abstract": "The mass of a supermassive black hole (M<SUB>BH</SUB>) is a fundamental property that can be obtained through observational methods. Constraining M<SUB>BH</SUB> through multiple methods for an individual galaxy is important for verifying the accuracy of different techniques and for investigating the assumptions inherent in each method. However, there exist only a few galaxies where multiple M<SUB>BH</SUB> measurement techniques can be applied. NGC 4151 is one of these rare galaxies for which multiple methods can be used: stellar and gas dynamical modeling because of its proximity (D = 15.8 ± 0.4 Mpc from Cepheids), and reverberation mapping because of its active accretion. In this work, we reanalyzed H-band integral field spectroscopy of the nucleus of NGC 4151 from Gemini NIFS, improving the analysis at several key steps. We then constructed a wide range of axisymmetric dynamical models with the new orbit-superposition code FORSTAND. One of our primary goals is to quantify the systematic uncertainties in M<SUB>BH</SUB> arising from different combinations of the deprojected density profile, inclination, intrinsic flattening, and mass-to-light ratio. As a consequence of uncertainties on the stellar luminosity profile arising from the presence of the active galactic nucleus, our constraints on M<SUB>BH</SUB> are rather weak. Models with a steep central cusp are consistent with no black hole; however, in models with more moderate cusps, the black hole mass lies within the range of 0.25 × 10<SUP>7</SUP> M<SUB>☉</SUB> ≲ M<SUB>BH</SUB> ≲ 3 × 10<SUP>7</SUP> M<SUB>☉</SUB>. This measurement is somewhat smaller than the earlier analysis presented by Onken et al. but agrees with previous M<SUB>BH</SUB> values from gas dynamical modeling and reverberation mapping. Future dynamical modeling of reverberation data, as well as IFU observations with JWST, will aid in further constraining the mass of the central supermassive black hole in NGC 4151.",
+      "keywords": [
+        "Active galaxies",
+        "Seyfert galaxies",
+        "Supermassive black holes",
+        "17",
+        "1447",
+        "1663",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 4
+    },
+    {
+      "source_id": "2020MNRAS.491.5126M",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stz3196",
+      "title": "Discarding the disc in a changing-state AGN: the UV/X-ray relation in NGC 4151",
+      "authors": [
+        "Mahmoud, Ra'ad D.",
+        "Done, Chris"
+      ],
+      "year": 2020,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2020MNRAS.491.5126M.pdf",
+      "retrieval_priority": 0.4803500699005298,
+      "abstract": "Recent monitoring campaigns designed to map the accretion regime in active galactic nuclei (AGN) show major discrepancies with models where the optical/ultraviolet (UV) is produced by X-ray-illuminated, optically thick disc material within a few hundred gravitational radii. However, these campaigns only monitored X-rays below 10 keV, whereas the bolometric luminosity for most of these AGN peaks above 50 keV. We use data from the recent multiwavelength campaign by Edelson et al. on NGC 4151 - the only AGN bright enough to be monitored at higher energies with Swift Burst Alert Telescope (BAT). We develop a spectral-timing model with a hot corona, warm Comptonization, and outer standard disc. This fits the time-averaged spectrum well, but completely fails to match the UV variability predicted from the X-ray light curve. However, it reveals that NGC 4151 had a bolometric luminosity around 1.4 per cent of the Eddington luminosity during this campaign, close to the luminosity at which AGN show a 'changing-state' transition, where the broad optical lines disappear. Stellar mass black holes show a state transition at a similarly low Eddington fraction, which is broadly interpreted as the inner disc being replaced by an optically thin flow. We find that the UV light curve can instead be matched by reprocessing of the X-ray flux on size scales of the broad-line region (BLR; 1.5-20 light-days) and rule out there being optically thick material inwards of this, as expected if the thin disc is replaced by the flow below the inner radius of the BLR. These results emphasize the need for even longer time-scale, multiwavelength monitoring campaigns on variable AGN.",
+      "keywords": [
+        "accretion",
+        "accretion discs",
+        "black hole physics",
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 8
+    },
+    {
+      "source_id": "2019ApJ...877...65N",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ab1d62",
+      "title": "Spectral Properties of NGC 4151 and the Estimation of Black Hole Mass Using TCAF Solution",
+      "authors": [
+        "Nandi, Prantik",
+        "Chakrabarti, Sandip K.",
+        "Mondal, Santanu"
+      ],
+      "year": 2019,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2019ApJ...877...65N.pdf",
+      "retrieval_priority": 0.4745734849931216,
+      "abstract": "We present X-ray spectral analysis of Seyfert 1.5 Active Galactic Nuclei (AGNs) NGC 4151 using NuSTAR observations during 2012. This is the first attempt to fit AGN data using the physical Two Component Advective flow (TCAF) solution. We disentangle the continuum emission properties of the source in the energy range 3.0-70.0 keV using the spectrum obtained from the TCAF model. This model was used as an additive local model directly in XSPEC. Additionally, we used a power-law component, to take care of possible X-ray contribution from the jet, which is not incorporated in the present version of TCAF. Our primary aim is to obtain the flow properties and the mass of the central supermassive black hole from the available archival data. Our best estimate of the average mass obtained from spectral fits of three observations is M <SUB>BH</SUB> = 3.03<SUP>+0.26</SUP> <SUB>-0.26</SUB> × 10<SUP>7</SUP> M <SUB>☉</SUB>. This is consistent with earlier estimations in the literature such as reverberation mapping, gas kinematics, and stellar dynamics around black holes. We also discuss the accretion dynamics and the flow geometry on the basis of model-fitted physical parameters. Model-fitted disk accretion rate is found to be lower than the low angular momentum halo accretion rate, indicating that the source was in a hard state during the observation.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "galaxies: Seyfert",
+        "hydrodynamics",
+        "shock waves",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 7
+    },
+    {
+      "source_id": "2015ApJ...806..149K",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/806/2/149",
+      "title": "NuSTAR and Suzaku X-ray Spectroscopy of NGC 4151: Evidence for Reflection from the Inner Accretion Disk",
+      "authors": [
+        "Keck, M. L.",
+        "Brenneman, L. W.",
+        "Ballantyne, D. R.",
+        "Bauer, F.",
+        "Boggs, S. E.",
+        "Christensen, F. E.",
+        "Craig, W. W.",
+        "Dauser, T.",
+        "Elvis, M.",
+        "Fabian, A. C.",
+        "Fuerst, F.",
+        "García, J.",
+        "Grefenstette, B. W.",
+        "Hailey, C. J.",
+        "Harrison, F. A.",
+        "Madejski, G.",
+        "Marinucci, A.",
+        "Matt, G.",
+        "Reynolds, C. S.",
+        "Stern, D.",
+        "Walton, D. J.",
+        "Zoghbi, A."
+      ],
+      "year": 2015,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2015ApJ...806..149K.pdf",
+      "retrieval_priority": 0.4519905469334767,
+      "abstract": "We present X-ray timing and spectral analyses of simultaneous 150 ks Nuclear Spectroscopic Telescope Array (NuSTAR) and Suzaku X-ray observations of the Seyfert 1.5 galaxy NGC 4151. We disentangle the continuum emission, absorption, and reflection properties of the active galactic nucleus (AGN) by applying inner accretion disk reflection and absorption-dominated models. With a time-averaged spectral analysis, we find strong evidence for relativistic reflection from the inner accretion disk. We find that relativistic emission arises from a highly ionized inner accretion disk with a steep emissivity profile, which suggests an intense, compact illuminating source. We find a preliminary, near-maximal black hole spin a\\gt 0.9 accounting for statistical and systematic modeling errors. We find a relatively moderate reflection fraction with respect to predictions for the lamp post geometry, in which the illuminating corona is modeled as a point source. Through a time-resolved spectral analysis, we find that modest coronal and inner disk reflection (IDR) flux variation drives the spectral variability during the observations. We discuss various physical scenarios for the IDR model and we find that a compact corona is consistent with the observed features.",
+      "keywords": [
+        "accretion",
+        "accretion disks",
+        "black hole physics",
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "galaxies: Seyfert",
+        "X-rays: galaxies",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 14
+    },
+    {
+      "source_id": "2014MNRAS.438.2980C",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stt2424",
+      "title": "Modelling the broad Fe Kα reverberation in the AGN NGC 4151",
+      "authors": [
+        "Cackett, E. M.",
+        "Zoghbi, A.",
+        "Reynolds, C.",
+        "Fabian, A. C.",
+        "Kara, E.",
+        "Uttley, P.",
+        "Wilkins, D. R."
+      ],
+      "year": 2014,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2014MNRAS.438.2980C.pdf",
+      "retrieval_priority": 0.4642967525303121,
+      "abstract": "The recent detection of X-ray reverberation lags, especially in the Fe Kα line region, around active galactic nuclei (AGN) has opened up the possibility of studying the time-resolved response (reflection) of hard X-rays from the accretion disc around supermassive black holes. Here, we use general relativistic transfer functions for reflection of X-rays from a point source located at some height above the black hole to study the time lags expected as a function of frequency and energy in the Fe Kα line region. We explore the models and the dependence of the lags on key parameters such as the height of the X-ray source, accretion disc inclination, black hole spin and black hole mass. We then compare these models with the observed frequency- and energy-dependence of the Fe Kα line lag in NGC 4151. Assuming the optical reverberation mapping mass of 4.6 × 10<SUP>7</SUP> M<SUB>☉</SUB>, we get a best fit to the lag profile across the Fe Kα line in the frequency range (1-2) × 10<SUP>- 5</SUP> Hz for an X-ray source located at a height h = 7^{+2.9}_{-2.6} R_G with a maximally spinning black hole and an inclination i &lt; 30°.",
+      "keywords": [
+        "accretion",
+        "accretion discs",
+        "galaxies: active",
+        "galaxies: Seyfert",
+        "X-rays: galaxies",
+        "X-rays: individual: NGC 4151",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 15
+    },
+    {
+      "source_id": "2014ApJ...791...37O",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/791/1/37",
+      "title": "The Black Hole Mass of NGC 4151. II. Stellar Dynamical Measurement from Near-infrared Integral Field Spectroscopy",
+      "authors": [
+        "Onken, Christopher A.",
+        "Valluri, Monica",
+        "Brown, Jonathan S.",
+        "McGregor, Peter J.",
+        "Peterson, Bradley M.",
+        "Bentz, Misty C.",
+        "Ferrarese, Laura",
+        "Pogge, Richard W.",
+        "Vestergaard, Marianne",
+        "Storchi-Bergmann, Thaisa",
+        "Riffel, Rogemar A."
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2014ApJ...791...37O.pdf",
+      "retrieval_priority": 0.49190619428339377,
+      "abstract": "We present a revised measurement of the mass of the central black hole (M <SUB>BH</SUB> ) in the Seyfert 1 galaxy NGC 4151. The new stellar dynamical mass measurement is derived by applying an axisymmetric orbit-superposition code to near-infrared integral field data obtained using adaptive optics with the Gemini Near-infrared Integral Field Spectrograph (NIFS). When our models attempt to fit both the NIFS kinematics and additional low spatial resolution kinematics, our results depend sensitively on how χ<SUP>2</SUP> is computed—probably a consequence of complex bar kinematics that manifest immediately outside the nuclear region. The most robust results are obtained when only the high spatial resolution kinematic constraints in the nuclear region are included in the fit. Our best estimates for the black hole mass and H-band mass-to-light ratio are M <SUB>BH</SUB> ~ 3.76 ± 1.15 × 10<SUP>7</SUP> M <SUB>☉</SUB> (1σ error) and Upsilon<SUB> H </SUB> ~ 0.34 ± 0.03 M <SUB>☉</SUB>/L <SUB>☉</SUB> (3σ error), respectively (the quoted errors reflect the model uncertainties). Our black hole mass measurement is consistent with estimates from both reverberation mapping (3.57<SUP>+0.45</SUP><SUB>-0.37</SUB>× 10<SUP>7</SUP> {{M}<SUB>☉ </SUB>}) and gas kinematics (3.0<SUP>+0.75</SUP><SUB>-2.2</SUB>× 10<SUP>7</SUP> {{M}<SUB>☉ </SUB>}; 1σ errors), and our best-fit mass-to-light ratio is consistent with the photometric estimate of Upsilon<SUB> H </SUB> = 0.4 ± 0.2 M <SUB>☉</SUB>/L <SUB>☉</SUB>. The NIFS kinematics give a central bulge velocity dispersion σ<SUB> c </SUB> = 116 ± 3 km s<SUP>-1</SUP>, bringing this object slightly closer to the M <SUB>BH</SUB>-σ relation for quiescent galaxies. Although NGC 4151 is one of only a few Seyfert 1 galaxies in which it is possible to obtain a direct dynamical black hole mass measurement—and thus, an independent calibration of the reverberation mapping mass scale—the complex bar kinematics makes it less than ideally suited for this purpose.",
+      "keywords": [
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "galaxies: kinematics and dynamics",
+        "galaxies: nuclei",
+        "galaxies: Seyfert",
+        "methods: numerical",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 5
+    },
+    {
+      "source_id": "2010MNRAS.408.1851L",
+      "source_type": "paper",
+      "doi": "10.1111/j.1365-2966.2010.17251.x",
+      "title": "Extreme flux states of NGC 4151 observed with INTEGRAL",
+      "authors": [
+        "Lubiński, P.",
+        "Zdziarski, A. A.",
+        "Walter, R.",
+        "Paltani, S.",
+        "Beckmann, V.",
+        "Soldi, S.",
+        "Ferrigno, C.",
+        "Courvoisier, T. J.-L."
+      ],
+      "year": 2010,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2010MNRAS.408.1851L.pdf",
+      "retrieval_priority": 0.36666738168165736,
+      "abstract": "We present a comprehensive spectral analysis of all INTEGRAL data obtained so far for the X-ray-bright Seyfert galaxy NGC 4151. We also use all contemporaneous data from RXTE, XMM-Newton, Swift and Suzaku. We find a linear correlation between the medium- and hard-energy X-ray fluxes measured by INTEGRAL, which indicates an almost constant spectral index over 6 yr. The majority of INTEGRAL observations were made when the source was either at a very bright or very dim hard-X-ray state. We find that thermal Comptonization models applied to the bright state yields the plasma temperature of ~=50-70keV and its optical depth of ~=1.3-2.6, depending on the assumed source geometry. For the dim state, these parameters are in the ranges of ~=180-230 keV and ~=0.3-0.7, respectively. The Compton parameter is for all the spectra, indicating a stable geometry. Using this result, we can determine the reflection effective solid angles associated with the close and distant reprocessing media as and , respectively. The plasma energy balance, the weak disc reflection and a comparison of the UV fluxes illuminating the plasma to the observed ones are all consistent with an inner hot accretion surrounded by an outer cold disc. The disc truncation radius can be determined from an approximate equipartition between the observed UV and X-ray emission, and from the fitted disc blackbody model, as ~15 gravitational radii. Alternatively, our results can be explained by a mildly relativistic coronal outflow. <P />Based on observations with INTEGRAL, an ESA project with instruments and science data centre funded by ESA member states (especially the PI countries: Denmark, France, Germany, Italy, Switzerland and Spain), the Czech Republic and Poland and with participation of Russia and the US. <P />E-mail: Lubiński@ncac.torun.pl (PL); aaz@camk.edu.pl (AAZ)",
+      "keywords": [
+        "accretion",
+        "accretion discs",
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "galaxies: Seyfert",
+        "gamma-rays: general",
+        "X-rays: galaxies",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"xray photon index\" OR abs:\"x-ray photon index\" OR abs:\"photon index\" OR abs:\"spectral index\" OR abs:\"gamma index\" OR abs:\"photon index gamma\")",
+      "search_rank": 51
+    },
+    {
+      "source_id": "2010A&A...509A.106S",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/200912311",
+      "title": "Long-term variability of the optical spectra of NGC 4151. II. Evolution of the broad Hα and Hβ emission-line profiles",
+      "authors": [
+        "Shapovalova, A. I.",
+        "Popović, L. Č.",
+        "Burenkov, A. N.",
+        "Chavushyan, V. H.",
+        "Ilić, D.",
+        "Kovačević, A.",
+        "Bochkarev, N. G.",
+        "León-Tavares, J."
+      ],
+      "year": 2010,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2010A&A...509A.106S.pdf",
+      "retrieval_priority": 0.6252598186638019,
+      "abstract": "<BR /> Aims: We present the results of a long-term monitoring (11 years, between 1996 and 2006) of Hα and Hβ line variations of the active galactic nucleus of NGC 4151. <BR /> Methods: High quality spectra (S/N &gt; 50 and R ≈ 8 Å) of Hα and Hβ were investigated. During monitoring period, we analyzed line profile variations. Comparing the line profiles of Hα and Hβ, we studied different details (bumps, absorbtion features) in the line profiles. The variations in the different Hα and Hβ line profile segments were investigated. We also analyzed the Balmer decrement for entire lines and for line segments. <BR /> Results: We found that the line profiles varied strongly during the monitoring period, and exhibited blue and red asymmetries. This is indicative of a complex BLR geometry inside NGC 4151 with, at least, three kinematically distinct regions: one that contributes to the blue line wing, one to the line core and one to the red line wing. The variation may be caused by an accelerating outflow originating very close to the black hole, where the red part may come from a region closer to the black hole than the blue part, which originates in the region with the highest outflow velocities. <BR /> Conclusions: Taking into account that the BLR of NGC 4151 has a complex geometry (probably affected by an outflow) and that a portion of the broad line emission does not seem to be produced entirely by photoionization, one may ask whether the study of the BLR using reverberation mapping would be worthwhile for this galaxy.",
+      "keywords": [
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 22
+    },
+    {
+      "source_id": "2010ApJ...714.1497W",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/714/2/1497",
+      "title": "Revisiting the Short-term X-ray Spectral Variability of NGC 4151 with Chandra",
+      "authors": [
+        "Wang, Junfeng",
+        "Risaliti, G.",
+        "Fabbiano, G.",
+        "Elvis, M.",
+        "Zezas, A.",
+        "Karovska, M."
+      ],
+      "year": 2010,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2010ApJ...714.1497W.pdf",
+      "retrieval_priority": 0.35868134115115385,
+      "abstract": "We present new X-ray spectral data for the Seyfert 1 nucleus in NGC 4151 observed with Chandra for ~200 ks. A significant ACIS pileup is present, resulting in a nonlinear count rate variation during the observation. With pileup corrected spectral fitting, we are able to recover the spectral parameters and find consistency with those derived from unpiled events in the ACIS readout streak and outer region from the bright nucleus. The absorption corrected 2-10 keV flux of the nucleus varied between 6 × 10<SUP>-11</SUP> erg s<SUP>-1</SUP> cm<SUP>-2</SUP> and 10<SUP>-10</SUP> erg s<SUP>-1</SUP> cm<SUP>-2</SUP> (L <SUB>2-10 keV</SUB> ~ 1.3-2.1 × 10<SUP>42</SUP> erg s<SUP>-1</SUP>). Similar to earlier Chandra studies of NGC 4151 at a historical low state, the photon indices derived from the same absorbed power-law model are Γ ~ 0.7-0.9. However, we show that Γ is highly dependent on the adopted spectral models. Fitting the power-law continuum with a Compton reflection component gives Γ ~ 1.1. By including passage of non-uniform X-ray obscuring clouds, we can reproduce the apparent flat spectral states with Γ ~ 1.7, typical for Seyfert 1 active galactic nuclei. The same model also fits the hard spectra from previous ASCA \"long look\" observation of NGC 4151 in the lowest flux state. The spectral variability during our observation can be interpreted as variations in intrinsic soft continuum flux relative to a Compton reflection component that is from distant cold material and constant on short timescale, or variations of partially covering absorber in the line of sight toward the nucleus. An ionized absorber model with ionization parameter log ξ ~ 0.8-1.1 can also fit the low-resolution ACIS spectra. If the partial covering model is correct, adopting a black hole mass M_{BH}∼ 4.6× 10^7 M <SUB>sun</SUB> we constrain the distance of the obscuring cloud from the central black hole to be r &lt;~ 9 lt-day, consistent with the size of the broad emission line region of NGC 4151 from optical reverberation mapping.",
+      "keywords": [
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "galaxies: Seyfert",
+        "X-rays: galaxies",
+        "Astrophysics - Cosmology and Nongalactic Astrophysics",
+        "Astrophysics - High Energy Astrophysical Phenomena"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"xray photon index\" OR abs:\"x-ray photon index\" OR abs:\"photon index\" OR abs:\"spectral index\" OR abs:\"gamma index\" OR abs:\"photon index gamma\")",
+      "search_rank": 50
+    },
+    {
+      "source_id": "2008A&A...486...99S",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20079111",
+      "title": "Long-term variability of the optical spectra of NGC 4151. I. Light curves and flux correlations",
+      "authors": [
+        "Shapovalova, A. I.",
+        "Popović, L. Č.",
+        "Collin, S.",
+        "Burenkov, A. N.",
+        "Chavushyan, V. H.",
+        "Bochkarev, N. G.",
+        "Benítez, E.",
+        "Dultzin, D.",
+        "Kovačević, A.",
+        "Borisov, N.",
+        "Carrasco, L.",
+        "León-Tavares, J.",
+        "Mercado, A.",
+        "Valdes, J. R.",
+        "Vlasuyk, V. V.",
+        "Zhdanova, V. E."
+      ],
+      "year": 2008,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2008A&A...486...99S.pdf",
+      "retrieval_priority": 0.4392348168237761,
+      "abstract": "Aims: Results of long-term spectral monitoring of the active galactic nucleus of NGC 4151 are presented (11 years, from 1996 to 2006). <BR />Methods: High quality spectra (S/N&gt;50 in the continuum near Hα and Hβ) were obtained in the spectral range ~4000 to 7500 Å, with a resolution between 5 and 15 Å, using the 6-m and the 1-m SAO's telescopes (Russia), the GHAO's 2.1-m telescope (Cananea, México), and the OAN-SPM's 2.1-m telescope (San-Pedro, México). The observed fluxes of the Hα, Hβ, Hγ, and HeIIλ4686 emission lines and of the continuum at the observed wavelength 5117 Å were corrected for the position angle, the seeing, and the aperture effects. <BR />Results: We found that the continuum and line fluxes varied strongly (up to a factor 6) during the monitoring period. The emission was maximum in 1996-1998, and there were two minima in 2001 and in 2005. As a consequence, the spectral type of the nucleus changed from a Sy1.5 in the maximum activity state to a Sy1.8 in the minimum state. The Hα, Hγ, and Heλ4686 fluxes correlated well with the Hβ flux. The line profiles were strongly variable, showing changes of the blue and red asymmetry. The flux ratios of the blue/red wings and of the blue (or red) wing/core of Hα and Hβ varied differently. We considered three characteristic periods during which the Hβ and Hα profiles were similar: 1996-1999, 2000-2001, and 2002-2006. The line-to-continuum flux ratios were different; in particular during the first period (1996-1999), the lines were not correlated with the continuum and saturated at high fluxes. In the second and third periods (2000-2006), where the continuum flux was small, the Hα and Hβ fluxes were well correlated to the continuum flux, meaning that the ionizing continuum was a good extrapolation of the optical continuum. The CCFs are often asymmetrical and the time lags between the lines and the continuum are badly defined, indicating the presence of a complex BLR, with dimensions from 1 to 50 light-days. <BR />Conclusions: We discuss the different responses of Hβ and Hα to the continuum during the monitoring period. <P />Tables 2-5, 7 and 8 are only available in electronic form at http://www.aanda.org",
+      "keywords": [
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 36
+    },
+    {
+      "source_id": "2007ApJ...659..250C",
+      "source_type": "paper",
+      "doi": "10.1086/511970",
+      "title": "Mass Outflow from the Nucleus of the Seyfert 1 Galaxy NGC 4151",
+      "authors": [
+        "Crenshaw, D. M.",
+        "Kraemer, S. B."
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2007ApJ...659..250C.pdf",
+      "retrieval_priority": 0.43999047125480506,
+      "abstract": "We present an analysis of UV and optical spectra of NGC 4151 obtained at high spectral and angular resolutions with the Hubble Space Telescope Space Telescope Imaging Spectrograph (HST STIS). We identify a kinematic component of the emission lines that has a width of 1170 km s<SUP>-1</SUP> (FWHM), intermediate between those from the broad and narrow (emission) line regions (BLRs and NLRs). We present evidence that these emission lines arise from the same gas responsible for most of the high-column UV and X-ray absorption (component ``D+E'') that we see in outflow at a distance of ~0.1 pc from the central nucleus. The gas in this intermediate-line region (ILR) shields the NLR and has a global covering factor of ~0.4, based on the observed C IV fluxes, indicating mass outflow over a large solid angle centered on the accretion disk's axis. A large transverse velocity (v<SUB>T</SUB>&gt;~2100 km s<SUP>-1</SUP>) compared to the radial velocity centroid (v<SUB>r</SUB>=-490 km s<SUP>-1</SUP>) indicates that the kinematics is dominated by rotation at this distance, but has a significant outflow component. The mass outflow rate at 0.1 pc is ~0.16 M<SUB>solar</SUB> yr<SUP>-1</SUP>, which is about 10 times the accretion rate. Based on physical conditions in the gas and dynamical considerations, models that invoke magnetocentrifugal acceleration (e.g., in an accretion disk wind) are favored over those that rely on radiation driving or thermal expansion as the principal driving mechanism for the mass outflow. <P />Based on observations made with the NASA/ESA Hubble Space Telescope, obtained from the Data Archive at the Space Telescope Science Institute.",
+      "keywords": [
+        "Galaxies: Individual: NGC Number: NGC 4151",
+        "Galaxies: Seyfert",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2007ApJ...670..105O",
+      "source_type": "paper",
+      "doi": "10.1086/522220",
+      "title": "The Black Hole Mass of NGC 4151: Comparison of Reverberation Mapping and Stellar Dynamical Measurements",
+      "authors": [
+        "Onken, Christopher A.",
+        "Valluri, Monica",
+        "Peterson, Bradley M.",
+        "Pogge, Richard W.",
+        "Bentz, Misty C.",
+        "Ferrarese, Laura",
+        "Vestergaard, Marianne",
+        "Crenshaw, D. Michael",
+        "Sergeev, Sergey G.",
+        "McHardy, Ian M.",
+        "Merritt, David",
+        "Bower, Gary A.",
+        "Heckman, Timothy M.",
+        "Wandel, Amri"
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2007ApJ...670..105O.pdf",
+      "retrieval_priority": 0.4351176639634453,
+      "abstract": "We present a stellar dynamical estimate of the black hole (BH) mass in the Seyfert 1 galaxy, NGC 4151. We analyze ground-based spectroscopy as well as imaging data from the ground and space, and we construct three-integral axisymmetric models in order to constrain the BH mass and mass-to-light ratio. The dynamical models depend on the assumed inclination of the kinematic symmetry axis of the stellar bulge. In the case in which the bulge is assumed to be viewed edge-on, the kinematical data give only an upper limit to the mass of the BH, of ~4×10<SUP>7</SUP> M<SUB>solar</SUB> (1 σ). If the bulge kinematic axis is assumed to have the same inclination as the symmetry axis of the large-scale galaxy disk (i.e., 23° relative to the line of sight), a best-fit dynamical mass between 4 and 5×10<SUP>7</SUP> M<SUB>solar</SUB> is obtained. However, because of the poor quality of the fit when the bulge is assumed to be inclined (as determined by the noisiness of the χ<SUP>2</SUP> surface and its minimum value) and because we lack spectroscopic data that clearly resolves the BH sphere of influence, we consider our measurements to be tentative estimates of the dynamical BH mass. With this preliminary result, NGC 4151 is now among the small sample of galaxies in which the BH mass has been constrained from two independent techniques, and the mass values we find for both bulge inclinations are in reasonable agreement with the recent estimate from reverberation mapping (4.57<SUP>+0.57</SUP><SUB>-0.47</SUB>×10<SUP>7</SUP> M<SUB>solar</SUB>) published by Bentz et al. <P />Based on observations with the NASA/ESA Hubble Space Telescope obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy (AURA), Inc., under NASA contract NAS5-26555, and with the MMT Observatory, a joint facility of the University of Arizona and the Smithsonian Institution.",
+      "keywords": [
+        "Black Hole Physics",
+        "Galaxies: Active",
+        "Galaxies: Nuclei",
+        "Galaxies: Structure",
+        "Stellar Dynamics",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2007A&A...463..903D",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20065028",
+      "title": "The broad band spectrum and variability of NGC 4151 observed by BeppoSAX",
+      "authors": [
+        "de Rosa, A.",
+        "Piro, L.",
+        "Perola, G. C.",
+        "Capalbi, M.",
+        "Cappi, M.",
+        "Grandi, P.",
+        "Maraschi, L.",
+        "Petrucci, P. O."
+      ],
+      "year": 2007,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2007A&A...463..903D.pdf",
+      "retrieval_priority": 0.36366999304084036,
+      "abstract": "We present an analysis of all BeppoSAX observations of NGC 4151. This source was observed 5 times from 1996 to 2001 with durations ranging from a day to four days. The intrinsic continuum (described as a cut-off power law) is absorbed at low energies by a complex system: a cold patchy absorber plus a warm uniform screen photoionised by the central continuum. We find that this \"dual absorber\" is the main driver of the observed variability, up to a factor of eight, at 3 keV. In particular the covering fraction of the cold absorber changes on time scales of the order of a day, supporting its association with the broad-line region. The column density of the warm gas varies on a longer time scale (months to year). Some of the small amplitude spectral variability above 10 keV can be explained with an intrinsic variation (with variation of the photon index ∆Γ ∼ 0.2). The flux below 1 keV remains constant confirming an extended origin. Its spectrum is reproduced by a combination of a thermal component (with temperature kT=0.15 keV) and a power law with the same slope as the intrinsic continuum, but with an intensity of a few percent. A Compton reflection component is significantly detected in 1996 (averaged value of Ω/2π ∼0.4, with the solid angle Ω covered by the reflecting medium), with intensity decreasing on a time scale of a year, and it desappears in 2000 and 2001. The long time scale of variations argues for an association with an optically thick torus at a distance of a few light years. An iron line was detected in all spectra. Its energy is consistent with fluorescence by cold iron. We find that the line is variable. Its behaviour is reproduced by a variable component proportional to the level of the reflection flux plus a constant component. The flux of the latter is consistent with the extended line emission observed by Chandra. We conclude that the first component likely arises from the torus and the second is produced in the extended narrow-line region.",
+      "keywords": [
+        "galaxies: Seyfert",
+        "X-rays: galaxies",
+        "galaxies: individual: NGC 4151",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"xray photon index\" OR abs:\"x-ray photon index\" OR abs:\"photon index\" OR abs:\"spectral index\" OR abs:\"gamma index\" OR abs:\"photon index gamma\")",
+      "search_rank": 45
+    },
+    {
+      "source_id": "2006ApJ...651..775B",
+      "source_type": "paper",
+      "doi": "10.1086/507417",
+      "title": "A Reverberation-based Mass for the Central Black Hole in NGC 4151",
+      "authors": [
+        "Bentz, Misty C.",
+        "Denney, Kelly D.",
+        "Cackett, Edward M.",
+        "Dietrich, Matthias",
+        "Fogel, Jeffrey K. J.",
+        "Ghosh, Himel",
+        "Horne, Keith",
+        "Kuehn, Charles",
+        "Minezaki, Takeo",
+        "Onken, Christopher A.",
+        "Peterson, Bradley M.",
+        "Pogge, Richard W.",
+        "Pronik, Vladimir I.",
+        "Richstone, Douglas O.",
+        "Sergeev, Sergey G.",
+        "Vestergaard, Marianne",
+        "Walker, Matthew G.",
+        "Yoshii, Yuzuru"
+      ],
+      "year": 2006,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2006ApJ...651..775B.pdf",
+      "retrieval_priority": 0.492816942574299,
+      "abstract": "We have undertaken a new ground-based monitoring campaign to improve the estimates of the mass of the central black hole in NGC 4151. We measure the lag time of the broad Hβ line response compared to the optical continuum at 5100 Å and find a lag of 6.6<SUP>+1.1</SUP><SUB>-0.8</SUB> days. We combine our data with the recent reanalysis of UV emission lines by Metzroth and coworkers to calculate a weighted mean of the black hole mass, M<SUB>BH</SUB>=(4.57<SUP>+0.57</SUP><SUB>-0.47</SUB>)×10<SUP>7</SUP> M<SUB>solar</SUB>. The absolute calibration of the black hole mass is based on normalization of the AGN black hole mass-stellar velocity dispersion (MBH-σ<SUB>*</SUB>) relationship to that of quiescent galaxies by Onken and coworkers. The scatter in the MBH-σ<SUB>*</SUB> relationship suggests that reverberation-mapping-based mass measurements are typically uncertain by a factor of 3-4.",
+      "keywords": [
+        "Galaxies: Active",
+        "Galaxies: Nuclei",
+        "Galaxies: Seyfert",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 6
+    },
+    {
+      "source_id": "2006ApJ...647..901M",
+      "source_type": "paper",
+      "doi": "10.1086/505525",
+      "title": "The Mass of the Central Black Hole in the Seyfert Galaxy NGC 4151",
+      "authors": [
+        "Metzroth, Kyle G.",
+        "Onken, Christopher A.",
+        "Peterson, Bradley M."
+      ],
+      "year": 2006,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2006ApJ...647..901M.pdf",
+      "retrieval_priority": 0.44484376688746663,
+      "abstract": "In order to improve the reverberation-mapping-based estimate of the mass of the central supermassive black hole in the Seyfert 1 galaxy NGC 4151, we have reanalyzed archival ultraviolet monitoring spectra from two campaigns undertaken with the International Ultraviolet Explorer. We measure emission-line time delays for four lines, C IV λ1549, He II λ1640, C III] λ1909, and Mg II λ2798, from both campaigns. We combine these measurements with the dispersion of the variable part of each respective emission line to obtain the mass of the central object. Despite the problematic nature of some of the data, we are able to measure a mass of (4.14+/-0.73)×10<SUP>7</SUP> M<SUB>solar</SUB>, although this, like all reverberation-based masses, is probably systematically uncertain by a factor of 3-4.",
+      "keywords": [
+        "Galaxies: Active",
+        "Galaxies: Nuclei",
+        "Galaxies: Seyfert",
+        "Galaxies: Quasars: Emission Lines",
+        "Ultraviolet: Galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 10
+    },
+    {
+      "source_id": "2005ApJ...634..939B",
+      "source_type": "paper",
+      "doi": "10.1086/497120",
+      "title": "The High-Energy Spectrum of NGC 4151",
+      "authors": [
+        "Beckmann, V.",
+        "Shrader, C. R.",
+        "Gehrels, N.",
+        "Soldi, S.",
+        "Lubiński, P.",
+        "Zdziarski, A. A.",
+        "Petrucci, P.-O.",
+        "Malzac, J."
+      ],
+      "year": 2005,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2005ApJ...634..939B.pdf",
+      "retrieval_priority": 0.3479943663942681,
+      "abstract": "We present the first INTEGRAL observations of the type 1.5 Seyfert galaxy NGC 4151. Combining several INTEGRAL observations performed during 2003, totaling ~400 ks of exposure time, allows us to study the spectrum in the 2-300 keV range. The measurements presented here reveal an overall spectrum from X-rays up to soft gamma-rays that can be described by an absorbed (N<SUB>H</SUB>=6.9×10<SUP>22</SUP> cm<SUP>-2</SUP>) model based on a Compton continuum from a hot electron population (kT<SUB>e</SUB>=94 keV) from an optically thick (τ=1.3) corona, reflected on cold material (R=0.7), consistent with earlier claims. The time-resolved analysis shows little variation of the spectral parameters over the duration of the INTEGRAL observations. The comparison with CGRO OSSE data shows that the same spectral model can be applied over a time span of 15 yr, with flux variations of the order of a factor of 2 and changes in the underlying continuum reflected by the temperature of the electron population (kT<SUB>e</SUB>=50-100 keV). When modeled with an exponential cutoff power law plus Compton reflection, this results in photon indices ranging from Γ=1.5 to 1.9 and a cutoff energy in the range 100-500 keV.",
+      "keywords": [
+        "Galaxies: Active",
+        "Galaxies: Individual: NGC Number: NGC 4151",
+        "Galaxies: Seyfert",
+        "Gamma Rays: Observations",
+        "X-Rays: Galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"xray photon index\" OR abs:\"x-ray photon index\" OR abs:\"photon index\" OR abs:\"spectral index\" OR abs:\"gamma index\" OR abs:\"photon index gamma\")",
+      "search_rank": 49
+    },
+    {
+      "source_id": "2005AJ....130..936U",
+      "source_type": "paper",
+      "doi": "10.1086/432034",
+      "title": "VLBA Identification of the Milliarcsecond Active Nucleus in the Seyfert Galaxy NGC 4151",
+      "authors": [
+        "Ulvestad, James S.",
+        "Wong, Diane S.",
+        "Taylor, Gregory B.",
+        "Gallimore, Jack F.",
+        "Mundell, Carole G."
+      ],
+      "year": 2005,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2005AJ....130..936U.pdf",
+      "retrieval_priority": 0.40065106697346703,
+      "abstract": "The Seyfert galaxy NGC 4151 has been imaged at resolution better than 0.1 pc using a VLBI array consisting of the Very Long Baseline Array and three 100 m class telescopes. A flat-spectrum 3 mJy source with a monochromatic radio power of ~10<SUP>37</SUP> ergs s<SUP>-1</SUP> has been detected, apparently at the location of the active galactic nucleus (AGN) and its central black hole. The radio source has a minimum brightness temperature of 2.1×10<SUP>8</SUP> K and a size upper limit of 0.035 pc, about 10 times the diameter of the broad-line region and 15,000 times the diameter of the black hole's event horizon. An additional flat-spectrum component located within a parsec of the apparent nucleus is likely to be a knot in the inner radio jet. The presence of some steep-spectrum radio emission within 0.1 pc of the galaxy nucleus limits the emission measure of a possible ionized torus to a maximum value of 10<SUP>8</SUP> cm<SUP>-6</SUP> pc. If the hard X-ray source in NGC 4151 is associated with the radio AGN, its radio-to-X-ray ratio is less than 10<SUP>-5</SUP>, putting NGC 4151 securely in the radio-quiet class of AGNs. The radio image reveals a 0.2 pc two-sided base to the well-known arcsecond radio jet. The apparent speeds of the jet components relative to the radio AGN are less than 0.050c and less than 0.028c at respective nuclear distances of 0.16 and 6.8 pc. These are the lowest speed limits yet found for a Seyfert galaxy and indicate nonrelativistic jet motions, possibly due to thermal plasma, on a scale only an order of magnitude larger than the broad-line region.",
+      "keywords": [
+        "Galaxies: Active",
+        "Galaxies: Individual: NGC Number: NGC 4151",
+        "Galaxies: Jets",
+        "Galaxies: Seyfert",
+        "Radio Continuum: Galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 18
+    },
+    {
+      "source_id": "2003MNRAS.342.1222C",
+      "source_type": "paper",
+      "doi": "10.1046/j.1365-8711.2003.06623.x",
+      "title": "Variability of accretion flow in the core of the Seyfert galaxy NGC 4151",
+      "authors": [
+        "Czerny, B.",
+        "Doroshenko, V. T.",
+        "Nikołajuk, M.",
+        "Schwarzenberg-Czerny, A.",
+        "Loska, Z.",
+        "Madejski, G."
+      ],
+      "year": 2003,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2003MNRAS.342.1222C.pdf",
+      "retrieval_priority": 0.3825967867684502,
+      "abstract": "We analyse observations of the Seyfert galaxy NGC 4151 covering 90 years in the optical band and 27 years in the 2-10 keV X-ray band. We compute the normalized power spectrum density, the structure function and the autocorrelation function for these data. The results show that the optical and X-ray variability properties are significantly different. X-ray variations are predominantly in the time-scale range of 5-1000 d. The optical variations also have a short time-scale component that may be related to X-ray variability, but the dominant effect is the long time-scale variability, with time-scales longer than ~10 yr. We compare our results with observations of NGC 5548 and Cyg X-1. We conclude that the long time-scale variability may be caused by radiation pressure instability in the accretion disc, although the observed time-scale in NGC 4151 is by a factor of a few longer than expected. X-ray variability of this source is very similar to what is observed in Cyg X-1 but scaled with the mass of the black hole, which suggests that the radiation pressure instability does not affect the X-ray production considerably.",
+      "keywords": [
+        "instabilities",
+        "galaxies: active",
+        "galaxies: individual: NGC 4151",
+        "galaxies: Seyfert",
+        "X-rays: galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:black OR abs:hole OR abs:mass OR abs:central)",
+      "search_rank": 20
+    },
+    {
+      "source_id": "2000ApJ...528..260K",
+      "source_type": "paper",
+      "doi": "10.1086/308143",
+      "title": "The Resolved Narrow-Line Region in NGC 4151",
+      "authors": [
+        "Kaiser, M. E.",
+        "Bradley, L. D., II",
+        "Hutchings, J. B.",
+        "Crenshaw, D. M.",
+        "Gull, T. R.",
+        "Kraemer, S. B.",
+        "Nelson, C. H.",
+        "Ruiz, J.",
+        "Weistrop, D."
+      ],
+      "year": 2000,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\2000ApJ...528..260K.pdf",
+      "retrieval_priority": 0.42357913949411186,
+      "abstract": "We present slitless spectra of the narrow-line region (NLR) in NGC 4151 from the Space Telescope Imaging Spectrograph (STIS) on the Hubble Space Telescope and investigate the kinematics and physical conditions of the emission-line clouds in this region. Using medium resolution (~0.5 Å) slitless spectra at two roll angles and narrow-band undispersed images, we have mapped the NLR velocity field from 1.2 kpc to within 13 pc (H<SUB>0</SUB>=75 km s<SUP>-1</SUP> Mpc<SUP>-1</SUP>) of the nucleus. The inner biconical cloud distribution exhibits recessional velocities relative to the nucleus to the NE and approaching velocities to the SW of the nucleus. We find evidence for at least two kinematic components in the NLR. One kinematic component is characterized by low velocities and low velocity dispersions (LVLVD clouds: |v|&lt;400 km s<SUP>-1</SUP>, and ∆v&lt;130 km s<SUP>-1</SUP>). This population extends through the NLR, and their observed kinematics may be gravitationally associated with the host galaxy. Another component is characterized by high velocities and high velocity dispersions (HVHVD clouds: 400&lt;|v|&lt;~1700 km s<SUP>-1</SUP>, ∆v&gt;=130 km s<SUP>-1</SUP>). This set of clouds is located within 1.1\" (~70 pc) of the nucleus and has radial velocities that are too high to be gravitational in origin but show no strong correlation between velocity or velocity dispersion and the position of the radio knots. Outflow scenarios will be discussed as the driving mechanism for these HVHVD clouds. We also find clouds characterized by low velocities and high velocity dispersions (LVHVD clouds: |v|&lt;400 km s<SUP>-1</SUP>, ∆v&gt;=130 km s<SUP>-1</SUP>). These clouds are located within 3.2\" (~200 pc) of the nucleus. It is not clear if the LVHVD clouds are HVHVD clouds whose low velocities are the result of projection effects. Within 3.2\" (~200 pc) of the nucleus, the [O III]/Hβ ratio declines roughly linearly for both the high-velocity-dispersion (HVD) and LVLVD clouds. Since the ionization parameter is proportional to r<SUP>-2</SUP>n<SUP>-1</SUP>, it appears that the density, n, must decrease as ~r<SUP>-1</SUP> for the clouds within the inner ~3.2\". At distances further from the nucleus, the [O III]/Hβ ratio is roughly constant. <P />Based on observations with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by AURA, Inc., under NASA contract NAS5-26555.",
+      "keywords": [
+        "GALAXIES: INDIVIDUAL: NGC NUMBER: NGC 4151",
+        "GALAXIES: KINEMATICS AND DYNAMICS",
+        "GALAXIES: NUCLEI",
+        "GALAXIES: SEYFERT",
+        "Galaxies: Individual: NGC Number: NGC 4151",
+        "Galaxies: Kinematics and Dynamics",
+        "galaxies: nuclei",
+        "galaxies: Seyfert",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "1999ApJ...512..204A",
+      "source_type": "paper",
+      "doi": "10.1086/306751",
+      "title": "Infrared Spectroscopy of NGC 4151: Probing the Obscured Ionizing Active Galactic Nucleus Continuum",
+      "authors": [
+        "Alexander, Tal",
+        "Sturm, Eckhard",
+        "Lutz, Dieter",
+        "Sternberg, Amiel",
+        "Netzer, Hagai",
+        "Genzel, Reinhard"
+      ],
+      "year": 1999,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\1999ApJ...512..204A.pdf",
+      "retrieval_priority": 0.4142169578075222,
+      "abstract": "The Infrared Space Observatory (ISO) Short-Wavelength Spectrometer4 (SWS) infrared spectroscopic observations of the nucleus of Seyfert galaxy NGC 4151, which are described in a companion paper, are used in conjunction with a compilation of UV to IR narrow emission line data to determine the spectral shape of the obscured extreme-UV continuum that photoionizes the narrow-line-emitting gas in the active galactic nucleus (AGN). We present a new method for determining the best-fitting photoionizing continuum and emission-line cloud model from a heterogeneous set of emission-line data. For NGC 4151, we find a best-fit model that reproduces the observed line fluxes to within a factor of 2 on average, and that is consistent with the observed geometry of the optical narrow-line region (NLR). Our model consists of a clumpy, optically thick (ionization-bounded) gas distribution, with a hydrogen gas density of ~1000 cm<SUP>-3</SUP> and a volume-filling factor of 6.510<SUP>-4</SUP>. Our best-fitting spectral energy distribution (SED) falls sharply beyond the Lyman limit and then rises sharply again toward 100 eV. In particular, it does not display the ``big blue bump'' signature of a hot accretion disk. We find that this SED, which best reproduces the NLR line emission on the 100-500 pc scale, does not have enough UV photons to produce the observed broad-line region (BLR) recombination emission from the inner 1 pc. This suggests that the BLR is photoionized by the intrinsic continuum source, which does have a strong UV component (perhaps a big blue bump), but that this UV component is absorbed by material located between the NLR and BLR. Our analysis suggests that the absorber consists of ~510<SUP>19</SUP> cm<SUP>-2</SUP> of neutral hydrogen. Such an absorber has been independently detected by UV absorption lines. Using our new method, we confirm our previous conclusion that a big blue bump is present in the SED of the Seyfert 2 galaxy Circinus.",
+      "keywords": [
+        "GALAXIES: INDIVIDUAL: NGC NUMBER: NGC 4151",
+        "GALAXIES: SEYFERT",
+        "INFRARED: ISM: LINES AND BANDS",
+        "GALAXIES: QUASARS: EMISSION LINES",
+        "Galaxies: Individual: NGC Number: NGC 4151",
+        "Galaxies: Seyfert",
+        "Infrared: ISM: Lines and Bands",
+        "Galaxies: Quasars: Emission Lines",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 38
+    },
+    {
+      "source_id": "1997ApJ...487L.121W",
+      "source_type": "paper",
+      "doi": "10.1086/310892",
+      "title": "The Narrow-Line Region of NGC 4151: A Turbulent Cauldron",
+      "authors": [
+        "Winge, Cláudia",
+        "Axon, David J.",
+        "Macchetto, F. D.",
+        "Capetti, A."
+      ],
+      "year": 1997,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\1997ApJ...487L.121W.pdf",
+      "retrieval_priority": 0.4278591579894037,
+      "abstract": "We present the first results of the Hubble Space Telescope/Faint Object Camera long-slit spectroscopy of the inner 8\" of the narrow-line region (NLR) of NGC 4151 at a spatial resolution of 0.029\". The emission gas is characterized by an underlying general orderly behavior, consistent with galactic rotation, over which are superposed kinematically distinct and strongly localized emission structures. High-velocity components shifted up to about 1500 km s<SUP>-1</SUP> from the systemic velocity are seen, associated with individual clouds located preferentially along the edges of the radio knots. Off-nuclear blue continuum emission is also observed, associated with the brightest emission line clouds. Emission-line ratios such as [Ne III] λ3869/[O II] λ3727 and [O II] λ3727/Hβ are observed to vary substantially between individual clouds. We advance the general picture that, as in other Seyfert galaxies observed with HST (e.g., NGC 1068, Mrk 573), the interaction of the ambient gas with the radio jet strongly influences both the morphology and the physical conditions of the NLR. <P />Based on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555.",
+      "keywords": [
+        "GALAXIES: ACTIVE",
+        "GALAXIES: INDIVIDUAL NGC NUMBER: NGC 4151",
+        "GALAXIES: KINEMATICS AND DYNAMICS",
+        "GALAXIES: SEYFERT",
+        "GALAXIES: QUASARS: EMISSION LINES",
+        "Galaxies: Active",
+        "Galaxies: Individual: NGC Number: NGC 4151",
+        "Galaxies: Kinematics and Dynamics",
+        "Galaxies: Seyfert",
+        "Galaxies: Quasars: Emission Lines",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 29
+    },
+    {
+      "source_id": "1996MNRAS.283..193Z",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/283.1.193",
+      "title": "Broad-band γ-ray and X-ray spectra of NGC 4151 and their implications for physical processes and geometry.",
+      "authors": [
+        "Zdziarski, A. A.",
+        "Johnson, W. N.",
+        "Magdziarz, P."
+      ],
+      "year": 1996,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\1996MNRAS.283..193Z.pdf",
+      "retrieval_priority": 0.5897405254857435,
+      "abstract": "We study γ-ray observations of NGC 4151 by the Gamma Ray Observatory (GRO)/OSSE contemporaneous with X-ray observations by ROSAT and Ginga in 1991 June and ASCA in 1993 May. The spectra are well modelled by thermal Comptonization and a dual neutral absorber. We also find, for the first time for NGC 4151, a Compton-reflection spectral component in the Ginga/OSSE data. When reflection is taken into account, the intrinsic X-ray energy spectral index is α∼0.8 and the plasma temperature is ∼60 keV for both observations, conditions which imply an optical depth of ∼1. The X-ray spectral index is within the range, α∼=0.95±0.15, observed from other Seyfert 1s. Also, the OSSE spectra of those and other observations of NGC 4151 are statistically indistinguishable from the average OSSE spectrum of radio-quiet Seyfert 1s. Thus, NGC 4151 observed in 1991 and 1993 has the intrinsic X-ray/γ-ray spectrum typical for Seyfert 1s, and the main property distinguishing it from other Seyfert 1s is a large absorbing column of ∼10<SUP>23</SUP> cm<SUP>-2</SUP>. We find no evidence for a strong, broad and redshifted Fe Kαline component in the ASCA spectrum of the 1993 May. Also, the Compton-reflection component in the Ginga/OSSE spectrum is a few times too small to account for the strength of the broad/redshifted line reported elsewhere to be found in this and other ASCA spectra of NGC 4151. <P />On the other hand, we confirm previous studies in that archival X-ray data do imply strong intrinsic X-ray variability and hardness of the intrinsic spectrum in low X-ray states. An observed softening of the intrinsic X-ray spectrum with the increasing flux implies that variability in γ-rays is weaker than in X-rays, which agrees with the 100-keV flux changing only within a factor of 2 in archival OSSE and GRANAT/SIGMA observations. <P />The relative hardness of the intrinsic X-ray spectrum rules out the homogeneous hot corona/cold disc model for this source. Instead, the hot plasma has to subtend a small solid angle as seen from the source of UV radiation. If the hot plasma is purely thermal, it consists of electrons rather than the e<SUP>±</SUP> pairs. On the other hand, the plasma can be pair-dominated if a small fraction of the power is non-thermal. <P />We consider the implications of their observations for physical processes in NGC 4151. They study Comptonization in the X-ray/γ-ray source as well as the presence of e<SUP>±</SUP> pairs and non-thermal acceleration. From that, the authors obtain strong constraints on the parameters and geometry of the central region of NGC 4151.",
+      "keywords": [
+        "Seyfert Galaxies: X-Ray Spectra",
+        "Seyfert Galaxies: Gamma-Ray Spectra",
+        "Seyfert Galaxies: Radiation Mechanisms",
+        "galaxies: individual: NGC4151 -- galaxies: Seyfert -- gamma-rays: observations -- gamma-rays: theory X-rays: galaxies",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"xray photon index\" OR abs:\"x-ray photon index\" OR abs:\"photon index\" OR abs:\"spectral index\" OR abs:\"gamma index\" OR abs:\"photon index gamma\")",
+      "search_rank": 42
+    },
+    {
+      "source_id": "1996ApJ...470..336K",
+      "source_type": "paper",
+      "doi": "10.1086/177870",
+      "title": "Multiwavelength Observations of Short-Timescale Variability in NGC 4151. II. Optical Observations",
+      "authors": [
+        "Kaspi, S.",
+        "Maoz, D.",
+        "Netzer, H.",
+        "Peterson, B. M.",
+        "Alexander, T.",
+        "Barth, A. J.",
+        "Bertram, R.",
+        "Cheng, F.-Z.",
+        "Chuvaev, K. K.",
+        "Edelson, R. A.",
+        "Filippenko, A. V.",
+        "Hemar, S.",
+        "Ho, L. C.",
+        "Kovo, O.",
+        "Matheson, T.",
+        "Pogge, R. W.",
+        "Qian, B.-C.",
+        "Smith, S. M.",
+        "Wagner, R. M.",
+        "Wu, H.",
+        "Xue, S.-J.",
+        "Zou, Z.-L."
+      ],
+      "year": 1996,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\1996ApJ...470..336K.pdf",
+      "retrieval_priority": 0.44065881252264555,
+      "abstract": "We present the results of an intensive ground-based spectrophotometric monitoring campaign on the Seyfert galaxy NGC 4151 for a period of over 2 months, with a typical temporal resolution of 1 day. Light curves for four optical continuum bands and the Hα and Hβ emission lines are tabulated. During the monitoring period, the continuum at 6925 A varied by ~17% while the continuum at 4600 A varied by ~35%, with larger variations in the near-UV. The wavelength dependence of the variation amplitude also extends into the far-UV. The dependence in the 2700-7200 A range can be explained by the different relative starlight contributions at different wavelengths, but the large variability at 1275 A cannot be explained in this way. The continuum variability timescale is of order 13 days and is similar in all optical wavelength bands. No evidence of a time lag between the optical continuum and the UV continuum and emission lines was found. The Hα emission-line flux varied by ~12%, with a gradual rise throughout the campaign. Its cross-correlation with the continuum light curve yields a lag of 0-2 days. The variations in the Hβ emission-line flux are ~30% and lag the continuum by 0-3 days. This is in contrast to past results in which a time lag of 9 +/- 2 days was found for both emission lines. This may be due to a different variability timescale of the ionizing continuum or to a real change in the broad-line region gas distribution in the 5.5 .yr interval between the two campaigns.",
+      "keywords": [
+        "GALAXIES: INDIVIDUAL NGC NUMBER: NGC 4151",
+        "GALAXIES: ACTIVE",
+        "GALAXIES: SEYFERT",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"H-beta\" OR abs:Hβ OR abs:\"emission line\" OR abs:\"full width half maximum\" OR abs:FWHM OR abs:\"broad H beta\" OR abs:\"broad Hβ\")",
+      "search_rank": 31
+    },
+    {
+      "source_id": "1978ApJ...225L.115M",
+      "source_type": "paper",
+      "doi": "10.1086/182806",
+      "title": "X-ray observations of a flare in NGC 4151 from OSO 8.",
+      "authors": [
+        "Mushotzky, R. F.",
+        "Holt, S. S.",
+        "Serlemitsos, P. J."
+      ],
+      "year": 1978,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\67eafb42-84ed-455a-a5b4-fb274f9bc874\\1978ApJ...225L.115M.pdf",
+      "retrieval_priority": 0.2617425531229203,
+      "abstract": "The 2-60-keV flux from NGC 4151 has been observed to change by a factor of 2 on a time scale of 1.5 days. No fluctuations in excess of a factor of 3 are detected on time scales less than 4 hours. During a total observation of approximately 11 days there were no statistically significant changes in spectral shape. The spectrum can be fitted by a power law with photon index of about 1.42 + or - 0.06 and a hydrogen column density of approximately 7.5 + or - 0.5 x 10 to the 22nd power atoms/sq cm. A 2-sigma residual to this fit implies fluorescent Fe line emission with an equivalent width of about 240 eV. Both synchrotron self-Compton and thermal Compton models are consistent with the X-ray data.",
+      "keywords": [
+        "Absorption Spectra",
+        "Infrared Spectra",
+        "Seyfert Galaxies",
+        "X Ray Spectra",
+        "Astronomical Models",
+        "Compton Effect",
+        "Fluorescence",
+        "Spaceborne Astronomy",
+        "Synchrotron Radiation",
+        "X Ray Absorption",
+        "Astronomy",
+        "Seyfert Galaxies:X-Ray Spectra"
+      ],
+      "search_query": "(title:\"NGC 4151\" OR abs:\"NGC 4151\") AND (abs:\"xray photon index\" OR abs:\"x-ray photon index\" OR abs:\"photon index\" OR abs:\"spectral index\" OR abs:\"gamma index\" OR abs:\"photon index gamma\")",
+      "search_rank": 58
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1978ApJ...225L.115M_NGC_4151_xray_photon_index_0",
+      "source_id": "1978ApJ...225L.115M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.42,
+      "field_unit": "",
+      "trace_id": "doc26_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          293,
+          482,
+          419,
+          504
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The spectrum can be fit by a power law with photon index α ~ 1.42 ± 0.06 and column density N_H ~ 7.5 ± 0.5 x 10^22 at/cm^2.",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "1978ApJ...225L.115M_NGC_4151_xray_photon_index_1",
+      "source_id": "1978ApJ...225L.115M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.42,
+      "field_unit": "",
+      "trace_id": "doc26_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "At all times during our observation the spectrum (Figure 2) can be adequately fit by a power law with photon index α = 1.42 ± .06 and with absorption due to cold material in the line of sight",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2003MNRAS.342.1222C_NGC_4151_black_hole_mass_0",
+      "source_id": "2003MNRAS.342.1222C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 7.08,
+      "field_unit": "Msun",
+      "trace_id": "doc21_p14",
+      "provenance": {
+        "page": 14,
+        "bbox": [
+          326,
+          429,
+          359,
+          446
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The masses of the central black holes estimated from reverberation studies are log M = 7.83 for NGC 5548 (Peterson & Wandel 1999) and log M = 7.08 for NGC 4151 (Wandel, Peterson, & Malkan 1999).",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2005AJ....130..936U_NGC_4151_black_hole_mass_0",
+      "source_id": "2005AJ....130..936U",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "1.2e7",
+      "field_unit": "Msun",
+      "trace_id": "doc17_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          718,
+          765,
+          731,
+          780
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Assuming that the line widths are largely virialized around a central massive black hole, Wandel et al. (1999) determined a central black hole mass of ≃ 1.2 × 10^7 M_☉.",
+      "measurement_method": "reverberation mapping / virial mass estimation",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_0",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.5,
+      "field_unit": "",
+      "trace_id": "doc32_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          90,
+          524,
+          118,
+          542
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The harder continuum at 2 - 10 keV as studied by ASCA shows a flatter spectrum with Γ ~ 1.5 (Weaver et al. 1994).",
+      "measurement_method": "ASCA observations",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_1",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.53,
+      "field_unit": "",
+      "trace_id": "doc32_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          373,
+          806,
+          408,
+          824
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The best fit values are Γ = 1.53 +0.04 -0.04, EC = 124 +21 -16 keV, and NH = 5.1 +0.7 -0.7 × 10^22 cm^-2.",
+      "measurement_method": "spectral fitting (INTEGRAL data)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_2",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.85,
+      "field_unit": "",
+      "trace_id": "doc32_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          685,
+          579,
+          695,
+          593
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The free parameters in the PEXRAV model are best fitted with a photon index of Γ = 1.85 +0.09 -0.09, a hydrogen column density of NH = 6.9 +0.8 -0.4 × 10^22 cm^-2",
+      "measurement_method": "spectral fitting (PEXRAV model)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_3",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.85,
+      "field_unit": "",
+      "trace_id": "doc32_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          731,
+          257,
+          767,
+          275
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The observations show that the underlying continuum is significantly steeper, with Γ = 1.85 +0.09 -0.09 (Schurch & Warwick 2002), instead of Γ = 1.65 +0.02 -0.03 (Schurch & Warwick 2002)",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_4",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.85,
+      "field_unit": "",
+      "trace_id": "doc32_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          90,
+          419,
+          126,
+          436
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "A Compton reflection model (PEXRAV) results in an underlying power-law with Γ = 1.85 +0.09 -0.09, a hydrogen column density of NH = 6.9 +0.8 -0.4 × 10^22 cm^-2",
+      "measurement_method": "spectral fitting (PEXRAV model)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_5",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.79,
+      "field_unit": "",
+      "trace_id": "doc32_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          90,
+          513,
+          766,
+          809
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2: Spectral fits to average INTEGRAL (2 - 300 keV) and OSSE (50 - 600 keV) spectra. Model: Power law, Mission: INTEGRAL, Photon Index: 1.79 ± 0.02",
+      "measurement_method": "spectral fitting (Power law model)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_6",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.53,
+      "field_unit": "",
+      "trace_id": "doc32_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          90,
+          513,
+          766,
+          809
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2: Spectral fits to average INTEGRAL (2 - 300 keV) and OSSE (50 - 600 keV) spectra. Model: PL-exp, Mission: INTEGRAL, Photon Index: 1.53 +0.04 -0.04",
+      "measurement_method": "spectral fitting (PL-exp model)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_7",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.85,
+      "field_unit": "",
+      "trace_id": "doc32_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          90,
+          513,
+          766,
+          809
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2: Spectral fits to average INTEGRAL (2 - 300 keV) and OSSE (50 - 600 keV) spectra. Model: PEXRAV, Mission: INTEGRAL, Photon Index: 1.85 +0.09 -0.09",
+      "measurement_method": "spectral fitting (PEXRAV model)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2005ApJ...634..939B_NGC_4151_xray_photon_index_8",
+      "source_id": "2005ApJ...634..939B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.61,
+      "field_unit": "",
+      "trace_id": "doc32_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          90,
+          513,
+          766,
+          809
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2: Spectral fits to average INTEGRAL (2 - 300 keV) and OSSE (50 - 600 keV) spectra. Model: PEXRAV, Mission: INTEGRAL+CGRO, Photon Index: 1.61 +0.06 -0.06",
+      "measurement_method": "spectral fitting (PEXRAV model)",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...647..901M_NGC_4151_black_hole_mass_0",
+      "source_id": "2006ApJ...647..901M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "(4.14 ± 0.73) × 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc11_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          293,
+          455,
+          333,
+          475
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Despite the problematic nature of some of the data, we are able to measure a mass of (4.14 ± 0.73) × 10^7 M_sun, although this, like all reverberation-based masses, is probably systematically uncertain by a factor of 3–4.",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...647..901M_NGC_4151_black_hole_mass_1",
+      "source_id": "2006ApJ...647..901M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "(2.58 ± 0.35) × 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc11_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          426,
+          848,
+          467,
+          868
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "If we use all of the data in Fig. 5, we find a black hole mass M_BH = (2.58 ± 0.35) × 10^7 M_sun, based on a weighted average of the individual mass estimates for each line.",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...647..901M_NGC_4151_black_hole_mass_2",
+      "source_id": "2006ApJ...647..901M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "(8.55 ± 1.26) × 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc11_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          690,
+          137,
+          730,
+          157
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "points from the present work, we obtain a mass estimate of M_BH = (8.55 ± 1.26) × 10^7 M_sun.",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...647..901M_NGC_4151_black_hole_mass_3",
+      "source_id": "2006ApJ...647..901M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "(4.14 ± 0.73) × 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc11_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          190,
+          197,
+          230,
+          217
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our preferred estimate is obtained by eliminating the most problematic data, leaving only C III], He II, and Mg II from the two UV campaigns. The resulting mass estimate is M_BH = (4.14 ± 0.73) × 10^7 M_sun.",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...647..901M_NGC_4151_black_hole_mass_4",
+      "source_id": "2006ApJ...647..901M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "(4.14 ± 0.73) × 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc11_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          362,
+          526,
+          402,
+          546
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Based on the subset of lines that we regard as most reliable, we provide an estimate of the black hole mass of M_BH = (4.14 ± 0.73) × 10^7 M_sun.",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2006ApJ...651..775B_NGC_4151_fwhm_broad_hbeta_0",
+      "source_id": "2006ApJ...651..775B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 4711,
+      "field_unit": "km/s",
+      "trace_id": "doc5_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          585,
+          717,
+          630,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The Hβ emission-line width measurements we determined from the rms spectrum for NGC 4151 are σline = 2680 ± 64 km s⁻¹ and FWHM = 4711 ± 750 km s⁻¹ in the restframe of NGC 4151.",
+      "measurement_method": "reverberation mapping / rms spectrum",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_0",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.58,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          247,
+          140,
+          506,
+          990
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Broad band (1.8-200 keV) fits with our BLM... Period Γ ... J96L 1.58^{+0.39}_{-0.29}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_1",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.51,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          247,
+          140,
+          506,
+          834
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... J96H 1.51^{+0.05}_{-0.22}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_10",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.42,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          358,
+          108,
+          617,
+          784
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... D96 1.42",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_11",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.51,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          277,
+          140,
+          476,
+          832
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... J99L1 1.51",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_12",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.59,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          358,
+          108,
+          617,
+          784
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... J99H 1.59",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_13",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.47,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          358,
+          108,
+          617,
+          784
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... J99L2 1.47",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_14",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.3,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          358,
+          108,
+          617,
+          784
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... D00 1.30",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_15",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.5,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          358,
+          108,
+          617,
+          784
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... D01 1.50",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_2",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.63,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          247,
+          140,
+          506,
+          834
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... D96 1.63^{+0.22}_{-0.27}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_3",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.59,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          319,
+          108,
+          655,
+          785
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... J99L1 1.59^{+0.18}_{-0.17}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_4",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.74,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          247,
+          140,
+          506,
+          834
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... J99H 1.74^{+0.22}_{-0.17}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_5",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.56,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          247,
+          140,
+          506,
+          834
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... J99L2 1.56^{+0.21}_{-0.29}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_6",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.71,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          319,
+          108,
+          655,
+          785
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... D00 1.71^{+0.17}_{-0.23}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_7",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.52,
+      "field_unit": "",
+      "trace_id": "doc28_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          319,
+          108,
+          655,
+          785
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2... D01 1.52^{+0.02}_{-0.06}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_8",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.42,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          358,
+          108,
+          617,
+          958
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. As Table 2 with the intrinsic photon index Γ frozen... Period Γ ... J96L 1.42",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007A&A...463..903D_NGC_4151_xray_photon_index_9",
+      "source_id": "2007A&A...463..903D",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.54,
+      "field_unit": "",
+      "trace_id": "doc28_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          277,
+          140,
+          476,
+          832
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... J96H 1.54",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2007ApJ...670..105O_NGC_4151_black_hole_mass_0",
+      "source_id": "2007ApJ...670..105O",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 45700000,
+      "field_unit": "M_sun",
+      "trace_id": "doc24_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          653,
+          678,
+          691,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "...published by Bentz et al. (4.57^{+0.57}_{-0.47} \\times 10^7 M_\\odot)",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2008A&A...486...99S_NGC_4151_fwhm_broad_hbeta_0",
+      "source_id": "2008A&A...486...99S",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6110,
+      "field_unit": "km/s",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          67,
+          63,
+          950,
+          232
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 12. The Full Widths at Half Maximum (FWHM) ... for the averaged and rms profiles of Hα, Hβ during the three periods. ... mean profile ... FWHM (Hβ) 6110±440",
+      "measurement_method": "spectral line profile fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2010A&A...509A.106S_NGC_4151_fwhm_broad_hbeta_0",
+      "source_id": "2010A&A...509A.106S",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6860,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc9_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. The FWHM and asymmetry of the Hα and Hβ broad emission lines in the period of 1996–2006. Columns: ... 3 - the FWHM of Hβ; ... 1996b_01 50096.0 6860 ± 566",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_0",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.35,
+      "field_unit": "",
+      "trace_id": "doc31_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          137,
+          556,
+          178,
+          576
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "(2) The photon spectral index (Γ) of the hard power law spectrum varies between ~ 1.35 and ~ 1.7, and correlates with the 2–10 keV flux",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_1",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 0.32,
+      "field_unit": "",
+      "trace_id": "doc31_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          418,
+          327,
+          458,
+          347
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Yang et al. (2001) presented Chandra observations of NGC 4151 and found that the 2–9 keV spectrum of the nucleus is described by a heavily absorbed (NH ≃ 3 × 1022 cm−2), extremely hard power law (photon index Γ = 0.32+0.05−0.12).",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_2",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 0.4,
+      "field_unit": "",
+      "trace_id": "doc31_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          315,
+          367,
+          395,
+          387
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "This is consistent with the Chandra HETG spectra reported in Ogle et al. (2000), in which the hard continuum emission is characterized by a photon index Γ = 0.4 ± 0.3",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_3",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.9,
+      "field_unit": "",
+      "trace_id": "doc31_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          359,
+          627,
+          443,
+          648
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "for both spectra, the partial covering model provides acceptable values for the continuum slope (Γ = 1.9 ± 0.05 for the total spectrum, Γ = 1.8 ± 0.2 for the low-state spectrum).",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_4",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.8,
+      "field_unit": "",
+      "trace_id": "doc31_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          671,
+          627,
+          745,
+          648
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "for both spectra, the partial covering model provides acceptable values for the continuum slope (Γ = 1.9 ± 0.05 for the total spectrum, Γ = 1.8 ± 0.2 for the low-state spectrum).",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_5",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.7,
+      "field_unit": "",
+      "trace_id": "doc31_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          529,
+          728,
+          608,
+          748
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The simple power law model provides a “normal” value of the continuum slope for the total spectrum (Γ = 1.7 ± 0.1), but an extremely flat value for the low state spectrum (Γ = 1.2 ± 0.2).",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010ApJ...714.1497W_NGC_4151_xray_photon_index_6",
+      "source_id": "2010ApJ...714.1497W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.2,
+      "field_unit": "",
+      "trace_id": "doc31_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          368,
+          748,
+          449,
+          768
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The simple power law model provides a “normal” value of the continuum slope for the total spectrum (Γ = 1.7 ± 0.1), but an extremely flat value for the low state spectrum (Γ = 1.2 ± 0.2).",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010MNRAS.408.1851L_NGC_4151_xray_photon_index_0",
+      "source_id": "2010MNRAS.408.1851L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.71,
+      "field_unit": "",
+      "trace_id": "doc30_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          80,
+          110,
+          892,
+          749
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3. Spectral fitting results for the e-folded power-law model including reflection... State: Bright, Γ: 1.71^{+0.06}_{-0.01}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010MNRAS.408.1851L_NGC_4151_xray_photon_index_1",
+      "source_id": "2010MNRAS.408.1851L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.81,
+      "field_unit": "",
+      "trace_id": "doc30_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          80,
+          110,
+          892,
+          749
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... State: Medium, Γ: 1.81^{+0.03}_{-0.03}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2010MNRAS.408.1851L_NGC_4151_xray_photon_index_2",
+      "source_id": "2010MNRAS.408.1851L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "xray_photon_index",
+      "field_value": 1.81,
+      "field_unit": "",
+      "trace_id": "doc30_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          80,
+          110,
+          892,
+          749
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3... State: Dim, Γ: 1.81^{+0.01}_{-0.01}",
+      "measurement_method": "spectral fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: xray_photon_index"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...791...37O_NGC_4151_black_hole_mass_0",
+      "source_id": "2014ApJ...791...37O",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "3.76 ± 1.15 × 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc14_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          608,
+          329,
+          623,
+          351
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our best estimates for the BH mass and H-band mass-to-light ratio are M_BH ~ 3.76 ± 1.15 × 10^7 M_sun (1σ error)...",
+      "measurement_method": "stellar dynamical modeling",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2014MNRAS.438.2980C_NGC_4151_black_hole_mass_0",
+      "source_id": "2014MNRAS.438.2980C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 4.6,
+      "field_unit": "10^7 Msun",
+      "trace_id": "doc25_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          361,
+          402,
+          386,
+          418
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The mass of NGC 4151 is estimated as M = (4.6 ± 0.5) × 10^7 M_sun (Bentz et al. 2006), so this lag corresponds to approximately 13 R_G.",
+      "measurement_method": "optical reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2015ApJ...806..149K_NGC_4151_black_hole_mass_0",
+      "source_id": "2015ApJ...806..149K",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "4.57",
+      "field_unit": "10^7 M_sun",
+      "trace_id": "doc13_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          264,
+          615,
+          300,
+          633
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The source has bolometric luminosity L_bol ~ 5 x 10^43 erg s^-1 (Woo & Urry 2002), SMBH mass M = 4.57 +0.57 -0.47 x 10^7 M_sun from optical and UV reverberation (Bentz et al. 2006)...",
+      "measurement_method": "optical and UV reverberation",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2019ApJ...877...65N_NGC_4151_black_hole_mass_0",
+      "source_id": "2019ApJ...877...65N",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 37000000,
+      "field_unit": "M_sun",
+      "trace_id": "doc18_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          685,
+          668,
+          716,
+          688
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "For example, from the detailed study of C IV line profile, Clavel et al. (1987) found the mass of the central black hole to be 3.7 ± 0.5 × 10^7 M_sun.",
+      "measurement_method": "virial (C IV line profile)",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2020MNRAS.491.5126M_NGC_4151_black_hole_mass_0",
+      "source_id": "2020MNRAS.491.5126M",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "4 x 10^7",
+      "field_unit": "Msun",
+      "trace_id": "doc22_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          350,
+          499,
+          364,
+          515
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The black hole mass is fixed to M_BH = 4 x 10^7 M_sun (as used by E17). We also fix the distance of NGC 4151 to D = 19 Mpc and assume an inclination angle of i = 53° (i.e. cos(i) = 0.6).",
+      "measurement_method": "fixed parameter from literature (E17)",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2021ApJ...916...25R_NGC_4151_black_hole_mass_0",
+      "source_id": "2021ApJ...916...25R",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "3.57^{+0.45}_{-0.43}",
+      "field_unit": "10^7 Msun",
+      "trace_id": "doc15_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "TABLE 3 MEASUREMENTS OF M_BH FOR NGC 4151 ... Hβ RM 3.57^{+0.45}_{-0.43} Bentz et al. (2006)",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2021ApJ...916...25R_NGC_4151_black_hole_mass_1",
+      "source_id": "2021ApJ...916...25R",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": "2.06^{+0.05}_{-0.05}",
+      "field_unit": "10^7 Msun",
+      "trace_id": "doc15_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          79,
+          90,
+          921,
+          725
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "TABLE 3 MEASUREMENTS OF M_BH FOR NGC 4151 ... Hβ RM 2.06^{+0.05}_{-0.05} De Rosa et al. (2018)",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2022ApJ...934..168B_NGC_4151_black_hole_mass_0",
+      "source_id": "2022ApJ...934..168B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 4.45,
+      "field_unit": "10^7 Msun",
+      "trace_id": "doc19_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          78,
+          81,
+          921,
+          717
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Direct Measurements of M_BH for NGC 4151 ... Hβ RM | 4.45^{+0.79}_{-0.56} | Bentz et al. (2006)",
+      "measurement_method": "Hβ Reverberation Mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2022ApJ...934..168B_NGC_4151_black_hole_mass_1",
+      "source_id": "2022ApJ...934..168B",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 2.41,
+      "field_unit": "10^7 Msun",
+      "trace_id": "doc19_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          78,
+          81,
+          921,
+          717
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Direct Measurements of M_BH for NGC 4151 ... Hβ RM | 2.41^{+0.18}_{-0.21} | De Rosa et al. (2018)",
+      "measurement_method": "Hβ Reverberation Mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_0",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6650.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Time Lags (in the Rest Frame), Line Widths and BH Masses from All Available Campaigns ... S2 ... Mean Spectra FWHM (km s⁻¹) 6650 ± 29",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_1",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6360,
+      "field_unit": "km s¹",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S3 ... Mean Spectra FWHM (km s⁻¹) 6360 ± 21",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_10",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 4677.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S20 ... Mean Spectra FWHM (km s⁻¹) 4677 ± 19",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_11",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5072.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S21 ... Mean Spectra FWHM (km s⁻¹) 5072 ± 17",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_12",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 4799.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          76,
+          901,
+          924,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3—continued ... L22 ... Mean Spectra FWHM (km s⁻¹) 4799 ± 20",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_13",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 7099.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          76,
+          901,
+          924,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3—continued ... L22 ... Mean Spectra FWHM (km s⁻¹) 7099 ± 52",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_14",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5003.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          76,
+          901,
+          924,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3—continued ... L22 ... Mean Spectra FWHM (km s⁻¹) 5003 ± 13",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_15",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6031,
+      "field_unit": "km s¹",
+      "trace_id": "doc23_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          76,
+          901,
+          924,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3—continued ... L22 ... Mean Spectra FWHM (km s⁻¹) 6031 ± 50",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_16",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 4897.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          76,
+          901,
+          924,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3—continued ... L22 ... Mean Spectra FWHM (km s¹) 4897 ± 5",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_2",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5741.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S4 ... Mean Spectra FWHM (km s⁻¹) 5741 ± 21",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_3",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6069.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S5 ... Mean Spectra FWHM (km s⁻¹) 6069 ± 22",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_4",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5714.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S6 ... Mean Spectra FWHM (km s⁻¹) 5714 ± 21",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_5",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 7352.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S9 ... Mean Spectra FWHM (km s⁻¹) 7352 ± 34",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_6",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6224.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S10 ... Mean Spectra FWHM (km s⁻¹) 6224 ± 24",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_7",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6118.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S11 ... Mean Spectra FWHM (km s⁻¹) 6118 ± 42",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_8",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5366.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S18 ... Mean Spectra FWHM (km s⁻¹) 5366 ± 18",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.520.1807C_NGC_4151_fwhm_broad_hbeta_9",
+      "source_id": "2023MNRAS.520.1807C",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5191.0,
+      "field_unit": "km/s",
+      "trace_id": "doc23_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          67,
+          899,
+          217,
+          969
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3 ... S19 ... Mean Spectra FWHM (km s⁻¹) 5191 ± 12",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_0",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 37100000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          159,
+          349,
+          193,
+          366
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "With the same technique but with higher-quality data and refined modeling methods, Roberts et al. (2021) constrained the M_BH range to be 5 x 10^6 - 2 x 10^7 M_sun, which they extended to 2.5 x 10^6 - 3 x 10^7 M_sun to be more conservative. Using H_beta reverberation mapping, Bentz et al. (2006) derived 3.71 x 10^7 M_sun.",
+      "measurement_method": "H_beta reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_1",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 21400000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          379,
+          363,
+          412,
+          380
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Using H_beta reverberation mapping, Bentz et al. (2006) derived 3.71 x 10^7 M_sun. With the same technique but with higher-quality data and refined modeling methods, Roberts et al. (2021) constrained the M_BH range to be 5 x 10^6 - 2 x 10^7 M_sun... De Rosa et al. (2018) obtained instead 2.14 x 10^7 M_sun.",
+      "measurement_method": "H_beta reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_2",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 16600000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          374,
+          405,
+          408,
+          422
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Very recently, by directly modeling the BLR from the reverberation mapping campaign (and, hence, without making any assumption on the virial factor f), Bentz et al. (2022) obtained 1.66 x 10^7 M_sun.",
+      "measurement_method": "H_beta reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_3",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 19200000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          67,
+          461,
+          100,
+          478
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Finally, using X-ray reverberation mapping, where the time delay of the variable component of the narrow Fe K_alpha line is measured with respect to the X-ray continuum, Zoghbi et al. (2019) inferred 1.92 x 10^7 M_sun.",
+      "measurement_method": "X-ray reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_4",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 37000000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          67,
+          72,
+          915,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. M_BH measurements derived from direct methods... Bentz et al. (2006) H_beta reverberation mapping 3.7 x 10^7",
+      "measurement_method": "H_beta reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_5",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 21000000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          67,
+          72,
+          915,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. M_BH measurements derived from direct methods... De Rosa et al. (2018) H_beta reverberation mapping 2.1 x 10^7",
+      "measurement_method": "H_beta reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_6",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 17000000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          67,
+          72,
+          915,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. M_BH measurements derived from direct methods... Bentz et al. (2022) H_beta reverberation mapping 1.7 x 10^7",
+      "measurement_method": "H_beta reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2023MNRAS.521.2897W_NGC_4151_black_hole_mass_7",
+      "source_id": "2023MNRAS.521.2897W",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "black_hole_mass",
+      "field_value": 19000000,
+      "field_unit": "M_sun",
+      "trace_id": "doc27_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          67,
+          72,
+          915,
+          262
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. M_BH measurements derived from direct methods... Zoghbi et al. (2019) X-ray reverberation mapping 1.9 x 10^7",
+      "measurement_method": "X-ray reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: black_hole_mass"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_0",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6630,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 8 1994 Dec-1995 Jun ... FWHM_mean (km s^{-1}) 6630±29",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_1",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6360,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 9 1995 Nov-1996 Jul ... FWHM_mean (km s^{-1}) 6360±21",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_10",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5191,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 33 2019 Nov-2020 Mar ... FWHM_mean (km s^{-1}) 5191±12",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_11",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 4677,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 34 2020 Nov-2021 May ... FWHM_mean (km s^{-1}) 4677±19",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_12",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 4937,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 34 2020 Nov-2021 Jun ... FWHM_mean (km s^{-1}) 4937±14",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_13",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5072,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 35 2021 Oct-2022 Aug ... FWHM_mean (km s^{-1}) 5072±17",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_14",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5163,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 35 2021 Nov-2022 May ... FWHM_mean (km s^{-1}) 5163±17",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_15",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5066,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 36 2022 Nov-2023 Jul ... FWHM_mean (km s^{-1}) 5066±13",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_16",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5407,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 37 2023 Nov-2024 Jun ... FWHM_mean (km s^{-1}) 5407±7",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_2",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5741,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 10 1996 Dec-1997 Jul ... FWHM_mean (km s^{-1}) 5741±21",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_3",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6069,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 11 1997 Nov-1998 Jul ... FWHM_mean (km s^{-1}) 6069±22",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_4",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5714,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 12 1998 Dec-1999 Apr ... FWHM_mean (km s^{-1}) 5714±21",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_5",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 7352,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 15 2001 Dec-2002 Jul ... FWHM_mean (km s^{-1}) 7352±34",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_6",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6224,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 16 2002 Dec-2003 Jul ... FWHM_mean (km s^{-1}) 6224±24",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_7",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 6118,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 17 2003 Nov-2004 Jul ... FWHM_mean (km s^{-1}) 6118±42",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_8",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5174,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 26 2012 Jan-2012 May ... FWHM_mean (km s^{-1}) 5174±32",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    },
+    {
+      "record_id": "2025ApJ...988..273L_NGC_4151_fwhm_broad_hbeta_9",
+      "source_id": "2025ApJ...988..273L",
+      "entity_type": "Sy1",
+      "entity_name": "NGC 4151",
+      "field_name": "fwhm_broad_hbeta",
+      "field_value": 5366,
+      "field_unit": "km s^{-1}",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          109,
+          212,
+          891,
+          737
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 2. Properties of NGC 4151 with measured τ_cent and velocities of the broad Hβ line for calibration. ... Year 32 2018 Nov-2019 Aug ... FWHM_mean (km s^{-1}) 5366±18",
+      "measurement_method": "reverberation mapping",
+      "condition_tags": [
+        "scope: global",
+        "metric: fwhm_broad_hbeta"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+{
+  "otype": "MS*",
+  "name_cn": "主序星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "恒星有效温度Teff(K)，GALAH/APOGEE/PASTEL/LAMOST/StarHorse均直接给出",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_gravity_logg",
+      "name_cn": "表面重力对数",
+      "description": "表面重力log g (cm/s^2)，区分主序(log g~4.0-4.8)与巨星，主序星判定的关键量",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_feh",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "铁丰度[Fe/H]，各巡天光谱拟合与等时线拟合均提供",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alpha_abundance",
+      "name_cn": "α元素丰度[α/Fe]",
+      "description": "α元素(Mg/Si/Ca/Ti等)相对铁丰度，反映主序星年龄与化学演化",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "individual_element_abundance",
+      "name_cn": "分元素丰度",
+      "description": "GALAH(~30种)与APOGEE(~20种)提供C、N、O、Na、Mg、Al、Si等逐元素丰度[A/B]及误差",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lithium_abundance",
+      "name_cn": "锂丰度",
+      "description": "锂丰度A(Li)，用于主序星年龄与自转/对流研究，GALAH DR3与LAMOST(6708Å谱线)给出",
+      "category": "physical",
+      "ucd": "phys.abund.Li",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(Msun)，StarHorse等时线拟合给出，基准星经基础关系推导",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(Rsun)，StarHorse拟合与APOGEE/基准星基础关系给出",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_luminosity",
+      "name_cn": "光度",
+      "description": "恒星光度(Lsun或logL)，由距离与测光/等时线拟合得出",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_age",
+      "name_cn": "年龄",
+      "description": "恒星年龄(Gyr)及误差，GALAH贝叶斯等时线与StarHorse概率分布提供，含主序寿命阶段判断",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "恒星视向速度(km/s)，由光谱测量，APOGEE/GALAH/LAMOST均给出且含多次测量",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_velocity_vsini",
+      "name_cn": "投影自转速度",
+      "description": "投影自转速度v sin i (km/s)，Glebocki汇编、Zorec & Royer早型星专项及LAMOST AFGK表提供",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期",
+      "description": "恒星自转周期(天)，Zorec & Royer由vsini与半径推算，亦可由光变调制测得",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "主序星(δ Scuti、β Cep、SPB、太阳型振荡)脉动周期，来源于光变/星震数据而非本组巡天表",
+      "category": "variability",
+      "ucd": "src.var.pulse.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type",
+      "name_cn": "光变类型",
+      "description": "主序星光变类型标签(脉动/自转调制/食双星等)，来自VSX等外部光变源",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_amplitude",
+      "name_cn": "光变振幅",
+      "description": "光变振幅(星等)，外部光变源提供，用于识别脉动主序星",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag_gaia",
+      "name_cn": "Gaia G星等",
+      "description": "Gaia G波段星等，主序星测光基准，GALAH/StarHorse均附带",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_rp_color",
+      "name_cn": "Gaia BP-RP颜色",
+      "description": "Gaia BP-RP颜色指数，主序星温度估计与消光诊断的基础颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_mag_2mass",
+      "name_cn": "2MASS J星等",
+      "description": "2MASS J波段星等，红化较弱，用于主序星等时线拟合",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "k_mag_2mass",
+      "name_cn": "2MASS Ks星等",
+      "description": "2MASS Ks波段星等，APOGEE目标测光与星等-质量关系常用",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V星等",
+      "description": "Johnson/Cousins V星等，基准星与PASTEL文献参数中附带",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_av",
+      "name_cn": "消光A_V",
+      "description": "V波段星际消光(及StarHorse的A_G、E(B-V))，由光谱测光联合推导",
+      "category": "photometry",
+      "ucd": "phys.absorption;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "ICRS赤经(J2000)，各表均含主坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "ICRS赤纬(J2000)，各表均含主坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia年视差(mas)，主序星距离与光度定标的基础",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_ra",
+      "name_cn": "赤经自行",
+      "description": "赤经方向自行(mas/yr)，成员判定与运动学研究",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion_dec",
+      "name_cn": "赤纬自行",
+      "description": "赤纬方向自行(mas/yr)",
+      "category": "astrometry",
+      "ucd": "pos.pm;pos.eq.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "恒星距离(pc)及几何/光测距误差，StarHorse以概率分布给出",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type_mk",
+      "name_cn": "MK光谱型",
+      "description": "MK光谱型(如G2V、K5V)，O-M全覆盖，主序星分类标签",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "MK光度级(V/IV/III等)，V级即主序判别，LAMOST/基准星提供光谱分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "evolutionary_stage",
+      "name_cn": "演化阶段",
+      "description": "演化阶段标签(主序/副巨星/红巨星等)，GALAH(flag_red_clump等)与StarHorse等时线拟合给出",
+      "category": "classification",
+      "ucd": "src.class.star",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团成员判定",
+      "description": "主序星所在疏散星团/移动群成员概率与编号，APOGEE团样本与GALAH星团研究提供",
+      "category": "environment",
+      "ucd": "meta.code.member",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity_flag",
+      "name_cn": "双星/多重性",
+      "description": "光谱双星(SB2/SB1)与伴星探测标记，APOGEE SB2样本及视向速度多历元测量判别",
+      "category": "environment",
+      "ucd": "src.class.double",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

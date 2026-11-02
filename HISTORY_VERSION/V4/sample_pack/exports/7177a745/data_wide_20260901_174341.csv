@@ -1,0 +1,12 @@
+﻿source_id,mass,mass_unit,radius,radius_unit,spectral_type,spectral_type_unit,teff,teff_unit
+2026MNRAS.547ag413R,2.09,M_sun,,,,,,
+2021A&A...646A.130A,1.7,Msun,8.8,Rsun,K0III,,5000,K
+2017A&A...599A..47O,1.91,Msun,,,,,,
+2015A&A...574A..90A,,,9.3,Rsun,,,,
+2010A&A...516A..13P,,,,,,,,
+2009A&A...504..231A,2.31,Msun,8.8,Rsun,,,4904,K
+2006ApJ...652..661R,1.86,Msun,,,,,,
+SRC_DB_HR,,,,,K0IIIb,,,
+SRC_DB_HD,,,,,K0,,,
+SRC_DB_TIC,,,,,,,4892.6,K
+SRC_DB_HIPPARCOS,,,,,K0IIIvar,,,

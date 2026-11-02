@@ -1,0 +1,332 @@
+{
+  "otype": "bC*",
+  "name_cn": "仙王座Beta型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "position_radec",
+      "name_cn": "赤道坐标(赤经赤纬,J2000)",
+      "description": "恒星J2000/ICRS赤道坐标,来自Gaia DR3或原表给出的坐标分量",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "三角视差",
+      "description": "Gaia三角视差(mas),用于距离与光度定标",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gmag",
+      "name_cn": "Gaia G波段星等",
+      "description": "Gaia DR3 G波段视星等(mag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag",
+      "name_cn": "V波段视星等",
+      "description": "V波段视星等(mag),取自TESS Input Catalog、SIMBAD或文献",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stromgren_by",
+      "name_cn": "Strömgren (b-y) 色指数",
+      "description": "Strömgren测光(b-y)颜色指数(mag),用于温度与消光估计",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stromgren_m1",
+      "name_cn": "Strömgren m1 金属度指数",
+      "description": "Strömgren m1指数,指示金属丰度",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stromgren_c1",
+      "name_cn": "Strömgren c1 巴尔末跳变指数",
+      "description": "Strömgren c1指数,指示表面重力/光度级",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hbeta_index",
+      "name_cn": "Hβ 光度指数",
+      "description": "Strömgren-Crawford Hβ窄带光度指数,用于光度级定标",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "effective_temperature",
+      "name_cn": "有效温度",
+      "description": "有效温度(K);Shi+2024/2023给出Teff(ESP-HS或文献),Fritzewski+2025以logTeff给出",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "log_luminosity",
+      "name_cn": "对数光度",
+      "description": "log(L/Lsun),由视差与测光推得,用于H-R图与不稳定带定位",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_correction",
+      "name_cn": "热改正",
+      "description": "热改正BC(mag),用于V星等向热光度转换",
+      "category": "physical",
+      "ucd": "phot.mag.bc",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_av",
+      "name_cn": "V波段星际消光",
+      "description": "V波段星际消光Av(mag),来自Gaia A0-HS(ESP-HS)估计",
+      "category": "physical",
+      "ucd": "phot.extinction",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "MK光谱型",
+      "description": "MK光谱分类(如B1III、B2IV),Beta Cep恒星通常为O8-B6,III-V级",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "视向速度(km/s),附变源标记;Beta Cep星存在显著脉动式RV变化",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc;spectroscopic",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "投影自转速度vsini(km/s),部分带近似标志",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_frequency",
+      "name_cn": "旋转频率(×sin i)",
+      "description": "旋转频率与sin i之积frotsini(d-1),由旋转劈裂或自转调制推得",
+      "category": "physical",
+      "ucd": "em.freq;src.var",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_period",
+      "name_cn": "脉动周期",
+      "description": "主脉动周期(天),位于0.059-0.31 d(约0.1-0.6 d)典型区间,BCEPS短周期组更短",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_frequency",
+      "name_cn": "脉动频率",
+      "description": "脉动主频率(d-1),含TESS/Gaia多频率(f1、fGaia、fTESS)与不确定度;表b1-b3含全部检测频率",
+      "category": "variability",
+      "ucd": "em.freq;src.var",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_amplitude",
+      "name_cn": "脉动振幅",
+      "description": "光变振幅(mmag),TESS波段、KELT波段或V波段;典型0.1-56 mmag,UV中可达1 mag",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "num_modes",
+      "name_cn": "脉动模式数",
+      "description": "检测到的脉动模式数量Nm(0-12),多周期性是Beta Cep星共性",
+      "category": "variability",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mode_degree",
+      "name_cn": "脉动模式阶数 l",
+      "description": "主导脉动模式球谐阶数l(由Gaia与TESS振幅比及旋转劈裂证认);多数为偶极非径向模",
+      "category": "variability",
+      "ucd": "meta.code;src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mode_probability",
+      "name_cn": "模式识别概率",
+      "description": "l=0/1/2模式识别概率p0/p1/p2,用于量化模式证认置信度",
+      "category": "variability",
+      "ucd": "stat.fit.goodness",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotational_splitting",
+      "name_cn": "旋转劈裂强度",
+      "description": "TESS频率谱中旋转劈裂强度(d-1),可推包层旋转与自旋参数",
+      "category": "variability",
+      "ucd": "stat.fit.param",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplet_asymmetry",
+      "name_cn": "多重线不对称度",
+      "description": "分裂多重线内相对频率不对称度(约-0.15~0.15,多为正)",
+      "category": "variability",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_ratio",
+      "name_cn": "多波段振幅比",
+      "description": "主频率在Gaia G/RP与TESS相对BP波段的振幅比(aG/aBP、aR/aBP、aT/B),用于模式证认",
+      "category": "variability",
+      "ucd": "stat.fit.param",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "beat_period",
+      "name_cn": "拍频周期",
+      "description": "TESS数据中两个主频率之间的拍频周期(天)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_variation",
+      "name_cn": "振幅变化量",
+      "description": "振幅随时间的变化量Avar(式2),表征模式振幅稳定性",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lightcurve_class",
+      "name_cn": "光变曲线形态分类",
+      "description": "光变曲线形态分类:mono(近单周期)/multi(多周期拍频)/hybrid(Beta Cep与SPB混合)/diff(其他)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_type",
+      "name_cn": "对象类型",
+      "description": "OB脉动星对象类型(BCEP/SPB/OeBe等)及Fourier频谱形态FS,支持BCEP-SPB混合脉动分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_status",
+      "name_cn": "变星确认状态",
+      "description": "β Cep身份状态:确认/候选/否决(Stankov表1/2/3;KELT Class与Known引证)",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "be_flag",
+      "name_cn": "Be星标志",
+      "description": "LAMOST光谱中Hα发射线轮廓检测的Be星标志,用于剔除/甄别Be型脉动",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "initial_mass",
+      "name_cn": "初始质量",
+      "description": "星震网格建模推得的初始质量Mini(Msun),含上下不确定度",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "core_hydrogen_fraction",
+      "name_cn": "核心氢质量分数",
+      "description": "归一化核心氢质量分数Xc',表征主序演化阶段,含上下不确定度",
+      "category": "physical",
+      "ucd": "phys.abund.X",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "core_mass_fraction",
+      "name_cn": "对流核质量占比",
+      "description": "对流核质量相对初始质量之比Mcore/M,含不确定度",
+      "category": "physical",
+      "ucd": "phys.mass;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_age",
+      "name_cn": "恒星年龄",
+      "description": "对数年龄logAge(yr),由星震网格模型给出,含上下不确定度",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团成员关系",
+      "description": "所属已知星团(如NGC 637、NGC 884等),用于年龄与质量交叉约束;部分为逃逸星候选",
+      "category": "environment",
+      "ucd": "meta.id.parent",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,440 @@
+{
+  "otype": "*",
+  "name_cn": "恒星通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000 赤经(ICRS),I/355 全源,精度亚毫角秒级",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000 赤纬(ICRS),I/355 全源,精度亚毫角秒级",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "绝对三角视差(含误差),Gaia DR3 对约15亿源;AG/距离由自行+视差+测光导出",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmra",
+      "name_cn": "赤经方向自行",
+      "description": "赤经方向自行(mas/yr),Gaia DR3 高精度,用于运动学/星群判定",
+      "category": "astrometry",
+      "ucd": "pos.pm.ra",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pmdec",
+      "name_cn": "赤纬方向自行",
+      "description": "赤纬方向自行(mas/yr),与pmra组合构成切向速度",
+      "category": "astrometry",
+      "ucd": "pos.pm.dec",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "距离(parsec):I/355 提供几何/光度几何距离;V/156 附加表提供分光光度距离;III/286 配套StarHorse VAC距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ruwe",
+      "name_cn": "重整化单位权重误差",
+      "description": "RUWE 天体测量质量指标,RUWE>1.4 提示双星/非单源或解不良,用于样本筛选与双星污染剔除",
+      "category": "astrometry",
+      "ucd": "stat.error",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "G波段星等",
+      "description": "Gaia G 波段总星等(约330-1050nm),约18亿源,是恒星样本构建的基本测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_mag",
+      "name_cn": "BP波段星等",
+      "description": "Gaia BP 波段(蓝端)星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rp_mag",
+      "name_cn": "RP波段星等",
+      "description": "Gaia RP 波段(红端)星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bp_rp_color",
+      "name_cn": "BP-RP 色指数",
+      "description": "Gaia BP-RP 颜色,温度探针,配合消光可估计恒星温标",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.R",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "V波段星等",
+      "description": "Johnson V 星等,PASTEL 自 Simbad 引入,历史亮度基准",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_mag",
+      "name_cn": "2MASS J星等",
+      "description": "近红外 J 测光(2MASS),GALAH/APOGEE 样本识别与消光估计基础",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_mag",
+      "name_cn": "2MASS H星等",
+      "description": "近红外 H 测光(2MASS),APOGEE 观测波段参照",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ks_mag",
+      "name_cn": "2MASS Ks星等",
+      "description": "近红外 Ks 测光,与V-J等组合做红外通量法温度标定",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_mag",
+      "name_cn": "绝对星等",
+      "description": "多波段绝对星等,LAMOST VAC 附加表(14波段)基于分光光度距离给出",
+      "category": "photometry",
+      "ucd": "phot.mag.abs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "重心视向速度:I/355(RVS,约3300万星)、III/286(vhelio)、V/154(rv_galah)、V/156 均提供,精度各异",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "snr",
+      "name_cn": "信噪比",
+      "description": "光谱信噪比(逐相机/逐波段),质量筛选与参数精度估计依据",
+      "category": "spectroscopy",
+      "ucd": "stat.snr",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度(K):I/355 GSPC约4.7亿星;III/286、V/154、V/156、B/pastel 均有高/中/低分辨率测定;误差随温度与信噪比变化",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力(对数)",
+      "description": "log g (cm/s^2):划分主序/巨星/亚巨星,配合Teff构建HR图;五个入选表均提供",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "[Fe/H] 铁丰度",
+      "description": "相对太阳的铁丰度(dex):I/355 对部分恒星、III/286/V/154/V/156/B/pastel 均有;高分辨率测定精度约0.05-0.1 dex",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_h",
+      "name_cn": "[M/H] 总金属丰度",
+      "description": "相对太阳总金属丰度(dex),GSPC 与 ASPCAP 管道输出,用于恒星演化模型输入",
+      "category": "physical",
+      "ucd": "phys.abund.Z",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alpha_fe",
+      "name_cn": "[alpha/Fe] α元素丰度比",
+      "description": "α元素(Mg,Si,Ca,Ti等)平均丰度比,盘/晕化学演化与星族区分关键参数",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(太阳质量):I/355 由FLAME等时线拟合(部分恒星);III/286 配套StarHorse VAC 亦提供;独立锚点来自食双星",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(太阳半径):GSPC 输出(约1.2-4.7亿星),基于Teff与光度/消光反演",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "恒星年龄(Gyr):I/355 FLAME 仅对部分恒星给出(演化模型依赖,不确定性大);LAMOST 巨星 VAC 提供质量-年龄;红巨星可用星震学校验",
+      "category": "physical",
+      "ucd": "time.age",
+      "unit": "Gyr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "恒星光度(太阳光度):I/355 基于距离/消光与Teff导出;也可由绝对星等换算",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "v sin i (km/s):III/286 ASPCAP 与 V/154 v_broad(自转+宏观展宽)提供,热星/快自转星样本重要",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "microturbulence",
+      "name_cn": "微湍流速度",
+      "description": "微湍流速度 v_mic (km/s),丰度分析辅助参数",
+      "category": "physical",
+      "ucd": "phys.microturbulence",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction",
+      "name_cn": "星际消光",
+      "description": "星际消光(I/355: A_G 与 E(BP-RP);III/286 StarHorse VAC: E(B-V)等),影响光度/半径反演",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "c_abund",
+      "name_cn": "碳丰度 [C/Fe]",
+      "description": "碳元素丰度(APOGEE、GALAH、LAMOST VAC均有),C/N比约束巨星演化阶段",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.C",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "n_abund",
+      "name_cn": "氮丰度 [N/Fe]",
+      "description": "氮元素丰度,与C合成C/N比用于红巨星支演化诊断",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.N",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "o_abund",
+      "name_cn": "氧丰度 [O/Fe]",
+      "description": "氧元素丰度,α元素代表,星系化学演化研究关键",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.O",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "na_abund",
+      "name_cn": "钠丰度 [Na/Fe]",
+      "description": "钠元素丰度",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Na",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mg_abund",
+      "name_cn": "镁丰度 [Mg/Fe]",
+      "description": "镁元素丰度,α元素核心成员,银河系年龄-丰度关系(Mg-Mn)关键",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Mg",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "al_abund",
+      "name_cn": "铝丰度 [Al/Fe]",
+      "description": "铝元素丰度",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Al",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "si_abund",
+      "name_cn": "硅丰度 [Si/Fe]",
+      "description": "硅元素丰度,α元素成员",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Si",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ca_abund",
+      "name_cn": "钙丰度 [Ca/Fe]",
+      "description": "钙元素丰度,α元素成员",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ca",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ti_abund",
+      "name_cn": "钛丰度 [Ti/Fe]",
+      "description": "钛元素丰度(含TiII),α元素成员",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ti",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mn_abund",
+      "name_cn": "锰丰度 [Mn/Fe]",
+      "description": "锰元素丰度,与Mg结合构建Mg-Mn年龄关系",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Mn",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ni_abund",
+      "name_cn": "镍丰度 [Ni/Fe]",
+      "description": "镍元素丰度,铁峰元素代表",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ni",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ba_abund",
+      "name_cn": "钡丰度 [Ba/Fe]",
+      "description": "钡元素丰度,s过程示踪元素,双星s过程增丰诊断",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Ba",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eu_abund",
+      "name_cn": "铕丰度 [Eu/Fe]",
+      "description": "铕元素丰度,r过程示踪元素",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Eu",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱分类(I/355 GSPC-Spec 为程序化光谱型;III/286、V/156 亦含分类信息),用于样本按光谱型筛选",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "object_class",
+      "name_cn": "天体类别",
+      "description": "恒星/星系/类星体/白矮星/紧致天体等分类标志(Gaia classscore),确保恒星样本纯度",
+      "category": "classification",
+      "ucd": "src.class.starGalaxy",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_flag",
+      "name_cn": "变星标志",
+      "description": "光度变星标志与变星类型分类(I/355),恒星级变星识别与样本排除",
+      "category": "variability",
+      "ucd": "meta.code.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_amplitude",
+      "name_cn": "光度变幅",
+      "description": "光变幅度(星等),Gaia G波段变幅,脉动/食变分类辅助",
+      "category": "variability",
+      "ucd": "phot.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "blend_flag",
+      "name_cn": "非单星/混合标志",
+      "description": "非单星/混合源标志(non_single_star、RUWE、G光度过量),双星污染会偏差参数,是环境质量控制关键",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

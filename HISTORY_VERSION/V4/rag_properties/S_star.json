@@ -1,0 +1,296 @@
+{
+  "otype": "S*",
+  "name_cn": "S型星",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "opt_bvri_mag",
+      "name_cn": "光学蓝/可见/红外星等",
+      "description": "CSS星表bmag(照相/B)、vmag(目视)、imag(6800-8800A红外)星等;已知变星取GCVS中位值,0.0表示缺失",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "jhk_mag",
+      "name_cn": "JHK近红外星等",
+      "description": "J、H、K波段星等及JHK质量旗标,用于内在/外在S星与温度判别",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_f12_flux",
+      "name_cn": "IRAS 12微米流量密度",
+      "description": "IRAS 12um点源流量密度(F12),拱星尘埃辐射示踪",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.8-15um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_f25_flux",
+      "name_cn": "IRAS 25微米流量密度",
+      "description": "IRAS 25um流量密度(F25),与12um组合的alpha12谱斜率用于C/O与尘埃分组",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.15-30um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_f60_flux",
+      "name_cn": "IRAS 60微米流量密度",
+      "description": "IRAS 60um流量密度(F60),冷尘埃与包层质量示踪",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.30-60um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_f100_flux",
+      "name_cn": "IRAS 100微米流量密度",
+      "description": "IRAS 100um流量密度(F100)",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.60-100um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dereddened_color_index",
+      "name_cn": "消光改正色指数",
+      "description": "消红后的Geneva与Johnson色指数:(U-B)0、(B-V)0、(V-K)0、(J-K)0、(H-K)0、(K-L)0、(U-B1)0、(B2-V1)0",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_extinction_av",
+      "name_cn": "V波段星际消光",
+      "description": "V滤波处总星际消光Av及消红后Geneva V0星等",
+      "category": "photometry",
+      "ucd": "phys.absorption;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_line_integrated_intensity",
+      "name_cn": "CO谱线积分强度",
+      "description": "CO(1-0)/(2-1)/(3-2)等谱线积分亮度ICO及观测台站波束HPBW、噪声rms",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line",
+      "unit": "K*km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_peak_brightness_temp",
+      "name_cn": "CO谱线峰值亮温",
+      "description": "CO谱线峰值亮温TMB与模型峰值亮温TMBM",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature;stat.max",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tc_abundance_status",
+      "name_cn": "锝(Tc)含量状态",
+      "description": "Tc存在性检测(yes/no)与alpha12谱斜率,区分内在S星(Tc-rich,s-process热脉冲)与外在S星(Tc-deficient,双星质量转移)",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "molecular_band_indices",
+      "name_cn": "TiO/ZrO/Na分子带强度指数",
+      "description": "BTiO、BZrO、BNa分子带/谱线强度指数,ZrO为S星定义判据,TiO为温度类,Na为光度类",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_lrs_class",
+      "name_cn": "IRAS低分辨率光谱分类",
+      "description": "IRAS LRS(7-23um)尘埃谱分类(Olnon 1986体系)及Volk&Cohen(1989)再分类,反映SiS吸收与C/O比诊断",
+      "category": "spectroscopy",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_line_datacube_fits",
+      "name_cn": "ALMA CO数据立方FITS",
+      "description": "ACA Band6/7 CO J=2-1、J=3-2数据立方FITS文件(150个),含频率范围、分辨率、观测日期与尺寸",
+      "category": "spectroscopy",
+      "ucd": "meta.fits",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "由CO谱线拟合的模型质量损失率dM/dt(Msun/yr)及下限旗标",
+      "category": "physical",
+      "ucd": "phys.mass.loss",
+      "unit": "Msun/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wind_expansion_velocity",
+      "name_cn": "星风膨胀速度",
+      "description": "CO谱线拟合的星风外流速度Ve及模型中心速度VeM",
+      "category": "physical",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "envelope_radius_model",
+      "name_cn": "拱星包层半径(模型)",
+      "description": "CO包层模型半径Rad(cm)与角半径Rad2(arcsec),包层尺度示踪",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "cm",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "envelope_angular_radius",
+      "name_cn": "包层角半径",
+      "description": "60um分辨包层的角半径与位置,直接成像的拱星包层尺度(IRAAS高分辨率数据)",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "adopted_distance",
+      "name_cn": "采纳距离",
+      "description": "CO包层模型采纳的日心距离",
+      "category": "physical",
+      "ucd": "pos.distance;pos.heliocentric",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_lsr_velocity",
+      "name_cn": "CO谱线LSR中心速度",
+      "description": "CO谱线相对LSR的中心速度Vc",
+      "category": "physical",
+      "ucd": "phys.veloc;pos.lsr",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "equatorial_coordinates",
+      "name_cn": "赤道坐标",
+      "description": "赤经赤纬:III/168为1900历元(精度1秒至1分),DEATHSTAR II及CDS补充列为J2000",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银道坐标",
+      "description": "银经l与银纬b,用于银盘分布与空间密度研究",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon;pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_radial_velocity",
+      "name_cn": "光学视向速度范围",
+      "description": "文献编译的光学视向速度(Vel1-Vel2)及参考来源,双星与运动学研究",
+      "category": "astrometry",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_type",
+      "name_cn": "GCVS变星类型",
+      "description": "GCVS变星类型(多为Mira/SRa/SRb等长周期变星)",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_period",
+      "name_cn": "光变周期",
+      "description": "GCVS变星周期(天)及不确定旗标",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_variation_amplitude",
+      "name_cn": "星等变幅",
+      "description": "星等变化范围Vamp(原表ucd arith.rate;instr.bandwidth)",
+      "category": "variability",
+      "ucd": "phot.mag;stat.range",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "S/SC/MS/C-S型光谱分类,多体系汇编:Keenan & Boeshaar(KB)、Houk、Keenan 1954-74、Bidelman等;含TiO温度类-ZrO强度双参数",
+      "category": "classification",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "css_catalog_number",
+      "name_cn": "CSS星表编号",
+      "description": "III/168第二版顺序编号(1-1347),S星命名与交叉证认基准(第一版III/60编号GCSS亦在Names列)",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "intrinsic_extrinsic_class",
+      "name_cn": "内在/外在S星类型",
+      "description": "按Tc含量判别:a=Tc-deficient(外在,双星),b=Tc-rich(内在,热脉冲),c=贫Tc候选",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hr_diagram_region",
+      "name_cn": "HR图区域",
+      "description": "A-E区域编号,HR图上的光度/演化阶段分组",
+      "category": "classification",
+      "ucd": "obs.field",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_detections",
+      "name_cn": "SiO/H2O/OH脉泽检测",
+      "description": "S星SiO(星周热脉泽)、H2O、OH(1612MHz)脉泽存在性(表3,55颗)及类型(表1 Names列),示踪高速星风与外在包层",
+      "category": "environment",
+      "ucd": "em.radio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "envelope_resolved_60um",
+      "name_cn": "60微米分辨拱星包层标志",
+      "description": "60um处被分辨的拱星包层S星清单(30颗),直接包层成像样本",
+      "category": "environment",
+      "ucd": "phys.angSize;em.IR.30-60um",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

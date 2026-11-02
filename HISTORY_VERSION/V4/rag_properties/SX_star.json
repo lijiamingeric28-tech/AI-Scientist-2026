@@ -1,0 +1,206 @@
+{
+  "otype": "SX*",
+  "name_cn": "凤凰SX型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_deg",
+      "name_cn": "赤经",
+      "description": "J2000赤经(度),GCVS及其他目录的全天坐标,用于交叉证认",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_deg",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(度),用于交叉证认与星团成员判定",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型",
+      "description": "GCVS变星类型代码(如SX*、DSCT),SX Phe的定义性分类字段,含脉动型与次型说明",
+      "category": "classification",
+      "ucd": "src.variability.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "光谱型(通常A-F型,如A2-F5),来自GCVS及文献,反映脉动星位于不稳定带",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "视向速度,GCVS部分条目提供,用于星团成员与银晕运动学研究",
+      "category": "astrometry",
+      "ucd": "phys.veloc;spect.doppler",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_fundamental",
+      "name_cn": "基频脉动周期",
+      "description": "基频(F)脉动周期,典型0.03-0.08天,是SX Phe定义性参数与PL关系自变量",
+      "category": "variability",
+      "ucd": "phot.period;em.opt",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_first_overtone",
+      "name_cn": "一阶泛音周期",
+      "description": "一阶泛音(1O)脉动周期,与基频周期比(P1/P0~0.77)用于模式证认",
+      "category": "variability",
+      "ucd": "phot.period;stat.fit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pulsation_mode",
+      "name_cn": "脉动模式",
+      "description": "单模/多模或基频/一阶泛音标记,OGLE与Cohen&Sarajedini目录按Petersen图判定",
+      "category": "variability",
+      "ucd": "src.variation;stat.fit",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_max_light",
+      "name_cn": "最大光度时刻",
+      "description": "最大光时刻(HJD),配合周期构成星历表(epoch+period)供O-C周期变化研究",
+      "category": "variability",
+      "ucd": "time.epoch;src.variation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amplitude_peak_to_peak",
+      "name_cn": "峰峰振幅",
+      "description": "I波段(或V波段)峰峰振幅,典型0.03-0.7mag,SX Phe以小振幅为特征",
+      "category": "photometry",
+      "ucd": "phot.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_v_mean",
+      "name_cn": "V波段平均星等",
+      "description": "强度平均V星等,用于PL关系与距离测定",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_i_mean",
+      "name_cn": "I波段平均星等",
+      "description": "强度平均I星等(消光改正后),OGLE时域测光的标准输出,PL关系核心量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index_vi",
+      "name_cn": "颜色指数(V-I)",
+      "description": "V-I颜色(含消光改正),用于星团成员筛选与蓝离散星带定位",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fourier_coefficients",
+      "name_cn": "傅里叶系数",
+      "description": "光变曲线谐波分解的振幅比R21/R31与相位差phi21/phi31,用于模式识别与物理参数拟合",
+      "category": "photometry",
+      "ucd": "phot.lc;stat.fourier",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "metallicity_feh",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "星团或恒星金属丰度[Fe/H](SX Phe为贫金属Pop II星,[Fe/H]<-1常见),Cohen&Sarajedini按宿主星团给出并研究PL关系金属度依赖",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_modulus",
+      "name_cn": "距离模数",
+      "description": "由SX Phe PL关系导出的距离模数,使SX Phe可作为球状星团与矮星系距离指示器",
+      "category": "physical",
+      "ucd": "phot.mag.distMod",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_magnitude",
+      "name_cn": "绝对星等",
+      "description": "绝对星等(通常My~2.5-3.5),由PL关系与成员星团距离标定,反映蓝离散星本质光度",
+      "category": "physical",
+      "ucd": "phot.mag.abs",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Gaia自行分量,用于判定SX Phe是否属于宿主球状星团",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia视差(Gaia DR2/EDR3交叉证认),为亮场SX Phe提供独立距离约束",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_name",
+      "name_cn": "所属球状星团",
+      "description": "宿主球状星团名称,将SX Phe与星团年龄、金属度、距离环境关联",
+      "category": "environment",
+      "ucd": "meta.id.parent",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_membership",
+      "name_cn": "星团成员概率",
+      "description": "基于位置/自行/径向速度的星团成员判定(部分给出成员概率),区分星团成员与前景银晕场星",
+      "category": "environment",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halo_field_flag",
+      "name_cn": "银晕场星标志",
+      "description": "OGLE按PL关系偏离度(>1.5mag)将前景恒星标记为银河系银晕SX Phe,用于区分云内与场星群体",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

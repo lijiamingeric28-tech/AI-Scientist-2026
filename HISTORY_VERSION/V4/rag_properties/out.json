@@ -1,0 +1,413 @@
+{
+  "otype": "out",
+  "name_cn": "外向流",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "外流/HH天体位置赤经(分度依表而异: Wu 2004与V/104为B1950, MHO与UWISH2为J2000)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "外流/HH天体位置赤纬(分度依表而异)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lon",
+      "name_cn": "银经",
+      "description": "外流银经(度, 分/角分)",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_lat",
+      "name_cn": "银纬",
+      "description": "外流银纬(度, 分/角分)",
+      "category": "astrometry",
+      "ucd": "pos.galactic.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "heliocentric_distance",
+      "name_cn": "日心距离",
+      "description": "外流/HH天体到太阳的距离(kpc, V/104为pc), 含误差与双值区间; 是动量/能量等物理量换算的基础",
+      "category": "astrometry",
+      "ucd": "pos.heliocentric.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_plane_height",
+      "name_cn": "距银道面高度",
+      "description": "外流距银道面高度Z(pc), 可含双值区间",
+      "category": "astrometry",
+      "ucd": "pos.cartesian.z",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_size",
+      "name_cn": "外流尺度",
+      "description": "外流最大线性尺度Rmax(pc), 用于外流动能密度与动量估算; 亦含UWISH2两瓣长度(角径, 可换算pc)",
+      "category": "physical",
+      "ucd": "phys.size",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_collimation",
+      "name_cn": "外流准直因子",
+      "description": "外流准直度(长径/短径比), 描述喷流状形态",
+      "category": "physical",
+      "ucd": "phys.size.axisRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_line_width",
+      "name_cn": "CO线全宽",
+      "description": "CO外流全线宽DeltaV(km/s), 表征外流气体运动速度",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_mass",
+      "name_cn": "外流质量",
+      "description": "CO外流气体质量(Msun), 含误差与双值区间",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_momentum",
+      "name_cn": "外流动量",
+      "description": "外流动量P(Msun*km/s), 用于评估对母云反馈与驱动机制",
+      "category": "physical",
+      "ucd": "phys.momentum",
+      "unit": "Msun*km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_kinetic_energy",
+      "name_cn": "外流动能",
+      "description": "外流动能E(10^38 J), 用于评估对周围湍流的能量注入",
+      "category": "physical",
+      "ucd": "phys.energy",
+      "unit": "erg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_dynamical_time",
+      "name_cn": "动力学时间",
+      "description": "外流动力学年龄t(10^4 yr), 由尺度/速度估算",
+      "category": "physical",
+      "ucd": "time.dynamical",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_mechanical_luminosity",
+      "name_cn": "外流机械光度",
+      "description": "外流机械光度Lm(solarLum), 喷流驱动能量的直接度量",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_driving_force",
+      "name_cn": "外流驱动力",
+      "description": "外流驱动力/推力F(10^-4 Msun*km/s/yr), 即动量流量",
+      "category": "physical",
+      "ucd": "phys.force",
+      "unit": "Msun*km/s/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "source_mass_loss_rate",
+      "name_cn": "恒星质量损失率",
+      "description": "中心恒星源质量损失率dM/dt(10^-4 Msun/yr), 与吸积率相联系",
+      "category": "physical",
+      "ucd": "phys.massLoss",
+      "unit": "Msun/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "source_bolometric_luminosity",
+      "name_cn": "源热光度",
+      "description": "外流中心源/团块热光度(solarLum): Wu 2004为驱动星, SEDIGISM为ATLASGAL团块(logL)",
+      "category": "physical",
+      "ucd": "phys.luminosity.bolometric",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hh_number",
+      "name_cn": "HH编号",
+      "description": "Herbig-Haro天体标准编号[HH]1-478及别名",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hh_suspected_source",
+      "name_cn": "HH激发源",
+      "description": "HH天体最可能的能量源/驱动星标识(从文献汇编)",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hh_region",
+      "name_cn": "所在区域",
+      "description": "HH天体所在恒星形成区/分子云名称(V/104的Region与MHO星表的Reg)",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mho_number",
+      "name_cn": "MHO编号",
+      "description": "分子氢发射线天体(MHO)标准注册编号, 与HH编号体系互补",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mho_associated_hh",
+      "name_cn": "关联HH天体",
+      "description": "与H2发射结相关联的HH天体编号(交叉认证)",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_polarity",
+      "name_cn": "外流极性",
+      "description": "外流极性分类: Bi双极, MB/MR蓝/红单极, Multi多极, Iso近各向同性",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_morphology",
+      "name_cn": "外流形态",
+      "description": "UWISH2形态分类: B双极(两瓣可见), S单侧, K单结或结群",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "associated_phenomena",
+      "name_cn": "伴随现象",
+      "description": "外流伴随现象编码: II=HII区, H=光学喷流或HH天体, 2=H2喷流, W=水脉泽, I=内落/坍缩",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_lobe_length",
+      "name_cn": "外流瓣长度",
+      "description": "双极外流两瓣各自长度(deg), 可结合距离换算pc尺度",
+      "category": "physical",
+      "ucd": "phys.size",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "outflow_lobe_pa",
+      "name_cn": "外流瓣位置角",
+      "description": "外流两瓣自北向东的位置角(度), 用于研究外流方向与母云磁场/丝状结构对准",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h2_s1_flux",
+      "name_cn": "H2 1-0 S(1)流量",
+      "description": "激波激发H2 1-0 S(1) 2.122um线积分流量(10^-19 W/m2, 逐瓣), 直接度量激波激发强度",
+      "category": "photometry",
+      "ucd": "phot.flux;em.IR.3-30um",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "driving_source_jmag",
+      "name_cn": "驱动源J星等",
+      "description": "候选驱动源近红外J波段星等(2MASS与UGPS两套)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "driving_source_hmag",
+      "name_cn": "驱动源H星等",
+      "description": "候选驱动源近红外H波段星等(2MASS与UGPS两套)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "driving_source_kmag",
+      "name_cn": "驱动源K星等",
+      "description": "候选驱动源K波段星等: 2MASS Ks与UGPS两历元K(用于变源判别与演化分类)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "driving_source_wise_mag",
+      "name_cn": "驱动源WISE星等",
+      "description": "候选驱动源WISE W1(3.4um)-W4(22um)中红外星等, 用于YSO演化阶段分类(原恒星vs经典T Tauri)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "kband_variability",
+      "name_cn": "K波段变幅",
+      "description": "驱动源K波段两历元(UGPS K1/K2)星等差, >0.5mag判为变源(约1/5驱动源)",
+      "category": "variability",
+      "ucd": "phot.mag",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "driving_source_id",
+      "name_cn": "候选驱动源标识",
+      "description": "外流候选驱动源名称及0-95%置信度CL, 并标注在UGPS/2MASS/WISE/AKARI/BGPS中哪些全天星表有探测",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cluster_association_flag",
+      "name_cn": "星团关联标志",
+      "description": "外流是否与星团/星群关联(Y/N), 用于研究成团环境对喷流的影响",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_detection",
+      "name_cn": "脉泽检测标志",
+      "description": "CH3OH(6.7GHz)与H2O(22GHz)脉泽检测标志(Y/N), 示踪团块演化阶段与致密热点",
+      "category": "environment",
+      "ucd": "em.radio.maser",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sio_detection",
+      "name_cn": "SiO检测标志",
+      "description": "SiO(2-1, 86.8GHz)检测标志(Y/N), SiO是激波示踪分子, 表征外流冲击活动",
+      "category": "environment",
+      "ucd": "em.radio.mm",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "clump_mass",
+      "name_cn": "团块质量",
+      "description": "ATLASGAL母团块质量logMc(Msun), 外流环境宿主质量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "clump_h2_column_density",
+      "name_cn": "H2峰值柱密度",
+      "description": "团块峰值H2柱密度logNH2(cm^-2)",
+      "category": "physical",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "clump_volume_density",
+      "name_cn": "体密度",
+      "description": "团块平均体密度lognH2(cm^-3)",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "clump_mass_surface_density",
+      "name_cn": "质量面密度",
+      "description": "团块平均质量面密度Sigma(Msun/pc2)",
+      "category": "physical",
+      "ucd": "phys.massDensity",
+      "unit": "Msun/pc^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co13_peak_velocity",
+      "name_cn": "13CO峰值速度",
+      "description": "观测的13CO与C18O峰值速度(km/s), 定义团块系统速度参考",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wing_velocity_range",
+      "name_cn": "蓝/红翼速度范围",
+      "description": "13CO线蓝翼与红翼各自的速度范围上下限(km/s), 外流检测与速度结构的基础",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "max_outflow_velocity",
+      "name_cn": "最大投影速度",
+      "description": "蓝/红翼相对C18O峰值的最大投影速度Vmax(km/s), 外流最高速气体的度量",
+      "category": "physical",
+      "ucd": "phys.veloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_main_beam_temperature",
+      "name_cn": "谱线主束温度",
+      "description": "13CO与C18O谱线主束温度Tmb(K), 线强度与激发的度量",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature",
+      "unit": "K",
+      "_unit_filled": true
+    }
+  ]
+}

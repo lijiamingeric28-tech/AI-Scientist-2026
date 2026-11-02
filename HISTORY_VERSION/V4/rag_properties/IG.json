@@ -1,0 +1,287 @@
+{
+  "otype": "IG",
+  "name_cn": "交互星系",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "ra_pair",
+      "name_cn": "系统赤经 (J2000)",
+      "description": "交互星系系统在 HST 图像中的 J2000 赤经 (deg)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_pair",
+      "name_cn": "系统赤纬 (J2000)",
+      "description": "交互星系系统在 HST 图像中的 J2000 赤纬 (deg)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra_comp_b1950",
+      "name_cn": "分量赤经 (B1950)",
+      "description": "KPG 目录对分量的 B1950 赤经(小时制,历史历元,现代使用需岁差转换)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_comp_b1950",
+      "name_cn": "分量赤纬 (B1950)",
+      "description": "KPG 目录对分量的 B1950 赤纬(历史历元)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "separation_arcmin",
+      "name_cn": "星系间角距",
+      "description": "主星系与伴星系之间的角距,以角分计(KPG 表以角分给出;S4G 表另给出以星系长径为单位的 Sep2)",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pair_separation_kpc",
+      "name_cn": "星系间投影间距",
+      "description": "对成员星系之间的投影间距,以 kpc 计(Ventou 表 rp;Knapen 表 Sep3),用于判断交互强度与并合概率",
+      "category": "physical",
+      "ucd": "phys.distance",
+      "unit": "kpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "optical_mag",
+      "name_cn": "星系光学星等",
+      "description": "样本星系的光学总星等 (mag)(S4G 表,来自 SDSS DR7/DR8 或利物浦望远镜)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_optical_mag",
+      "name_cn": "伴星系光学星等",
+      "description": "密近伴星系的光学星等 (mag),与主星系星等共同约束质量比",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "apparent_mag_comp",
+      "name_cn": "分量视星等",
+      "description": "KPG 目录对分量的视星等(样本限亮于 15.7 mag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_spec_g1",
+      "name_cn": "光谱红移 (星系1)",
+      "description": "MUSE 光谱测得的对中第一个星系的红移(表分 major/minor 存储)",
+      "category": "spectroscopy",
+      "ucd": "src.redshift;spect.dopplerVeloc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_spec_g2",
+      "name_cn": "光谱红移 (星系2)",
+      "description": "MUSE 光谱测得的对中第二个星系的红移",
+      "category": "spectroscopy",
+      "ucd": "src.redshift;spect.dopplerVeloc",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pair_velocity_difference",
+      "name_cn": "对内视向速度差",
+      "description": "两成员星系的视向速度差 Δv (km/s),与投影间距共同决定动力学束缚与并合判据",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "recession_velocity",
+      "name_cn": "星系退行速度",
+      "description": "S4G 样本星系的退行速度 (km/s)",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity_comp",
+      "name_cn": "分量视向速度",
+      "description": "KPG 对分量的视向速度 (km/s,含均方误差及来源代码,已扣除太阳运动)",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type_emission",
+      "name_cn": "光谱发射强度类型",
+      "description": "KPG 分量发射线强度分类:ABS(吸收)、WEK(弱发射)、MID(中等)、STG(强发射),反映星暴/活动核特征",
+      "category": "spectroscopy",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass_log_g1",
+      "name_cn": "恒星质量 (星系1)",
+      "description": "对中第一个星系的恒星质量,以 log Msun 计(10^7-10^11 Msun 范围)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass_log_g2",
+      "name_cn": "恒星质量 (星系2)",
+      "description": "对中第二个星系的恒星质量,以 log Msun 计",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pair_mass_ratio",
+      "name_cn": "对质量比",
+      "description": "次级与主星系恒星质量之比,划分并合类别:major(1:1-1:6)、minor(1:6-1:100)、very minor(<1:100)",
+      "category": "physical",
+      "ucd": "phys.mass.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "major_diameter_arcmin",
+      "name_cn": "星系角长径",
+      "description": "样本星系角直径 (1-24 arcmin),衡量潮汐拉伸的尺寸基准",
+      "category": "physical",
+      "ucd": "phys.angSize",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "axis_ratio",
+      "name_cn": "长短轴比",
+      "description": "KPG 分量短轴与长轴之比 (0-1),指示潮汐畸变",
+      "category": "physical",
+      "ucd": "phys.size.axisRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "interaction_probability",
+      "name_cn": "交互概率",
+      "description": "Zoobot 卷积神经网络对 HST F814W 图像判定系统为交互星系的概率(入选阈值 0.95-1.0)",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "literature_status",
+      "name_cn": "文献引用状态",
+      "description": "系统是否在 NED/Simbad 中已有引用(Referenced/Unreferenced);约 65% 为 Unreferenced 的新发现",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "merging_type",
+      "name_cn": "并合形态类型",
+      "description": "Hwang 目录的形态分类:M=并合系统、CP=密近对、CM=密近多重系统",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "interaction_class",
+      "name_cn": "交互等级",
+      "description": "S4G 交互分类:A=两个相似大小星系重叠、明显正在并合;B=潮汐臂或星盘强畸变;C=存在弱潮汐特征等交互迹象",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hubble_type",
+      "name_cn": "哈勃形态类型",
+      "description": "KPG 分量的哈勃分类:E、S0、Sx(a/b/c)、Sm 或 Irr",
+      "category": "classification",
+      "ucd": "src.morph",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "companion_name",
+      "name_cn": "伴星系名称",
+      "description": "密近伴星系的常用名称,用于交叉匹配其他目录",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "survey_field",
+      "name_cn": "观测天区",
+      "description": "系统所在巡天天区:RCS2 场名(Hwang)或 MUSE 深场 UDF-Mosaic/HDFS/COSMOS-Gr30/A2744(Ventou)",
+      "category": "environment",
+      "ucd": "meta.id;obs.field",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pair_id",
+      "name_cn": "星系对编号",
+      "description": "对系统的目录编号:KPG/K72 编号、HC2009 编号、MUSE 对编号",
+      "category": "identification",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_id",
+      "name_cn": "对内分量标识",
+      "description": "分量在星系对内的标识(A/B),用于区分主星系与伴星系记录",
+      "category": "identification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "muse_source_id",
+      "name_cn": "MUSE 源编号",
+      "description": "对成员在 MUSE 源目录中的编号,可交叉到 J/A+A/608/A2 等 MUSE 目录",
+      "category": "identification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hst_proposal_id",
+      "name_cn": "HST 观测计划号",
+      "description": "图像来源的 HST 提案号(8183-16435),附观测日期、ObsID 与 DOI",
+      "category": "identification",
+      "ucd": "meta.id;obs.proposal",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

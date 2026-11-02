@@ -1,0 +1,175 @@
+{
+  "field_definitions": {
+    "mass": {
+      "standard_unit": "Msun",
+      "semantic_type": "stellar_mass",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The mass field quantifies the total gravitational mass of the celestial object, expressed in solar masses (Msun)."
+    },
+    "radius": {
+      "standard_unit": "Rsun",
+      "semantic_type": "stellar_radius",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The radius field specifies the physical radius of the star, measured in solar radii (Rsun)."
+    },
+    "spectral_type": {
+      "standard_unit": null,
+      "semantic_type": "classification",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The spectral_type field categorizes the star based on its spectral absorption features and temperature, represented as an alphanumeric classification without a physical unit."
+    },
+    "teff": {
+      "standard_unit": "K",
+      "semantic_type": "effective_temperature",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "The teff field denotes the effective surface temperature of the star, recorded in Kelvin (K)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 11,
+    "sources_exported": 11,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_TIC",
+        "title": "TESS Input Catalog (TIC)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HIPPARCOS",
+        "title": "The Hipparcos and Tycho Catalogues",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HD",
+        "title": "Henry Draper Catalogue (HD)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "SRC_DB_HR",
+        "title": "Bright Star Catalogue (HR)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2021A&A...646A.130A",
+        "title": "Pollux: A weak dynamo-driven dipolar magnetic field and implications for its probable planet",
+        "year": 2021,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 5,
+        "quality_grade": "excellent",
+        "final_route": "Export"
+      },
+      {
+        "source_id": "2009A&A...504..231A",
+        "title": "Discovery of a weak magnetic field in the photosphere of the single giant Pollux",
+        "year": 2009,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006ApJ...652..661R",
+        "title": "Precise Radial Velocities of Giant Stars. II. Pollux and Its Planetary Companion",
+        "year": 2006,
+        "journal": "The Astrophysical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010A&A...516A..13P",
+        "title": "POLLUX: a database of synthetic stellar spectra",
+        "year": 2010,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017A&A...599A..47O",
+        "title": "Detection of thermal radio emission from a single coronal giant",
+        "year": 2017,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2026MNRAS.547ag413R",
+        "title": "Halo photometry and asteroseismology for 98 of the brightest stars observed by TESS",
+        "year": 2026,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015A&A...574A..90A",
+        "title": "The magnetic fields at the surface of active single G-K giants",
+        "year": 2015,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 11,
+      "overall_quality": "excellent",
+      "total_issues": 16
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 6,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 6
+      },
+      "errors_count": 0,
+      "errors": []
+    },
+    "conflict": {
+      "status": "Skipped"
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T17:43:25.094386",
+    "run_id": "7177a745-0ad0-47a3-a1f6-06da8a395c2c",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

@@ -1,0 +1,404 @@
+{
+  "otype": "RS*",
+  "name_cn": "猎犬RS型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "pos_ra",
+      "name_cn": "赤经(J2000)",
+      "description": "系统J2000赤经(时/分/秒),含历元与多星系统中的位置说明",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "系统J2000赤纬(度/角分/角秒)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "Hipparcos自行mu_alpha*cos(delta)与mu_delta(mas/yr),附误差",
+      "category": "astrometry",
+      "ucd": "pos.eq.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Hipparcos三角视差(mas)及其不确定度",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "质心视向速度",
+      "description": "系统质心视向速度Vcm(km/s);Karataş表另给独立RV值",
+      "category": "astrometry",
+      "ucd": "spect.dopplerVeloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "距离(秒差距),来源含视差(phot标为光度法);V/76中另含由绝对星等推算的距离",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "space_velocity",
+      "name_cn": "空间速度(U,V,W)",
+      "description": "相对太阳/局域标准静止系的银心直角系空间速度分量(km/s),由视差、自行与视向速度计算;用于样本运动学年龄与银河系轨道分析",
+      "category": "astrometry",
+      "ucd": "phys.veloc.lsr",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_max",
+      "name_cn": "最大V星等",
+      "description": "Johnson V波段最大亮度(mag),RS CVn亮度变化典型约0.2mag;GCVS给出最大/最小亮度完整范围",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "color_index",
+      "name_cn": "UBVRI色指数",
+      "description": "热/冷子星或合并系统的U-B、B-V、V-R、V-I色指数,括号值表示由光谱型-颜色关系推定;注意活动恒星(V-R)、(V-I)作温度指标不可靠",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_v_mag",
+      "name_cn": "绝对V星等",
+      "description": "系统绝对总V星等M(V),*号表示经消光改正并扣除第三体影响",
+      "category": "photometry",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "flux_ratio",
+      "name_cn": "子星表面流量比",
+      "description": "两子星在给定波段(Band)的表面流量比FRatio及其波长区域说明",
+      "category": "photometry",
+      "ucd": "phot.flux;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photometric_period",
+      "name_cn": "光变(自转)周期",
+      "description": "由光变曲线得到的测光周期(d),源于自转调制的星斑;约80%的RS CVn被潮汐锁定,测光周期≈轨道周期,差异来自较差自转;附上限/区间与Porb标记",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "migration_period",
+      "name_cn": "斑点波迁移周期",
+      "description": "光斑波相对轨道位相迁移的周期(年),由1/Pmigr=1/Ppho-1/Porb关系或长期测光确定,反映星斑经度漂移(较差自转/活动经度带)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "activity_cycle_period",
+      "name_cn": "活动循环周期",
+      "description": "星斑覆盖/活动水平的长周期循环周期(年),如AR Lac约17年;由光变波振幅或波形的年际演化测定",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wave_amplitude",
+      "name_cn": "星斑波振幅",
+      "description": "V波段(或R/b/y)光变曲线畸变波(星斑波)最大振幅(mag),是星斑覆盖面积占比的直接光度量度;const/var/small等注记说明是否存在波",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "轨道周期Porb(天),附相对周期变化信息PorbVar(如光时效应LTE、周期递减)与相零历元T0性质",
+      "category": "variability",
+      "ucd": "time.period.orbit",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch",
+      "name_cn": "历元/极小时刻",
+      "description": "相零儒略日T0(JD-2400000)及其物理定义(主极小、近星点、最大视向速度、合等)",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_type",
+      "name_cn": "变星类型(GCVS)",
+      "description": "GCVS 5.1给出的变星类型代码与描述,RS*即猎犬RS型,含RS、RS/EA等组合型与Hall五子类定义文本",
+      "category": "classification",
+      "ucd": "src.class.variable",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_amplitude",
+      "name_cn": "变星总变幅",
+      "description": "GCVS给出的总光变幅度与变光范围(最大/最小星等),可能含食深与星斑波叠加",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "热+冷子星的光谱型与光度级(如G5IV+K0IV),括号表示三体系统中密近双星",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "自转投影速度",
+      "description": "热/冷子星投影自转速度v sin i(km/s),带极限/不确定度标记与探测注记(Invz不可见等)",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ca2_hk_emission",
+      "name_cn": "Ca II H&K发射",
+      "description": "Ca II H&K线发射核强度与归属子星(热/冷/双星),及发射强度描述(str/weak/var/above continuum等);RS CVn判据之一,是色球活动核心指标",
+      "category": "spectroscopy",
+      "ucd": "spect.line.strength",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_emission",
+      "name_cn": "H-alpha发射/填线",
+      "description": "Halpha线行为:发射、核心填充、与光斑波相关/反相关、耀斑、冕/日珥模型等;与Ca II HK互补的色球活动指标",
+      "category": "spectroscopy",
+      "ucd": "spect.line.strength",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "li_abundance",
+      "name_cn": "锂丰度",
+      "description": "热/冷子星锂丰度log n(Li)(太阳单位),附检测注记(Not dtc未检测等);RS CVn巨星常呈锂超丰,与自转/轨道角动量转移相关",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feh",
+      "name_cn": "金属丰度[Fe/H]",
+      "description": "热/冷子星相对太阳的铁丰度,带极限标记",
+      "category": "spectroscopy",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "热/冷子星有效温度Teff(K),含第二值;色球活动恒星测光色温指标(V-R/V-I)存在系统偏差,以谱分析值为准",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力",
+      "description": "热/冷子星对数表面重力log g(cgs),方括号表示由星表数据计算值",
+      "category": "physical",
+      "ucd": "phys.gravity",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "子星质量",
+      "description": "热/冷子星质量(太阳质量);*号表示质量含sin^3(i)因子;含三体系统总质量注记",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "子星半径",
+      "description": "热/冷子星半径(太阳半径);]号表示由星表数据自行计算;约束星斑占表面比例与食几何",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function",
+      "name_cn": "质量函数",
+      "description": "光谱轨道质量函数f(M),对单谱线SB1系统提供子星质量下限",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面(或自转轴,rot注记)倾角i(度);决定是否食双星及质量定解;异步系统自转轴与轨道面常不共面",
+      "category": "physical",
+      "ucd": "src.orbital.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率e及近星点经度omega;短周期同步系统多为圆轨道",
+      "category": "physical",
+      "ucd": "src.orbital.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "semi_major_axis",
+      "name_cn": "轨道半长轴",
+      "description": "视轨道半长轴a(10^6 km),aType说明a、a1、a sin i或a1 sin i",
+      "category": "physical",
+      "ucd": "phys.size.smajAxis",
+      "unit": "km",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_semiamplitude",
+      "name_cn": "视向速度半振幅",
+      "description": "热/冷子星视向速度曲线半振幅K1、K2(km/s),谱线性质(宽/窄)注记辅助分辨",
+      "category": "physical",
+      "ucd": "spect.dopplerVeloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "系统X射线光度Lx(10^31 erg/s),源自ROSAT(PSPC)等观测;RS CVn日冕T~10^7K,Lx>>10^24 W,含耀斑/相关性注记。Dempsey 1993/1997的ROSAT样本数据已汇入本列",
+      "category": "physical",
+      "ucd": "phys.luminosity.X",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux",
+      "name_cn": "射电流量密度",
+      "description": "射电连续谱流量密度SRadio(mJy),非热回旋同步辐射为主,是磁场的直接示踪物;含毫米波耀斑注记",
+      "category": "physical",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "mJy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnetic_field",
+      "name_cn": "磁场强度",
+      "description": "测得的表面磁场强度MF(高斯,表列单位为10^-4 T),含T inf注记",
+      "category": "physical",
+      "ucd": "phys.magField",
+      "unit": "G",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "polarization",
+      "name_cn": "偏振",
+      "description": "光/射电偏振测量信息及文献",
+      "category": "physical",
+      "ucd": "phys.polarization",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse",
+      "name_cn": "食性质",
+      "description": "食类型:无食/全食(环食)/偏食/可能食,附文献;V/76另用NONE/TOT/PRTL/PSBL码",
+      "category": "physical",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cab_class",
+      "name_cn": "活动双星分类(RS CVn/BY Dra)",
+      "description": "经典活动双星分类RS CVn或BY Dra及其定义文献,RS CVn按Hall(1976)判据细分五子类(常规/短周期/长周期/耀星/V471 Tau型)",
+      "category": "classification",
+      "ucd": "src.class.variable",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sb_type",
+      "name_cn": "光谱双星性质",
+      "description": "SB1单谱线/SB2双谱线/SB3三谱线/谱线性质未知,描述谱可见性",
+      "category": "classification",
+      "ucd": "src.class.binary",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_id",
+      "name_cn": "交叉证认标识",
+      "description": "HD/HDE、HIP、HR、SAO、CCABS(1版)、CABS(2版)编号及其他来源名称(BD/CD/GCVS/RXJ/2E/2REJ等);GCVS含变星命名与交叉证认表",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity",
+      "name_cn": "三体/伴星",
+      "description": "系统在三星/多星结构中的位置、第三体质量注记与comments.dat说明;RS CVn主星常有远距伴星(如Roettenbacher 2015对sigma Gem的干涉测量);V/128参2含Porb变化指示光时效应",
+      "category": "environment",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "starspot_parameters",
+      "name_cn": "星斑参数与模型",
+      "description": "星斑建模方法与结果注记(SpotMod):Doppler成像DI、光变曲线建模LC、Wilson-Devinney WD、最大熵MaxE、Zeeman DI、TiO/OH分子带等;结合per.dat波振幅与迁移周期构成星斑覆盖-纬度-经度演化的完整观测约束",
+      "category": "physical",
+      "ucd": "phys.temperature.photosphere",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

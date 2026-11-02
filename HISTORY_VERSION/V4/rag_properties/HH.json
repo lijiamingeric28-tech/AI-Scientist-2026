@@ -1,0 +1,305 @@
+{
+  "otype": "HH",
+  "name_cn": "Herbig-Haro天体",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "hh_number",
+      "name_cn": "HH编号",
+      "description": "Herbig-Haro天体序号(HH n),含多结后缀索引(如HH 99A/B)",
+      "category": "classification",
+      "ucd": "meta.id;src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "alt_designation",
+      "name_cn": "其他命名/别名",
+      "description": "同一HH天体的历史命名或其他编号",
+      "category": "classification",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_eq_1950",
+      "name_cn": "赤道坐标(B1950)",
+      "description": "历元1950.0的赤经赤纬(经典HH表多采用B1950)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance_pc",
+      "name_cn": "距离(秒差距)",
+      "description": "HH天体所在恒星形成区的距离,单位pc",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "exciting_source",
+      "name_cn": "激发源/驱动源",
+      "description": "最可能的激发源(年轻恒星/原恒星候选)名称",
+      "category": "environment",
+      "ucd": "meta.id;src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "region_name",
+      "name_cn": "所在恒星形成区",
+      "description": "HH天体所属恒星形成区或分子云名称(如Orion, Taurus)",
+      "category": "environment",
+      "ucd": "obs.field",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_assoc",
+      "name_cn": "关联IRAS源",
+      "description": "与HH激发源关联的IRAS点源编号",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "co_outflow_assoc",
+      "name_cn": "伴生CO外流标志",
+      "description": "是否检测到与HH关联的CO分子外流(YES/NO)",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology_note",
+      "name_cn": "形态/性质注记",
+      "description": "每个HH天体的形态与激波性质文字描述,含文献bibcode引用",
+      "category": "classification",
+      "ucd": "src.morphology",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bibcode_ref",
+      "name_cn": "参考文献bibcode",
+      "description": "19位ADS bibcode形式的文献引用",
+      "category": "environment",
+      "ucd": "meta.bib.bibcode",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ha_flux",
+      "name_cn": "Hα线通量",
+      "description": "Hα发射线积分通量(Feige 34定标),单位aW/m2(1e-18 W/m2)",
+      "category": "photometry",
+      "ucd": "phot.flux;em.line.Halpha",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sii_flux",
+      "name_cn": "[SII]双线通量",
+      "description": "[SII] λ6716+6731双线总通量,单位aW/m2",
+      "category": "photometry",
+      "ucd": "phot.flux;em.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "source_area",
+      "name_cn": "源角面积",
+      "description": "HH发射源在图像上的面积,单位角秒平方",
+      "category": "physical",
+      "ucd": "phys.angArea",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "HH天体/激波结的视向速度或相对静止速度,单位km/s",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_fwhm",
+      "name_cn": "谱线半高全宽",
+      "description": "发射线的FWHM,单位km/s(激波增宽诊断量)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_wavelength",
+      "name_cn": "谱线静止波长",
+      "description": "发射线静止波长,单位埃",
+      "category": "spectroscopy",
+      "ucd": "em.wl;spect.line",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "observed_wavelength",
+      "name_cn": "观测波长",
+      "description": "发射线观测波长(含多普勒位移),单位埃",
+      "category": "spectroscopy",
+      "ucd": "em.wl",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ion_species",
+      "name_cn": "离子标识",
+      "description": "发射线所属离子(如[O I], [S II], H I, H2)",
+      "category": "spectroscopy",
+      "ucd": "phys.atmol.ionStage",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "upper_level_energy",
+      "name_cn": "上能级激发能Eup",
+      "description": "跃迁上能级能量,单位cm-1",
+      "category": "spectroscopy",
+      "ucd": "phys.energy.level",
+      "unit": "eV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lower_level_energy",
+      "name_cn": "下能级能量Elo",
+      "description": "跃迁下能级能量,单位cm-1",
+      "category": "spectroscopy",
+      "ucd": "phys.energy.level",
+      "unit": "eV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "forbidden_line_flux",
+      "name_cn": "原子禁线通量",
+      "description": "原子禁线(如[O I],[O II],[S II],[Fe II])通量及双分量、误差,单位1e-17 erg/s/cm2",
+      "category": "photometry",
+      "ucd": "phot.flux;spect.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "recombination_line_flux",
+      "name_cn": "复合线通量",
+      "description": "He I/He II/H复合线通量及误差,单位1e-17 erg/s/cm2",
+      "category": "photometry",
+      "ucd": "phot.flux;spect.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h2_line_flux",
+      "name_cn": "H2分子线通量",
+      "description": "H2振转线(含v量子数,2.12µm等近红外)通量及误差",
+      "category": "photometry",
+      "ucd": "phot.flux;em.line.NIR",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hbeta_flux",
+      "name_cn": "Hβ绝对通量",
+      "description": "Hβ谱线绝对通量,单位erg/cm2/s,用于流量定标",
+      "category": "photometry",
+      "ucd": "phot.flux;em.line.Hbeta",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_flux_rel_hbeta",
+      "name_cn": "相对Hβ谱线通量比",
+      "description": "各谱线通量相对于Hβ的比值F/Fβ,激发/消光诊断基础量",
+      "category": "photometry",
+      "ucd": "phot.flux;arith.ratio;em.line.Hbeta",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_intensity_rel_hbeta",
+      "name_cn": "消光改正强度比(I/Iβ)",
+      "description": "消光改正后谱线强度相对Hβ的比值,用于电子密度/温度诊断",
+      "category": "photometry",
+      "ucd": "phot.flux;arith.ratio;em.line.Hbeta",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_flux_density",
+      "name_cn": "1-20µm多历元红外测光",
+      "description": "HH激发源1-20µm波长多历元(1965-1992)测光值及误差、口径信息",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "observation_epoch",
+      "name_cn": "观测历元(年份)",
+      "description": "测光观测年份(1965-1992),多历元数据可用于HH结亮度变化研究",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "electron_density",
+      "name_cn": "电子密度ne",
+      "description": "由禁线比(如[S II] 6716/6731、[O II] 3726/3729)推导的电子密度",
+      "category": "physical",
+      "ucd": "phys.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "electron_temperature",
+      "name_cn": "电子温度Te",
+      "description": "由谱线强度比(如[O III]/[N II]等)推导的电子温度",
+      "category": "physical",
+      "ucd": "phys.temperature.electron",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chemical_abundance",
+      "name_cn": "化学丰度/金属丰度",
+      "description": "由高分辨谱线强度推导的离子/元素丰度(C,N,O,S,Fe等),评估HH天体金属丰度",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "shock_velocity",
+      "name_cn": "激波速度",
+      "description": "由H2振转线通量比及光学禁线诊断的激波速度/温度(论文推导量)",
+      "category": "physical",
+      "ucd": "phys.velocity",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "excitation_class",
+      "name_cn": "激发类别(组分)",
+      "description": "谱线双高斯分解的组分类别:激波组分与光电离/星云组分",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

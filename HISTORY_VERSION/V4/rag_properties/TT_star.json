@@ -1,0 +1,350 @@
+{
+  "otype": "TT*",
+  "name_cn": "金牛T型星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经(光学或X射线位置)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(光学或X射线位置)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "日心距离",
+      "description": "目标恒星的距离(pc), 用于光度与质量标定",
+      "category": "astrometry",
+      "ucd": "pos.distance;pos.heliocentric",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "日心视向速度及其误差, 用于运动学成员判定与双星搜寻",
+      "category": "astrometry",
+      "ucd": "phys.veloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ic_mag",
+      "name_cn": "Cousins I星等",
+      "description": "Cousins I波段星等及误差, 用于光变与周期搜索",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "v_mag",
+      "name_cn": "Johnson V星等",
+      "description": "来自TYCHO星表的Johnson V星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B-V色指数",
+      "description": "Johnson B-V色指数",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "photospheric_flux_7510",
+      "name_cn": "7510A光球流量密度",
+      "description": "经消光改正的7510A光球流量logF, 用于推导光度与半径",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.opt",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "irac_mag",
+      "name_cn": "Spitzer IRAC星等",
+      "description": "Spitzer IRAC 3.6/4.5/5.8/8.0um波段星等及质量标志, 探测内盘热尘",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.3-30um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mips24_mag",
+      "name_cn": "MIPS 24um星等",
+      "description": "Spitzer MIPS 24um星等, 对温尘盘/外盘敏感",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.30-60um",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_mag",
+      "name_cn": "WISE W1-W4星等",
+      "description": "WISE 3.4/4.6/12/22um星等, 构建SED判别盘",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_count",
+      "name_cn": "X射线计数",
+      "description": "RASS背景扣除后的X射线计数及误差、曝光时间与最大似然探测置信度",
+      "category": "photometry",
+      "ucd": "phot.count;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_hardness",
+      "name_cn": "X射线硬度比",
+      "description": "ROSAT PSPC硬度比HR1、HR2, 反映X射线谱软硬程度",
+      "category": "photometry",
+      "ucd": "phot.color;em.X-ray",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "MK光谱型, TTS多为K-M型; Herczeg表为统一光学模板测定的精度类型",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "teff",
+      "name_cn": "有效温度",
+      "description": "有效温度(K)及误差",
+      "category": "physical",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "logg",
+      "name_cn": "表面重力加速度",
+      "description": "表面重力log g及误差, 与年龄/半径相关",
+      "category": "physical",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fe_h",
+      "name_cn": "铁丰度",
+      "description": "相对太阳的铁丰度[Fe/H]",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_av",
+      "name_cn": "光学消光A_V",
+      "description": "V波段消光, 由光学光谱拟合得到",
+      "category": "physical",
+      "ucd": "phot.extinction;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_aj",
+      "name_cn": "J波段消光A_J",
+      "description": "J波段消光及导出方法标志(色指数、CTTS内禀色或光谱法)",
+      "category": "physical",
+      "ucd": "phot.extinction;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "恒星光度",
+      "description": "总光度logL(Lsun), 结合Teff构建H-R图",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radius",
+      "name_cn": "恒星半径",
+      "description": "恒星半径(Rsun)",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass",
+      "name_cn": "恒星质量",
+      "description": "恒星质量(Msun), 来自理论演化轨迹插值",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "age",
+      "name_cn": "恒星年龄",
+      "description": "对数年龄logA(yr)",
+      "category": "physical",
+      "ucd": "phys.age",
+      "unit": "yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vsini",
+      "name_cn": "投影自转速度",
+      "description": "v sin i及误差(CCF与ROTFIT两种方法), 衡量自转速率",
+      "category": "physical",
+      "ucd": "phys.veloc.rot",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "li_ew",
+      "name_cn": "Li I 6708A等效宽度",
+      "description": "锂线等效宽度, 前主序星年轻性的经典判据",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;phys.abund.Li",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_ew",
+      "name_cn": "Halpha等效宽度",
+      "description": "Halpha 6563A等效宽度, 反映吸积与色球活动强度",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.line.Halpha",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "veiling_7510",
+      "name_cn": "7510A连续谱遮蔽量",
+      "description": "吸积激波连续谱对光球连续谱的遮蔽量r7510, 吸积率(Mdot)的代理指标",
+      "category": "spectroscopy",
+      "ucd": "spect.continuum",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_plasma_temp",
+      "name_cn": "X射线等离子体温度",
+      "description": "X射线发射等离子体温度kT(keV)",
+      "category": "physical",
+      "ucd": "phys.temperature;em.X-ray",
+      "unit": "keV",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_column_density",
+      "name_cn": "氢柱密度N(H)",
+      "description": "前景中性氢柱密度, 谱拟合自由参数",
+      "category": "physical",
+      "ucd": "phys.columnDensity",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_luminosity",
+      "name_cn": "X射线光度",
+      "description": "能量转换因子改正后的X射线光度Lx(10^30 erg/s)",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_surface_flux",
+      "name_cn": "X射线表面流量",
+      "description": "X射线表面流量Fs, 与自转/发电机活动比较",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rotation_period",
+      "name_cn": "自转周期",
+      "description": "由光变周期图(Scargle与CLEAN互证)得到的最终自转周期(d)",
+      "category": "variability",
+      "ucd": "phot.period;var.rotation",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "tts_class",
+      "name_cn": "经典/弱线TTS类型",
+      "description": "经典TTS(C, 有吸积盘)与弱线TTS(W, 无盘)分类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "disk_class",
+      "name_cn": "盘形态分类",
+      "description": "按红外SED判定的盘类型: full、transitional、evolved、debris/ev trans等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ir_excess_flag",
+      "name_cn": "红外过量标志",
+      "description": "各波段(IRAC 4.5/8.0um、MIPS 24um、WISE W2-W4)是否存在红外过量, 判定盘有无",
+      "category": "classification",
+      "ucd": "phot.color.excess",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pms_membership",
+      "name_cn": "前主序成员判定",
+      "description": "两项PMS检验(位置/颜色与周期-光度判据)结果, 判定是否NGC 2264前主序成员",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "multiplicity",
+      "name_cn": "多重性标志",
+      "description": "单星/光谱双星(SB1/SB2/SB3)及目视双星、三合星等标志, 评估伴星对盘与吸积影响",
+      "category": "classification",
+      "ucd": "src.class.arity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_region",
+      "name_cn": "宿主恒星形成区",
+      "description": "成员归属的恒星形成区或星协(金牛座、NGC 2264、ChaI、Lupus等), 关联环境年龄与密度",
+      "category": "environment",
+      "ucd": "meta.id.assoc",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

@@ -1,0 +1,269 @@
+{
+  "otype": "LP*",
+  "name_cn": "长周期变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经(J2000)",
+      "description": "J2000赤道坐标赤经(时/分/秒),OGLE表按h/m/s分列",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬(J2000)",
+      "description": "J2000赤道坐标赤纬(度/角分/角秒)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "三角视差(角秒),来自Gaia源表(gaia_source),可推导距离与光度定标",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "赤经/赤纬方向自行(角秒/年),Gaia天体测量,用于运动学与伴星研究",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "g_mag",
+      "name_cn": "G波段平均星等",
+      "description": "Gaia G波段平均星等(约320-1000nm,深度至G=20 mag)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "imag_mean",
+      "name_cn": "I波段强度平均星等",
+      "description": "OGLE I波段强度平均星等(对整个光变周期积分),LP*亮度统计基准量",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.I",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "vmag_mean",
+      "name_cn": "V波段强度平均星等",
+      "description": "OGLE V波段强度平均星等(部分亮星或子集有测光,如MW Mira仅约2万颗有V波段)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_max_min",
+      "name_cn": "极大/极小星等",
+      "description": "GCVS记录的最大与最小(或振幅)星等,附测光系统代码(p目视/V等)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "delta_wl_rp",
+      "name_cn": "RP光谱分子带伪波长分离度",
+      "description": "Gaia低分辨率RP光谱两个主峰间伪波长差中位数,>7指示CN带(碳星)、<7为TiO带(富氧星),>12为不可靠值",
+      "category": "spectroscopy",
+      "ucd": "spect.index;em.opt.R",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sp_type_mk",
+      "name_cn": "MK光谱型",
+      "description": "GCVS给出的MK光谱分类(如M5e、C型等),指示温度序列与富碳特性",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "evol_status",
+      "name_cn": "演化状态",
+      "description": "RGB(红巨星支)或AGB(渐近巨星支),由星等在颜色-星等图中的位置判定,仅LMC/SMC目录提供",
+      "category": "physical",
+      "ucd": "phys.evol",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "chemistry_oc",
+      "name_cn": "富氧/富碳化学分类",
+      "description": "O=富氧星、C=富碳星(含碳星),影响振幅-周期关系和周期光度关系形态",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_primary",
+      "name_cn": "主周期",
+      "description": "主脉动周期(天),OGLE(64-1748天,Mira典型150-600天)与GCVS给出",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_secondary",
+      "name_cn": "次周期",
+      "description": "自动检测的次级周期(天),对应多模脉动或长次级周期(LSP)",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period_tertiary",
+      "name_cn": "第三周期",
+      "description": "自动检测的第三周期(天),用于多周期OSARG/SRV脉动模式分析",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "frequency",
+      "name_cn": "振荡频率",
+      "description": "Gaia LPV频率(1/天),搜索范围0.0007-0.1/天(对应周期35-1000天),附频率误差",
+      "category": "variability",
+      "ucd": "time.frequency",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amp_primary",
+      "name_cn": "主周期I波段振幅",
+      "description": "主周期I波段振幅(星等),是区分Mira(>0.8mag)与SRV/OSARG(毫星等级)的核心判据",
+      "category": "variability",
+      "ucd": "phot.mag.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amp_secondary",
+      "name_cn": "次周期振幅",
+      "description": "次级周期对应I波段振幅(星等)",
+      "category": "variability",
+      "ucd": "phot.mag.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amp_tertiary",
+      "name_cn": "第三周期振幅",
+      "description": "第三周期对应I波段振幅(星等)",
+      "category": "variability",
+      "ucd": "phot.mag.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "amp_g_gaia",
+      "name_cn": "G波段峰-峰半振幅",
+      "description": "Gaia最佳拟合模型的G波段峰-峰半振幅(星等),入选阈值>0.1mag(5-95%分位),与实测范围可能不同",
+      "category": "variability",
+      "ucd": "phot.mag.amplitude;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "epoch_max",
+      "name_cn": "极大时刻(儒略日)",
+      "description": "光变极大时刻(JD),食/椭球变星或RV Tau等为极小/特殊历元,用于周期折叠",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_m_ratio",
+      "name_cn": "上升时间占比",
+      "description": "光变上升时间占周期百分比(M-m),刻画光变曲线非对称性",
+      "category": "variability",
+      "ucd": "time.phase",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "remark_flags",
+      "name_cn": "备注标志",
+      "description": "OGLE备注:LSP=长次级周期(PL序列D)、ECL/ELL=食/椭球变(PL序列E)、DoPhot=DoPhot测光,标志约30%LPV的次生现象",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "var_subtype",
+      "name_cn": "变星亚型",
+      "description": "Mira/SRV(半规则)/OSARG(OGLE小振幅红巨星),按振幅与周期-光度关系划分",
+      "category": "classification",
+      "ucd": "src.class.variable",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gcvs_type",
+      "name_cn": "GCVS变星类型代码",
+      "description": "GCVS类型代码(M=米拉、SR=半规则、L=缓变不规则等),对应本otype(LP*)包含的L、SR、OSARG亚类",
+      "category": "classification",
+      "ucd": "src.class.variable",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "is_cstar",
+      "name_cn": "碳星候选标志",
+      "description": "布尔标志:由median_delta_wl_rp>7判定为C星候选(546,468颗),FALSE为富氧候选,推荐取7-11且G_BP<19的高可靠子集",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sky_region",
+      "name_cn": "所在天区/星系位置",
+      "description": "目标所在环境:LMC/SMC/银心核球(BLG)/银盘(GD),对应不同金属丰度与距离环境",
+      "category": "environment",
+      "ucd": "pos",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "field_id",
+      "name_cn": "OGLE观测场编号",
+      "description": "OGLE-III/IV巡天场编号(如BLGxxx、LMCxxx),对应不同积分时间与深度",
+      "category": "environment",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cross_ids",
+      "name_cn": "交叉证认ID",
+      "description": "与其他星表的交叉证认:OGLE-II、MACHO、GCVS、Gaia source_id,MW Mira另含VSX/ASAS-SN/ZTF最佳匹配名",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

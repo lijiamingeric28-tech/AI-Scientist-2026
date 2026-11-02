@@ -1,0 +1,242 @@
+{
+  "otype": "PCG",
+  "name_cn": "原星系团",
+  "description": "",
+  "priority": "B",
+  "properties": [
+    {
+      "property_id": "pcg_name",
+      "name_cn": "原星系团名称",
+      "description": "原星系团/过密度结构候选体标识符(如PCz6.44-01、DNADNN编号、AMICO组编号)",
+      "category": "astrometry",
+      "ucd": "meta.id;meta.main",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ra",
+      "name_cn": "赤经",
+      "description": "J2000赤经,结构峰位置或成员星系坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬,结构峰位置或成员星系坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_galaxy_id",
+      "name_cn": "成员星系标识符",
+      "description": "结构成员星系在源目录(COSMOS2020、Steidel+2003等)中的编号,可交叉匹配完整测光/物理量",
+      "category": "astrometry",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_spec",
+      "name_cn": "光谱红移",
+      "description": "经光谱证认的红移,含置信度标志,用于确认原星系团成员结构",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_phot",
+      "name_cn": "测光红移",
+      "description": "多波段SED拟合红移(LePhare、EAZY等),含上下不对称误差",
+      "category": "spectroscopy",
+      "ucd": "src.redshift.phot",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "z_structure",
+      "name_cn": "结构平均红移",
+      "description": "过密度结构成员的平均红移,定义结构的红移位置",
+      "category": "spectroscopy",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ew_lya",
+      "name_cn": "Lyα等值宽度",
+      "description": "静止系Lyα等值宽度,环境效应(如z~4成员星系Lyα弱化)的探针",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lya_skewness",
+      "name_cn": "Lyα线轮廓不对称性",
+      "description": "Lyα线加权偏度/不对称性,反映星际介质与光子逃逸几何",
+      "category": "spectroscopy",
+      "ucd": "spect.line.asymmetry",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_multi",
+      "name_cn": "多波段视星等",
+      "description": "光学多波段视星等(探测波段孔径星等i'/z'及u*,g,r,i,z,BVRi'z'等2″孔径星等),用于SED拟合",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mag_nir",
+      "name_cn": "近红外星等",
+      "description": "近红外/中红外星等(Ks、IRAC 3.6/4.5/5.8/8.0um),示踪恒星质量与高红移红序列",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "m_uv_abs",
+      "name_cn": "紫外绝对星等",
+      "description": "静止系UV绝对星等(如1300A处M_UV),表征星系光度与紫外光度函数位置",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lya_flux",
+      "name_cn": "Lyα线流量",
+      "description": "观测Lyα线流量,LAE选择与光度估计的基础量",
+      "category": "photometry",
+      "ucd": "phot.flux;spect.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lya_luminosity",
+      "name_cn": "Lyα线光度",
+      "description": "Lyα线光度,高红移恒星形成/AGN活动示踪",
+      "category": "photometry",
+      "ucd": "phys.luminosity;spect.line",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "SED拟合恒星质量(对数,Msun),含不对称误差;累加成员可得结构总恒星质量",
+      "category": "physical",
+      "ucd": "phys.mass.stellar",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "恒星形成率(如紫外导出SFR,Msun/yr),累加可得结构SFR与SFR密度",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halo_mass",
+      "name_cn": "暗物质晕质量",
+      "description": "结构暗物质晕质量估计(丰度匹配Behroozi+2013或HOD模型),预示z=0宿主星团质量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lx_xray",
+      "name_cn": "X射线光度",
+      "description": "2-8keV X射线光度,表征成员星系AGN与星暴活动",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galaxy_class",
+      "name_cn": "星系类型",
+      "description": "星系/AGN类型标志:dropout类(u/g/r/i)、LBG、LAE、QSO、X射线AGN等",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_flag",
+      "name_cn": "原星系团成员标志",
+      "description": "星系是否属于原星系团(成员/场星系标志,如3.06<=z<=3.12成员定义)",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "membership_probability",
+      "name_cn": "成员概率",
+      "description": "星系属于该结构/场的概率(组关联概率与场概率),用于成员选样",
+      "category": "classification",
+      "ucd": "stat.probability",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology",
+      "name_cn": "星系形态参数",
+      "description": "GALFITM形态参数(Sersic指数、有效半径、轴比、位角)、Gini/M20浓度指数及目视并合分类(孤立/并合/不确定)",
+      "category": "classification",
+      "ucd": "src.morph",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "overdensity",
+      "name_cn": "过密度",
+      "description": "相对场密度的过密度(峰值delta或sigma显著性),原星系团核心判据;>4sigma视为候选体",
+      "category": "environment",
+      "ucd": "src.density",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "local_galaxy_density",
+      "name_cn": "局域星系密度",
+      "description": "局域星系面密度(如3'半径内dropout星系数、局域LAE密度),表征星系局域环境",
+      "category": "environment",
+      "ucd": "src.density",
+      "unit": "pc^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "member_gal_count",
+      "name_cn": "结构内星系数",
+      "description": "过密度等值线内/给定半径内成员星系数目(含光谱确认数Nspec)",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "richness",
+      "name_cn": "丰度λ",
+      "description": "AMICO匹配滤波组丰度(lambda与固有丰度lambda*),结构与质量代理",
+      "category": "environment",
+      "ucd": "src.class.richness",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

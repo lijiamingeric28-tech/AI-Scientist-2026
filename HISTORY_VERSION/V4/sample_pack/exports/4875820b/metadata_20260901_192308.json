@@ -1,0 +1,413 @@
+{
+  "field_definitions": {
+    "distance": {
+      "standard_unit": "pc",
+      "semantic_type": "distance",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the line-of-sight distance from Earth to the astronomical source, expressed in parsecs (pc)."
+    },
+    "m_h": {
+      "standard_unit": "dex",
+      "semantic_type": "metallicity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Quantifies the overall logarithmic metallicity of the object relative to solar composition, reported in dex."
+    },
+    "metallicity_Fe_H": {
+      "standard_unit": "dex",
+      "semantic_type": "metallicity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Specifies the logarithmic iron-to-hydrogen abundance ratio compared to the Sun, measured in dex."
+    },
+    "parallax": {
+      "standard_unit": "mas",
+      "semantic_type": "parallax",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Records the apparent angular displacement of the object caused by Earth's annual orbital motion, given in milliarcseconds (mas)."
+    },
+    "pulsation_period": {
+      "standard_unit": "d",
+      "semantic_type": "orbital_period",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Defines the characteristic time interval between consecutive brightness maxima for a variable star, measured in days (d)."
+    },
+    "distance_from_PL_relation": {
+      "standard_unit": "kpc",
+      "semantic_type": "astrometry",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "in_data": false,
+      "description": "Calculates the estimated distance to the object based on empirical Period-Luminosity relation calibrations, expressed in kiloparsecs (kpc)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 31,
+    "sources_exported": 31,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_TIC",
+        "title": "TESS Input Catalog (TIC)",
+        "year": null,
+        "journal": "",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_GAIA_DR2",
+        "title": "Gaia Data Release 2 (Gaia DR2)",
+        "year": null,
+        "journal": "",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_GAIA_DR3",
+        "title": "Gaia Data Release 3 (Gaia DR3)",
+        "year": null,
+        "journal": "",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_HIPPARCOS",
+        "title": "The Hipparcos and Tycho Catalogues",
+        "year": null,
+        "journal": "",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "SRC_DB_HR",
+        "title": "Bright Star Catalogue (HR)",
+        "year": null,
+        "journal": "",
+        "record_count": 1,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2015ApJ...804..144A",
+        "title": "Revealing δ Cephei's Secret Companion and Intriguing Past",
+        "year": 2015,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2014ApJ...794...80E",
+        "title": "The Secret Lives of Cepheids: Evolutionary Changes and Pulsation-induced Shock Heating in the Prototype Classical Cepheid δ Cep",
+        "year": 2014,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2017ApJ...838...67E",
+        "title": "The Secret Lives of Cepheids: δ Cep—The Prototype of a New Class of Pulsating X-Ray Variable Stars",
+        "year": 2017,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2002AJ....124.1695B",
+        "title": "Astrometry with the Hubble Space Telescope: A Parallax of the Fundamental Distance Calibrator δ Cephei",
+        "year": 2002,
+        "journal": "The Astronomical Journal",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2012ApJ...744...53M",
+        "title": "New Evidence for Mass Loss from δ Cephei from H I 21 cm Line Observations",
+        "year": 2012,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2010ApJ...725.2392M",
+        "title": "An Infrared Nebula Associated with δ Cephei: Evidence of Mass Loss?",
+        "year": 2010,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2024A&A...684L...9N",
+        "title": "The orbital parameters of the δ Cep inner binary system determined using 2019 HARPS-N spectroscopic data",
+        "year": 2024,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2001AJ....121..476A",
+        "title": "Diameters of δ Cephei and η Aquilae Measured with the Navy Prototype Optical Interferometer",
+        "year": 2001,
+        "journal": "The Astronomical Journal",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2008ApJ...674L..93N",
+        "title": "Theoretical Fits of the δ Cephei Light, Radius, and Radial Velocity Curves",
+        "year": 2008,
+        "journal": "The Astrophysical Journal Letters",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017A&A...597A..73N",
+        "title": "HARPS-N high spectral resolution observations of Cepheids I. The Baade-Wesselink projection factor of δ Cep revisited",
+        "year": 2017,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2015A&A...584A..80M",
+        "title": "Cepheid distances from the SpectroPhoto-Interferometry of Pulsating Stars (SPIPS). Application to the prototypes δ Cephei and η Aquilae",
+        "year": 2015,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2026arXiv260702439E",
+        "title": "Native-Opacity Sensitivity of a Fixed Delta Cephei MESA-RSP Pulsation Model",
+        "year": 2026,
+        "journal": "arXiv e-prints",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024A&A...690A.246T",
+        "title": "Cepheid Metallicity in the Leavitt Law (C-MetaLL) survey: VI. Radial abundance gradients of 29 chemical species in the Milky Way disc",
+        "year": 2024,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2012ApJ...747..145M",
+        "title": "New Evidence Supporting Cluster Membership for the Keystone Calibrator Delta Cephei",
+        "year": 2012,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2026A&A...708A.216R",
+        "title": "Cepheid Metallicity in the Leavitt Law (C─MetaLL) survey: IX. Metallicity dependence of period-Wesenheit relations based on a homogeneous spectroscopic sample",
+        "year": 2026,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005astro.ph..6695A",
+        "title": "The projection factor of delta Cephei A calibration of the Baade-Wesselink method using the CHARA Array",
+        "year": 2005,
+        "journal": "arXiv e-prints",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2023MNRAS.520.4154M",
+        "title": "Cepheid metallicity in the Leavitt law (C-MetaLL) survey - III. Simultaneous derivation of the Gaia parallax offset and period-luminosity-metallicity coefficients",
+        "year": 2023,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2020A&A...642A.230R",
+        "title": "Period-luminosity-metallicity relation of classical Cepheids",
+        "year": 2020,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2002AJ....123.3380N",
+        "title": "Calibration of the Barnes-Evans Relation Using Interferometric Observations of Cepheids",
+        "year": 2002,
+        "journal": "The Astronomical Journal",
+        "record_count": 3,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2013IAUS..289..134N",
+        "title": "Wesenheit function for Galactic Cepheids: Application to the projection factors",
+        "year": 2013,
+        "journal": "Advancing the Physics of Cosmic Distances",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006MmSAI..77..299G",
+        "title": "Using delta  Cep stars to study northern dwarf irregular galaxies of the Local Group .",
+        "year": 2006,
+        "journal": "Memorie della Societa Astronomica Italiana",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2007AJ....133.1810B",
+        "title": "Hubble Space Telescope Fine Guidance Sensor Parallaxes of Galactic Cepheid Variable Stars: Period-Luminosity Relations",
+        "year": 2007,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016MNRAS.461.1451G",
+        "title": "Multiplicity of Galactic Cepheids from long-baseline interferometry - III. Sub-percent limits on the relative brightness of a close companion of δ Cephei",
+        "year": 2016,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2024AJ....168...34W",
+        "title": "Search for Classical Cepheids in Galactic Open Clusters and Calibration of the Period─Wesenheit─Metallicity Relation in the Gaia Bands",
+        "year": 2024,
+        "journal": "The Astronomical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025ApJ...981..179W",
+        "title": "Milky Way Classical Cepheid Distances from Calibrated Infrared Period─Luminosity─Metallicity Relations",
+        "year": 2025,
+        "journal": "The Astrophysical Journal",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024A&A...682L..21C",
+        "title": "OGLE-GD-CEP-0516: The most metal-poor lithium-rich Galactic Cepheid",
+        "year": 2024,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 31,
+      "overall_quality": "fair",
+      "total_issues": 173
+    },
+    "normalization": {
+      "status": "Completed_With_Issues",
+      "modifications": 0,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 0
+      },
+      "errors_count": 6,
+      "errors": [
+        {
+          "source": "2007AJ....133.1810B",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2017ApJ...838...67E",
+          "tool": "numeric_convert",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2008ApJ...674L..93N",
+          "tool": "parse_distance_uncertainty",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2024A&A...684L...9N",
+          "tool": "parse_uncertainty_value",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2012ApJ...744...53M",
+          "tool": "strip_distance_uncertainty",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        },
+        {
+          "source": "2017A&A...597A..73N",
+          "tool": "clean_uncertainty_markers",
+          "kind": "noop",
+          "error": "generated tool made zero modifications on full data"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 65,
+      "auto_resolved": 61,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T19:22:52.921271",
+    "run_id": "4875820b-6779-43d4-b1f9-a3d298054d2d",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}

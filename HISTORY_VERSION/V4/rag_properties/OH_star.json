@@ -1,0 +1,350 @@
+{
+  "otype": "OH*",
+  "name_cn": "OH/IR星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "right_ascension",
+      "name_cn": "赤经",
+      "description": "J2000赤经(Engels表为ICRS/Ep=2016),分辨率达毫角秒级",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "declination",
+      "name_cn": "赤纬",
+      "description": "J2000赤纬(Engels表为ICRS/Ep=2016)",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_longitude",
+      "name_cn": "银经",
+      "description": "银河系银经,用于银心OH/IR星群体的分布与运动学研究",
+      "category": "astrometry",
+      "ucd": "pos.gal.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_latitude",
+      "name_cn": "银纬",
+      "description": "银河系银纬;OH/IR星集中于银道面(|b|<2度),膨胀速度与银纬相关",
+      "category": "astrometry",
+      "ucd": "pos.gal.lat",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "Gaia DR3视差(仅约222颗OH/IR星具有相对误差<20%的可靠视差)",
+      "category": "astrometry",
+      "ucd": "pos.parallax.trig",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "由Gaia视差导出的Bailer-Jones几何距离(pc),用于计算恒星光度",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "pc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_g_mag",
+      "name_cn": "Gaia G星等",
+      "description": "Gaia DR3 G波段平均星等,OH/IR星偏红(BP-RP>4 mag)且变幅>1 mag",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_bp_mag",
+      "name_cn": "Gaia BP星等",
+      "description": "Gaia DR3蓝端BP平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.BP",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gaia_rp_mag",
+      "name_cn": "Gaia RP星等",
+      "description": "Gaia DR3红端RP平均星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.RP",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_flux_25um",
+      "name_cn": "IRAS 25微米流量",
+      "description": "IRAS 25um流量密度F25(Jy),OH/IR星选择与红外颜色判据的核心量",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_color_r21",
+      "name_cn": "IRAS颜色比log(F25/F12)",
+      "description": "IRAS颜色比R21=log(F25/F12),OH/IR星判据之一(F25/F12>~0.2),反映尘埃包层厚度",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_color_r32",
+      "name_cn": "IRAS颜色比log(F60/F25)",
+      "description": "IRAS颜色比R32=log(F60/F25),与R21联合构成van der Veen-Habing判据",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_photometry_flux",
+      "name_cn": "SED多波段测光流量",
+      "description": "约1-30um多仪器(2MASS/AllWISE/MSX/AKARI/Herschel等)测光流量及误差、消光改正值,用于构建能谱分布",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bolometric_flux",
+      "name_cn": "热流量(热光度通量)",
+      "description": "SED模型拟合导出的热流量Fbol(mW/m2)",
+      "category": "photometry",
+      "ucd": "phot.flux;em.IR",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_peak_flux_density",
+      "name_cn": "OH脉泽峰值流量密度",
+      "description": "1612/1665/1667 MHz脉泽蓝/红峰流量密度(Jy),含3sigma上限;OH/IR星强度表征量",
+      "category": "spectroscopy",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_integrated_flux",
+      "name_cn": "OH脉泽积分流量",
+      "description": "蓝/红脉泽峰的积分流量(仅Engels数据库给出,比峰值流量更稳健)",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;em.radio",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "extinction_av",
+      "name_cn": "星际消光AV",
+      "description": "Lallement等(2022)三维消光图给出的星际消光(对有可靠视差的源)",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_frequency",
+      "name_cn": "OH脉泽跃迁频率",
+      "description": "OH脉泽观测频率:1612 MHz(卫星线,OH/IR星主导)或1665/1667 MHz主线",
+      "category": "spectroscopy",
+      "ucd": "em.freq.radio",
+      "unit": "MHz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_peak_velocity_blue",
+      "name_cn": "蓝移脉泽峰速度",
+      "description": "最蓝移脉泽峰的速度(km/s);双峰间隔Delta_v/2即壳层膨胀速度",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_peak_velocity_red",
+      "name_cn": "红移脉泽峰速度",
+      "description": "最红移脉泽峰的速度(km/s)",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radial_velocity",
+      "name_cn": "视向速度",
+      "description": "恒星视向速度(双峰速度中点),OH/IR星在光学波段被尘埃遮挡时的主要运动学量,可做银心方向动力学研究",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "expansion_velocity",
+      "name_cn": "壳层膨胀速度",
+      "description": "星周包层膨胀速度(km/s,典型10-20,峰值14 km/s);可由OH双峰间隔或CO谱线终端速度导出,与主序质量相关",
+      "category": "physical",
+      "ucd": "phys.veloc.expansion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "carbon_isotope_ratio",
+      "name_cn": "碳同位素比(12C/13C)",
+      "description": "星周12CO/13CO丰度比(典型~5),反映CNO循环与第一上红巨分支挖潜过程",
+      "category": "spectroscopy",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "lrs_class_number",
+      "name_cn": "IRAS低分辨率光谱类别",
+      "description": "IRAS低分辨率光谱(LRS)类别号,指示硅酸盐尘埃特征",
+      "category": "classification",
+      "ucd": "spect.index;em.IR",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity",
+      "name_cn": "光度",
+      "description": "由热流量与Gaia距离导出的恒星光度(太阳光度单位);银心子样本中位值约5600 Lsun,对应初始质量1.2-1.6 Msun",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_loss_rate",
+      "name_cn": "质量损失率",
+      "description": "气体质量损失率(银心OH/IR星典型2e-5 Msun/yr,AGB顶端的极端质量损失),由CO谱线辐射转移建模导出",
+      "category": "physical",
+      "ucd": "phys.massLoss",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gas_to_dust_ratio",
+      "name_cn": "气尘比",
+      "description": "气体-尘埃质量比(典型~200;具分离尘埃壳的源显著更低)",
+      "category": "physical",
+      "ucd": "phys.abund",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_shell_inner_radius",
+      "name_cn": "尘埃包层内半径",
+      "description": "分离尘埃包层内半径(200-600 au)或自星面延伸的连续尘埃包层,由SED辐射转移模型判定,区分近期停止质量损失的post-AGB候选",
+      "category": "environment",
+      "ucd": "phys.size.radius",
+      "unit": "AU",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_initial_mass",
+      "name_cn": "恒星初始质量",
+      "description": "由光度判定的初始质量(银心OH/IR星来自1.2-1.6 Msun的太阳型前身星)",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "period",
+      "name_cn": "光变周期",
+      "description": "脉动光变周期(连续性尘埃包层源为周期变星;分离尘埃包层源多非周期,处于post-AGB过渡);OH/IR星多为长周期大振幅Mira型",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_monitoring_flux_range",
+      "name_cn": "脉泽监测流量范围",
+      "description": "长期监测(180项)中观测到的最大/最小流量密度与监测时段(1970年代起),用于脉泽强度变化研究",
+      "category": "variability",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "iras_variability_index",
+      "name_cn": "IRAS变率指数",
+      "description": "IRAS双历元观测给出的变率概率指数(VAR),指示红外变亮(如Mira型脉动)",
+      "category": "variability",
+      "ucd": "src.var",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_profile_type",
+      "name_cn": "脉泽谱型",
+      "description": "谱型分类:D=标准双峰(OH/IR星特征),S=单峰,I=不规则;用于AGB与post-AGB演化阶段判别",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_type",
+      "name_cn": "SED形态类型",
+      "description": "SED形态:SP单峰/DP双峰/F平坦/P特殊,来自GTC光谱与SED拟合",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "source_identification",
+      "name_cn": "源标识与交叉证认",
+      "description": "多波段标识:IRAS名、OH脉泽名、Gaia DR3号、2MASS、AllWISE及SIMBAD名;OH/IR星常用银经银纬命名",
+      "category": "classification",
+      "ucd": "meta.id",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "envelope_morphology",
+      "name_cn": "包层形态",
+      "description": "ALMA高分辨率(约0.15角秒)成像解析的包层结构:球形/空腔与双极形态,指示post-AGB转变与圆盘/环面结构",
+      "category": "environment",
+      "ucd": "phys.morphology",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_map_resolution",
+      "name_cn": "脉泽干涉测量角分辨率",
+      "description": "干涉成像观测(271条)的角分辨率(mas)、灵敏度rms与观测历元,用于脉泽源位置与磁场的精确测量",
+      "category": "environment",
+      "ucd": "phys.angSize",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "maser_polarization",
+      "name_cn": "脉泽偏振",
+      "description": "是否测量了OH脉泽偏振(全偏振观测),用于导出磁场强度",
+      "category": "environment",
+      "ucd": "phys.polarization",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

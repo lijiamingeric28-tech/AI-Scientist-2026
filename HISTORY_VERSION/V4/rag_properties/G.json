@@ -1,0 +1,314 @@
+{
+  "otype": "G",
+  "name_cn": "星系通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra_j2000",
+      "name_cn": "赤经(J2000)",
+      "description": "星系中心赤经,HYPERLEDA精度优于2″;RC3、2MASS XSC、GZ1、MPA-JHU均给出各自口径的坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec_j2000",
+      "name_cn": "赤纬(J2000)",
+      "description": "星系中心赤纬,各表提供J2000(及部分B1950)坐标",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec;meta.main",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "position_angle",
+      "name_cn": "形态主轴位置角",
+      "description": "主轴方位角(北偏东,0-180°),RC3(来自UGC/ESO/HI)与2MASS XSC给出",
+      "category": "astrometry",
+      "ucd": "pos.angPos",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移/视向速度",
+      "description": "光谱红移及光学/HI视向速度(km/s);RC3含V21、Vopt及改正到银河静止系(GSR)与3K微波背景系的速度,MPA-JHU给出SDSS光谱z",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "distance",
+      "name_cn": "距离",
+      "description": "红移无关距离(常用至距离模数),见HYPERLEDA III距离目录(J/A+A/570/A13, Makarov+2014)及NED-D(J/ApJ/837/106),为本组合表的互补数据源",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bt_magnitude",
+      "name_cn": "B波段总星等",
+      "description": "外推到25 B mag/arcsec²等光域的B_T总星等(含光电孔径与面测光两种口径)及照片星等,RC3与LEDA均归算到同一系统,含银道/内部消光与红移改正版本",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.B",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "j_magnitude",
+      "name_cn": "J波段星等(2MASS)",
+      "description": "2MASS XSC近红外J(1.235μm)延展源等光域总星等及点源测光",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.J",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "h_magnitude",
+      "name_cn": "H波段星等(2MASS)",
+      "description": "2MASS XSC H(1.662μm)延展源总星等",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.H",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ks_magnitude",
+      "name_cn": "Ks波段星等(2MASS)",
+      "description": "2MASS XSC Ks(2.159μm)延展源总星等,近红外恒星质量代理",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR.K",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color_index",
+      "name_cn": "(B-V)色指数",
+      "description": "Johnson B-V总色指数及有效孔径Ae内色指数,含改正银道/内部消光与红移的版本",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color_index",
+      "name_cn": "(U-B)色指数",
+      "description": "Johnson U-B总色指数及有效孔径内色指数,含改正版本",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.U;em.opt.B",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nir_color_index",
+      "name_cn": "近红外色指数",
+      "description": "2MASS J-H、H-Ks、J-Ks近红外颜色,恒星形成与红化诊断",
+      "category": "photometry",
+      "ucd": "phot.color;em.IR.J;em.IR.H;em.IR.K",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "surface_brightness",
+      "name_cn": "平均面亮度",
+      "description": "D25等光域内(B mag/arcmin²)及有效孔径Ae内平均B面亮度(m'25、m'e),弗里曼定律等标度关系常用量",
+      "category": "photometry",
+      "ucd": "phot.mag.surfaceBrightness",
+      "unit": "mag/arcsec^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "fir_flux_iras",
+      "name_cn": "远红外通量(IRAS)",
+      "description": "IRAS 60/100μm加权平均远红外连续谱通量及m_FIR星等,尘埃辐射与SFR代理",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.IR.60-100um",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "isophotal_diameter",
+      "name_cn": "等光域直径D25",
+      "description": "μB=25 B mag/arcsec²处长径D25(0.1′单位)、面对称+消光改正直径D0及半光有效孔径Ae,LEDA经EPIDEMIC法归算到RC2系统;含误差与标志",
+      "category": "photometry",
+      "ucd": "phys.angSize.smajAxis",
+      "unit": "arcmin",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "axis_ratio",
+      "name_cn": "轴比logR25",
+      "description": "D25等光域长短轴比对数,倾角与内部消光改正的输入量",
+      "category": "photometry",
+      "ucd": "phys.angSize.axisRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_isophotal_radius",
+      "name_cn": "Ks等光域半径",
+      "description": "2MASS XSC在Ks=20 mag/arcsec²等光域处的延展半径r_ext(及长短轴与PA),近红外等光域大小的均匀口径",
+      "category": "photometry",
+      "ucd": "phys.angSize.smajAxis",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_21cm_magnitude",
+      "name_cn": "21cm HI流量星等",
+      "description": "21cm中性氢线流量星等m21及改正后HI指数(HI0-BT0),气体含量指标",
+      "category": "spectroscopy",
+      "ucd": "phot.mag;em.radio.HI",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hi_line_width",
+      "name_cn": "HI谱线宽度",
+      "description": "21cm谱线20%与50%强度处全宽W20/W50(km/s,含误差),旋转速度与动力学质量代理",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "emission_line_fluxes",
+      "name_cn": "发射线通量",
+      "description": "Hα、Hβ、[OIII]5007、[NII]6583、[SII]6716/6731、[OI]6300等谱线通量(消光改正后),BPT诊断与SFR、金属丰度计算输入",
+      "category": "spectroscopy",
+      "ucd": "phot.flux;spect.line",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "emission_line_eqwidth",
+      "name_cn": "发射线等值宽度",
+      "description": "主要发射线等值宽度(含Hδ吸收),恒星形成历史与AGN活动指示量",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "d4000_index",
+      "name_cn": "D4000断层强度",
+      "description": "4000Å断点强度,恒星年龄/星族合成的稳健指示量",
+      "category": "spectroscopy",
+      "ucd": "spect.index",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_dispersion",
+      "name_cn": "恒星速度弥散",
+      "description": "SDSS光谱测定的恒星速度弥散σ(km/s),星系动力学质量与黑洞质量标定代理",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_mass",
+      "name_cn": "恒星质量",
+      "description": "谱拟合恒星质量(log M*, M☉,Kauffmann+03与Gallazzi+05两种口径,含误差百分位),SDSS星系质量函数与质量-SFR/丰度关系基础量",
+      "category": "physical",
+      "ucd": "phys.mass;em.opt",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "star_formation_rate",
+      "name_cn": "恒星形成率",
+      "description": "总SFR(M☉/yr):基于Hα纤维谱线(弱发射线用测光估计)与基于测光的两种口径,含误差",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "specific_sfr",
+      "name_cn": "比恒星形成率",
+      "description": "sSFR=SFR/M*(yr^-1),星系净恒星增长/熄灭(quenching)状态的最常用判据",
+      "category": "physical",
+      "ucd": "phys.SFR;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "gas_phase_metallicity",
+      "name_cn": "气相金属丰度",
+      "description": "12+log(O/H)气体金属丰度(Tremonti+04,强线方法),质量-金属丰度关系的基础数据",
+      "category": "physical",
+      "ucd": "phys.abund.Z",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_metallicity_age",
+      "name_cn": "恒星金属丰度与年龄",
+      "description": "谱指数拟合的恒星金属丰度[Z/H]与r波段权重年龄(log age/yr,Gallazzi+05),恒星群属性",
+      "category": "physical",
+      "ucd": "phys.abund.Z;em.opt",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dust_attenuation",
+      "name_cn": "恒星消光",
+      "description": "恒星有效消光A_V(衰减)估计,尘埃含量与颜色改正",
+      "category": "physical",
+      "ucd": "phys.absorption",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hubble_type_t",
+      "name_cn": "哈勃形态型指数T",
+      "description": "RC2/RC3系统哈勃阶段指数T(-5椭圆~10不规则)及修订形态型(含数字及符号编码与误差),LEDA与RC3同系统可互校",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_class",
+      "name_cn": "光度级",
+      "description": "DDO范登贝赫光度级(Ⅰ-Ⅴ,含误差与估计次数),旋涡星系绝对光度分类",
+      "category": "classification",
+      "ucd": "src.class.luminosity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "morphology_vote_fractions",
+      "name_cn": "众包形态投票比例",
+      "description": "GZ1六类投票比例(椭圆/顺旋/逆旋/边缘/恒星或未知/并合)、去偏椭圆与旋涡概率及螺旋/椭圆/不确定判据标志(阈值0.8),含置信度表",
+      "category": "classification",
+      "ucd": "src.morph.type",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "agn_bpt_class",
+      "name_cn": "AGN/BPT分类",
+      "description": "基于[OIII]/Hβ与[NII]/Hα等线比图的分类(无发射线/恒星形成/复合/Seyfert/LINER),AGN宿主星系研究基础",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "environment_density",
+      "name_cn": "环境密度",
+      "description": "邻域星系数密度场估计(Kauffmann+04口径),用于形态-环境、熄灭-环境关系;如需群/团成员关系建议补充SDSS群目录(如Yang+2007 J/ApJ/671/153)",
+      "category": "environment",
+      "ucd": "phys.density",
+      "unit": "cm^-3",
+      "_unit_filled": true
+    }
+  ]
+}

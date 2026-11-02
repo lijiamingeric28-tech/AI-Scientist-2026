@@ -1,0 +1,1713 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2026A&A...706A.112L",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202557737",
+      "title": "Astrometric Reconnaissance of Exoplanetary Systems (ARES): I. Methodology validation with HST point-source images of Proxima Centauri",
+      "authors": [
+        "Libralato, M.",
+        "Bedin, L. R.",
+        "Burgasser, A."
+      ],
+      "year": 2026,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2026A&A...706A.112L.pdf",
+      "retrieval_priority": 0.453140385648531,
+      "abstract": "We present the first results of the Astrometric Reconnaissance of Exoplanetary Systems (ARES) project, aimed at validating and characterizing candidate exoplanets around the nearest systems using multi-epoch Hubble Space Telescope (HST) data. In this first paper, we focus on Proxima Centauri, leveraging archival and recent HST observations in point-source imaging mode. We refined the geometric-distortion calibration of the HST detector used and developed a robust methodology to derive high-precision astrometric parameters by combining HST measurements with the Gaia DR3 catalog. We determined Proxima's position, proper motion, and parallax with uncertainties at the ~0.4-mas, 50-µas yr<SUP>−1</SUP>, and 0.2-mas levels, respectively. This allowed us to achieve consistent results with Gaia measurements within ~1σ. We further investigated the presence of the candidate exoplanet Proxima c by analyzing the proper-motion anomaly derived from combining long-term HST-based and short-term Gaia astrometry. Based on the assumption of a circular, face-on orbit, we obtained an estimated mass of mc = 3.4<SUB>−3.4</SUB><SUP>+5.2</SUP> M<SUB>⊕</SUB>, which is broadly consistent with radial-velocity constraints, but still limited by our current uncertainties. These results establish the foundation for the next phase of ARES, which will exploit HST spatial-scanning observations to achieve astrometric precisions of a few tens of µas, while also enabling a direct search for astrometric signatures of low-mass companions.",
+      "keywords": [
+        "astrometry",
+        "planets and satellites: detection",
+        "stars: low-mass",
+        "Earth and Planetary Astrophysics",
+        "Instrumentation and Methods for Astrophysics",
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:parallax OR abs:\"trigonometric parallax\")",
+      "search_rank": 26
+    },
+    {
+      "source_id": "2025AJ....170...22L",
+      "source_type": "paper",
+      "doi": "10.3847/1538-3881/addabe",
+      "title": "A Demonstration of Interstellar Navigation Using New Horizons",
+      "authors": [
+        "Lauer, Tod R.",
+        "Munro, David H.",
+        "Spencer, John R.",
+        "Buie, Marc W.",
+        "Gomez, Edward L.",
+        "Hennessy, Gregory S.",
+        "Henry, Todd J.",
+        "Kaplan, George H.",
+        "Kielkopf, John F.",
+        "May, Brian H.",
+        "Parker, Joel W.",
+        "Porter, Simon B.",
+        "Vrijmoet, Eliot Halley",
+        "Weaver, Harold A.",
+        "Brandt, Pontus",
+        "Singer, Kelsi N.",
+        "Stern, S. Alan",
+        "Verbiscer, Anne. J.",
+        "Acosta, Pedro",
+        "Arias, Nicolás Ariel",
+        "Babino, Sergio",
+        "Ballan, Gustavo Enrique",
+        "Buso, Víctor Ángel",
+        "Conard, Steven J.",
+        "Das Airas, Daniel",
+        "Di Scala, Giorgio",
+        "Fornari, César",
+        "Fraire, Jossiel",
+        "Gerard, Brian Nicolás",
+        "González, Federico",
+        "Goytea, Gerardo",
+        "Guzmán, Emilio Mora",
+        "Hanna, William",
+        "Keel, William C.",
+        "Kleiman, Aldo",
+        "López, Anselmo",
+        "Machuca, Jorge Gerardo",
+        "Málaga, Leonardo",
+        "Martínez, Claudio",
+        "Martinez, Denis",
+        "Meliá, Raúl",
+        "Monópoli, Marcelo",
+        "Murison, Marc A.",
+        "Fernandez Pohle, Leandro Emiliano",
+        "Ribas, Mariano",
+        "Ramón Sánchez, José Luis",
+        "Scauso, Sergio",
+        "Terrell, Dirk",
+        "Traub, Thomas",
+        "Valenti, Pedro Oscar",
+        "Valenzuela, Ángel",
+        "von Hippel, Ted",
+        "Chen, Wen Ping",
+        "Zambelis, Dennis"
+      ],
+      "year": 2025,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2025AJ....170...22L.pdf",
+      "retrieval_priority": 0.3226625523650716,
+      "abstract": "As NASA's New Horizons spacecraft exits the solar system bound for interstellar space, it has traveled so far that the nearest stars have shifted markedly from their positions seen from Earth. We demonstrated this by imaging the Proxima Centauri and Wolf 359 fields from Earth and New Horizons on 2020 April 23, when the spacecraft was 47.1 au distant. The observed parallaxes for Proxima Centauri and Wolf 359 are <inline-formula> <mml:math><mml:mn>32</mml:mn><mml:mover><mml:mrow><mml:mi>.</mml:mi></mml:mrow><mml:mrow><mml:mi>″</mml:mi></mml:mrow></mml:mover><mml:mn>4</mml:mn></mml:math> </inline-formula> and <inline-formula> <mml:math><mml:mn>15</mml:mn><mml:mover><mml:mi>.</mml:mi><mml:mi>″</mml:mi></mml:mover><mml:mn>7</mml:mn></mml:math> </inline-formula>, respectively. These measurements are not of research grade, but directly seeing large stellar parallaxes between two widely separated simultaneous observers is vividly educational. Using the New Horizons positions of the two stars alone, referenced to the three-dimensional model (3D) of the solar neighborhood constructed from Gaia DR3 astrometry, further provides the spacecraft spatial position relative to nearby stars with 0.44 au accuracy. The range to New Horizons from the solar system barycenter is recovered to 0.27 au accuracy, and its angular direction to <inline-formula> <mml:math><mml:mn>0</mml:mn><mml:mover><mml:mrow><mml:mi>.</mml:mi></mml:mrow><mml:mrow><mml:mi>°</mml:mi></mml:mrow></mml:mover><mml:mn>4</mml:mn></mml:math> </inline-formula> accuracy, when compared to the precise values from NASA Deep Space Network tracking. This is the first time optical stellar astrometry has been used to determine the 3D location of a spacecraft with respect to nearby stars and the first time any method of interstellar navigation has been demonstrated for a spacecraft on an interstellar trajectory. We conclude that the best astrometric approach to navigating spacecraft on their departures to interstellar space is to use a single pair of the closest stars as references, rather than a large sample of more distant stars.",
+      "keywords": [
+        "Space astrometry",
+        "Space probes",
+        "1541",
+        "1545",
+        "Instrumentation and Methods for Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:parallax OR abs:\"trigonometric parallax\")",
+      "search_rank": 38
+    },
+    {
+      "source_id": "2019MNRAS.487.1653B",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stz1379",
+      "title": "Directly testing gravity with Proxima Centauri",
+      "authors": [
+        "Banik, Indranil",
+        "Kroupa, Pavel"
+      ],
+      "year": 2019,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2019MNRAS.487.1653B.pdf",
+      "retrieval_priority": 0.6535481481481481,
+      "abstract": "The wide binary orbit of Proxima Centauri around α Centauri A and B differs significantly between Newtonian and Milgromian dynamics (MOND). By combining previous calculations of this effect with mock observations generated using a Monte Carlo procedure, we show that this prediction can be tested using high precision astrometry of Proxima Centauri. This requires ≈10 yr of observations at an individual epoch precision of 0.5 μas, within the design specifications of the proposed Theia mission. In general, the required duration should scale as the 2/5 power of the astrometric precision. A long-period planet could produce a MOND-like astrometric signal, but only if it has a particular ratio of mass to separation squared and a sky position close to the line segment connecting Proxima Centauri with α Centauri. Uncertainties in perspective effects should be small enough for this test if the absolute radial velocity of Proxima Centauri can be measured to within ≈10 m s<SUP>-1</SUP>, better than the present accuracy of 32 m s<SUP>-1</SUP>. We expect the required improvement to become feasible using radial velocity zero-points estimated from larger samples of close binaries, with the Sun providing an anchor. We demonstrate that possible astrometric microlensing of Proxima Centauri is unlikely to affect the results. We also discuss why it should be possible to find sufficiently astrometrically stable reference stars. Adequately, addressing these and other issues would enable a decisive test of gravity in the currently little explored low acceleration regime relevant to the dynamical discrepancies in galactic outskirts.",
+      "keywords": [
+        "gravitation",
+        "proper motions",
+        "binaries: general",
+        "stars: individual: Proxima Centauri",
+        "solar neighbourhood",
+        "dark matter",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:\"proper motion\" OR abs:\"proper motion ra\" OR abs:\"proper motion dec\" OR abs:\"total proper motion\" OR abs:\"right ascension\" OR abs:declination)",
+      "search_rank": 41
+    },
+    {
+      "source_id": "2018MNRAS.480.2660B",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/sty2007",
+      "title": "Testing gravity with wide binary stars like α Centauri",
+      "authors": [
+        "Banik, Indranil",
+        "Zhao, Hongsheng"
+      ],
+      "year": 2018,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2018MNRAS.480.2660B.pdf",
+      "retrieval_priority": 0.45389048528430576,
+      "abstract": "We consider the feasibility of testing Newtonian gravity at low accelerations using wide binary (WB) stars separated by ≳ 3 kAU. These systems probe the accelerations at which galaxy rotation curves unexpectedly flatline, possibly due to modified Newtonian dynamics (MOND). We conduct Newtonian and MOND simulations of WBs covering a grid of model parameters in the system mass, semimajor axis, eccentricity, and orbital plane. We self-consistently include the external field (EF) from the rest of the Galaxy on the Solar neighbourhood using an axisymmetric algorithm. For a given projected separation, WB relative velocities reach larger values in MOND. The excess is ≈ 20 per cent adopting its simple interpolating function, as works best with a range of Galactic and extragalactic observations. This causes noticeable MOND effects in accurate observations of ≈500 WBs, even without radial velocity measurements. We show that the proposed Theia mission may be able to directly measure the orbital acceleration of Proxima Centauri towards the 13 kAU-distant α Centauri. This requires an astrometric accuracy of ≈ 1 μas over 5 yr. We also consider the long-term orbital stability of WBs with different orbital planes. As each system rotates around the Galaxy, it experiences a time-varying EF because this is directed towards the Galactic Centre. We demonstrate approximate conservation of the angular momentum component along this direction, a consequence of the WB orbit adiabatically adjusting to the much slower Galactic orbit. WBs with very little angular momentum in this direction are less stable over Gyr periods. This novel direction-dependent effect might allow for further tests of MOND.",
+      "keywords": [
+        "gravitation",
+        "proper motions",
+        "binaries: general",
+        "stars: individual: Proxima Centauri",
+        "Galaxy: disc",
+        "dark matter",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:\"proper motion\" OR abs:\"proper motion ra\" OR abs:\"proper motion dec\" OR abs:\"total proper motion\" OR abs:\"right ascension\" OR abs:declination)",
+      "search_rank": 46
+    },
+    {
+      "source_id": "2017ApJ...850L...6A",
+      "source_type": "paper",
+      "doi": "10.3847/2041-8213/aa978b",
+      "title": "ALMA Discovery of Dust Belts around Proxima Centauri",
+      "authors": [
+        "Anglada, Guillem",
+        "Amado, Pedro J.",
+        "Ortiz, Jose L.",
+        "Gómez, José F.",
+        "Macías, Enrique",
+        "Alberdi, Antxon",
+        "Osorio, Mayra",
+        "Gómez, José L.",
+        "de Gregorio-Monsalvo, Itziar",
+        "Pérez-Torres, Miguel A.",
+        "Anglada-Escudé, Guillem",
+        "Berdiñas, Zaira M.",
+        "Jenkins, James S.",
+        "Jimenez-Serra, Izaskun",
+        "Lara, Luisa M.",
+        "López-González, Maria J.",
+        "López-Puertas, Manuel",
+        "Morales, Nicolas",
+        "Ribas, Ignasi",
+        "Richards, Anita M. S.",
+        "Rodríguez-López, Cristina",
+        "Rodriguez, Eloy"
+      ],
+      "year": 2017,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2017ApJ...850L...6A.pdf",
+      "retrieval_priority": 0.6029125635856901,
+      "abstract": "Proxima Centauri, the star closest to our Sun, is known to host at least one terrestrial planet candidate in a temperate orbit. Here we report the Atacama Large Millimeter/submillimeter Array (ALMA) detection of the star at 1.3 mm wavelength and the discovery of a belt of dust orbiting around it at distances ranging between 1 and 4 au, approximately. Given the low luminosity of the Proxima Centauri star, we estimate a characteristic temperature of about 40 K for this dust, which might constitute the dust component of a small-scale analog to our solar system’s Kuiper Belt. The estimated total mass, including dust and bodies up to 50 km in size, is of the order of 0.01 Earth masses, which is similar to that of the solar Kuiper Belt. Our data also show a hint of warmer dust closer to the star. We also find signs of two additional features that might be associated with the Proxima Centauri system that still require further observations to be confirmed: an outer extremely cold (about 10 K) belt around the star at about 30 au, with an orbital plane that is tilted about 45° with respect to the plane of the sky; additionally, we marginally detect a compact 1.3 mm emission source at a projected distance of about 1.2 arcsec from the star, the nature of which is still unknown.",
+      "keywords": [
+        "circumstellar matter",
+        "planetary systems",
+        "radio continuum: planetary systems",
+        "stars: individual: Proxima Centauri",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:distance)",
+      "search_rank": 2
+    },
+    {
+      "source_id": "2016Natur.536..437A",
+      "source_type": "paper",
+      "doi": "10.1038/nature19106",
+      "title": "A terrestrial planet candidate in a temperate orbit around Proxima Centauri",
+      "authors": [
+        "Anglada-Escudé, Guillem",
+        "Amado, Pedro J.",
+        "Barnes, John",
+        "Berdiñas, Zaira M.",
+        "Butler, R. Paul",
+        "Coleman, Gavin A. L.",
+        "de La Cueva, Ignacio",
+        "Dreizler, Stefan",
+        "Endl, Michael",
+        "Giesers, Benjamin",
+        "Jeffers, Sandra V.",
+        "Jenkins, James S.",
+        "Jones, Hugh R. A.",
+        "Kiraga, Marcin",
+        "Kürster, Martin",
+        "López-González, María J.",
+        "Marvin, Christopher J.",
+        "Morales, Nicolás",
+        "Morin, Julien",
+        "Nelson, Richard P.",
+        "Ortiz, José L.",
+        "Ofir, Aviv",
+        "Paardekooper, Sijme-Jan",
+        "Reiners, Ansgar",
+        "Rodríguez, Eloy",
+        "Rodríguez-López, Cristina",
+        "Sarmiento, Luis F.",
+        "Strachan, John P.",
+        "Tsapras, Yiannis",
+        "Tuomi, Mikko",
+        "Zechmeister, Mathias"
+      ],
+      "year": 2016,
+      "journal": "Nature",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2016Natur.536..437A.pdf",
+      "retrieval_priority": 0.7564132039492869,
+      "abstract": "At a distance of 1.295 parsecs, the red dwarf Proxima Centauri (α Centauri C, GL 551, HIP 70890 or simply Proxima) is the Sun’s closest stellar neighbour and one of the best-studied low-mass stars. It has an effective temperature of only around 3,050 kelvin, a luminosity of 0.15 per cent of that of the Sun, a measured radius of 14 per cent of the radius of the Sun and a mass of about 12 per cent of the mass of the Sun. Although Proxima is considered a moderately active star, its rotation period is about 83 days (ref. 3) and its quiescent activity levels and X-ray luminosity are comparable to those of the Sun. Here we report observations that reveal the presence of a small planet with a minimum mass of about 1.3 Earth masses orbiting Proxima with a period of approximately 11.2 days at a semi-major-axis distance of around 0.05 astronomical units. Its equilibrium temperature is within the range where water could be liquid on its surface.",
+      "keywords": [
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:distance)",
+      "search_rank": 6
+    },
+    {
+      "source_id": "2014ApJ...782...89S",
+      "source_type": "paper",
+      "doi": "10.1088/0004-637X/782/2/89",
+      "title": "Microlensing Events by Proxima Centauri in 2014 and 2016: Opportunities for Mass Determination and Possible Planet Detection",
+      "authors": [
+        "Sahu, Kailash C.",
+        "Bond, Howard E.",
+        "Anderson, Jay",
+        "Dominik, Martin"
+      ],
+      "year": 2014,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2014ApJ...782...89S.pdf",
+      "retrieval_priority": 0.49476022714321055,
+      "abstract": "We have found that Proxima Centauri, the star closest to our Sun, will pass close to a pair of faint background stars in the next few years. Using Hubble Space Telescope (HST) images obtained in 2012 October, we determine that the passage close to a mag 20 star will occur in 2014 October (impact parameter 1.''6), and to a mag 19.5 star in 2016 February (impact parameter 0.''5). As Proxima passes in front of these stars, the relativistic deflection of light will cause shifts in the positions of the background stars of ~0.5 and 1.5 mas, respectively, readily detectable by HST imaging, and possibly by Gaia and ground-based facilities such as the Very Large Telescope. Measurement of these astrometric shifts offers a unique and direct method to measure the mass of Proxima. Moreover, if Proxima has a planetary system, the planets may be detectable through their additional microlensing signals, although the probability of such detections is small. With astrometric accuracies of 0.03 mas (achievable with HST spatial scanning), centroid shifts caused by Jovian planets are detectable at separations of up to 2.''0 (corresponding to 2.6 AU at the distance of Proxima), and centroid shifts by Earth-mass planets are detectable within a small band of 8 mas (corresponding to 0.01 AU) around the source trajectories. Jovian planets within a band of about 28 mas (corresponding to 0.036 AU) around the source trajectories would produce a brightening of the source by &gt;0.01 mag and could hence be detectable. Estimated timescales of the astrometric and photometric microlensing events due to a planet range from a few hours to a few days, and both methods would provide direct measurements of the planetary mass. <P />Based in part on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555.",
+      "keywords": [
+        "astrometry",
+        "gravitational lensing: micro",
+        "planetary systems",
+        "stars: individual: Proxima Centauri",
+        "Astrophysics - Earth and Planetary Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:distance)",
+      "search_rank": 8
+    },
+    {
+      "source_id": "2014AJ....148...91L",
+      "source_type": "paper",
+      "doi": "10.1088/0004-6256/148/5/91",
+      "title": "The Solar Neighborhood. XXXIV. a Search for Planets Orbiting Nearby M Dwarfs Using Astrometry",
+      "authors": [
+        "Lurie, John C.",
+        "Henry, Todd J.",
+        "Jao, Wei-Chun",
+        "Quinn, Samuel N.",
+        "Winters, Jennifer G.",
+        "Ianna, Philip A.",
+        "Koerner, David W.",
+        "Riedel, Adric R.",
+        "Subasavage, John P."
+      ],
+      "year": 2014,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2014AJ....148...91L.pdf",
+      "retrieval_priority": 0.3076311058265684,
+      "abstract": "Astrometric measurements are presented for seven nearby stars with previously detected planets: six M dwarfs (GJ 317, GJ 667C, GJ 581, GJ 849, GJ 876, and GJ 1214) and one K dwarf (BD-10 -3166). Measurements are also presented for six additional nearby M dwarfs without known planets, but which are more favorable to astrometric detections of low mass companions, as well as three binary systems for which we provide astrometric orbit solutions. Observations have baselines of 3 to 13 years, and were made as part of the RECONS long-term astrometry and photometry program at the CTIO/SMARTS 0.9 m telescope. We provide trigonometric parallaxes and proper motions for all 16 systems, and perform an extensive analysis of the astrometric residuals to determine the minimum detectable companion mass for the 12 M dwarfs not having close stellar secondaries. For the six M dwarfs with known planets, we are not sensitive to planets, but can rule out the presence of all but the least massive brown dwarfs at periods of 2-12 years. For the six more astrometrically favorable M dwarfs, we conclude that none have brown dwarf companions, and are sensitive to companions with masses as low as 1 {{M}<SUB>Jup</SUB>} for periods longer than two years. In particular, we conclude that Proxima Centauri has no Jovian companions at orbital periods of 2-12 years. These results complement previously published M dwarf planet occurrence rates by providing astrometrically determined upper mass limits on potential super-Jupiter companions at orbits of two years and longer. As part of a continuing survey, these results are consistent with the paucity of super-Jupiter and brown dwarf companions we find among the over 250 red dwarfs within 25 pc observed longer than five years in our astrometric program.",
+      "keywords": [
+        "astrometry",
+        "planetary systems",
+        "solar neighborhood",
+        "stars: low-mass",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Earth and Planetary Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:parallax OR abs:\"trigonometric parallax\")",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2003PASA...20..257S",
+      "source_type": "paper",
+      "doi": "10.1071/AS03011",
+      "title": "Long-duration Coherent Radio Emission from the dMe Star Proxima Centauri",
+      "authors": [
+        "Slee, O. B.",
+        "Willes, A. J.",
+        "Robinson, R. D."
+      ],
+      "year": 2003,
+      "journal": "Publications of the Astronomical Society of Australia",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2003PASA...20..257S.pdf",
+      "retrieval_priority": 0.47366131329442646,
+      "abstract": "The Australia Telescope and Anglo-Australian Telescope were used in May 2000 to record the radio and optical emissions from the dMe flare star Proxima Centauri. Eight bright optical flares over a two-day interval resulted in no detectable excess short-term radio emission at 1.38 and 2.50GHz. However, a slowly declining 1.38GHz emission over the two-day interval was nearly 100% right circular polarised and was restricted to a relatively narrow bandwidth with total intensity (I) and circular polarisation (V) varying significantly over the 104MHz receiver bandwidth. These are the first observations to show that highly-polarised narrowband flare star emission can persist for several days. This signature is attributed to sources of coherent radio emission in the star's corona. Similarities with various solar radio emissions are discussed; however, it is not possible with the existing observations to distinguish between fundamental plasma emission and electron-cyclotron maser emission as the responsible mechanism.",
+      "keywords": [
+        "Stars: activity",
+        "stars: individual: Proxima Cen",
+        "stars: flare",
+        "radio continuum: stars",
+        "radiation mechanisms"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:\"proper motion\" OR abs:\"proper motion ra\" OR abs:\"proper motion dec\" OR abs:\"total proper motion\" OR abs:\"right ascension\" OR abs:declination)",
+      "search_rank": 42
+    },
+    {
+      "source_id": "2001ApJ...547L..49W",
+      "source_type": "paper",
+      "doi": "10.1086/318888",
+      "title": "Observational Estimates for the Mass-Loss Rates of α Centauri and Proxima Centauri Using Hubble Space Telescope Lyα Spectra",
+      "authors": [
+        "Wood, Brian E.",
+        "Linsky, Jeffrey L.",
+        "Müller, Hans-Reinhard",
+        "Zank, Gary P."
+      ],
+      "year": 2001,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\2001ApJ...547L..49W.pdf",
+      "retrieval_priority": 0.55664011196919,
+      "abstract": "We study H I Lyα absorption observed by the Hubble Space Telescope toward the nearby binary system α Centauri (G2 V + K0 V) and its distant companion star Proxima Centauri (M5.5 Ve). Absorption from heliospheric H I heated by the solar wind/interstellar medium interaction is observed toward both α Cen and Proxima Cen. Absorption from analogous ``astrospheric'' material surrounding the stars is detected toward α Cen but not Proxima Cen. The nondetection of astrospheric absorption toward Proxima Cen suggests that the stellar wind of Proxima Cen must be significantly weaker than that of the α Cen system. We compute several hydrodynamic models of the astrospheres assuming different mass-loss rates in order to predict astrospheric Lyα absorption for comparison with the observations. The model that best matches the α Cen data has a mass-loss rate of M=2 M<SUB>solar</SUB>, and the models suggest an upper limit of M&lt;=0.2 M<SUB>solar</SUB> for Proxima Cen. Finally, we note that the heliospheric absorption observed toward Proxima Cen in 2000 May is identical to the heliospheric absorption observed toward α Cen in 1995 May, implying that the structure of the outer heliosphere does not change significantly during the solar activity cycle. Based on observations with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS5-26555.",
+      "keywords": [
+        "Hydrodynamics",
+        "Stars: Individual: Constellation Name: α Centauri",
+        "Stars: Individual: Constellation Name: Proxima Centauri",
+        "Stars: Winds",
+        "Outflows",
+        "Ultraviolet: ISM",
+        "Ultraviolet: Stars",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:distance)",
+      "search_rank": 3
+    },
+    {
+      "source_id": "1999AJ....118.1086B",
+      "source_type": "paper",
+      "doi": "10.1086/300975",
+      "title": "Interferometric Astrometry of Proxima Centauri and Barnard's Star Using HUBBLE SPACE TELESCOPE Fine Guidance Sensor 3: Detection Limits for Substellar Companions",
+      "authors": [
+        "Benedict, G. Fritz",
+        "McArthur, Barbara",
+        "Chappell, D. W.",
+        "Nelan, E.",
+        "Jefferys, W. H.",
+        "van Altena, W.",
+        "Lee, J.",
+        "Cornell, D.",
+        "Shelus, P. J.",
+        "Hemenway, P. D.",
+        "Franz, Otto G.",
+        "Wasserman, L. H.",
+        "Duncombe, R. L.",
+        "Story, D.",
+        "Whipple, A. L.",
+        "Fredrick, L. W."
+      ],
+      "year": 1999,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\d888fd23-f980-4f3b-a1ec-91fcc13f1a3d\\1999AJ....118.1086B.pdf",
+      "retrieval_priority": 0.43658041178990115,
+      "abstract": "We report on a substellar-companion search utilizing interferometric fringe-tracking astrometry acquired with Fine Guidance Sensor 3 on the Hubble Space Telescope. Our targets were Proxima Centauri and Barnard's star. We obtain absolute parallax values of pi_abs=0.7687\"+/-0.0003\" for Proxima Cen and pi_abs=0.5454\"+/-0.0003\" for Barnard's star. Once low-amplitude instrumental systematic errors are identified and removed, our companion detection sensitivity is less than or equal to one Jupiter mass for periods longer than 60 days for Proxima Cen. Between the astrometry and the recent radial velocity results of Kürster et al., we exclude all companions with M&gt;0.8M_Jup for the range of periods 1 day&lt;P&lt;1000 days. For Barnard's star, our companion detection sensitivity is less than or equal to one Jupiter mass for periods longer than 150 days. Our null results for Barnard's star are consistent with those reported by Gatewood in 1995.",
+      "keywords": [
+        "ASTROMETRY",
+        "STARS: DISTANCES",
+        "STARS: INDIVIDUAL (PROXIMA CENTAURI",
+        "BARNARD'S STAR)",
+        "STARS: LATE-TYPE",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"Proxima Centauri\" OR abs:\"Proxima Centauri\") AND (abs:parallax OR abs:\"trigonometric parallax\")",
+      "search_rank": 22
+    },
+    {
+      "source_id": "SRC_DB_ALLWISE",
+      "source_type": "database",
+      "title": "AllWISE Data Release",
+      "vizier_table_id": "II/328/allwise",
+      "description": "AllWISE数据发布结合了广域红外巡天探测器(WISE)在冷巡天及后期任务期间的所有数据，是全天中红外波段最敏锐且最全面的星表之一。",
+      "reference_paper": "Cutri, R. M., et al. 2013, wise.rept, 1C",
+      "bibcode": "2013wise.rept....1C",
+      "research_methodology": "空间中红外全天扫描成像与测光",
+      "observation_facility": "Wide-field Infrared Survey Explorer (WISE)",
+      "waveband": "Mid-Infrared (W1: 3.4 μm, W2: 4.6 μm, W3: 12 μm, W4: 22 μm)",
+      "research_content": "提供近7.48亿个天体的精确位置、表观运动(自行)以及W1至W4四个中红外波段的高精度测光数据。"
+    },
+    {
+      "source_id": "SRC_DB_GAIA_DR2",
+      "source_type": "database",
+      "title": "Gaia Data Release 2 (Gaia DR2)",
+      "vizier_table_id": "I/345/gaia2",
+      "description": "盖亚(Gaia)任务的第二次数据发布，为天文学带来了革命性的改变，包含近17亿颗恒星的高精度五参数天体测量和三波段测光数据。",
+      "reference_paper": "Gaia Collaboration, Brown, A. G. A., et al. 2018, A&A, 616, A1",
+      "bibcode": "2018A&A...616A...1G",
+      "research_methodology": "空间高精度天体测量和多波段测光",
+      "observation_facility": "Gaia Space Observatory (ESA)",
+      "waveband": "Optical (G, BP, RP bands)",
+      "research_content": "16.9亿个天体的位置和G波段星等，13.3亿天体的高精度视差和自行，1.6亿天体的有效温度，以及约720万颗恒星的径向速度。"
+    },
+    {
+      "source_id": "SRC_DB_GAIA_DR3",
+      "source_type": "database",
+      "title": "Gaia Data Release 3 (Gaia DR3)",
+      "vizier_table_id": "I/355/gaiadr3",
+      "description": "欧洲航天局(ESA)盖亚(Gaia)空间任务的第三次数据发布，提供约18亿颗天体迄今最高精度的天体测量、测光、光谱数据及天体物理参数。",
+      "reference_paper": "Gaia Collaboration, Vallenari, A., et al. 2023, A&A, 674, A1",
+      "bibcode": "2023A&A...674A...1G",
+      "research_methodology": "空间高精度天体测量、多波段测光和无缝分光巡天",
+      "observation_facility": "Gaia Space Observatory (ESA)",
+      "waveband": "Optical (330 - 1050 nm, G, BP, RP bands)",
+      "research_content": "包含近18亿个天体的位置、视差、自行和G/BP/RP波段测光数据，以及数千万天体的径向速度、化学丰度、天体物理参数，包括变星、双星及太阳系天体目录。"
+    },
+    {
+      "source_id": "SRC_DB_TIC",
+      "source_type": "database",
+      "title": "TESS Input Catalog (TIC)",
+      "vizier_table_id": "IV/38/tic",
+      "description": "凌星系外行星巡天卫星(TESS)的输入星表，综合了多项巡天数据，用于为TESS任务挑选观测目标并提供先验的恒星物理参数。",
+      "reference_paper": "Stassun, K. G., et al. 2019, AJ, 158, 138",
+      "bibcode": "2019AJ....158..138S",
+      "research_methodology": "多星表交叉匹配与天体物理参数的统计学推断",
+      "observation_facility": "Compilation (Gaia, 2MASS, ALLWISE, etc.)",
+      "waveband": "Optical to Near-Infrared (TESS band ~600-1000 nm + reference bands)",
+      "research_content": "包含数十亿个点源的坐标、自行、估计的TESS星等，及数千万恒星的有效温度、半径、质量、表面重力等物理参数。"
+    },
+    {
+      "source_id": "SRC_DB_HIPPARCOS",
+      "source_type": "database",
+      "title": "The Hipparcos and Tycho Catalogues",
+      "vizier_table_id": "I/239/hip_main",
+      "description": "依巴谷(Hipparcos)卫星星表，天体测量学的历史性里程碑，首次在太空中实现了极高精度的全天恒星视差和自行测量。",
+      "reference_paper": "ESA, 1997, ESA Special Publication, Vol. 1200",
+      "bibcode": "1997ESASP1200.....E",
+      "research_methodology": "空间高精度天体测量及双视场光电探测",
+      "observation_facility": "Hipparcos Satellite (ESA)",
+      "waveband": "Optical (Hp band, Tycho V/B bands)",
+      "research_content": "118,218颗恒星的高精度天球坐标、三角视差（毫角秒级）、自行，以及精确的Hp波段光度数据和变星信息。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1999AJ....118.1086B_Proxima_Centauri_parallax_0",
+      "source_id": "1999AJ....118.1086B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.7,
+      "field_unit": "mas",
+      "trace_id": "doc15_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          0,
+          407,
+          1000,
+          471
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We obtain absolute parallax values for Proxima Cen π_abs = 0''.7687 ± 0''.0003",
+      "measurement_method": "interferometric astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "1999AJ....118.1086B_Proxima_Centauri_parallax_1",
+      "source_id": "1999AJ....118.1086B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.7,
+      "field_unit": "mas",
+      "trace_id": "doc15_p18",
+      "provenance": {
+        "page": 18,
+        "bbox": [
+          245,
+          372,
+          753,
+          666
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 7: HST Absolute Parallax for Proxima Cen: 768.7 ± 0.3 mas",
+      "measurement_method": "interferometric astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "1999AJ....118.1086B_Proxima_Centauri_pm_total_2",
+      "source_id": "1999AJ....118.1086B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_total",
+      "field_value": 3.8517,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc15_p18",
+      "provenance": {
+        "page": 18,
+        "bbox": [
+          245,
+          372,
+          753,
+          666
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 7: HST Proper Motion for Proxima Cen: 3851.7 ± 0.1 mas y^-1",
+      "measurement_method": "interferometric astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_total"
+      ]
+    },
+    {
+      "record_id": "2001ApJ...547L..49W_Proxima_Centauri_distance_0",
+      "source_id": "2001ApJ...547L..49W",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": "1.295",
+      "field_unit": "pc",
+      "trace_id": "doc8_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          282,
+          155,
+          355,
+          174
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Cen is about 12,000 AU from α Cen, based on its 2.2° separation on the sky and its closer distance of 1.295 pc compared with 1.347 pc for α Cen (Perryman et al. 1997).",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2003PASA...20..257S_Proxima_Centauri_distance_0",
+      "source_id": "2003PASA...20..257S",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": "1.295",
+      "field_unit": "pc",
+      "trace_id": "doc7_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          654,
+          513,
+          717,
+          531
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The parallax measurement from Hipparcos gives a distance to Proxima Cen of 1.295 pc.",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2014AJ....148...91L_Proxima_Centauri_distance_3",
+      "source_id": "2014AJ....148...91L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": 1.3,
+      "field_unit": "pc",
+      "trace_id": "doc14_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          108,
+          133,
+          850,
+          393
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Cen ... 1.30 ± 0.01",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2014AJ....148...91L_Proxima_Centauri_parallax_0",
+      "source_id": "2014AJ....148...91L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.13,
+      "field_unit": "mas",
+      "trace_id": "doc14_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Cen ... 768.13 ± 1.04 ... 3850.8 ± 0.6 ... -262.4 ± 0.02",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2014AJ....148...91L_Proxima_Centauri_pm_dec_2",
+      "source_id": "2014AJ....148...91L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": -0.2624,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc14_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Cen ... -262.4 ± 0.02",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_dec"
+      ]
+    },
+    {
+      "record_id": "2014AJ....148...91L_Proxima_Centauri_pm_ra_1",
+      "source_id": "2014AJ....148...91L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": 3.8508,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc14_p9",
+      "provenance": {
+        "page": 9,
+        "bbox": [
+          92,
+          288,
+          880,
+          638
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Cen ... 3850.8 ± 0.6",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_ra"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...782...89S_Proxima_Centauri_parallax_0",
+      "source_id": "2014ApJ...782...89S",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": "771.64 ± 2.60",
+      "field_unit": "mas",
+      "trace_id": "doc10_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          804,
+          397,
+          864,
+          417
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Centauri (α Centauri C, V645 Cen, GJ 551; Hipparcos parallax 771.64 ± 2.60 mas) is the nearest known star...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2014ApJ...782...89S_Proxima_Centauri_pm_total_1",
+      "source_id": "2014ApJ...782...89S",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_total",
+      "field_value": "3.78526 ± 0.0026",
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc10_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          333,
+          553,
+          492,
+          571
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vlm_crop"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "...and a proper motion of 3.78526 ± 0.0026 yr⁻¹ in position angle (PA) 281.461 ± 0.036, as measured by Hipparcos...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_total"
+      ]
+    },
+    {
+      "record_id": "2016Natur.536..437A_Proxima_Centauri_distance_0",
+      "source_id": "2016Natur.536..437A",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": "1.295",
+      "field_unit": "pc",
+      "trace_id": "doc12_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          310,
+          247,
+          353,
+          269
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "At a distance of 1.295 parsecs, the red-dwarf Proxima Centauri (α Centauri C, GL 551, HIP 70890, or simply Proxima) is the Sun's closest stellar neighbour...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...850L...6A_Proxima_Centauri_distance_0",
+      "source_id": "2017ApJ...850L...6A",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": 1.3,
+      "field_unit": "pc",
+      "trace_id": "doc16_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          350,
+          338,
+          401,
+          356
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Proxima Centauri, at a distance of 1.3 pc (van Leeuwen 2007), is the closest star to the Sun.",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...850L...6A_Proxima_Centauri_parallax_1",
+      "source_id": "2017ApJ...850L...6A",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.13,
+      "field_unit": "mas",
+      "trace_id": "doc16_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          836,
+          814,
+          921,
+          831
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "...and a parallax of 768.13 mas (Lurie et al. 2014).",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...850L...6A_Proxima_Centauri_pm_dec_3",
+      "source_id": "2017ApJ...850L...6A",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": 0.76554,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc16_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          713,
+          873,
+          753,
+          886
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vlm_crop"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "...proper motions of -3775.75 and 765.54 mas yr^-1 (van Leeuwen et al. 2007) in R.A. and Dec, respectively...",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_dec"
+      ]
+    },
+    {
+      "record_id": "2017ApJ...850L...6A_Proxima_Centauri_pm_ra_2",
+      "source_id": "2017ApJ...850L...6A",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": -3.77575,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc16_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          103,
+          863,
+          163,
+          876
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vlm_crop"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "...proper motions of -3775.75 and 765.54 mas yr^-1 (van Leeuwen et al. 2007) in R.A. and Dec, respectively...",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_ra"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.480.2660B_Proxima_Centauri_parallax_0",
+      "source_id": "2018MNRAS.480.2660B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.77,
+      "field_unit": "mas",
+      "trace_id": "doc13_p23",
+      "provenance": {
+        "page": 23,
+        "bbox": [
+          82,
+          245,
+          917,
+          879
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 5. Observed parameters of the barycentre of the α Cen A+B close binary... and their companion Proxima Cen... Parallax 768.77 mas",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.480.2660B_Proxima_Centauri_pm_dec_2",
+      "source_id": "2018MNRAS.480.2660B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": 0.7705,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc13_p23",
+      "provenance": {
+        "page": 23,
+        "bbox": [
+          82,
+          245,
+          917,
+          879
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 5... Proxima Cen... μδ 770.5 mas/yr",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_dec"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.480.2660B_Proxima_Centauri_pm_ra_1",
+      "source_id": "2018MNRAS.480.2660B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": -3.7738,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc13_p23",
+      "provenance": {
+        "page": 23,
+        "bbox": [
+          82,
+          245,
+          917,
+          879
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 5... Proxima Cen... μα,* -3773.8 mas/yr",
+      "measurement_method": "observation",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_ra"
+      ]
+    },
+    {
+      "record_id": "2019MNRAS.487.1653B_Proxima_Centauri_distance_0",
+      "source_id": "2019MNRAS.487.1653B",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": 1.3,
+      "field_unit": "pc",
+      "trace_id": "doc11_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          861,
+          611,
+          917,
+          626
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The excellent astrometry required for the proposed test would lead to a very precisely known downrange distance r based on trigonometric parallax. Given that r = 1.30 pc (Gaia Collaboration 2018), an astrometric accuracy of 10 μas implies r would be known to a precision of ≈ 10⁻⁵.",
+      "measurement_method": "trigonometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2025AJ....170...22L_Proxima_Centauri_distance_1",
+      "source_id": "2025AJ....170...22L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": 1.301971,
+      "field_unit": "pc",
+      "trace_id": "doc17_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          103,
+          81,
+          897,
+          291
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Target Star Properties ... Distance (pc) ... Proxima Centauri ... 1.301971(85)",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2025AJ....170...22L_Proxima_Centauri_parallax_0",
+      "source_id": "2025AJ....170...22L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.066,
+      "field_unit": "mas",
+      "trace_id": "doc17_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          103,
+          81,
+          897,
+          291
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Target Star Properties ... Parallax ... Proxima Centauri ... 0''.768066(50)",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2025AJ....170...22L_Proxima_Centauri_pm_dec_3",
+      "source_id": "2025AJ....170...22L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": 0.769465,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc17_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          103,
+          81,
+          897,
+          291
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Target Star Properties ... δ proper motion (mas/yr) ... Proxima Centauri ... 769.465(51)",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_dec"
+      ]
+    },
+    {
+      "record_id": "2025AJ....170...22L_Proxima_Centauri_pm_ra_2",
+      "source_id": "2025AJ....170...22L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": -3.781741,
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc17_p4",
+      "provenance": {
+        "page": 4,
+        "bbox": [
+          103,
+          81,
+          897,
+          291
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Target Star Properties ... α proper motion (mas/yr) ... Proxima Centauri ... -3781.741(31)",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_ra"
+      ]
+    },
+    {
+      "record_id": "2026A&A...706A.112L_Proxima_Centauri_distance_5",
+      "source_id": "2026A&A...706A.112L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": "1.3",
+      "field_unit": "pc",
+      "trace_id": "doc18_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          597,
+          733,
+          647,
+          749
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Proxima is a late-type M dwarf and the closest star to the Sun at ~1.3 pc.",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2026A&A...706A.112L_Proxima_Centauri_parallax_0",
+      "source_id": "2026A&A...706A.112L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": "0.2",
+      "field_unit": "mas",
+      "trace_id": "doc18_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          416,
+          373,
+          441,
+          388
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We determine Proxima's position, proper motion, and parallax with uncertainties at the ~0.4-mas, 50-μas yr⁻¹, and 0.2-mas level, respectively",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2026A&A...706A.112L_Proxima_Centauri_parallax_2",
+      "source_id": "2026A&A...706A.112L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": "768.373",
+      "field_unit": "mas",
+      "trace_id": "doc18_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          58,
+          64,
+          941,
+          225
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Fitted astrometric parameters for Proxima. ... ϖ [mas] ... Best-fit value 768.373 (+0.194/-0.162)",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2026A&A...706A.112L_Proxima_Centauri_pm_dec_4",
+      "source_id": "2026A&A...706A.112L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": "0.769458",
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc18_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          58,
+          64,
+          941,
+          225
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Fitted astrometric parameters for Proxima. ... μ_δ [mas yr⁻¹] ... Best-fit value 769.458 (+0.048/-0.047)",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_dec"
+      ]
+    },
+    {
+      "record_id": "2026A&A...706A.112L_Proxima_Centauri_pm_ra_3",
+      "source_id": "2026A&A...706A.112L",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": "-3.781761",
+      "field_unit": "arcsec/yr",
+      "trace_id": "doc18_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          58,
+          64,
+          941,
+          225
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Fitted astrometric parameters for Proxima. ... μ_α cos δ [mas yr¹] ... Best-fit value -3781.761 (+0.045/-0.050)",
+      "measurement_method": "astrometry",
+      "condition_tags": [
+        "scope: global",
+        "metric: pm_ra"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_ALLWISE_J142937.35-624038.3_0_pmDE",
+      "source_id": "SRC_DB_ALLWISE",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": "1279",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "II/328/allwise",
+        "key_column": "AllWISE",
+        "key_value": "J142937.35-624038.3",
+        "raw_column": "pmDE",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_ALLWISE_J142937.35-624038.3_0_pmRA",
+      "source_id": "SRC_DB_ALLWISE",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": "-2944",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "II/328/allwise",
+        "key_column": "AllWISE",
+        "key_value": "J142937.35-624038.3",
+        "raw_column": "pmRA",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR2_5853498713160606720_0_Plx",
+      "source_id": "SRC_DB_GAIA_DR2",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.5004,
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/345/gaia2",
+        "key_column": "Source",
+        "key_value": "5853498713160606720",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR2_5853498713160606720_0_pmDE",
+      "source_id": "SRC_DB_GAIA_DR2",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": 769.766,
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/345/gaia2",
+        "key_column": "Source",
+        "key_value": "5853498713160606720",
+        "raw_column": "pmDE",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR2_5853498713160606720_0_pmRA",
+      "source_id": "SRC_DB_GAIA_DR2",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": -3781.306,
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/345/gaia2",
+        "key_column": "Source",
+        "key_value": "5853498713160606720",
+        "raw_column": "pmRA",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_5853498713190525696_0_Dist",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": "1.3010999999999999",
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "5853498713190525696",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_5853498713190525696_0_Plx",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": "768.06650000000002",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "5853498713190525696",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_5853498713190525696_0_pmDE",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": "769.46500000000003",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "5853498713190525696",
+        "raw_column": "pmDE",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_5853498713190525696_0_pmRA",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": "-3781.741",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "5853498713190525696",
+        "raw_column": "pmRA",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_GAIA_DR3_5853498713190525696_0_PM",
+      "source_id": "SRC_DB_GAIA_DR3",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_total",
+      "field_value": "3859.2280000000001",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/355/gaiadr3",
+        "key_column": "Source",
+        "key_value": "5853498713190525696",
+        "raw_column": "PM",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_70890_0_Plx",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": "772.33001708984375",
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "70890",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_70890_0_pmDE",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": "768.15999999999997",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "70890",
+        "raw_column": "pmDE",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_HIPPARCOS_70890_0_pmRA",
+      "source_id": "SRC_DB_HIPPARCOS",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": "-3775.6399999999999",
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "I/239/hip_main",
+        "key_column": "HIP",
+        "key_value": "70890",
+        "raw_column": "pmRA",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_1019422535_0_Dist",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": 1.3012,
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "1019422535",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_388857263_0_Dist",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "distance",
+      "field_value": 1.3012,
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "388857263",
+        "raw_column": "Dist",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_1019422535_0_Plx",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.5,
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "1019422535",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_388857263_0_Plx",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "parallax",
+      "field_value": 768.5,
+      "field_unit": "mas",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "388857263",
+        "raw_column": "Plx",
+        "raw_unit": "mas",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_1019422535_0_pmDE",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": 769.766,
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "1019422535",
+        "raw_column": "pmDE",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_388857263_0_pmDE",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_dec",
+      "field_value": 769.766,
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "388857263",
+        "raw_column": "pmDE",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_1019422535_0_pmRA",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": -3781.31,
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "1019422535",
+        "raw_column": "pmRA",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_TIC_388857263_0_pmRA",
+      "source_id": "SRC_DB_TIC",
+      "entity_type": "PM*",
+      "entity_name": "Proxima Centauri",
+      "field_name": "pm_ra",
+      "field_value": -3781.31,
+      "field_unit": "mas/yr",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "IV/38/tic",
+        "key_column": "TIC",
+        "key_value": "388857263",
+        "raw_column": "pmRA",
+        "raw_unit": "mas/yr",
+        "row_index": 0
+      }
+    }
+  ]
+}

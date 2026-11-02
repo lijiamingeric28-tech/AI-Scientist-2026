@@ -1,0 +1,368 @@
+{
+  "otype": "SyG",
+  "name_cn": "赛弗特星系通用",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "ra",
+      "name_cn": "赤经(J2000)",
+      "description": "天球赤经,精度约0.1角秒(光学位置)至1角秒(射电位置)",
+      "category": "astrometry",
+      "ucd": "pos.eq.ra",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dec",
+      "name_cn": "赤纬(J2000)",
+      "description": "天球赤纬,来源标志区分光学/射电/近似位置",
+      "category": "astrometry",
+      "ucd": "pos.eq.dec",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "redshift",
+      "name_cn": "红移",
+      "description": "光谱红移,几乎全部SyG均有;含E(无缝光谱估计)与下限标志",
+      "category": "astrometry",
+      "ucd": "src.redshift",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "luminosity_distance",
+      "name_cn": "光度距离",
+      "description": "由红移按宇宙学参数计算的光度距离,用于光度换算",
+      "category": "astrometry",
+      "ucd": "pos.distance",
+      "unit": "Mpc",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "app_mag",
+      "name_cn": "视星等",
+      "description": "U/B/V等波段视星等及波段标志(V/P/B/R等)",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "abs_mag",
+      "name_cn": "绝对V星等",
+      "description": "绝对星等(H0=71),历史QSO/AGN分界M_V=-23的依据",
+      "category": "photometry",
+      "ucd": "phys.magAbs;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bv_color",
+      "name_cn": "B-V色指数",
+      "description": "约翰逊B-V颜色",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ub_color",
+      "name_cn": "U-B色指数",
+      "description": "约翰逊U-B颜色,负值UV超为经典AGN选源特征",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_5ghz",
+      "name_cn": "6cm(5GHz)射电流量密度",
+      "description": "射电探测源的5GHz流量密度,判断射电噪/射电静SyG",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_flux_1_4ghz",
+      "name_cn": "20cm(1.4GHz)射电流量密度",
+      "description": "1.4GHz流量密度",
+      "category": "photometry",
+      "ucd": "phot.flux.density;em.radio",
+      "unit": "Jy",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "wise_midir_mag",
+      "name_cn": "WISE中红外星等",
+      "description": "W1-W4(3.4-22um)星等,中红外色区分Sy2与类星体/遮蔽诊断",
+      "category": "photometry",
+      "ucd": "phot.mag;em.IR",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_flux_14_195kev",
+      "name_cn": "14-195keV硬X射线流量",
+      "description": "Swift/BAT硬X射线流量;硬X射线选源对环面遮蔽不敏感",
+      "category": "photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_lum_14_195kev",
+      "name_cn": "14-195keV硬X射线光度",
+      "description": "硬X射线光度,AGN本征光度探针,与[OIII]光度联合做Sy2诊断",
+      "category": "photometry",
+      "ucd": "phys.luminosity;em.X-ray",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sed_spectral_index",
+      "name_cn": "多波段谱指数",
+      "description": "由多频SED(射电-光学)拟合的谱指数",
+      "category": "photometry",
+      "ucd": "phys.spectralIndex",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_flux",
+      "name_cn": "[OIII]5007流量",
+      "description": "[OIII]5007发射线流量,窄线区最亮禁线,AGN光度校准线",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oiii_luminosity",
+      "name_cn": "[OIII]5007光度",
+      "description": "消光改正后的[OIII]光度,AGN本征光度核心量,Sy2诊断与黑洞质量推算输入",
+      "category": "spectroscopy",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "halpha_flux",
+      "name_cn": "Hα流量",
+      "description": "Hα6563发射线流量,宽/窄成分分解",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hbeta_flux",
+      "name_cn": "Hβ流量",
+      "description": "Hβ4861发射线流量,宽Hβ用于virial质量估计",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nii_flux",
+      "name_cn": "[NII]6584流量",
+      "description": "[NII]6584发射线流量,BPT诊断横轴参数",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sii_flux",
+      "name_cn": "[SII]6717,6731流量",
+      "description": "[SII]双线流量,用于BPT与电子密度诊断",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "oi_flux",
+      "name_cn": "[OI]6300流量",
+      "description": "[OI]6300流量,区分AGN与恒星形成主导的强诊断线",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;em.opt",
+      "unit": "erg/s/cm^2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "feii_strength",
+      "name_cn": "FeII强度",
+      "description": "FeII(4434-4684)与Hβ流量比,NLS1强FeII特征(约为宽线Sy1的2倍)",
+      "category": "spectroscopy",
+      "ucd": "spect.line.flux;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "line_ew",
+      "name_cn": "发射线等值宽度",
+      "description": "Hα、[OIII]等发射线等值宽度",
+      "category": "spectroscopy",
+      "ucd": "spect.line.eqWidth;em.opt",
+      "unit": "Angstrom",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hb_fwhm",
+      "name_cn": "Hβ线宽(FWHM)",
+      "description": "宽Hβ半高全宽,virial黑洞质量关键输入;NLS1判据FWHM<2000km/s",
+      "category": "spectroscopy",
+      "ucd": "spect.line.width;em.opt",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "balmer_decrement",
+      "name_cn": "巴耳末减缩Hα/Hβ",
+      "description": "Hα/Hβ流量比,用于核区红化与星族改正",
+      "category": "spectroscopy",
+      "ucd": "spect.line.ratio;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bh_mass",
+      "name_cn": "黑洞质量",
+      "description": "单历元virial黑洞质量(由Hβ宽线FWHM与5100Å光度推算),NLS1平均log M_BH约6.9",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eddington_ratio",
+      "name_cn": "爱丁顿比率",
+      "description": "活动核光度与爱丁顿光度之比,吸积率探针;NLS1平均log Edd约-0.34,远高于宽线Sy1",
+      "category": "physical",
+      "ucd": "phys.luminosity;arith.ratio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mono_lum_5100",
+      "name_cn": "5100Å单色光度",
+      "description": "5100Å连续谱单色光度,virial质量估计输入量,与Hβ/[OIII]光度强相关",
+      "category": "physical",
+      "ucd": "phys.luminosity;em.opt",
+      "unit": "erg/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "xray_col_density",
+      "name_cn": "中性氢柱密度NH",
+      "description": "X射线吸收柱密度,环面遮蔽程度指标(Sy2通常NH>10^22 cm^-2,含康普顿厚源)",
+      "category": "physical",
+      "ucd": "phys.columnDensity;em.X-ray",
+      "unit": "cm^-2",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "stellar_veldisp",
+      "name_cn": "恒星速度弥散",
+      "description": "宿主星系核区恒星速度弥散σ*,与M_BH相关、Sy2质量估计替代途径",
+      "category": "physical",
+      "ucd": "phys.veloc.dispersion",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "host_stellar_mass",
+      "name_cn": "宿主恒星质量",
+      "description": "宿主星系恒星质量",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "sfr",
+      "name_cn": "恒星形成率",
+      "description": "宿主星系恒星形成率,评估AGN与恒星形成复合光谱污染",
+      "category": "physical",
+      "ucd": "phys.SFR",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "reddening_ebv",
+      "name_cn": "核区色余E(B-V)",
+      "description": "由巴耳末减缩得到的核区尘埃消光,改正[OIII]光度用",
+      "category": "physical",
+      "ucd": "phot.color.excess",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "seyfert_type",
+      "name_cn": "赛弗特光谱亚型",
+      "description": "Véron谱型编码:S1/S1.2/S1.5/S1.8/S1.9/S2/S3(LINER)/NLS1等,统一模型视角下对应宽/窄线区可见性",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "nls1_flag",
+      "name_cn": "窄线赛弗特1型标志",
+      "description": "是否NLS1(FWHM(Hβ)<2000km/s且FeII强),低质量高吸积率子类",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hidden_blr_flag",
+      "name_cn": "隐藏宽线区(HBLR)标志",
+      "description": "Sy2核中是否探测到隐蔽宽线区(偏振/红外),检验统一模型的关键观测量",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "bpt_class",
+      "name_cn": "BPT诊断分类",
+      "description": "由[NII]/Hα与[OIII]/Hβ判定:AGN(Sy2)/LINER/复合型/恒星形成HII区",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ratio_oiii_hb",
+      "name_cn": "[OIII]/Hβ线比",
+      "description": "BPT诊断图纵轴参数,电离源判据",
+      "category": "classification",
+      "ucd": "spect.line.ratio;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ratio_nii_ha",
+      "name_cn": "[NII]/Hα线比",
+      "description": "BPT诊断图横轴参数,与[OIII]/Hβ联合区分AGN与恒星形成",
+      "category": "classification",
+      "ucd": "spect.line.ratio;em.opt",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "radio_det_flag",
+      "name_cn": "射电探测标志",
+      "description": "是否FIRST射电探测源(约5%的NLS1被探测),射电噪/射电静划分",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

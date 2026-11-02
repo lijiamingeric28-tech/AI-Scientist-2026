@@ -1,0 +1,323 @@
+{
+  "otype": "**",
+  "name_cn": "双星或多星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "orbital_period",
+      "name_cn": "轨道周期",
+      "description": "双星绕质心公转周期(分光双星以天为单位,目视/多重星系统可为年、千年乃至百万年),WDS-ORB6与SB9给出误差,宽双星周期由角距-视差-质量估计(MSC)",
+      "category": "astrometry",
+      "ucd": "orbit.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eccentricity",
+      "name_cn": "轨道偏心率",
+      "description": "轨道偏心率e,0为圆轨道;SB9含误差与假设值标记,Gaia NSS对SB1/SB2/天体测量轨道均给出",
+      "category": "astrometry",
+      "ucd": "orbit.eccentricity",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "periastron_epoch",
+      "name_cn": "近星点时刻",
+      "description": "近星点通过时刻T0(儒略日),分光与目视轨道相位计算的参考历元;含假设值标记(SB9)",
+      "category": "astrometry",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "arg_periastron",
+      "name_cn": "近星点幅角",
+      "description": "近星点幅角ω(度),轨道面内从升交点量至近星点的角度,SB9含误差,圆轨道中未定义",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "ascending_node",
+      "name_cn": "升交点经度",
+      "description": "升交点黄经Ω(度),目视轨道天球定向元素,ORB6给出;无视向速度资料时无法区分升降交点的系统记于0-180度",
+      "category": "astrometry",
+      "ucd": "orbit.Node",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbit_inclination",
+      "name_cn": "轨道倾角",
+      "description": "轨道面相对天球切面的倾角i(度),目视与天体测量轨道(SB9谱轨道不提供,Gaia NSS天体测量轨道提供i与节点)",
+      "category": "astrometry",
+      "ucd": "orbit.inclination",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbital_semimajor_axis",
+      "name_cn": "轨道半长轴(角秒)",
+      "description": "目视轨道角半长轴a(角秒),与视差、周期结合由开普勒第三定律给出系统动力学总质量",
+      "category": "astrometry",
+      "ucd": "orbit.semimajoraxis",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "a_sin_i",
+      "name_cn": "轨道半长轴投影 a·sin i",
+      "description": "谱轨道半长轴乘以轨道倾角正弦(以日或AU为单位),由 K1、K2、P、e 导出,用于质量函数与最小质量计算",
+      "category": "astrometry",
+      "ucd": "orbit.semimajoraxis",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "angular_separation",
+      "name_cn": "角距",
+      "description": "分量间角距ρ(角秒,近密对可达毫角秒),WDS给出首末历元测量值,Gaia NSS天体测量轨道给出投影角半长轴,宽双星物理与光学区分的关键量",
+      "category": "astrometry",
+      "ucd": "pos.angDistance",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "position_angle",
+      "name_cn": "位置角",
+      "description": "从主星指向伴星的位置角θ(度,自北向东),WDS为首末历元未岁差值,由历元序列可得轨道运动",
+      "category": "astrometry",
+      "ucd": "pos.posAng",
+      "unit": "deg",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "proper_motion",
+      "name_cn": "自行",
+      "description": "主星与伴星各自的自行(RA赤经方向与Dec分量),一致性用于判定物理(共同自行)还是光学双星",
+      "category": "astrometry",
+      "ucd": "pos.pm",
+      "unit": "mas/yr",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "parallax",
+      "name_cn": "视差",
+      "description": "系统三角视差(角秒或mas),MSC收录并用于宽双星周期估计与质量换算;由WDS码可交叉至Gaia/Hipparcos",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "thiele_innes_elements",
+      "name_cn": "Thiele-Innes 常数",
+      "description": "Gaia NSS天体测量轨道解的A、F、B、G四个Thiele-Innes常数,与轨道周期、偏心率等构成完整轨道描述",
+      "category": "astrometry",
+      "ucd": "pos.cartesian",
+      "unit": "arcsec",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "velocity_semi_amplitude",
+      "name_cn": "视向速度半振幅",
+      "description": "主星K1与伴星K2的视向速度半振幅(km/s),SB9给出误差、不确定与假设标记;K1/K2之比直接给出质量比q,单谱双星(SB1)只给K1",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.amp",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "systemic_rv",
+      "name_cn": "系统质心视向速度",
+      "description": "系统质心视向速度γ(km/s),用于轨道拟合与银道坐标系下的运动学分析",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_trend",
+      "name_cn": "视向速度趋势/加速度",
+      "description": "Gaia NSS对长周期或未解轨道的视向速度一次/二次趋势系数(加速度),指示亚恒星或长周期伴星存在",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "rv_residual",
+      "name_cn": "视向速度残差",
+      "description": "主/次星视向速度拟合残差RMS与观测次数,衡量轨道解质量并暗示第三体或谱线混合",
+      "category": "spectroscopy",
+      "ucd": "stat.rms",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spectral_type",
+      "name_cn": "光谱型",
+      "description": "各分量MK光谱型(WDS/SB9给出主次星),MSC用颜色推断并加问号标记;与质量-光谱关系配合给出光谱质量",
+      "category": "classification",
+      "ucd": "src.class.starSpectType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_magnitude",
+      "name_cn": "分量视星等",
+      "description": "主星与伴星视星等(WDS以V为主且注明不均匀性,部分为B/R/K波段;SB9标注滤光带;MSC含多波段),总量可分开",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "magnitude_difference",
+      "name_cn": "分量星等差",
+      "description": "主次星星等差dm,与视星等、角距联合约束质量比与探测完备性,WDS另有Delta-M专用目录",
+      "category": "photometry",
+      "ucd": "phot.mag.diff",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_mass",
+      "name_cn": "分量质量",
+      "description": "各分量质量估计(太阳质量),MSC按来源给质量码:r原始发表、a光谱型/色指数、q由质量比、m SB1最小质量、v绝对星等,并标注不确定性",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_ratio",
+      "name_cn": "质量比",
+      "description": "次星与主星质量比q,SB2系统由K1/K2直接给出,Gaia NSS SB2解直接提供,是双星形成与演化研究的基本参数",
+      "category": "physical",
+      "ucd": "phys.composition.massRatio",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "mass_function",
+      "name_cn": "质量函数",
+      "description": "f(m)=K1^3·P·(1-e^2)^(3/2)/(2πG),由谱轨道元素直接导出,给SB1伴星最小质量约束",
+      "category": "physical",
+      "ucd": "phys.mass.function",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "dynamical_mass",
+      "name_cn": "动力学总质量",
+      "description": "由a、P、π经开普勒第三定律求得的系统总质量(ORB6目视轨道或MSC子系统),与测光/光谱质量对比可诊断第三体、视差误差等",
+      "category": "physical",
+      "ucd": "phys.mass",
+      "unit": "Msun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_period",
+      "name_cn": "食变周期",
+      "description": "食双星/椭变星光变周期,Gaia NSS食双星解与MSC的E/E*系统给出,与谱轨道周期互检",
+      "category": "variability",
+      "ucd": "time.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "eclipse_depth",
+      "name_cn": "食深与食宽",
+      "description": "主/次食深度(星等)与食持续时间,Gaia NSS食双星轨道解给出,约束温度比与轨道倾角",
+      "category": "variability",
+      "ucd": "src.var.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "variability_class",
+      "name_cn": "变星类型",
+      "description": "食双星几何分类(EA/EB/EW),Gaia NSS对8.7万食双星解给出;MSC以E(有周期)/E*(食时变)/e(未定周期)码标记",
+      "category": "variability",
+      "ucd": "src.var.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "system_type_code",
+      "name_cn": "子系统类型码",
+      "description": "MSC对每个子系统按观测技术分类:v/V目视、a/A天体测量、s/S1/S2分光、o掩星、E/e食、c/C共同自行、X非物理,反映发现与研究方法",
+      "category": "classification",
+      "ucd": "meta.code.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "component_designation",
+      "name_cn": "分量标示",
+      "description": "分量命名(A、B、C或Aa、AB-C等),WDS按角距顺序与子系统层次命名,多重系统检索的必需标识",
+      "category": "classification",
+      "ucd": "meta.id;src.component",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "hierarchy_parent",
+      "name_cn": "层级父系结构",
+      "description": "MSC嵌套二叉树结构中的父级关系(parent字段),将系统组织为逐级二分子系统,量化多重性3-7分量",
+      "category": "classification",
+      "ucd": "meta.id;src",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "discoverer_code",
+      "name_cn": "发现者编码",
+      "description": "WDS发现者三字母编码与序号,追溯双星发现历史并区分独立发现对",
+      "category": "classification",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "orbit_grade",
+      "name_cn": "轨道解质量等级",
+      "description": "轨道可靠性评级:SB9为0(差)-5(确定性),ORB6为1-5(另有9=天体测量轨道),统计研究筛选高质量轨道的标准判据",
+      "category": "classification",
+      "ucd": "meta.code.qual",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "cpm_flag",
+      "name_cn": "共同自行/物理成员标志",
+      "description": "判定物理双星的证据码:MSC的C类型(>1角秒)按判据细分为h假想视差、r共同视向速度、p共同距离、m相似自行;WDS含X伪双星(可疑对)标记",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "third_body_flag",
+      "name_cn": "第三体/凌食时变标志",
+      "description": "指示更高阶伴星存在的证据:MSC的E*(食时变)与天体测量/谱轨道残差,Gaia NSS的RV趋势与额外解,服务高阶多重性研究",
+      "category": "environment",
+      "ucd": "meta.code",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "galactic_coordinates",
+      "name_cn": "银道坐标",
+      "description": "系统银经/银纬(WDS与SB9均提供),用于双星环境、星协成员与银盘/银晕分布的统计研究",
+      "category": "environment",
+      "ucd": "pos.galactic.lon",
+      "unit": "deg",
+      "_unit_filled": true
+    }
+  ]
+}

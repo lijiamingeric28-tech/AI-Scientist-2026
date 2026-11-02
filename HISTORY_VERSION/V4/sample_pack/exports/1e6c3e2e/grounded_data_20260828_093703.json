@@ -1,0 +1,3836 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "source_id": "2025ApJ...994..111B",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/ae0cb9",
+      "title": "Converging on the Cepheid Metallicity Dependence: Implications of Nonstandard Gaia Parallax Recalibration on Distance Measures",
+      "authors": [
+        "Breuval, Louise",
+        "Anand, Gagandeep S.",
+        "Anderson, Richard I.",
+        "Beaton, Rachael",
+        "Bhardwaj, Anupam",
+        "Casertano, Stefano",
+        "Clementini, Gisella",
+        "Cruz Reyes, Mauricio",
+        "De Somma, Giulia",
+        "Groenewegen, Martin A. T.",
+        "Huang, Caroline D.",
+        "Kervella, Pierre",
+        "Khan, Saniya",
+        "Macri, Lucas M.",
+        "Marconi, Marcella",
+        "Minniti, Javier H.",
+        "Riess, Adam G.",
+        "Ripepi, Vincenzo",
+        "Romaniello, Martino",
+        "Scolnic, Daniel",
+        "Trentin, Erasmo",
+        "Wielgórski, Piotr",
+        "Yuan, Wenlong"
+      ],
+      "year": 2025,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2025ApJ...994..111B.pdf",
+      "retrieval_priority": 0.5616318938499842,
+      "abstract": "By comparing Cepheid brightnesses with geometric distance measures including Gaia EDR3 parallaxes, most recent analyses conclude metal-rich Cepheids are brighter, quantified as γ ∼ −0.2 mag dex<SUP>−1</SUP>. While the value of γ has little impact on the determination of the Hubble constant in contemporary distance ladders (due to the similarity of metallicity across these ladders), γ plays a role in gauging the distances to metal-poor dwarf galaxies like the Magellanic Clouds and is of considerable interest in testing stellar models. Recently, B. F. Madore &amp; W. L. Freedman (hereafter MF25) recalibrated Gaia EDR3 parallaxes by adding to them a magnitude offset to match certain historic Cepheid parallaxes, which otherwise differ by ∼1.6σ. A calibration that adjusts Gaia parallaxes by applying a magnitude offset (i.e., a multiplicative correction in parallax) differs significantly from the Gaia Team's calibration, which is additive in parallax space—especially at distances much closer than 1 kpc or beyond 10 kpc, outside the ∼2─3 kpc range on which the MF25 calibration was based. The MF25 approach reduces γ to zero. If broadly applied, it places nearby cluster distances like the Pleiades too close compared to independent measurements, while leaving distant quasars with negative parallaxes. We conclude that the MF25 proposal for Gaia calibration and γ ∼ 0 produces farther-reaching consequences, many of which are strongly disfavored by the data.",
+      "keywords": [
+        "Cepheid variable stars",
+        "Distance measure",
+        "Parallax",
+        "Metallicity",
+        "218",
+        "395",
+        "1197",
+        "1031",
+        "Astrophysics of Galaxies",
+        "Cosmology and Nongalactic Astrophysics",
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 39
+    },
+    {
+      "source_id": "2025A&A...698A...7F",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202553673",
+      "title": "LAMOST medium-resolution observations of the Pleiades",
+      "authors": [
+        "Frasca, A.",
+        "Zhang, J. Y.",
+        "Alonso-Santiago, J.",
+        "Fu, J. N.",
+        "Molenda-Żakowicz, J.",
+        "De Cat, P.",
+        "Catanzaro, G."
+      ],
+      "year": 2025,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2025A&A...698A...7F.pdf",
+      "retrieval_priority": 0.5271500639505979,
+      "abstract": "Aims. In this work, we present the results of our analysis of medium-resolution LAMOST spectra of late-type candidate members of the Pleiades with the aim of determining the stellar parameters, activity level, and lithium abundance. Methods. We used the ROTFIT code to determine the atmospheric parameters (T<SUB>eff</SUB>, log g, and [Fe/H]), along with the radial velocity (RV) and projected rotation velocity (v sin i). Moreover, for late-type stars (T<SUB>eff</SUB> ≤ 6500 K), we also calculated the Hα and Li Iλ6708 net equivalent width by means of the subtraction of inactive photospheric templates. We also used the rotation periods from the literature and we purposely determined them for 89 stars by analyzing the available Transiting Exoplanet Survey Satellite (TESS) photometry. Results. We derived the RV, v sin i, and atmospheric parameters for 1581 spectra of 283 stars. Literature data were used to assess the accuracy of the derived parameters. The RV distribution of the cluster members peaks at 5.0 km s<SUP>−1</SUP> with a dispersion of 1.4 km s<SUP>−1</SUP>, while the average metallicity is [Fe/H]=−0.03±0.06, in line with previous determinations. Fitting empirical isochrones of Li depletion to EW measures of stars with T<SUB>eff</SUB> ≤ 6500 K, we obtained a reliable age for the Pleiades of 118±6 Myr, in agreement with the recent literature. The activity indicators Hα line flux (F<SUB>Hα</SUB>) and luminosity ratio (R<SUP>'</SUP><SUB>Hα</SUB>) show the hottest stars to be less active (on average) than the coldest ones, as expected for a 100-Myr old cluster. When plotted against the Rossby number, R<SUB>O</SUB>, our R<SUP>'</SUP><SUB>Hα</SUB> values display a typical activity-rotation trend, with a steep decay for R<SUB>O</SUB> ≥ 0.2 and a nearly flat (saturated) activity level for smaller values. However, we still see a slight dependence on R<SUB>O</SUB> in the saturated regime, which is well fitted by a power law with a slope of −1.18 ± 0.02; this is in agreement with a number of previous works. For three sources with multi-epoch data, we had access to LAMOST spectra acquired during flares, which are characterized by strong and broad Hα profiles and the presence of the He I λ6678 Å emission line. Among our targets, we identified 39 possible SB1 and ten SB2 systems. We have also shown the potential of the LAMOST-MRS spectra in allowing us to refine the orbital solution of a number of binaries and to discover a new double-lined binary as well.",
+      "keywords": [
+        "stars: abundances",
+        "stars: activity",
+        "binaries: spectroscopic",
+        "stars: flare",
+        "stars: fundamental parameters",
+        "open clusters and associations: individual: Pleiades",
+        "Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 12
+    },
+    {
+      "source_id": "2023A&A...677A.163A",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202346569",
+      "title": "A Gaia astrometric view of the open clusters Pleiades, Praesepe, and Blanco 1",
+      "authors": [
+        "Alfonso, Jeison",
+        "García-Varela, Alejandro"
+      ],
+      "year": 2023,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2023A&A...677A.163A.pdf",
+      "retrieval_priority": 0.5109151280579455,
+      "abstract": "Context. Nearby open clusters, such as Pleiades, Praesepe, and Blanco 1, have been extensively studied due to their proximity to the Sun. The Gaia data provide the opportunity to investigate these clusters, because they contain valuable astrometric and photometric information that can be used to update their kinematic and stellar properties. <BR /> Aims: Our goal is to carry out a star membership study in these nearby open clusters by employing an astrometric model with proper motions (PMs) and an unsupervised clustering machine learning algorithm that uses positions, PMs, and parallaxes. The star members are selected from the cross-matching between both methods. Once we know the members, we investigate the spatial distributions of these clusters and estimate their distances, ages, and metallicities. <BR /> Methods: We used the Gaia DR3 catalogue to determine star members using two approaches: a classical Bayesian model and the unsupervised machine learning algorithm DBSCAN. For star members, we built radial density profiles and spatial distributions, and computed the King parameters. The ages and metallicities were estimated using the BASE-9 Bayesian software. <BR /> Results: We identified 958, 744, and 488 star members for Pleiades, Praesepe, and Blanco 1, respectively. We corrected the distances and built the spatial distributions, finding that Praesepe and Blanco 1 have elongated shape structures. The distances, ages, and metallicities obtained were consistent with those reported in the literature. <BR /> Conclusions: We obtained catalogues of star members, and updated kinematic and stellar parameters for these open clusters. We find that the PMs model can find a similar number of members to the unsupervised clustering algorithm when the cluster population forms an overdensity in the vector point diagram. This allows us to select an adequate size of the PMs region with which to run these methods. Our analysis found stars that are being directed towards the outskirts of Praesepe and Blanco 1, which exhibit elongated shapes. These stars have high membership probabilities and similar PMs to those within the tidal radius. <P />Tables with cluster members are available at the CDS via anonymous ftp to <A href=\"https://cdsarc.cds.unistra.fr\">cdsarc.cds.unistra.fr</A> (ftp://130.79.128.5) or via <A href=\"https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/677/A163\">https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/677/A163</A>",
+      "keywords": [
+        "astrometry",
+        "methods: data analysis",
+        "open clusters and associations: individual: Blanco 1",
+        "open clusters and associations: individual: Pleiades",
+        "open clusters and associations: individual: Praesepe",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 13
+    },
+    {
+      "source_id": "2023A&A...677A.162B",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/202346790",
+      "title": "Benchmarking Gaia DR3 Apsis with the Hyades and Pleiades open clusters",
+      "authors": [
+        "Brandner, Wolfgang",
+        "Calissendorff, Per",
+        "Kopytova, Taisiya"
+      ],
+      "year": 2023,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2023A&A...677A.162B.pdf",
+      "retrieval_priority": 0.4948752968062827,
+      "abstract": "Context. The Gaia astrophysical parameters inference system (Apsis) provides astrophysical parameter estimates for several to hundreds of millions of stars. <BR /> Aims: We aim to benchmark Gaia DR3 Apsis. <BR /> Methods: We compiled approximately 1500 bona fide single stars in the Hyades and Pleiades open clusters for validation of PARSEC isochrones, and for comparison with Apsis estimates. PARSEC stellar isochrones in the Gaia photometric system enable us to assign average ages and metallicities to the clusters, and mass, effective temperature, luminosity, and surface gravity to the individual stars. <BR /> Results: Apsis does not recover the single-age, single-metallicity characteristic of the cluster populations. Ages assigned to cluster members seemingly follow the input template for Galactic populations, with earlier-type stars being systematically assigned younger ages than later-type stars. Cluster metallicities are underestimated by 0.10-0.2 dex. Effective temperature estimates are in general reliable. Surface gravity estimates reveal strong systematic errors for specific ranges of the Gaia BP ‒ RP colours. <BR /> Conclusions: We caution that Gaia DR3 Apsis estimates can be subject to significant systematic uncertainties. Some of the Apsis estimates, such as metallicity, might only be meaningful for statistical studies of the time-averaged Galactic stellar population, but are not recommended to be used for individual stars. <P />Full Table 2 is available at the CDS via anonymous ftp to <A href=\"https://cdsarc.cds.unistra.fr\">cdsarc.cds.unistra.fr</A> (ftp://130.79.128.5) or via <A href=\"https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/677/A162\">https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/677/A162</A>",
+      "keywords": [
+        "open clusters and associations: individual: Hyades",
+        "open clusters and associations: individual: Pleiades",
+        "stars: abundances",
+        "stars: fundamental parameters",
+        "Galaxy: stellar content",
+        "Hertzsprung-Russell and C-M diagrams",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 20
+    },
+    {
+      "source_id": "2022RMxAA..58..315M",
+      "source_type": "paper",
+      "doi": "10.22201/ia.01851101p.2022.58.02.12",
+      "title": "The Hipparcos Pleiades Parallax Error is Also a Proper Motion Error",
+      "authors": [
+        "Makarov, V. V."
+      ],
+      "year": 2022,
+      "journal": "Revista Mexicana de Astronomia y Astrofisica",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2022RMxAA..58..315M.pdf",
+      "retrieval_priority": 0.541296827123982,
+      "abstract": "The mean parallax of the Pleiades open cluster from the Hipparcos catalog is larger than the true value by approximately 1 mas. The origin of this error, as well as a possible algorithm of correcting it, was proposed by Makarov (2002). The problem is reassessed using the more accurate Gaia data with a focus on the predicted correction to the Pleiades proper motions. The accurately determined differences Gaia ‒ Hipparcos for 52 common stars are close to these estimates within the formal uncertainties for all three parameters, which strongly suggests that the proposed interpretation was correct. With adjustments for the systematic vector field fitted with 126 vector spherical harmonics to degree 7, these differences amount to (+0.39, ‒0.74) mas yr<SUP>‒1</SUP>. The implications of small-scale proper motion and position errors in Hipparcos for present day astrometry are briefly discussed.",
+      "keywords": [
+        "astrometry",
+        "parallaxes",
+        "proper motions",
+        "reference systems",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 35
+    },
+    {
+      "source_id": "2019A&A...628A..66L",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201935533",
+      "title": "A 5D view of the α Per, Pleiades, and Praesepe clusters",
+      "authors": [
+        "Lodieu, N.",
+        "Pérez-Garrido, A.",
+        "Smart, R. L.",
+        "Silvotti, R."
+      ],
+      "year": 2019,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2019A&A...628A..66L.pdf",
+      "retrieval_priority": 0.5139620482082545,
+      "abstract": "<BR /> Aims: Our scientific goal is to provide revised membership lists of the α Per, Pleiades, and Praesepe clusters exploiting the second data release of Gaia and produce five-dimensional maps (α, δ, π, μ<SUB>α</SUB> cos δ, μ<SUB>δ</SUB>) of these clusters. <BR /> Methods: We implemented the kinematic method combined with the statistical treatment of parallaxes and proper motions to identify astrometric member candidates of three of the most nearby and best studied open clusters in the sky. <BR /> Results: We cross-correlated the Gaia catalogue with large-scale public surveys to complement the astrometry of Gaia with multi-band photometry from the optical to the mid-infrared. We identified 517, 1248, and 721 bona fide astrometric member candidates inside the tidal radius of α Per, the Pleiades, and Praesepe, respectively. We cross-matched our final samples with catalogues from previous surveys to address the level of completeness. We update the main physical properties of the clusters, including mean distance and velocity, as well as core, half-mass, and tidal radii. We infer updated ages from the white dwarf members of the Pleiades and Praesepe. We derive the luminosity and mass functions of the three clusters and compare them to the field mass function. We compute the positions in space of all member candidates in the three regions to investigate their distribution in space. <BR /> Conclusions: We provide updated distances and kinematics for the three clusters. We identify a list of members in the α Per, Pleiades, and Praesepe clusters from the most massive stars all the way down to the hydrogen-burning limit with a higher confidence and better astrometry than previous studies. We produce complete 5D maps of stellar and substellar bona fide members in these three regions. The photometric sequences derived in several colour-magnitude diagrams represent benchmark cluster sequences at ages from 90 to 600 Myr. We note the presence of a stream around the Pleiades cluster extending up to 40 pc from the cluster centre. <P />Full Tables A.1, B.1, and C.1 are only available at the CDS via anonymous ftp to <A href=\"http://cdsarc.u-strasbg.fr/\">http://cdsarc.u-strasbg.fr</A> (ftp://130.79.128.5) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/628/A66\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/628/A66</A>",
+      "keywords": [
+        "stars: low-mass",
+        "brown dwarfs",
+        "surveys",
+        "open clusters and associations: individual: α Persei",
+        "open clusters and associations: individual: Pleiades",
+        "open clusters and associations: individual: Praesepe",
+        "Astrophysics - Solar and Stellar Astrophysics",
+        "Astrophysics - Astrophysics of Galaxies"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 10
+    },
+    {
+      "source_id": "2018ApJ...863...67G",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aad0a0",
+      "title": "Age Determinations of the Hyades, Praesepe, and Pleiades via MESA Models with Rotation",
+      "authors": [
+        "Gossage, Seth",
+        "Conroy, Charlie",
+        "Dotter, Aaron",
+        "Choi, Jieun",
+        "Rosenfield, Philip",
+        "Cargile, Philip",
+        "Dolphin, Andrew"
+      ],
+      "year": 2018,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2018ApJ...863...67G.pdf",
+      "retrieval_priority": 0.5679473679440766,
+      "abstract": "The Hyades, Praesepe, and Pleiades are well-studied stellar clusters that anchor important secondary stellar age indicators. Recent studies have shown that main sequence turn off based ages for these clusters may depend on the degree of rotation in the underlying stellar models. Rotation induces structural instabilities that can enhance the chemical mixing of a star, extending its fuel supply. In addition, rotation introduces a modulation of the star’s observed magnitude and color due to the effects of gravity darkening. We aim to investigate the extent to which stellar rotation affects the age determination of star clusters. We utilize the MESA stellar evolution code to create models that cover a range of rotation rates corresponding to Ω/Ω<SUB>c</SUB> = 0.0-0.6 in 0.1 dex steps, allowing the assessment of variations in this dimension. The statistical analysis package, MATCH, is employed to derive ages and metallicities by fitting our MESA models to Tycho B <SUB> T </SUB>, V <SUB> T </SUB>, and 2MASS J, K <SUB> s </SUB> color-magnitude diagrams. We find that the derived ages are relatively insensitive to the effects of rotation. For the Hyades, Praesepe, and Pleiades clusters, we derive ages based on synthetic populations that model a distribution of rotation rates or a fixed rate. Across each case, the derived ages tend to agree roughly within errors, near 680, 590, and 110-160 Myr for the Hyades, Praesepe, and Pleiades clusters, respectively. These ages are in agreement with Li depletion boundary-based ages and previous analyses that used nonrotating isochrones. Our methods do not provide a strong constraint on the metallicities of these clusters.",
+      "keywords": [
+        "Hertzsprung─Russell and C─M diagrams",
+        "open clusters and associations: individual: The Hyades",
+        "The Praesepe",
+        "The Pleiades",
+        "stars: general",
+        "stars: rotation",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 1
+    },
+    {
+      "source_id": "2018ApJ...863..179S",
+      "source_type": "paper",
+      "doi": "10.3847/1538-4357/aad190",
+      "title": "Chemical Inhomogeneities in the Pleiades: Signatures of Rocky-forming Material in Stellar Atmospheres",
+      "authors": [
+        "Spina, Lorenzo",
+        "Meléndez, Jorge",
+        "Casey, Andrew R.",
+        "Karakas, Amanda I.",
+        "Tucci-Maia, Marcelo"
+      ],
+      "year": 2018,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2018ApJ...863..179S.pdf",
+      "retrieval_priority": 0.48889887968312207,
+      "abstract": "The aim of Galactic archaeology is to recover the history of our Galaxy through the information encoded in stars. An unprobed assumption of this field is that the chemical composition of a star is an immutable marker of the gas from which it formed. It is vital to test this assumption on open clusters, a group of stars formed from the same gas. Previous investigations have shown that unevolved stars in clusters are chemically homogeneous within the typical uncertainties of these analyses, i.e., 15% of the elemental abundances. Our strictly differential analysis on five members of the Pleiades allows us to reach precisions of 5% for most elements and to unveil chemical anomalies within the cluster that could be explained by planet engulfment events. These results reveal that the evolution of planetary systems may alter the chemical composition of stars, challenging our capability of tagging them to their native environments, and also paving the way for the study of planetary architectures and their evolution, through the chemical pattern of their host stars.",
+      "keywords": [
+        "open clusters and associations: individual: Pleiades",
+        "stars: abundances",
+        "stars: chemically peculiar",
+        "stars: solar-type",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 54
+    },
+    {
+      "source_id": "2018MNRAS.473.4612K",
+      "source_type": "paper",
+      "doi": "10.1093/mnras/stx2637",
+      "title": "The GALAH survey: chemical tagging of star clusters and new members in the Pleiades",
+      "authors": [
+        "Kos, Janez",
+        "Bland-Hawthorn, Joss",
+        "Freeman, Ken",
+        "Buder, Sven",
+        "Traven, Gregor",
+        "De Silva, Gayandhi M.",
+        "Sharma, Sanjib",
+        "Asplund, Martin",
+        "Duong, Ly",
+        "Lin, Jane",
+        "Lind, Karin",
+        "Martell, Sarah",
+        "Simpson, Jeffrey D.",
+        "Stello, Dennis",
+        "Zucker, Daniel B.",
+        "Zwitter, Tomaž",
+        "Anguiano, Borja",
+        "Da Costa, Gary",
+        "D'Orazi, Valentina",
+        "Horner, Jonathan",
+        "Kafle, Prajwal R.",
+        "Lewis, Geraint",
+        "Munari, Ulisse",
+        "Nataf, David M.",
+        "Ness, Melissa",
+        "Reid, Warren",
+        "Schlesinger, Katie",
+        "Ting, Yuan-Sen",
+        "Wyse, Rosemary"
+      ],
+      "year": 2018,
+      "journal": "Monthly Notices of the Royal Astronomical Society",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2018MNRAS.473.4612K.pdf",
+      "retrieval_priority": 0.4932004048651656,
+      "abstract": "The technique of chemical tagging uses the elemental abundances of stellar atmospheres to 'reconstruct' chemically homogeneous star clusters that have long since dispersed. The GALAH spectroscopic survey - which aims to observe one million stars using the Anglo-Australian Telescope - allows us to measure up to 30 elements or dimensions in the stellar chemical abundance space, many of which are not independent. How to find clustering reliably in a noisy high-dimensional space is a difficult problem that remains largely unsolved. Here, we explore t-distributed stochastic neighbour embedding (t-SNE) - which identifies an optimal mapping of a high-dimensional space into fewer dimensions - whilst conserving the original clustering information. Typically, the projection is made to a 2D space to aid recognition of clusters by eye. We show that this method is a reliable tool for chemical tagging because it can: (i) resolve clustering in chemical space alone, (ii) recover known open and globular clusters with high efficiency and low contamination, and (iii) relate field stars to known clusters. t-SNE also provides a useful visualization of a high-dimensional space. We demonstrate the method on a data set of 13 abundances measured in the spectra of 187 000 stars by the GALAH survey. We recover seven of the nine observed clusters (six globular and three open clusters) in chemical space with minimal contamination from field stars and low numbers of outliers. With chemical tagging, we also identify two Pleiades supercluster members (which we confirm kinematically), one as far as 6° - one tidal radius away from the cluster centre.",
+      "keywords": [
+        "methods: data analysis",
+        "stars: abundances",
+        "open clusters and associations: general",
+        "open clusters and associations: individual: Pleiades",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 55
+    },
+    {
+      "source_id": "2018Ap&SS.363...58E",
+      "source_type": "paper",
+      "doi": "10.1007/s10509-018-3268-3",
+      "title": "The Pleiades apex and its kinematical structure",
+      "authors": [
+        "Elsanhoury, W. H.",
+        "Postnikova, E. S.",
+        "Chupina, N. V.",
+        "Vereshchagin, S. V.",
+        "Sariya, Devesh P.",
+        "Yadav, R. K. S.",
+        "Jiang, Ing-Guey"
+      ],
+      "year": 2018,
+      "journal": "Astrophysics and Space Science",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2018Ap&SS.363...58E.pdf",
+      "retrieval_priority": 0.5221072394449675,
+      "abstract": "A study of cluster characteristics and internal kinematical structure of the middle-aged Pleiades open star cluster is presented. The individual star apexes and various cluster kinematical parameters including the velocity ellipsoid parameters are determined using both Hipparcos and Gaia data. Modern astrometric parameters were taken from the Gaia Data Release 1 (DR1) in combination with the Radial Velocity Experiment Fifth Data Release (DR5). The necessary set of parameters including parallaxes, proper motions and radial velocities are used for <inline-formula id=\"IEq1\"><mml:math><mml:mi>n</mml:mi><mml:mo>=</mml:mo><mml:mn>17</mml:mn></mml:math></inline-formula> stars from Gaia DR1+RAVE DR5 and for <inline-formula id=\"IEq2\"><mml:math><mml:mi>n</mml:mi><mml:mo>=</mml:mo><mml:mn>19</mml:mn></mml:math></inline-formula> stars from the Hipparcos catalog using SIMBAD data base. Single stars are used to improve accuracy by eliminating orbital movements. RAVE DR5 measurements were taken only for the stars with the radial velocity errors not exceeding <inline-formula id=\"IEq3\"><mml:math><mml:mn>2</mml:mn><mml:mspace width=\"0.3em\"></mml:mspace><mml:mtext>km</mml:mtext><mml:mo stretchy=\"false\">/</mml:mo><mml:mtext>s</mml:mtext></mml:math></inline-formula>. For the Pleiades stars taken from Gaia, we found mean heliocentric distance as <inline-formula id=\"IEq4\"><mml:math><mml:mn>136.8</mml:mn><mml:mo>±</mml:mo><mml:mn>6.4</mml:mn></mml:math></inline-formula> pc, and the apex position is calculated as: <inline-formula id=\"IEq5\"><mml:math><mml:msub><mml:mi>A</mml:mi><mml:mrow><mml:mi>C</mml:mi><mml:mi>P</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:msup><mml:mn>92</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>52</mml:mn><mml:mo>±</mml:mo><mml:msup><mml:mn>1</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>72</mml:mn></mml:math></inline-formula>, <inline-formula id=\"IEq6\"><mml:math><mml:msub><mml:mi>D</mml:mi><mml:mrow><mml:mi>C</mml:mi><mml:mi>P</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msup><mml:mn>42</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>28</mml:mn><mml:mo>±</mml:mo><mml:msup><mml:mn>2</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>56</mml:mn></mml:math></inline-formula> by the convergent point method and <inline-formula id=\"IEq7\"><mml:math><mml:msub><mml:mi>A</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>=</mml:mo><mml:msup><mml:mn>95</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>59</mml:mn><mml:mo>±</mml:mo><mml:msup><mml:mn>2</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>30</mml:mn></mml:math></inline-formula> and <inline-formula id=\"IEq8\"><mml:math><mml:msub><mml:mi>D</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msup><mml:mn>50</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>90</mml:mn><mml:mo>±</mml:mo><mml:msup><mml:mn>2</mml:mn><mml:mo>∘</mml:mo></mml:msup><mml:mo>.</mml:mo><mml:mn>04</mml:mn></mml:math></inline-formula> using AD-diagram method (<inline-formula id=\"IEq9\"><mml:math><mml:mi>n</mml:mi><mml:mo>=</mml:mo><mml:mn>17</mml:mn></mml:math></inline-formula> in both cases). The results are compared with those obtained historically before the Gaia mission era.",
+      "keywords": [
+        "Open clusters",
+        "Kinematics",
+        "Convergent point method",
+        "AD-diagram",
+        "VEPs",
+        "individual-Pleiades",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 36
+    },
+    {
+      "source_id": "2018A&A...613A..63B",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201731881",
+      "title": "The lithium-rotation connection in the 125 Myr-old Pleiades cluster",
+      "authors": [
+        "Bouvier, J.",
+        "Barrado, D.",
+        "Moraux, E.",
+        "Stauffer, J.",
+        "Rebull, L.",
+        "Hillenbrand, L.",
+        "Bayo, A.",
+        "Boisse, I.",
+        "Bouy, H.",
+        "DiFolco, E.",
+        "Lillo-Box, J.",
+        "Morales Calderón, M."
+      ],
+      "year": 2018,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2018A&A...613A..63B.pdf",
+      "retrieval_priority": 0.5440083843285811,
+      "abstract": "Context. The evolution of lithium abundance over a star's lifetime is indicative of transport processes operating in the stellar interior. <BR /> Aims: We revisit the relationship between lithium content and rotation rate previously reported for cool dwarfs in the Pleiades cluster. <BR /> Methods: We derive new LiI 670.8 nm equivalent width measurements from high-resolution spectra obtained for low-mass Pleiades members. We combine these new measurements with previously published ones, and use the Kepler K2 rotational periods recently derived for Pleiades cool dwarfs to investigate the lithium-rotation connection in this 125 Myr-old cluster. <BR /> Results: The new data confirm the correlation between lithium equivalent width and stellar spin rate for a sample of 51 early K-type members of the cluster, where fast rotating stars are systematically lithium-rich compared to slowly rotating ones. The correlation is valid for all stars over the (J-K<SUB>s</SUB>) color range 0.50-0.70 mag, corresponding to a mass range from about 0.75 to 0.90 M<SUB>☉</SUB>, and may extend down to lower masses. <BR /> Conclusions: We argue that the dispersion in lithium equivalent widths observed for cool dwarfs in the Pleiades cluster reflects an intrinsic scatter in lithium abundances, and suggest that the physical origin of the lithium dispersion pattern is to be found in the pre-main sequence rotational history of solar-type stars. <P />Based on observations made at Observatoire de Haute Provence (CNRS), France, at the Nordic Optical Telescope (IAC), Spain, and at the W. M. Keck Observatory, Hawaii, USA.Full Table B.1 is only available at the CDS via anonymous ftp to cdsarc.u-strasbg.fr (ftp://130.79.128.5) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/613/A63\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/613/A63</A>",
+      "keywords": [
+        "stars: abundances",
+        "stars: low-mass",
+        "stars: rotation",
+        "open clusters and associations: individual: Melotte 22 (Pleiades)",
+        "stars: solar-type",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 46
+    },
+    {
+      "source_id": "2017A&A...598A..48G",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201629239",
+      "title": "A revised moving cluster distance to the Pleiades open cluster",
+      "authors": [
+        "Galli, P. A. B.",
+        "Moraux, E.",
+        "Bouy, H.",
+        "Bouvier, J.",
+        "Olivares, J.",
+        "Teixeira, R."
+      ],
+      "year": 2017,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2017A&A...598A..48G.pdf",
+      "retrieval_priority": 0.6298900054669972,
+      "abstract": "Context. The distance to the Pleiades open cluster has been extensively debated in the literature over several decades. Although different methods point to a discrepancy in the trigonometric parallaxes produced by the HIPPARCOS mission, the number of individual stars with known distances is still small compared to the number of cluster members to help solve this problem. <BR /> Aims: We provide a new distance estimate for the Pleiades based on the moving cluster method, which will be useful to further discuss the so-called Pleiades distance controversy and compare it with the very precise parallaxes from the Gaia space mission. <BR /> Methods: We apply a refurbished implementation of the convergent point search method to an updated census of Pleiades stars to calculate the convergent point position of the cluster from stellar proper motions. Then, we derive individual parallaxes for 64 cluster members using radial velocities compiled from the literature, and approximate parallaxes for another 1146 stars based on the spatial velocity of the cluster. This represents the largest sample of Pleiades stars with individual distances to date. <BR /> Results: The parallaxes derived in this work are in good agreement with previous results obtained in different studies (excluding HIPPARCOS) for individual stars in the cluster. We report a mean parallax of 7.44 ± 0.08 mas and distance of 134.4<SUP>+2.9</SUP><SUB>-2.8</SUB> pc that is consistent with the weighted mean of 135.0 ± 0.6 pc obtained from the non-HIPPARCOS results in the literature. <BR /> Conclusions: Our result for the distance to the Pleiades open cluster is not consistent with the HIPPARCOS catalog, but favors the recent and more precise distance determination of 136.2 ± 1.2 pc obtained from Very Long Baseline Interferometry observations. It is also in good agreement with the mean distance of 133 ± 5 pc obtained from the first trigonometric parallaxes delivered by the Gaia satellite for the brightest cluster members in common with our sample. <P />Full Table B.2 is only available at the CDS via anonymous ftp to <A href=\"http://cdsarc.u-strasbg.fr\">http://cdsarc.u-strasbg.fr</A> (<A href=\"http://130.79.128.5\">http://130.79.128.5</A>) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/598/A48\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/598/A48</A>",
+      "keywords": [
+        "stars: distances",
+        "open clusters and associations: individual: Pleiades",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 22
+    },
+    {
+      "source_id": "2017PASJ...69....1T",
+      "source_type": "paper",
+      "doi": "10.1093/pasj/psw105",
+      "title": "Photospheric carbon and oxygen abundances of F-G type stars in the Pleiades cluster*",
+      "authors": [
+        "Takeda, Yoichi",
+        "Hashimoto, Osamu",
+        "Honda, Satoshi"
+      ],
+      "year": 2017,
+      "journal": "Publications of the Astronomical Society of Japan",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2017PASJ...69....1T.pdf",
+      "retrieval_priority": 0.5149760497580398,
+      "abstract": "In order to investigate the carbon-to-oxygen ratio of the young open cluster M 45 (Pleiades), the C and O abundances of 32 selected F-G type dwarfs (in the effective temperature range of T<SUB>eff</SUB> ∼ 5800-7600 K and projected rotational velocity range of v<SUB>e</SUB>sin i ∼ 10-110 km s<SUP>-1</SUP>) belonging to this cluster were determined by applying the synthetic spectrum-fitting technique to C i 5380 and O i 6156-8 lines. The non-local thermodynamical equilibrium corrections for these C i and O i lines were found to be practically negligible (less than a few hundredths dex).The resulting C and O abundances (along with the Fe abundance) turned out nearly uniform without any systematic dependence upon T<SUB>eff</SUB> or v<SUB>e</SUB>sin i. We found, however, in spite of almost solar Fe abundance ([Fe/H] ∼ 0), carbon turned out to be slightly subsolar ([C/H] ∼ -0.1) while that of oxygen was slightly supersolar ([O/H] ∼ +0.1). This leads to a conclusion that the [C/O] ratio was moderately subsolar (∼ -0.2) in the primordial gas from which these Pleiades stars were formed ∼ 120-130 Myr ago. Interestingly, similarly young B-type stars are reported to show just the same result ([C/O] ∼ -0.2), while rather aged (∼ 1-10 Gyr) field F-G stars of near-solar metallicity yield almost the solar value ([C/O] ∼ 0) on average. Such a difference in the C/O ratio between two star groups of distinctly different ages may be explained as a consequence of the orbit migration mechanism which Galactic stars may undergo over a long time.",
+      "keywords": [
+        "open clusters and associations: individual (M 45)",
+        "stars: abundances",
+        "stars: atmospheres",
+        "stars: solar-type",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 45
+    },
+    {
+      "source_id": "2016AJ....152..115S",
+      "source_type": "paper",
+      "doi": "10.3847/0004-6256/152/5/115",
+      "title": "Rotation in the Pleiades with K2. III. Speculations on Origins and Evolution",
+      "authors": [
+        "Stauffer, John",
+        "Rebull, Luisa",
+        "Bouvier, Jerome",
+        "Hillenbrand, Lynne A.",
+        "Collier-Cameron, Andrew",
+        "Pinsonneault, Marc",
+        "Aigrain, Suzanne",
+        "Barrado, David",
+        "Bouy, Herve",
+        "Ciardi, David",
+        "Cody, Ann Marie",
+        "David, Trevor",
+        "Micela, Giusi",
+        "Soderblom, David",
+        "Somers, Garrett",
+        "Stassun, Keivan G.",
+        "Valenti, Jeff",
+        "Vrba, Frederick J."
+      ],
+      "year": 2016,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2016AJ....152..115S.pdf",
+      "retrieval_priority": 0.48500334188711536,
+      "abstract": "We use high-quality K2 light curves for hundreds of stars in the Pleiades to better understand the angular momentum evolution and magnetic dynamos of young low-mass stars. The K2 light curves provide not only rotational periods but also detailed information from the shape of the phased light curve that was not available in previous studies. A slowly rotating sequence begins at {(V-{K}<SUB>{{s</SUB>}})}<SUB>0</SUB> ∼ 1.1 (spectral type F5) and ends at {(V-{K}<SUB>{{s</SUB>}})}<SUB>0</SUB> ∼ 3.7 (spectral type K8), with periods rising from ∼2 to ∼11 days in that interval. A total of 52% of the Pleiades members in that color interval have periods within 30% of a curve defining the slow sequence; the slowly rotating fraction decreases significantly redward of {(V-{K}<SUB>{{s</SUB>}})}<SUB>0</SUB> = 2.6. Nearly all of the slow-sequence stars show light curves that evolve significantly on timescales less than the K2 campaign duration. The majority of the FGK Pleiades members identified as photometric binaries are relatively rapidly rotating, perhaps because binarity inhibits star-disk angular momentum loss mechanisms during pre-main-sequence evolution. The fully convective late M dwarf Pleiades members (5.0 &lt; {(V-{K}<SUB>{{s</SUB>}})}<SUB>0</SUB> &lt; 6.0) nearly always show stable light curves, with little spot evolution or evidence of differential rotation. During pre-main-sequence evolution from ∼3 Myr (NGC 2264 age) to ∼125 Myr (Pleiades age), stars of 0.3 {M}<SUB>☉ </SUB> shed about half of their angular momentum, with the fractional change in period between 3 and 125 Myr being nearly independent of mass for fully convective stars. Our data also suggest that very low mass binaries form with rotation periods more similar to each other and faster than would be true if drawn at random from the parent population of single stars.",
+      "keywords": [
+        "open clusters and associations: individual: Pleiades",
+        "stars: rotation",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 14
+    },
+    {
+      "source_id": "2016A&A...595A..59M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361/201629091",
+      "title": "Stellar twins determine the distance of the Pleiades",
+      "authors": [
+        "Mädler, Thomas",
+        "Jofré, Paula",
+        "Gilmore, Gerard",
+        "Clare Worley, C.",
+        "Soubiran, Caroline",
+        "Blanco-Cuaresma, Sergi",
+        "Hawkins, Keith",
+        "Casey, Andrew R."
+      ],
+      "year": 2016,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2016A&A...595A..59M.pdf",
+      "retrieval_priority": 0.5214542569728808,
+      "abstract": "Since the release of the Hipparcos catalogue in 1997, the distance to the Pleiades open cluster has been heavily debated. The distance obtained from Hipparcos and those by alternative methods differ by 10 to 15%. As accurate stellar distances are key to understanding stellar structure and evolution, this dilemma puts the validity of some stellar evolution models into question. Using our model-independent method to determine parallaxes based on twin stars, we report individual parallaxes of 15 FGK type stars in the Pleiades in anticipation of the astrometric mission Gaia. These parallaxes give a mean cluster parallax of 7.42 ± 0.09 mas,which corresponds to a mean cluster distance of 134.8 ± 1.7 pc. This value agrees with the current results obtained from stellar evolution models. <P />Based on data products from observations made with ESO Telescopes at the La Silla Paranal Observatory under programme ID 096.D-0402(A).Full Table A.1 is only available at the CDS via anonymous ftp to <A href=\"http://cdsarc.u-strasbg.fr\">http://cdsarc.u-strasbg.fr</A> (<A href=\"http://130.79.128.5\">http://130.79.128.5</A>) or via <A href=\"http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/595/A59\">http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/595/A59</A>",
+      "keywords": [
+        "stars: distances",
+        "stars: solar-type",
+        "parallaxes",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 33
+    },
+    {
+      "source_id": "2013IAUS..289...60M",
+      "source_type": "paper",
+      "doi": "10.1017/S1743921312021114",
+      "title": "Toward a VLBI resolution of the Pleiades distance controversy",
+      "authors": [
+        "Melis, Carl",
+        "Reid, M. J.",
+        "Mioduszewski, A. J.",
+        "Stauffer, J. R.",
+        "Bower, G. C."
+      ],
+      "year": 2013,
+      "journal": "Advancing the Physics of Cosmic Distances",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2013IAUS..289...60M.pdf",
+      "retrieval_priority": 0.49272623049501585,
+      "abstract": "The Pleiades is the best-studied open cluster in the sky. It is one of the primary open clusters used to define the `zero-age main sequence,' and hence it serves as a cornerstone for programs which use main-sequence fitting to derive distances. This role is called into question by the `Pleiades distance controversy:' the distance to the Pleiades from Hipparcos of approximately 120 pc is significantly different from the distance of 133 pc derived using other techniques. To resolve this issue, we plan to use Very Long Baseline Interferometry to derive a new, independent trigonometric parallax distance to the Pleiades. In these proceedings we present our observational program and report some preliminary results.",
+      "keywords": [
+        "techniques: interferometric",
+        "astrometry",
+        "stars: distances",
+        "open clusters and associations: individual (Pleiades)",
+        "distance scale",
+        "Astrophysics - Astrophysics of Galaxies",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 37
+    },
+    {
+      "source_id": "2009AJ....138.1292S",
+      "source_type": "paper",
+      "doi": "10.1088/0004-6256/138/5/1292",
+      "title": "The Metallicity of the Pleiades",
+      "authors": [
+        "Soderblom, David R.",
+        "Laskar, Tanmoy",
+        "Valenti, Jeff A.",
+        "Stauffer, John R.",
+        "Rebull, Luisa M."
+      ],
+      "year": 2009,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2009AJ....138.1292S.pdf",
+      "retrieval_priority": 0.6063362149069806,
+      "abstract": "We have measured the abundances of Fe, Si, Ni, Ti, and Na in 20 Pleiades stars with T <SUB>eff</SUB> values near solar and with low vsin i using high-resolution, high signal-to-noise echelle spectra. We have validated our procedures by also analyzing 10 field stars of a range of temperatures and metallicities that were observed by Valenti and Fischer. Our result for the Pleiades is [Fe/H] = +0.03 ± 0.02 ± 0.05 (statistical and systematic). The average of published measurements for the Pleiades is +0.042 ± 0.021.",
+      "keywords": [
+        "open clusters and associations: individual: Pleiades",
+        "stars: abundances",
+        "Astrophysics - Solar and Stellar Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 41
+    },
+    {
+      "source_id": "2008A&A...483..567G",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20079271",
+      "title": "Chemical composition of A and F dwarfs members of the Pleiades open cluster",
+      "authors": [
+        "Gebran, M.",
+        "Monier, R."
+      ],
+      "year": 2008,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2008A&A...483..567G.pdf",
+      "retrieval_priority": 0.4686024342062972,
+      "abstract": "Aims: We derive the abundances of 18 chemical elements for 16 A-dwarf, both normal and chemically-peculiar, and 5 F-dwarf members of the Pleiades open cluster to place constraints on evolutionary models. <BR />Methods: Abundances and rotational and microturbulent velocities were derived by fitting synthetic spectra to high-resolution (R ~ 42 000 and R ~ 75 000) observations of high signal-to-noise ratio (S/N). <BR />Results: The abundances exhibit correlation with neither the effective temperature nor the projected rotational velocity. Interestingly, A stars exhibit larger star-to-star variations in C, Sc, Ti, V, Cr, Mn, Sr, Y, Zr and Ba, than F stars. F stars have solar abundances of almost all elements. In A stars, the abundances of Si, Ti and Cr are correlated with that of Fe, and the [X/Fe] ratios are solar for these three elements. The derived abundances are compared with the predictions of evolutionary models for the age of Pleiades (100 Myr). For F stars, small predicted underabundances of light elements and overabundances of Cr, Fe and Ni are confirmed by our findings. For A stars, the predicted overabundances in iron-peak elements are confirmed for a few stars only. <BR />Conclusions: The large scatter in the abundances of A stars, discovered previously in the Hyades, Coma Berenices, UMa group, and in field stars, appears to be a characteristic property of dwarf A stars. Hydrodynamical processes competing with radiative diffusion in the radiative zone of A dwarfs, could account for the scatter in abundances that we determine. <P />Based on observations performed at the Observatoire de Haute-Provence (France). <P />Tables [see full textsee full text] and [see full textsee full text] are only available in electronic form at http://www.aanda.org",
+      "keywords": [
+        "stars: abundances",
+        "stars: rotation",
+        "diffusion",
+        "Galaxy: open clusters and associations: individual: Pleiades",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 52
+    },
+    {
+      "source_id": "2008ApJ...678..431C",
+      "source_type": "paper",
+      "doi": "10.1086/529431",
+      "title": "The Distribution of Stellar Mass in the Pleiades",
+      "authors": [
+        "Converse, Joseph M.",
+        "Stahler, Steven W."
+      ],
+      "year": 2008,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2008ApJ...678..431C.pdf",
+      "retrieval_priority": 0.4584574014762331,
+      "abstract": "As part of an effort to understand the origin of open clusters, we present a statistical analysis of the currently observed Pleiades. Starting with a photometric catalog of the cluster, we employ a maximum likelihood technique to determine the mass distribution of its members, including single stars and both components of binary systems. We find that the overall binary fraction for unresolved pairs is 68%. Extrapolating to include resolved systems, this fraction climbs to about 76%, significantly higher than the accepted field star result. Both figures are sensitive to the cluster age, for which we have used the currently favored value of 125 Myr. The primary and secondary masses within binaries are correlated, in the sense that their ratios are closer to unity than under the hypothesis of random pairing. We map out the spatial variation of the cluster's projected and three-dimensional mass and number densities. Finally, we revisit the issue of mass segregation in the Pleiades. We find unambiguous evidence of segregation, and introduce a new method for quantifying it.",
+      "keywords": [
+        "binaries: general",
+        "open clusters and associations: individual: Pleiades",
+        "stars: luminosity function",
+        "mass function",
+        "stars: statistics",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 7
+    },
+    {
+      "source_id": "2007ApJS..172..663S",
+      "source_type": "paper",
+      "doi": "10.1086/518961",
+      "title": "Near- and Mid-Infrared Photometry of the Pleiades and a New List of Substellar Candidate Members",
+      "authors": [
+        "Stauffer, John R.",
+        "Hartmann, Lee W.",
+        "Fazio, Giovanni G.",
+        "Allen, Lori E.",
+        "Patten, Brian M.",
+        "Lowrance, Patrick J.",
+        "Hurt, Robert L.",
+        "Rebull, Luisa M.",
+        "Cutri, Roc M.",
+        "Ramirez, Solange V.",
+        "Young, Erick T.",
+        "Rieke, George H.",
+        "Gorlova, Nadya I.",
+        "Muzerolle, James C.",
+        "Slesnick, Cathy L.",
+        "Skrutskie, Michael F."
+      ],
+      "year": 2007,
+      "journal": "The Astrophysical Journal Supplement Series",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2007ApJS..172..663S.pdf",
+      "retrieval_priority": 0.45766883121495583,
+      "abstract": "We make use of new near- and mid-IR photometry of the Pleiades cluster in order to help identify proposed cluster members. We also use the new photometry with previously published photometry to define the single-star main-sequence locus at the age of the Pleiades in a variety of color-magnitude planes. The new near- and mid-IR photometry extend effectively 2 mag deeper than the 2MASS All-Sky Point Source catalog, and hence allow us to select a new set of candidate very low-mass and substellar mass members of the Pleiades in the central square degree of the cluster. We identify 42 new candidate members fainter than K<SUB>s</SUB>=14 (corresponding to 0.1 M<SUB>solar</SUB>). These candidate members should eventually allow a better estimate of the cluster mass function to be made down to of order 0.04 M<SUB>solar</SUB>. We also use new IRAC data, in particular the images obtained at 8 μm, in order to comment briefly on interstellar dust in and near the Pleiades. We confirm, as expected, that-with one exception-a sample of low-mass stars recently identified as having 24 μm excesses due to debris disks do not have significant excesses at IRAC wavelengths. However, evidence is also presented that several of the Pleiades high-mass stars are found to be impacting with local condensations of the molecular cloud that is passing through the Pleiades at the current epoch. <P />This work is based (in part) on observations made with the Spitzer Space Telescope, which is operated by the Jet Propulsion Laboratory, California Institute of Technology, under NASA contract 1407. <P />This publication makes use of data products from the Two Micron All Sky Survey, which is a joint project of the University of Massachusetts and the Infrared Processing and Analysis Center/California Institute of Technology, funded by the National Aeronautics and Space Administration and the National Science Foundation.",
+      "keywords": [
+        "Galaxy: Open Clusters and Associations: Individual: Name: Pleiades",
+        "Stars: Low-Mass",
+        "Brown Dwarfs",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 19
+    },
+    {
+      "source_id": "2006A&A...446..611F",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20053791",
+      "title": "A seismological analysis of δ Scuti stars in the Pleiades cluster",
+      "authors": [
+        "Fox Machado, L.",
+        "Pérez Hernández, F.",
+        "Suárez, J. C.",
+        "Michel, E.",
+        "Lebreton, Y."
+      ],
+      "year": 2006,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2006A&A...446..611F.pdf",
+      "retrieval_priority": 0.4484361872372692,
+      "abstract": "A comparison between the oscillation frequencies of six multi-periodic δ Scuti stars of the Pleiades cluster and the eigenfrequencies of rotating stellar models that match the corresponding stellar parameters has been carried out. The assumption that all the stars considered have some common parameters, such as metallicity, distance or age, is imposed as a constraint. As a result, we have a best fit solution associated with a cluster metallicity of [Fe/H]≃ 0.067, an age between 70 × 10<SUP>6</SUP> and 100 × 10<SUP>6</SUP> yr and a distance modulus of m<SUB>V</SUB>-M<SUB>V</SUB>=5.60-5.70 mag. All the stars were found to oscillate mainly in non-radial, low degree, low order p modes. Estimates of mass and rotation rates for each star are also obtained.",
+      "keywords": [
+        "stars: oscillations",
+        "stars: variables: δ Sct",
+        "open cluster and associations: individual: Pleiades",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:metallicity OR abs:feh OR abs:\"[Fe/H]\")",
+      "search_rank": 56
+    },
+    {
+      "source_id": "2005AJ....129.1616S",
+      "source_type": "paper",
+      "doi": "10.1086/427860",
+      "title": "Confirmation of Errors in Hipparcos Parallaxes from Hubble Space Telescope Fine Guidance Sensor Astrometry of the Pleiades",
+      "authors": [
+        "Soderblom, David R.",
+        "Nelan, Ed",
+        "Benedict, G. Fritz",
+        "McArthur, Barbara",
+        "Ramirez, Ivan",
+        "Spiesman, William",
+        "Jones, Burton F."
+      ],
+      "year": 2005,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2005AJ....129.1616S.pdf",
+      "retrieval_priority": 0.567703382474178,
+      "abstract": "We present absolute trigonometric parallaxes and relative proper motions for three members of the Pleiades, obtained with the Hubble Space Telescope's Fine Guidance Sensor 1r, a white-light interferometer. We estimate spectral types and luminosity classes of the stars comprising the astrometric reference frame from R~2000 spectra, VJHK photometry, and reduced proper motions. From these we derive estimates of absolute parallaxes and introduce them into our model as observations with error. We constrain the three cluster members to have a 1 σ dispersion in distance less than 6.4 pc and find an average π<SUB>abs</SUB>=7.43+/-0.17+/-0.20 mas, where the second error is systematic due to member placement within the cluster. This parallax corresponds to a distance of 134.6+/-3.1 pc or a distance modulus of m-M=5.65+/-0.05 for these three Pleiades stars, presuming a central location. This result agrees with three other independent determinations of the Pleiades distance. Presuming that the cluster depth systematic error can be significantly reduced because of the random placement of these many members within the cluster, these four independent measures yield a best-estimate Pleiades distance of π<SUB>abs</SUB>=7.49+/-0.07 mas, corresponding to a distance of 133.5+/-1.2 pc or a distance modulus of m-M=5.63+/-0.02. This resolves the dispute between the main-sequence fitting and the Hipparcos distance moduli in favor of main-sequence fitting. <P />Based on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy (AURA), Inc., under NASA contract NAS5-26555.",
+      "keywords": [
+        "Astrometry",
+        "Cosmology: Distance Scale",
+        "Galaxy: Open Clusters and Associations: General",
+        "Stars: Distances",
+        "Techniques: Interferometric",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 25
+    },
+    {
+      "source_id": "2005A&A...429..645S",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20041867",
+      "title": "Eclipsing binaries as standard candles. HD 23642 and the distance to the Pleiades",
+      "authors": [
+        "Southworth, J.",
+        "Maxted, P. F. L.",
+        "Smalley, B."
+      ],
+      "year": 2005,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2005A&A...429..645S.pdf",
+      "retrieval_priority": 0.5366994764034326,
+      "abstract": "We present a reanalysis of the light curves of HD 23642, a detached eclipsing binary star in the Pleiades open cluster, with emphasis on a detailed error analysis. We compare the masses and radii of the two stars to predictions of stellar evolutionary models and find that the metal and helium abundances of the Pleiades are approximately solar. We present a new method for finding distances to eclipsing binaries, of spectral types A to M, using the empirical calibrations of effective temperature versus surface brightness given by Kervella et al. (2004, A&amp;A, 426, 297). We use the calibration for K-filter surface brightness to determine a distance of 139.1 ± 3.5 pc to HD 23642 and the Pleiades. This distance is in excellent agreement with distances found from the use of theoretical and empirical bolometric corrections. We show that the determination of distance, both from the use of surface brightness relations and from the use of bolometric corrections, is more accurate and precise at infrared wavelengths than at optical wavelengths. The distance to HD 23642 is consistent with that derived from photometric methods and Hubble Space Telescope parallaxes, but is inconsistent with the distance measured using Hipparcos parallaxes of HD 23642 and of other Pleiades stars.",
+      "keywords": [
+        "stars: distances",
+        "stars: fundamental parameters",
+        "stars: binaries: eclipsing",
+        "stars: chemically peculiar",
+        "Galaxy: open clusters and associations: general",
+        "stars: binaries: spectroscopic",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 34
+    },
+    {
+      "source_id": "2005A&A...429..887P",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20041694",
+      "title": "The distance to the Pleiades. Main sequence fitting in the near infrared",
+      "authors": [
+        "Percival, S. M.",
+        "Salaris, M.",
+        "Groenewegen, M. A. T."
+      ],
+      "year": 2005,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2005A&A...429..887P.pdf",
+      "retrieval_priority": 0.5710023741789332,
+      "abstract": "Hipparcos parallax measurements of stars in the Pleiades notoriously result in a cluster distance of 118 pc, which is approximately 10% shorter than the ``classical'' result obtained from earlier main sequence (MS) fitting studies. In an earlier paper we developed a purely empirical MS-fitting method in an attempt to address this problem. This work produced conflicting results for the Pleiades between the (B-V) and (V-I) colour indices, indicating that the cluster's photometric metallicity is substantially lower than its generally accepted spectroscopic metallicity of [Fe/H]=-0.03. We were able to reconcile the discrepancy by assuming [Fe/H]=-0.4, the appropriate metallicity indicated from (B-V)/(V-I) colour-colour plots, and the distance moduli obtained from the two colour indices were in agreement with the Hipparcos result, within the 1σ errors. With the release of the 2MASS All Sky Catalogue, we now apply our MS-fitting method to the Pleiades using the infrared colours in addition to the optical bands, in order to test the plausibility of our earlier result. Using the full field dwarf sample and fitting in the V/(V-K) and K/(J-K) colour planes, we find that assuming a substantially subsolar metallicity does not produce distances in agreement with the (B-V) and (V-I) results. However the infrared plus (V-I) distances are in mutual agreement when adopting the spectroscopic metallicity. By considering only the field dwarfs with M<SUB>V</SUB>≤ 6, i.e. brighter than the magnitude where the Pleiades (B-V) colours start to be anomalous (Stauffer et al. 2003, AJ, 126, 833), the infrared and optical colour indices all yield consistent distances using the spectroscopic [Fe/H]. The concordant distances thus obtained from the V/(B-V), V/(V-I), V/(V-K) and K/(J-K) planes yield a mean of 133.8 ±3 pc, in excellent agreement with both the pre-Hipparcos MS-fitting results, and the most recent determinations from other methods. We conclude that there are two distinct, and unrelated, issues affecting the Pleiades: 1) the Hipparcos parallax is in error by ∼10%, as previously claimed; 2) the (B-V) colours of the lower MS are anomalous, and we caution against using the (B-V) index for MS-fitting to the Pleiades and similarly young open clusters.",
+      "keywords": [
+        "Galaxy: open clusters and associations: general",
+        "Galaxy: open clusters and associations: individual: Pleiades",
+        "stars: Hertzsprung-Russell (HR) and C-M diagrams",
+        "stars: distances",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 24
+    },
+    {
+      "source_id": "2004A&A...418L..31M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20040124",
+      "title": "The distance to the Pleiades from orbital solution of the double-lined eclipsing binary HD 23642",
+      "authors": [
+        "Munari, U.",
+        "Dallaporta, S.",
+        "Siviero, A.",
+        "Soubiran, C.",
+        "Fiorucci, M.",
+        "Girard, P."
+      ],
+      "year": 2004,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2004A&A...418L..31M.pdf",
+      "retrieval_priority": 0.525110780238853,
+      "abstract": "Combining precise B, V photometry and radial velocities, we have been able to derive a firm orbital solution and accurate physical parameters for the newly discovered eclipsing binary HD 23642 in the Pleiades open cluster. The resulting distance to the binary and therefore to the cluster is 132 ± 2 pc. This closely confirms the distance modulus obtained by classical main sequence fitting methods (m - M= 5.60 or 132 pc), moving cluster techniques and the astrometric orbit of Atlas. This is the first time the distance to a member of the Pleiades is derived by orbital solution of a double-lined eclipsing binary, and it is intended to contribute to the ongoing discussion about the discordant Hipparcos distance to the cluster. <P />The photometric and spectroscopic observations discussed in this paper are electronically available from the web page http://ulisse.pd.astro.it/HD_23642/ <P />Based in part on spectra collected with the ELODIE spectrograph at the 1.93 m telescope of the Observatoire de Haute Provence (OHP), France.",
+      "keywords": [
+        "stars: binaries: eclipsing",
+        "stars: distances",
+        "stars: fundamental parameters",
+        "stars: individual: HD 23642",
+        "stars: HR and C-M diagrams",
+        "Galaxy: open clusters and associations: individual: Pleiades",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 29
+    },
+    {
+      "source_id": "2003A&A...400..891M",
+      "source_type": "paper",
+      "doi": "10.1051/0004-6361:20021903",
+      "title": "Brown dwarfs in the Pleiades cluster: Clues to the substellar mass function",
+      "authors": [
+        "Moraux, E.",
+        "Bouvier, J.",
+        "Stauffer, J. R.",
+        "Cuillandre, J.-C."
+      ],
+      "year": 2003,
+      "journal": "Astronomy and Astrophysics",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2003A&A...400..891M.pdf",
+      "retrieval_priority": 0.4569176237373176,
+      "abstract": "We present the results of a 6.4 square degrees imaging survey of the Pleiades cluster in the I and Z-bands. The survey extends up to 3 degrees from the cluster center and is 90% complete down to I =~ 22. It covers a mass range from 0.03 M<SUB>sun</SUB> to 0.48 M<SUB>sun</SUB> and yields 40 brown dwarf candidates (BDCs) of which 29 are new. The spatial distribution of BDCs is fitted by a King profile in order to estimate the cluster substellar core radius. The Pleiades mass function is then derived accross the stellar-substellar boundary and we find that, between 0.03 M<SUB>sun</SUB> and 0.48 M<SUB>sun</SUB>, it is well represented by a single power-law, dN/dM~ M<SUP>-alpha </SUP>, with an index alpha =0.60+/- 0.11. Over a larger mass domain, however, from 0.03 M<SUB>sun</SUB> to 10 M<SUB>sun</SUB>, the mass function is better fitted by a log-normal function. We estimate that brown dwarfs represent about 25% of the cluster population which nevertheless makes up less than 1.5% of the cluster mass. The early dynamical evolution of the cluster appears to have had little effect on its present mass distribution at an age of 120 Myr. Comparison between the Pleiades mass function and the Galactic field mass function suggests that apparent differences may be mostly due to unresolved binary systems. <P />Based on observations obtained at Canada-France-Hawaii Telescope. <P />Full Table 3 is only available in electronic form at the CDS via anonymous ftp to cdsarc.u-strasbg.fr (130.79.128.5) or via http://cdsweb.u-strasbg.fr/cgi-bin/qcat?J/A+A/400/891",
+      "keywords": [
+        "stars: low-mass",
+        "brown dwarfs",
+        "stars: luminosity function",
+        "mass function",
+        "open clusters and associations: individual: Pleiades",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 18
+    },
+    {
+      "source_id": "2003AJ....126..833S",
+      "source_type": "paper",
+      "doi": "10.1086/376739",
+      "title": "Why Are the K Dwarfs in the Pleiades So Blue?",
+      "authors": [
+        "Stauffer, John R.",
+        "Jones, Burton F.",
+        "Backman, Dana",
+        "Hartmann, Lee W.",
+        "Barrado y Navascués, David",
+        "Pinsonneault, Marc H.",
+        "Terndrup, Donald M.",
+        "Muench, August A."
+      ],
+      "year": 2003,
+      "journal": "The Astronomical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\2003AJ....126..833S.pdf",
+      "retrieval_priority": 0.4518206836733824,
+      "abstract": "The K dwarfs in the Pleiades fall nearly 1/2 mag below a main-sequence isochrone when plotted in a color-magnitude diagram utilizing V magnitude as the luminosity index and B-V as the color index. This peculiarity has been known for 40 years but has gone unexplained and mostly ignored. When compared to Praesepe members, the Pleiades K dwarfs again are subluminous (or blue) in a color-magnitude diagram using B-V as the color index. However, using V-I as the color index, stars in the two clusters are coincident to M<SUB>V</SUB>~10 using V-K as the color index, Pleiades late K and M stars fall above the main-sequence locus defined by Praesepe members. We believe that the anomalous spectral energy distributions for the Pleiades K dwarfs, as compared to older clusters, are a consequence of rapid stellar rotation and may be primarily due to spottedness. If so, the required areal filling factor for the cool component has to be very large (&gt;=50%). Weak-lined T Tauri stars have similar color anomalies, and we suspect that this is a common feature of all very young K dwarfs (spectral type &gt;K3). The peculiar spectral energy distribution needs to be considered in deriving accurate pre-main-sequence isochrone-fitting ages for clusters like the Pleiades, since the age derived will depend on the temperature index used. <P />Some of the data presented herein were obtained at the W. M. Keck Observatory, which is operated as a scientific partnership among the California Institute of Technology, the University of California, and the National Aeronautics and Space Administration. The Observatory was made possible by the generous financial support of the W. M. Keck Foundation.",
+      "keywords": [
+        "Galaxy: Open Clusters and Associations: Individual: Name: Pleiades",
+        "Stars: Low-Mass",
+        "Brown Dwarfs",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 16
+    },
+    {
+      "source_id": "1999ApJ...523..328N",
+      "source_type": "paper",
+      "doi": "10.1086/307716",
+      "title": "Correlated Errors in HIPPARCOS Parallaxes toward the Pleiades and the Hyades",
+      "authors": [
+        "Narayanan, Vijay K.",
+        "Gould, Andrew"
+      ],
+      "year": 1999,
+      "journal": "The Astrophysical Journal",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\1999ApJ...523..328N.pdf",
+      "retrieval_priority": 0.6061063829787234,
+      "abstract": "We show that the errors in the Hipparcos parallaxes toward the Pleiades and the Hyades open clusters are spatially correlated over angular scales of 2°-3°, with an amplitude of up to 2 mas. This correlation is stronger than expected based on the analysis of the Hipparcos catalog. We predict the parallaxes of individual cluster members, π<SUB>pm</SUB>, from their Hipparcos proper motions, assuming that all the cluster members move with the same space velocity. We compare these parallaxes with their Hipparcos parallaxes, π<SUB>Hip</SUB>, and find that there are significant spatial correlations in the latter quantity. We derive a distance modulus to the Pleiades of 5.58+/-0.18 mag from the gradient in the radial velocities of the Pleiades members in the direction parallel to the proper motion of the cluster. This value, derived using a geometric method, agrees very well with the distance modulus of 5.60+/-0.04 mag determined using the main-sequence fitting technique, compared with the value of 5.33+/-0.06 mag inferred from the average of the Hipparcos parallaxes of the Pleiades members. We show that the difference between the main-sequence fitting distance and the Hipparcos parallax distance can arise from spatially correlated errors in the Hipparcos parallaxes of individual Pleiades members. Although the Hipparcos parallax errors toward the Hyades are spatially correlated in a manner similar to those of the Pleiades, the center of the Hyades is located on a node of this spatial structure. Therefore, the parallax errors cancel out when the average distance is estimated, leading to a mean Hyades distance modulus that agrees with the pre-Hipparcos value. We speculate that these spatial correlations are also responsible for the discrepant distances that are inferred using the mean Hipparcos parallaxes to some open clusters, although an agreement between the mean Hipparcos parallax distance and the main-sequence fitting distance to other clusters does not necessarily preclude spatially correlated Hipparcos parallax errors. Finally, we note that our conclusions are based on a purely geometric method and do not rely on any models of stellar isochrones.",
+      "keywords": [
+        "ASTROMETRY",
+        "GALAXY: OPEN CLUSTERS AND ASSOCIATIONS: INDIVIDUAL: NAME: PLEIADES",
+        "GALAXY: OPEN CLUSTERS AND ASSOCIATIONS: INDIVIDUAL: NAME: HYADES",
+        "STARS: DISTANCES",
+        "Astrometry",
+        "Galaxy: Open Clusters and Associations: Individual: Name: Pleiades",
+        "Galaxy: Open Clusters and Associations: Individual: Name: Hyades",
+        "Stars: Distances",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:parallax OR abs:\"mean parallax\" OR abs:distance OR abs:\"heliocentric distance\" OR abs:\"distance modulus\")",
+      "search_rank": 21
+    },
+    {
+      "source_id": "1998ApJ...499L.199S",
+      "source_type": "paper",
+      "doi": "10.1086/311379",
+      "title": "Keck Spectra of Pleiades Brown Dwarf Candidates and a Precise Determination of the Lithium Depletion Edge in the Pleiades",
+      "authors": [
+        "Stauffer, John R.",
+        "Schultz, Greg",
+        "Kirkpatrick, J. Davy"
+      ],
+      "year": 1998,
+      "journal": "The Astrophysical Journal Letters",
+      "access_path": "E:\\work\\AI-Scientist-2026\\astroquery_frontend\\subgraphs\\data\\papers\\1e6c3e2e-9e5e-4248-a6b8-5fd3faad274c\\1998ApJ...499L.199S.pdf",
+      "retrieval_priority": 0.5825317921510721,
+      "abstract": "We have obtained intermediate resolution spectra of 11 candidate brown dwarf members of the Pleiades open cluster using the Keck II telescope and Low-Resolution Imaging Spectrograph. Our primary goal was to determine the location of the ``lithium depletion edge'' in the Pleiades and hence to derive a precise age for the cluster. All but one of our 11 program objects have radial velocities appropriate for Pleiades members, have moderately strong Hα emission, and have spectral types M6-M8.5 as expected from their (R - I)<SUB>C</SUB> colors. We have constructed a color-magnitude diagram for the faint end of the Pleiades main sequence, including only stars for which high signal-to-noise spectra in the region of the lithium 6708 Å absorption line have been obtained. These data allow us to accurately determine the Pleiades single-star lithium depletion edge at I<SUB>C0</SUB> = 17.80, (R - I)<SUB>C0</SUB> = 2.20, spectral type M6.5. By reference to theoretical evolutionary models, this converts fairly directly into an age for the Pleiades of τ = 125 Myr. This is significantly older than the age that is normally quoted, but does agree with some other recent estimates. <P />Based on observations obtained at the W. M. Keck Observatory, which is operated jointly by the University of California and the California Institute of Technology.",
+      "keywords": [
+        "STARS: LOW-MASS",
+        "BROWN DWARFS",
+        "GALAXY: OPEN CLUSTERS AND ASSOCIATIONS: INDIVIDUAL NAME: PLEIADES",
+        "stars: low mass",
+        "brown dwarfs--open clusters and associations: individual (Pleiades)",
+        "Astrophysics"
+      ],
+      "search_query": "(title:\"M45\" OR abs:\"M45\") AND (abs:age OR abs:\"cluster age\")",
+      "search_rank": 3
+    },
+    {
+      "source_id": "SRC_DB_MWSC",
+      "source_type": "database",
+      "title": "Milky Way Global Survey of Star Clusters (MWSC)",
+      "vizier_table_id": "J/A+A/558/A53/catalog",
+      "description": "银河系星团全局巡天星表，提供了一套具有高度均一性参数的疏散星团和球状星团的全面列表。",
+      "reference_paper": "Kharchenko, N. V., et al. 2013, A&A, 558, A53",
+      "bibcode": "2013A&A...558A..53K",
+      "research_methodology": "基于2MASS与PPMXL数据利用空间分布与测光参数进行的自动化星团证认及参数拟合",
+      "observation_facility": "Compilation (2MASS, PPMXL)",
+      "waveband": "Optical and Near-Infrared",
+      "research_content": "3006个银河系星团的精确中心坐标、视半径、距离、年龄、星际红化、平均自行及成员星概率信息。"
+    }
+  ],
+  "records": [
+    {
+      "record_id": "1998ApJ...499L.199S_M45_cluster_age_2",
+      "source_id": "1998ApJ...499L.199S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 125,
+      "field_unit": "Myr",
+      "trace_id": "doc1_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          846,
+          193,
+          880,
+          212
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The age derived in this way is then 125 ± 8 Myr",
+      "measurement_method": "lithium depletion boundary",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "1998ApJ...499L.199S_M45_dist_modulus_0",
+      "source_id": "1998ApJ...499L.199S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.6,
+      "field_unit": "mag",
+      "trace_id": "doc1_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          290,
+          137,
+          328,
+          156
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "cluster has (m-M)o = 5.60 (r ~ 130 pc), and AI = 0.06",
+      "measurement_method": "photometric distance modulus",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "1998ApJ...499L.199S_M45_distance_1",
+      "source_id": "1998ApJ...499L.199S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 130,
+      "field_unit": "pc",
+      "trace_id": "doc1_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          368,
+          137,
+          427,
+          156
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "cluster has (m-M)o = 5.60 (r ~ 130 pc)",
+      "measurement_method": "photometric distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "1999ApJ...523..328N_M45_dist_modulus_0",
+      "source_id": "1999ApJ...523..328N",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.58",
+      "field_unit": "mag",
+      "trace_id": "doc15_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          443,
+          480,
+          483,
+          500
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We derive a distance modulus to the Pleiades of 5.58 ± 0.18 mag from the gradient in the radial velocities of the Pleiades members in the direction parallel to the proper motion of the cluster.",
+      "measurement_method": "radial-velocity gradient method",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "1999ApJ...523..328N_M45_dist_modulus_2",
+      "source_id": "1999ApJ...523..328N",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.58",
+      "field_unit": "mag",
+      "trace_id": "doc15_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          436,
+          837,
+          477,
+          857
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The distance to the Pleiades from the radial-velocity gradient method corresponds to a distance modulus of (m - M) = 5.58 ± 0.18 mag. This value agrees very well with the 'classical' estimates...",
+      "measurement_method": "radial-velocity gradient method",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "1999ApJ...523..328N_M45_dist_modulus_3",
+      "source_id": "1999ApJ...523..328N",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.58",
+      "field_unit": "mag",
+      "trace_id": "doc15_p28",
+      "provenance": {
+        "page": 28,
+        "bbox": [
+          732,
+          549,
+          772,
+          569
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "(1): We have derived a distance modulus to the Pleiades of (m - M) = 5.58 ± 0.18 mag using a variant of the moving cluster method - the gradient in the radial velocity of the cluster members...",
+      "measurement_method": "radial-velocity gradient method",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "1999ApJ...523..328N_M45_distance_1",
+      "source_id": "1999ApJ...523..328N",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "130.7",
+      "field_unit": "pc",
+      "trace_id": "doc15_p13",
+      "provenance": {
+        "page": 13,
+        "bbox": [
+          642,
+          247,
+          692,
+          267
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We adopt as Pleiades members all the 141 of the 154 candidate stars that remain after the last iteration and derive a distance to the Pleiades of d = 130.7 ± 11.1 pc, a velocity dispersion of σ_clus = 0.69 ± 0.05 km s^-1...",
+      "measurement_method": "radial-velocity gradient method",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2003A&A...400..891M_M45_cluster_age_0",
+      "source_id": "2003A&A...400..891M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "120",
+      "field_unit": "Myr",
+      "trace_id": "doc24_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          678,
+          640,
+          746,
+          657
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Its age of approximately 120 Myr (Stauffer et al. 1998) makes the lithium test particularly useful for identifying brown dwarfs",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2003A&A...400..891M_M45_dist_modulus_2",
+      "source_id": "2003A&A...400..891M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.53",
+      "field_unit": "mag",
+      "trace_id": "doc24_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          439,
+          812,
+          475,
+          830
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We overplotted the 120 Myr isochrones from the NEXTGEN and DUSTY models from Baraffe et al. (1998) and Chabrier et al. (2000) respectively, assuming a distance modulus for the Pleiades cluster of (m-M)o = 5.53",
+      "measurement_method": "photometric distance modulus",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2003A&A...400..891M_M45_distance_1",
+      "source_id": "2003A&A...400..891M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "125",
+      "field_unit": "pc",
+      "trace_id": "doc24_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          760,
+          594,
+          811,
+          612
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "It is relatively nearby with a distance of about 125 pc, with the apparent magnitude of massive brown dwarfs bright enough for being easily detected",
+      "measurement_method": "photometric distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2003AJ....126..833S_M45_cluster_age_1",
+      "source_id": "2003AJ....126..833S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "600",
+      "field_unit": "Myr",
+      "trace_id": "doc27_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.9,
+      "context_snippet": "Because the Praesepe K dwarfs are not affected, we can assume that by ages of order 600 Myr the condition has dissipated.",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2003AJ....126..833S_M45_dist_modulus_0",
+      "source_id": "2003AJ....126..833S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.53",
+      "field_unit": "mag",
+      "trace_id": "doc27_p6",
+      "provenance": {
+        "page": 6,
+        "bbox": [
+          459,
+          273,
+          475,
+          298
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The values we selected for the Pleiades are (m-M)0 = 5.53, AV = 0.12 (Becker & Fenkart 1971; Jones 1972; Crawford & Perry 1976; Turner 1979; Nissen 1988)",
+      "measurement_method": "main-sequence fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2004A&A...418L..31M_M45_dist_modulus_1",
+      "source_id": "2004A&A...418L..31M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.60 ± 0.04",
+      "field_unit": "mag",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          396,
+          613,
+          432,
+          631
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The distance to the Pleiades has been derived by main-sequence fitting methods several times over the years, and consistently found to cluster around m-M=5.60 ±0.04...",
+      "measurement_method": "main-sequence fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2004A&A...418L..31M_M45_distance_0",
+      "source_id": "2004A&A...418L..31M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "132 ± 2",
+      "field_unit": "pc",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          615,
+          415,
+          644,
+          431
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The resulting distance to the binary and therefore to the cluster is 132±2 pc. This closely confirms the distance modulus obtained by classical main sequence fitting methods...",
+      "measurement_method": "orbital solution of eclipsing binary",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2004A&A...418L..31M_M45_fe_h_2",
+      "source_id": "2004A&A...418L..31M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": "0.00 ± 0.03",
+      "field_unit": "dex",
+      "trace_id": "doc2_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          733,
+          691,
+          769,
+          709
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "the metallicity of the Pleiades has been measured several times and with different methods, which generally converged to a mean value of [Fe/H]=0.00±0.03 (e.g. Stauffer et al. 2003).",
+      "measurement_method": "spectroscopic measurement",
+      "condition_tags": [
+        "scope: global",
+        "metric: metallicity"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_cluster_age_3",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 125,
+      "field_unit": "Myr",
+      "trace_id": "doc10_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          391,
+          364,
+          453,
+          386
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "An age of 125 Myr has been adopted (Stauffer, Schultz & Kirkpatrick 1998); a change in this age by -25 or +75 Myr does not affect the conclusions below.",
+      "measurement_method": "isochrone fitting (adopted)",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_0",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 132,
+      "field_unit": "pc",
+      "trace_id": "doc10_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          276,
+          708,
+          308,
+          730
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The 'long' distance scale of 132 ± 3 pc was established by main sequence fitting analyses (e.g., Johnson 1957; Meynet, Mermilliod & Maeder 1993).",
+      "measurement_method": "main sequence fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_1",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 120,
+      "field_unit": "pc",
+      "trace_id": "doc10_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          691,
+          594,
+          722,
+          616
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "A 'short' distance scale of 120 ± 3 pc (van Leeuwen 2004) has been found using trigonometrical parallaxes observed by the Hipparcos space satellite (Perryman et al. 1997).",
+      "measurement_method": "trigonometrical parallaxes (Hipparcos)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_4",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 120,
+      "field_unit": "pc",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          54,
+          906,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 8. Summary of the different distances found for the Pleiades or for Pleiades members... Hipparchos parallaxes (van Leeuwen 2004) 120 ± 3",
+      "measurement_method": "parallax (Hipparcos)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_5",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 132.4,
+      "field_unit": "pc",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          54,
+          906,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 8. Summary of the different distances found for the Pleiades or for Pleiades members... MS fitting (Stello & Nissen 2001) 132.4 ± 1.8",
+      "measurement_method": "main sequence fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_6",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 130.9,
+      "field_unit": "pc",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          54,
+          906,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 8. Summary of the different distances found for the Pleiades or for Pleiades members... Ground-based parallaxes 130.9 ± 7.4",
+      "measurement_method": "parallax (ground-based)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_7",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 134.6,
+      "field_unit": "pc",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          54,
+          906,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 8. Summary of the different distances found for the Pleiades or for Pleiades members... HST parallaxes of three Pleiades stars 134.6 ± 3.1",
+      "measurement_method": "parallax (HST)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_8",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 131,
+      "field_unit": "pc",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          54,
+          906,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 8. Summary of the different distances found for the Pleiades or for Pleiades members... Narayanan & Gould (1999) 131 ± 11",
+      "measurement_method": "moving cluster method",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_distance_9",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 129,
+      "field_unit": "pc",
+      "trace_id": "doc10_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          65,
+          54,
+          906,
+          697
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 8. Summary of the different distances found for the Pleiades or for Pleiades members... Makarov (2002) 129 ± 3",
+      "measurement_method": "parallax (Hipparcos reanalysis)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..645S_M45_fe_h_2",
+      "source_id": "2005A&A...429..645S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": -0.034,
+      "field_unit": "dex",
+      "trace_id": "doc10_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          848,
+          838,
+          862,
+          859
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Also, Boesgaard & Friel (1990) have measured the iron abundance of the Pleiades to be approximately solar ([Fe/H] = -0.034 ± 0.024) from high-resolution spectra of twelve F dwarfs in the cluster",
+      "measurement_method": "high-resolution spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_cluster_age_22",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "100",
+      "field_unit": "Myr",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          773,
+          298,
+          839,
+          316
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The Pleiades is known to be anomalous in several respects - we know it is very young (~ 100 Myr)...",
+      "measurement_method": "estimated",
+      "condition_tags": [
+        "scope: global",
+        "metric: age"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_10",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.46,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(B-V) (full sample) ... 5.46 ± 0.06",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_11",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.67,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(B-V) (MV < 6.0 only) ... 5.67 ± 0.06",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_12",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.37,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(B-V) (MV < 6.0 only) ... 5.37 ± 0.06",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_13",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.58,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(V-I) ... 5.58 ± 0.04",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_14",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.39,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(V-I) ... 5.39 ± 0.04",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_15",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.67,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(V-K) ... 5.67 ± 0.06",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_16",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.53,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(V-K) ... 5.53 ± 0.06",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_17",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.61,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... K/(J-K) (with [Fe/H] dependence) ... 5.61 ± 0.05",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_18",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.49,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... K/(J-K) (with [Fe/H] dependence) ... 5.49 ± 0.05",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_19",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.61,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... K/(J-K) (no [Fe/H] dependence) ... 5.61 ± 0.05",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_20",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.61,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... K/(J-K) (no [Fe/H] dependence) ... 5.61 ± 0.05",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_21",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.37,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... Hipparcos result (van Leeuwen 1999) ... 5.37 ± 0.07",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_dist_modulus_9",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": 5.76,
+      "field_unit": "mag",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          65,
+          205,
+          906,
+          843
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 1. Summary of MS-fitting results for the Pleiades. ... V/(B-V) (full sample) ... 5.76 ± 0.06",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_distance_0",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "118",
+      "field_unit": "pc",
+      "trace_id": "doc22_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          111,
+          383,
+          161,
+          399
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Hipparchos parallax measurements of stars in the Pleiades notoriously result in a cluster distance of 118 pc...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_distance_23",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 133.8,
+      "field_unit": "pc",
+      "trace_id": "doc22_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          349,
+          766,
+          452,
+          784
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Furthermore, the average of the best-fit distance moduli yields a Pleiades distance of 133.8 ± 3 pc...",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005A&A...429..887P_M45_distance_3",
+      "source_id": "2005A&A...429..887P",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 133.8,
+      "field_unit": "pc",
+      "trace_id": "doc22_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          435,
+          590,
+          476,
+          607
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The concordant distances thus obtained from the V/(B-V), V/(V-I), V/(V-K) and K/(J-K) planes yield a mean of 133.8 ± 3 pc...",
+      "measurement_method": "MS-fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005AJ....129.1616S_M45_dist_modulus_2",
+      "source_id": "2005AJ....129.1616S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.63 ± 0.02",
+      "field_unit": "mag",
+      "trace_id": "doc8_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          443,
+          502,
+          478,
+          519
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "these four independent measures yield a best-estimate Pleiades distance of π_abs = 7.49 ± 0.07 milliseconds of arc, corresponding to a distance of 133.5 ± 1.2 pc or a distance modulus of (m − M) = 5.63 ± 0.02.",
+      "measurement_method": "astrometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "2005AJ....129.1616S_M45_dist_modulus_4",
+      "source_id": "2005AJ....129.1616S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.65 ± 0.05",
+      "field_unit": "mag",
+      "trace_id": "doc8_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          79,
+          454,
+          921,
+          951
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 9: HST/FGS parallax ... d (pc) 134.6 ± 3.1 ... (m-M) 5.65 ± 0.05",
+      "measurement_method": "astrometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "2005AJ....129.1616S_M45_distance_1",
+      "source_id": "2005AJ....129.1616S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "133.5 ± 1.2",
+      "field_unit": "pc",
+      "trace_id": "doc8_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          778,
+          488,
+          822,
+          506
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "these four independent measures yield a best-estimate Pleiades distance of π_abs = 7.49 ± 0.07 milliseconds of arc, corresponding to a distance of 133.5 ± 1.2 pc or a distance modulus of (m − M) = 5.63 ± 0.02.",
+      "measurement_method": "astrometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005AJ....129.1616S_M45_distance_3",
+      "source_id": "2005AJ....129.1616S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "134.6 ± 3.1",
+      "field_unit": "pc",
+      "trace_id": "doc8_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          79,
+          454,
+          921,
+          951
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 9: HST/FGS parallax ... d (pc) 134.6 ± 3.1 ... (m-M) 5.65 ± 0.05",
+      "measurement_method": "astrometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2005AJ....129.1616S_M45_parallax_0",
+      "source_id": "2005AJ....129.1616S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": "7.49 ± 0.07",
+      "field_unit": "mas",
+      "trace_id": "doc8_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          334,
+          488,
+          370,
+          506
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "these four independent measures yield a best-estimate Pleiades distance of π_abs = 7.49 ± 0.07 milliseconds of arc, corresponding to a distance of 133.5 ± 1.2 pc or a distance modulus of (m − M) = 5.63 ± 0.02.",
+      "measurement_method": "astrometric parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2006A&A...446..611F_M45_cluster_age_0",
+      "source_id": "2006A&A...446..611F",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 87.5,
+      "field_unit": "Myr",
+      "trace_id": "doc17_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          368,
+          300,
+          391,
+          317
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The Pleiades (M45) is a young (~ 75-100 Myr), Population I cluster.",
+      "measurement_method": "literature review",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2006A&A...446..611F_M45_fe_h_1",
+      "source_id": "2006A&A...446..611F",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": -0.005,
+      "field_unit": "dex",
+      "trace_id": "doc17_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          226,
+          360,
+          262,
+          378
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "In particular, the metallicity of the cluster is estimated to be between -0.14 <= [Fe/H] <= +0.13 (e.g., -0.034 +/- 0.024 Boesgaard & Friel 1990, 0.0260 +/- 0.103 Cayrel de Strobel 1990, -0.11 +/- 0.03 Grenon 2001)",
+      "measurement_method": "literature review",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2007ApJS..172..663S_M45_cluster_age_0",
+      "source_id": "2007ApJS..172..663S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "100",
+      "field_unit": "Myr",
+      "trace_id": "doc21_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          777,
+          807,
+          812,
+          827
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The age of the Pleiades is not as well-defined, but is probably somewhere between 100 and 125 Myr (Meynet, Mermilliod, & Maeder 1993; Stauffer et al. 1998). We adopt 100 Myr for the purposes of this discussion",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2007ApJS..172..663S_M45_distance_1",
+      "source_id": "2007ApJS..172..663S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "133",
+      "field_unit": "pc",
+      "trace_id": "doc21_p10",
+      "provenance": {
+        "page": 10,
+        "bbox": [
+          616,
+          767,
+          678,
+          787
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We take the distance to the Pleiades as 133 pc, and refer the reader to Soderblom et al. (2005) for a discussion and a listing of the most recent determinations.",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2008A&A...483..567G_M45_cluster_age_0",
+      "source_id": "2008A&A...483..567G",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "100",
+      "field_unit": "Myr",
+      "trace_id": "doc23_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          457,
+          779,
+          488,
+          800
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "At the age of Coma Berenices (about 450 Myr, Boumatiro & Arimoto 1993), the A stars have spent more time on the Main Sequence than at the age the Pleiades (around 100 Myr, Meynet et al. 1993).",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2008A&A...483..567G_M45_distance_1",
+      "source_id": "2008A&A...483..567G",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 134,
+      "field_unit": "pc",
+      "trace_id": "doc23_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          250,
+          889,
+          281,
+          911
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "High-resolution spectroscopy of A and F stars in the Pleiades is feasible with 2-m class telescopes down to magnitude V=9 which corresponds to the earliest F stars, the distance to this cluster being about 134±3 pc (Percival et al. 2005).",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...678..431C_M45_cluster_age_0",
+      "source_id": "2008ApJ...678..431C",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "125",
+      "field_unit": "Myr",
+      "trace_id": "doc19_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          522,
+          486,
+          597,
+          505
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Both figures are sensitive to the cluster age, for which we have used the currently favored value of 125 Myr.",
+      "measurement_method": "lithium dating / isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...678..431C_M45_cluster_age_1",
+      "source_id": "2008ApJ...678..431C",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "1.25 x 10^8",
+      "field_unit": "yr",
+      "trace_id": "doc19_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          429,
+          390,
+          467,
+          409
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The age of the Pleiades has been established from lithium dating as 1.25 x 10^8 yr (Stauffer et al. 1998).",
+      "measurement_method": "lithium dating",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...678..431C_M45_cluster_age_2",
+      "source_id": "2008ApJ...678..431C",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "125",
+      "field_unit": "Myr",
+      "trace_id": "doc19_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          135,
+          646,
+          208,
+          664
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The isochrone is that for the measured cluster age of 125 Myr.",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...678..431C_M45_distance_3",
+      "source_id": "2008ApJ...678..431C",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "133",
+      "field_unit": "pc",
+      "trace_id": "doc19_p12",
+      "provenance": {
+        "page": 12,
+        "bbox": [
+          609,
+          258,
+          666,
+          277
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Using the Pleiades distance of 133 pc, these apparent magnitudes are readily converted to absolute ones...",
+      "measurement_method": "photometric distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...678..431C_M45_distance_4",
+      "source_id": "2008ApJ...678..431C",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "133",
+      "field_unit": "pc",
+      "trace_id": "doc19_p17",
+      "provenance": {
+        "page": 17,
+        "bbox": [
+          134,
+          273,
+          191,
+          292
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "At the Pleiades distance of 133 pc, the corresponding physical separation is 1400 AU.",
+      "measurement_method": "photometric distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2008ApJ...678..431C_M45_distance_5",
+      "source_id": "2008ApJ...678..431C",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "133",
+      "field_unit": "pc",
+      "trace_id": "doc19_p21",
+      "provenance": {
+        "page": 21,
+        "bbox": [
+          379,
+          183,
+          435,
+          202
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We have assigned all members a distance of 133 pc, although there will naturally be some variation.",
+      "measurement_method": "photometric distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2009AJ....138.1292S_M45_fe_h_0",
+      "source_id": "2009AJ....138.1292S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": 0.03,
+      "field_unit": "dex",
+      "trace_id": "doc9_p16",
+      "provenance": {
+        "page": 16,
+        "bbox": [
+          269,
+          267,
+          730,
+          755
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3. Determinations of [Fe/H] for the Pleiades ... this study +0.03 ± 0.04",
+      "measurement_method": "high-resolution spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2013IAUS..289...60M_M45_dist_modulus_2",
+      "source_id": "2013IAUS..289...60M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.65 ± 0.05",
+      "field_unit": "mag",
+      "trace_id": "doc11_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          87,
+          64,
+          719,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Pleiades parallaxes... HST FGS parallax of 3 Pleiads 7.43±0.17 134.6±3.1 5.65±0.05 6",
+      "measurement_method": "HST FGS parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance_modulus"
+      ]
+    },
+    {
+      "record_id": "2013IAUS..289...60M_M45_distance_1",
+      "source_id": "2013IAUS..289...60M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "134.6 ± 3.1",
+      "field_unit": "pc",
+      "trace_id": "doc11_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          87,
+          64,
+          719,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Pleiades parallaxes... HST FGS parallax of 3 Pleiads 7.43±0.17 134.6±3.1 5.65±0.05 6",
+      "measurement_method": "HST FGS parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2013IAUS..289...60M_M45_parallax_0",
+      "source_id": "2013IAUS..289...60M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": "7.43 ± 0.17",
+      "field_unit": "mas",
+      "trace_id": "doc11_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          87,
+          64,
+          719,
+          700
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Pleiades parallaxes... HST FGS parallax of 3 Pleiads 7.43±0.17 134.6±3.1 5.65±0.05 6",
+      "measurement_method": "HST FGS parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2016A&A...595A..59M_M45_distance_1",
+      "source_id": "2016A&A...595A..59M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 134.8,
+      "field_unit": "pc",
+      "trace_id": "doc0_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          210,
+          366,
+          239,
+          385
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "These parallaxes give a mean cluster parallax of 7.42 ± 0.09 mas corresponding to a mean cluster distance of 134.8 ± 1.7 pc.",
+      "measurement_method": "twin method (parallax)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2016A&A...595A..59M_M45_distance_3",
+      "source_id": "2016A&A...595A..59M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 134.8,
+      "field_unit": "pc",
+      "trace_id": "doc0_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          135,
+          699,
+          167,
+          719
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our main result is thus that the weighed mean parallax of the 15 stars obtained with the twin method yields a distance of 134.8 ± 1.7 pc to the Pleiades.",
+      "measurement_method": "twin method (parallax)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2016A&A...595A..59M_M45_parallax_0",
+      "source_id": "2016A&A...595A..59M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": 7.42,
+      "field_unit": "mas",
+      "trace_id": "doc0_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          644,
+          354,
+          658,
+          373
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "These parallaxes give a mean cluster parallax of 7.42 ± 0.09 mas corresponding to a mean cluster distance of 134.8 ± 1.7 pc.",
+      "measurement_method": "twin method (parallax)",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2016A&A...595A..59M_M45_parallax_2",
+      "source_id": "2016A&A...595A..59M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": 7.42,
+      "field_unit": "mas",
+      "trace_id": "doc0_p7",
+      "provenance": {
+        "page": 7,
+        "bbox": [
+          239,
+          428,
+          254,
+          448
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "In turn, calculating the weighed mean of the 15 twin parallaxes gives a value of 7.42 ± 0.09 mas.",
+      "measurement_method": "twin method (parallax)",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2016AJ....152..115S_M45_cluster_age_1",
+      "source_id": "2016AJ....152..115S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 125,
+      "field_unit": "Myr",
+      "trace_id": "doc14_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          785,
+          105,
+          851,
+          123
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Because of its proximity (136.2 pc, Melis et al. 2014), richness (more than 1500 probable members, Sarro et al. 2014), age (125 Myr, Stauffer, Schulz, & Kirkpatrick 1998)...",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2016AJ....152..115S_M45_distance_0",
+      "source_id": "2016AJ....152..115S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 136.2,
+      "field_unit": "pc",
+      "trace_id": "doc14_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          877,
+          79,
+          921,
+          96
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Because of its proximity (136.2 pc, Melis et al. 2014), richness (more than 1500 probable members, Sarro et al. 2014), age (125 Myr, Stauffer, Schulz, & Kirkpatrick 1998)...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2016AJ....152..115S_M45_distance_2",
+      "source_id": "2016AJ....152..115S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 136.2,
+      "field_unit": "pc",
+      "trace_id": "doc14_p22",
+      "provenance": {
+        "page": 22,
+        "bbox": [
+          493,
+          382,
+          559,
+          399
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We base the mass estimates in both the Pleiades and NGC 2264 on the BHAC15 isochrones, adopting ages of 125 Myr and 3 Myr respectively. We also adopt distances of 136.2 pc and 760 pc, and Av values of 0.12 (Pleiades) and 0.00 (NGC 2264).",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017A&A...598A..48G_M45_distance_1",
+      "source_id": "2017A&A...598A..48G",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 134.4,
+      "field_unit": "pc",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          779,
+          436,
+          820,
+          452
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We report a mean parallax of 7.44 ± 0.08 mas and distance of 134.4 +2.9 -2.8 pc that is consistent with the weighted mean of 135.0 ± 0.6 pc obtained from the non-Hipparcos results in the literature.",
+      "measurement_method": "moving cluster method",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017A&A...598A..48G_M45_parallax_0",
+      "source_id": "2017A&A...598A..48G",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": 7.44,
+      "field_unit": "mas",
+      "trace_id": "doc13_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          573,
+          436,
+          681,
+          452
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We report a mean parallax of 7.44 ± 0.08 mas and distance of 134.4 +2.9 -2.8 pc that is consistent with the weighted mean of 135.0 ± 0.6 pc obtained from the non-Hipparcos results in the literature.",
+      "measurement_method": "moving cluster method",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69....1T_M45_cluster_age_0",
+      "source_id": "2017PASJ...69....1T",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "120-130",
+      "field_unit": "Myr",
+      "trace_id": "doc12_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          577,
+          462,
+          608,
+          480
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "primordial gas from which these Pleiades stars were formed ~ 120-130 Myr ago.",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69....1T_M45_cluster_age_1",
+      "source_id": "2017PASJ...69....1T",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "120-130",
+      "field_unit": "Myr",
+      "trace_id": "doc12_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          364,
+          471,
+          396,
+          489
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "M 45 (Pleiades), which has an age of ~ 120-130 Myr",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69....1T_M45_distance_2",
+      "source_id": "2017PASJ...69....1T",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 136.2,
+      "field_unit": "pc",
+      "trace_id": "doc12_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          166,
+          558,
+          232,
+          576
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "using the distance of 136.2 pc; cf. Melis et al. 2014",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2017PASJ...69....1T_M45_fe_h_3",
+      "source_id": "2017PASJ...69....1T",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": 0,
+      "field_unit": "dex",
+      "trace_id": "doc12_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          523,
+          862,
+          537,
+          880
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.9,
+      "context_snippet": "while [Fe/H] appears to be nearly solar",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2018A&A...613A..63B_M45_cluster_age_0",
+      "source_id": "2018A&A...613A..63B",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 125,
+      "field_unit": "Myr",
+      "trace_id": "doc3_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          611,
+          130,
+          720,
+          154
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The lithium-rotation connection in the 125 Myr-old Pleiades cluster",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2018Ap&SS.363...58E_M45_distance_0",
+      "source_id": "2018Ap&SS.363...58E",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 136.8,
+      "field_unit": "pc",
+      "trace_id": "doc7_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          555,
+          343,
+          578,
+          368
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For the Pleiades stars taken from Gaia, we found mean heliocentric distance as 136.8 ± 6.4 pc...",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2018Ap&SS.363...58E_M45_distance_1",
+      "source_id": "2018Ap&SS.363...58E",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 136.8,
+      "field_unit": "pc",
+      "trace_id": "doc7_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          578,
+          570,
+          622,
+          588
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "For n=17 single stars in the Pleiades, the average parallax value was converted into the mean heliocentric distance of 136.8 ± 6.4 pc.",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2018Ap&SS.363...58E_M45_distance_2",
+      "source_id": "2018Ap&SS.363...58E",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 136.8,
+      "field_unit": "pc",
+      "trace_id": "doc7_p11",
+      "provenance": {
+        "page": 11,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 3: d, pc | 136.8 ± 6.4 | Table 2",
+      "measurement_method": "parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2018ApJ...863...67G_M45_cluster_age_1",
+      "source_id": "2018ApJ...863...67G",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "112",
+      "field_unit": "Myr",
+      "trace_id": "doc5_p20",
+      "provenance": {
+        "page": 20,
+        "bbox": [
+          79,
+          90,
+          920,
+          498
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 3 Best Fit Ages and [Fe/H] ... The Pleiades ... B_T, V_T ... P(Omega/Omega_c=0.3) ... 112^{+2}_{-26}",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2018ApJ...863...67G_M45_dist_modulus_0",
+      "source_id": "2018ApJ...863...67G",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.64",
+      "field_unit": "mag",
+      "trace_id": "doc5_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          804,
+          570,
+          875,
+          588
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Our adopted distance modulus and extinction for this cluster are: 5.64 mag (Gaia Collaboration et al. 2016)...",
+      "measurement_method": "photometric distance modulus",
+      "condition_tags": [
+        "scope: global",
+        "metric: dist_modulus"
+      ]
+    },
+    {
+      "record_id": "2018ApJ...863..179S_M45_cluster_age_0",
+      "source_id": "2018ApJ...863..179S",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 120,
+      "field_unit": "Myr",
+      "trace_id": "doc18_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          281,
+          396,
+          348,
+          413
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "we observed five members of the Pleiades, a 120 Myr old open cluster (Kharchenko et al. 2005).",
+      "measurement_method": "literature reference",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2018MNRAS.473.4612K_M45_parallax_0",
+      "source_id": "2018MNRAS.473.4612K",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": 7.48,
+      "field_unit": "mas",
+      "trace_id": "doc16_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          805,
+          184,
+          917,
+          200
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Adopting the Pleiades parallax of ϖ = 7.48 ± 0.03 mas (Gaia Collaboration et al. 2017), median proper motion of our known Pleiades members...",
+      "measurement_method": "Gaia parallax",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2019A&A...628A..66L_M45_cluster_age_2",
+      "source_id": "2019A&A...628A..66L",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 132,
+      "field_unit": "Myr",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We inferred ages of 132+26−27 Myr and 705+76−54 Myr from the WD members within the tidal radius of the Pleiades and Praesepe, respectively...",
+      "measurement_method": "white dwarf cooling",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2019A&A...628A..66L_M45_cluster_age_3",
+      "source_id": "2019A&A...628A..66L",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 132,
+      "field_unit": "Myr",
+      "trace_id": "doc20_p8",
+      "provenance": {
+        "page": 8,
+        "bbox": [
+          67,
+          455,
+          99,
+          472
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "we derive an age of 132+26−27 Myr for the Pleiades, which is older than the isochrone fitting (77.6 Myr; Mermilliod 1981)...",
+      "measurement_method": "white dwarf cooling",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2019A&A...628A..66L_M45_distance_0",
+      "source_id": "2019A&A...628A..66L",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 135.15,
+      "field_unit": "pc",
+      "trace_id": "doc20_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "fallback"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "We infer a distance of 135.15±0.43 pc for the Pleiades from the Bayesian approach of Luri et al. (2018) and kinematic members (Table 1)...",
+      "measurement_method": "kinematic and Bayesian approach",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2019A&A...628A..66L_M45_distance_1",
+      "source_id": "2019A&A...628A..66L",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 135.15,
+      "field_unit": "pc",
+      "trace_id": "doc20_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          67,
+          66,
+          950,
+          183
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Positional and kinematics data of the Pleiades, Praesepe, and α Per clusters... Pleiades 135.15±0.43",
+      "measurement_method": "kinematic and Bayesian approach",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2022RMxAA..58..315M_M45_parallax_0",
+      "source_id": "2022RMxAA..58..315M",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "parallax",
+      "field_value": 8.6,
+      "field_unit": "mas",
+      "trace_id": "doc6_p3",
+      "provenance": {
+        "page": 3,
+        "bbox": [
+          331,
+          184,
+          394,
+          202
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "The Hipparcos parallax is too large at approximately 8.6 mas, placing the Pleiades main sequence about 0.5 mag fainter with respect to the well-established main sequence at its metallicity.",
+      "measurement_method": "trigonometric parallax (Hipparcos)",
+      "condition_tags": [
+        "scope: global",
+        "metric: parallax"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.162B_M45_cluster_age_0",
+      "source_id": "2023A&A...677A.162B",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 120,
+      "field_unit": "Myr",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          63,
+          941,
+          420
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Compilation of abundance, αML, and age estimates for the Pleiades open cluster based on isochrone fitting. ... 120 ... Bouy et al. (2015)",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.162B_M45_cluster_age_1",
+      "source_id": "2023A&A...677A.162B",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 125,
+      "field_unit": "Myr",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          63,
+          941,
+          420
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Compilation of abundance, αML, and age estimates for the Pleiades open cluster based on isochrone fitting. ... 125 ± 35 ... Gossage et al. (2018)",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.162B_M45_cluster_age_2",
+      "source_id": "2023A&A...677A.162B",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 120,
+      "field_unit": "Myr",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          58,
+          63,
+          941,
+          420
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.95,
+      "context_snippet": "Table 1. Compilation of abundance, αML, and age estimates for the Pleiades open cluster based on isochrone fitting. ... 120 ± 20 ... Heyl et al. (2022)",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.162B_M45_distance_3",
+      "source_id": "2023A&A...677A.162B",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 135,
+      "field_unit": "pc",
+      "trace_id": "doc28_p2",
+      "provenance": {
+        "page": 2,
+        "bbox": [
+          877,
+          823,
+          911,
+          835
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vlm_crop"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.95,
+      "context_snippet": "At average distances of ≈45 pc (van Leeuwen 2009; Röser et al. 2011; Gaia Collaboration et al. 2018) and ≈135 pc (e.g. Percival et al. 2005; Heyl et al. 2022), respectively, the Hyades and the Pleiades are among the most nearby open clusters.",
+      "measurement_method": "average distance",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.163A_M45_cluster_age_1",
+      "source_id": "2023A&A...677A.163A",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "7.99",
+      "field_unit": "Myr",
+      "trace_id": "doc26_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          58,
+          64,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Number of members found with the PM model... Pleiades ... logAge (Myr) 7.99",
+      "measurement_method": "isochrone fitting (BASE-9)",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.163A_M45_distance_0",
+      "source_id": "2023A&A...677A.163A",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": 135.74,
+      "field_unit": "pc",
+      "trace_id": "doc26_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          58,
+          64,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Number of members found with the PM model... Pleiades ... d (pc) 135.74 ± 0.10",
+      "measurement_method": "astrometric and photometric data (Gaia DR3)",
+      "condition_tags": [
+        "scope: global",
+        "metric: distance"
+      ]
+    },
+    {
+      "record_id": "2023A&A...677A.163A_M45_fe_h_2",
+      "source_id": "2023A&A...677A.163A",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": "0.015",
+      "field_unit": "dex",
+      "trace_id": "doc26_p5",
+      "provenance": {
+        "page": 5,
+        "bbox": [
+          58,
+          64,
+          941,
+          699
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "full_table"
+      },
+      "extraction_method": "vlm_table",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Table 2. Number of members found with the PM model... Pleiades ... Z (dex) 0.015",
+      "measurement_method": "isochrone fitting (BASE-9)",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "2025A&A...698A...7F_M45_cluster_age_0",
+      "source_id": "2025A&A...698A...7F",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 118,
+      "field_unit": "Myr",
+      "trace_id": "doc25_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          323,
+          463,
+          353,
+          478
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "Fitting empirical isochrones of Li depletion to EW measures of stars with Teff ≤ 6500 K, we obtain a reliable age for the Pleiades of 118±6 Myr, in agreement with the recent literature.",
+      "measurement_method": "isochrone fitting",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2025A&A...698A...7F_M45_cluster_age_2",
+      "source_id": "2025A&A...698A...7F",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": 118,
+      "field_unit": "Myr",
+      "trace_id": "doc25_p15",
+      "provenance": {
+        "page": 15,
+        "bbox": [
+          615,
+          535,
+          647,
+          551
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "We find an age of about 118±6 Myr, considering only the detections; if we include the upper limits, the age remains basically unchanged (122±6 Myr).",
+      "measurement_method": "isochrone fitting (Li depletion)",
+      "condition_tags": [
+        "scope: global",
+        "metric: cluster_age"
+      ]
+    },
+    {
+      "record_id": "2025A&A...698A...7F_M45_fe_h_1",
+      "source_id": "2025A&A...698A...7F",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": -0.03,
+      "field_unit": "dex",
+      "trace_id": "doc25_p1",
+      "provenance": {
+        "page": 1,
+        "bbox": [
+          686,
+          439,
+          721,
+          454
+        ],
+        "bbox_coord_system": "normalized_1000",
+        "bbox_source": "vector"
+      },
+      "extraction_method": "vlm_text",
+      "extraction_confidence": 0.98,
+      "context_snippet": "The RV distribution of the cluster members peaks at 5.0 km s−1 with a dispersion of 1.4 km s−1, while the average metallicity is [Fe/H]=-0.03±0.06, in line with previous determinations.",
+      "measurement_method": "spectroscopy",
+      "condition_tags": [
+        "scope: global",
+        "metric: fe_h"
+      ]
+    },
+    {
+      "record_id": "REC_SRC_DB_MWSC_0305_0_logt",
+      "source_id": "SRC_DB_MWSC",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "cluster_age",
+      "field_value": "8.1499996185302734",
+      "field_unit": "log(yr)",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/558/A53/catalog",
+        "key_column": "MWSC",
+        "key_value": "0305",
+        "raw_column": "logt",
+        "raw_unit": "log(yr)",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_MWSC_0305_0_MOD",
+      "source_id": "SRC_DB_MWSC",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "dist_modulus",
+      "field_value": "5.5760002136230469",
+      "field_unit": "mag",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/558/A53/catalog",
+        "key_column": "MWSC",
+        "key_value": "0305",
+        "raw_column": "MOD",
+        "raw_unit": "mag",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_MWSC_0305_0_d",
+      "source_id": "SRC_DB_MWSC",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "distance",
+      "field_value": "130",
+      "field_unit": "pc",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/558/A53/catalog",
+        "key_column": "MWSC",
+        "key_value": "0305",
+        "raw_column": "d",
+        "raw_unit": "pc",
+        "row_index": 0
+      }
+    },
+    {
+      "record_id": "REC_SRC_DB_MWSC_0305_0_[Fe/H]",
+      "source_id": "SRC_DB_MWSC",
+      "entity_type": "OpC",
+      "entity_name": "M45",
+      "field_name": "fe_h",
+      "field_value": "-0.035999999999999997",
+      "field_unit": "log(Sun)",
+      "extraction_method": "database_query",
+      "provenance": {
+        "source_kind": "database",
+        "db_table": "J/A+A/558/A53/catalog",
+        "key_column": "MWSC",
+        "key_value": "0305",
+        "raw_column": "[Fe/H]",
+        "raw_unit": "log(Sun)",
+        "row_index": 0
+      }
+    }
+  ]
+}

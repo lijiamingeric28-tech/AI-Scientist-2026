@@ -1,0 +1,260 @@
+{
+  "otype": "gD*",
+  "name_cn": "剑鱼Gamma型变星",
+  "description": "",
+  "priority": "A",
+  "properties": [
+    {
+      "property_id": "phot_mag_v",
+      "name_cn": "V星等",
+      "description": "Johnson V波段总星等(Tycho-2转换或HIP Vmag),用于HR图定位",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_color_bv",
+      "name_cn": "B-V颜色指数",
+      "description": "Johnson B-V色指数(0.29-0.62),F型早段/晚期A型γ Dor选择判据",
+      "category": "photometry",
+      "ucd": "phot.color;em.opt.B;em.opt.V",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_abs_v",
+      "name_cn": "绝对V星等",
+      "description": "由V星等与Hipparcos/Gaia视差导出的绝对星等Mv,γ Dor不稳定带定位参数",
+      "category": "photometry",
+      "ucd": "phot.mag.abs;em.opt.V",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_tess",
+      "name_cn": "TESS星等",
+      "description": "TESS输入星表(TIC)星等,TESS红通带观测选择参数",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt.R",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_geneva",
+      "name_cn": "日内瓦七色星等",
+      "description": "日内瓦系统U,B,B1,B2,V,V1,G共7波段平均星等及误差,多色振幅与振幅比分析基础",
+      "category": "photometry",
+      "ucd": "phot.mag;em.opt",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_flux_uv",
+      "name_cn": "TD1紫外流量",
+      "description": "TD1卫星S2/68实验的UV星等/流量(196.5nm与236.5nm),用于检测γ Dor的UV超额(73%样本存在)",
+      "category": "photometry",
+      "ucd": "phot.flux;em.UV",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_color_reddening_eby",
+      "name_cn": "色余E(b-y)",
+      "description": "uvbyβ测光导出的星际红化E(b-y),用于消红后的物理参数推导",
+      "category": "photometry",
+      "ucd": "phot.color.reddening",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_amplitude",
+      "name_cn": "脉动振幅",
+      "description": "各通带(B、V、日内瓦7色)脉动振幅,γ Dor典型4-94mmag(B带)",
+      "category": "photometry",
+      "ucd": "phot.mag.amplitude",
+      "unit": "mag",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_mag_amplitude_ratio",
+      "name_cn": "多色振幅比",
+      "description": "各频率相对于最强频率的多通带振幅比及误差,低阶g模模式证认关键量",
+      "category": "photometry",
+      "ucd": "phot.mag.amplitude",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_temperature_effective",
+      "name_cn": "有效温度Teff",
+      "description": "光谱Teff(文献汇编)、SED拟合Teff(本工作)与uvbyβ光度Teff,用于HR图与不稳定带定位",
+      "category": "spectroscopy",
+      "ucd": "phys.temperature.effective",
+      "unit": "K",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_gravity_surface",
+      "name_cn": "表面重力logg",
+      "description": "光谱与光度学(loggph)表面重力,演化状态参数",
+      "category": "spectroscopy",
+      "ucd": "phys.gravity.surface",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_veloc_rotat_vsini",
+      "name_cn": "投影自转速度vsini",
+      "description": "投影自转速度(3-125km/s),γ Dor自转-脉动耦合研究量",
+      "category": "spectroscopy",
+      "ucd": "phys.veloc.rotat",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "spect_radial_velocity",
+      "name_cn": "视向速度",
+      "description": "逐次RV测量(HJD-相位-权重),含SB1/SB2轨道拟合与O-C残差",
+      "category": "spectroscopy",
+      "ucd": "spect.dopplerVeloc.radial",
+      "unit": "km/s",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "src_spectral_type",
+      "name_cn": "MK光谱型",
+      "description": "MK光谱型与光度级(A/F型主序,光谱分类辅助判据)",
+      "category": "spectroscopy",
+      "ucd": "src.spType",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_luminosity",
+      "name_cn": "光度",
+      "description": "以太阳光度为单位的总光度,HR图纵坐标",
+      "category": "physical",
+      "ucd": "phys.luminosity",
+      "unit": "Lsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_size_radius",
+      "name_cn": "恒星半径",
+      "description": "以太阳半径为单位的恒星半径",
+      "category": "physical",
+      "ucd": "phys.size.radius",
+      "unit": "Rsun",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phys_abund_fe",
+      "name_cn": "金属丰度[M/H]",
+      "description": "Kunzli日内瓦程序拟合的金属丰度,γ Dor含不同金属丰度成员与化学特殊星问题",
+      "category": "physical",
+      "ucd": "phys.abund.Fe",
+      "unit": "dex",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "pos_parallax",
+      "name_cn": "视差",
+      "description": "Hipparcos或Gaia DR2视差及误差,距离/绝对星等来源",
+      "category": "astrometry",
+      "ucd": "pos.parallax",
+      "unit": "mas",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "time_period_puls",
+      "name_cn": "脉动周期",
+      "description": "主导脉动周期,γ Dor特征范围0.28-3天(本类表实测0.28-1.86d),每星多周期(2-5个独立周期)",
+      "category": "variability",
+      "ucd": "phot.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_frequency",
+      "name_cn": "脉动频率",
+      "description": "频率分析得到的f1-f6(d^-1)及误差,γ Dor低阶高次g模星震学核心量,周期=1/频率",
+      "category": "variability",
+      "ucd": "phot.frequency;em.opt",
+      "unit": "Hz",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "time_epoch_hjd",
+      "name_cn": "观测历元HJD",
+      "description": "每次测光/RV观测的日心儒略日,可重做周期分析",
+      "category": "variability",
+      "ucd": "time.epoch",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "phot_phase",
+      "name_cn": "轨道相位",
+      "description": "按轨道历元折叠的相位(0-1),配合RV作轨道解",
+      "category": "variability",
+      "ucd": "phot.phase",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "time_period_orbital",
+      "name_cn": "轨道周期",
+      "description": "SB1/SB2分光双星轨道周期(如995d、1052.4d、17.5yr),γ Dor高双星比例(约50%)",
+      "category": "variability",
+      "ucd": "phot.period",
+      "unit": "d",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "src_class_var_type",
+      "name_cn": "变异性类型",
+      "description": "TESS变异性分类:GDOR/DSCT/混合/HAGD(高振幅γ Dor)等,含不确定标记",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "src_class_gdor_status",
+      "name_cn": "γ Dor确认状态",
+      "description": "样本最终状态:新确认γ Dor/δ Sct/周期未解变量/恒定星,HIP变异性类型(C/D/M/P/U)",
+      "category": "classification",
+      "ucd": "src.class",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "meta_code_multip",
+      "name_cn": "多重性代码",
+      "description": "双星状态:SB1/SB2/VB(目视双星)/Single,γ Dor双星比例高(11颗中5-6颗非单星)",
+      "category": "classification",
+      "ucd": "meta.code.multip",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "meta_id_cross",
+      "name_cn": "交叉证认标识",
+      "description": "HD/HIP/TIC号与其他星名,用于与Gaia、TIC、WDS、uvbyβ目录交叉证认",
+      "category": "environment",
+      "ucd": "meta.id.cross",
+      "unit": "",
+      "_unit_filled": true
+    },
+    {
+      "property_id": "meta_number_obs",
+      "name_cn": "观测次数",
+      "description": "每星测光观测点数与时间跨度,反映频率分辨率",
+      "category": "environment",
+      "ucd": "meta.number",
+      "unit": "",
+      "_unit_filled": true
+    }
+  ]
+}

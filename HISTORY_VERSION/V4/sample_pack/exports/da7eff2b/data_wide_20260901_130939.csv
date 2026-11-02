@@ -1,0 +1,25 @@
+﻿source_id,central_velocity_dispersion,central_velocity_dispersion_unit,mass,mass_unit,metallicity,metallicity_unit
+2026MNRAS.550g1147K,,,,,"-1.45",dex
+2025A&A...693A.155P,,,3.5 ± 0.03 × 10^6,Msun,,
+2025A&A...701A.169S,,,4_x_10^6,Msun,,
+2021MNRAS.507.1127K,,,,,,
+2020AJ....159..254J,,,10^7,Msun,,
+2019ApJ...881..104M,,,,,"-1.8",dex
+2019MNRAS.482.4713Z,3.01,km/s,,,,
+2014ApJ...782...49S,16.8,km/s,,,,
+2014ApJ...797..115B,16.8,km/s,,,,
+2013ApJ...773L..31H,,,3000000.0,M_sun,,
+2013ApJ...763..126C,,,3 x 10^6,Msun,"-1.7",dex
+2013ApJ...772...67B,17.31,km/s,,,,
+2012AJ....144....5K,,,,,"-1.62",dex
+2011A&A...534A..29D,,,,,10,factor
+2010ApJ...722.1373J,,,,,,
+2010A&A...520A..95C,,,,,"-1.6",dex
+2009ApJ...698.2048J,,,2-7e6,Msun,,
+2008ApJ...681.1505J,,,2-7x10^6,Msun,,
+2006MNRAS.368.1749T,,,,,"-1.6",dex
+2006A&A...445..503R,15,km/s,,,,
+2005ApJ...621..777P,,,,,"-1.26",dex
+2002ApJ...579..832S,,,,,"-2.0 to -1.8",dex
+1999AJ....117..303D,,,3.9 10^6,Msun,,
+SRC_DB_MWSC,,,,,"-1.445",log(Sun)

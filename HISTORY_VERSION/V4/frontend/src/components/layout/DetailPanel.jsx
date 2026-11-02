@@ -1,0 +1,1071 @@
+import { useDismissTransition } from '@/hooks/useDismissTransition'
+import { useDialogFocus } from '@/hooks/useDialogFocus'
+import { dimensionSummary } from '@/lib/resultData'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/icons'
+import { useWheelHorizontal } from '@/hooks/useWheelHorizontal'
+import Markdown from '@/lib/markdown'
+
+/* 右侧详情面板（块 5 定案）：
+ * - 宽度 560 默认，可拖拽调宽（400-680）
+ * - 分区 Tab：概览 / 质量 / 运行 / 来源 / 研究图像 / 轨迹 / 洞察 / 下载
+ * - <1280px：改覆盖式抽屉（fixed + 遮罩，CSS .detail-panel 媒体查询）
+ * - 数据加载期显示骨架屏；各分区空数据有空状态提示
+ */
+
+const MIN_W = 400
+const MAX_W = 680
+
+/* 研究图像缩略图：有 image_url 走真实图（契约 D7-3），否则显示缺失状态。
+ * 2026-08-27：缩略图只放图（点击 → FigureLightboxModal 全屏模态），
+ * caption 由调用方节流展示（一行）。 */
+export function FigureThumb({ fig, height = 110 }) {
+  const [failed, setFailed] = useState(false)
+  useEffect(() => setFailed(false), [fig.image_url])
+  const b = fig.bbox || fig.bbox_2d
+  if (fig.image_url && !failed) {
+    return (
+      <div style={{ position: 'relative', width: '100%', height, background: 'var(--surface-secondary)', borderRadius: 6, overflow: 'hidden' }}>
+        <img onError={() => setFailed(true)} src={fig.image_url} alt={fig.caption || ''} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        {b && (
+          <div style={{
+            position: 'absolute',
+            left: `${b[0] * 100}%`, top: `${b[1] * 100}%`,
+            width: `${(b[2] - b[0]) * 100}%`, height: `${(b[3] - b[1]) * 100}%`,
+            border: '1.5px solid var(--status-error)', borderRadius: 2, pointerEvents: 'none',
+          }} />
+        )}
+      </div>
+    )
+  }
+  return <div className="evidence-missing" style={{ height }}>{failed ? '图像加载失败，请重新打开或检查文件' : '该记录未提供图像'}</div>
+}
+
+/* 研究图像全屏模态（2026-08-27：样式对齐 RecordDetailDialog 记录详情弹窗）：
+ * 上方大图（自适应 contain）+ 下方 Markdown 渲染图注 + 来源（第 N 页 · source_id）。
+ * Esc / 遮罩关闭。
+ * 注意：must use createPortal —— DetailPanel 的 aside 带 .glass（backdrop-filter），
+ * 会创建 position:fixed 的 containing block，普通渲染的模态会被卡在面板内（实测踩坑）。 */
+/* 研究图像全屏与无级缩放模态（F4：支持滚轮无级缩放 1x-8x、鼠标拖拽平移、双击放大/复位、全屏切换、bbox 联动） */
+export function FigureLightboxModal({ fig, onClose }) {
+  const dismissal = useDismissTransition(onClose)
+  const dialogRef = useDialogFocus(true, dismissal.close)
+  const [view, setView] = useState({ scale: 1, pan: { x: 0, y: 0 } })
+  const [isMax, setIsMax] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const stageRef = useRef(null)
+  const dragRef = useRef(null)
+
+  const clampScale = (v) => Math.min(8, Math.max(1, v))
+
+  const zoomBy = (factor) => setView((s) => {
+    const ns = clampScale(s.scale * factor)
+    return { scale: ns, pan: ns === 1 ? { x: 0, y: 0 } : s.pan }
+  })
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.defaultPrevented) return
+      if (!e.defaultPrevented && e.key === 'Escape') dismissal.close()
+      if (e.key === '+' || e.key === '=') zoomBy(1.25)
+      if (e.key === '-') zoomBy(1 / 1.25)
+      if (e.key === '0') setView({ scale: 1, pan: { x: 0, y: 0 } })
+      if (e.key === 'f' || e.key === 'F') setIsMax((m) => !m)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  // 滚轮无级缩放 (原生非 passive 监听，以光标为锚点)
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const onWheel = (e) => {
+      e.preventDefault()
+      setView((s) => {
+        const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15
+        const ns = clampScale(s.scale * factor)
+        if (ns === s.scale) return s
+        const rect = el.getBoundingClientRect()
+        const cx = e.clientX - rect.left - rect.width / 2
+        const cy = e.clientY - rect.top - rect.height / 2
+        return {
+          scale: ns,
+          pan: {
+            x: cx - (cx - s.pan.x) * (ns / s.scale),
+            y: cy - (cy - s.pan.y) * (ns / s.scale),
+          },
+        }
+      })
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
+
+  const onDoubleClick = () => setView((s) =>
+    s.scale > 1.1 ? { scale: 1, pan: { x: 0, y: 0 } }
+      : { scale: 2.5, pan: { x: 0, y: 0 } })
+
+  const onPointerDown = (e) => {
+    if (view.scale <= 1.01) return
+    dragRef.current = { x: e.clientX, y: e.clientY, pan: { ...view.pan } }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  const onPointerMove = (e) => {
+    const d = dragRef.current
+    if (!d) return
+    setView((s) => ({ ...s, pan: { x: d.pan.x + (e.clientX - d.x), y: d.pan.y + (e.clientY - d.y) } }))
+  }
+  const onPointerUp = () => { dragRef.current = null }
+
+  const b = fig.bbox || fig.bbox_2d
+  const bboxStyle = useMemo(() => {
+    if (!b || b.length < 4) return null
+    const [x0, y0, x1, y1] = b
+    const is1000 = x0 > 1 || x1 > 1 || y0 > 1 || y1 > 1
+    const l = is1000 ? x0 / 10 : x0 * 100
+    const t = is1000 ? y0 / 10 : y0 * 100
+    const w = is1000 ? (x1 - x0) / 10 : (x1 - x0) * 100
+    const h = is1000 ? (y1 - y0) / 10 : (y1 - y0) * 100
+    return {
+      left: `${l}%`,
+      top: `${t}%`,
+      width: `${w}%`,
+      height: `${h}%`,
+    }
+  }, [b])
+
+  return createPortal(
+    <div
+      onClick={dismissal.close}
+      data-closing={dismissal.closing || undefined}
+      className="animate-fade-in"
+      style={{ position: 'fixed', inset: 0, background: 'var(--overlay)', zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        ref={dialogRef} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} role="dialog" aria-modal="true" aria-label="研究图像" tabIndex={-1}
+        className="animate-modal-in"
+        data-component="figure-lightbox"
+        style={{
+          width: isMax ? '98vw' : 940,
+          maxWidth: '98vw',
+          height: isMax ? '96vh' : 'auto',
+          maxHeight: '94vh',
+          display: 'flex', flexDirection: 'column',
+          background: 'var(--seed-surface)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-modal)',
+          overflow: 'hidden',
+          transition: 'width 0.2s ease, height 0.2s ease',
+        }}
+      >
+        {/* 头部：标题 + 来源 + 缩放平移交互栏 + 全屏/关闭 */}
+        <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, overflow: 'hidden' }}>
+          <span style={{ fontSize: 13.5, fontWeight: 550, color: 'var(--content-fg)', flexShrink: 0, whiteSpace: 'nowrap' }}>
+            科学研究图像{fig.page != null ? ` · 第 ${fig.page} 页` : ''}
+          </span>
+          {fig.source_id && (
+            <span className="font-mono" style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {fig.source_id}
+            </span>
+          )}
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, marginLeft: 'auto' }}>
+            <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)', marginRight: 6 }}>
+              滚轮缩放 · 拖拽平移 · 双击 1:1
+            </span>
+            <Button variant="ghost" size="icon" title="缩小 (-)" onClick={() => zoomBy(1 / 1.25)} style={{ width: 28, height: 28 }}>
+              <Icon.Minus />
+            </Button>
+            <span className="font-mono" style={{ fontSize: 11.5, color: 'var(--content-fg-secondary)', minWidth: 42, textAlign: 'center' }}>
+              {Math.round(view.scale * 100)}%
+            </span>
+            <Button variant="ghost" size="icon" title="放大 (+)" onClick={() => zoomBy(1.25)} style={{ width: 28, height: 28 }}>
+              <Icon.Plus />
+            </Button>
+            <Button variant="ghost" size="icon" title="复位 (0)" onClick={() => setView({ scale: 1, pan: { x: 0, y: 0 } })} style={{ width: 28, height: 28 }}>
+              <Icon.Maximize />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              title={isMax ? '恢复标准视口' : '最大化全屏比对 (F)'}
+              onClick={() => setIsMax((m) => !m)}
+              style={{ width: 28, height: 28, color: isMax ? 'var(--accent)' : 'inherit' }}
+            >
+              <Icon.PanelRight />
+            </Button>
+            <Button variant="ghost" size="icon" title="关闭 (Esc)" onClick={dismissal.close} style={{ width: 28, height: 28 }}>
+              <Icon.Close />
+            </Button>
+          </div>
+        </div>
+
+        {/* 视口舞台区 */}
+        <div
+          ref={stageRef}
+          onDoubleClick={onDoubleClick}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          style={{
+            flex: 1, minHeight: isMax ? '60vh' : 380, maxHeight: isMax ? '80vh' : '65vh',
+            background: 'var(--surface-secondary)',
+            overflow: 'hidden', position: 'relative',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: view.scale > 1.01 ? (dragRef.current ? 'grabbing' : 'grab') : 'zoom-in',
+            touchAction: 'none', userSelect: 'none',
+          }}
+        >
+          {fig.image_url && !failed ? (
+            <div
+              style={{
+                position: 'relative',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                maxWidth: '92%', maxHeight: '92%',
+                transform: `translate(${view.pan.x}px, ${view.pan.y}px) scale(${view.scale})`,
+                transformOrigin: 'center center',
+                transition: dragRef.current ? 'none' : 'transform 0.08s ease-out',
+              }}
+            >
+              <img
+                src={fig.image_url}
+                alt={fig.caption || ''}
+                onError={() => setFailed(true)}
+                draggable={false}
+                style={{
+                  display: 'block', maxWidth: '100%', maxHeight: isMax ? '74vh' : '58vh',
+                  objectFit: 'contain', borderRadius: 'var(--radius-sm)',
+                  boxShadow: 'var(--shadow-modal)',
+                  pointerEvents: 'none',
+                }}
+              />
+              {bboxStyle && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    ...bboxStyle,
+                    border: '2px solid var(--status-error)',
+                    borderRadius: 2,
+                    background: 'color-mix(in srgb, var(--status-error) 15%, transparent)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+            </div>
+          ) : (
+            <span className="hint-dim">该研究图像无可用图像文件</span>
+          )}
+        </div>
+
+        {/* 图注 + 来源（Markdown 渲染） */}
+        {fig.caption && (
+          <div style={{ padding: '12px 18px 14px', borderTop: '1px solid var(--surface-border)', flexShrink: 0, maxHeight: 160, overflowY: 'auto' }}>
+            <div style={{
+              padding: '10px 14px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)',
+              borderLeft: '3px solid var(--accent)', fontSize: 12.5, lineHeight: 1.7,
+              color: 'var(--content-fg-secondary)',
+            }}>
+              <Markdown>{fig.caption}</Markdown>
+            </div>
+            {fig.source_id && (
+              <div className="font-mono hint-dim" style={{ marginTop: 8, fontSize: 11 }}>来源：{fig.source_id}</div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
+/* 骨架屏（加载期占位） */
+function PanelSkeleton() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8 }}>
+        {[0, 1, 2, 3].map((i) => <div key={i} className="skeleton" style={{ height: 58 }} />)}
+      </div>
+      <div className="skeleton" style={{ height: 14, width: '40%' }} />
+      {[0, 1, 2].map((i) => <div key={i} className="skeleton" style={{ height: 34 }} />)}
+    </div>
+  )
+}
+
+/* 分区空状态 */
+function TabEmpty({ text }) {
+  return (
+    <div className="empty-state">
+      <Icon.FileText style={{ width: 18, height: 18, opacity: 0.6 }} />
+      <span style={{ fontSize: 'var(--fs-sm)' }}>{text}</span>
+    </div>
+  )
+}
+
+/* 洞察报告（契约：final_output.quality_report.output_state.insights，
+ * 由 SynthesisAgent 组装：research_domain / field_insights / cross_field_relationships /
+ * usage_recommendations / overall_narrative / insufficient_context_fields） */
+const REL_LABELS = {
+  physical_law: '物理定律', correlation: '相关性', conditional: '条件依赖', no_relationship: '无显著关系',
+}
+const SOURCE_LABELS = { database: '星表', paper: '论文', supplementary: '补充材料' }
+function gradeColor(grade) {
+  if (!grade) return 'var(--content-fg-tertiary)'
+  const g = String(grade).toLowerCase()
+  if (/excellent|good|^a$|^a[-_]|优/.test(g)) return 'var(--status-success)'
+  if (/poor|bad|fail|^c$|^d$|^c[-_]|^d[-_]|差/.test(g)) return 'var(--status-error)'
+  return 'var(--status-progress)'   // fair / medium / b / 其他 → 中性进度色
+}
+/* 置信度：0-1 小数 → 百分比；>1 原样 */
+const fmtConf = (c) => (typeof c === 'number' && c <= 1 ? `${Math.round(c * 100)}%` : String(c))
+export function InsightsReport({ insights }) {
+  const fi = Array.isArray(insights.field_insights) ? insights.field_insights : []
+  const rel = Array.isArray(insights.cross_field_relationships) ? insights.cross_field_relationships : []
+  const rec = insights.usage_recommendations || {}
+  const lists = [
+    ['适用场景', rec.suitable_use_cases],
+    ['局限性', rec.limitations],
+    ['使用注意事项', rec.recommended_caveats],
+    ['低置信度记录', rec.low_confidence_records],
+    ['覆盖缺口', rec.coverage_gaps],
+  ].filter(([, arr]) => Array.isArray(arr) && arr.length > 0)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      {/* 元信息 */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+        {insights.research_domain && (
+          <span style={{ fontSize: 11, padding: '2px 10px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+            {insights.research_domain}
+          </span>
+        )}
+        {rec.overall_grade && (
+          <span style={{ fontSize: 11, padding: '2px 10px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', color: gradeColor(rec.overall_grade), fontWeight: 510 }}>
+            可用等级 {rec.overall_grade}
+          </span>
+        )}
+        {insights.generated_at && (
+          <span className="hint-dim" style={{ marginLeft: 'auto' }}>
+            {new Date(insights.generated_at).toLocaleString('zh-CN', { hour12: false })}
+          </span>
+        )}
+      </div>
+
+      {/* 综合叙述 */}
+      {insights.overall_narrative && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>综合叙述</div>
+          <div style={{ fontSize: 13, color: 'var(--content-fg)', lineHeight: 1.7, padding: '10px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)' }}>
+            {insights.overall_narrative}
+          </div>
+        </div>
+      )}
+
+      {/* 天体物理定律知识网络拓扑与防幻觉护栏 */}
+
+      {/* 字段洞察 */}
+      {fi.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>字段洞察 · {fi.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {fi.map((f, i) => (
+              <div key={i} className="row-item">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
+                  <span className="font-mono" style={{ fontSize: 13, fontWeight: 510, color: 'var(--content-fg)' }}>{f.field_name || '未知字段'}</span>
+                  {f.source_type && (
+                    <span style={{ fontSize: 11, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+                      {SOURCE_LABELS[f.source_type] || f.source_type}
+                    </span>
+                  )}
+                  {f.confidence != null && (
+                    <span style={{ marginLeft: 'auto', fontSize: 11, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--status-progress-bg)', color: 'var(--status-progress)' }}>
+                      置信度 {fmtConf(f.confidence)}
+                    </span>
+                  )}
+                </div>
+                {f.observation && <div className="hint">{f.observation}</div>}
+                {f.interpretation && <div className="hint-dim" style={{ marginTop: 4 }}>解读：{f.interpretation}</div>}
+                {f.typical_range != null && (
+                  <div className="hint-dim" style={{ marginTop: 2 }}>典型范围：{String(f.typical_range)}</div>
+                )}
+                {Array.isArray(f.cause_hypotheses) && f.cause_hypotheses.length > 0 && (
+                  <div className="hint-dim" style={{ marginTop: 2 }}>成因假设：{f.cause_hypotheses.join('；')}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 跨字段关系 */}
+      {rel.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>跨字段关系 · {rel.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {rel.map((r, i) => (
+              <div key={i} className="row-item">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
+                  <span className="font-mono" style={{ fontSize: 12, color: 'var(--content-fg)' }}>{r.field_a} ↔ {r.field_b}</span>
+                  <span style={{ fontSize: 11, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-light)', color: 'var(--accent-text)' }}>
+                    {REL_LABELS[r.relationship_type] || r.relationship_type || '关系'}
+                  </span>
+                  {r.confidence != null && (
+                    <span className="font-mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>置信度 {fmtConf(r.confidence)}</span>
+                  )}
+                </div>
+                {r.description && <div className="hint">{r.description}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 使用建议 */}
+      {lists.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>使用建议</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {lists.map(([label, arr]) => (
+              <div key={label}>
+                <div style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg-secondary)', marginBottom: 4 }}>{label}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                  {arr.map((item, i) => (
+                    <div key={i} className="hint" style={{ display: 'flex', gap: 8 }}>
+                      <span style={{ color: 'var(--content-fg-tertiary)', flexShrink: 0 }}>·</span>
+                      {/* P1-7：JSON 直渲改为键值对结构化行（键 hint-dim + 值） */}
+                      {typeof item === 'string' ? (
+                        <span>{item}</span>
+                      ) : (
+                        <span style={{ display: 'flex', flexWrap: 'wrap', gap: '2px 10px' }}>
+                          {Object.entries(item).map(([k, v]) => (
+                            <span key={k}>
+                              <span className="hint-dim">{k}</span>{' '}
+                              <span>{typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v)}</span>
+                            </span>
+                          ))}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ── 质量报告（质量 tab）：report_state.quality 真实数据 ───────────────
+ * quality_scoring: { overall_score: 0-1, overall_score_ci: [lo, hi],
+ *   quality_level, per_source_scores: {sid: 0-1}, per_source_routes: {sid: 路由},
+ *   route_counts: {路由: n}, per_source_reasons?: {sid: 原因} }
+ * qState.sources: { sid: { title, record_count, extraction_quality: {score} } }
+ */
+const ROUTE_LABELS = {
+  Normalization: '归一化', Conflict: '冲突消解', DirectExport: '直接导出',
+  Export: '导出', Quarantine: '隔离', Skip: '跳过',
+}
+function routeColor(route) {
+  if (route === 'Conflict' || route === 'Quarantine') return route === 'Conflict' ? 'var(--status-warn)' : 'var(--status-error)'
+  return 'var(--status-success)'
+}
+function scoreColor(v) {
+  if (typeof v !== 'number') return 'var(--content-fg-tertiary)'
+  if (v >= 0.9) return 'var(--status-success)'
+  if (v >= 0.75) return 'var(--status-progress)'
+  return 'var(--status-warn)'
+}
+
+/* P0-6：冲突标注 chip（与 RecordDetail 同款视觉，就地实现避免跨文件依赖） */
+function Chip({ children, color, bg }) {
+  return (
+    <span style={{
+      fontSize: 11, padding: '1px 8px', borderRadius: 'var(--radius-pill)',
+      background: bg || 'var(--surface-secondary)',
+      border: '1px solid var(--surface-border-subtle)', color: color || 'var(--content-fg-secondary)',
+    }}>
+      {children}
+    </span>
+  )
+}
+
+/* 概览 KPI 卡（用户重设计：2×2，完成状态带绿色圆环对勾） */
+function KpiCard({ label, value, status }) {
+  return (
+    <div className="kpi-card" style={{ padding: '10px 12px' }}>
+      <div className="kpi-label" style={{ marginBottom: 4 }}>{label}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, minHeight: 22 }}>
+        <span className="font-mono kpi-value-sm" style={{ color: 'var(--content-fg)' }}>{value}</span>
+        {status === 'completed' && (
+          <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="var(--status-success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <circle cx="10" cy="10" r="8.2" />
+            <path d="M6.6 10.2l2.2 2.2 4.4-4.6" />
+          </svg>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── 概览：6 维质量雷达图（F5：细分指标 Tooltip 说明、多源动态聚合提取与缺陷引导） ── */
+const QUALITY_DIM_INFO = {
+  completeness: {
+    label: '完整性',
+    desc: '物理性质与元数据字段覆盖率，惩罚未标定或缺失字段',
+  },
+  consistency: {
+    label: '一致性',
+    desc: '跨源测量单位、物理量纲与天体物理参数类型一致度',
+  },
+  format: {
+    label: '格式规范',
+    desc: '数据值域合规性、数值精度格式与标准化结构契合度',
+  },
+  source_reliability: {
+    label: '来源可信度',
+    desc: '权威巡天星表/同行评议核心期刊/高优先级出版源背书可信度',
+  },
+  conflict_risk: {
+    label: '冲突风险',
+    desc: '多源交叉观测一致性反比评分，异议越少得分越高',
+  },
+  extraction_quality: {
+    label: '提取质量',
+    desc: '大模型与视觉多模态 (VLM) 科学事实提取准确度与保真度',
+  },
+}
+
+const QUALITY_DIM_LABELS = {
+  completeness: '完整性',
+  consistency: '一致性',
+  format: '格式规范',
+  source_reliability: '来源可信度',
+  conflict_risk: '冲突风险',
+  extraction_quality: '提取质量',
+}
+
+function resolveDimensionScores(qScoring, qState) {
+  return dimensionSummary(qScoring, qState).scores
+}
+
+function RadarChart({ dims, size = 270 }) {
+  const [hoveredIdx, setHoveredIdx] = useState(null)
+  const gradientId = `radar-${useId().replace(/:/g, '')}`
+  const cx = 130
+  const cy = 115
+  const radius = 68
+  const n = dims.length || 1
+  const pt = (i, r) => {
+    const ang = (Math.PI * 2 * i) / n - Math.PI / 2
+    return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)]
+  }
+  const ringPoly = (frac) => dims.map((_, i) => pt(i, radius * frac).join(',')).join(' ')
+  const dataPoly = dims.map((d, i) => {
+    const r = radius * Math.max(0.04, Math.min(1, Number(d.score) || 0))
+    return pt(i, r).join(',')
+  }).join(' ')
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      <svg
+        width="100%"
+        height={size}
+        viewBox="-40 -25 340 280"
+        role="img"
+        aria-label="质量维度雷达图"
+        style={{ overflow: 'visible', maxWidth: 330 }}
+      >
+        <defs>
+          <radialGradient id={gradientId} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={radius}>
+            <stop offset="0%" stopColor="var(--radar-center)" />
+            <stop offset="18%" stopColor="var(--radar-center)" />
+            <stop offset="38%" stopColor="var(--radar-pale)" stopOpacity="0.9" />
+            <stop offset="60%" stopColor="var(--sage-soft)" stopOpacity="0.8" />
+            <stop offset="82%" stopColor="var(--sage)" stopOpacity="0.78" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.8" />
+          </radialGradient>
+        </defs>
+        <polygon points={dataPoly} className="radar-data" fill={`url(#${gradientId})`} />
+        {/* 背景同心多边形网格 */}
+        {[0.25, 0.5, 0.75, 1].map((f) => (
+          <polygon
+            key={f}
+            points={ringPoly(f)}
+            fill="none"
+            stroke="var(--chart-grid)"
+            strokeWidth={f === 1 ? 1.2 : 0.8}
+            strokeDasharray={f === 1 ? 'none' : '3 3'}
+          />
+        ))}
+        {/* 轴线 */}
+        {dims.map((_, i) => {
+          const [x, y] = pt(i, radius)
+          return <line key={`a-${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--chart-grid)" strokeWidth={1} />
+        })}
+        {/* Outline stays above the grid; the radial fill stays behind it. */}
+        <polygon
+          points={dataPoly}
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth={2}
+          style={{ transition: 'fill 0.2s ease, stroke 0.2s ease' }}
+        />
+        {/* 数据点与交互高亮 */}
+        {dims.map((d, i) => {
+          const [x, y] = pt(i, radius * Math.max(0.04, Math.min(1, Number(d.score) || 0)))
+          const isHov = hoveredIdx === i
+          return (
+            <g
+              key={`pt-group-${i}`}
+              onClick={() => setHoveredIdx(i)}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{ cursor: 'pointer' }}
+            >
+              <title>{`${d.label}: ${Math.round((Number(d.score) || 0) * 100)}%\n${d.desc || ''}`}</title>
+              <circle
+                cx={x}
+                cy={y}
+                r={isHov ? 5.5 : 3.2}
+                fill={isHov ? 'var(--accent)' : 'var(--accent)'}
+                stroke="var(--surface-bg)"
+                strokeWidth={isHov ? 2 : 1}
+                style={{ transition: 'r 0.15s ease' }}
+              />
+            </g>
+          )
+        })}
+        {/* 维度文字与百分比标签 */}
+        {dims.map((d, i) => {
+          const [x, y] = pt(i, radius + 15)
+          const isHov = hoveredIdx === i
+          const anchor = Math.abs(x - cx) < 10 ? 'middle' : (x < cx ? 'end' : 'start')
+          return (
+            <g
+              key={`label-group-${i}`}
+              tabIndex={0}
+              onClick={() => setHoveredIdx(i)}
+              onFocus={() => setHoveredIdx(i)}
+              onBlur={() => setHoveredIdx(null)}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{ cursor: 'pointer' }}
+            >
+              <title>{`${d.label}: ${Math.round((Number(d.score) || 0) * 100)}%\n${d.desc || ''}`}</title>
+              <text
+                x={x}
+                y={y - 2}
+                textAnchor={anchor}
+                fontSize={13}
+                fontWeight={isHov ? 600 : 500}
+                fill={isHov ? 'var(--accent)' : 'var(--content-fg-secondary)'}
+              >
+                {d.label}
+              </text>
+              <text
+                x={x}
+                y={y + 14}
+                textAnchor={anchor}
+                fontSize={12.5}
+                fontWeight={600}
+                fill={isHov ? 'var(--accent)' : 'var(--content-fg)'}
+              >
+                {Math.round((Number(d.score) || 0) * 100)}%
+              </text>
+            </g>
+          )
+        })}
+      </svg>
+      {/* 底部细分指标说明 Tooltip 引导条 */}
+      <div className="quality-dimension-description" aria-live="polite">{hoveredIdx != null && dims[hoveredIdx] && <><strong>{dims[hoveredIdx].label}</strong>{dims[hoveredIdx].desc}</>}</div>
+    </div>
+  )
+}
+
+/* 概览「数据质量评分」卡：大数字 + 等级 + 水平条 + 雷达图 + 统计行 */
+export function QualityScoreSection({ qScoring, qState, normCount, onOpenQuality }) {
+  if (!qScoring) {
+    return (
+      <div className="empty-state" style={{ padding: '20px 12px' }}>
+        <span style={{ fontSize: 'var(--fs-sm)' }}>任务进行中，质检完成后展示评分</span>
+      </div>
+    )
+  }
+  const overall = typeof qScoring.overall_score === 'number' ? qScoring.overall_score : null
+  const rawDims = resolveDimensionScores(qScoring, qState) || {}
+  const dims = Object.entries(rawDims).map(([key, score]) => ({
+    key,
+    label: QUALITY_DIM_INFO[key]?.label || QUALITY_DIM_LABELS[key] || key,
+    desc: QUALITY_DIM_INFO[key]?.desc || '',
+    score,
+  }))
+  const level = (qScoring.quality_level || 'unknown').toUpperCase()
+  return (
+    <div>
+      <div className="quality-score-layout" style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+            <span className="font-mono" style={{ fontSize: 40, fontWeight: 590, letterSpacing: '-0.03em', lineHeight: 1, color: 'var(--content-fg)' }}>
+              {overall == null ? '未提供' : (overall * 100).toFixed(2)}
+            </span>
+            <span className="font-mono" style={{ fontSize: 13, color: 'var(--content-fg-tertiary)' }}>/100</span>
+          </div>
+          <span style={{ fontSize: 11, fontWeight: 590, letterSpacing: '0.08em', marginTop: 4, color: gradeColor(qScoring.quality_level) }}>{level}</span>
+          <div style={{ width: 84, height: 5, borderRadius: 99, background: 'var(--surface-secondary)', marginTop: 6, overflow: 'hidden' }}>
+            <div style={{ height: '100%', borderRadius: 99, width: `${overall == null ? '未提供' : (overall * 100).toFixed(2)}%`, background: scoreColor(overall) }} />
+          </div>
+        </div>
+        {/* 雷达图展示区 */}
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: 'center' }}>
+          <div className="quality-dimensions">{dims.length ? <RadarChart dims={dims} /> : <p className="hint">该报告未提供质量维度分数</p>}<p className="hint">{dimensionSummary(qScoring, qState).method}</p></div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+        <span className="section-label">质量等级</span>
+        <span style={{ fontSize: 12, fontWeight: 510, color: gradeColor(qScoring.quality_level) }}>
+          {String(qScoring.quality_level || '').toUpperCase()}
+        </span>
+        {Number.isFinite(normCount) && normCount >= 0 && (
+          <span style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>· 归一化 {normCount}</span>
+        )}
+        <span style={{ flex: 1 }} />
+      </div>
+    </div>
+  )
+}
+
+export function QualityReport({ qState, conflictReport }) {
+  const scoring = qState?.quality_scoring || {}
+  const srcMap = qState?.sources || {}
+  const perScores = scoring.per_source_scores || {}
+  const routes = qState?.per_source_routes || {}
+  const reasons = qState?.per_source_reasons || {}
+  const routeCounts = qState?.route_counts || {}
+  const ci = Array.isArray(scoring.overall_score_ci) && scoring.overall_score_ci.length >= 2 ? scoring.overall_score_ci : null
+  const dmRows = Object.entries(qState?.decision_matrix || {})
+  const crList = Array.isArray(qState?.conditional_routes) ? qState.conditional_routes : []
+  const mv = qState?.multi_source_variance || null
+  const anns = Array.isArray(conflictReport?.annotations) ? conflictReport.annotations : []
+  // 逐源按分数升序（最差的排前面，便于审视问题源）
+  const rows = Object.keys(perScores)
+    .sort((a, b) => (perScores[a] ?? 0) - (perScores[b] ?? 0))
+
+  const rawDims = resolveDimensionScores(scoring, qState) || {}
+  const dims = Object.entries(rawDims).map(([key, score]) => ({
+    key,
+    label: QUALITY_DIM_INFO[key]?.label || QUALITY_DIM_LABELS[key] || key,
+    desc: QUALITY_DIM_INFO[key]?.desc || '',
+    score,
+  }))
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      {/* 综合评分头部与 6 维质量雷达 */}
+      <div className="kpi-card" style={{ padding: '14px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+          <span className="font-mono" style={{ fontSize: 30, fontWeight: 590, letterSpacing: '-0.02em', color: scoreColor(scoring.overall_score) }}>
+            {typeof scoring.overall_score === 'number' ? (scoring.overall_score * 100).toFixed(2) : '—'}
+          </span>
+          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--content-fg-tertiary)' }}>/ 100 综合质量分</span>
+          {scoring.quality_level && (
+            <span style={{ marginLeft: 'auto', fontSize: 11, padding: '2px 10px', borderRadius: 'var(--radius-pill)', fontWeight: 510, color: gradeColor(scoring.quality_level), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
+              等级 {String(scoring.quality_level).toUpperCase()}
+            </span>
+          )}
+        </div>
+        {ci && (
+          <div className="hint-dim" style={{ marginTop: 6 }}>
+            报告评分区间 {ci[0].toFixed(3)} – {ci[1].toFixed(3)} · 来源 {rows.length} 个
+          </div>
+        )}
+        {!dims.length && <p className="hint">该报告未提供质量维度分数</p>}
+        {dims.length > 0 && (
+          <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--surface-border-subtle)', display: 'flex', justifyContent: 'center' }}>
+            <RadarChart dims={dims} size={250} />
+          </div>
+        )}
+      </div>
+
+      {/* 路由分布 */}
+      {Object.keys(routeCounts).length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>清洗路由分布</div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {Object.entries(routeCounts).map(([route, n]) => (
+              <span key={route} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'var(--fs-sm)', padding: '4px 12px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-bg)', border: '1px solid var(--surface-border)' }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: routeColor(route) }} />
+                {ROUTE_LABELS[route] || route}
+                <span className="font-mono" style={{ color: 'var(--content-fg-tertiary)' }}>{n}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 逐源评分 */}
+      {rows.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>逐源评分（低分在前）</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {rows.map((sid) => {
+              const score = perScores[sid]
+              const route = routes[sid]
+              const src = srcMap[sid] || {}
+              return (
+                <div key={sid} className="row-item">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <span className="font-mono" style={{ fontSize: 12, fontWeight: 510, color: 'var(--content-fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '38%', minWidth: 0 }}>
+                      {sid}
+                    </span>
+                    {/* 2026-08-27：长标题不再固定 maxWidth 46%（窄面板溢出截断），
+                       改 flex 弹性收敛——宽则展开、窄则 ellipsis */}
+                    {src.title && (
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--content-fg-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>{src.title}</span>
+                    )}
+                    <span className="font-mono" style={{ flexShrink: 0, fontSize: 12, fontWeight: 510, color: scoreColor(score) }}>
+                      {typeof score === 'number' ? score.toFixed(3) : '—'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ flex: 1, height: 4, background: 'var(--surface-border)', borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${Math.max(0, Math.min(1, score ?? 0)) * 100}%`, background: scoreColor(score), borderRadius: 2 }} />
+                    </div>
+                    {route && (
+                      <span style={{ flexShrink: 0, fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(route), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
+                        {ROUTE_LABELS[route] || route}
+                      </span>
+                    )}
+                  </div>
+                  {reasons[sid] && <div className="hint-dim" style={{ marginTop: 5 }}>{reasons[sid]}</div>}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：综合评估摘要（assessment_summary：每源一行路由摘要文本） */}
+      {qState?.assessment_summary && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>综合评估摘要</div>
+          <div style={{ fontSize: 12.5, color: 'var(--content-fg-secondary)', lineHeight: 1.7, padding: '10px 12px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)', whiteSpace: 'pre-line', wordBreak: 'break-all' }}>
+            {qState.assessment_summary}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：路由决策矩阵（decision_matrix：每源 matrix/rule 路由 + 等级/修复成本） */}
+      {dmRows.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>路由决策矩阵 · {dmRows.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {dmRows.map(([sid, dm]) => (
+              <div key={sid} className="row-item" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', padding: '7px 10px' }}>
+                <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{sid}</span>
+                {dm.quality_level && (
+                  <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: gradeColor(dm.quality_level), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
+                    等级 {String(dm.quality_level).toUpperCase()}
+                  </span>
+                )}
+                {dm.repair_cost && (
+                  <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+                    修复成本 {dm.repair_cost}
+                  </span>
+                )}
+                <span style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
+                  {dm.matrix_route && (
+                    <span style={{ padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(dm.matrix_route), background: 'var(--status-progress-bg)' }}>
+                      矩阵 {ROUTE_LABELS[dm.matrix_route] || dm.matrix_route}
+                    </span>
+                  )}
+                  {dm.rule_route && (
+                    <span style={{ padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(dm.rule_route), background: 'var(--status-progress-bg)' }}>
+                      规则 {ROUTE_LABELS[dm.rule_route] || dm.rule_route}
+                    </span>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：条件路由（conditional_routes：每源主路由 + 条件分支） */}
+      {crList.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>条件路由 · {crList.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {crList.map((cr, i) => (
+              <div key={i} className="row-item" style={{ padding: '7px 10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{cr.source_id || '—'}</span>
+                  <span style={{ fontSize: 11, color: 'var(--content-fg-tertiary)' }}>主路由</span>
+                  <span style={{ fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', color: routeColor(cr.primary_route), background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)' }}>
+                    {ROUTE_LABELS[cr.primary_route] || cr.primary_route || '—'}
+                  </span>
+                </div>
+                {Array.isArray(cr.conditions) && cr.conditions.length > 0 && (
+                  <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    {cr.conditions.map((c, j) => (
+                      <div key={j} className="hint-dim" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
+                        <span className="font-mono" style={{ color: 'var(--content-fg-secondary)' }}>{c.condition}</span>
+                        <span style={{ color: 'var(--content-fg-tertiary)' }}>→</span>
+                        <span style={{ color: routeColor(c.route), fontWeight: 510 }}>{ROUTE_LABELS[c.route] || c.route}</span>
+                        {c.reason && <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.reason}</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：多源方差（multi_source_variance：方差/异常计数 + 明细） */}
+      {mv && Array.isArray(mv.variances) && mv.variances.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>多源方差与异常</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 8, marginBottom: 10 }}>
+            <div className="kpi-card" style={{ padding: '8px 12px' }}>
+              <div className="kpi-label">方差数</div>
+              <div className="font-mono kpi-value-sm">{mv.variance_count ?? mv.variances.length}</div>
+            </div>
+            <div className="kpi-card" style={{ padding: '8px 12px' }}>
+              <div className="kpi-label">异常数</div>
+              <div className="font-mono kpi-value-sm">{mv.anomaly_count ?? (Array.isArray(mv.anomalies) ? mv.anomalies.length : 0)}</div>
+            </div>
+            <div className="kpi-card" style={{ padding: '8px 12px' }}>
+              <div className="kpi-label">风险级</div>
+              <div className="kpi-value-sm" style={{ color: mv.risk_level === 'high' ? 'var(--status-error)' : mv.risk_level === 'medium' ? 'var(--status-progress)' : 'var(--content-fg)' }}>
+                {mv.risk_level || '—'}
+              </div>
+            </div>
+          </div>
+          {mv.summary && <div className="hint" style={{ marginBottom: 8 }}>{mv.summary}</div>}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {mv.variances.map((v, i) => (
+              <div key={i} className="row-item" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', padding: '7px 10px' }}>
+                <span className="font-mono" style={{ fontSize: 11.5, fontWeight: 510, color: 'var(--content-fg)' }}>{v.field_name || '—'}</span>
+                {v.entity_name && <span style={{ fontSize: 11, color: 'var(--content-fg-secondary)' }}>{v.entity_name}</span>}
+                <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
+                  {v.source_count ?? (Array.isArray(v.source_ids) ? v.source_ids.length : 0)} 个来源
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* P0-6：冲突标注（report_state.conflict.resolution_report.annotations） */}
+      {anns.length > 0 && (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>冲突标注 · {anns.length}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {anns.map((c, i) => (
+              <div key={i} className="row-item" style={{ padding: '8px 12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
+                  <Chip color="var(--status-warn)" bg="var(--status-warn-bg)">{c.annotation_type || 'annotation'}</Chip>
+                  {c.cause_label && <Chip>{c.cause_label}</Chip>}
+                  {typeof c.confidence === 'number' && (
+                    <span className="font-mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--content-fg-tertiary)' }}>
+                      置信度 {Math.round(c.confidence * 100)}%
+                    </span>
+                  )}
+                </div>
+                <div className="hint">
+                  {c.source_count != null && `${c.source_count} 个来源的值域 ${Array.isArray(c.value_range) ? c.value_range.join(' – ') : '—'}`}
+                  {c.action ? ` · 处置：${c.action}` : ''}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ── 运行统计（运行 tab）：workflow_state + processing_statistics ──────
+ * workflow_state: { llm_call_count, tool_call_count, iteration_counter,
+ *   workflow_history: [{ agent, stage, status, timestamp, duration, reason }] }
+ * processing_statistics: { total_llm_calls, total_tool_calls,
+ *   total_elapsed_seconds, b_c_loop_iterations }
+ */
+function fmtElapsed(sec) {
+  if (typeof sec !== 'number' || !isFinite(sec)) return '—'
+  if (sec < 60) return `${sec.toFixed(1)}s`
+  const m = Math.floor(sec / 60)
+  const s = Math.round(sec % 60)
+  return `${m}m ${s}s`
+}
+function fmtTime(ts) {
+  try {
+    return new Date(ts).toLocaleTimeString('zh-CN', { hour12: false })
+  } catch { return '—' }
+}
+export function ExecutionReport({ workflowState, procStats }) {
+  const [historyPage, setHistoryPage] = useState(1)
+  const ws = workflowState || {}
+  const ps = procStats || {}
+  const llm = ws.llm_call_count ?? ps.total_llm_calls ?? null
+  const tools = ws.tool_call_count ?? ps.total_tool_calls ?? null
+  const elapsed = ps.total_elapsed_seconds ?? null
+  const loops = ps.b_c_loop_iterations ?? ws.iteration_counter ?? null
+  const history = Array.isArray(ws.workflow_history)
+    ? [...ws.workflow_history].sort((a, b) => String(a.timestamp || '').localeCompare(String(b.timestamp || '')))
+    : []
+  const stats = [
+    ['LLM 调用', llm, 'var(--content-fg)'],
+    ['工具调用', tools, 'var(--content-fg)'],
+    ['总耗时', fmtElapsed(elapsed), 'var(--content-fg)'],
+    ['B⇄C 循环', loops, loops > 1 ? 'var(--status-warn)' : 'var(--content-fg)'],
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      {/* 计数卡（2026-08-27：auto-fit minmax——窄面板 400px 下 1fr 1fr 会撑破网格，卡片换行堆叠） */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
+        {stats.map(([label, value, color]) => (
+          <div key={label} className="kpi-card" style={{ padding: '10px 12px' }}>
+            <div className="kpi-label" style={{ marginBottom: 4 }}>{label}</div>
+            <div className="font-mono kpi-value-sm" style={{ color }}>{value ?? '—'}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 审计时间线 */}
+      {history.length > 0 ? (
+        <div>
+          <div className="section-label" style={{ marginBottom: 6 }}>执行审计 · {history.length} 步</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {history.slice((Math.min(historyPage, Math.ceil(history.length / 20)) - 1) * 20, Math.min(historyPage, Math.ceil(history.length / 20)) * 20).map((h, i) => (
+              <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline', padding: '6px 10px', background: i % 2 ? 'var(--surface-secondary)' : 'transparent', borderRadius: 'var(--radius-sm)' }}>
+                <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-tertiary)' }}>{fmtTime(h.timestamp)}</span>
+                <span className="font-mono" style={{ flexShrink: 0, fontSize: 12, fontWeight: 510, color: 'var(--content-fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '42%', minWidth: 0 }}>{h.agent || '—'}</span>
+                {h.stage && (
+                  <span style={{ flexShrink: 0, fontSize: 10.5, padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-secondary)', border: '1px solid var(--surface-border-subtle)', color: 'var(--content-fg-secondary)' }}>
+                    {h.stage}
+                  </span>
+                )}
+                <span style={{ flex: 1, minWidth: 0, fontSize: 11, color: 'var(--content-fg-tertiary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{h.reason || ''}</span>
+                {typeof h.duration === 'number' && (
+                  <span className="font-mono" style={{ flexShrink: 0, fontSize: 11, color: 'var(--content-fg-secondary)' }}>{fmtElapsed(h.duration)}</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="pagination-row"><span>{history.length} 步 · 每页 20 步</span><div><Button variant="outline" size="sm" disabled={historyPage <= 1} onClick={() => setHistoryPage(page => page - 1)}>上一页</Button><span>{Math.min(historyPage, Math.ceil(history.length / 20))} / {Math.ceil(history.length / 20)}</span><Button variant="outline" size="sm" disabled={historyPage >= Math.ceil(history.length / 20)} onClick={() => setHistoryPage(page => page + 1)}>下一页</Button></div></div>
+        </div>
+      ) : (
+        <TabEmpty text="暂无执行审计记录" />
+      )}
+    </div>
+  )
+}
+

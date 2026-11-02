@@ -1,0 +1,347 @@
+{
+  "field_definitions": {
+    "cluster_age": {
+      "standard_unit": "yr",
+      "semantic_type": "age",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the time elapsed since the formation of a star cluster, expressed in years (yr)."
+    },
+    "dist_modulus": {
+      "standard_unit": "mag",
+      "semantic_type": "distance",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the logarithmic distance indicator derived from the difference between apparent and absolute magnitude, reported in magnitudes (mag)."
+    },
+    "distance": {
+      "standard_unit": "pc",
+      "semantic_type": "distance",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the physical separation between an observer and a celestial object, expressed in parsecs (pc)."
+    },
+    "fe_h": {
+      "standard_unit": "dex",
+      "semantic_type": "metallicity",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the logarithmic ratio of iron to hydrogen abundance relative to solar values, quantified in decimal exponent units (dex)."
+    },
+    "parallax": {
+      "standard_unit": "mas",
+      "semantic_type": "parallax",
+      "criticality": "important",
+      "aliases": [],
+      "in_schema": true,
+      "is_extra_field": false,
+      "description": "Measures the apparent angular displacement of a celestial object caused by Earth's orbital motion, recorded in milliarcseconds (mas)."
+    }
+  },
+  "source_summary": {
+    "total_sources": 28,
+    "sources_exported": 28,
+    "sources_human_review": 0,
+    "per_source": [
+      {
+        "source_id": "SRC_DB_MWSC",
+        "title": "Milky Way Global Survey of Star Clusters (MWSC)",
+        "year": null,
+        "journal": "",
+        "record_count": 4,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2001MNRAS.321..699K",
+        "title": "The formation of a bound star cluster: from the Orion nebula cluster to the Pleiades",
+        "year": 2001,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 0,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2001AJ....121.2053A",
+        "title": "The Mass and Structure of the Pleiades Star Cluster from 2MASS",
+        "year": 2001,
+        "journal": "The Astronomical Journal",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018ApJ...863...67G",
+        "title": "Age Determinations of the Hyades, Praesepe, and Pleiades via MESA Models with Rotation",
+        "year": 2018,
+        "journal": "The Astrophysical Journal",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2009AJ....138.1292S",
+        "title": "The Metallicity of the Pleiades",
+        "year": 2009,
+        "journal": "The Astronomical Journal",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "1999ApJ...523..328N",
+        "title": "Correlated Errors in HIPPARCOS Parallaxes toward the Pleiades and the Hyades",
+        "year": 1999,
+        "journal": "The Astrophysical Journal",
+        "record_count": 4,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018MNRAS.475..139Z",
+        "title": "Confirming the least massive members of the Pleiades star cluster",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017A&A...598A..48G",
+        "title": "A revised moving cluster distance to the Pleiades open cluster",
+        "year": 2017,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022MNRAS.511.5718M",
+        "title": "Five young δ Scuti stars in the Pleiades seen with Kepler/K2",
+        "year": 2022,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 2,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005A&A...429..887P",
+        "title": "The distance to the Pleiades. Main sequence fitting in the near infrared",
+        "year": 2005,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 9,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024AstL...50..780K",
+        "title": "850 SRG/eROSITA Sources in the Pleiades",
+        "year": 2024,
+        "journal": "Astronomy Letters",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025A&A...698A...7F",
+        "title": "LAMOST medium-resolution observations of the Pleiades",
+        "year": 2025,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018MNRAS.473.4612K",
+        "title": "The GALAH survey: chemical tagging of star clusters and new members in the Pleiades",
+        "year": 2018,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005AJ....129.1616S",
+        "title": "Confirmation of Errors in Hipparcos Parallaxes from Hubble Space Telescope Fine Guidance Sensor Astrometry of the Pleiades",
+        "year": 2005,
+        "journal": "The Astronomical Journal",
+        "record_count": 9,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2004A&A...418L..31M",
+        "title": "The distance to the Pleiades from orbital solution of the double-lined eclipsing binary HD 23642",
+        "year": 2004,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2017PASJ...69....1T",
+        "title": "Photospheric carbon and oxygen abundances of F-G type stars in the Pleiades cluster*",
+        "year": 2017,
+        "journal": "Publications of the Astronomical Society of Japan",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2016A&A...595A..59M",
+        "title": "Stellar twins determine the distance of the Pleiades",
+        "year": 2016,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 4,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2005A&A...429..645S",
+        "title": "Eclipsing binaries as standard candles. HD 23642 and the distance to the Pleiades",
+        "year": 2005,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 10,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2006A&A...446..611F",
+        "title": "A seismological analysis of δ Scuti stars in the Pleiades cluster",
+        "year": 2006,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 4,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2022RMxAA..58..315M",
+        "title": "The Hipparcos Pleiades Parallax Error is Also a Proper Motion Error",
+        "year": 2022,
+        "journal": "Revista Mexicana de Astronomia y Astrofisica",
+        "record_count": 1,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018A&A...613A..63B",
+        "title": "The lithium-rotation connection in the 125 Myr-old Pleiades cluster",
+        "year": 2018,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2018Ap&SS.363...58E",
+        "title": "The Pleiades apex and its kinematical structure",
+        "year": 2018,
+        "journal": "Astrophysics and Space Science",
+        "record_count": 12,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2013IAUS..289...60M",
+        "title": "Toward a VLBI resolution of the Pleiades distance controversy",
+        "year": 2013,
+        "journal": "Advancing the Physics of Cosmic Distances",
+        "record_count": 3,
+        "quality_grade": "excellent",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2019A&A...628A..66L",
+        "title": "A 5D view of the α Per, Pleiades, and Praesepe clusters",
+        "year": 2019,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 7,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2025ApJ...994..111B",
+        "title": "Converging on the Cepheid Metallicity Dependence: Implications of Nonstandard Gaia Parallax Recalibration on Distance Measures",
+        "year": 2025,
+        "journal": "The Astrophysical Journal",
+        "record_count": 2,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2024MNRAS.534.3005G",
+        "title": "Chemical abundances for a sample of FGK dwarfs in the Pleiades open cluster from APOGEE",
+        "year": 2024,
+        "journal": "Monthly Notices of the Royal Astronomical Society",
+        "record_count": 8,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      },
+      {
+        "source_id": "2023A&A...677A.162B",
+        "title": "Benchmarking Gaia DR3 Apsis with the Hyades and Pleiades open clusters",
+        "year": 2023,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 6,
+        "quality_grade": "fair",
+        "final_route": "Conflict"
+      },
+      {
+        "source_id": "2008A&A...483..567G",
+        "title": "Chemical composition of A and F dwarfs members of the Pleiades open cluster",
+        "year": 2008,
+        "journal": "Astronomy and Astrophysics",
+        "record_count": 1,
+        "quality_grade": "good",
+        "final_route": "Normalization"
+      }
+    ]
+  },
+  "processing_record": {
+    "assessment": {
+      "status": "Completed",
+      "sources_assessed": 28,
+      "overall_quality": "good",
+      "total_issues": 109
+    },
+    "normalization": {
+      "status": "Completed",
+      "modifications": 77,
+      "by_layer": {
+        "base": 0,
+        "adapted": 0,
+        "generated": 77
+      },
+      "errors_count": 1,
+      "errors": [
+        {
+          "source": "2022MNRAS.511.5718M",
+          "tool": "extract_central_value",
+          "kind": "self_check_failed",
+          "error": "self_check mismatch: [{'assert': 'all_numeric', 'field': 'field_value', 'message': 'assertion failed at index 1'}] (LLM review: 工具未能从含不确定度的复杂字符串中解析出中心数值，导致字段保留原始非数字文本，属于核心提取逻辑失效。"
+        }
+      ]
+    },
+    "conflict": {
+      "status": "Annotated",
+      "total_conflicts": 23,
+      "auto_resolved": 18,
+      "human_required": 0
+    }
+  },
+  "run_info": {
+    "generated_at": "2026-09-01T16:48:52.406312",
+    "run_id": "4873c876-d3d4-483e-9bd7-d3c4ab8df197",
+    "graph_version": "V2.1",
+    "research_domain": "astrophysics"
+  },
+  "field_descriptions_llm": true
+}
