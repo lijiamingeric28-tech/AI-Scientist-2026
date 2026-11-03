@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -34,6 +35,7 @@ def main():
     for relative in (
         "tools/windows_entry.py",
         "tools/packaging/windows.spec",
+        "tools/packaging/Windows使用说明.txt",
         "requirements-windows.lock",
     ):
         target = stage / relative
@@ -64,9 +66,10 @@ def main():
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(payload)
     manifest = {
-        "schema_version": "windows-build/1",
+        "schema_version": "windows-build/2",
         "build_id": build_id,
-        "release_ready": False,
+        "desktop_executable": "AstroQueryAI.exe",
+        "renderer": "Microsoft Edge WebView2",
         "scientific_libraries": "pinned registry, knowledge, qualifications and published demo archives",
         "source_files": {},
     }
@@ -96,6 +99,7 @@ def main():
                 str(stage / "tools/packaging/windows.spec"),
             ],
             cwd=stage,
+            env={**os.environ, "PYTHONPATH": str(stage / "backend/src")},
             stdout=output,
             stderr=subprocess.STDOUT,
         )
@@ -103,18 +107,19 @@ def main():
         print(json.dumps({"build_id": build_id, "status": "failed", "log": str(log)}))
         raise SystemExit(result.returncode)
     package = destination / "AstroQueryAI"
-    shutil.copy2(stage / "build-manifest.json", package / "build-manifest.json")
-    shutil.copy2(stage / "requirements-windows.lock", package / "requirements-windows.lock")
-    (package / "启动说明.txt").write_text(
-        "AstroQuery AI 工程整理验证版\n\n双击 AstroQuery.exe 启动桌面程序。\nAstroQueryWorker.exe 是隔离解析与本地导入辅助程序。\n便携版默认使用本目录 data；升级须保留数据，也可显式指定--data-root。\n密钥不随程序交付。\n包含既有Psr和知识资源，实际可运行范围取决于运行库与准确资格。\n此构建仅用于迁移验证，未切换生产活动库，不代表全部科学验收通过。\n",
-        encoding="utf-8-sig",
-    )
+    internal = package / "_internal"
+    (package / "AstroQueryWorker.exe").replace(internal / "AstroQueryWorker.exe")
+    shutil.copy2(stage / "build-manifest.json", internal / "build-manifest.json")
+    shutil.copy2(stage / "requirements-windows.lock", internal / "requirements-windows.lock")
+    shutil.copy2(stage / "tools/packaging/Windows使用说明.txt", package / "使用说明.txt")
+    archive = shutil.make_archive(str(destination / "AstroQueryAI-win64"), "zip", root_dir=destination, base_dir=package.name)
     print(
         json.dumps(
             {
                 "build_id": build_id,
                 "status": "built_not_yet_verified",
                 "path": str(package),
+                "archive": archive,
                 "log": str(log),
             }
         )

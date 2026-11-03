@@ -38,7 +38,9 @@ class Parsers:
             raise DomainError("PARSER_OPTIONS", "解析参数超出允许范围")
         async with self.semaphore:
             if getattr(sys, "frozen", False):
-                worker = Path(sys.executable).parent / "AstroQueryWorker.exe"
+                worker = Path(sys._MEIPASS) / "AstroQueryWorker.exe"
+                if not worker.is_file():
+                    worker = Path(sys.executable).parent / "AstroQueryWorker.exe"
                 if not worker.is_file():
                     raise DomainError("PARSER_WORKER_MISSING", "启动包的隔离解析程序缺失")
                 command = [str(worker), "--parser-worker"]

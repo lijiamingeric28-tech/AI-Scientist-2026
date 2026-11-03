@@ -1,15 +1,8 @@
-"""内置引擎桌面入口（2026-09-01）：uvicorn（线程） + pywebview 窗口加载 127.0.0.1:<port>
-
-- 不再依赖外部浏览器：窗口走 Win11 自带 WebView2（Chromium 内核控件），无地址栏/标签
-- 端口：ASTROQUERY_PORT 指定优先，否则从 8000 起自动找空闲端口（避免与已开服务撞）
-- 生命周期：窗口关闭 → uvicorn 一并退出（不留残留进程）
-- 运行：python -m web.desktop
-- pywebview 采用惰性导入：浏览器模式（直接用浏览器访问服务端口）与测试环境不依赖它
-"""
-
+"""Run the local application and its native window in one desktop process."""
 from __future__ import annotations
 
 import os
+from pathlib import Path
 import socket
 import sys
 import threading
@@ -17,138 +10,112 @@ import time
 
 HOST = "127.0.0.1"
 WINDOW_SIZE = (1500, 940)
-WINDOW_MIN = (1100, 700)
+WINDOW_MIN = (1000, 650)
 
 
-def _pick_port(start: int) -> int:
-    """start 起找空闲端口（绑定探测，探测后立即释放，uvicorn 随后独占）"""
-    for port in range(start, start + 11):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            try:
-                s.bind((HOST, port))
-            except OSError:
-                continue
-        return port
-    raise RuntimeError(f"{start}-{start + 10} 端口区间均被占用，请释放端口或设置 ASTROQUERY_PORT")
+def window_geometry(work_width=None, work_height=None):
+    width, height = WINDOW_SIZE
+    maximize = False
+    if work_width and work_height:
+        width = min(width, max(1, work_width - 32))
+        height = min(height, max(1, work_height - 64))
+        maximize = (width, height) != WINDOW_SIZE
+    return dict(width=width, height=height, maximized=maximize,
+                min_size=(min(WINDOW_MIN[0], width), min(WINDOW_MIN[1], height)))
 
 
-def _set_app_user_model_id() -> None:
-    """任务栏图标根因（2026-09-02）：winforms 下 window.native.Icon 只影响标题栏，
-    任务栏按钮在未绑定 AppUserModelID 时恒回落进程 exe 图标（python.exe）。
-    SetCurrentProcessExplicitAppUserModelID 绑定后任务栏取窗口图标。"""
-    try:
+def desktop_geometry():
+    if sys.platform == "win32":
         import ctypes
+        from ctypes.wintypes import RECT
+        work = RECT()
+        if ctypes.windll.user32.SystemParametersInfoW(0x0030, 0, ctypes.byref(work), 0):
+            return window_geometry(work.right - work.left, work.bottom - work.top)
+    return window_geometry()
 
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("AstroQueryAI")
-    except Exception:  # noqa: BLE001
-        pass
+
+def desktop_socket(host: str, port: int | None) -> socket.socket:
+    """Pass the reserved socket directly to uvicorn, including when the preferred port is busy."""
+    if port is not None and not 1024 <= port <= 65535:
+        raise ValueError("桌面端口应在 1024 到 65535 之间")
+    if port is None:
+        start = int(os.environ.get("ASTROQUERY_PORT") or 8000)
+        if not 1024 <= start <= 65535:
+            raise ValueError("ASTROQUERY_PORT 应在 1024 到 65535 之间")
+        ports = [*range(start, min(start + 11, 65536)), 0]
+    else:
+        ports = [port]
+    for candidate in ports:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            if os.name == "nt":
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+            sock.bind((host, candidate))
+            return sock
+        except OSError:
+            sock.close()
+    raise RuntimeError(f"无法监听本机端口 {port or start}，请关闭占用该端口的程序或选择其他端口。")
 
 
-def _apply_taskbar_icon(window, ico_path: str) -> None:
-    """任务栏大图标（2026-09-02 fix L2）：webview.start(icon=) 只影响标题栏/小图标，
-    Windows 任务栏按钮跟随 WM_SETICON(ICON_BIG)。loaded 回调内显式发送。
-    前置 clr.AddReference 保证 System.Drawing 已加载（此前静默失败根因）。"""
+def require_webview2():
+    """Use the same Microsoft loader as pywebview to check the Windows browser runtime."""
+    import ctypes
+    import platform
+    from webview.util import interop_dll_path
+
+    arch = "arm64" if platform.machine().lower() in {"arm64", "aarch64"} else "x64" if sys.maxsize > 2**32 else "x86"
+    dll = Path(interop_dll_path("win-" + arch)) / "WebView2Loader.dll"
+    get_version = ctypes.WinDLL(str(dll)).GetAvailableCoreWebView2BrowserVersionString
+    get_version.argtypes = [ctypes.c_wchar_p, ctypes.POINTER(ctypes.c_void_p)]
+    get_version.restype = ctypes.c_long
+    value = ctypes.c_void_p()
     try:
-        import clr
-
-        clr.AddReference("System.Drawing")
-        from System.Drawing import Icon as _WinIcon
-        import ctypes
-        import sys
-
-        native = window.native
-        print(f"[icon-debug] native={type(native).__name__}", flush=True)
-        hwnd_attr = getattr(native, "Handle", None)
-        print(f"[icon-debug] Handle attr={hwnd_attr}", flush=True)
-        if hwnd_attr is None:
-            return
-        hwnd = int(hwnd_attr.ToInt64()) if hasattr(hwnd_attr, "ToInt64") else int(hwnd_attr)
-        print(
-            f"[icon-debug] hwnd={hwnd} isIcon={bool(ctypes.windll.user32.IsIconic(hwnd))}",
-            flush=True,
-        )
-        icon = _WinIcon(ico_path)
-        hicon = int(icon.Handle.ToInt64()) if hasattr(icon.Handle, "ToInt64") else int(icon.Handle)
-        print(f"[icon-debug] hicon={hicon}", flush=True)
-        WM_SETICON = 0x0080
-        ICON_BIG = 1
-        ICON_SMALL = 0
-        r1 = ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, ICON_BIG, hicon)
-        r2 = ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, ICON_SMALL, hicon)
-        print(f"[icon-debug] SendMessage big={r1} small={r2}", flush=True)
-    except Exception as e:  # noqa: BLE001
-        print(f"[icon-debug] FAIL: {type(e).__name__}: {e}", flush=True)
+        if get_version(None, ctypes.byref(value)) != 0 or not value.value:
+            raise RuntimeError("此电脑缺少 Microsoft Edge WebView2 Runtime。请按压缩包内的《使用说明》安装后重新打开。")
+    finally:
+        if value.value:
+            release = ctypes.windll.ole32.CoTaskMemFree
+            release.argtypes = [ctypes.c_void_p]
+            release.restype = None
+            release(value)
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("AstroQueryAI.Desktop")
 
 
 def run_embedded(host: str = HOST, port: int | None = None) -> None:
-    """核心启动：服务线程 + 桌面窗口。
-    port=None → ASTROQUERY_PORT → 自动找空闲。"""
-    try:
-        import webview  # 惰性：非桌面流程不依赖 pywebview
-    except ImportError as _exc:  # noqa: BLE001
-        raise SystemExit("pywebview 未安装：pip install pywebview（或重新安装项目依赖）") from _exc
-
+    import uvicorn
+    import webview
+    from astroquery_ai.runtime.paths import data_root, resource_root
     from .http import create_app
 
-    fastapi_app = create_app()  # 复用现有装配（含 frontend/dist 静态挂载）
-
-    # 任务栏图标绑定（须在窗口创建前设置）
-    _set_app_user_model_id()
-
-    if port is None:
-        env_port = os.environ.get("ASTROQUERY_PORT", "")
-        port = _pick_port(int(env_port)) if env_port.isdigit() else _pick_port(8000)
-
-    import uvicorn
-
-    server = uvicorn.Server(
-        uvicorn.Config(
-            fastapi_app,
-            host=host,
-            port=port,
-            log_level="warning",
-        )
-    )
-    server_thread = threading.Thread(target=server.run, name="astroquery-web", daemon=False)
-    server_thread.start()
-
-    # 服务就绪再挂窗口（快速失败给出明确错误，而非窗口白屏）
-    deadline = time.time() + 15
-    while time.time() < deadline and not server.started:
-        time.sleep(0.2)
-    if not server.started:
-        server.should_exit = True
-        server_thread.join(timeout=10)
-        raise SystemExit(f"服务启动失败（{host}:{port}），请检查后端日志")
-
-    window = webview.create_window(
-        "AstroQuery AI",
-        url=f"http://{host}:{port}",
-        width=WINDOW_SIZE[0],
-        height=WINDOW_SIZE[1],
-        min_size=WINDOW_MIN,
-    )
-    # 窗口/任务栏图标：webview.start(icon=) 官方入口（2026-09-02 fix——
-    # 此前 loaded 回调 hack 在 pythonnet 未预加载 System.Drawing 时静默失败，
-    # 任务栏仍显示 python.exe 图标；start() 在窗口创建前应用，任务栏正确）
-    # 2026-09-04 PyInstaller 兼容：冻结态资源根 = sys._MEIPASS（_internal/，icon.ico 已打包于该处）
-    from astroquery_ai.runtime.paths import resource_root, data_root
-
-    _ico = str(resource_root() / "desktop/icon.ico")
-    _start_kwargs = {'storage_path': str(data_root() / 'webview')}
-    if os.path.isfile(_ico):
-        _start_kwargs["icon"] = _ico
-        # 任务栏大图标（WM_SETICON）：start(icon=) 只覆盖标题栏小图标
-        window.events.loaded += lambda: _apply_taskbar_icon(window, _ico)
-    # 窗口关闭 → 停服务（线程 is daemon，但显式置位避免 uvicorn 在关闭竞态中继续收请求）
-    window.events.closed += lambda: setattr(server, "should_exit", True)
-    try:
-        webview.start(**_start_kwargs)
-    finally:
-        server.should_exit = True
-        server_thread.join(timeout=15)
-        if server_thread.is_alive():
-            raise RuntimeError("后台服务未在关闭期限内退出；已保存状态，需检查运行日志")
+    if sys.platform == "win32":
+        require_webview2()
+    with desktop_socket(host, port) as sock:
+        port = sock.getsockname()[1]
+        server = uvicorn.Server(uvicorn.Config(
+            create_app(), host=host, port=port, log_level="warning", use_colors=False,
+        ))
+        thread = threading.Thread(target=server.run, kwargs={"sockets": [sock]}, name="astroquery-web")
+        thread.start()
+        try:
+            deadline = time.monotonic() + 30
+            while not server.started and thread.is_alive() and time.monotonic() < deadline:
+                thread.join(0.08)
+            if not server.started:
+                raise RuntimeError("本机查询服务未能启动，请检查数据目录是否可写或已被其他实例使用。")
+            window = webview.create_window(
+                "AstroQuery AI", f"http://{host}:{port}",
+                **desktop_geometry(),
+            )
+            window.events.closed += lambda: setattr(server, "should_exit", True)
+            webview.settings["ALLOW_DOWNLOADS"] = True
+            webview.start(
+                gui="edgechromium" if sys.platform == "win32" else None,
+                private_mode=False, storage_path=str(data_root() / "webview"),
+                icon=str(resource_root() / "desktop/icon.ico"),
+            )
+        finally:
+            server.should_exit = True
+            thread.join()
 
 
 def main() -> None:

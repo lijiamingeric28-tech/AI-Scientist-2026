@@ -2,7 +2,13 @@
 
 用自然语言查询天体性质，从星表、论文和官方附表取得测量，在同一份结果中查看原报、独立误差、测量条件和来源。每次查询有自己的交付修订，历史问答和处理过程可以回放。
 
-## 在本机运行
+## Windows 桌面版
+
+下载 Windows x64 压缩包，解压后双击 **AstroQueryAI.exe**。程序会启动本机服务，在自己的 WebView2 窗口中打开，关闭窗口即可退出。前端、后端、科学库和六个真实演示样例都已打包。[下载 Windows 桌面版](https://github.com/lijiamingeric28-tech/AI-Scientist-2026/releases/download/desktop-2026.11.03/AstroQueryAI-win64.zip)
+
+第一次可从「演示样例」打开首位的 SN 2014J。自己的查询和设置保存在程序旁的 `data/` 文件夹，换新版时请保留该文件夹。若系统缺少 WebView2 Runtime，先安装微软提供的 Evergreen x64 运行时。[微软 WebView2 下载页](https://developer.microsoft.com/microsoft-edge/webview2/)
+
+## 从源码运行
 
 使用 Python 3.12 或 3.13，以及 Node.js 22.12 以上版本。从本目录执行下列命令。
 
@@ -66,4 +72,4 @@ cd ..
 python -m pip wheel --no-deps --wheel-dir .build/wheels .
 ```
 
-前端构建输出位于 `frontend/dist/`，安装包会收录该界面。Windows 桌面构建从装有 `.[build]` 依赖的源码环境运行 `python -m astroquery_ai.tools.build_product --windows`。单独的 Windows 运行依赖锁见 `requirements-windows.lock`。
+前端构建输出位于 `frontend/dist/`，安装包会收录该界面。在 Windows x64 上构建便携版，先安装 `python -m pip install -e ".[build]"` 并在 `frontend/` 执行 `npm ci`，然后从源码目录运行 `python -m astroquery_ai.tools.build_product --windows`。生成的 ZIP 位于 `.build/windows/<构建时间>/dist/`。Windows 运行依赖锁见 `requirements-windows.lock`。

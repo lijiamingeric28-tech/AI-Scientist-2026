@@ -43,6 +43,9 @@ async def self_check(root):
     check.mkdir(parents=True, exist_ok=True)
     repo = Repository(check / "check.sqlite3")
     application = Application(check / "application")
+    # Initialize the same verified TLS transport used to download source papers.
+    async with httpx.AsyncClient():
+        pass
     with application.repository.read() as conn:
         startup_attempts = conn.execute("SELECT count(*) FROM attempts").fetchone()[0]
     position = propagate(
@@ -103,6 +106,7 @@ async def self_check(root):
         "page_count": result["page_count"],
         "image_png": image.startswith(b"\x89PNG"),
         "application_initialized": True,
+        "https_transport_initialized": True,
         "model_attempts_at_startup": startup_attempts,
         "astropy_version": astropy.__version__,
         "astrometric_math_imported": float(position["ra_deg"]) == float(position["dec_deg"]) == 0,
@@ -126,14 +130,14 @@ def main():
     parser = argparse.ArgumentParser(description="AstroQuery AI")
     parser.add_argument("--browser", action="store_true")
     parser.add_argument("--self-check", action="store_true")
-    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--port", type=int)
     parser.add_argument("--data-root", type=Path)
     parser.add_argument("--import-registry", type=Path)
     parser.add_argument("--import-knowledge", type=Path)
     parser.add_argument("--import-credentials", type=Path)
     parser.add_argument("--import-history", type=Path)
     args = parser.parse_args()
-    if not 1024 <= args.port <= 65535:
+    if args.port is not None and not 1024 <= args.port <= 65535:
         parser.error("port must be within 1024..65535")
     from astroquery_ai.runtime.paths import data_root
 
@@ -166,7 +170,7 @@ def main():
         import uvicorn
         from astroquery_ai.api.http import create_app
 
-        uvicorn.run(create_app(root), host="127.0.0.1", port=args.port, log_level="warning")
+        uvicorn.run(create_app(root), host="127.0.0.1", port=args.port or 8000, log_level="warning", use_colors=False)
     else:
         from astroquery_ai.api.desktop import run_embedded
 
