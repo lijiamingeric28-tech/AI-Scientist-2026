@@ -1,0 +1,3876 @@
+{
+  "schema_version": "insight-legacy-map/1",
+  "mapping_basis": "explicit_author_decisions_on_topics_not_validation_of_old_claims",
+  "input_files": [
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/astrophysical_models.yaml",
+      "sha256": "3c1ef4d67a9771ef216d0b90c19892a04a509d00530f5d4a6d7ebcad6c15b56e"
+    },
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/galaxy_catalogs.yaml",
+      "sha256": "e3e3e5e15827c5e542c56393c8c5f9d5dae260837211d919134b4891ea95bb35"
+    },
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/measurement_theory.yaml",
+      "sha256": "71f2be36a1f1f19c0fd371ef27ebc4db3808557eb95ed3eee0500984384ffa1c"
+    },
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/methodology.yaml",
+      "sha256": "15a4ada7d15edb5f32268f4371938c33bc1ee959807c0a16fe96e064da54b92c"
+    },
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/physical_laws.yaml",
+      "sha256": "00a66ec27c0551d99d8e03aabf4249d7b916233dcf6f42022972c8ce7075808d"
+    },
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/reference_ranges.yaml",
+      "sha256": "d65a481b7f73c07091b4863aaca32b7afccbc7d86ff17647b96b832fb3b21a70"
+    },
+    {
+      "path": "quality_pipeline/data/insight_knowledge/astrophysics/transient_sources.yaml",
+      "sha256": "26db90c0f69cb21a624d86ae581341ca0eb9dbf44ad8e56e0f1e0bb6898c8c4a"
+    }
+  ],
+  "count": 294,
+  "entries": [
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "NE2001_model",
+      "legacy_title": "NE2001 银河系自由电子密度模型",
+      "legacy_payload_sha256": "1338f6437f39179dd72a2e9b9e7346149988b3b17507ca3765e7d22d76f6a15c",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "YMW16_model",
+      "legacy_title": "YMW16 银河系电子密度模型",
+      "legacy_payload_sha256": "c4fb8996ca035686d1bff32867600c884b26e6fd456ae5b29fbcc866a6963e86",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "Macquart_relation",
+      "legacy_title": "Macquart DM-z 关系",
+      "legacy_payload_sha256": "b834b7b12bdbd861903f0e2b5968717971f41be6f10a541e8d86e0665ec531db",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "LambdaCDM_cosmology",
+      "legacy_title": "ΛCDM 标准宇宙学模型参数",
+      "legacy_payload_sha256": "bccaff9756e03dc04583dda74ed1ba162cdb79c3909fd43231bfa7154d02d7b6",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "stellar_evolution_pathway",
+      "legacy_title": "恒星结构与演化路径",
+      "legacy_payload_sha256": "5a6ba7a297a2f808eea924de33392cf76282bcd39ea5acbfff25db31610e013d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.evolution",
+        "stellar.energy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "ms_lifetime_mass_relation",
+      "legacy_title": "主序寿命-质量关系",
+      "legacy_payload_sha256": "890461738e1da60323330ae7d604ae85f38202ab1b0c7764127e679a55826ee3",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.evolution",
+        "stellar.energy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "chandrasekhar_limit",
+      "legacy_title": "Chandrasekhar 极限",
+      "legacy_payload_sha256": "5bc17c8f49a63073f649e87f59213a73f71c7563a45285c808e88995e9536dbd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.white_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "neutron_star_structure",
+      "legacy_title": "中子星结构",
+      "legacy_payload_sha256": "df5a8eee9fb58d3d68084ccf994ec3aa45916f0754eb8bd7eb6e7f894040e4df",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.neutron_star"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "agn_unified_model",
+      "legacy_title": "AGN 统一模型",
+      "legacy_payload_sha256": "fe4b73afd9bb81f164fcaa6b2c4b141c30e7fc661d792777d30d0d566cd59b3b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.active_nucleus",
+        "type.blazar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "eddington_accretion",
+      "legacy_title": "爱丁顿吸积与光度上限",
+      "legacy_payload_sha256": "a8419ae96e516b0ad47c1614fe0076830c23da79bcd036dbf9459ae1ad9f9b17",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "galactic_chemical_evolution",
+      "legacy_title": "星系化学演化",
+      "legacy_payload_sha256": "daf23037f14f498952254cf1b0f390cb0b421ee6957d2ae86eb8cb156b03e728",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.mass_metallicity",
+        "chemistry.abundance"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "stromgren_sphere_model",
+      "legacy_title": "Strömgren 球与 HII 区",
+      "legacy_payload_sha256": "d6a758ffb07fe51212ac2ba6a30f891edbcaa12b3c6407e9db12ba629f45872c",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "snr_sedov_expansion",
+      "legacy_title": "SNR Sedov 膨胀演化",
+      "legacy_payload_sha256": "74f9c1c5f748af7c09473bce84a49fb64bf75de3b77105f2a4695c2e01e5b7bf",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "hierarchical_galaxy_formation",
+      "legacy_title": "星系等级形成 (ΛCDM)",
+      "legacy_payload_sha256": "07711a1f0b2d6c9e1734aa2a76faffda504d4f597781256ffd922021aae5b73f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.interacting_galaxies",
+        "relation.star_forming_sequence"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "imf_initial_mass_function",
+      "legacy_title": "初始质量函数 IMF",
+      "legacy_payload_sha256": "7cb5b32f3cefa5decfa816f0460555afc3ad371302cd0cef6272801fe4b7d908",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "population.imf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "ism_three_phase_model",
+      "legacy_title": "ISM 三相模型",
+      "legacy_payload_sha256": "0ecdce062b176efd94f683a4efd72a9eb9c49eda659e5ecc55687c1bfc7c0115",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "mass_luminosity_relation",
+      "legacy_title": "主序星质光关系",
+      "legacy_payload_sha256": "db6485b39b2674b1c90810afe3d4fd9cf16a89a37a511ffaa9dfab3785bef2c7",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.main_sequence"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "schechter_luminosity_function",
+      "legacy_title": "Schechter 星系光度函数",
+      "legacy_payload_sha256": "13d0a4f5216bbd1702424345dc7a10a38720f4869ac64eb397b6d80f98d3cab0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "population.imf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "lambda_cdm_parameters",
+      "legacy_title": "ΛCDM 参数与暗能量状态方程",
+      "legacy_payload_sha256": "39b968e21a19c554931087e47fc8c22a3767c89bd6887048e4bd47619fd836ad",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "shakura_sunyaev_disk",
+      "legacy_title": "Shakura-Sunyaev 标准薄吸积盘",
+      "legacy_payload_sha256": "e0b156b1c2c068bc7653a5cc3742e41dea8679337f529e1e486b0f90e852eae4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.winds"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "eddington_limit",
+      "legacy_title": "爱丁顿极限 (推导与应用)",
+      "legacy_payload_sha256": "063d530e13f7af02880a3d3c5c61110a0dd4877b9cd3b2e36f16bf6fbbc92475",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "gravitational_lensing",
+      "legacy_title": "引力透镜与爱因斯坦角",
+      "legacy_payload_sha256": "49b342eb4354903237183dd4fb390995368312f35370192d79cfab8044c8efb9",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.lensing"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "jeans_mass_stability",
+      "legacy_title": "金斯质量与引力坍缩判据",
+      "legacy_payload_sha256": "240463cbd909e504375da9b62652c3e104ac959d323fa991dedb1b1ee21cd1ba",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "solar_stellar_dynamo",
+      "legacy_title": "恒星发电机与太阳 11 年周期",
+      "legacy_payload_sha256": "c9da5a3d20bbb04a86b0c89255433198c9d3ba275b2a4be9c1e4d8136e40e379",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.rotation"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "neutron_star_max_mass",
+      "legacy_title": "中子星最大质量 (TOV 极限)",
+      "legacy_payload_sha256": "f4f886fb3df86a18888315643a6912e73158c60d52b4e709a07ac5f4381e83ca",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.neutron_star"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "virial_theorem_cluster_mass",
+      "legacy_title": "维里定理与星系团质量",
+      "legacy_payload_sha256": "fef7d4c4f82be0c8305ca3843ee14ff47aa2a93390d0fd0c918eecb705382d9a",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "groups.virial",
+        "groups.mass_definition",
+        "cluster.hot_gas"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "nfw_halo_profile",
+      "legacy_title": "NFW 暗晕密度剖面",
+      "legacy_payload_sha256": "cfc399f22e412b80faf34605ac8ca84ffac794d05aa53164616741254b8435fe",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "groups.mass_definition"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "stellar_wind_mass_loss",
+      "legacy_title": "恒星风质量损失",
+      "legacy_payload_sha256": "e6ab6748cc58da151f38235ce9fa40e7574b85c6c05107dde6d6d1382f796cbd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.winds"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "madau_star_formation",
+      "legacy_title": "Madau 图: 宇宙恒星形成率密度演化",
+      "legacy_payload_sha256": "de7cfa6f4ab2d26a4a07324dab5bcaad3463f602eefb7b41e4e2928fd40478d1",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "weak_lensing_theory",
+      "legacy_title": "弱引力透镜理论: 剪切、收敛与相关函数",
+      "legacy_payload_sha256": "c834e0ff8ae281685159e4b61a8c8942f4a94e8a0e27a3ae94dc721c62ca8b07",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.lensing"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "cmb_power_spectrum",
+      "legacy_title": "CMB 功率谱与声学峰",
+      "legacy_payload_sha256": "7e65a47049cacb1adad01753ffec97772158f0a4aeea9a6be2af587130f77659",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "reionization_epoch",
+      "legacy_title": "宇宙再电离纪元 (EoR)",
+      "legacy_payload_sha256": "49a5c416c8c776c1a6635f7adf3e5d7e6015dc4e86a5e9d15a8afc5a877f59d5",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "r_process_nucleosynthesis",
+      "legacy_title": "r 过程核合成 (快中子俘获)",
+      "legacy_payload_sha256": "781d76de7c5ef8a86d1108526cfd62988a66a7e90a8aeb9f347077c0dac28ce6",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "chemistry.abundance",
+        "type.agb",
+        "type.s_star"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "s_process_nucleosynthesis",
+      "legacy_title": "s 过程核合成 (慢中子俘获)",
+      "legacy_payload_sha256": "16f370e0c32eb894f8f25c861f1409f8ea3513f28c9d47da5813b190fadf1a3b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "chemistry.abundance",
+        "type.agb",
+        "type.s_star"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "stellar_feedback_model",
+      "legacy_title": "恒星反馈模型 (能量与动量注入)",
+      "legacy_payload_sha256": "f66616655e4334f598674edccf4adcde1ab77d2db130539e5575fa7bb2292dec",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.interacting_galaxies",
+        "relation.star_forming_sequence"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "galaxy_merger_evolution",
+      "legacy_title": "星系并合演化与类星体触发",
+      "legacy_payload_sha256": "377f576d4b6b667ef37f4bfaa448d25e4d97d66320ff5abca2a020155792611f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.interacting_galaxies",
+        "relation.star_forming_sequence"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "cluster_mass_estimation",
+      "legacy_title": "星系团质量估计: 三种方法对比",
+      "legacy_payload_sha256": "60ec6ca2cbe66d50a87d6a9f5f2e0ecc9a713fd6038c7473d6991cdbe92ba25d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "groups.virial",
+        "groups.mass_definition",
+        "cluster.hot_gas"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "mond_modified_gravity",
+      "legacy_title": "MOND 修正引力 (星系旋转曲线)",
+      "legacy_payload_sha256": "4f6dd47d580bb1f4a68a2fe87d77f21ba36ef4f9e398e4e15991637ab7e32f49",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "pulsar_spin_down_model",
+      "legacy_title": "脉冲星磁偶极自转减慢模型",
+      "legacy_payload_sha256": "eae8217c63c57bf5987b51594d6ba223c147dbff0234e0dec91c8bf765edc874",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.pulsar_age",
+        "type.pulsar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "mri_accretion_disk",
+      "legacy_title": "磁旋转不稳定性 MRI 与吸积盘粘滞",
+      "legacy_payload_sha256": "8da79f1ec60d91532bcd1169da4994e3108c89e62fa41865c8f63ea3b36307be",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.winds"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "agn_variability_model",
+      "legacy_title": "AGN 变光模型 (阻尼随机游走 DRW)",
+      "legacy_payload_sha256": "82a63f00dbe6ed363ba3b5e709ca0983a2ace33c000db12a6f85f01ee10bf823",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.epoch",
+        "type.active_nucleus"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "galaxy_quenching_models",
+      "legacy_title": "星系熄灭机制 (环境/反馈/时标)",
+      "legacy_payload_sha256": "bd15dc5d39764cd6e908b9f1335b0774ef3e71527b9d6fe47db5ac7bdafa1a54",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.interacting_galaxies",
+        "relation.star_forming_sequence"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "star_formation_efficiency",
+      "legacy_title": "恒星形成效率 (SFE/每自由落体时标)",
+      "legacy_payload_sha256": "25bbb8b9c3caec060202807f1cdab8243f42bcae61c61195fe4423f1c90de625",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.gas_star_formation"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "black_hole_growth_history",
+      "legacy_title": "黑洞增长历史 (Soltan 论证/吸积主导)",
+      "legacy_payload_sha256": "250fa22f860f8fc3d0adcf14d59ed0eeb95ee67454f840fb8cbaa1ef9eb0a777",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.active_nucleus",
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "snia_light_curve_model",
+      "legacy_title": "SN Ia 光变曲线模型 (Arnett 规则/56Ni)",
+      "legacy_payload_sha256": "a2b4a03630e20823bffd2f0f793fdaa92e4df4467fd3537d28115df2b2ef9c80",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.supernova"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "astrophysical_models.yaml",
+      "legacy_id": "tde_fallback_model",
+      "legacy_title": "潮汐瓦解事件回落模型 (t^-5/3)",
+      "legacy_payload_sha256": "c692dc380bb594584d86b46ddc88b97e392704ca350560a4f42ef4bea5b497a6",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galaxy_absolute_magnitude",
+      "legacy_title": "星系绝对星等与距离换算",
+      "legacy_payload_sha256": "4b6150b5ed435b1b722792e7684f3075c5848ef911f26f63f2462779a5a83774",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "interstellar_extinction_av",
+      "legacy_title": "星际消光 A_V 与波段换算",
+      "legacy_payload_sha256": "55114fcaa900ad45c4245e9d2cdade9b4df593dacd2cbd5279fca163e6ad2c80",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.extinction"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galaxy_redshift_typical",
+      "legacy_title": "星系红移典型范围与距离换算",
+      "legacy_payload_sha256": "69c340da1eceb39ed42c8276dc0597dbba06b3144bb975ee79c21613bed16deb",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "gaia_astrometry_fields",
+      "legacy_title": "Gaia 天体测量字段与精度",
+      "legacy_payload_sha256": "a668cad9a50c0acad1e410f26d9c6a42e7a09427fa93eb61ce15958dbe0db986",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "astrometry.parallax",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "photometric_redshift_precision",
+      "legacy_title": "测光红移精度与判据",
+      "legacy_payload_sha256": "1da02cdd7e3af17d0cf772141a70ba4c5ecb7a3ed2d0c4973ecf7ea446d5ce52",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galaxy_rotation_curve",
+      "legacy_title": "旋涡星系旋转曲线与 Tully-Fisher",
+      "legacy_payload_sha256": "235f228734c696959f22f137a8fa14397ab0437781f051d4deffcf7f919216ff",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.kinematics",
+        "relation.tully_fisher"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "stellar_metallicity_dex",
+      "legacy_title": "恒星金属丰度 [Fe/H] 范围",
+      "legacy_payload_sha256": "cc5dc2f7297ff197c9c6b19b44bbbc8fcdb99105e00048680b123b457e1087fa",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.mass_metallicity",
+        "chemistry.abundance"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "quasar_luminosity_range",
+      "legacy_title": "类星体光度与 Eddington 上限",
+      "legacy_payload_sha256": "98591e20abc9fe226e9b70e98ee8d4a5a47c61fa7ce34bfb3467b889264f1fb6",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "radio_flux_typical",
+      "legacy_title": "射电 1.4 GHz 通量典型范围",
+      "legacy_payload_sha256": "2510a4bd66f68321c5b341f00d608f3bc988a77468c31560a29eb076e0ea276f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.interferometry",
+        "photometry.flux"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galaxy_distance_ladder",
+      "legacy_title": "河外距离阶梯",
+      "legacy_payload_sha256": "bce12f607c3967f51ef21a282c8dd7a9ba54d9dc3e3bd060c57671fd814296a4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "iras_color_color",
+      "legacy_title": "IRAS 颜色-颜色图分区判据",
+      "legacy_payload_sha256": "f3d52af9bd3bcbc856b5653cbb1f827632bd2801cc9107bca0364b2c2a1809df",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "hyperleda_field_semantics",
+      "legacy_title": "HYPERLEDA 常用列语义与单位",
+      "legacy_payload_sha256": "522c83d897db0fc05e5d7ef25186ecc29ddcc2ae5f5ac7aef14137db1550e233",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "sdss_photometry_fields",
+      "legacy_title": "SDSS 测光: ugriz 波段深度与星等口径",
+      "legacy_payload_sha256": "d5056af336964e5e4e5f083e4e57dca37db56852b4940da160d17770ee644ae4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "wise_photometry_bands",
+      "legacy_title": "WISE 四波段测光: 波长/深度/系统",
+      "legacy_payload_sha256": "d63dc7c894f91b0bbc9784c7e8d9a236aa5f904f3e43a43c8968bd7b71e4241b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "hipparcos_tycho_astrometry",
+      "legacy_title": "Hipparcos/Tycho 天体测量: 精度与星等范围",
+      "legacy_payload_sha256": "65ec8972c8be4e4b4a596ef3207528a0f2d1a42934064eb9a5936f9318553fb4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "astrometry.parallax",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "catalog_crossmatch_practice",
+      "legacy_title": "目录 cross-match 规范: 匹配半径与自行外推",
+      "legacy_payload_sha256": "7380633f028bc8322f5d727adecc5a415fc777c0f753a3359f30ffb407ddeebf",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "ab_vega_conversion",
+      "legacy_title": "AB 与 Vega 星等系统转换",
+      "legacy_payload_sha256": "c7540834f79f672876fe5f99022bbf714de8ad2f43e55f95e9213e8e4b61638f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "catalog_flag_semantics",
+      "legacy_title": "目录标志位语义: 缺测/上限/质量标志",
+      "legacy_payload_sha256": "7a041abd8724fc5d2bb963b8c53c39a7323dadba8e7b0f2244481e3053a4c1a7",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "sed_construction_bands",
+      "legacy_title": "多波段 SED 构建: 波段覆盖与流量单位统一",
+      "legacy_payload_sha256": "521bd4ea235b1677ba75413ae89d290e32a4bd8b54368037090ae0817b4d3921",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "proper_motion_catalog_use",
+      "legacy_title": "自行与历元外推: 位置随自行变化",
+      "legacy_payload_sha256": "e0c3747b7e3e6cd53f723343dcb15faa98fced86c44da458036c27aae750a9ba",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galaxy_catalog_photometry_units",
+      "legacy_title": "星系目录测光单位与口径 (等光度 vs 总量)",
+      "legacy_payload_sha256": "71cb5e289e36a005c8cf1fddfa61bf9ab1cb716572d67af5bf1d5035780c47d2",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "ukidss_near_infrared_photometry",
+      "legacy_title": "UKIDSS 近红外巡天测光 (YJHK)",
+      "legacy_payload_sha256": "039719d50ff8fae090e152cf1f61cb8f1c53e32cd7d5e51328c8ce5fd23a1701",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "twomass_photometry_fields",
+      "legacy_title": "2MASS 点源目录测光字段与完备限",
+      "legacy_payload_sha256": "b86d2f17eeea00ce29eb1c845b5f64aa1897d8b0f170c82868ee065425143ef0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galex_uv_photometry",
+      "legacy_title": "GALEX 紫外测光: FUV/NUV 波段、深度与口径",
+      "legacy_payload_sha256": "f1b1561e2cbb8ffbad4986ee82e5b139f04f6921bd3471c88a0f00b32edf41ed",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "spitzer_irac_bands",
+      "legacy_title": "Spitzer IRAC 四波段测光: 波长/灵敏度/系统",
+      "legacy_payload_sha256": "4f99606212f9eccfe4dab763ceb665dc1689ad0a5a071b766a893eb36ad9fc88",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "vla_radio_survey",
+      "legacy_title": "VLA 射电巡天: NVSS 1.4 GHz 参数与字段",
+      "legacy_payload_sha256": "963c66f648e79b0ed064ddfb9c47a1bf717caec58739308ce4cb1bcc71eff656",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.interferometry",
+        "photometry.flux"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "redshift_survey_fields",
+      "legacy_title": "红移巡天: SDSS/2dF/6dF 深度与覆盖",
+      "legacy_payload_sha256": "f3cf0dcf416089abec7ed1935b0d831bb1f20d947606051af4915467325a4312",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.selection"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "gaia_dr3_astrophysical_params",
+      "legacy_title": "Gaia DR3 天体物理参数: 来源口径与精度",
+      "legacy_payload_sha256": "dacd19bcd23fdba41113345dfd99c49ad405cc2e080c964baad1bfff98bacfa1",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration",
+        "stars.temperature"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "stellar_parameter_catalogs",
+      "legacy_title": "恒星参数光谱目录: APOGEE/LAMOST/PaSTeL",
+      "legacy_payload_sha256": "8e22e0980282f35e188b952a60067c327bc551ed5c18c65f981315f499866679",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration",
+        "stars.temperature"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "galex_sdss_wise_multiwavelength",
+      "legacy_title": "多波段组合: GALEX+SDSS+WISE 的 SED 覆盖",
+      "legacy_payload_sha256": "8ef0755084c4458e423d154f2f03d50b94ea279a8c162356f8351b5ce5d5835e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "source_catalog_quality_metrics",
+      "legacy_title": "源目录质量指标: SNR/混淆度/天测精度列",
+      "legacy_payload_sha256": "dcc779465b10f717273eb7732fe52ab42043d9b0c8018f32d52221667bec7d92",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "photometric_redshift_catalogs",
+      "legacy_title": "测光红移目录: 误差列/PDZ/离群率",
+      "legacy_payload_sha256": "ed9c0b46c15ffc6fe1a5f7e19c5659c9990c952a3b9b78b86967cdc8cd460d51",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "morphological_catalogs",
+      "legacy_title": "形态分类目录: Galaxy Zoo 投票分数与标志",
+      "legacy_payload_sha256": "cf2cae7dc88a41a1f876ccc91ea873a21d7d99db4b9b4c96c929e951f3ad3073",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.morphology"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "akari_ir",
+      "legacy_title": "AKARI 红外巡天: 6 波段覆盖与灵敏度",
+      "legacy_payload_sha256": "4a77a9109b9c481fc3943c19483e3cf981897ec11e6b50c2d4116448291ecfa2",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "galaxy_catalogs.yaml",
+      "legacy_id": "first_radio_catalog",
+      "legacy_title": "FIRST 射电目录: 高分辨 1.4 GHz 与 NVSS 配合",
+      "legacy_payload_sha256": "115e00723ac99b6d77f9a12b2b59e456d2b47a2845f7813611810bcb8685be62",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.interferometry",
+        "photometry.flux"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "radio_dm_measurement",
+      "legacy_title": "射电 DM 测量原理与精度",
+      "legacy_payload_sha256": "21eff6014d2dc0333f5292d17d36baf44e8ce38a74fc4d9b63c074a1aea1c90d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "spectroscopic_redshift_method",
+      "legacy_title": "光谱红移测量原理",
+      "legacy_payload_sha256": "7f567a732f553001de3ac2694fa0a163adaabf9458a2feabf8fae373652bd8f5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "photometric_redshift_method",
+      "legacy_title": "测光红移原理与局限性",
+      "legacy_payload_sha256": "fa82b1c63514c060f7dde5f38876a3765c4de69aadeeeeac7c4cde9b867b7810",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "interferometry_basics",
+      "legacy_title": "射电干涉测量基本原理",
+      "legacy_payload_sha256": "ac8435071b0bca01da30c018fc747aab472a8c33c56afc2a13a03c231d8952d5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.interferometry",
+        "photometry.flux"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "astrometry_parallax_principle",
+      "legacy_title": "天体测量视差原理 (Gaia)",
+      "legacy_payload_sha256": "93459b031373990562fe125bc93d39056a001402613567d9dd9827579c4dac90",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "astrometry.parallax"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "photometric_system_differences",
+      "legacy_title": "测光系统差异 (G/BP/RP, J/H/K)",
+      "legacy_payload_sha256": "0983d4c1228b142d3ece646a3c580af0f8edada17fc203285c4a93fb7ffe7658",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "mk_spectral_classification",
+      "legacy_title": "MK 光谱分类原理",
+      "legacy_payload_sha256": "cf523273d8ab3791bcfa9ec49f6f03a59694c8a5a68023dcc35ff6ea00f7c0d3",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.temperature",
+        "stars.gravity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "agn_emission_line_diagnostics",
+      "legacy_title": "AGN 谱线诊断 (BPT 图)",
+      "legacy_payload_sha256": "dc750aa3929f7df6065382b63389c360c794be637efb0978ee45bf7d6f64d897",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "sersic_profile_fitting",
+      "legacy_title": "Sérsic 剖面拟合",
+      "legacy_payload_sha256": "45a7ae250c07f7950149f8edcf12f43a1776bb9cc4790ec38060c7348e927974",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "iras_farir_photometry",
+      "legacy_title": "IRAS 远红外测光口径",
+      "legacy_payload_sha256": "1aafcc1ae95c8a29b2a6441414cdfc2cfaaf94c83d4f02d81b6701447b645691",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "extragalactic_distance_ladder",
+      "legacy_title": "河外距离阶梯",
+      "legacy_payload_sha256": "874b51284be22cb76a2f97631876259b88cf21b40562ada0dcfc6426418fd7d6",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "radial_velocity_measurement",
+      "legacy_title": "径向速度测量",
+      "legacy_payload_sha256": "440145d8c9759433611244e9009c6bb478a0fdf428385ca629f1a221d66d3795",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "kinematics.velocity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "2mass_jhk_photometry",
+      "legacy_title": "2MASS JHK 测光列语义",
+      "legacy_payload_sha256": "d55d117814c2f896b72c2dc9ce76e1d287ee77cb643ad65866536ed37dfde301",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "metallicity_measurement",
+      "legacy_title": "金属丰度测量与双标尺",
+      "legacy_payload_sha256": "905fb2ab2150ab7983d194cbc78690cc1fccad362bc390ab71a14f85a40aece9",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.mass_metallicity",
+        "chemistry.abundance"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "galaxy_kinematics_measurement",
+      "legacy_title": "星系动力学测量",
+      "legacy_payload_sha256": "b3f7958e97ed20c15648be11ae495681f62ffac2b4895e5f6938918e9068ce0c",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.kinematics",
+        "relation.tully_fisher"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "photometric_redshift_galaxy",
+      "legacy_title": "星系测光红移",
+      "legacy_payload_sha256": "83672c8e3e929b1e00962ba0c7d7353e679a391d25483350715cbbe7c14bab71",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "photometric_system_ugriz",
+      "legacy_title": "SDSS ugriz 测光系统与 AB 零点",
+      "legacy_payload_sha256": "7d0317db3a8b947383b20ea9942a8241da4f92fb98979ee6320e74fe2cf9f89b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "spectral_line_measurement",
+      "legacy_title": "谱线参数测量 (中心波长/等值宽度/FWHM)",
+      "legacy_payload_sha256": "60b85e2726920c382fe45e51ec86638ba118c6109810b0bd916df464bc4666bb",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "spectroscopy.lines"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "radial_velocity_precision",
+      "legacy_title": "径向速度测量精度与抖动源",
+      "legacy_payload_sha256": "2af4a825d15973012480939b67f8df77ed69e564b9868cb4323a5c54596e0281",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "kinematics.velocity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "stokes_polarimetry",
+      "legacy_title": "偏振测量与 Stokes 参数",
+      "legacy_payload_sha256": "e4b150c75102ba3d80f31ebeafede20c378637d68cbd382eb4258b3fbd9bbbb0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.polarization"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "light_curve_phase_folding",
+      "legacy_title": "光变曲线相位折叠与周期搜索",
+      "legacy_payload_sha256": "3345f16e5c6b6d4b4ea2b98f5290e6ca038099c7bb24f85e61affabddc033b9d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "time.periods",
+        "measurement.epoch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "astrometric_precession_nutation",
+      "legacy_title": "岁差/章动/自行修正与历元转换",
+      "legacy_payload_sha256": "97bfc598d10b09449466f84212353ce9642c90a65774ad4b9937e1877630c4dd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "radio_interferometry_uv",
+      "legacy_title": "干涉测量 uv 覆盖与综合孔径",
+      "legacy_payload_sha256": "fd2d24ed323dafd5f885fa0c17114e6cf6afe8a2860fdd811a6ffb195a2c5f9c",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.interferometry",
+        "photometry.flux"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "error_propagation_weighted",
+      "legacy_title": "误差传播与加权平均",
+      "legacy_payload_sha256": "750f8f98379c501a20fe67cd717f5cf04cc456b3e2ec873437fb1b4f9f5478ba",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.uncertainty",
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "spectral_index_measurement",
+      "legacy_title": "谱指数测量 (连续谱幂律斜率)",
+      "legacy_payload_sha256": "cc8a8712e84660c7c50aab398469c83a0db5045c609722fbc14b5dcd350c6bfc",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.spectral_index"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "stromgren_photometry",
+      "legacy_title": "Strömgren uvby 中间带测光",
+      "legacy_payload_sha256": "25b74127860fa90ba6fd165dfab320f0b366856ee5c3a1fa82a97b60f3c3cff2",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "sed_fitting_method",
+      "legacy_title": "SED 拟合方法 (模板网格/χ² 最小化)",
+      "legacy_payload_sha256": "d7a9aff8b81e0b84d4b4b0b8ce98e674a69233a59113841044d34f024cc48b0e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "aperture_photometry",
+      "legacy_title": "孔径测光 (孔径半径/天空扣除/孔径改正)",
+      "legacy_payload_sha256": "17d5c0c43fc42391bbf0840628fbb726e8d428b0823cc86efddad105d84fb4eb",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "surface_brightness_measure",
+      "legacy_title": "表面亮度测量与单位 (mag/arcsec²)",
+      "legacy_payload_sha256": "15dfc504c6b5563be8ed61b893d68a1cac60a05f68a93cc892855fb8993df7a1",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "ccd_calibration",
+      "legacy_title": "CCD 校准 (偏置/暗流/平场/非线性)",
+      "legacy_payload_sha256": "f6ec304d35cfa7eb1c6f6f85d5331eb31497e6c42004546afdc014ca520e1a93",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "flux_calibration_standards",
+      "legacy_title": "流量定标 (标准星/大气消光/仪器响应)",
+      "legacy_payload_sha256": "ad2d74d526975a6fbcc046da8496f83476e8a59938b514d5d1418f13c07a488f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "time_resolution_sampling",
+      "legacy_title": "时间分辨率与采样 (Nyquist 与混叠)",
+      "legacy_payload_sha256": "84a9883f325b8988030429602a585e2f7abf43418e1d3d7756c3aaad9c468713",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "time.periods",
+        "measurement.epoch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "isophotal_analysis",
+      "legacy_title": "等光度分析 (椭圆拟合/位置角/轮廓)",
+      "legacy_payload_sha256": "f4e66d26ab9d6d1a260c033084ee0685956016ee5fff80a57a6efdaaef21a4bc",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "narrowband_imaging",
+      "legacy_title": "窄带成像 (发射线滤光片/连续谱扣除)",
+      "legacy_payload_sha256": "de577e15042db6ac5df584cfd224ace1600df0e2ddc0ba8877093ca0dbd9e9b8",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "spectroscopy.lines"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "spectrum_snr_optimization",
+      "legacy_title": "光谱信噪比优化 (曝光/拼接/抖动)",
+      "legacy_payload_sha256": "f6f53bbc20fe969ce449bdd495bbd884d2384c2009589234afd7ebf09f422326",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "spectroscopy.lines"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "astrometry_plate_solution",
+      "legacy_title": "天体测量板解 (切点投影/参考星/畸变)",
+      "legacy_payload_sha256": "38e752c9020471a3b862363c9dec199f0ae862021d33624abd575a96f38f2d08",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "psf_fitting_photometry",
+      "legacy_title": "PSF 拟合测光 (拥挤场点源)",
+      "legacy_payload_sha256": "47671560f0b67a58055123ff711c59b82c1f84d02f301c0ef6a02212dc8027b0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "lucky_imaging",
+      "legacy_title": "幸运成像 (短曝光选帧叠加)",
+      "legacy_payload_sha256": "ee84dbf7a5b5c5214ae194311ec1e660eec0cc1f4f583f8261ae5f49b01142e4",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目主要是观测处理、应用评分或通用算法操作，当前M11解释库不接管此流程。 分类：application_or_observation_workflow_not_theory",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "spectral_resolution_rvalue",
+      "legacy_title": "光谱分辨率 R 值与仪器轮廓",
+      "legacy_payload_sha256": "54bfa1570babe9080a402f3c3f16733f50e72afe905ba4882d2d41a4ef24e525",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "spectroscopy.lines"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "twod_spectroscopy",
+      "legacy_title": "二维光谱 (长缝与积分视场单元)",
+      "legacy_payload_sha256": "3c97e02eed94d88da4f8fd44e4b4f2e943dcd1905cf1d2a6277e2efcd1314ab8",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "spectroscopy.lines"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "sky_background_estimation",
+      "legacy_title": "天光背景估计与扣除",
+      "legacy_payload_sha256": "8907ce0daf7fe6d351066b34865c75c4c2254b63049084ecad9ce92c3783e657",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "radio_channel_dm_smearing",
+      "legacy_title": "射电通道内色散涂抹",
+      "legacy_payload_sha256": "c5a3bb1474a5ca37517851019591ff7021cfc575f222764141ba98262f5958b4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "faraday_rotation_measurement",
+      "legacy_title": "法拉第旋转与旋转量测量",
+      "legacy_payload_sha256": "bb62693eb3e0c6b81e448ae5d27db5e6c2c05aecdfc5ccb96c625bbc38060347",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.polarization"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "pulsar_timing_method",
+      "legacy_title": "脉冲星计时方法 (TOA 与计时模型)",
+      "legacy_payload_sha256": "9fcc53b1413199cfa9e863f52833798fb8b8cae803a7fd8f16f288dfbac966c5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "measurement_theory.yaml",
+      "legacy_id": "multi_object_spectroscopy",
+      "legacy_title": "多目标光谱观测 (光纤/多缝)",
+      "legacy_payload_sha256": "a53a995ffee78f932785a75769afee36b89f37437ec4822f61d0daa430b82752",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "spectroscopy.lines"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "cross_instrument_dm_comparison",
+      "legacy_title": "跨仪器 DM 比较方法论",
+      "legacy_payload_sha256": "1db76b861e83282b01d8f9bac1636495f6d3ebe1d5eca55023fc19b75aa721c5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "frb_statistical_guidelines",
+      "legacy_title": "FRB 数据统计分析指南",
+      "legacy_payload_sha256": "5fa815b914c33ab23ecdfb0c3158c55399114cd98a4efebc38a76c8e51b06e36",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "data_quality_interpretation",
+      "legacy_title": "天体物理数据质量评分解读指南",
+      "legacy_payload_sha256": "372a202ef4a3a59212253e1156a592659e3fb69cce56aff404090144ac969df4",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目主要是观测处理、应用评分或通用算法操作，当前M11解释库不接管此流程。 分类：application_or_observation_workflow_not_theory",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "catalog_cross_match_guidelines",
+      "legacy_title": "星表交叉证认方法论",
+      "legacy_payload_sha256": "c674fdc392e605b8104d1f2478b239e0d701508409ef3f4a23ae02875e4d925b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "database_source_reliability",
+      "legacy_title": "数据库来源可信度评估",
+      "legacy_payload_sha256": "1bfbfd31bbf3ffd8b734b60b7ad28cb89b96f03f7a257c32dee6d4eeea7aaf33",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "data.provenance",
+        "measurement.precision"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "simbad_otype_classification_rule",
+      "legacy_title": "Simbad 对象类型分类规则",
+      "legacy_payload_sha256": "1a3e691946425a7ce54817203418833264b985f504d0bd7c4f7d223a34f93cbb",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "taxonomy.codes"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "extragalactic_catalog_crossmatch",
+      "legacy_title": "河外多目录交叉证认",
+      "legacy_payload_sha256": "fb964a4a05c7cc1980dffb1719dc27b8981767d25d91c14d153a738aed87429b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "sample_selection_bias",
+      "legacy_title": "样本选择效应",
+      "legacy_payload_sha256": "850410fd3a662c74004bd4cf58278a6cb37c70c7b2a84ff23efb31568f23c777",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.selection"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "photometric_system_conversion",
+      "legacy_title": "测光系统转换",
+      "legacy_payload_sha256": "5f5da53cc285538be6608b489b23bfb04ca31ebdb058bf48e697b4996c36869c",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "multi_source_redshift_compare",
+      "legacy_title": "多来源红移比较",
+      "legacy_payload_sha256": "a52b0c9a6c01d6961a06987f8d40fcb8b1819563477c6efae40cd456974fa264",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "agn_host_galaxy_interpretation",
+      "legacy_title": "AGN 宿主星系解读",
+      "legacy_payload_sha256": "b0de442e85af065bf3b5e307d4662e00e84ef2a0130e4e1872f19beefc2aefd7",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.active_nucleus",
+        "type.blazar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "catalog_documentation_check",
+      "legacy_title": "目录文档核对",
+      "legacy_payload_sha256": "65760abec0e8da32a04e24e38259e541cb805aa85179d4f400a018f0f1ea8bde",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "data.provenance",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "bayesian_inference_astro",
+      "legacy_title": "贝叶斯推断在天文中的应用",
+      "legacy_payload_sha256": "7dea405f7a45e8b961ed0eaa6ee6888a9637b2db08361186902f3157ce2dcc84",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "least_squares_fitting",
+      "legacy_title": "最小二乘与卡方拟合",
+      "legacy_payload_sha256": "b85f2b627a1119e657c42e465ec29af7d4279313fd1456a468226b35c4607556",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "cross_match_angular",
+      "legacy_title": "角距匹配与误差椭圆",
+      "legacy_payload_sha256": "04d84c709abc4154f7b4e473a72c2799ef693753f000ab1e9bc0cb3925e6e30b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "spectral_classification_mk",
+      "legacy_title": "MK 光谱分类体系 (应用与校验)",
+      "legacy_payload_sha256": "b95028b0c8d5f5c2eb6e6338b6b606bd9c288d4c18927754db7449ab7a48be03",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.temperature",
+        "stars.gravity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "stellar_mass_function_imf",
+      "legacy_title": "恒星初始质量函数 (IMF)",
+      "legacy_payload_sha256": "8218a5f7bb02d3a95b7f102cd82dba0dd3a3485fe6455364ad5b9c69ee5693ce",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "population.imf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "source_detection_deblend",
+      "legacy_title": "源检测与去混叠 (deblending)",
+      "legacy_payload_sha256": "c1a604a0a96c071ab3e4b6cb0c89cd6c22d7e461120bab7cf54230a6b4d8ae9e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.aperture",
+        "galaxy.structure"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "lomb_scargle_periodogram",
+      "legacy_title": "Lomb-Scargle 周期图",
+      "legacy_payload_sha256": "deeed2320fee3f6f92fbde78baf16daf09eb15e7b5874bc128a91f2d042871da",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "time.periods",
+        "measurement.epoch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "extinction_correction_method",
+      "legacy_title": "消光改正方法",
+      "legacy_payload_sha256": "be5d99746c0c4b6b8ba1889f4587d4349b021d6b92a181d01af0eade4290462d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.extinction"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "mcmc_sampling_astro",
+      "legacy_title": "马尔可夫链蒙特卡洛 (MCMC) 参数采样",
+      "legacy_payload_sha256": "e1aaf5df16ebe41d438ff3fc7f20bfd33d7fa52853cf1362d92fa8341cca0550",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "pca_dimensionality_reduction",
+      "legacy_title": "数据降维与可视化 (PCA)",
+      "legacy_payload_sha256": "e9ac3d94500883c60639f34d030e0e8cd3db13057efe4061e02069b930dfc615",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目主要是观测处理、应用评分或通用算法操作，当前M11解释库不接管此流程。 分类：application_or_observation_workflow_not_theory",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "selection_bias_correction",
+      "legacy_title": "选择偏差 (Malmquist 偏差) 识别与改正",
+      "legacy_payload_sha256": "6a1a09ffe8f6fd55b882f070264a7caa89e46e60689133774515eed7450aec1d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.selection"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "volume_limited_sample",
+      "legacy_title": "体积受限样本与 V/Vmax 检验",
+      "legacy_payload_sha256": "2860f94282a07b03fa201ebdcc4a8230c9584ffd0244c9de87de964d914b509f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.selection"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "cluster_analysis_method",
+      "legacy_title": "聚类分析方法 (DBSCAN/FoF/层次聚类)",
+      "legacy_payload_sha256": "1a67c6f5f69737748e82779b7d8983701066cd46720cb781cc67b16676f1bccb",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "environment.membership"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "robust_fitting_outliers",
+      "legacy_title": "鲁棒拟合与离群值处理",
+      "legacy_payload_sha256": "0080efaefdda4a464034c21e0dadc22a2de21d52cf061db4255840b3402a41f4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.precision",
+        "measurement.intervals"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "monte_carlo_simulation",
+      "legacy_title": "蒙特卡洛模拟 (不确定度传播与合成观测)",
+      "legacy_payload_sha256": "f615c82fcc7c7d72e003949208bd7c7f8863ea91ac27198b02b9aa09c5cdffef",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.uncertainty",
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "k_correction_method",
+      "legacy_title": "K 改正 (波段平移改正)",
+      "legacy_payload_sha256": "ad077198c3213b391d71e6166bef7a10c466f628101227f4057d31f593ee9fb2",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.flux",
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "spectral_template_fitting",
+      "legacy_title": "光谱模板拟合 (红移/恒星参数/发射线分解)",
+      "legacy_payload_sha256": "90d3bcbcf00699cc75b2b5a0da7d6adac2703ed24d173d3a82d751e9f9f64f63",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "photometry_astrometry_quality_control",
+      "legacy_title": "测光/天测数据质量控制",
+      "legacy_payload_sha256": "b39480ee4ffccbffacd0ae22c409eead15943bd531e45ecaa445a5b08b42567f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "machine_learning_classification",
+      "legacy_title": "机器学习分类 (随机森林/神经网络/不平衡处理)",
+      "legacy_payload_sha256": "f246ae0d6b1a6dfb64ada0d9da485c6a0c65cccb90e1c516bfd2881c69fd38b5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "bootstrap_resampling",
+      "legacy_title": "Bootstrap/Jackknife 重采样误差估计",
+      "legacy_payload_sha256": "ad2960fb8d2ac0790af930c30298908d5fa7c9fbe64dbaa42f0230a0b06d1b24",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.uncertainty",
+        "method.posterior"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "censored_data_upper_limits",
+      "legacy_title": "上限值 (未检出) 数据处理 — 生存分析",
+      "legacy_payload_sha256": "22dc9ea01423a9ccc28c43046a7482ebf763ff5b0c02dbfd4c20de7c458c8f47",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.intervals"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "limiting_magnitude_estimation",
+      "legacy_title": "极限星等估计 (曝光/口径/天光公式)",
+      "legacy_payload_sha256": "d3184420a102002b97e5fc0df3de2d4750e9d7034c0f2bcceed840add9d70582",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "signal_noise_trading",
+      "legacy_title": "信噪比权衡 (时间/波段/空间分辨率分配)",
+      "legacy_payload_sha256": "e47560614acc6b81a70c15fd662913a86fd5ce1b754b56f926df9ae737b867e9",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "astrometric_calibration_method",
+      "legacy_title": "天体测量校准 (参考网/畸变模型/内部一致性)",
+      "legacy_payload_sha256": "3ee8784287e794d8bdd5a93d1c0cb8b827577f4566ae7f660a222aeec58732e2",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.crossmatch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "spectroscopy_template_redshift",
+      "legacy_title": "光谱红移模板匹配 (交叉相关/发射线红移)",
+      "legacy_payload_sha256": "982c11d768e0bb0ea828b62e6761cdfd7391f7a34235ac83e737b899929d4721",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "photometric_variability_detect",
+      "legacy_title": "变光检测 (统计显著性/超额方差/结构函数)",
+      "legacy_payload_sha256": "a70ebda5f63e7d7ab8b4dfdccd429a438cf8a0a8c0634b297330ce4d95546d96",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "time.periods",
+        "measurement.epoch"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "multi_epoch_combination",
+      "legacy_title": "多历元合并 (加权平均/去趋势/系统差处理)",
+      "legacy_payload_sha256": "fd85efaf60fae41255cf3e1eb87581c4c64709ac9cf6d4ae8fb5b102292b6958",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.epoch",
+        "measurement.uncertainty"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "methodology.yaml",
+      "legacy_id": "survey_completeness",
+      "legacy_title": "巡天完备性 (完备函数/注入-回收/选择函数)",
+      "legacy_payload_sha256": "0ceae06961bdd9d01c5896c46e0bdb143818a69afc09b6f896ed93f29d280d82",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.selection"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "DM_redshift_relation",
+      "legacy_title": "色散量-红移关系 (Macquart Relation)",
+      "legacy_payload_sha256": "1ef26f2d4976045e8b8389843a393cebb89b014a1e61e46d1b9be5a848011f79",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "scattering_frequency_relation",
+      "legacy_title": "散射时标-频率关系",
+      "legacy_payload_sha256": "c261998eed6bb5d8a2dd3258f3c648433465affb6208666866d87af3a09c45ed",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "fluence_energy_relation",
+      "legacy_title": "fluence-能量关系",
+      "legacy_payload_sha256": "5ba7627a2824532ba3938f0077149d5de5c44ea4084b79399d52829d848af913",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "photo_z_vs_spec_z",
+      "legacy_title": "测光红移 vs 光谱红移精度对比",
+      "legacy_payload_sha256": "5ba115f2bb9a7c25f6cb2310c7612049a2c82219b073aba8a31ba8afa0bb0d3b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "dm_galactic_contribution",
+      "legacy_title": "银河系 DM 贡献模型",
+      "legacy_payload_sha256": "e00ce9b29414e47f3f847c67e48c1b55a0efcad952627d16e70410e8d0d87274",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.dispersion"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "blackbody_radiation_law",
+      "legacy_title": "黑体辐射定律",
+      "legacy_payload_sha256": "70b786690b00dc1b47a4093af1dd236fae7a04e6b693231f2973ed1e240bd421",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.stefan_boltzmann",
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "mass_luminosity_law",
+      "legacy_title": "主序质光关系",
+      "legacy_payload_sha256": "4f526de83af44b774cb8208ea8675951936e13b7a0483d457392c22c58d2536e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.main_sequence"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "eddington_luminosity",
+      "legacy_title": "爱丁顿光度界限",
+      "legacy_payload_sha256": "277ea7488db81dabbfcfeb47307803152fed4001f0959c883d962c8dde4b22ca",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "hubble_flow_law",
+      "legacy_title": "Hubble 流与距离-红移",
+      "legacy_payload_sha256": "77351a426b16acf2840959a213e8885e4a33a9f8f16bf59d6db623caf37bc2c2",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "doppler_redshift_law",
+      "legacy_title": "多普勒红移与视向速度",
+      "legacy_payload_sha256": "8bfd1dc5d250d5d359cde5b345d4384de9a4060737bae32109fa0417f9f74936",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "kinematics.velocity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "virial_mass_theorem",
+      "legacy_title": "维里定理与动力学质量",
+      "legacy_payload_sha256": "ffc7e2c222b689559da5208eacada2a642b998b7198a4a2918399b533efc958f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "groups.virial",
+        "groups.mass_definition",
+        "cluster.hot_gas"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "radius_temp_luminosity",
+      "legacy_title": "恒星半径-温度-光度关系",
+      "legacy_payload_sha256": "212752d2be15b78e089decdc36f5050c2ea74fce483381240b4e42c8259fe50f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.stefan_boltzmann",
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "schwarzschild_radius",
+      "legacy_title": "Schwarzschild 半径",
+      "legacy_payload_sha256": "3380437ab563c4e394825a017e508998c89c4269af5d0ed2ecb1dea46197d72c",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "stellar_hydrostatic_equilibrium",
+      "legacy_title": "恒星流体静力平衡与维里定理",
+      "legacy_payload_sha256": "00b2ce4e9586f26d6f627b19aa4fe585256bdb214e2ee6c9bbe04ca6083e9113",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.evolution",
+        "stellar.energy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "stellar_nucleosynthesis_pp_cno",
+      "legacy_title": "氢燃烧: pp 链与 CNO 循环",
+      "legacy_payload_sha256": "53f5808d7059887eac60997945063a4f0616c0d43a4cc3077d434b3fffdac327",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.evolution",
+        "stellar.energy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "synchrotron_radiation",
+      "legacy_title": "同步辐射与谱指数",
+      "legacy_payload_sha256": "6adba032629112c50d7edd4c8f52ecfa181c4c4f0272da949f5477a47b0026a3",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.spectral_index"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "inverse_compton_scattering",
+      "legacy_title": "逆康普顿散射与 IC 损失",
+      "legacy_payload_sha256": "fe75699eba98f2f51ac71b7f1e470e8a01c301a1fe5d28a06501d61f5838f4cd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.spectral_index"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "free_free_radiation",
+      "legacy_title": "自由-自由辐射 (热轫致辐射)",
+      "legacy_payload_sha256": "4db945fbb660287e7a0907871473b7515ae3c3166760853593e01c2e94f85275",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.spectral_index"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "hydrogen_21cm_line",
+      "legacy_title": "中性氢 21cm 谱线",
+      "legacy_payload_sha256": "f8befb94b584836e2c5b4c3753aff6a2da846d0d0174ce6fec1d93e53ada3c24",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.inventory"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "kepler_orbital_mechanics",
+      "legacy_title": "开普勒轨道力学与双星质量函数",
+      "legacy_payload_sha256": "ee6302ae84396e677026f1f48f7cc4e9e0adf8432ef788237abbe3d313555e48",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.kepler",
+        "binary.orbits"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "degenerate_gas_equation",
+      "legacy_title": "简并气体状态方程与钱德拉塞卡极限",
+      "legacy_payload_sha256": "2afe4ab0997b295acea12c2a2d7c7913e133c43adf30ffe54d7d2f90c7a805d0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.white_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "plasma_frequency_debye_shielding",
+      "legacy_title": "等离子体频率与德拜屏蔽",
+      "legacy_payload_sha256": "5746f8038dba6877d0abb02f998104925ca109b02f0c6ba2b96808f92cf96622",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "jeans_instability",
+      "legacy_title": "金斯不稳定性与金斯质量",
+      "legacy_payload_sha256": "c044857a6a3197db010727fde64524ec32878c477869000fbf6d0a04e5e749fd",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "radiation_transfer_equation",
+      "legacy_title": "辐射转移方程与光深",
+      "legacy_payload_sha256": "a19a2faffcb5e956e1d3a55754ef26018d3a3a91d78db0d816492fe49ced43da",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics",
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "stellar_oscillation_asteroseismology",
+      "legacy_title": "恒星振荡与星震学 (p 模/g 模)",
+      "legacy_payload_sha256": "f07ecb408dfab17b35a50cbbd08e3af83ece7daa70abbe247095ba6699472343",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.asteroseismology"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "acoustic_wave_plasma",
+      "legacy_title": "等离子体中的声波与磁声波 (阿尔芬波)",
+      "legacy_payload_sha256": "6042123eeba5c275cfc4f9c168f02c153582860631d0cbf18911b51da22f584f",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "eddington_approximation",
+      "legacy_title": "爱丁顿近似与辐射扩散近似",
+      "legacy_payload_sha256": "31473ff47f973681a1f4b06719c4b45f7bdc4495eeb5d5a3ccd995c180162e1a",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "tidal_forces_roche",
+      "legacy_title": "潮汐力与洛希极限 (潮汐瓦解)",
+      "legacy_payload_sha256": "cff89bc451bb369c8e442759420ed4598e3ba8052546bc1f087e4cc87b6e8e69",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "atomic_transition_probability",
+      "legacy_title": "原子跃迁概率与谱线强度 (爱因斯坦系数)",
+      "legacy_payload_sha256": "83a2990442e257e59492f6f3e2df0e4c1f15d32356e2e9a84d0f630ce5901b34",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "relativistic_beaming",
+      "legacy_title": "相对论聚束效应 (多普勒因子)",
+      "legacy_payload_sha256": "befca268e8eca7905e8c23ace75d00488b6bcb5a25c7d7c30bda2e86fb1d0993",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.active_nucleus",
+        "type.blazar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "gravitational_redshift",
+      "legacy_title": "引力红移",
+      "legacy_payload_sha256": "5a8d61e1640105d536e5dc04d4bdb9c9aa5b7c756cdfb3f03cdb44ff92224a5d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "kinematics.velocity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "jeans_mass_star_formation",
+      "legacy_title": "恒星形成的坍缩时标与吸积率",
+      "legacy_payload_sha256": "89e5fadf4a7e61b34154e5ab39f3c798e3695f22ef708fe1c16d01b7d2aa7f8b",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "magnetic_reconnection",
+      "legacy_title": "磁重联 (Sweet-Parker 与 Petschek 速率)",
+      "legacy_payload_sha256": "35a1bcea7591c83ff9946271c938b5bf746163d354755ce46f35b12b21cf1795",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "rayleigh_jeans_wien",
+      "legacy_title": "瑞利-金斯与维恩极限 (亮温度)",
+      "legacy_payload_sha256": "44e5ff6a5557002b0ab0893d9d6fa86919ca79b234eaf846e50fea296ea9ec28",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "radio.spectral_index"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "planck_law_numerical",
+      "legacy_title": "普朗克定律的数值形式与计算要点",
+      "legacy_payload_sha256": "fe2d877b28465cb0e9c4350d3d5efcab1b3d0e4efadf2141b6e238ef85396b90",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.stefan_boltzmann",
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "radiation_pressure_force",
+      "legacy_title": "辐射压力 (光子动量与辐射压梯度)",
+      "legacy_payload_sha256": "507304e0e81fb0db44c35fc85724b38a3a6db89db873eceae77c51ec22e86d80",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "electron_scattering_depth",
+      "legacy_title": "电子散射光深 (Thomson 光深)",
+      "legacy_payload_sha256": "8be7497b718913bbc68965f138a7588e3acde59fdc4d2d7e20a1ea7b10d4b317",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics",
+        "method.sed"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "saha_ionization_equation",
+      "legacy_title": "Saha 电离方程与恒星光谱温度序",
+      "legacy_payload_sha256": "a0a60d29f76eb320844d87f3a154b4b5d7977430a50fbb63be7e1039030f67d5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "line_formation_curve_growth",
+      "legacy_title": "谱线形成与生长曲线",
+      "legacy_payload_sha256": "d67e82fdc9aad107c6984506cfb21c34173daa68feb2cf7aad81a2b10eb2059e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "orbital_resonance_mechanics",
+      "legacy_title": "轨道共振与潮汐锁定",
+      "legacy_payload_sha256": "b0d12e40659243b6ba99a1b2a82edcdb9c5b6bd899214c4345369db80c41ea67",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.kepler",
+        "binary.orbits"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "fluid_dynamics_shock",
+      "legacy_title": "流体动力学激波 (Rankine-Hugoniot 跳跃条件)",
+      "legacy_payload_sha256": "02be06f941a6c6cee90c009e080124a5e1be648e54a4aa6312eb955b2e34e1dd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.herbig_haro"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "heat_capacity_degenerate",
+      "legacy_title": "简并物质热容与白矮星冷却",
+      "legacy_payload_sha256": "06fecae5d8fe3852dd5329aab4fd22b852e57aa7d33f0adbde5e97dc225567e7",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.white_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "physical_laws.yaml",
+      "legacy_id": "radiative_cooling_function",
+      "legacy_title": "等离子体辐射冷却函数",
+      "legacy_payload_sha256": "f030e23231ded7d73e6e34a612a9a3c3faad0423b7eb1ce5279d09d39ea22aa7",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cluster.hot_gas"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "FRB_DM_range",
+      "legacy_title": "FRB 色散量参考范围",
+      "legacy_payload_sha256": "e533dedcd53e510505841159cccd3960fdc2a8e71ca07d7297418fc8a8200aa9",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "FRB_fluence_range",
+      "legacy_title": "FRB fluence 参考范围",
+      "legacy_payload_sha256": "0c0d865ad36cc15e0dcadb0aa300c363b910fbaeb7806dec2c5cee09e3a611f9",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "high_z_quasar_range",
+      "legacy_title": "高红移类星体参考范围",
+      "legacy_payload_sha256": "ce21a5702e7cb6fc5302c138ce72a25c2b78215db9e646cbd3a68d6af504264a",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "method.redshift",
+        "type.quasar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "stellar_parallax_range",
+      "legacy_title": "恒星视差参考范围",
+      "legacy_payload_sha256": "ff3ba0498802f40a5313ed653796ea2a87626f24d075831edf0975112d532d6b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "astrometry.parallax",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "stellar_temperature_gravity_range",
+      "legacy_title": "恒星有效温度与表面重力参考范围",
+      "legacy_payload_sha256": "ccc94d25232c2bdc6e57fb57b058fb334fb125ff2966b69d9242d973fa7986c0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.temperature",
+        "stars.gravity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "star_teff_luminosity_span",
+      "legacy_title": "恒星 Teff/光度全域锚点",
+      "legacy_payload_sha256": "de239b61f50ae7fa0fbb1542996fa36c91bc894cc0db2c22e5f5efc3e9b8396d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.temperature",
+        "stars.gravity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "main_sequence_spectral_sequence",
+      "legacy_title": "主序光谱型-温度序列",
+      "legacy_payload_sha256": "bc6b5aeb5fb4b738471f8586007ac43c6efe55d5e00cbb0a47361667e9690175",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.temperature",
+        "stars.gravity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "ttaauri_star_parameters",
+      "legacy_title": "T Tauri 星与前主序参数",
+      "legacy_payload_sha256": "df9ee0bc762fd14b9901c77a07f232008b52afe4350ba37e4cfd431ad70c19bf",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.t_tauri"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "white_dwarf_parameters",
+      "legacy_title": "白矮星参数与简并本质",
+      "legacy_payload_sha256": "9ccd5ade5d664641df9d4b3f66bbc22f230c7a033ebd0cdd55f14d939cc9c033",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.white_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "giant_supergiant_radius",
+      "legacy_title": "巨星/超巨星半径",
+      "legacy_payload_sha256": "97a00aa117332fe789da3acf7525161862850a002614d43e05f32c45bfe9a66f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.supergiant",
+        "law.stefan_boltzmann"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_redshift_span",
+      "legacy_title": "星系红移全域与演化",
+      "legacy_payload_sha256": "98194a9a4c3ecb91a35ecb1295201faa615bb2ecc56a121b258c66998813899d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "cosmology.distances"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_stellar_mass_span",
+      "legacy_title": "星系恒星质量跨数量级",
+      "legacy_payload_sha256": "3182366dcf093e5e1e788c4217d78527243d469bff0a71b9f7c24c0a7277e04d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.stellar_mass"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "agn_luminosity_ladder",
+      "legacy_title": "AGN 光度阶梯",
+      "legacy_payload_sha256": "27bbb5aaab6b7d0d8a947d09cc73f3b746516af69398045bede3d6df9a311c14",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "quasar_bolometric_anchor",
+      "legacy_title": "类星体热光度锚点",
+      "legacy_payload_sha256": "abcebcf2e85833920398b1ee2a3d820abfd9f27396a5c362d3262491c983d9df",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "agn_blackhole_mass_relation",
+      "legacy_title": "AGN 黑洞质量锚点",
+      "legacy_payload_sha256": "12d33d2cc9c4eca060dde288d2a4a4c483768a9540860a04309e4547c782305a",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.blackhole_host"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "hii_region_physics",
+      "legacy_title": "HII 区物理与电离平衡",
+      "legacy_payload_sha256": "a79db6c2dc371625026866e7d9078437cdb565fe7676fa801f2fd96399730b52",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "snr_properties_range",
+      "legacy_title": "超新星遗迹演化与谱指数",
+      "legacy_payload_sha256": "55f401679fbaa48c8789efce2502f6343e4504d94e163f318a7070077a96a09d",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "brown_dwarf_boundaries",
+      "legacy_title": "褐矮星质量边界",
+      "legacy_payload_sha256": "38b39f1eb1ea092f1b69beb7af85cd0c23c437fd0bdd74a0060f613101efaa62",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.brown_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "exoplanet_radius_gap",
+      "legacy_title": "系外行星半径间隙",
+      "legacy_payload_sha256": "528403b1f039d924e4a2d48f02a61c3c4319a8c069e73af5350e90f923c74953",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.exoplanet"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_morphology_hubble",
+      "legacy_title": "星系形态 (Hubble T 序列)",
+      "legacy_payload_sha256": "300428447b5cb5da18e0376f5ccc69cc415daff7dd90868dcf3c12e63a739b35",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.morphology"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_sfr_typical",
+      "legacy_title": "星系恒星形成率 (SFR) 典型范围",
+      "legacy_payload_sha256": "acc5ba30cc67bc3383ff5a65a5b61ab60941174f6f1409e330b0930f309c5803",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.sfr"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_gas_content",
+      "legacy_title": "星系气体含量 (HI/H2)",
+      "legacy_payload_sha256": "805b4ea9462077e3acabae5751c3b4eafa9920ec370a7b21d2fa900c599704dd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.inventory"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "cluster_velocity_dispersion",
+      "legacy_title": "星系团速度弥散与丰度",
+      "legacy_payload_sha256": "e14012769ca58e1aab8435e0b7fde79041c34f3876c08a1621cb991fe97caf0d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "groups.virial",
+        "groups.mass_definition",
+        "cluster.hot_gas"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "xray_band_luminosity",
+      "legacy_title": "X 射线波段天体光度范围",
+      "legacy_payload_sha256": "83a289c5ff9465850caf087046d4ede214ee6f07fd2e2560f8124d3ac6abb2cb",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.xray_binary",
+        "cluster.hot_gas"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "iras_photometry_bands",
+      "legacy_title": "IRAS 点源测光 (12/25/60/100um)",
+      "legacy_payload_sha256": "f9f993e6958ff3300bd5e8afe0f4b62f6987815d489854c1824ecf41ff7113c4",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "twomass_photometry",
+      "legacy_title": "2MASS 近红外测光 (J/H/Ks)",
+      "legacy_payload_sha256": "409430df08af1cdb6f2bc54bb4b76bc715da2f6dabb1f92f36138c0166f58c21",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "photometry.magnitude",
+        "method.calibration"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "hyperleda_kinematics",
+      "legacy_title": "HYPERLEDA 星系运动学与口径",
+      "legacy_payload_sha256": "48561aa7d2286986be17b24dc8529653f3e80a22fc42a29b5d61a6a0f67d55a8",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "galaxy.kinematics",
+        "relation.tully_fisher"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "stellar_evolution_stages",
+      "legacy_title": "恒星演化各阶段典型参数",
+      "legacy_payload_sha256": "1c66a34ca0089a561720d782796a400a8f935c40e851b8eab9e93a774d531fe5",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stars.evolution",
+        "stellar.energy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "exoplanet_parameter_range",
+      "legacy_title": "系外行星质量与半径范围",
+      "legacy_payload_sha256": "8dc2a62af589c9ecef87261d46c4c0aac1dfe6ad1fe041bc77347b69e15a0141",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.exoplanet"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "hii_region_properties",
+      "legacy_title": "HII 区电子密度与温度范围",
+      "legacy_payload_sha256": "4a92e9127b5b105710ef5be22306b94c68a27094f8ca3e1601672f13a8cf235b",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "gas.nebular_diagnostics"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "molecular_cloud_properties",
+      "legacy_title": "分子云物理参数范围",
+      "legacy_payload_sha256": "f0deb9f6c22fcce1719d92ab06c704cba3b457380191285fc5f02b60c25512ee",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "milky_way_structure",
+      "legacy_title": "银河系结构参数范围",
+      "legacy_payload_sha256": "3c5331eddb33962ffb8d71816ae3861935c651569b1f05902765796c54265f8e",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "globular_cluster_range",
+      "legacy_title": "球状星团典型参数范围",
+      "legacy_payload_sha256": "f057c0797b05ddd5e801d72caa7d7c9787f0cb0d7a49b0353a64bd8ae795616e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.globular_cluster"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "variable_star_period_lum",
+      "legacy_title": "脉动变星周期-光度范围",
+      "legacy_payload_sha256": "fe4e510585b481f92d380e7fd4bf156911447fbfba69b2d8f1fe17e6093cb6b3",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "relation.period_luminosity"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "solar_system_planets",
+      "legacy_title": "太阳系行星参数范围",
+      "legacy_payload_sha256": "10869dd12ed8af227bc01219ef73a16de6e5549de2b218835fa5d8f129c7aedd",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "gamma_ray_burst_energy",
+      "legacy_title": "伽马暴能量与持续时间范围",
+      "legacy_payload_sha256": "fbff2b5a0a1990332351a2ff14424b615ed53410814dad2370d6a19b6147f8d9",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "neutron_star_parameters",
+      "legacy_title": "中子星质量-半径范围",
+      "legacy_payload_sha256": "6d391ba6e3b133c02378d9444692a4ed700ec6a93ed57883596ae593881d1102",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.neutron_star"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "open_cluster_range",
+      "legacy_title": "疏散星团典型参数范围",
+      "legacy_payload_sha256": "e458f33f497910ed0a85bc1eace7564fa74f3c43fa44dbd4489ec7f28de00464",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.open_cluster"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "supernova_type_ranges",
+      "legacy_title": "超新星类型与能量参考范围",
+      "legacy_payload_sha256": "d4ad0d40567e1fc0272f2b9345ea4dfbca7b0b687ff9f40d5d4b10cef0aaceaa",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.supernova"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "gravitational_wave_sources",
+      "legacy_title": "引力波源参考范围",
+      "legacy_payload_sha256": "5faf2f807752fb9159fd31fa9b6f29f248645d812477e1657d8f9ac734126bd6",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "black_hole_mass_distribution",
+      "legacy_title": "黑洞质量分布参考范围",
+      "legacy_payload_sha256": "d7e43de859b4bb82d5ac7766ba361def02663d5622e335410802ecbff808cddd",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.eddington",
+        "type.active_nucleus",
+        "type.xray_binary"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "blazar_properties",
+      "legacy_title": "耀变体分类与性质参考范围",
+      "legacy_payload_sha256": "b311b5fb7860a9b60f0107d81ca499d18b5fc503ac432763312aa6c526c02bb0",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.blazar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "brown_dwarf_range",
+      "legacy_title": "褐矮星表面温度与光谱温度标定",
+      "legacy_payload_sha256": "456f594bbab99917d8b2890769135ddacc0da5c48eecb99630dec76e5d3c2b48",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.brown_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "white_dwarf_cooling",
+      "legacy_title": "白矮星冷却时标与表面温度范围",
+      "legacy_payload_sha256": "8ad77d8e8c3bd50c2785f9666d2200bf4e8e07f0dd61ca602f55b8917fd9173a",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "stellar.compact_limits",
+        "type.white_dwarf"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "pulsar_magnetar_range",
+      "legacy_title": "脉冲星与磁星周期/磁场/年龄范围",
+      "legacy_payload_sha256": "49e5170b1d5d61589913e11ca13edbfe82d29df8403df632c537818bd25b5b12",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "law.pulsar_age",
+        "type.pulsar"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "exoplanet_atmosphere",
+      "legacy_title": "系外行星大气参数范围",
+      "legacy_payload_sha256": "12a5013667ce85ae2e63304216693a5c1d19ba5ea55382363d4b518acce12dda",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.exoplanet"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "small_bodies_solar_system",
+      "legacy_title": "太阳系小天体参考范围",
+      "legacy_payload_sha256": "de732cae9369cb6d6407db64d0a1d3efae6188939d2a6148054898b00ea0d73a",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "xray_binary_types",
+      "legacy_title": "X 射线双星类型与轨道周期范围",
+      "legacy_payload_sha256": "ce669ac64e7fe3fd6fa2c92d60ea3c52ca6f198a9a21f2a6f2eb32901f62a6b1",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.xray_binary",
+        "type.high_mass_xray_binary",
+        "type.low_mass_xray_binary"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "tidal_disruption_event_range",
+      "legacy_title": "潮汐瓦解事件 (TDE) 参考范围",
+      "legacy_payload_sha256": "9918e0a6c868140ac71c3154c3af1b340005a6119846b6fba927e39f0ae1a056",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "diffuse_ism_phase_range",
+      "legacy_title": "弥散星际介质相位参数范围",
+      "legacy_payload_sha256": "292ae26c122b0043d00e3f433a34a144e0b7b1bda491f3fbf4f9f488645fcc39",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "herbig_haro_range",
+      "legacy_title": "Herbig-Haro 天体参考范围",
+      "legacy_payload_sha256": "6d0068ac73b24c82083fd840e085acaa891b03f4aa0d8b5662b9128413fd98c1",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.herbig_haro"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "planetary_nebula_range",
+      "legacy_title": "行星状星云参考范围",
+      "legacy_payload_sha256": "be644ea71cd77d9890f64b1472fabda99c2d0d6377410f6c2da84aea9df277e9",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.planetary_nebula"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "starburst_galaxy_range",
+      "legacy_title": "星暴星系参考范围",
+      "legacy_payload_sha256": "07d99b73e93a99831e65da43cbcfbe724c40dacad0d892549bee8af5df136817",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.starburst_galaxy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "low_surface_brightness_galaxy_range",
+      "legacy_title": "低面亮度星系参考范围",
+      "legacy_payload_sha256": "06e653cf09304374c5e645e099514cc5e22f0c6a02b745d0ebef923cc9132395",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.low_surface_brightness_galaxy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_pair_range",
+      "legacy_title": "星系对参考范围",
+      "legacy_payload_sha256": "3381f4309296317836ebe067989b5b8d039d1b0f7e92d8a4135eee08e27de090",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.galaxy_pair"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "galaxy_group_member_range",
+      "legacy_title": "星系群成员星系参考范围",
+      "legacy_payload_sha256": "b33e4b4c4868aa859ebaffa0814f148a5b6dc9dbca647e226318269a64466316",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.galaxy_towards_group"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "bcg_properties_range",
+      "legacy_title": "最亮星系团星系 (BCG) 参考范围",
+      "legacy_payload_sha256": "47f4e5538a493507e7fe5ab3916218971a761ddfba3bdd38aa6c82e2e8b784ae",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.brightest_cluster_galaxy"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "interacting_galaxy_range",
+      "legacy_title": "相互作用星系参考范围",
+      "legacy_payload_sha256": "417a52967f06d582a0fc168b9b92fc3bb3c3ba1e1a7b5352f0abad08a39d1744",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.interacting_galaxies"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "protocluster_range",
+      "legacy_title": "原星系团参考范围",
+      "legacy_payload_sha256": "c4853f1033aaf727946a5a1a90e0a9a30f8d0149bc4bd9b8149b105712c6300f",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.protocluster"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "supercluster_range",
+      "legacy_title": "超星系团参考范围",
+      "legacy_payload_sha256": "df21e5f8256026413d4c15d0008704d2f0997b3f6da6524ee08ed6c06845f598",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.supercluster"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "moving_group_range",
+      "legacy_title": "恒星移动星群参考范围",
+      "legacy_payload_sha256": "fbd67b3e424cbce13b0577d4a73184fda74a5efa0033d9a9ced617a29f5a7924",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.moving_group"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "stellar_outflow_range",
+      "legacy_title": "恒星外流参考范围",
+      "legacy_payload_sha256": "8c52d7cbd3a4c01aff98c895967ee45d84add10e3f14ca7a89a8022dddbb5c45",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.outflow"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "blue_supergiant_range",
+      "legacy_title": "蓝超巨星参考范围",
+      "legacy_payload_sha256": "f502ed276ce21ba4a7e7395e593a9507c2a6784ba347ef65b1e0177ca34d6d59",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.blue_supergiant"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "yellow_supergiant_range",
+      "legacy_title": "黄超巨星参考范围",
+      "legacy_payload_sha256": "0fd773bba24d79ca7a7bc0d683498fec628f3c7ddd824432703c1660e71a11d3",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.yellow_supergiant"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "reference_ranges.yaml",
+      "legacy_id": "void_properties_range",
+      "legacy_title": "宇宙空洞参考范围",
+      "legacy_payload_sha256": "fc17a667f85a5b2ad1ef579b3b186fb9447cead537189db16b9eb46c59b64061",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.cosmic_void"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "supernova_classification",
+      "legacy_title": "超新星分类判据与光谱特征",
+      "legacy_payload_sha256": "beac3c43589a2694a8ea32a609e2f2a0fc2ab7ab7d088664e4066844a08b2195",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.supernova"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "gamma_ray_burst_taxonomy",
+      "legacy_title": "伽马暴长短分类与光谱硬度判据",
+      "legacy_payload_sha256": "a3805f15134dc5f8a1f0aa5849bc7c418489560ed9d9e9ef7cfa6986930f5dde",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "kilonova_properties",
+      "legacy_title": "千新星观测性质 (r 过程供能暂现源)",
+      "legacy_payload_sha256": "035e0a07793043e9ebe7bc04c32c019859a87715d693c85e984836b2852551fa",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "tidal_disruption_event",
+      "legacy_title": "潮汐瓦解事件判据与吸积率",
+      "legacy_payload_sha256": "95c1dba83ece505e227dfc349ecfee6940853ca3fc6e78541199105be3b0d4ed",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "不保留该旧通用规则或专门模型；当前内容目的不要求其数值预测。不能由旧条目存在就给所有目标套用；这不是声称科学上无资料。 分类：not_carried_as_general_rule",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "fast_radio_burst_population",
+      "legacy_title": "FRB 群体性质 (重复/非重复与事件率)",
+      "legacy_payload_sha256": "c337f73f56aeac868f9ca0ff21324f9ea31679163fa8c07fd770a0d8f568859a",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "neutrino_astronomy_sources",
+      "legacy_title": "中微子天文源与通量参考",
+      "legacy_payload_sha256": "7e23991c048a3ef75511ca9e442b1cee3bb14ac56dcaeedd6f47fc3b995fee4c",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "gravitational_wave_events",
+      "legacy_title": "引力波事件探测参数",
+      "legacy_payload_sha256": "ba16f75d9a428644d1b1f611f1bd2c847bc9b1f63c9792ed190728844691fa1f",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "nova_recurrent_nova",
+      "legacy_title": "新星与再发新星参数",
+      "legacy_payload_sha256": "eebe69f7c9c90e62facdc1aff0b2d69e17d3058c0f91e7fd9b160ffc112eb34e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.classical_nova"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "xray_transients",
+      "legacy_title": "X 射线暂现源: 爆发时标与吸积态转换",
+      "legacy_payload_sha256": "3ec299b4c5d3f84c95d33ce37665c2ef03cb0cf69f6683d315ba9a11f1932e55",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.xray_binary",
+        "type.high_mass_xray_binary",
+        "type.low_mass_xray_binary"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "active_galactic_nucleus_variability",
+      "legacy_title": "AGN 变光性质 (DRW 与结构函数)",
+      "legacy_payload_sha256": "0aaa840a3cbcddaf83535b40a5e4457bb85df12a84cb6d39fc54ce54a821b7af",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "measurement.epoch",
+        "type.active_nucleus"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "stellar_flares",
+      "legacy_title": "恒星耀斑能量分布与特征",
+      "legacy_payload_sha256": "f640824f30ab78534353a9ec36572d5f241fd90f7b44e5293f2971f0abed206c",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.eruptive_variable",
+        "type.by_draconis"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "electromagnetic_counterparts",
+      "legacy_title": "多信使对应体与定位精度",
+      "legacy_payload_sha256": "53b01133f09107b00f41e7dc37f3cf29c62b5507d68a586ef40ebb1350db3c10",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "supernova_remnant_evolution",
+      "legacy_title": "超新星残余演化阶段 (自由膨胀-Sedov-辐射) 与观测判据",
+      "legacy_payload_sha256": "c32bc14a6359a7aee2c775c50eb768c23123c9941cbca672c8507fd6f94ec417",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "gamma_ray_afterglow",
+      "legacy_title": "伽马暴余辉光变 (正幂律衰减与射电余辉)",
+      "legacy_payload_sha256": "ea8ad546b489b17c4cdf652959dbe7e46506ae739dced36d46749174d1d14f4a",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "xray_flare_mechanism",
+      "legacy_title": "X 射线耀斑机制 (磁重联与日冕加热)",
+      "legacy_payload_sha256": "84a723614d273a748b5fac0cda60156e1d1b944f65a0bc8723396df1d3518c8e",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.eruptive_variable",
+        "type.by_draconis"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "fast_transient_detection",
+      "legacy_title": "快速暂现源检测 (单脉冲搜寻与巡天策略)",
+      "legacy_payload_sha256": "220a5dbcebb3ad747e9adbabd266e7c7c5897a08c8a1b00f822ccba29f250cff",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目主要是观测处理、应用评分或通用算法操作，当前M11解释库不接管此流程。 分类：application_or_observation_workflow_not_theory",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "orphan_afterglow",
+      "legacy_title": "孤儿余辉 (无伽马暴的余辉) 搜寻与判据",
+      "legacy_payload_sha256": "79846fc1d79234ff0300f0dee58df397ea1d6536bec17f46ea5f3a2308f374c9",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "jet_break_lightcurve",
+      "legacy_title": "喷流拐折: 余辉光变曲线 break 时标与喷流开角",
+      "legacy_payload_sha256": "ed7dc3dc86e3979e461c4b56d2552cbac964afc682d59e2dbbb69d735a1725b1",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "magnetar_giant_flare",
+      "legacy_title": "磁星巨耀斑能量与时标 (2004 类事件)",
+      "legacy_payload_sha256": "fd7788faf6316ff22feef12cb9770a6fd281df341a3ab694bd3605f41c586c1d",
+      "disposition": "rewritten_topic_subset",
+      "new_entry_ids": [
+        "type.pulsar",
+        "type.neutron_star"
+      ],
+      "reason_zh": "仅将主题重新用作者知识/本轮核查材料编写；旧正文、旧引文、旧系数、固定范围、自动计算和处置逻辑均未直接采用。对应新条目不承诺覆盖旧段落所有论断。",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    },
+    {
+      "legacy_file": "transient_sources.yaml",
+      "legacy_id": "gravitational_wave_followup",
+      "legacy_title": "引力波后随观测策略 (定位巡天与证认流程)",
+      "legacy_payload_sha256": "38ced0a1ac93c35e5377af99027c2be81cf6dfc0b91fc133533526f6e4cbfa6a",
+      "disposition": "not_adopted",
+      "new_entry_ids": [],
+      "reason_zh": "旧条目以当前1/2/4/5类之外的独立对象/事件或全宇宙背景为主；不增加新otype授权。共用知识已在独立条目重写。 分类：outside_object_scope",
+      "legacy_scientific_claims_validated": false,
+      "legacy_prose_imported": false
+    }
+  ]
+}

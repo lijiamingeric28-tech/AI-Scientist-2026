@@ -1,0 +1,1 @@
+"Cohesive application responsibilities."

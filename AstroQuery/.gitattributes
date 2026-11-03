@@ -1,0 +1,10 @@
+* text=auto eol=lf
+# Reviewed resource hashes cover the exact published bytes, including line endings.
+resources/** -text -whitespace !eol
+frontend/public/demo-catalog.json text eol=lf
+*.xz binary
+*.gz binary
+*.zip binary
+*.png binary
+*.ico binary
+*.jpg binary

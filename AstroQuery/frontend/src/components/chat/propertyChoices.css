@@ -1,0 +1,34 @@
+.query-question.draft-question { margin: 8px 0 18px 38px; padding: 20px 24px; border: 1px solid var(--surface-border); border-radius: 12px; background: var(--surface-bg); color: var(--content-fg); font-size: 16px; line-height: 1.6; }
+.property-choice > header, .choice-submit, .draft-secondary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.draft-question h3 { margin: 0; font-size: var(--text-section); line-height: 1.45; font-weight: 600; }
+.property-choice > header > span, .choice-submit > span, .choice-unit, .choice-symbol { color: var(--content-fg-secondary); font-size: 14px; }
+.choice-group, .choice-scope { min-width: 0; padding: 0; margin: 20px 0 0; border: 0; }
+.choice-group legend, .choice-scope legend { padding: 0; margin-bottom: 6px; font-size: var(--text-body); font-weight: 600; }
+.choice-combine { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 6px; font-size: var(--text-body); color: var(--content-fg-secondary); }
+.choice-combine button { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.choice-combine button:disabled { opacity: .6; }
+.choice-option { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: baseline; padding: 7px 10px; border-radius: 6px; }
+.choice-option[data-picked=true] { background: var(--surface-secondary); }
+.choice-option > label { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: baseline; gap: 0 10px; padding: 4px 0; cursor: pointer; }
+.property-choice input[type=checkbox] { width: 17px; height: 17px; align-self: start; margin-top: 4px; accent-color: var(--accent-text); }
+.choice-symbol { display: inline-block; margin-inline-start: 8px; }
+.choice-name, .choice-note, .choice-definition p { overflow-wrap: anywhere; }
+.choice-note { grid-column: 2 / -1; font-size: var(--text-body); color: var(--content-fg-secondary); }
+.choice-definition { display: contents; }
+.choice-definition summary, .choice-alternatives > summary, .draft-edit > summary { cursor: pointer; color: var(--accent-text); font-size: var(--text-body); }
+.choice-definition summary { grid-column: 2; padding: 3px 0 3px 12px; }
+.choice-definition p { grid-column: 1 / -1; max-width: 70ch; margin: 6px 0 4px; color: var(--content-fg-secondary); }
+.confirmed-choices > div { display: grid; grid-template-columns: minmax(0,1fr) auto; padding: 7px 0; border-bottom: 1px solid var(--surface-border-subtle); }
+.choice-alternatives { margin: 5px 0 0 10px; }
+.choice-scope { padding-block: 12px; border-top: 1px solid var(--surface-border-subtle); }
+.choice-scope label { display: flex; gap: 10px; margin-bottom: 6px; }
+.choice-submit { margin-top: 18px; padding-block: 14px; align-items: center; border-top: 1px solid var(--surface-border-subtle); }
+.draft-secondary { align-items: flex-start; margin-top: 8px; }
+.draft-edit { flex: 1; min-width: 0; }
+.draft-edit label { display: grid; gap: 4px; margin: 10px 0; }
+.draft-edit input { min-width: 0; width: 100%; color: var(--content-fg); background: var(--surface-bg); border: 1px solid var(--surface-border); border-radius: 6px; padding: 7px; }
+.draft-question :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .query-question.draft-question { margin-inline-start: 0; padding: 16px; }
+  .choice-option { padding-inline: 4px; }
+}

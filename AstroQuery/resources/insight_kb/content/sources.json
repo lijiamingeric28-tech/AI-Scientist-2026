@@ -1,0 +1,571 @@
+[
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.simbad.otypes",
+    "identity": {
+      "title": "SIMBAD: Object types",
+      "authors": [
+        "CDS / SIMBAD"
+      ],
+      "url": "https://simbad.cds.unistra.fr/Pages/guide/otypes.htx",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "页面访问快照2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "official_section",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.simbad.otypes.e1",
+        "locator": "Object type引言；本项目100类名单另固定于2026-10-24 scope.json",
+        "excerpt": "hierarchical classification, which emphasizes the physical nature of the object",
+        "excerpt_hash": "740c19b3fb6f21521d764befa4e0895091a94dc24c3053ce44b64697e09702b7",
+        "language": "en",
+        "supports_claim_ids": [
+          "taxonomy.codes.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.simbad.variability",
+    "identity": {
+      "title": "Description of variability measurements in SIMBAD",
+      "authors": [
+        "CDS / SIMBAD"
+      ],
+      "url": "https://simbad.cds.unistra.fr/Pages/guide/chMeasVar.htx",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "2024同化说明，访问2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "official_section",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.simbad.variability.e1",
+        "locator": "Ambiguous variability types；VarTyp表E/EB/ELL/CW/DCEP条目",
+        "excerpt": "vartyp = EB means Eclipsing binary of bet Lyr subtype",
+        "excerpt_hash": "c26545250c4237fe86ee25e9d87469fa133dcacbe5fd758cbcd26b3157d7e547",
+        "language": "en",
+        "supports_claim_ids": [
+          "taxonomy.codes.verified2"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.nasa.exoplanet_columns",
+    "identity": {
+      "title": "Planetary Systems and Planetary Systems Composite Parameters Table Definitions",
+      "authors": [
+        "NASA Exoplanet Archive / IPAC"
+      ],
+      "url": "https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "页面访问快照2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "official_section",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.nasa.exoplanet_columns.e1",
+        "locator": "Choosing the Right Table；Planet Parameters: pl_eqt、pl_msinie、pl_msinij",
+        "excerpt": "more complete, though not necessarily self-consistent",
+        "excerpt_hash": "25348bff84ccd0bba91bbc7ee4dad845dab40bca6a1fac0b20c6febb60870391",
+        "language": "en",
+        "supports_claim_ids": [
+          "data.provenance.verified1",
+          "type.exoplanet.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.nasa.atnf",
+    "identity": {
+      "title": "ATNFPULSAR - ATNF Pulsar Catalog",
+      "authors": [
+        "HEASARC / NASA GSFC; catalog by Manchester et al."
+      ],
+      "url": "https://heasarc.gsfc.nasa.gov/W3Browse/all/atnfpulsar.html",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "页面Last Modified 2026-10-20，访问2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "official_section",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.nasa.atnf.e1",
+        "locator": "Parameters: Luminosity_400_MHz/1400_MHz, Age, Period_Dot, Corr_Period_Dot",
+        "excerpt": "The pulse period derivative corrected for the proper motion effect",
+        "excerpt_hash": "47e046df61331b27b3112d9cb0a9d59db2f9cc31f82f149137a100f9bab73a68",
+        "language": "en",
+        "supports_claim_ids": [
+          "type.pulsar.verified1",
+          "radio.dispersion.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.nist.combination",
+    "identity": {
+      "title": "Combining uncertainty components",
+      "authors": [
+        "NIST"
+      ],
+      "url": "https://physics.nist.gov/cuu/Uncertainty/combination.html",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "在线指南，访问2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "official_section",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.nist.combination.e1",
+        "locator": "Calculation of combined standard uncertainty，式(6)后的文字与Simplified forms",
+        "excerpt": "if the input estimates are uncorrelated",
+        "excerpt_hash": "efc4b14954e17a164d5d3e44f1c5d87217d7a3e71f313a68206734c9ac4d5513",
+        "language": "en",
+        "supports_claim_ids": [
+          "measurement.uncertainty.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.nist.coverage",
+    "identity": {
+      "title": "Expanded uncertainty and coverage factors",
+      "authors": [
+        "NIST"
+      ],
+      "url": "https://physics.nist.gov/cuu/Uncertainty/coverage.html",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "在线指南，访问2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "official_section",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.nist.coverage.e1",
+        "locator": "Expanded uncertainty；Coverage factor",
+        "excerpt": "When the normal distribution applies",
+        "excerpt_hash": "0f2aec31806be5515751229db7701d57256cd77f4e1434dd9f499dd149cf147c",
+        "language": "en",
+        "supports_claim_ids": [
+          "measurement.intervals.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.hogg.luminosity",
+    "identity": {
+      "title": "Distance Measures in Cosmology, Section 7",
+      "authors": [
+        "David W. Hogg"
+      ],
+      "url": "https://ned.ipac.caltech.edu/level5/Hogg/Hogg7.html",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "NED学术文章网页版本，访问2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "paper_section_text",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.hogg.luminosity.e1",
+        "locator": "§7 LUMINOSITY DISTANCE，式(19)前定义及K-correction文字",
+        "excerpt": "the k-correction depends on the spectrum of the object in question",
+        "excerpt_hash": "a49f10b8aefc978f8d0bf224bac7b5dc024c792a09e5dce02b32e661ff136c36",
+        "language": "en",
+        "supports_claim_ids": [
+          "law.flux_luminosity.verified1"
+        ],
+        "limitations": "实际核读第7节文字；网页中的图片公式未转录，本文公式另按作者基础知识整理，不声称从图内核抄。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.hogg.angular",
+    "identity": {
+      "title": "Distance Measures in Cosmology, Section 6",
+      "authors": [
+        "David W. Hogg"
+      ],
+      "url": "https://ned.ipac.caltech.edu/level5/Hogg/Hogg6.html",
+      "doi": null,
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "NED学术文章网页版本，访问2026-10-25",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "paper_section_text",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.hogg.angular.e1",
+        "locator": "§6 ANGULAR DIAMETER DISTANCE开头定义",
+        "excerpt": "physical transverse size to its angular size",
+        "excerpt_hash": "f725d2e5e395ec251ef2b5824d26c2a8ff1b297cf1ef3678d2f48df6f9c4e9a4",
+        "language": "en",
+        "supports_claim_ids": [
+          "cosmology.distances.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.cidfernandes.whan",
+    "identity": {
+      "title": "A comprehensive classification of galaxies in the SDSS: How to tell true from fake AGN?",
+      "authors": [
+        "R. Cid Fernandes",
+        "G. Stasinska",
+        "A. Mateus",
+        "N. Vale Asari"
+      ],
+      "url": "https://arxiv.org/abs/1012.4426",
+      "doi": "10.1111/j.1365-2966.2011.18244.x",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:1012.4426v1 (2010); MNRAS paper 2011",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "abstract_only",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.cidfernandes.whan.e1",
+        "locator": "Abstract中LINER区域重叠与retired galaxies说明",
+        "excerpt": "ionized by their hot evolved low-mass stars",
+        "excerpt_hash": "4b84287279e61d5f623597634a8bd88aefa4483f21e9e836d42be1b45f2b3214",
+        "language": "en",
+        "supports_claim_ids": [
+          "type.liner.verified1"
+        ],
+        "limitations": "只核查摘要所述机制区分；没有采用或普适化其数值分界。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.urry.unification",
+    "identity": {
+      "title": "Unified Schemes for Radio-Loud Active Galactic Nuclei",
+      "authors": [
+        "C. Megan Urry",
+        "Paolo Padovani"
+      ],
+      "url": "https://arxiv.org/abs/astro-ph/9506063v2",
+      "doi": "10.1086/133630",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:astro-ph/9506063v2; PASP 1995",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "abstract_only",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.urry.unification.e1",
+        "locator": "Abstract关于orientation、obscuration、relativistic beaming及统一方案限制",
+        "excerpt": "depends so strongly on orientation",
+        "excerpt_hash": "83337caddb78d2443f49b07093f3a2f71406cc230159b504e00a963e01a5f048",
+        "language": "en",
+        "supports_claim_ids": [
+          "type.active_nucleus.verified1"
+        ],
+        "limitations": "使用v2；v1提交记录标withdrawn不当作v2论文撤稿。只核查摘要，不发布其中未读取的公式或数值。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.kennicutt.sfr",
+    "identity": {
+      "title": "Star Formation in the Milky Way and Nearby Galaxies",
+      "authors": [
+        "Robert C. Kennicutt Jr",
+        "Neal J. Evans II"
+      ],
+      "url": "https://arxiv.org/abs/1204.3552v2",
+      "doi": "10.1146/annurev-astro-081811-125610",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:1204.3552v2 (2012)",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "abstract_only",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.kennicutt.sfr.e1",
+        "locator": "Abstract：gas contents, SFR methods, relations across spatial scales",
+        "excerpt": "from entire galaxies to individual molecular clouds",
+        "excerpt_hash": "be69393822b466062f006c605d337281b8a825fc30d78fef8f5a32e83e4b4c3b",
+        "language": "en",
+        "supports_claim_ids": [
+          "relation.gas_star_formation.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.kravtsov.clusters",
+    "identity": {
+      "title": "Formation of Galaxy Clusters",
+      "authors": [
+        "Andrey Kravtsov",
+        "Stefano Borgani"
+      ],
+      "url": "https://arxiv.org/abs/1205.5556",
+      "doi": "10.1146/annurev-astro-081811-125502",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:1205.5556v1 (2012)",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "abstract_only",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.kravtsov.clusters.e1",
+        "locator": "Abstract：intracluster plasma、radial range、self-similar assumptions and limitations",
+        "excerpt": "assumptions and limitations of the widely used self-similar model",
+        "excerpt_hash": "7e816c18bd719b3a297b95ca0582aae6c3c3205122dd443a6522348349ea6fc9",
+        "language": "en",
+        "supports_claim_ids": [
+          "relation.cluster_scaling.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.heber.subdwarfs",
+    "identity": {
+      "title": "Hot subluminous stars",
+      "authors": [
+        "Ulrich Heber"
+      ],
+      "url": "https://arxiv.org/abs/1604.07749",
+      "doi": "10.1088/1538-3873/128/966/082001",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:1604.07749v1 (2016)",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "abstract_only",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.heber.subdwarfs.e1",
+        "locator": "Abstract：gravity-mode和p-mode sdB pulsators",
+        "excerpt": "gravity-mode sdB pulsators",
+        "excerpt_hash": "9a77ec518fb56413be8406d4b27bedb50d2790441cff2f2c050ecacea4e16155",
+        "language": "en",
+        "supports_claim_ids": [
+          "type.hot_subdwarf.verified1"
+        ],
+        "limitations": "仅支持明确对应的核查声明，不替同条其他作者知识或当前目标测量背书。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.dawson.subdwarfs",
+    "identity": {
+      "title": "A 500 pc volume-limited sample of hot subluminous stars II. Atmospheric parameters, mass distribution, and kinematics",
+      "authors": [
+        "H. Dawson",
+        "M. Dorsch",
+        "S. Geier",
+        "et al."
+      ],
+      "url": "https://arxiv.org/html/2601.02250v1",
+      "doi": "10.1051/0004-6361/202558123",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:2601.02250v1 (2026)",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "paper_section_text",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.dawson.subdwarfs.e1",
+        "locator": "§6.3.1：HD 188112、CPD-20 1123、EVR-CB-001讨论；实际读文字未从图提数",
+        "excerpt": "might instead be a pre-ELM object",
+        "excerpt_hash": "fdea26bd47880c2746c38144ee12743f83c9c3fc88c109a4a3fded83926c7e34",
+        "language": "en",
+        "supports_claim_ids": [
+          "type.hot_subdwarf.verified2"
+        ],
+        "limitations": "核查的是作者给出的条件性解释；不采用本样本比例或单个质量数值作为全类规则。"
+      }
+    ]
+  },
+  {
+    "schema_version": "insight-source/1",
+    "source_id": "src.gaia.apsis",
+    "identity": {
+      "title": "Gaia Data Release 3: Astrophysical parameters inference system (Apsis) I -- methods and content overview",
+      "authors": [
+        "O. L. Creevey",
+        "R. Sordo",
+        "F. Pailler",
+        "et al."
+      ],
+      "url": "https://arxiv.org/abs/2206.05864",
+      "doi": "10.1051/0004-6361/202243688",
+      "identity_status": "checked_on_opened_page"
+    },
+    "version": "arXiv:2206.05864v1; A&A 674 A26 (2023)",
+    "accessed_at": "2026-10-25",
+    "availability": "opened_and_read",
+    "read_level": "abstract_only",
+    "artifact_ref": null,
+    "artifact_note": "通过网页工具实际读取；未下载整篇文件，无整文hash。excerpt_hash只对下面短摘录有效。",
+    "qualification": {
+      "status": "usable_for_scoped_claims",
+      "basis": "primary_paper_or_official_documentation",
+      "retraction_check": "not_a_comprehensive_retraction_database_check"
+    },
+    "evidence": [
+      {
+        "evidence_id": "src.gaia.apsis.e1",
+        "locator": "Abstract关于mean BP/RP、mean RVS spectra及derived parameters",
+        "excerpt": "the mean BP/RP and mean RVS spectra",
+        "excerpt_hash": "196df3eee67cc939cfa5fd926c594ae41034fe16ba9a6afe3d7039fab2a4a36d",
+        "language": "en",
+        "supports_claim_ids": [
+          "method.calibration.verified1"
+        ],
+        "limitations": "只核查摘要的方法概括；未将搜索结果中的详细误差和具体限制冒充已读正文。"
+      }
+    ]
+  }
+]

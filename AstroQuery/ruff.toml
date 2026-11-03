@@ -1,0 +1,12 @@
+target-version = "py312"
+line-length = 100
+
+[lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501", "F401", "F811", "F841", "E402", "E701", "E702", "E741", "I001"]
+
+[lint.isort]
+known-first-party = ["astroquery_ai"]
+
+[format]
+quote-style = "double"

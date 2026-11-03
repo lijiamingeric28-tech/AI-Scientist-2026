@@ -1,0 +1,802 @@
+[
+  {
+    "otype": "*",
+    "label": "Star",
+    "description": "Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 58,
+    "file": "inputs/by-type/001.json"
+  },
+  {
+    "otype": "**",
+    "label": "**",
+    "description": "Double or Multiple Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 17,
+    "file": "inputs/by-type/002.json"
+  },
+  {
+    "otype": "a2*",
+    "label": "alf2CVnV*",
+    "description": "alpha2 CVn Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/003.json"
+  },
+  {
+    "otype": "AB*",
+    "label": "AGB*",
+    "description": "Asymptotic Giant Branch Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 21,
+    "file": "inputs/by-type/004.json"
+  },
+  {
+    "otype": "Ae*",
+    "label": "Ae*",
+    "description": "Herbig Ae/Be Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 28,
+    "file": "inputs/by-type/005.json"
+  },
+  {
+    "otype": "bC*",
+    "label": "bCepV*",
+    "description": "beta Cep Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 18,
+    "file": "inputs/by-type/006.json"
+  },
+  {
+    "otype": "BD*",
+    "label": "BrownD*",
+    "description": "Brown Dwarf",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 27,
+    "file": "inputs/by-type/007.json"
+  },
+  {
+    "otype": "Be*",
+    "label": "Be*",
+    "description": "Be Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/008.json"
+  },
+  {
+    "otype": "BS*",
+    "label": "BlueStraggler",
+    "description": "Blue Straggler",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 48,
+    "file": "inputs/by-type/009.json"
+  },
+  {
+    "otype": "BY*",
+    "label": "BYDraV*",
+    "description": "BY Dra Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 19,
+    "file": "inputs/by-type/010.json"
+  },
+  {
+    "otype": "C*",
+    "label": "C*",
+    "description": "Carbon Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 26,
+    "file": "inputs/by-type/011.json"
+  },
+  {
+    "otype": "cC*",
+    "label": "ClassicalCep",
+    "description": "Classical Cepheid Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 27,
+    "file": "inputs/by-type/012.json"
+  },
+  {
+    "otype": "Ce*",
+    "label": "Cepheid",
+    "description": "Cepheid Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 41,
+    "file": "inputs/by-type/013.json"
+  },
+  {
+    "otype": "CV*",
+    "label": "CataclyV*",
+    "description": "Cataclysmic Binary",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 17,
+    "file": "inputs/by-type/014.json"
+  },
+  {
+    "otype": "dS*",
+    "label": "delSctV*",
+    "description": "delta Sct Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 19,
+    "file": "inputs/by-type/015.json"
+  },
+  {
+    "otype": "EB*",
+    "label": "EclBin",
+    "description": "Eclipsing Binary",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 28,
+    "file": "inputs/by-type/016.json"
+  },
+  {
+    "otype": "El*",
+    "label": "EllipVar",
+    "description": "Ellipsoidal Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 14,
+    "file": "inputs/by-type/017.json"
+  },
+  {
+    "otype": "Em*",
+    "label": "EmLine*",
+    "description": "Emission-line Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 30,
+    "file": "inputs/by-type/018.json"
+  },
+  {
+    "otype": "Er*",
+    "label": "Eruptive*",
+    "description": "Eruptive Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 34,
+    "file": "inputs/by-type/019.json"
+  },
+  {
+    "otype": "Ev*",
+    "label": "Evolved*",
+    "description": "Evolved Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 18,
+    "file": "inputs/by-type/020.json"
+  },
+  {
+    "otype": "gD*",
+    "label": "gammaDorV*",
+    "description": "gamma Dor Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 16,
+    "file": "inputs/by-type/021.json"
+  },
+  {
+    "otype": "HB*",
+    "label": "HorBranch*",
+    "description": "Horizontal Branch Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/022.json"
+  },
+  {
+    "otype": "HH",
+    "label": "HerbigHaroObj",
+    "description": "Herbig-Haro Object",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 16,
+    "file": "inputs/by-type/023.json"
+  },
+  {
+    "otype": "HS*",
+    "label": "HotSubdwarf",
+    "description": "Hot Subdwarf",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 21,
+    "file": "inputs/by-type/024.json"
+  },
+  {
+    "otype": "HV*",
+    "label": "HighVel*",
+    "description": "High Velocity Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 16,
+    "file": "inputs/by-type/025.json"
+  },
+  {
+    "otype": "HXB",
+    "label": "HighMassXBin",
+    "description": "High Mass X-ray Binary",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 28,
+    "file": "inputs/by-type/026.json"
+  },
+  {
+    "otype": "Ir*",
+    "label": "IrregularV*",
+    "description": "Irregular Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 20,
+    "file": "inputs/by-type/027.json"
+  },
+  {
+    "otype": "LM*",
+    "label": "Low-Mass*",
+    "description": "Low-mass Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 54,
+    "file": "inputs/by-type/028.json"
+  },
+  {
+    "otype": "LP*",
+    "label": "LongPeriodV*",
+    "description": "Long-Period Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/029.json"
+  },
+  {
+    "otype": "LXB",
+    "label": "LowMassXBin",
+    "description": "Low Mass X-ray Binary",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 16,
+    "file": "inputs/by-type/030.json"
+  },
+  {
+    "otype": "Ma*",
+    "label": "Massiv*",
+    "description": "Massive Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 8,
+    "file": "inputs/by-type/031.json"
+  },
+  {
+    "otype": "Mi*",
+    "label": "Mira",
+    "description": "Mira Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 22,
+    "file": "inputs/by-type/032.json"
+  },
+  {
+    "otype": "MS*",
+    "label": "MainSequence*",
+    "description": "Main Sequence Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 57,
+    "file": "inputs/by-type/033.json"
+  },
+  {
+    "otype": "N*",
+    "label": "Neutron*",
+    "description": "Neutron Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/034.json"
+  },
+  {
+    "otype": "No*",
+    "label": "Nova",
+    "description": "Classical Nova",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 21,
+    "file": "inputs/by-type/035.json"
+  },
+  {
+    "otype": "OH*",
+    "label": "OH/IR*",
+    "description": "OH/IR Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 21,
+    "file": "inputs/by-type/036.json"
+  },
+  {
+    "otype": "Or*",
+    "label": "OrionV*",
+    "description": "Orion Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 34,
+    "file": "inputs/by-type/037.json"
+  },
+  {
+    "otype": "out",
+    "label": "Outflow",
+    "description": "Outflow",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 17,
+    "file": "inputs/by-type/038.json"
+  },
+  {
+    "otype": "pA*",
+    "label": "post-AGB*",
+    "description": "Post-AGB Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 34,
+    "file": "inputs/by-type/039.json"
+  },
+  {
+    "otype": "Pe*",
+    "label": "ChemPec*",
+    "description": "Chemically Peculiar Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 11,
+    "file": "inputs/by-type/040.json"
+  },
+  {
+    "otype": "Pl",
+    "label": "Planet",
+    "description": "Extra-solar Planet",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 22,
+    "file": "inputs/by-type/041.json"
+  },
+  {
+    "otype": "PM*",
+    "label": "HighPM*",
+    "description": "High Proper Motion Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 30,
+    "file": "inputs/by-type/042.json"
+  },
+  {
+    "otype": "PN",
+    "label": "PlanetaryNeb",
+    "description": "Planetary Nebula",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/043.json"
+  },
+  {
+    "otype": "Psr",
+    "label": "Pulsar",
+    "description": "Pulsar",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 54,
+    "file": "inputs/by-type/044.json"
+  },
+  {
+    "otype": "Pu*",
+    "label": "PulsV*",
+    "description": "Pulsating Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 23,
+    "file": "inputs/by-type/045.json"
+  },
+  {
+    "otype": "RC*",
+    "label": "RCrBV*",
+    "description": "R CrB Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 19,
+    "file": "inputs/by-type/046.json"
+  },
+  {
+    "otype": "RG*",
+    "label": "RGB*",
+    "description": "Red Giant Branch star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 32,
+    "file": "inputs/by-type/047.json"
+  },
+  {
+    "otype": "Ro*",
+    "label": "RotV*",
+    "description": "Rotating Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 20,
+    "file": "inputs/by-type/048.json"
+  },
+  {
+    "otype": "RR*",
+    "label": "RRLyrae",
+    "description": "RR Lyrae Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 34,
+    "file": "inputs/by-type/049.json"
+  },
+  {
+    "otype": "RS*",
+    "label": "RSCVnV*",
+    "description": "RS CVn Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 39,
+    "file": "inputs/by-type/050.json"
+  },
+  {
+    "otype": "RV*",
+    "label": "RVTauV*",
+    "description": "RV Tauri Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 19,
+    "file": "inputs/by-type/051.json"
+  },
+  {
+    "otype": "S*",
+    "label": "S*",
+    "description": "S Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 37,
+    "file": "inputs/by-type/052.json"
+  },
+  {
+    "otype": "s*b",
+    "label": "BlueSG",
+    "description": "Blue Supergiant",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 19,
+    "file": "inputs/by-type/053.json"
+  },
+  {
+    "otype": "s*r",
+    "label": "RedSG",
+    "description": "Red Supergiant",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 26,
+    "file": "inputs/by-type/054.json"
+  },
+  {
+    "otype": "s*y",
+    "label": "YellowSG",
+    "description": "Yellow Supergiant",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 12,
+    "file": "inputs/by-type/055.json"
+  },
+  {
+    "otype": "SB*",
+    "label": "SB*",
+    "description": "Spectroscopic Binary",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 16,
+    "file": "inputs/by-type/056.json"
+  },
+  {
+    "otype": "sg*",
+    "label": "Supergiant",
+    "description": "Evolved Supergiant",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 26,
+    "file": "inputs/by-type/057.json"
+  },
+  {
+    "otype": "SN*",
+    "label": "Supernova",
+    "description": "SuperNova",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 23,
+    "file": "inputs/by-type/058.json"
+  },
+  {
+    "otype": "SX*",
+    "label": "SXPheV*",
+    "description": "SX Phe Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 23,
+    "file": "inputs/by-type/059.json"
+  },
+  {
+    "otype": "Sy*",
+    "label": "Symbiotic*",
+    "description": "Symbiotic Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 24,
+    "file": "inputs/by-type/060.json"
+  },
+  {
+    "otype": "TT*",
+    "label": "TTauri*",
+    "description": "T Tauri Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 25,
+    "file": "inputs/by-type/061.json"
+  },
+  {
+    "otype": "V*",
+    "label": "Variable*",
+    "description": "Variable Star",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 46,
+    "file": "inputs/by-type/062.json"
+  },
+  {
+    "otype": "WD*",
+    "label": "WhiteDwarf",
+    "description": "White Dwarf",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 17,
+    "file": "inputs/by-type/063.json"
+  },
+  {
+    "otype": "WR*",
+    "label": "WolfRayet*",
+    "description": "Wolf-Rayet",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 22,
+    "file": "inputs/by-type/064.json"
+  },
+  {
+    "otype": "WV*",
+    "label": "Type2Cep",
+    "description": "Type II Cepheid Variable",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 22,
+    "file": "inputs/by-type/065.json"
+  },
+  {
+    "otype": "XB*",
+    "label": "XrayBin",
+    "description": "X-ray Binary",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 23,
+    "file": "inputs/by-type/066.json"
+  },
+  {
+    "otype": "Y*O",
+    "label": "YSO",
+    "description": "Young Stellar Object",
+    "category": "1. TAXONOMY OF STARS",
+    "property_count": 34,
+    "file": "inputs/by-type/067.json"
+  },
+  {
+    "otype": "As*",
+    "label": "Association",
+    "description": "Association of Stars",
+    "category": "2. SETS OF STARS",
+    "property_count": 30,
+    "file": "inputs/by-type/068.json"
+  },
+  {
+    "otype": "Cl*",
+    "label": "Cluster*",
+    "description": "Cluster of Stars",
+    "category": "2. SETS OF STARS",
+    "property_count": 75,
+    "file": "inputs/by-type/069.json"
+  },
+  {
+    "otype": "GlC",
+    "label": "GlobCluster",
+    "description": "Globular Cluster",
+    "category": "2. SETS OF STARS",
+    "property_count": 47,
+    "file": "inputs/by-type/070.json"
+  },
+  {
+    "otype": "MGr",
+    "label": "MouvGroup",
+    "description": "Moving Group",
+    "category": "2. SETS OF STARS",
+    "property_count": 25,
+    "file": "inputs/by-type/071.json"
+  },
+  {
+    "otype": "OpC",
+    "label": "OpenCluster",
+    "description": "Open Cluster",
+    "category": "2. SETS OF STARS",
+    "property_count": 35,
+    "file": "inputs/by-type/072.json"
+  },
+  {
+    "otype": "St*",
+    "label": "Stream",
+    "description": "Stellar Stream",
+    "category": "2. SETS OF STARS",
+    "property_count": 52,
+    "file": "inputs/by-type/073.json"
+  },
+  {
+    "otype": "AGN",
+    "label": "AGN",
+    "description": "Active Galaxy Nucleus",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 47,
+    "file": "inputs/by-type/074.json"
+  },
+  {
+    "otype": "bCG",
+    "label": "BlueCompactG",
+    "description": "Blue Compact Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 51,
+    "file": "inputs/by-type/075.json"
+  },
+  {
+    "otype": "BiC",
+    "label": "BrightestCG",
+    "description": "Brightest Galaxy in a Cluster (BCG)",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 45,
+    "file": "inputs/by-type/076.json"
+  },
+  {
+    "otype": "Bla",
+    "label": "Blazar",
+    "description": "Blazar",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 18,
+    "file": "inputs/by-type/077.json"
+  },
+  {
+    "otype": "BLL",
+    "label": "BLLac",
+    "description": "BL Lac",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 18,
+    "file": "inputs/by-type/078.json"
+  },
+  {
+    "otype": "EmG",
+    "label": "EmissionG",
+    "description": "Emission-line galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 81,
+    "file": "inputs/by-type/079.json"
+  },
+  {
+    "otype": "G",
+    "label": "Galaxy",
+    "description": "Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 45,
+    "file": "inputs/by-type/080.json"
+  },
+  {
+    "otype": "GiC",
+    "label": "GtowardsCl",
+    "description": "Galaxy towards a Cluster of Galaxies",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 60,
+    "file": "inputs/by-type/081.json"
+  },
+  {
+    "otype": "GiG",
+    "label": "GtowardsGroup",
+    "description": "Galaxy towards a Group of Galaxies",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 60,
+    "file": "inputs/by-type/082.json"
+  },
+  {
+    "otype": "GiP",
+    "label": "GinPair",
+    "description": "Galaxy in Pair of Galaxies",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 60,
+    "file": "inputs/by-type/083.json"
+  },
+  {
+    "otype": "H2G",
+    "label": "HIIG",
+    "description": "HII Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 106,
+    "file": "inputs/by-type/084.json"
+  },
+  {
+    "otype": "LIN",
+    "label": "LINER",
+    "description": "LINER-type Active Galaxy Nucleus",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 40,
+    "file": "inputs/by-type/085.json"
+  },
+  {
+    "otype": "LSB",
+    "label": "LowSurfBrghtG",
+    "description": "Low Surface Brightness Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 17,
+    "file": "inputs/by-type/086.json"
+  },
+  {
+    "otype": "QSO",
+    "label": "QSO",
+    "description": "Quasar",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 82,
+    "file": "inputs/by-type/087.json"
+  },
+  {
+    "otype": "rG",
+    "label": "RadioG",
+    "description": "Radio Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 24,
+    "file": "inputs/by-type/088.json"
+  },
+  {
+    "otype": "SBG",
+    "label": "StarburstG",
+    "description": "Starburst Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 49,
+    "file": "inputs/by-type/089.json"
+  },
+  {
+    "otype": "Sy1",
+    "label": "Seyfert1",
+    "description": "Seyfert 1 Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 84,
+    "file": "inputs/by-type/090.json"
+  },
+  {
+    "otype": "Sy2",
+    "label": "Seyfert2",
+    "description": "Seyfert 2 Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 41,
+    "file": "inputs/by-type/091.json"
+  },
+  {
+    "otype": "SyG",
+    "label": "Seyfert",
+    "description": "Seyfert Galaxy",
+    "category": "4. TAXONOMY OF GALAXIES",
+    "property_count": 51,
+    "file": "inputs/by-type/092.json"
+  },
+  {
+    "otype": "CGG",
+    "label": "Compact_Gr_G",
+    "description": "Compact Group of Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 20,
+    "file": "inputs/by-type/093.json"
+  },
+  {
+    "otype": "ClG",
+    "label": "ClG",
+    "description": "Cluster of Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 16,
+    "file": "inputs/by-type/094.json"
+  },
+  {
+    "otype": "GrG",
+    "label": "GroupG",
+    "description": "Group of Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 18,
+    "file": "inputs/by-type/095.json"
+  },
+  {
+    "otype": "IG",
+    "label": "InteractingG",
+    "description": "Interacting Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 22,
+    "file": "inputs/by-type/096.json"
+  },
+  {
+    "otype": "PaG",
+    "label": "PairG",
+    "description": "Pair of Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 12,
+    "file": "inputs/by-type/097.json"
+  },
+  {
+    "otype": "PCG",
+    "label": "protoClG",
+    "description": "Proto Cluster of Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 20,
+    "file": "inputs/by-type/098.json"
+  },
+  {
+    "otype": "SCG",
+    "label": "SuperClG",
+    "description": "Supercluster of Galaxies",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 24,
+    "file": "inputs/by-type/099.json"
+  },
+  {
+    "otype": "vid",
+    "label": "Void",
+    "description": "Underdense Region of the Universe",
+    "category": "5. SETS OF GALAXIES",
+    "property_count": 11,
+    "file": "inputs/by-type/100.json"
+  }
+]

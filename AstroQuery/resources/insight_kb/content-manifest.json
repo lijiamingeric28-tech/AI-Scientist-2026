@@ -1,0 +1,58 @@
+{
+  "schema_version": "insight-content/1",
+  "release_id": "insight-content-2026-10-25-v1",
+  "status": "content_ready_bindings_pending",
+  "content_progress": {
+    "types_written": 100,
+    "types_in_scope": 100,
+    "entries": 166,
+    "reviews_matching_current_hash": 166
+  },
+  "scope_snapshot_date": "2026-10-24",
+  "scope_source_hash": "a14ed9dc999a52a442932b95cbb0303e41947a3df3747dbd7758bc57cc548448",
+  "source_progress": {
+    "sources_read": 15,
+    "verified_claims": 17,
+    "author_knowledge_claims": 583
+  },
+  "source_policy": "author_knowledge_and_claim_level_source_verification",
+  "binding_status": "waiting_registry",
+  "runtime_acceptance": "not_tested_with_formal_registry",
+  "activation_allowed": false,
+  "files": {
+    "content/entries.json": {
+      "sha256": "61c40817748fc2035199e33ebbb2faeded835ef39dda4348ac037e1081fdaa6f"
+    },
+    "content/type-profiles.json": {
+      "sha256": "127bab10d901e5bf433023df1da2fa4af6118cb724b47ccb0c8e77a15021e83c"
+    },
+    "content/concepts.json": {
+      "sha256": "718472b24f5fefe9fbdefa7ac17b8f7b58ee76fed1688b54b5190a4c4a918558"
+    },
+    "content/sources.json": {
+      "sha256": "5aa5ccefb220c350f97da4ee0624e4f2e6fd2d6a201a169313f974068939a553"
+    },
+    "content/coverage.json": {
+      "sha256": "3e98811ae1e72d83b3acf245b120d97f3b73e01af80780b9b429e5e45d57053c"
+    },
+    "content/reviews.json": {
+      "sha256": "261b05c923e415cb5105dbbb4a5a7bb5925a2a88f270a97e78921c2bedeeb06f"
+    },
+    "content/index.json": {
+      "sha256": "38d56471e07e68c920ea35ce63d0909e39b1118a933fe63acbf61f31bb057664"
+    },
+    "content/bindings.json": {
+      "sha256": "282fbf9066ddacd59f795f738edbef92836fc83c434aa06aac1142d1bcb2b628"
+    },
+    "inputs/scope.json": {
+      "sha256": "113eb95024a3921c823550cc65a3f6cf3518c390e8feb5057f6c3cffd5a189c1"
+    },
+    "inputs/otype_nodes.json": {
+      "sha256": "a14ed9dc999a52a442932b95cbb0303e41947a3df3747dbd7758bc57cc548448"
+    },
+    "migration/legacy-map.json": {
+      "sha256": "7a35f273cfe63c1834bc9b40b283bcde85b1eaa4a07f13ee53c9e69e15b8be6e"
+    }
+  },
+  "content_hash": "2117e6b9c567640ad045e590a8f879d28261850b419f6ffb443d0c6ad4259234"
+}

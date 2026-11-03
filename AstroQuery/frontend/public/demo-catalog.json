@@ -1,0 +1,162 @@
+{
+  "schema_version": "PublishedDemos/1",
+  "samples": [
+    {
+      "task_id": "b4e7f77a-52b3-4005-bc7a-b3a674a4cc75",
+      "name": "SN 2014J · 爆发峰值、红化与吸收线",
+      "object": "SN 2014J",
+      "otype": "SN*",
+      "query": "我想了解 SN 2014J 的峰值星等、红化，以及 Na I D 吸收线的等值宽度。",
+      "properties": [
+        "峰值视星等",
+        "色余 E(B−V)",
+        "Na I D 等值宽度"
+      ],
+      "summary": "从多波段峰值到星际吸收线，回到论文第 5 页查看 5.8 Å 的原报，再看红化测量如何按不同条件保留。",
+      "record_count": 154,
+      "source_count": 35,
+      "figure_count": 55,
+      "quality_score": 0.85,
+      "status": "completed",
+      "created_at": "2026-11-03T08:57:30.355553+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-bf889a581d6bdc49be811533d96ac6c3e6df1b6755ee21187b2b52f614b21db3",
+      "snapshot_ref": {
+        "content_sha256": "21b6662a9a13cfe4c44e8473cc70e8cc4effcbddc47041c14574e7ca7349accf",
+        "id": "science-21b6662a9a13cfe4c44e8473cc70e8cc4effcbddc47041c14574e7ca7349accf",
+        "version": 1
+      },
+      "featured": true
+    },
+    {
+      "task_id": "590778de-7bb6-4e9a-916f-e94e61cb3d00",
+      "name": "HD 209458 b · 质量、半径与轨道倾角",
+      "object": "HD 209458 b",
+      "otype": "Pl",
+      "query": "请汇总不同研究对 HD 209458 b 的质量、半径和轨道倾角的测定结果",
+      "properties": [
+        "行星质量",
+        "行星半径",
+        "轨道倾角"
+      ],
+      "summary": "46 条测量、35 份来源资料与 27 幅图像。包含原页证据、跨文献对照及人工审核后继续查询。",
+      "record_count": 46,
+      "source_count": 35,
+      "figure_count": 27,
+      "quality_score": 0.86,
+      "status": "completed",
+      "created_at": "2026-11-03T04:29:20.322224+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-1a0c80a9bef58ff2efb82d9b234c6975a80bc1ab7a44aae7867acaffb44cb0ee",
+      "snapshot_ref": {
+        "content_sha256": "985bc99d7d244f2cab66463043a9db1f1d1ed6e78c66968834aadb9d260dabf2",
+        "id": "science-985bc99d7d244f2cab66463043a9db1f1d1ed6e78c66968834aadb9d260dabf2",
+        "version": 1
+      }
+    },
+    {
+      "task_id": "4df446b0-8241-4acb-8d2d-a4c71662278e",
+      "name": "织女星 · 有效温度与表面重力",
+      "object": "织女星",
+      "otype": "dS*",
+      "query": "我要查询织女星的有效温度和表面重力对数",
+      "properties": [
+        "有效温度",
+        "表面重力对数"
+      ],
+      "summary": "在原论文的拟合表中找回 9547 ± 17 K，对照整星与不同区域的大气参数。",
+      "record_count": 64,
+      "source_count": 23,
+      "figure_count": 38,
+      "quality_score": 0.93,
+      "status": "completed",
+      "created_at": "2026-11-03T08:26:07.166286+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-34c7d9c999ae7a8bd707b4cf74ed7bda349bfe4e08e6a1e7ed84101f7e38b877",
+      "snapshot_ref": {
+        "content_sha256": "8496dab38a6364b7749db46b1d55e288fe583bdab76db22d9f59080d6a74f418",
+        "id": "science-8496dab38a6364b7749db46b1d55e288fe583bdab76db22d9f59080d6a74f418",
+        "version": 1
+      }
+    },
+    {
+      "task_id": "e030fefb-3db1-479e-af8b-eb710233e539",
+      "name": "PSR J0437−4715 · 精密计时",
+      "object": "PSR J0437−4715",
+      "otype": "Psr",
+      "query": "请整理 PSR J0437−4715 的自转频率、轨道周期和色散量。",
+      "properties": [
+        "自转频率",
+        "轨道周期",
+        "色散量"
+      ],
+      "summary": "在 VizieR 的原始响应行核对脉冲星名称、轨道周期和独立误差列。",
+      "record_count": 35,
+      "source_count": 55,
+      "figure_count": 19,
+      "quality_score": 0.94,
+      "status": "completed",
+      "created_at": "2026-11-03T10:28:13.323666+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-c7b1b6fa9ee912a117614842b47b2be0b80094b337e959ea7ae2ff6e06b6e97e",
+      "snapshot_ref": {
+        "content_sha256": "a2ef88f5efa48083f8b9924d27eb7ddedce3b4cff92bc53ac63ee81e61387b63",
+        "id": "science-a2ef88f5efa48083f8b9924d27eb7ddedce3b4cff92bc53ac63ee81e61387b63",
+        "version": 1
+      }
+    },
+    {
+      "task_id": "d50e2f5d-1390-4a25-b8bc-03554f90492d",
+      "name": "M45 昴星团 · 年龄、距离与金属丰度",
+      "object": "M45 昴星团",
+      "otype": "OpC",
+      "query": "昴星团(M45)的年龄、距离和金属丰度",
+      "properties": [
+        "星团年龄对数",
+        "日心距离",
+        "星团采用的 [Fe/H]"
+      ],
+      "summary": "比较双星测距与视差测距，沿原文查看 132 ± 2 pc 以及金属丰度的统计和系统误差。",
+      "record_count": 45,
+      "source_count": 23,
+      "figure_count": 37,
+      "quality_score": 0.97,
+      "status": "completed",
+      "created_at": "2026-11-03T09:48:39.794331+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-2b8ad80c40fbb55167cdd521c87ad594bfd2007bd5c02beaec14e1c81ec2ab7c",
+      "snapshot_ref": {
+        "content_sha256": "cad854d7cae19f49bfaa0ad6221b497119ea8736be45eb4317ad44f25d55918a",
+        "id": "science-cad854d7cae19f49bfaa0ad6221b497119ea8736be45eb4317ad44f25d55918a",
+        "version": 1
+      }
+    },
+    {
+      "task_id": "9b792ff5-97dc-4f14-b0ef-c4c9e06743cd",
+      "name": "大角星 · 恒星大气与微湍流",
+      "object": "大角星",
+      "otype": "RG*",
+      "query": "请汇总大角星的有效温度、表面重力、金属丰度和微湍流速度。",
+      "properties": [
+        "有效温度",
+        "表面重力对数",
+        "铁氢丰度比",
+        "微湍流速度"
+      ],
+      "summary": "337 条测量、39 份来源资料与 83 幅图像。展示多性质查询、人工审核及原页回溯；四项性质中两项生成洞察、一项完成对照。",
+      "record_count": 337,
+      "source_count": 39,
+      "figure_count": 83,
+      "quality_score": 0.86,
+      "status": "completed",
+      "created_at": "2026-11-03T05:17:44.079157+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-72bd7bc6f2229b193c0bb6d3a53ae376d08f19cab714cd02e7741d224b92a880",
+      "snapshot_ref": {
+        "content_sha256": "6174c6cf373393f93e1a6ad39c8b46145ad5a67dad69375488f7e73d8ccb95dc",
+        "id": "science-6174c6cf373393f93e1a6ad39c8b46145ad5a67dad69375488f7e73d8ccb95dc",
+        "version": 1
+      }
+    }
+  ]
+}

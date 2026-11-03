@@ -1,0 +1,2794 @@
+[
+  {
+    "concept_id": "astro.absorption",
+    "label_zh": "吸收",
+    "definition_zh": "辐射在传播或源内被吸收的影响；保留波段、成分、柱密度及模型。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.active_nucleus",
+      "type.high_mass_xray_binary",
+      "type.seyfert",
+      "type.seyfert1",
+      "type.seyfert2",
+      "type.xray_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.abundance",
+    "label_zh": "元素丰度",
+    "definition_zh": "指定元素或离子的数目/质量比或相对参考对数；需主体和标尺。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "chemistry.abundance",
+      "gas.nebular_diagnostics",
+      "relation.main_sequence",
+      "relation.mass_metallicity",
+      "relation.period_luminosity",
+      "type.agb",
+      "type.alpha2_cvn",
+      "type.beta_cephei",
+      "type.blue_compact_galaxy",
+      "type.blue_straggler",
+      "type.blue_supergiant",
+      "type.carbon_star",
+      "type.cepheid",
+      "type.classical_cepheid",
+      "type.classical_nova",
+      "type.evolved_star",
+      "type.globular_cluster",
+      "type.hii_galaxy",
+      "type.horizontal_branch",
+      "type.hot_subdwarf",
+      "type.long_period_variable",
+      "type.low_mass_star",
+      "type.main_sequence",
+      "type.moving_group",
+      "type.peculiar_star",
+      "type.planetary_nebula",
+      "type.r_crb",
+      "type.red_giant_branch",
+      "type.rr_lyrae",
+      "type.rv_tauri",
+      "type.s_star",
+      "type.star",
+      "type.stellar_stream",
+      "type.sx_phoenicis",
+      "type.type_ii_cepheid",
+      "type.white_dwarf",
+      "type.wolf_rayet",
+      "type.yellow_supergiant"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.accretion_rate",
+    "label_zh": "吸积率",
+    "definition_zh": "穿过指定边界向中心流入的质量每时间；与外流失质分开。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.eddington",
+      "stellar.energy",
+      "stellar.winds",
+      "type.active_nucleus",
+      "type.cataclysmic_variable",
+      "type.classical_nova",
+      "type.herbig_aebe",
+      "type.low_mass_xray_binary",
+      "type.orion_variable",
+      "type.quasar",
+      "type.symbiotic_star",
+      "type.t_tauri",
+      "type.xray_binary",
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.activity",
+    "label_zh": "活动",
+    "definition_zh": "来源定义的活动现象或指标；不能替代具体物理机制。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stars.rotation"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.age",
+    "label_zh": "年龄",
+    "definition_zh": "从指定参考事件累计的时间或模型时间尺度；必须区分形成、冷却、特征年龄。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.pulsar_age",
+      "method.sed",
+      "population.imf",
+      "stars.evolution",
+      "stellar.energy",
+      "stellar_sets.population",
+      "type.blue_straggler",
+      "type.brown_dwarf",
+      "type.globular_cluster",
+      "type.herbig_aebe",
+      "type.horizontal_branch",
+      "type.main_sequence",
+      "type.moving_group",
+      "type.open_cluster",
+      "type.orion_variable",
+      "type.post_agb",
+      "type.pulsar",
+      "type.rotating_variable",
+      "type.stellar_association",
+      "type.stellar_cluster",
+      "type.t_tauri",
+      "type.white_dwarf",
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.amplitude",
+    "label_zh": "变幅",
+    "definition_zh": "指定波段和时间窗下的峰峰、半幅或统计幅度，定义不能互换。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.alpha2_cvn",
+      "type.by_draconis",
+      "type.delta_scuti",
+      "type.ellipsoidal_variable",
+      "type.eruptive_variable",
+      "type.irregular_variable",
+      "type.long_period_variable",
+      "type.orion_variable",
+      "type.pulsating_star",
+      "type.rotating_variable",
+      "type.rr_lyrae",
+      "type.variable_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.angular_diameter_distance",
+    "label_zh": "角直径距离",
+    "definition_zh": "横向物理尺度与角尺度之比，保留宇宙学和红移。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cosmology.distances"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.angular_size",
+    "label_zh": "角尺度",
+    "definition_zh": "天空角尺寸；注明长短轴、半径/直径、分辨与去卷积状态。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.aperture",
+      "method.crossmatch",
+      "radio.interferometry",
+      "type.outflow",
+      "type.planetary_nebula"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.aperture",
+    "label_zh": "测量孔径",
+    "definition_zh": "实际空间/角范围与加权边界，不等于目标整个范围。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.kinematics",
+      "measurement.aperture"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.asteroseismology",
+    "label_zh": "星震",
+    "definition_zh": "恒星振动的模态及其内部结构解释。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stellar.asteroseismology",
+      "type.beta_cephei",
+      "type.delta_scuti",
+      "type.gamma_doradus",
+      "type.pulsating_star",
+      "type.red_giant_branch"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.atmosphere",
+    "label_zh": "大气",
+    "definition_zh": "对象的大气组成、结构或模型，必须区分恒星与行星。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.brown_dwarf",
+      "type.exoplanet"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.attenuation",
+    "label_zh": "衰减",
+    "definition_zh": "扩展系统中含几何与散射影响的净光减弱，不等同前景屏消光。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "photometry.extinction"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.bandpass",
+    "label_zh": "波段响应",
+    "definition_zh": "观测频率/波长窗口及响应、积分约定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "photometry.flux",
+      "photometry.magnitude"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.baryonic_mass",
+    "label_zh": "重子质量",
+    "definition_zh": "指定系统的恒星与气体等重子成分总量；需包含项及孔径。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.tully_fisher"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.binary_mass_function",
+    "label_zh": "双星轨道质量函数",
+    "definition_zh": "由轨道约束的质量与倾角组合量，不等于群体质量分布或某个分量质量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.spectroscopic_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.black_hole_mass",
+    "label_zh": "黑洞质量",
+    "definition_zh": "指定黑洞的质量估计，保留动力学、反响或代理方法。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.blackhole_host",
+      "type.active_nucleus",
+      "type.quasar",
+      "type.seyfert",
+      "type.seyfert1",
+      "type.seyfert2"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.bulge_fraction",
+    "label_zh": "核球比例",
+    "definition_zh": "某波段光度或某质量定义下核球占比，需分解模型。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.structure"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.bulge_mass",
+    "label_zh": "核球质量",
+    "definition_zh": "指定核球的质量及模型，不等于全星系恒星质量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.blackhole_host"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.cadence",
+    "label_zh": "采样安排",
+    "definition_zh": "观测时间间隔、窗口与基线。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "time.periods",
+      "type.irregular_variable",
+      "type.variable_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.calibration",
+    "label_zh": "校准",
+    "definition_zh": "将仪器响应关联到量值的处理及参考版本。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.precision",
+      "method.calibration"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.color",
+    "label_zh": "颜色",
+    "definition_zh": "两个明确波段和系统的星等差。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.morphology",
+      "photometry.extinction",
+      "photometry.magnitude",
+      "type.blue_compact_galaxy",
+      "type.blue_straggler",
+      "type.orion_variable",
+      "type.supernova"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.completeness",
+    "label_zh": "完备性",
+    "definition_zh": "指定总体、区域和选择方法的被纳入概率或比例。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.selection"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.covariance",
+    "label_zh": "协方差",
+    "definition_zh": "参数或测量的共同变化结构；未知不表示零。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "data.provenance",
+      "method.posterior",
+      "relation.interpretation",
+      "type.high_proper_motion"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.critical_density",
+    "label_zh": "临界密度",
+    "definition_zh": "给定红移及宇宙学的宇宙临界密度参照。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "groups.mass_definition"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.density",
+    "label_zh": "密度",
+    "definition_zh": "指定主体、相与空间边界的体密度，不含自动由质量半径计算权限。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.exoplanet"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.depletion_time",
+    "label_zh": "耗尽时间尺度",
+    "definition_zh": "某种储量与当前消耗率之比的解释量，不是未来事件时间预测。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.gas_star_formation"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.disk",
+    "label_zh": "盘",
+    "definition_zh": "环星、吸积或星系盘结构；必须注明是哪一主体及成分。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stellar.winds",
+      "type.be_star",
+      "type.herbig_aebe",
+      "type.t_tauri",
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.dispersion_measure",
+    "label_zh": "色散量",
+    "definition_zh": "沿传播路径自由电子密度积分的观测约束。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.dispersion",
+      "type.pulsar"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.distance",
+    "label_zh": "距离",
+    "definition_zh": "泛指已定义距离，正式绑定必须细分几何、模型和宇宙学距离。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "astrometry.parallax",
+      "cosmology.distances",
+      "galaxy.lensing",
+      "law.flux_luminosity",
+      "radio.dispersion",
+      "type.cepheid",
+      "type.classical_cepheid",
+      "type.high_proper_motion",
+      "type.high_velocity_star",
+      "type.open_cluster",
+      "type.pulsar",
+      "type.red_giant_branch",
+      "type.rr_lyrae",
+      "type.star",
+      "type.stellar_association",
+      "type.stellar_stream",
+      "type.type_ii_cepheid"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.dust",
+    "label_zh": "尘埃",
+    "definition_zh": "指定区域尘埃质量、温度或辐射背景，不能合并成一个数值性质。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.inventory",
+      "type.agb",
+      "type.carbon_star",
+      "type.long_period_variable",
+      "type.mira",
+      "type.oh_ir_star",
+      "type.post_agb",
+      "type.r_crb",
+      "type.red_supergiant",
+      "type.rv_tauri",
+      "type.starburst_galaxy",
+      "type.symbiotic_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.dynamical_mass",
+    "label_zh": "动力学质量",
+    "definition_zh": "给定模型与空间范围内由运动推断的引力质量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.kinematics",
+      "galaxy.stellar_mass"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.eccentricity",
+    "label_zh": "偏心率",
+    "definition_zh": "指定轨道的无量纲形状参数。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "binary.orbits",
+      "type.spectroscopic_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.effective_temperature",
+    "label_zh": "有效温度",
+    "definition_zh": "由单位表面积全波段辐射通量定义的等效温度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.stefan_boltzmann",
+      "stars.temperature"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.electron_density",
+    "label_zh": "电子密度",
+    "definition_zh": "指定气体区域的自由电子数密度，保留诊断加权。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.nebular_diagnostics",
+      "type.herbig_haro",
+      "type.hii_galaxy",
+      "type.planetary_nebula"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.electron_temperature",
+    "label_zh": "电子温度",
+    "definition_zh": "指定气体的电子热状态或诊断温度，非恒星有效温度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.nebular_diagnostics",
+      "type.herbig_haro",
+      "type.hii_galaxy",
+      "type.planetary_nebula"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.energy",
+    "label_zh": "能量",
+    "definition_zh": "指定事件、波段或系统的能量，不等于功率。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.eruptive_variable",
+      "type.outflow"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.envelope",
+    "label_zh": "包层",
+    "definition_zh": "恒星内部外层或环星包层必须区分主体与边界。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.environment",
+    "label_zh": "环境",
+    "definition_zh": "目标所处结构及关联信息，不赋予邻近对象的全部性质。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "environment.membership",
+      "type.brightest_cluster_galaxy",
+      "type.cosmic_void",
+      "type.galaxy_group",
+      "type.galaxy_towards_cluster",
+      "type.galaxy_towards_group",
+      "type.radio_galaxy",
+      "type.stellar_stream",
+      "type.supercluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.epoch",
+    "label_zh": "历元",
+    "definition_zh": "位置/测量的参照时刻与时间标准，不等于发布年份。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.epoch",
+      "method.crossmatch"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.equation_of_state",
+    "label_zh": "状态方程",
+    "definition_zh": "物质压力与热力学变量等的模型联系。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stellar.compact_limits"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.equilibrium_temperature",
+    "label_zh": "平衡温度",
+    "definition_zh": "给定辐射平衡、反照率及热再分配约定的温度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.exoplanet"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.equivalent_width",
+    "label_zh": "等值宽度",
+    "definition_zh": "谱线相对于连续谱的积分宽度，保留符号与静止/观测系。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "spectroscopy.lines",
+      "type.be_star",
+      "type.bl_lac",
+      "type.emission_line_galaxy",
+      "type.emission_line_star",
+      "type.liner"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.evolution",
+    "label_zh": "演化",
+    "definition_zh": "物理演化过程；与某种单值年龄不同。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stars.evolution"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.expansion_velocity",
+    "label_zh": "膨胀速度",
+    "definition_zh": "指定气体结构的运动指标，保留几何及线型定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.classical_nova",
+      "type.planetary_nebula",
+      "type.supernova"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.extinction",
+    "label_zh": "消光",
+    "definition_zh": "视线吸收和散射造成的光减弱，需波段及消光律。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.sed",
+      "photometry.extinction",
+      "type.cepheid",
+      "type.emission_line_galaxy",
+      "type.herbig_aebe",
+      "type.open_cluster",
+      "type.orion_variable",
+      "type.r_crb",
+      "type.star",
+      "type.supernova",
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.flux",
+    "label_zh": "通量",
+    "definition_zh": "单位面积的积分辐射功率；需波段和校正定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.flux_luminosity",
+      "measurement.aperture",
+      "photometry.flux"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.flux_density",
+    "label_zh": "通量密度",
+    "definition_zh": "单位频率或波长的通量，密度坐标不可省略。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "photometry.flux",
+      "radio.interferometry",
+      "radio.spectral_index"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.frequency",
+    "label_zh": "频率",
+    "definition_zh": "指定物理振动、光子或拟合信号的每时间次数，须注明种类。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.dispersion",
+      "radio.polarization",
+      "radio.spectral_index",
+      "stellar.asteroseismology",
+      "time.periods",
+      "type.beta_cephei",
+      "type.delta_scuti",
+      "type.gamma_doradus",
+      "type.pulsating_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.gas_mass",
+    "label_zh": "气体质量",
+    "definition_zh": "指定区域、气体相、氦处理和转换模型的质量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cluster.hot_gas",
+      "gas.inventory",
+      "relation.gas_star_formation",
+      "type.blue_compact_galaxy",
+      "type.galaxy",
+      "type.galaxy_group",
+      "type.interacting_galaxies",
+      "type.low_surface_brightness_galaxy",
+      "type.starburst_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.gas_temperature",
+    "label_zh": "气体温度",
+    "definition_zh": "气体的热状态或光谱加权温度，需相与方法。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cluster.hot_gas",
+      "relation.cluster_scaling",
+      "type.galaxy_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.halo_mass",
+    "label_zh": "晕质量",
+    "definition_zh": "指定晕边界或过密度定义的引力质量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cluster.hot_gas",
+      "groups.mass_definition",
+      "relation.cluster_scaling",
+      "type.galaxy",
+      "type.galaxy_cluster",
+      "type.galaxy_group",
+      "type.protocluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.host_galaxy",
+    "label_zh": "宿主星系",
+    "definition_zh": "核或事件所在星系的身份及允许的主体关系。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.active_nucleus"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.inclination",
+    "label_zh": "倾角",
+    "definition_zh": "指定轴/轨道相对参考平面或视线的角度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "binary.orbits",
+      "galaxy.kinematics",
+      "relation.tully_fisher",
+      "stars.rotation",
+      "type.eclipsing_binary",
+      "type.ellipsoidal_variable",
+      "type.rotating_variable"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.interaction",
+    "label_zh": "相互作用",
+    "definition_zh": "对象之间有证据的动态或物质作用，不等于投影邻近。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.compact_galaxy_group",
+      "type.galaxy_in_pair",
+      "type.galaxy_pair",
+      "type.interacting_galaxies"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.interval",
+    "label_zh": "区间",
+    "definition_zh": "具有明确统计或物理含义的上下边界，不默认用中点替代。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.intervals"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.ionization",
+    "label_zh": "电离",
+    "definition_zh": "电离状态、机制或模型，不由一个线比唯一决定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.nebular_diagnostics",
+      "type.emission_line_galaxy",
+      "type.hii_galaxy",
+      "type.liner",
+      "type.planetary_nebula"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.jet",
+    "label_zh": "喷流",
+    "definition_zh": "准直流动/辐射结构，需与中心源和外流其他相区分。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.active_nucleus",
+      "type.bl_lac",
+      "type.blazar",
+      "type.radio_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.lensing_mass",
+    "label_zh": "透镜质量",
+    "definition_zh": "透镜模型约束的投影质量或相应转换量，需孔径。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.lensing"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.line_flux",
+    "label_zh": "谱线通量",
+    "definition_zh": "指定谱线和积分窗口扣除连续谱后的积分信号。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.redshift",
+      "spectroscopy.lines",
+      "type.be_star",
+      "type.emission_line_galaxy",
+      "type.emission_line_star",
+      "type.herbig_haro",
+      "type.hii_galaxy",
+      "type.planetary_nebula",
+      "type.seyfert2",
+      "type.symbiotic_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.line_profile",
+    "label_zh": "线型",
+    "definition_zh": "指定谱线的形状或分量分解。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.emission_line_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.line_ratio",
+    "label_zh": "谱线比",
+    "definition_zh": "明确定义的两条或多条谱线量之比。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.nebular_diagnostics",
+      "type.emission_line_galaxy",
+      "type.liner"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.line_width",
+    "label_zh": "线宽",
+    "definition_zh": "FWHM、弥散或分位宽度等指标，不能只按单位合并。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "spectroscopy.lines",
+      "type.quasar",
+      "type.seyfert",
+      "type.seyfert1"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.luminosity",
+    "label_zh": "光度",
+    "definition_zh": "源辐射功率；需波段、各向同性/本征和主体。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.eddington",
+      "law.flux_luminosity",
+      "law.stefan_boltzmann",
+      "measurement.aperture",
+      "photometry.flux",
+      "relation.fundamental_plane",
+      "relation.main_sequence",
+      "relation.period_luminosity",
+      "relation.tully_fisher",
+      "stars.evolution",
+      "stars.temperature",
+      "stellar.energy",
+      "type.agb",
+      "type.blue_straggler",
+      "type.blue_supergiant",
+      "type.brightest_cluster_galaxy",
+      "type.brown_dwarf",
+      "type.carbon_star",
+      "type.cataclysmic_variable",
+      "type.cepheid",
+      "type.classical_cepheid",
+      "type.classical_nova",
+      "type.compact_galaxy_group",
+      "type.eruptive_variable",
+      "type.evolved_star",
+      "type.herbig_aebe",
+      "type.horizontal_branch",
+      "type.long_period_variable",
+      "type.low_mass_star",
+      "type.low_surface_brightness_galaxy",
+      "type.main_sequence",
+      "type.massive_star",
+      "type.mira",
+      "type.multiple_star",
+      "type.neutron_star",
+      "type.oh_ir_star",
+      "type.post_agb",
+      "type.pulsar",
+      "type.r_crb",
+      "type.red_giant_branch",
+      "type.red_supergiant",
+      "type.rr_lyrae",
+      "type.rv_tauri",
+      "type.s_star",
+      "type.star",
+      "type.stellar_cluster",
+      "type.supergiant",
+      "type.supernova",
+      "type.sx_phoenicis",
+      "type.symbiotic_star",
+      "type.t_tauri",
+      "type.type_ii_cepheid",
+      "type.variable_star",
+      "type.wolf_rayet",
+      "type.yellow_supergiant",
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.luminosity_distance",
+    "label_zh": "光度距离",
+    "definition_zh": "联系全波段通量与光度的距离定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cosmology.distances"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.luminosity_function",
+    "label_zh": "光度函数",
+    "definition_zh": "给定总体的光度分布及归一化，不等于单体光度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "population.imf",
+      "stellar_sets.population",
+      "type.globular_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.magnetic_activity",
+    "label_zh": "磁活动",
+    "definition_zh": "与磁场相关的观测活动及诊断，不等于直接场强。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.by_draconis",
+      "type.low_mass_star",
+      "type.rotating_variable",
+      "type.rs_cvn",
+      "type.t_tauri"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.magnetic_field",
+    "label_zh": "磁场",
+    "definition_zh": "场强、分量、几何或模型推断需逐项定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.polarization",
+      "type.alpha2_cvn",
+      "type.cataclysmic_variable",
+      "type.neutron_star",
+      "type.peculiar_star",
+      "type.pulsar"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.magnification",
+    "label_zh": "放大",
+    "definition_zh": "给定透镜模型下辐射或面积等的放大因子及约定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.lensing"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.magnitude",
+    "label_zh": "星等",
+    "definition_zh": "指定波段、零点、观测/绝对及平均方式的对数亮度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "photometry.magnitude",
+      "relation.period_luminosity",
+      "type.cepheid",
+      "type.classical_cepheid"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.maser",
+    "label_zh": "脉泽",
+    "definition_zh": "受激辐射放大现象及其谱线/几何条件。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.oh_ir_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mass",
+    "label_zh": "质量",
+    "definition_zh": "通用质量概念；正式绑定必须确定主体、成分、真值/投影及范围。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.lensing",
+      "groups.virial",
+      "law.eddington",
+      "law.kepler",
+      "law.surface_gravity",
+      "method.sed",
+      "relation.main_sequence",
+      "stars.evolution",
+      "stars.gravity",
+      "stellar.asteroseismology",
+      "stellar.compact_limits",
+      "stellar.energy",
+      "type.blue_straggler",
+      "type.brown_dwarf",
+      "type.eclipsing_binary",
+      "type.exoplanet",
+      "type.horizontal_branch",
+      "type.hot_subdwarf",
+      "type.low_mass_star",
+      "type.main_sequence",
+      "type.massive_star",
+      "type.multiple_star",
+      "type.neutron_star",
+      "type.outflow",
+      "type.white_dwarf"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mass_flow_rate",
+    "label_zh": "质量流率",
+    "definition_zh": "穿过指定边界的质量每时间；方向、相与时间平均明确。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stellar.winds",
+      "type.outflow"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mass_function",
+    "label_zh": "群体质量函数",
+    "definition_zh": "给定总体按质量或对数质量表示的分布，不是双星轨道质量函数。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "population.imf",
+      "type.open_cluster",
+      "type.stellar_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mass_loss",
+    "label_zh": "质量损失",
+    "definition_zh": "指定恒星或系统的失质及失质率背景，需定义时段和相。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.inventory",
+      "stellar.winds",
+      "type.agb",
+      "type.blue_supergiant",
+      "type.evolved_star",
+      "type.high_mass_xray_binary",
+      "type.massive_star",
+      "type.mira",
+      "type.oh_ir_star",
+      "type.post_agb",
+      "type.red_supergiant",
+      "type.supergiant",
+      "type.wolf_rayet"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mass_ratio",
+    "label_zh": "质量比",
+    "definition_zh": "两个明确分量质量之比，须保留分子分母。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "binary.orbits",
+      "type.ellipsoidal_variable",
+      "type.galaxy_pair"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mass_to_light_ratio",
+    "label_zh": "质量光度比",
+    "definition_zh": "特定质量成分、波段、区域和单位下的比值。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.stellar_mass"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.mean_density",
+    "label_zh": "平均密度参照",
+    "definition_zh": "本库群团定义中的宇宙平均物质密度，非任意对象内部平均密度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "groups.mass_definition"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.measurement",
+    "label_zh": "测量结果",
+    "definition_zh": "主值、误差、定义、方法、上下文与来源构成的结果。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "data.provenance",
+      "measurement.precision",
+      "measurement.uncertainty",
+      "method.calibration",
+      "relation.interpretation"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.membership",
+    "label_zh": "成员关系",
+    "definition_zh": "目标与集合的方向性关联、资格或概率及依据。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "environment.membership",
+      "stellar_sets.population",
+      "type.blue_straggler",
+      "type.brightest_cluster_galaxy",
+      "type.compact_galaxy_group",
+      "type.galaxy_group",
+      "type.galaxy_in_pair",
+      "type.galaxy_pair",
+      "type.galaxy_towards_cluster",
+      "type.galaxy_towards_group",
+      "type.globular_cluster",
+      "type.moving_group",
+      "type.open_cluster",
+      "type.protocluster",
+      "type.stellar_association",
+      "type.stellar_cluster",
+      "type.stellar_stream",
+      "type.supercluster",
+      "type.sx_phoenicis"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.metallicity",
+    "label_zh": "金属丰度标度",
+    "definition_zh": "总体金属组成标度，须区别Z、[M/H]、[Fe/H]及气相氧丰度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "chemistry.abundance",
+      "relation.mass_metallicity",
+      "stellar_sets.population",
+      "type.open_cluster",
+      "type.stellar_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.minimum_mass",
+    "label_zh": "最小质量",
+    "definition_zh": "含投影或假设的质量下约束，不直接作为真质量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.exoplanet"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.model",
+    "label_zh": "模型",
+    "definition_zh": "估计或解释所采用的结构、假设和参数族。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.posterior"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.molecular_gas",
+    "label_zh": "分子气体",
+    "definition_zh": "指定区域的分子相及示踪物转换约定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.inventory"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.momentum",
+    "label_zh": "动量",
+    "definition_zh": "指定流体或系统的质量运动量，保留投影与范围。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.outflow"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.morphology",
+    "label_zh": "形态",
+    "definition_zh": "特定波段与分类体系下的结构类别或描述。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.morphology",
+      "galaxy.structure",
+      "type.cosmic_void",
+      "type.galaxy",
+      "type.galaxy_towards_group",
+      "type.interacting_galaxies"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.multiplicity",
+    "label_zh": "多重性",
+    "definition_zh": "恒星等系统的分量、层级和物理关联。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.crossmatch",
+      "type.blue_straggler",
+      "type.by_draconis",
+      "type.carbon_star",
+      "type.eclipsing_binary",
+      "type.high_velocity_star",
+      "type.hot_subdwarf",
+      "type.multiple_star",
+      "type.post_agb",
+      "type.rs_cvn",
+      "type.rv_tauri",
+      "type.s_star",
+      "type.spectroscopic_binary",
+      "type.symbiotic_star",
+      "type.type_ii_cepheid",
+      "type.wolf_rayet",
+      "type.xray_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.neutral_hydrogen",
+    "label_zh": "中性氢",
+    "definition_zh": "HI成分及相关21厘米等示踪的定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "gas.inventory"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.nuclear_luminosity",
+    "label_zh": "核光度",
+    "definition_zh": "指定核区或活动核成分的辐射功率，非宿主整体光度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.active_nucleus",
+      "type.blazar",
+      "type.liner",
+      "type.quasar",
+      "type.seyfert",
+      "type.seyfert1",
+      "type.seyfert2"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.opacity",
+    "label_zh": "不透明度",
+    "definition_zh": "单位长度或质量的辐射相互作用系数及机制；正式定义必须区分。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.eddington"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.orbit",
+    "label_zh": "轨道",
+    "definition_zh": "指定系统层级、参考系与拟合模型的运动结构。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.stellar_stream"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.orbital_period",
+    "label_zh": "轨道周期",
+    "definition_zh": "指定一对对象或系统层级完成一周的时间。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "binary.orbits",
+      "law.kepler",
+      "type.cataclysmic_variable",
+      "type.eclipsing_binary",
+      "type.ellipsoidal_variable",
+      "type.exoplanet",
+      "type.high_mass_xray_binary",
+      "type.low_mass_xray_binary",
+      "type.multiple_star",
+      "type.rs_cvn",
+      "type.spectroscopic_binary",
+      "type.xray_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.outflow",
+    "label_zh": "外流",
+    "definition_zh": "指定区域向外流动的气体结构或物理过程。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.herbig_aebe",
+      "type.outflow",
+      "type.starburst_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.overdensity",
+    "label_zh": "密度对比",
+    "definition_zh": "相对指定参照与示踪总体的过密或欠密量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.cosmic_void",
+      "type.protocluster",
+      "type.supercluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.overdensity_radius",
+    "label_zh": "过密度半径",
+    "definition_zh": "相对明确参考密度与倍数定义的包围半径。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "groups.mass_definition",
+      "type.galaxy_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.parallax",
+    "label_zh": "视差",
+    "definition_zh": "天体测量角参数，不等于已推断的距离。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "astrometry.parallax",
+      "type.high_proper_motion"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.period",
+    "label_zh": "周期",
+    "definition_zh": "泛指重复时间，正式绑定须细分自转、轨道、脉动与调制。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.epoch",
+      "relation.period_luminosity",
+      "stellar.asteroseismology",
+      "time.periods",
+      "type.alpha2_cvn",
+      "type.by_draconis",
+      "type.cepheid",
+      "type.classical_cepheid",
+      "type.ellipsoidal_variable",
+      "type.gamma_doradus",
+      "type.long_period_variable",
+      "type.mira",
+      "type.pulsating_star",
+      "type.rotating_variable",
+      "type.rr_lyrae",
+      "type.rv_tauri",
+      "type.sx_phoenicis",
+      "type.type_ii_cepheid",
+      "type.variable_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.polarization",
+    "label_zh": "偏振",
+    "definition_zh": "Stokes、比例、角度及观测坐标约定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.polarization",
+      "type.be_star",
+      "type.bl_lac",
+      "type.blazar",
+      "type.radio_galaxy",
+      "type.seyfert2"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.posterior",
+    "label_zh": "后验",
+    "definition_zh": "特定模型、似然和先验下的推断分布。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.posterior",
+      "method.redshift"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.projected_rotation",
+    "label_zh": "投影自转速度",
+    "definition_zh": "通常为v sin i，需谱模型与轴倾角定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stars.rotation"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.proper_motion",
+    "label_zh": "自行",
+    "definition_zh": "天球角位置变化率及分量、坐标和历元约定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "kinematics.velocity",
+      "method.crossmatch",
+      "type.herbig_haro",
+      "type.high_proper_motion",
+      "type.high_velocity_star",
+      "type.moving_group"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.provenance",
+    "label_zh": "来源与版本",
+    "definition_zh": "作品、原始数据、表列、版本及共同来源关系。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "data.provenance",
+      "method.calibration",
+      "method.crossmatch",
+      "relation.interpretation",
+      "taxonomy.codes"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.pulsation",
+    "label_zh": "脉动",
+    "definition_zh": "恒星振动模式与对应变化机制。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.period_luminosity",
+      "type.agb",
+      "type.beta_cephei",
+      "type.carbon_star",
+      "type.cepheid",
+      "type.classical_cepheid",
+      "type.delta_scuti",
+      "type.gamma_doradus",
+      "type.hot_subdwarf",
+      "type.long_period_variable",
+      "type.mira",
+      "type.pulsating_star",
+      "type.rr_lyrae",
+      "type.rv_tauri",
+      "type.sx_phoenicis",
+      "type.type_ii_cepheid",
+      "type.yellow_supergiant"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.radial_velocity",
+    "label_zh": "视向速度",
+    "definition_zh": "沿视线的速度定义、参考系及示踪物。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "kinematics.velocity",
+      "law.redshift",
+      "type.herbig_haro",
+      "type.high_proper_motion",
+      "type.high_velocity_star",
+      "type.multiple_star",
+      "type.oh_ir_star",
+      "type.outflow",
+      "type.spectroscopic_binary",
+      "type.white_dwarf"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.radio_luminosity",
+    "label_zh": "射电光度",
+    "definition_zh": "指定射电频率/频段及各向同性约定，需区别伪光度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.radio_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.radius",
+    "label_zh": "半径",
+    "definition_zh": "指定主体和表面的长度量，不等同各种结构或孔径半径。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.stefan_boltzmann",
+      "law.surface_gravity",
+      "stars.gravity",
+      "stars.temperature",
+      "stellar.asteroseismology",
+      "stellar.compact_limits",
+      "type.brown_dwarf",
+      "type.eclipsing_binary",
+      "type.exoplanet",
+      "type.low_mass_star",
+      "type.mira",
+      "type.neutron_star",
+      "type.red_supergiant",
+      "type.supergiant",
+      "type.white_dwarf"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.reddening",
+    "label_zh": "红化",
+    "definition_zh": "波段间消光差的描述，如明确系统下的颜色余量。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "photometry.extinction"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.redshift",
+    "label_zh": "红移",
+    "definition_zh": "波长比、谱模板或测光模型得到的无量纲量，方法另存。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cosmology.distances",
+      "environment.membership",
+      "galaxy.lensing",
+      "law.redshift",
+      "method.redshift",
+      "relation.star_forming_sequence",
+      "type.bl_lac",
+      "type.blazar",
+      "type.cosmic_void",
+      "type.emission_line_galaxy",
+      "type.galaxy",
+      "type.galaxy_towards_cluster",
+      "type.galaxy_towards_group",
+      "type.protocluster",
+      "type.quasar",
+      "type.supercluster",
+      "type.supernova"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.reference_frame",
+    "label_zh": "参考系",
+    "definition_zh": "坐标、运动与时间的参照体系。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "kinematics.velocity"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.reference_scale",
+    "label_zh": "参考标尺",
+    "definition_zh": "对数、太阳丰度、零点等量值所依附的定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "chemistry.abundance"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.resolution",
+    "label_zh": "分辨率",
+    "definition_zh": "空间、频谱或时间的分辨能力与报告方式。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.calibration",
+      "radio.interferometry"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.richness",
+    "label_zh": "丰富度",
+    "definition_zh": "集合成员计数或加权代理，须有选择范围与概率定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.cluster_scaling",
+      "type.compact_galaxy_group",
+      "type.galaxy_cluster",
+      "type.galaxy_group"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.rotation",
+    "label_zh": "旋转",
+    "definition_zh": "自转或系统有序旋转的背景概念，正式性质不能跨主体混用。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.kinematics",
+      "relation.tully_fisher",
+      "stellar.asteroseismology",
+      "type.alpha2_cvn",
+      "type.be_star",
+      "type.beta_cephei",
+      "type.blue_straggler",
+      "type.by_draconis",
+      "type.delta_scuti",
+      "type.gamma_doradus",
+      "type.low_surface_brightness_galaxy",
+      "type.massive_star",
+      "type.peculiar_star",
+      "type.rotating_variable",
+      "type.rs_cvn",
+      "type.t_tauri"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.rotation_measure",
+    "label_zh": "旋转量",
+    "definition_zh": "偏振角随波长平方的拟合指标，复杂介质下不同于单Faraday深度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.polarization"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.rotation_period",
+    "label_zh": "自转周期",
+    "definition_zh": "指定对象自转的周期，与信号主周期或轨道周期分开。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stars.rotation"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.scattering",
+    "label_zh": "散射",
+    "definition_zh": "本库主要指脉冲传播展宽及其模型，与色散量不同。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.dispersion",
+      "type.pulsar"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.selection",
+    "label_zh": "选择效应",
+    "definition_zh": "进入观测样本或分析子样本的机制。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.selection"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.separation",
+    "label_zh": "间距",
+    "definition_zh": "分量的投影、三维或轨道尺度，正式绑定必须明确。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.kepler",
+      "type.exoplanet",
+      "type.galaxy_in_pair",
+      "type.galaxy_pair",
+      "type.multiple_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.sersic_index",
+    "label_zh": "Sérsic指数",
+    "definition_zh": "特定结构拟合中的形状参数，非唯一形态标签。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.structure"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.shock",
+    "label_zh": "激波",
+    "definition_zh": "流体快速压缩与加热结构及相应诊断条件。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.herbig_haro"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.size",
+    "label_zh": "结构尺度",
+    "definition_zh": "区域或系统的大小指标，需几何、半径类型与距离约定。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.structure",
+      "groups.virial",
+      "relation.fundamental_plane",
+      "type.blue_compact_galaxy",
+      "type.brightest_cluster_galaxy",
+      "type.compact_galaxy_group",
+      "type.cosmic_void",
+      "type.galaxy",
+      "type.globular_cluster",
+      "type.low_surface_brightness_galaxy",
+      "type.protocluster",
+      "type.radio_galaxy",
+      "type.stellar_association",
+      "type.stellar_cluster",
+      "type.supercluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.specific_sfr",
+    "label_zh": "比星形成率",
+    "definition_zh": "SFR按明确恒星质量归一化的量，需一致模型。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.sfr",
+      "type.starburst_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.spectral_energy_distribution",
+    "label_zh": "能谱分布",
+    "definition_zh": "按明确频率/波长表示的辐射分布及组成。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.redshift",
+      "method.sed",
+      "type.bl_lac",
+      "type.blazar"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.spectral_index",
+    "label_zh": "频谱指数",
+    "definition_zh": "指定谱量的幂律斜率、符号约定及频段。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.interferometry",
+      "radio.spectral_index",
+      "type.radio_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.spectral_state",
+    "label_zh": "谱态",
+    "definition_zh": "时变吸积或辐射系统的观测谱状态。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.low_mass_xray_binary",
+      "type.xray_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.spin_derivative",
+    "label_zh": "自转周期导数",
+    "definition_zh": "本库指Pdot而非频率导数，保留本征/表观/校正定义。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.pulsar_age",
+      "type.pulsar"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.spin_period",
+    "label_zh": "自转脉冲周期",
+    "definition_zh": "致密星计时等的自转周期及时间标准。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.pulsar_age",
+      "type.cataclysmic_variable",
+      "type.high_mass_xray_binary",
+      "type.low_mass_xray_binary",
+      "type.neutron_star",
+      "type.pulsar"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.star_formation_rate",
+    "label_zh": "恒星形成率",
+    "definition_zh": "给定时间响应和模型下形成恒星的质量每时间。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.sfr",
+      "relation.gas_star_formation",
+      "relation.mass_metallicity",
+      "relation.star_forming_sequence",
+      "type.blue_compact_galaxy",
+      "type.galaxy",
+      "type.galaxy_in_pair",
+      "type.galaxy_towards_cluster",
+      "type.hii_galaxy",
+      "type.interacting_galaxies",
+      "type.seyfert",
+      "type.starburst_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.stellar_evolution",
+    "label_zh": "恒星演化",
+    "definition_zh": "恒星结构、能量来源和组成随演化阶段改变。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.main_sequence",
+      "stellar.compact_limits",
+      "stellar.energy",
+      "taxonomy.codes",
+      "type.agb",
+      "type.blue_supergiant",
+      "type.evolved_star",
+      "type.horizontal_branch",
+      "type.hot_subdwarf",
+      "type.main_sequence",
+      "type.massive_star",
+      "type.post_agb",
+      "type.r_crb",
+      "type.red_giant_branch",
+      "type.s_star",
+      "type.star",
+      "type.supergiant",
+      "type.yellow_supergiant",
+      "type.young_stellar_object"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.stellar_mass",
+    "label_zh": "恒星质量总量",
+    "definition_zh": "星系/集合中恒星成分质量；单星质量使用mass并限定主体。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.sfr",
+      "galaxy.stellar_mass",
+      "population.imf",
+      "relation.mass_metallicity",
+      "relation.star_forming_sequence",
+      "type.blue_compact_galaxy",
+      "type.brightest_cluster_galaxy",
+      "type.galaxy",
+      "type.galaxy_in_pair",
+      "type.galaxy_towards_cluster",
+      "type.galaxy_towards_group",
+      "type.globular_cluster",
+      "type.interacting_galaxies",
+      "type.low_surface_brightness_galaxy",
+      "type.starburst_galaxy",
+      "type.stellar_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.stellar_population",
+    "label_zh": "星族",
+    "definition_zh": "具有年龄、组成、形成历史等分布的恒星总体。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.morphology",
+      "population.imf",
+      "type.liner",
+      "type.protocluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.substructure",
+    "label_zh": "亚结构",
+    "definition_zh": "系统内部空间或运动子成分及识别方式。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.stellar_association"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.surface_brightness",
+    "label_zh": "面亮度",
+    "definition_zh": "单位立体角或相应面积的亮度，需波段和几何。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.structure",
+      "relation.fundamental_plane",
+      "type.brightest_cluster_galaxy",
+      "type.low_surface_brightness_galaxy"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.surface_density",
+    "label_zh": "面密度",
+    "definition_zh": "指定质量/数目成分每面积，区域及投影定义明确。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "relation.gas_star_formation"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.surface_gravity",
+    "label_zh": "表面重力",
+    "definition_zh": "指定表面加速度或有效引力；log g需单位基准。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.surface_gravity",
+      "stars.gravity",
+      "type.blue_supergiant",
+      "type.brown_dwarf",
+      "type.evolved_star",
+      "type.hot_subdwarf",
+      "type.main_sequence",
+      "type.peculiar_star",
+      "type.red_giant_branch",
+      "type.star",
+      "type.supergiant",
+      "type.white_dwarf",
+      "type.yellow_supergiant"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.synchrotron",
+    "label_zh": "同步辐射",
+    "definition_zh": "相对论性带电粒子在磁场中的辐射背景。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "radio.spectral_index"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.sz_signal",
+    "label_zh": "SZ信号",
+    "definition_zh": "Compton参数或其积分，需热/动力学类型及角/物理面积。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cluster.hot_gas",
+      "relation.cluster_scaling",
+      "type.galaxy_cluster"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.temperature",
+    "label_zh": "温度总概念",
+    "definition_zh": "仅用于主题关联；绑定须明确有效、电子、平衡、亮温或其他类型。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "method.sed",
+      "stars.temperature",
+      "type.beta_cephei",
+      "type.blue_supergiant",
+      "type.brown_dwarf",
+      "type.carbon_star",
+      "type.delta_scuti",
+      "type.eclipsing_binary",
+      "type.evolved_star",
+      "type.exoplanet",
+      "type.herbig_aebe",
+      "type.horizontal_branch",
+      "type.hot_subdwarf",
+      "type.low_mass_star",
+      "type.main_sequence",
+      "type.massive_star",
+      "type.mira",
+      "type.neutron_star",
+      "type.peculiar_star",
+      "type.post_agb",
+      "type.pulsating_star",
+      "type.red_giant_branch",
+      "type.red_supergiant",
+      "type.s_star",
+      "type.star",
+      "type.supergiant",
+      "type.symbiotic_star",
+      "type.t_tauri",
+      "type.white_dwarf",
+      "type.wolf_rayet",
+      "type.yellow_supergiant"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.timescale",
+    "label_zh": "时间尺度",
+    "definition_zh": "形成、变动、冷却或动态等特定过程的尺度，不等于任意年龄。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.classical_nova",
+      "type.eruptive_variable",
+      "type.irregular_variable",
+      "type.supernova"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.uncertainty",
+    "label_zh": "不确定度",
+    "definition_zh": "原始统计/系统/非对称/区间/限值及其水平和相关信息。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "astrometry.parallax",
+      "measurement.intervals",
+      "measurement.precision",
+      "measurement.uncertainty",
+      "method.posterior"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.upper_limit",
+    "label_zh": "限值",
+    "definition_zh": "有检测或推断条件的上限/下限约束，不是检测主值。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.intervals",
+      "measurement.selection"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.variability",
+    "label_zh": "变化性",
+    "definition_zh": "指定波段、状态与时间窗中的变化现象或统计指标。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "measurement.epoch",
+      "taxonomy.codes",
+      "time.periods",
+      "type.be_star",
+      "type.bl_lac",
+      "type.blazar",
+      "type.cataclysmic_variable",
+      "type.classical_nova",
+      "type.emission_line_star",
+      "type.eruptive_variable",
+      "type.irregular_variable",
+      "type.low_mass_xray_binary",
+      "type.orion_variable",
+      "type.r_crb",
+      "type.red_supergiant",
+      "type.seyfert1",
+      "type.variable_star"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.velocity",
+    "label_zh": "速度总概念",
+    "definition_zh": "正式绑定须细分空间、视向、投影、流动及参考系。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "environment.membership",
+      "kinematics.velocity",
+      "spectroscopy.lines",
+      "type.galaxy_in_pair",
+      "type.galaxy_pair",
+      "type.high_velocity_star",
+      "type.interacting_galaxies",
+      "type.moving_group",
+      "type.stellar_stream"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.velocity_dispersion",
+    "label_zh": "速度弥散",
+    "definition_zh": "指定成员或示踪物速度分布的统计宽度及空间窗口。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "galaxy.kinematics",
+      "groups.virial",
+      "relation.blackhole_host",
+      "relation.fundamental_plane",
+      "type.compact_galaxy_group",
+      "type.galaxy_cluster",
+      "type.galaxy_group",
+      "type.globular_cluster",
+      "type.stellar_association"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.virial_equilibrium",
+    "label_zh": "维里前提",
+    "definition_zh": "关于系统束缚、近稳态及边界项的物理条件。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "groups.virial"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.wavelength",
+    "label_zh": "波长",
+    "definition_zh": "观测或静止、空气或真空约定下的辐射波长。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "law.redshift"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.width",
+    "label_zh": "宽度",
+    "definition_zh": "结构宽度或统计宽度的背景词，正式绑定必须具体。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "type.stellar_stream"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.wind_velocity",
+    "label_zh": "风速",
+    "definition_zh": "指定恒星风区域与诊断下的流动速度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "stellar.winds",
+      "type.high_mass_xray_binary",
+      "type.massive_star",
+      "type.oh_ir_star",
+      "type.wolf_rayet"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.xray_luminosity",
+    "label_zh": "X射线光度",
+    "definition_zh": "指定能段、吸收校正、距离与主体的光度。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "cluster.hot_gas",
+      "relation.cluster_scaling",
+      "type.galaxy_cluster",
+      "type.high_mass_xray_binary",
+      "type.low_mass_xray_binary",
+      "type.rs_cvn",
+      "type.xray_binary"
+    ],
+    "binding_status": "waiting_registry"
+  },
+  {
+    "concept_id": "astro.zero_point",
+    "label_zh": "零点",
+    "definition_zh": "测光或其他量值系统的参考归一化与版本。",
+    "kind": "theory_concept",
+    "property_id": null,
+    "definition_version": null,
+    "definition_hash": null,
+    "binding_rule": "explicit_subject_quantity_context_review_required",
+    "entry_ids": [
+      "photometry.magnitude"
+    ],
+    "binding_status": "waiting_registry"
+  }
+]
