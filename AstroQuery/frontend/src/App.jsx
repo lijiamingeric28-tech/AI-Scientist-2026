@@ -389,7 +389,8 @@ function AppInner() {
     if (next?.type === 'record' && next.record.details_loaded === false) {
       setDetail({type:'loading-record',record:next.record})
       try {
-        const record = await getRecord(selectedId,next.record.delivery_id,next.record.delivery_revision,next.record.record_id)
+        const targetTaskId = selectedId || next.record.task_id || next.record.source?.task_id
+        const record = await getRecord(targetTaskId,next.record.delivery_id,next.record.delivery_revision,next.record.record_id)
         if (epoch !== contextEpoch.current) return
         next = {...next,record}
       } catch (error) {
@@ -449,7 +450,6 @@ function AppInner() {
                 )}
                 {editingTitle && !helpOpen ? <input aria-label="任务名称" autoFocus ref={titleInputRef} value={titleDraft} onChange={event => setTitleDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) commitTitle(); if (event.key === 'Escape') setEditingTitle(false) }} onBlur={() => setEditingTitle(false)} /> : <div className="task-heading-text"><h1 title={originalQuestion || selected?.title}>{heading}{!helpOpen && !customTitle && displayName !== targetName && <small className="catalog-name">{targetName}</small>}</h1>{!helpOpen && targetName && propertyNames.length > 0 && <p>{propertyNames.join(' · ')}</p>}</div>}
               </div>
-              {!helpOpen && view === 'chat' && facts?.delivery_ref && <Button className="header-result-button" variant="accent" onClick={() => openData('records')}>查看数据结果 <Icon.ChevronRight /></Button>}
               {!player && selected && !helpOpen && <StatusBadge status={selected.status} />}
               {!pipeline.readOnly && mode !== 'sample' && selected && !helpOpen && ['queued', 'running', 'clarifying', 'waiting_input', 'waiting_review', 'paused', 'interrupted'].includes(selected.status) && <Button variant="outline" size="sm" disabled={cancelling} onClick={handleCancel}>{cancelling ? '取消中…' : '取消任务'}</Button>}
               {!pipeline.readOnly && mode !== 'sample' && selected?.query_ref && !helpOpen && ['queued', 'running', 'waiting_review'].includes(selected.status) && <Button variant="outline" size="sm" onClick={async () => { try { await apiPauseTask(selected.task_id); toast('暂停请求已保存', 'info'); await loadTasks(0) } catch (err) { toast(err.message, 'error') } }}>暂停执行</Button>}

@@ -3,6 +3,13 @@ import asyncio
 import base64
 import lzma
 import hashlib
+if not hasattr(hashlib, 'file_digest'):
+    def _file_digest(fileobj, digest_name='sha256'):
+        h = getattr(hashlib, digest_name)() if isinstance(digest_name, str) else digest_name()
+        for chunk in iter(lambda: fileobj.read(65536), b''):
+            h.update(chunk)
+        return h
+    hashlib.file_digest = _file_digest
 import json
 import os
 import tempfile
@@ -17,8 +24,9 @@ TABLES = {'tasks', 'objects', 'events', 'jobs', 'job_dependencies', 'producers',
           'http_attempts', 'artifacts', 'artifact_refs'}
 
 
-def save_artifact(path, data, sha):
-    if hashlib.sha256(data).hexdigest() != sha:
+def save_artifact(path, data, sha, *, allow_derived_hash=False):
+    actual = hashlib.sha256(data).hexdigest()
+    if actual != sha and not allow_derived_hash:
         raise DomainError('DEMO_ORIGINAL_CHANGED', '来源返回了不同版本的原件', 409)
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as stream:

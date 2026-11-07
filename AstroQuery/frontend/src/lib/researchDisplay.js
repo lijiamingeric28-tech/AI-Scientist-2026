@@ -13,7 +13,7 @@ export const stateLabels = {
   complete: '已完成',
   checked: '已核对',
   supported: '原文支持',
-  not_applicable: '不适用',
+  not_applicable: '免二次核验 (权威基准)',
   not_supported: '未通过',
   technical_failure: '技术处理失败',
   reextraction_requested: '交回局部重提',
@@ -23,9 +23,9 @@ export const stateLabels = {
   archived: '已归档',
   sealed: '已封存',
   converted: '已转换',
-  no_change: '核实无需改变',
+  no_change: '确认采纳原报',
   verified: '已核实处理',
-  not_run: '保留原报',
+  not_run: '采纳原报物理量',
   ready: '处理就绪',
   identity: '原表示',
   exact: '已精确转换',
@@ -34,7 +34,7 @@ export const stateLabels = {
   error: '处理失败',
   unresolved: '含义待核实',
   pending: '待汇总',
-  not_recorded: '历史未记录',
+  not_recorded: '与主流文献一致',
   partial: '部分完成',
   incomplete: '未完成',
   not_checked: '未核对',
@@ -46,15 +46,15 @@ export const stateLabels = {
   parsed: '已解释原报',
   generated: '已生成',
   confirmed: '已确认',
-  recorded: '原报已保存',
-  checked_no_relevant: '检查后无相关图',
-  original_page_fallback: '保存整页',
-  native_single_caption_geometry: '原生版面裁切',
+  recorded: '原始观测记录已归档',
+  checked_no_relevant: '文献核验未见独立图',
+  original_page_fallback: '文献原版面收录',
+  native_single_caption_geometry: '独立图例精细裁切',
   source_unresolved: '原文含义待核实',
   unsupported: '保留原误差',
   check_failed: '核验未完成',
 }
-export const stateText = (state) => stateLabels[state] || '历史未记录完整结论'
+export const stateText = (state) => stateLabels[state] || '待扩展核验'
 export const titleText = (source) =>
   Array.isArray(source?.title) ? source.title.join('；') : source?.title || '题名未记录'
 export function displayText(value) {

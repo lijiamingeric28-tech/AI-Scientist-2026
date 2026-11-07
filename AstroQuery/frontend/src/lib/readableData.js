@@ -40,8 +40,45 @@ export function reportParagraphs(value) {
   return text ? [text] : []
 }
 export function sourceName(source, id, short = false) {
-  if (short && /^\d{4}[A-Za-z&]/.test(id || '')) return journalLabel(id)
-  if (short && source?.journal) return [source.journal, source.year].filter(Boolean).join(' ')
+  if (short) {
+    if (/^\d{4}[A-Za-z&]/.test(id || '')) return journalLabel(id)
+    const key = source?.work?.canonical_key || source?.canonical_key || source?.bibcode || ''
+    if (typeof key === 'string') {
+      if (key.startsWith('bibcode:')) {
+        const bib = key.replace(/^bibcode:/, '')
+        const lbl = journalLabel(bib)
+        if (lbl) return lbl
+      }
+      if (/^\d{4}[A-Za-z&]/.test(key)) {
+        const lbl = journalLabel(key)
+        if (lbl) return lbl
+      }
+      if (key.startsWith('doi:')) {
+        const m = key.match(/(?:mnras|apj|aj|a&a|pasj|pasp|nature|science|coska)/i)
+        const year = source?.year || (Array.isArray(source?.title) ? source.title[0] : source?.title || '').match(/\b(19\d\d|20\d\d)\b/)?.[1]
+        if (m) {
+          const jName = m[0].toUpperCase()
+          return year ? `${jName} ${year}` : jName
+        }
+      }
+    }
+    if (source?.journal) return [source.journal, source.year].filter(Boolean).join(' ')
+    const cat = source?.catalog_id || source?.table_id || source?.metadata?.catalog_id
+    if (cat) {
+      const m = cat.match(/^[A-Z]\/([A-Za-z&+-]+)\/([0-9]+)/)
+      if (m) return `${m[1]} ${m[2]}`
+      return cat.split('/')[0] || cat
+    }
+    const t = Array.isArray(source?.title) ? source.title[0] : source?.title
+    if (t) {
+      if (t.length <= 26) return t
+      const y = t.match(/\b(19\d\d|20\d\d)\b/)
+      const author = t.match(/^([A-Z][a-z]+)/)?.[1] || (t.includes('Swift') ? 'Swift' : null)
+      if (author && y) return `${author}+ ${y[1]}`
+      if (y) return `文献 (${y[1]})`
+      return t.slice(0, 24) + '…'
+    }
+  }
   if (source?.title) return Array.isArray(source.title) ? source.title.join('；') : source.title
   const title = source?.work?.records?.[0]?.titles?.[0]
   if (title) return title

@@ -7,6 +7,7 @@ import {
   visibleSpan,
   stateNames,
 } from "./executionDisplay";
+import { Icon } from "@/components/icons";
 
 export default function ExecutionTimeline({
   data,
@@ -55,28 +56,55 @@ export default function ExecutionTimeline({
       </div>
       <div className="execution-axis-tools">
         <div className="execution-tool-group">
-          <button onClick={() => zoom(0.5)} disabled={span < 1000}>
+          <button
+            className="execution-axis-pill-btn"
+            onClick={() => zoom(0.5)}
+            disabled={span < 1000}
+            title="放大时间轴显示"
+          >
+            <Icon.Search style={{ width: 12, height: 12 }} />
             放大
           </button>
-          <button onClick={() => zoom(2)}>缩小</button>
-          <button aria-label="向前平移时间轴" onClick={() => pan(-1)}>
-            前移
-          </button>
-          <button aria-label="向后平移时间轴" onClick={() => pan(1)}>
-            后移
+          <button
+            className="execution-axis-pill-btn"
+            onClick={() => zoom(2)}
+            title="缩小时间轴显示"
+          >
+            缩小
           </button>
           <button
+            className="execution-axis-pill-btn"
+            aria-label="向前平移时间轴"
+            onClick={() => pan(-1)}
+            title="向前平移时间视窗"
+          >
+            <Icon.ChevronLeft style={{ width: 12, height: 12 }} />
+            前移
+          </button>
+          <button
+            className="execution-axis-pill-btn"
+            aria-label="向后平移时间轴"
+            onClick={() => pan(1)}
+            title="向后平移时间视窗"
+          >
+            后移
+            <Icon.ChevronRight style={{ width: 12, height: 12 }} />
+          </button>
+          <button
+            className="execution-axis-pill-btn"
             onClick={() => {
               onRange(null);
               setWidth(1);
             }}
+            title="恢复全局完整时间范围"
           >
+            <Icon.RotateCcw style={{ width: 12, height: 12 }} />
             全局范围
           </button>
         </div>
         <div className="execution-tool-group">
-          <label>
-            起始分钟{" "}
+          <label className="execution-axis-input-box">
+            起始
             <input
               type="number"
               step="0.1"
@@ -84,9 +112,10 @@ export default function ExecutionTimeline({
               value={rangeValue(0)}
               onChange={(e) => custom(0, e.target.value)}
             />
+            m
           </label>
-          <label>
-            结束分钟{" "}
+          <label className="execution-axis-input-box">
+            结束
             <input
               type="number"
               step="0.1"
@@ -94,9 +123,14 @@ export default function ExecutionTimeline({
               value={rangeValue(1)}
               onChange={(e) => custom(1, e.target.value)}
             />
+            m
           </label>
-          <button onClick={() => setWidth((n) => (n === 1 ? 2 : 1))}>
-            {width === 1 ? "展开宽时间轴" : "适应宽度"}
+          <button
+            className="execution-axis-pill-btn"
+            onClick={() => setWidth((n) => (n === 1 ? 2 : 1))}
+          >
+            <Icon.Maximize style={{ width: 12, height: 12 }} />
+            {width === 1 ? "展开高密度时间轴" : "自适应宽度"}
           </button>
         </div>
       </div>
@@ -174,7 +208,7 @@ export default function ExecutionTimeline({
                     aria-expanded={expanded === stage.id}
                     onClick={() => onExpand(stage.id)}
                   >
-                    {stage.name}
+                    <span className="execution-lane-name">{stage.name}</span>
                     <span>
                       {stage.visits.length} 次 · {duration(stage.seconds)}
                     </span>

@@ -20,7 +20,7 @@ export function ReviewQuestion({ review, onSubmit, disabled, simulation, replayG
   })[a] || '查看原回答'
   return <section className="review-question">
     {simulation && <p className="hint">{locked ? '当时的模拟审核' : '模拟审核'}</p>}
-    <ReviewReading review={review} taskId={review.task_id}>
+    <ReviewReading review={review} taskId={review.task_id} hideTitle={true}>
     {review.validation_feedback && <p role="alert">{review.validation_feedback.message}</p>}
     {locked ? <label>原审核选择 <select aria-label="审核判断" disabled value={action}>
       {review.allowed_actions.map(a=><option key={a} value={a}>{choiceName(a)}</option>)}</select></label> :
@@ -36,10 +36,10 @@ export function ReviewQuestion({ review, onSubmit, disabled, simulation, replayG
       {(replayGate.answer.correction.components || replayGate.answer.correction.conditions || []).map((c,i)=><p key={i}>{c.raw_text}</p>)}
       {replayGate.answer.correction.quote && <blockquote>{replayGate.answer.correction.quote}</blockquote>}</details>}
     {!locked && <label style={{ display: 'block', margin: '8px 0' }}>依据{action === 'unable' ? '（可不填）' : ''} <textarea aria-label="审核依据" value={reason} onChange={event => setReason(event.target.value)} maxLength={16000} /></label>}
-    {locked ? <Button onClick={()=>onSubmit(replayGate.key)}>提交并继续回放</Button> :
-    <Button disabled={disabled || !action || action !== 'unable' && !reason.trim() || action === 'correct' && !editor.quote.trim()} onClick={() => onSubmit({ review_id: review.review_id, action, reason,
+    {locked ? <button type="button" className="hitl-submit-btn" onClick={()=>onSubmit(replayGate.key)}>提交并继续回放</button> :
+    <button type="button" className="hitl-submit-btn" disabled={disabled || !action || action !== 'unable' && !reason.trim() || action === 'correct' && !editor.quote.trim()} onClick={() => onSubmit({ review_id: review.review_id, action, reason,
       ...(review.choices?.find(c => c.action === action)?.comparison_outcome ? {comparison_outcome: review.choices.find(c => c.action === action).comparison_outcome} : {}),
-      ...(action === 'correct' ? { correction: editor.correction, ...(review.issue_kind === 'comparison_contradiction' ? {correction_measurement_id:correctionTarget} : {}) } : {}) })}>提交判断并复检</Button>}
+      ...(action === 'correct' ? { correction: editor.correction, ...(review.issue_kind === 'comparison_contradiction' ? {correction_measurement_id:correctionTarget} : {}) } : {}) })}>提交判断并复检</button>}
 
     </ReviewReading>
   </section>

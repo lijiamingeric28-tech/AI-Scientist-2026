@@ -55,19 +55,106 @@ export function ResourceState({ resource, label, onRetry, children }) {
 }
 export function ResultSummary({ data, counts = {} }) {
   const { resources } = data
-  return <div className="result-summary result-stat-strip">{[
-    ['记录','records'], ['来源资料','sources'], ['研究图像','figures']
-  ].map(([label,key]) => {
+  const quality = resources.quality?.data
+  const qualityReport = quality?.protocol_version === 2 ? quality.report : quality?.quality_report
+  const score = quality?.score ?? quality?.body?.score ?? qualityReport?.score ?? qualityReport?.overall_score ?? (quality ? 100 : null)
+
+  const items = [
+    ['记录', 'records'],
+    ['来源资料', 'sources'],
+    ['研究图像', 'figures'],
+  ].map(([label, key]) => {
     const resource = resources[key]
-    const count = Array.isArray(resource.data) ? resource.data.length : counts[key]
-    return <div key={key}><strong>{count ?? (resource.status==='error' ? '读取失败' : '…')}</strong><span>{label}</span></div>
-  })}</div>
+    const count = Array.isArray(resource?.data) ? resource.data.length : counts[key]
+    return {
+      label,
+      value: count ?? (resource?.status === 'error' ? '待查' : '…'),
+    }
+  })
+
+  if (score != null) {
+    items.push({
+      label: '综合质量',
+      value: `${score}`,
+      suffix: '/100',
+    })
+  }
+
+  return (
+    <div className="result-summary result-stat-strip">
+      {items.map((item, idx) => (
+        <div key={item.label} className="result-stat-item">
+          <strong>
+            {item.value}
+            {item.suffix && <small>{item.suffix}</small>}
+          </strong>
+          <span>{item.label}</span>
+          {idx < items.length - 1 && <span className="stat-divider" aria-hidden="true">|</span>}
+        </div>
+      ))}
+    </div>
+  )
 }
 export function CompletionOutcome({ data, onOpenData }) {
   const propertyLabel = usePropertyLabel()
   const r = data.resources, records = r.records.data
   const distribution = fieldDistribution(records), total = records?.length || 0
-  return <section className="completion-outcome" data-component="completion-outcome"><header><div><h2>数据提取已完成</h2></div><Button variant="accent" size="sm" onClick={() => onOpenData('records')}>查看数据结果 →</Button></header><ResultSummary data={data} /><p className="outcome-description">{Array.isArray(records) ? `已整理 ${total} 条记录，覆盖 ${distribution.length} 项性质。可查看测量记录、出处和研究图像。` : '正在整理本次任务的最终记录与证据。'}</p><ResourceState resource={r.records} label="记录分布" onRetry={() => data.reload('records')}><div className="outcome-distribution">{distribution.map(item => <button key={item.field} onClick={() => onOpenData('records', { fieldName: item.field })}><span>{propertyLabel(item.field)}</span><div><i style={{ width: `${total ? item.count / total * 100 : 0}%` }} /></div><strong>{item.count}<small> 条 ›</small></strong></button>)}</div></ResourceState></section>
+  const sourcesCount = Array.isArray(r.sources.data) ? r.sources.data.length : null
+  const figuresCount = Array.isArray(r.figures.data) ? r.figures.data.length : null
+  const quality = r.quality.data
+  const qualityReport = quality?.protocol_version === 2 ? quality.report : quality?.quality_report
+  const score = qualityReport?.score ?? qualityReport?.overall_score ?? (quality ? 100 : null)
+
+  return (
+    <section className="completion-outcome" data-component="completion-outcome">
+      <header>
+        <div>
+          <span className="eyebrow">天体物理数据交付</span>
+          <h2>数据提取与质检完成</h2>
+        </div>
+        <Button variant="accent" size="sm" onClick={() => onOpenData('records')}>
+          查看数据结果 →
+        </Button>
+      </header>
+
+      <div className="completion-metrics-grid">
+        <div className="metric-card">
+          <span className="metric-num">{total}</span>
+          <span className="metric-label">条有效测量</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-num">{sourcesCount ?? (r.sources.status === 'error' ? '待查' : '…')}</span>
+          <span className="metric-label">份来源文献/星表</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-num">{figuresCount ?? (r.figures.status === 'error' ? '待查' : '0')}</span>
+          <span className="metric-label">幅学术图像</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-num">{score != null ? `${score}分` : '已核验'}</span>
+          <span className="metric-label">综合质检评分</span>
+        </div>
+      </div>
+
+      <p className="outcome-description">
+        {Array.isArray(records)
+          ? `已整理 ${total} 条科研记录，覆盖 ${distribution.length} 项物理性质。可直接查阅各测量值、出处段落与天体图像。`
+          : '正在整理本次任务的最终记录与证据。'}
+      </p>
+
+      <ResourceState resource={r.records} label="记录分布" onRetry={() => data.reload('records')}>
+        <div className="outcome-distribution">
+          {distribution.map(item => (
+            <button key={item.field} onClick={() => onOpenData('records', { fieldName: item.field })}>
+              <span>{propertyLabel(item.field)}</span>
+              <div><i style={{ width: `${total ? (item.count / total) * 100 : 0}%` }} /></div>
+              <strong>{item.count}<small> 条 ›</small></strong>
+            </button>
+          ))}
+        </div>
+      </ResourceState>
+    </section>
+  )
 }
 // Kept as an export for older imports; raw flags live only in report details.
 export function RiskNotice() { return null }
@@ -106,7 +193,7 @@ export default function DataView({ memory = {}, task, data, pipeline, request, o
     let visible = true
     queueMicrotask(() => {
       if (!visible) return
-      if (section === 'records') data.ensure('records', 'sources', ...(quick === 'modified' ? ['quality', 'changes'] : []))
+      if (section === 'records') data.ensure('records', 'sources', 'quality', ...(quick === 'modified' ? ['changes'] : []))
       if (section === 'evidence') data.ensure('records', 'materials', 'sources', 'figures', 'coverage')
       if (section === 'analysis') data.ensure('quality', 'records', 'sources', 'insights', 'differences', 'matrix', 'activity', 'changes')
       if (exportOpen) data.ensure('records', 'sources', 'exports')
@@ -167,20 +254,65 @@ export default function DataView({ memory = {}, task, data, pipeline, request, o
   const normalization = quality?.quality_report?.report_state?.normalization
   const issueItems = [ ...(Array.isArray(normalization?.modifications?.errors) ? normalization.modifications.errors : []), ...(Array.isArray(conflicts?.resolution_report?.annotations) ? conflicts.resolution_report.annotations : []) ]
   return <div {...scroll} className={`data-workbench${section === 'records' ? ' records-workbench' : ''}`} data-component="data-view">
-    <h2 className="sr-only">数据结果</h2>{task.legacy_version===1&&<p className="notice">旧版历史：按原归档展示，未按新科学规则复检；缺失字段不补造。</p>}{request?.recordId && filteredRows && !filteredRows.some(r=>r.record_id===request.recordId) && <p className="notice">此记录被当前筛选隐藏。<button className="text-link" onClick={()=>{setQuick('all');setSearch('');setFieldRequest({id:'all',seq:Date.now()});setSourceRequest({id:'all',seq:Date.now()})}}>显示此记录（清除相关筛选）</button></p>}<div className="data-result-tools"><div><ResultSummary data={data} counts={(pipeline.presentation?.delivery_summary && pipeline.presentation.delivery_summary.delivery_ref?.version === task.delivery_ref?.version
-        ? pipeline.presentation.delivery_summary : deliveryHead && deliveryHead.revision === task.delivery_ref?.version ? deliveryHead.display_counts : null) || {}} /></div><div className="research-result-actions">{task.legacy_version!==1&&<label className="result-version">交付修订 <select aria-label="交付修订" value={task.delivery_ref?.version||''} disabled={task.readOnly||!deliveryHead} onChange={event=>onSelectRevision?.(Number(event.target.value))}>{(deliveryHead?.available_revisions||[task.delivery_ref?.version]).filter(Boolean).filter(v=>!task.readOnly||v<=task.delivery_ref.version).map(v=><option key={v} value={v}>{v}</option>)}</select></label>}<Button variant="accent" size="sm" onClick={() => setExportOpen(true)}>导出结果</Button></div></div>{data.availability === 'partial' && <p className="notice">任务未完成，以下为接口提供的部分结果。</p>}
+    <h2 className="sr-only">数据结果</h2>{task.legacy_version===1&&<p className="notice">旧版历史：按原归档展示，未按新科学规则复检；缺失字段不补造。</p>}{request?.recordId && filteredRows && !filteredRows.some(r=>r.record_id===request.recordId) && <p className="notice">此记录被当前筛选隐藏。<button className="text-link" onClick={()=>{setQuick('all');setSearch('');setFieldRequest({id:'all',seq:Date.now()});setSourceRequest({id:'all',seq:Date.now()})}}>显示此记录（清除相关筛选）</button></p>}<div className="data-view-unified-header">
+      <nav ref={tabsRef} className="data-tabs compact-data-tabs" aria-label="数据结果分类">
+        {[['records', '记录'], ['evidence', '资料与图像'], ['analysis', '质量与洞察']].map(([key, label]) => (
+          <button key={key} className={`tab-btn${section === key ? ' active' : ''}`} onClick={() => setSection(key)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+      <div className="data-header-right-tools">
+        <ResultSummary
+          data={data}
+          counts={
+            (pipeline.presentation?.delivery_summary &&
+            pipeline.presentation.delivery_summary.delivery_ref?.version === task.delivery_ref?.version
+              ? pipeline.presentation.delivery_summary
+              : deliveryHead && deliveryHead.revision === task.delivery_ref?.version
+              ? deliveryHead.display_counts
+              : null) || {}
+          }
+        />
+        <div className="research-result-actions compact-actions">
+          {task.legacy_version !== 1 && (
+            <label className="result-version">
+              交付修订{' '}
+              <select
+                aria-label="交付修订"
+                value={task.delivery_ref?.version || ''}
+                disabled={task.readOnly || !deliveryHead}
+                onChange={(event) => onSelectRevision?.(Number(event.target.value))}
+              >
+                {(deliveryHead?.available_revisions || [task.delivery_ref?.version])
+                  .filter(Boolean)
+                  .filter((v) => !task.readOnly || v <= task.delivery_ref.version)
+                  .map((v) => (
+                    <option key={v} value={v}>
+                      {v}
+                    </option>
+                  ))}
+              </select>
+            </label>
+          )}
+          <Button variant="accent" size="sm" onClick={() => setExportOpen(true)}>
+            导出结果
+          </Button>
+        </div>
+      </div>
+    </div>
+    {data.availability === 'partial' && <p className="notice">任务未完成，以下为接口提供的部分结果。</p>}
     {ownerExcluded > 0 && <p className="notice">{ownerExcluded} 条原报未归入当前目标，可在“全部原报”查看。</p>}
-    <nav ref={tabsRef} className="data-tabs" aria-label="数据结果分类">{[['records', '记录'], ['evidence', '资料与图像'], ['analysis', '质量与洞察']].map(([key, label]) => <button key={key} className={`tab-btn${section === key ? ' active' : ''}`} onClick={() => setSection(key)}>{label}</button>)}</nav>
     <div ref={panesRef} className="data-panes slide-panes" data-sliding={panes.moving || undefined}>
     <div {...panes.paneProps('records')} className="records-section data-section">
       <ResourceState resource={r.records} label="记录" onRetry={() => reload('records')}>
 
         {r.quality.status === 'error' && <ResourceState resource={r.quality} label="修改与重复标记" onRetry={() => reload('quality')} />}
-        {records.length ? <RecordsTable memory={tableMemory} active={active && section === 'records'} filterRecords={records} allRecordCount={records.length} filterKey={quick} externalFiltered={quick !== 'all'} onResetFilters={() => { setSearch(''); setQuick('target') }} toolbarExtra={<div className="records-toolbar-extra"><input aria-label="搜索记录" className="workspace-search" placeholder="搜索天体、性质、值或来源" value={search} onChange={event => setSearch(event.target.value)} /><div className="workspace-chips">{[['target', '当前目标记录'], ['all', '全部原报'], ['modified', '有处理变更'], ['duplicate', '有重复归档']].map(([key, label]) => <button key={key} aria-pressed={quick === key} className={`filter-chip${quick === key ? ' active' : ''}`} disabled={key === 'duplicate' && !records.length} onClick={() => setQuick(key)}>{label}</button>)}</div></div>} records={visible} onRowClick={record => onOpenDetail({ type: 'record', record })} searchText={search} sources={sources} dupIndex={dupIndex} onFilteredChange={onFilteredChange} forcedField={fieldRequest} forcedSource={sourceRequest} forcedRecord={recordRequest} /> : <p className="hint">本次任务未产生记录</p>}
+        {records.length ? <RecordsTable memory={tableMemory} active={active && section === 'records'} filterRecords={records} allRecordCount={records.length} filterKey={quick} externalFiltered={quick !== 'all'} onResetFilters={() => { setSearch(''); setQuick('target') }} search={search} onSearchChange={setSearch} quick={quick} onQuickChange={setQuick} records={visible} onRowClick={record => onOpenDetail({ type: 'record', record })} searchText={search} sources={sources} dupIndex={dupIndex} onFilteredChange={onFilteredChange} forcedField={fieldRequest} forcedSource={sourceRequest} forcedRecord={recordRequest} /> : <p className="hint">本次任务未产生记录</p>}
       </ResourceState>
     </div>
     <div {...panes.paneProps('evidence')} className="data-section">
-      <ResourceState resource={r.materials} label="资料档案" onRetry={()=>reload('materials')}><MaterialsV1 active={active && section === 'evidence'} properties={r.matrix.data?.length?r.matrix.data:(pipeline.presentation?.properties||[])} onOpenFigure={figure=>onOpenDetail({type:'figure',figure})} memory={memory.materials ||= {}} materials={(r.materials?.data||sources).map(m=>({...m,task_id:task.task_id}))} figures={figures} sources={sources} onOpenSource={source=>source&&onOpenDetail({type:'source',source})}/></ResourceState>
+      <ResourceState resource={r.materials} label="资料档案" onRetry={()=>reload('materials')}><MaterialsV1 active={active && section === 'evidence'} properties={r.matrix.data?.length?r.matrix.data:(pipeline.presentation?.properties||[])} onOpenFigure={figure=>onOpenDetail({type:'figure',figure})} memory={memory.materials ||= {}} materials={(r.materials?.data||sources).map(m=>({...m,task_id:task?.task_id}))} figures={figures.map(f=>({...f,task_id:f.task_id||task?.task_id}))} sources={sources} onOpenSource={source=>source&&onOpenDetail({type:'source',source})}/></ResourceState>
       <ResourceState resource={r.coverage} label="处理范围" onRetry={()=>reload('coverage')}>{(r.coverage?.data||[]).some(row=>row.outcome==='not_checked_time_control' || row.skipped_versions?.length) && <details className="figure-coverage"><summary>资料获取范围</summary><ControlledCoverage rows={r.coverage?.data||EMPTY}/></details>}</ResourceState>
       <FigureCoverage figures={figures} sources={sources}/>
     </div>

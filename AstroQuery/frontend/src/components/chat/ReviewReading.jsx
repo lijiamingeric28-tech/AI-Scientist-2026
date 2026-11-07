@@ -3,6 +3,7 @@ import { artifactUrl } from '@/services/api'
 import { usePropertyLabel } from '@/lib/propertyLabel'
 import { rawCells, reviewRows, reviewWording } from '@/lib/scienceReading'
 import { NativeCells, OriginalPage } from '../results/EvidenceSource'
+import FormattedExcerpt from '../results/FormattedExcerpt'
 
 function evidencePages(items, issue) {
   const result = new Map()
@@ -24,7 +25,7 @@ function evidencePages(items, issue) {
   return [...result.values()]
 }
 
-export default function ReviewReading({review,taskId,children}) {
+export default function ReviewReading({review,taskId,children,hideTitle = false}) {
   const propertyLabel = usePropertyLabel()
   const items = review.evidence_bundle || review.evidence || []
   const rows = reviewRows(review), wording = reviewWording(review)
@@ -40,10 +41,10 @@ export default function ReviewReading({review,taskId,children}) {
   const showSupplement = additional.length > 0 && rows.some(r=>r.evidence.length)
   const alternatives = special ? additional : files
   const columnDefinitions = Object.entries(review.scientific_issue?.column_evidence || {})
-  return <div className="review-reading">
-    {wording.original && propertyName && propertyName !== entry?.propertyId && <strong>{propertyName}</strong>}
-    <h4>{wording.title}</h4>
-    {wording.original && <details className="review-original-question"><summary>查看当时的完整问题</summary><p>{wording.original}</p></details>}
+  return <div className="review-reading modern-review-reading">
+    {!hideTitle && wording.original && propertyName && propertyName !== entry?.propertyId && <strong className="review-prop-label">{propertyName}</strong>}
+    {!hideTitle && <h4>{wording.title}</h4>}
+    {!hideTitle && wording.original && <details className="review-original-question"><summary>查看当时的完整问题</summary><p>{wording.original}</p></details>}
     {rows.length > 0 && <div className="review-values" aria-label="待核实的测量">{rows.map((r,i)=>
       <button type="button" key={r.id || i} aria-pressed={i===selectedRow} onClick={()=>{setRow(i);setPage(0)}}>
         {rows.length>1 && <span>记录 {i+1}</span>}<strong>{r.value ?? '原值未记录'} <small>{r.unit}</small></strong>
@@ -67,7 +68,7 @@ export default function ReviewReading({review,taskId,children}) {
         {Number.isInteger(e.locator?.row) && <span> · 第 {e.locator.row+1} 个数据行</span>}
         {main?.length > 0 && <NativeCells cells={main}/>}
         {cells ? <details><summary>查看整行（{cells.length} 列）</summary><NativeCells cells={cells}/></details> :
-          e.raw_text && <details><summary>查看保存的摘录</summary><blockquote>{e.raw_text}</blockquote></details>}
+          e.raw_text && <FormattedExcerpt excerpt={e.raw_text} role="审核出处摘录" />}
         {e.artifact_ref?.id && <a className="text-link" href={artifactUrl(taskId,e.artifact_ref.id)} target="_blank" rel="noreferrer">打开原件</a>}
       </section>
     })}

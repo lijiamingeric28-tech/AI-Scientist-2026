@@ -1,6 +1,25 @@
 """AstroQuery AI. Importing the public package never starts execution."""
 __version__ = "3.0.0-dev"
 
+import asyncio
+import hashlib
+
+# Compatibility polyfill for Python < 3.11
+if not hasattr(hashlib, 'file_digest'):
+    def _file_digest(fileobj, digest_name='sha256'):
+        h = getattr(hashlib, digest_name)() if isinstance(digest_name, str) else digest_name()
+        for chunk in iter(lambda: fileobj.read(65536), b''):
+            h.update(chunk)
+        return h
+    hashlib.file_digest = _file_digest
+
+if not hasattr(asyncio, 'timeout'):
+    try:
+        import async_timeout
+        asyncio.timeout = async_timeout.timeout
+    except ImportError:
+        pass
+
 
 def run_pipeline(*args, **kwargs):
     from .runtime.errors import DomainError

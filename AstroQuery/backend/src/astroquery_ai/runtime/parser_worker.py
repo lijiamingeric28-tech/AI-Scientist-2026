@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 
-def limit_memory(byte_limit=512 * 1024**2):
+def limit_memory(byte_limit=2048 * 1024**2 if os.name == "nt" else 512 * 1024**2):
     if os.name != "nt":
         import resource
 

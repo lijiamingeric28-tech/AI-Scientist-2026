@@ -1,4 +1,5 @@
-.settings-dialog.preferences-dialog { width:min(850px,calc(100vw - 32px)); height:min(730px,calc(100dvh - 48px)); border-radius:16px; background:var(--surface-bg)!important; }
+.settings-dialog.preferences-dialog { width:min(850px,calc(100vw - 32px)); height:min(730px,calc(100dvh - 48px)); border-radius:16px; background:#ffffff !important; opacity: 1 !important; }
+html[data-theme='dark'] .settings-dialog.preferences-dialog { background:#1e2722 !important; }
 .preferences-dialog .settings-header { padding:24px 28px 20px; }
 .preferences-dialog .settings-header h2 { font-size:24px; color:var(--content-fg); font-weight:650; line-height:1.35; }
 .preferences-dialog .settings-body { display:grid; grid-template-columns:174px minmax(0,1fr); flex:1; min-height:0; }

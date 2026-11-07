@@ -1,3 +1,4 @@
+import AstroQueryLogo from '@/components/icons/AstroQueryLogo'
 import ReadOnlyInteractions from './ReadOnlyInteractions'
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,7 @@ import { useToast } from '@/components/ui/toast'
 import SampleGallery from './SampleGallery'
 import ReviewInteraction from './ReviewInteraction'
 import ReviewReceipts from './ReviewReceipts'
+import AggregatedReviewCard from './AggregatedReviewCard'
 import RetrievalPreferences from '@/components/settings/RetrievalPreferences'
 import { ADS_SORTS, papersValue, preferencesFromConfig } from '@/lib/retrievalPreferences'
 import { artifactUrl } from '@/services/api'
@@ -53,7 +55,7 @@ function AiMessage({ content }) {
 function Message({ msg }) {
   if (msg.role === 'user') {
     return (
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 24 }}>
         <div className="msg-bubble">{msg.content}</div>
       </div>
     )
@@ -68,6 +70,48 @@ const EXAMPLE_PROMPTS = [
   '收集 M31 球状星团系统的金属丰度数据',
 ]
 
+function getStageNarrative(stageId, stages, targetName) {
+  const understandStage = stages.find((s) => s.id === 'understand')
+  const actualTarget = understandStage?.target?.main_id || understandStage?.target?.name || (targetName && targetName.length <= 16 ? targetName : null)
+  const retrievalStage = stages.find((s) => s.id === 'retrieval')
+  const extractionStage = stages.find((s) => s.id === 'extraction')
+  const qualityStage = stages.find((s) => s.id === 'quality_check')
+  const cleanStage = stages.find((s) => s.id === 'clean')
+
+  switch (stageId) {
+    case 'understand':
+      return '好的，我先开始「任务理解」——确认目标天体与要提取的标准性质。'
+    case 'retrieval':
+      return `已完成「任务理解${actualTarget ? `（已确认目标 ${actualTarget}）` : ''}」，下面开始「数据检索」。`
+    case 'extraction': {
+      const u = retrievalStage?.uniqueReadable
+      const dataStr = u ? `${u} 篇不同可读作品` : '星表与文献检索'
+      return `已完成「数据检索（${dataStr}）」，下面开始「数据提取」。`
+    }
+    case 'quality_check': {
+      const cand = extractionStage?.activity?.candidates?.total
+      const dataStr = cand ? `提取 ${cand} 项候选记录` : null
+      return `已完成「数据提取${dataStr ? `（${dataStr}）` : ''}」，下面开始「质量检查」。`
+    }
+    case 'clean': {
+      const roots = qualityStage?.activity?.quality?.roots
+      const dataStr = roots ? `${roots} 项候选通过质检` : null
+      return `已完成「质量检查${dataStr ? `（${dataStr}）` : ''}」，下面开始「数据清洗」。`
+    }
+    case 'comparison': {
+      const changed = cleanStage?.activity?.cleaning?.states?.changed
+      const dataStr = Number.isFinite(changed) ? `${changed} 项表示变更` : null
+      return `已完成「数据清洗${dataStr ? `（${dataStr}）` : ''}」，下面开始「数据对照」。`
+    }
+    case 'deliver':
+      return '已完成多源数据对照与核验，下面整理交付数据集。'
+    case 'insight':
+      return '已完成数据集交付，下面生成天体物理学洞察报告。'
+    default:
+      return null
+  }
+}
+
 export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
   mode = 'user', samplesExpanded = false, samples = [], onOpenSample, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
@@ -78,6 +122,13 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
   const changePreferences = value => { setQueryPreferences(value); memory.retrievalPreferences = value }
   useEffect(() => { memory.input = input }, [input, memory])
   const [submitting, setSubmitting] = useState(false)
+  const [isSliding, setIsSliding] = useState(false)
+  const isEmptyState = mode === 'user' && !task && !started && timeline.length === 0
+  useEffect(() => {
+    if (!submitting && !task) {
+      setIsSliding(false)
+    }
+  }, [task?.task_id, submitting, task, active, mode])
   const { toast } = useToast()
   // 历史阶段默认折叠；当前阶段自动展开，用户手动操作优先。
   const [expandedByUser, setExpandedByUser] = useState(memory.expanded || {})
@@ -156,6 +207,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
   const handleSubmit = async () => {
     const text = input.trim()
     if (!text || (running && !pending) || clarifying || submitRef.current || papersValue(effectivePreferences.papers_per_property) === null) return
+
     submitRef.current = true
     setSubmitting(true)
     try {
@@ -164,16 +216,25 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
         await submitAnswer(text)
         setInput('')
       } else {
-        // 新查询：建任务 → 打开事件流
-        if (beforeCreate && !await beforeCreate()) return
-        const taskId = await submitQuery(text, {...effectivePreferences, papers_per_property:papersValue(effectivePreferences.papers_per_property)})
+        // 新查询：先校验科研连接（若未就绪将弹出设置弹窗，不应下沉输入框）
+        if (beforeCreate && !(await beforeCreate())) {
+          setIsSliding(false)
+          return
+        }
+        // 校验通过后，如果处于居中空状态，执行平滑下沉接力动效
+        if (isEmptyState) {
+          setIsSliding(true)
+          await new Promise((r) => setTimeout(r, 260))
+        }
+        const taskId = await submitQuery(text, { ...effectivePreferences, papers_per_property: papersValue(effectivePreferences.papers_per_property) })
         changePreferences(null)
         setPreferencesOpen(false)
         onNewTask?.(taskId)
-        // 失败（400）保留输入
+        // 成功建立任务后清空输入框
         setInput('')
       }
     } catch (err) {
+      setIsSliding(false)
       toast(`提交失败：${err.message}`, 'error')
     } finally {
       submitRef.current = false
@@ -188,40 +249,58 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
         <div className="chat-column">
           {pipeline.snapshot?.legacy_version === 1 && <p className="hint">旧版历史，只读展示，未按新规则复检。原任务状态：{pipeline.snapshot.legacy?.original_status}。<a href={artifactUrl(pipeline.snapshot.task_id, pipeline.snapshot.legacy_archive_artifact_id)} download>下载原始结果归档</a></p>}
           {/* 顶部信息带（用户重设计）：耗时 · 数据源 · 记录数 + 质量总结 */}
-          {timeline.map((entry) => {
-            if (entry.kind === 'msg') {
-              const msg = messages.find((m) => m.id === entry.id)
-              return msg && msg.phase !== 'completion' ? <Message key={`m-${entry.id}`} msg={msg} /> : null
-            }
-            if(entry.kind==='visit') return <div className="chat-return" key={entry.id}>
-              <span>返回{stages.find(s=>s.id===entry.stageId)?.name}</span>
-              <button className="text-link" onClick={()=>{setExpandedByUser(v=>({...v,[entry.stageId]:true}));
-                scrollRef.current?.querySelector(`[data-stage-id="${entry.stageId}"]`)?.scrollIntoView({behavior:'smooth',block:'center'})}}>查看本阶段</button>
-            </div>
-            if(entry.kind==='review') {
-              let review=(pipeline.readOnly?pipeline.presentation?.reviews:pipeline.snapshot?.reviews)?.find(r=>r.review_id===entry.reviewId)
-              if(review&&entry.revision&&entry.revision!==review.revision)review={review_id:entry.reviewId,status:'closed_unanswered',question:'此审核问题后来经过修订。旧题干未保存。',evidence:[]}
-              return review&&<ReviewInteraction key={entry.id} review={review} taskId={task?.task_id}
-                readOnly={pipeline.readOnly} gate={pipeline.playback?.gate}
-                onSubmit={submitAnswer} onReplaySubmit={pipeline.playback?.submitGate}
-                receipts={pipeline.presentation?.review_receipts}/>
-            }
-            const stage = stages.find((s) => s.id === entry.id)
-            if (!stage || pipeline.snapshot?.legacy_version || (stage.id === 'done' && !pipeline.presentation)) return null
-            return (
-              <Fragment key={`s-${entry.id}`}>
-                <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 8 }}>
-                  <StageCard stage={stage} expanded={expandedByUser[stage.id] ?? (stage.id === 'done' || stage.id === autoExpandedStage)} onToggle={toggleStage} onOpenInsights={onOpenInsights} onOpenAgent={handleOpenAgent} sourceScores={sourceScores} data={data} onOpenData={onOpenData}
-                    historyContent={pipeline.readOnly && stage.id==='understand'
-                      ? <ReadOnlyInteractions presentation={pipeline.presentation} taskId={task?.task_id} stageId={stage.id}/>
-                      : null}
-                    onReplay={stage.id==='done' && !pipeline.readOnly && onReplaySample ? ()=>onReplaySample(task.task_id) : undefined} />
-                </div>
-                {pending && pending.stageId === stage.id && pending.type !== 'greeting' && <ClarificationCard payload={pending} onSubmit={submitAnswer} />}
-
-              </Fragment>
-            )
-          })}
+          {(() => {
+            let reviewRendered = false
+            const rawReviews = (pipeline.readOnly ? pipeline.presentation?.reviews : pipeline.snapshot?.reviews) || []
+            return timeline.map((entry) => {
+              if (entry.kind === 'msg') {
+                const msg = messages.find((m) => m.id === entry.id)
+                return msg && msg.phase !== 'completion' ? <Message key={`m-${entry.id}`} msg={msg} /> : null
+              }
+              if (entry.kind === 'visit') return <div className="chat-return" key={entry.id}>
+                <span>返回{stages.find(s=>s.id===entry.stageId)?.name}</span>
+                <button className="text-link" onClick={()=>{setExpandedByUser(v=>({...v,[entry.stageId]:true}));
+                  scrollRef.current?.querySelector(`[data-stage-id="${entry.stageId}"]`)?.scrollIntoView({behavior:'smooth',block:'center'})}}>查看本阶段</button>
+              </div>
+              if (entry.kind === 'review') {
+                if (reviewRendered) return null
+                reviewRendered = true
+                const reviewCount = rawReviews.length || 1
+                return (
+                  <Fragment key={`aggregated-review-${entry.id}`}>
+                    <AiMessage content={`已完成「数据对照」，发现 ${reviewCount} 项文献记录存在分歧，需进行人工决策或核对。`} />
+                    <div className="stage-indent" style={{ marginLeft: 38, marginBottom: 24 }}>
+                      <AggregatedReviewCard
+                        reviews={rawReviews}
+                        taskId={task?.task_id}
+                        readOnly={pipeline.readOnly}
+                        gate={pipeline.playback?.gate}
+                        onSubmit={submitAnswer}
+                        onReplaySubmit={pipeline.playback?.submitGate}
+                        receipts={pipeline.presentation?.review_receipts}
+                      />
+                    </div>
+                  </Fragment>
+                )
+              }
+              const stage = stages.find((s) => s.id === entry.id)
+              if (!stage || pipeline.snapshot?.legacy_version || (stage.id === 'done' && !pipeline.presentation)) return null
+              const narrative = getStageNarrative(stage.id, stages, pipeline.presentation?.target_name || task?.title)
+              return (
+                <Fragment key={`s-${entry.id}`}>
+                  {narrative && <AiMessage content={narrative} />}
+                  <div className="stage-indent" data-stage-id={stage.id} style={{ marginLeft: 38, marginBottom: 24 }}>
+                    <StageCard stage={stage} expanded={expandedByUser[stage.id] ?? (stage.id === 'done' || stage.id === autoExpandedStage)} onToggle={toggleStage} onOpenInsights={onOpenInsights} onOpenAgent={handleOpenAgent} sourceScores={sourceScores} data={data} onOpenData={onOpenData}
+                      historyContent={pipeline.readOnly && stage.id==='understand'
+                        ? <ReadOnlyInteractions presentation={pipeline.presentation} taskId={task?.task_id} stageId={stage.id}/>
+                        : null}
+                      onReplay={stage.id==='done' && !pipeline.readOnly && onReplaySample ? ()=>onReplaySample(task.task_id) : undefined} />
+                  </div>
+                  {pending && pending.stageId === stage.id && pending.type !== 'greeting' && <ClarificationCard payload={pending} onSubmit={submitAnswer} />}
+                </Fragment>
+              )
+            })
+          })()}
 
           {pipeline.snapshot?.legacy_version && pipeline.snapshot.delivery_ref && <Button variant="outline" onClick={()=>onOpenData?.('records')}>查看归档结果</Button>}
           {!pipeline.presentation && pipeline.snapshot?.kind !== 'replay' && data.availability === 'ready' && <CompletionOutcome data={data} onOpenData={onOpenData} />}
@@ -254,24 +333,134 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                 </div>
               )
             ) : (
-              <div className="query-start">
-                <h2>查询一个天体</h2>
-                <form className="query-compose" onSubmit={event => { event.preventDefault(); handleSubmit() }}>
-                  <textarea aria-label="科研查询" value={input} rows={3} placeholder="输入天体名称和想了解的性质…"
-                    onChange={event => setInput(event.target.value)}
-                    onKeyDown={event => {
-                      if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing && event.keyCode !== 229) {
-                        event.preventDefault()
-                        handleSubmit()
-                      }
-                    }}/>
-                  <div className="query-preference-row"><div className="query-pref-summary"><button type="button" className="query-preference-toggle" aria-expanded={preferencesOpen} onClick={()=>setPreferencesOpen(value=>!value)}>每项 {effectivePreferences.papers_per_property} 篇 · {ADS_SORTS.find(([key])=>key===effectivePreferences.ads_sort)?.[1] || '相关度优先'}</button>{queryPreferences && <button type="button" className="query-pref-reset" onClick={()=>changePreferences(null)}>恢复默认</button>}</div>
-                    {preferencesOpen && <div className="query-preferences"><RetrievalPreferences id="query" value={effectivePreferences} onChange={changePreferences}/></div>}
+              <div className="empty-state" style={{ paddingTop: 96, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 14 }}>
+                <AstroQueryLogo width={124} height={91} style={{ marginBottom: 4 }} />
+                <div
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 21,
+                    fontWeight: 650,
+                    color: 'var(--title-strong, #325843)',
+                    letterSpacing: '-0.015em',
+                    lineHeight: 1.35,
+                  }}
+                >
+                  开始一次天文数据提取
+                </div>
+                <div
+                  style={{
+                    maxWidth: 480,
+                    lineHeight: 1.72,
+                    fontSize: 13.5,
+                    color: 'var(--content-fg-secondary)',
+                    padding: '0 16px',
+                    margin: '-4px 0 4px',
+                  }}
+                >
+                  描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
+                </div>
+
+                {/* 中央英雄窄胶囊输入舱（外圈顺时针流动深绿光环） */}
+                <div className={`hero-composer-container ${isSliding ? 'sliding-down' : ''}`}>
+                  <div className="hero-flowing-border-wrap">
+                    <div
+                      className="composer"
+                      style={{
+                        position: 'relative',
+                        zIndex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '7px 8px 7px 18px',
+                        borderRadius: 28,
+                        background: 'var(--bg-ambient)',
+                        backgroundAttachment: 'fixed',
+                        border: 'none',
+                        boxShadow: 'none',
+                      }}
+                    >
+                    <Icon.Sparkle style={{ width: 17, height: 17, color: 'var(--accent)', flexShrink: 0 }} />
+                    <textarea
+                      rows={1}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
+                          e.preventDefault()
+                          handleSubmit()
+                        }
+                      }}
+                      disabled={submitting}
+                      placeholder="输入天体名称和想了解的物理性质…"
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        padding: '9px 4px',
+                        fontSize: 14.5,
+                        lineHeight: 1.5,
+                        color: 'var(--content-fg)',
+                        background: 'transparent',
+                        border: 'none',
+                        outline: 'none',
+                        resize: 'none',
+                        minHeight: 22,
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSubmit}
+                      disabled={!input.trim() || submitting}
+                      title="开始查询"
+                      className="active-press"
+                      style={{
+                        width: 38,
+                        height: 38,
+                        borderRadius: '50%',
+                        flexShrink: 0,
+                        border: !input.trim() || submitting ? '1px solid var(--surface-border)' : '1px solid transparent',
+                        cursor: !input.trim() || submitting ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: !input.trim() || submitting ? 'var(--surface-secondary)' : 'var(--accent)',
+                        color: !input.trim() || submitting ? 'var(--content-fg-tertiary)' : '#ffffff',
+                        transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    >
+                      <Icon.Send style={{ width: 16, height: 16 }} />
+                    </button>
+                    </div>
                   </div>
-                  <div><Button type="submit" disabled={!input.trim() || submitting || papersValue(effectivePreferences.papers_per_property)===null}>{submitting ? '正在创建…' : '开始查询'} <Icon.Send /></Button></div>
-                </form>
-                <div className="example-queries">{EXAMPLE_PROMPTS.map(prompt =>
-                  <button key={prompt} onClick={() => { setInput(prompt); scrollRef.current?.querySelector('textarea')?.focus() }}>{prompt}</button>)}</div>
+                </div>
+
+                {/* 居中 Prompt 示例药丸 */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12, width: '100%', maxWidth: 440, padding: '0 12px' }}>
+                  {EXAMPLE_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => {
+                        setInput(prompt)
+                        const ta = document.querySelector('.hero-composer-container textarea, .composer textarea')
+                        if (ta) ta.focus()
+                      }}
+                      className="filter-chip active-press"
+                      style={{
+                        borderRadius: 8,
+                        padding: '9px 16px',
+                        border: '1px solid var(--surface-border)',
+                        background: 'var(--surface-bg)',
+                        color: 'var(--content-fg)',
+                        fontSize: 13,
+                        cursor: 'pointer',
+                        textAlign: 'center',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
               </div>
             )
           )}
@@ -281,29 +470,121 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
       {readingHistory && running && !clarifying && <div className="latest-progress"><Button variant="outline" size="sm" onClick={() => { stickToBottomRef.current = true; setReadingHistory(false) }}>查看最新进展 ↓</Button></div>}
       {/* 输入栏（块 6 定案：附件 chips / 状态禁用；玻璃输入舱）
           2026-09-02：演示样例模式 → 禁发提示条（防误触发起真实计费查询） */}
+      {/* 底部窄胶囊输入舱 / 样例提示栏 */}
       {pipeline.readOnly || pipeline.snapshot?.kind === 'replay' ? null : mode === 'sample' && task ? (
         <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
-          <div className="chat-column">
+          <div className="chat-column" style={{ maxWidth: 760, margin: '0 auto' }}>
             <div
               className="composer"
-              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 16px' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '11px 16px',
+                borderRadius: 28,
+                background: 'var(--surface-bg)',
+                border: '1px solid var(--surface-border)',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
+              }}
             >
               <Icon.Sparkle style={{ width: 15, height: 15, color: 'var(--accent-text)', flexShrink: 0 }} />
-              <span style={{ flex: 1, fontSize: 'var(--text-note)', color: 'var(--content-fg-secondary)', lineHeight: 1.5 }}>
-                演示样例
+              <span style={{ flex: 1, fontSize: 13, color: 'var(--content-fg-secondary)', lineHeight: 1.5 }}>
+                演示样例模式：当前呈现为只读归档过程。
               </span>
               <button
                 onClick={onSwitchToUser}
-                title="切回『我的查询』发起新的真实查询"
+                title="切回我的查询发起新的真实查询"
                 className="active-press"
                 style={{
                   border: '1px solid color-mix(in srgb, var(--accent) 45%, transparent)',
-                  background: 'var(--accent-light)', color: 'var(--accent-text)',
-                  fontSize: 'var(--text-note)', fontWeight: 500, padding: '5px 12px', borderRadius: 'var(--radius-pill)',
-                  cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap',
+                  background: 'var(--accent-light)',
+                  color: 'var(--accent-text)',
+                  fontSize: 12,
+                  fontWeight: 500,
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-pill)',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 发起真实查询
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : mode === 'user' && !isEmptyState ? (
+        <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
+          <div className="chat-column bottom-composer-enter" style={{ maxWidth: 760, margin: '0 auto' }}>
+            <div
+              className="composer"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '6px 8px 6px 16px',
+                borderRadius: 28,
+                background: 'var(--surface-bg)',
+                border: '1px solid var(--surface-border)',
+                boxShadow: '0 2px 12px rgba(68,120,91,0.06)',
+                opacity: (running && !pending) || clarifying || submitting ? 0.7 : 1,
+                transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+              }}
+            >
+              <Icon.Sparkle style={{ width: 16, height: 16, color: 'var(--accent)', flexShrink: 0 }} />
+              <textarea
+                rows={1}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
+                    e.preventDefault()
+                    handleSubmit()
+                  }
+                }}
+                disabled={(running && !pending) || clarifying || submitting}
+                placeholder={clarifying ? '请在上方确认框中回复…' : pending ? '正在处理确认…' : running ? '运行中，可查看上方进展…' : '输入需求以发起新的科研查询…'}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  padding: '9px 4px',
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  color: 'var(--content-fg)',
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  resize: 'none',
+                  minHeight: 22,
+                  ...((running || clarifying) ? { cursor: 'not-allowed' } : {}),
+                }}
+              />
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={!input.trim() || (running && !pending) || clarifying || submitting}
+                title="发送查询"
+                className="active-press"
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: '50%',
+                  flexShrink: 0,
+                  border: 'none',
+                  cursor: !input.trim() || ((running && !pending) || clarifying || submitting) ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: ((running && !pending) || clarifying || submitting || !input.trim())
+                    ? 'var(--surface-secondary)'
+                    : 'var(--accent)',
+                  color: ((running && !pending) || clarifying || submitting || !input.trim())
+                    ? 'var(--content-fg-tertiary)'
+                    : '#ffffff',
+                  transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+              >
+                <Icon.Send style={{ width: 16, height: 16 }} />
               </button>
             </div>
           </div>

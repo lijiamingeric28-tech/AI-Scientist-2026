@@ -28,9 +28,29 @@ test('App.jsx provides a back-to-samples button before the task title when viewi
   assert.match(appJsx, /<Icon\.ArrowLeft/)
 })
 
-test('icons.jsx defines ArrowLeft icon for return navigation', () => {
+test('icons.jsx defines ArrowLeft icon for return navigation and HelpCircle icon for sidebar', () => {
   const icons = readFile('src/components/icons.jsx')
   assert.match(icons, /ArrowLeft:\s*\(p\)\s*=>/)
+  assert.match(icons, /HelpCircle:\s*\(p\)\s*=>/)
+})
+
+test('all Icon.* references across jsx components are defined in icons.jsx', () => {
+  const icons = readFile('src/components/icons.jsx')
+  const definedIcons = new Set([...icons.matchAll(/(\w+):\s*\(p\)\s*=>/g)].map(m => m[1]))
+  
+  const filesToCheck = [
+    'src/App.jsx',
+    'src/components/layout/Sidebar.jsx',
+    'src/components/chat/ChatStage.jsx',
+    'src/components/chat/StageCard.jsx',
+    'src/components/results/DataView.jsx',
+  ]
+  for (const rel of filesToCheck) {
+    const code = readFile(rel)
+    for (const match of code.matchAll(/Icon\.(\w+)/g)) {
+      assert.ok(definedIcons.has(match[1]), `Icon.${match[1]} in ${rel} must be defined in icons.jsx`)
+    }
+  }
 })
 
 test('styles.css styles .back-to-samples-btn with consistent title-strong color', () => {

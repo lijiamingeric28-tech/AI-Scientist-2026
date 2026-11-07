@@ -10,12 +10,12 @@ import math
 import re
 import unicodedata
 
-from astroquery_ai.runtime.calls import ModelProfile
 from astroquery_ai.runtime.codec import canonical, content_hash, digest
 from astroquery_ai.runtime.errors import DomainError
 
 
 def figure_profile(*, state="validated"):
+    from astroquery_ai.runtime.calls import ModelProfile
     return ModelProfile(model="qwen3.8-flash", version="paper-figures-1", state=state,
                         thinking=False, max_output_tokens=4096, max_input_tokens=96000,
                         max_images=1, wall_seconds=180, inactivity_seconds=90,

@@ -3,6 +3,7 @@ import ResearchFigure from '@/components/results/ResearchFigure'
 import { getRecord } from '@/services/api'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/icons'
 import SourceDetails from '@/components/results/SourceDetails'
 import RecordDetail from '@/components/results/RecordDetail'
 import { Excerpt } from '@/components/results/ReadableContent'
@@ -14,13 +15,13 @@ import { useDismissTransition } from '@/hooks/useDismissTransition'
 import { useContentTransition } from '@/hooks/useContentTransition'
 
 export default function ContextDrawer({ detail, data, pipeline, onClose, onChange, onShowStageInChat, onOpenResults }) {
-  const [width, setWidth] = useState(620), [available, setAvailable] = useState(window.innerWidth)
+  const [width, setWidth] = useState(580), [available, setAvailable] = useState(window.innerWidth)
   const [history, setHistory] = useState([])
   const navigation = useRef(null)
   const currentDetail=useRef(detail);currentDetail.current=detail
   const [loadError,setLoadError]=useState('')
   const direction = useRef(1)
-  const overlay = available - width < 520
+  const overlay = true
   const dismissal = useDismissTransition(onClose, { duration: 160, active: !!detail, identity: detail })
   const ref = useDialogFocus(!!detail, dismissal.close, { trap: overlay })
   useLayoutEffect(() => {
@@ -53,7 +54,7 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
   if (!detail) return null
   const navigate = async next => {
     const previousDetail=detail
-    if(next.type==='record'&&next.record.details_loaded===false){try{const r=next.record;next={...next,record:await getRecord(r.source.task_id,r.delivery_id,r.delivery_revision,r.record_id)}}catch(e){setLoadError(e.message);return}if(currentDetail.current!==previousDetail)return}
+    if(next.type==='record'&&next.record.details_loaded===false){try{const r=next.record;const targetTaskId=r.task_id||r.source?.task_id||data?.taskId||pipeline?.taskId;next={...next,record:await getRecord(targetTaskId,r.delivery_id,r.delivery_revision,r.record_id)}}catch(e){setLoadError(e.message);return}if(currentDetail.current!==previousDetail)return}
     setLoadError('')
     direction.current = 1
     const scroller = ref.current?.querySelector('.record-detail-body, .context-content')
@@ -91,12 +92,77 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
   return <>
     {overlay && <div className="context-backdrop" data-closing={dismissal.closing || undefined} onClick={dismissal.close} />}
     <aside ref={ref} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} role="dialog" aria-modal={overlay ? 'true' : undefined} aria-label="上下文详情" tabIndex={-1} className={`context-drawer animate-drawer-in${overlay ? ' overlay' : ''}`} style={{ width: overlay ? Math.min(width, window.innerWidth - 24) : width, flexBasis: overlay ? undefined : width }}>
-      {!overlay && <div className="drawer-resize" onPointerDown={startResize} />}
+      <div className="drawer-resize" onPointerDown={startResize} />
       {loadError&&<p className="resource-error">{loadError}</p>}
-      {history.length > 0 && <div className="drawer-back-row"><Button variant="ghost" size="sm" onClick={goBack}>← 返回上一项</Button></div>}
+      {history.length > 0 && !source && detail.type !== 'figure' && <div className="drawer-back-row"><Button variant="ghost" size="sm" onClick={goBack}>← 返回上一项</Button></div>}
       {detail.type === 'loading-record' ? <><header className="record-detail-heading"><strong>{detail.record.field_name}</strong><Button variant="ghost" onClick={dismissal.close}>关闭</Button></header>
-        <section className="context-content" aria-busy="true"><p className="record-measurement">{detail.record.field_value} {detail.record.field_unit}</p><p role="status">正在读取原件与处理记录…</p></section></> : detail.type === 'figure' ? <><header className="settings-header"><h2>研究图像</h2><Button variant="ghost" onClick={dismissal.close}>关闭</Button></header><ResearchFigure onPrevious={gallery.length>1?()=>moveFigure(-1):undefined} onNext={gallery.length>1?()=>moveFigure(1):undefined} figure={detail.figure} sources={sources} onOpenSource={source=>navigate({type:'source',source})}/></> : detail.type === 'knowledge' ? <KnowledgeDetail block={detail.block} onClose={dismissal.close}/> : detail.type === 'record' ? <RecordDetail key={detail.record.record_id} embedded record={detail.record} quality={quality} sources={sources} loading={['loading', 'settling', 'refreshing'].includes(data.resources.quality.status)} dup={dup} onClose={dismissal.close} onOpenComparison={pid=>onOpenResults?.('analysis',{analysisTab:'comparison',propertyId:pid})} onOpenSource={source => navigate({ type: 'source', source })} onOpenRecord={id => { const record = records.find(record => record.record_id === id); if (record) navigate({ type: 'record', record }) }} /> : detail.type === 'stage' ? <StageDetailPanel embedded stage={stage} initialAgentKey={detail.agentKey} onClose={dismissal.close} onShowStageInChat={onShowStageInChat} /> : source ? <>
-        <header className="settings-header"><h2 data-detail-heading tabIndex={-1}>来源详情</h2><Button variant="ghost" size="sm" onClick={dismissal.close}>关闭</Button></header>
+        <section className="context-content" aria-busy="true"><p className="record-measurement">{detail.record.field_value} {detail.record.field_unit}</p><p role="status">正在读取原件与处理记录…</p></section></> : detail.type === 'figure' ? <>
+        <header className="context-drawer-header">
+          <div className="drawer-header-left">
+            {history.length > 0 && (
+              <button
+                type="button"
+                className="drawer-back-pill active-press"
+                onClick={goBack}
+                title="返回上一级"
+              >
+                <Icon.ArrowLeft style={{ width: 14, height: 14 }} />
+                <span>返回</span>
+              </button>
+            )}
+            <h2 data-detail-heading tabIndex={-1} className="drawer-header-title">
+              <Icon.Image className="drawer-title-icon" style={{ width: 16, height: 16, color: 'var(--accent)' }} />
+              <span>研究图像详情</span>
+            </h2>
+          </div>
+          <button
+            type="button"
+            className="drawer-close-circle active-press"
+            onClick={dismissal.close}
+            aria-label="关闭"
+          >
+            <Icon.Close style={{ width: 14, height: 14 }} />
+          </button>
+        </header>
+        <ResearchFigure onPrevious={gallery.length>1?()=>moveFigure(-1):undefined} onNext={gallery.length>1?()=>moveFigure(1):undefined} figure={detail.figure} sources={sources} onOpenSource={source=>navigate({type:'source',source})}/>
+      </> : detail.type === 'knowledge' ? <KnowledgeDetail block={detail.block} onClose={dismissal.close}/> : detail.type === 'record' ? <RecordDetail key={detail.record.record_id} embedded record={detail.record} quality={quality} sources={sources} loading={['loading', 'settling', 'refreshing'].includes(data.resources.quality.status)} dup={dup} onClose={dismissal.close} onOpenComparison={pid=>onOpenResults?.('analysis',{analysisTab:'comparison',propertyId:pid})} onOpenSource={source => navigate({ type: 'source', source })} onOpenRecord={id => { const record = records.find(record => record.record_id === id); if (record) navigate({ type: 'record', record }) }} /> : detail.type === 'stage' ? <StageDetailPanel embedded stage={stage} initialAgentKey={detail.agentKey} onClose={dismissal.close} onShowStageInChat={onShowStageInChat} /> : source ? <>
+        <header className="context-drawer-header">
+          <div className="drawer-header-left">
+            {history.length > 0 && (
+              <button
+                type="button"
+                className="drawer-back-pill active-press"
+                onClick={goBack}
+                title="返回上一级"
+              >
+                <Icon.ArrowLeft style={{ width: 14, height: 14 }} />
+                <span>返回记录</span>
+              </button>
+            )}
+            <h2 data-detail-heading tabIndex={-1} className="drawer-header-title">
+              {source.kind === 'cited' ? (
+                <>
+                  <Icon.Quote style={{ width: 16, height: 16, color: 'var(--accent)' }} />
+                  <span>原文引用详情</span>
+                </>
+              ) : (
+                <>
+                  <Icon.BookOpen style={{ width: 16, height: 16, color: 'var(--accent)' }} />
+                  <span>来源文献档案</span>
+                </>
+              )}
+            </h2>
+          </div>
+          <button
+            type="button"
+            className="drawer-close-circle active-press"
+            onClick={dismissal.close}
+            title="关闭详情"
+            aria-label="关闭详情"
+          >
+            <Icon.Close style={{ width: 14, height: 14 }} />
+          </button>
+        </header>
         <SourceDetails key={source.source_id+':'+data.deliveryRevision} scope={data} sources={sources} onOpenFigure={figure=>navigate({type:'figure',figure})} source={source} records={records} materials={data.resources.materials?.data||[]} onOpenSource={s=>navigate({type:'source',source:s})} onOpenRecord={record=>navigate({type:'record',record})}/>
       </> : null}
       {detail.type === 'record' && data.resources.sources.status === 'error' && <div className="resource-error">来源读取失败<Button size="sm" variant="outline" onClick={() => data.reload('sources')}>重试</Button></div>}

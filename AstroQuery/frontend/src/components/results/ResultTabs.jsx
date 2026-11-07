@@ -29,18 +29,47 @@ function MethodBadge({ method }) {
   const vlm = m.startsWith('vlm')
   const style = {
     padding: '2px 9px',
-    borderRadius: 8,
-    fontSize: 'var(--text-note)',
-    fontWeight: 510,
+    borderRadius: 12,
+    fontSize: '11.5px',
+    fontWeight: 500,
     display: 'inline-block',
+    lineHeight: '15px',
+    whiteSpace: 'nowrap',
   }
   if (!vlm) {
-    return <span style={{ ...style, background: 'var(--surface-secondary)', color: 'var(--content-fg-secondary)' }}>{extractionLabel(m)}</span>
+    return (
+      <span style={{
+        ...style,
+        background: '#eef3f0',
+        color: '#466052',
+        border: '1px solid #d4dfd8',
+      }}>
+        {extractionLabel(m)}
+      </span>
+    )
   }
   if (m === 'vlm_table') {
-    return <span style={{ ...style, background: 'var(--status-success-bg)', color: 'var(--status-success)' }}>VLM 表格</span>
+    return (
+      <span style={{
+        ...style,
+        background: '#e8f5ec',
+        color: '#1e7e48',
+        border: '1px solid #c2e2cc',
+      }}>
+        VLM 表格
+      </span>
+    )
   }
-  return <span style={{ ...style, background: 'var(--status-progress-bg)', color: 'var(--status-progress)' }}>{extractionLabel(m)}</span>
+  return (
+    <span style={{
+      ...style,
+      background: '#eef4ff',
+      color: '#2563eb',
+      border: '1px solid #c9dcfe',
+    }}>
+      {extractionLabel(m)}
+    </span>
+  )
 }
 
 /* 疑似重复徽标（2026-09-06，用户决策：重复组内仅标非代表成员行；代表行无徽标）
@@ -51,6 +80,17 @@ const DUP_BADGE_STYLE = {
   borderRadius: 'var(--radius-pill)', whiteSpace: 'nowrap',
   background: 'var(--status-warn-bg)', color: 'var(--status-warn)',
   verticalAlign: '2px',
+}
+
+function extractShortConditionBadge(condText) {
+  if (!condText) return null
+  const bandMatch = condText.match(/\b([UBVRIJHK]|g|r|i|z|y|F\d{3,4}\w?)\s*band\b/i) || condText.match(/\b([UBVRIJHK])\s*波段/i)
+  if (bandMatch) {
+    return bandMatch[0].trim()
+  }
+  const first = condText.split(/[;,·]/)[0].trim()
+  if (first.length <= 14) return first
+  return first.slice(0, 12) + '…'
 }
 
 /* 徽标 hover 文案（原生 title 多行）：组内其余来源 + 代表 + 规则/原则；
@@ -95,7 +135,7 @@ function pageItems(page, totalPages) {
   return items
 }
 
-export function RecordsTable({ memory = {}, active = true, records, filterRecords = records, allRecordCount = records.length, onRowClick, searchText = '', onResetFilters, externalFiltered = false, filterKey = '', onDeleteRecord, dupIndex = null, sources: allSources = [], onFilteredChange, forcedSource, forcedRecord, forcedField, toolbarExtra }) {
+export function RecordsTable({ memory = {}, active = true, records, filterRecords = records, allRecordCount = records.length, onRowClick, searchText = '', onResetFilters, externalFiltered = false, filterKey = '', onDeleteRecord, dupIndex = null, sources: allSources = [], onFilteredChange, forcedSource, forcedRecord, forcedField, toolbarExtra, search = searchText, onSearchChange, quick = filterKey || 'target', onQuickChange }) {
   const propertyLabel = usePropertyLabel()
   const [selectedRow, setSelectedRow] = useRememberedState(memory, 'selectedRow', null)
   const openRow = record => { setSelectedRow(record.record_id); onRowClick?.(record) }
@@ -166,6 +206,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
   const previousSearch = useRef({ q, filterKey })
   useEffect(() => { if (previousSearch.current.q !== q || previousSearch.current.filterKey !== filterKey) { previousSearch.current = { q, filterKey }; setPage(1) } }, [q, filterKey])
   const hasFilters = !!q || fieldFilter !== 'all' || sourceFilter !== 'all' || externalFiltered
+  const hasExplicitFilter = !!q || fieldFilter !== 'all' || sourceFilter !== 'all' || yearSort !== 'none'
   const clearFilters = () => { setFieldFilter('all'); setSourceFilter('all'); setPage(1); onResetFilters?.() }
   const filtered = useMemo(() => records.filter(
     (r) =>
@@ -234,53 +275,140 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
 
   return (
     <div className="records-workspace">
-      {/* 筛选与排序栏 */}
-      {toolbarExtra}
-      {narrowFilters&&<button className="mobile-filter-button" aria-expanded={filterOpen} onClick={()=>{setDraftFilters({field:fieldFilter,source:sourceFilter,year:yearSort});setFilterOpen(n=>!n)}}>筛选与排序</button>}
-      <div className="filter-toolbar record-filters" hidden={narrowFilters&&!filterOpen}>
-        <select
-          aria-label="按性质筛选"
-          value={narrowFilters?draftFilters.field||fieldFilter:fieldFilter}
-          onChange={(e) => narrowFilters?setDraftFilters(v=>({...v,field:e.target.value})):resetPage(setFieldFilter)(e.target.value)}
-          style={selectStyle}
-        >
-          <option value="all">全部性质 ({fields.length})</option>
-          {fields.map((f) => <option key={f} value={f}>{propertyLabel(f)}</option>)}
-        </select>
-        <select
-          aria-label="按来源筛选"
-          title={sourceFilter === 'all' ? '按记录出处筛选' : sourceName(sourceMap.get(sourceFilter), sourceFilter)}
-          value={narrowFilters?draftFilters.source||sourceFilter:sourceFilter}
-          onChange={(e) => narrowFilters?setDraftFilters(v=>({...v,source:e.target.value})):resetPage(setSourceFilter)(e.target.value)}
-          style={selectStyle}
-        >
-          <option value="all">全部来源 ({sources.length})</option>
-          {sources.map((s) => <option key={s} value={s} title={s}>{sourceName(sourceMap.get(s), s)}</option>)}
-        </select>
-        <select
-          value={narrowFilters?draftFilters.year||yearSort:yearSort}
-          onChange={(e) => narrowFilters?setDraftFilters(v=>({...v,year:e.target.value})):resetPage(setYearSort)(e.target.value)}
-          style={selectStyle}
-          title="按文献来源发表年份排序"
-        >
-          <option value="none">来源年份：默认顺序</option>
-          <option value="desc">来源年份：最新优先 (从新到旧)</option>
-          <option value="asc">来源年份：早期优先 (从旧到新)</option>
-        </select>
-        {narrowFilters&&<div className="stage-links"><Button onClick={()=>{setFieldFilter(draftFilters.field||'all');setSourceFilter(draftFilters.source||'all');setYearSort(draftFilters.year||'none');setPage(1);setFilterOpen(false)}}>应用筛选</Button><Button variant="ghost" onClick={()=>{setDraftFilters({field:'all',source:'all',year:'none'});clearFilters()}}>清除筛选</Button></div>}
-        {/* 匹配集分页计数 */}
-        {hasFilters && !narrowFilters && <Button className="clear-record-filters" variant="ghost" size="sm" onClick={clearFilters}>清除筛选</Button>}
-        <span role="status" aria-live="polite" style={{ marginLeft: 'auto', fontSize: 'var(--text-note)', color: 'var(--content-fg-tertiary)' }}>
-          显示 {displayRows.length} 项 · 保留 {allRecordCount} 条原始记录
-        </span>
-      </div>
+      {/* 单行紧凑流线型工具栏 */}
+      {onSearchChange ? (
+        <div className="record-filters-bar" hidden={narrowFilters && !filterOpen}>
+          <div className="filter-search-box">
+            <Icon.Search style={{ width: 13, height: 13, color: 'var(--content-fg-tertiary)', flexShrink: 0 }} />
+            <input
+              aria-label="搜索记录"
+              className="records-inline-search"
+              placeholder="搜索天体、性质、值或来源"
+              value={search}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+          </div>
+          <select
+            aria-label="按性质筛选"
+            value={narrowFilters ? draftFilters.field || fieldFilter : fieldFilter}
+            onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, field: e.target.value })) : resetPage(setFieldFilter)(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">全部性质 ({fields.length})</option>
+            {fields.map((f) => <option key={f} value={f}>{propertyLabel(f)}</option>)}
+          </select>
+          <select
+            aria-label="按来源筛选"
+            title={sourceFilter === 'all' ? '按记录出处筛选' : sourceName(sourceMap.get(sourceFilter), sourceFilter)}
+            value={narrowFilters ? draftFilters.source || sourceFilter : sourceFilter}
+            onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, source: e.target.value })) : resetPage(setSourceFilter)(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">全部来源 ({sources.length})</option>
+            {sources.map((s) => <option key={s} value={s} title={s}>{sourceName(sourceMap.get(s), s)}</option>)}
+          </select>
+          <select
+            value={narrowFilters ? draftFilters.year || yearSort : yearSort}
+            onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, year: e.target.value })) : resetPage(setYearSort)(e.target.value)}
+            className="filter-select"
+            title="按文献来源发表年份排序"
+          >
+            <option value="none">来源年份：默认顺序</option>
+            <option value="desc">来源年份：最新优先 (从新到旧)</option>
+            <option value="asc">来源年份：早期优先 (从旧到新)</option>
+          </select>
+          {onQuickChange && (
+            <div className="filter-chips-inline">
+              {[
+                ['target', '当前目标'],
+                ['all', '全部原报'],
+                ['modified', '有修改'],
+                ['duplicate', '疑似重复'],
+              ].map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={quick === key}
+                  className={`filter-chip-sm${quick === key ? ' active' : ''}`}
+                  disabled={key === 'duplicate' && !records.length}
+                  onClick={() => onQuickChange(key)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+          {hasExplicitFilter && !narrowFilters && (
+            <button type="button" className="clear-record-filters-sm" onClick={clearFilters}>
+              清除筛选
+            </button>
+          )}
+          <span role="status" aria-live="polite" className="records-count-status">
+            第 {sortedRows.length ? (cur - 1) * pageSize + 1 : 0}–{Math.min(cur * pageSize, sortedRows.length)} 条，共 {displayRows.length} 项 (保留 {allRecordCount} 条原报)
+          </span>
+        </div>
+      ) : (
+        <>
+          {toolbarExtra}
+          {narrowFilters && (
+            <button
+              className="mobile-filter-button"
+              aria-expanded={filterOpen}
+              onClick={() => {
+                setDraftFilters({ field: fieldFilter, source: sourceFilter, year: yearSort })
+                setFilterOpen((n) => !n)
+              }}
+            >
+              筛选与排序
+            </button>
+          )}
+          <div className="filter-toolbar record-filters" hidden={narrowFilters && !filterOpen}>
+            <select
+              aria-label="按性质筛选"
+              value={narrowFilters ? draftFilters.field || fieldFilter : fieldFilter}
+              onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, field: e.target.value })) : resetPage(setFieldFilter)(e.target.value)}
+              style={selectStyle}
+            >
+              <option value="all">全部性质 ({fields.length})</option>
+              {fields.map((f) => <option key={f} value={f}>{propertyLabel(f)}</option>)}
+            </select>
+            <select
+              aria-label="按来源筛选"
+              title={sourceFilter === 'all' ? '按记录出处筛选' : sourceName(sourceMap.get(sourceFilter), sourceFilter)}
+              value={narrowFilters ? draftFilters.source || sourceFilter : sourceFilter}
+              onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, source: e.target.value })) : resetPage(setSourceFilter)(e.target.value)}
+              style={selectStyle}
+            >
+              <option value="all">全部来源 ({sources.length})</option>
+              {sources.map((s) => <option key={s} value={s} title={s}>{sourceName(sourceMap.get(s), s)}</option>)}
+            </select>
+            <select
+              value={narrowFilters ? draftFilters.year || yearSort : yearSort}
+              onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, year: e.target.value })) : resetPage(setYearSort)(e.target.value)}
+              style={selectStyle}
+              title="按文献来源发表年份排序"
+            >
+              <option value="none">来源年份：默认顺序</option>
+              <option value="desc">来源年份：最新优先 (从新到旧)</option>
+              <option value="asc">来源年份：早期优先 (从旧到新)</option>
+            </select>
+            {hasFilters && !narrowFilters && <Button className="clear-record-filters" variant="ghost" size="sm" onClick={clearFilters}>清除筛选</Button>}
+            <span role="status" aria-live="polite" style={{ marginLeft: 'auto', fontSize: 'var(--text-note)', color: 'var(--content-fg-tertiary)' }}>
+              显示 {displayRows.length} 项 · 保留 {allRecordCount} 条原始记录
+            </span>
+          </div>
+        </>
+      )}
 
-      {/* 表格（用户重设计：无外框，行分隔线 + hover 左侧绿条） */}
+      {/* 表格（科学 6 列：实体 | 性质(含条件) | 值 | 单位 | 来源 | 提取方式） */}
       <div ref={tableScrollRef} className="records-table-region" tabIndex={-1} aria-label="测量记录表格" onScroll={event => { if (active) { memory.tableTop = event.currentTarget.scrollTop; memory.tableLeft = event.currentTarget.scrollLeft } }}>
-        <table className="records-table" style={{ width: '100%', minWidth: 760, borderCollapse: 'collapse', fontSize: 'var(--text-note)' }}>
+        <table className="records-table" style={{ width: '100%', minWidth: 760, borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr style={{ background: 'var(--surface-secondary)' }}>
-              {['性质', '测量值', '关键条件', '来源', '提取方式', ...(onDeleteRecord ? ['操作'] : [])].map((h) => {
+              {['实体', '性质', '值', '单位', '来源', '提取方式', ...(onDeleteRecord ? ['操作'] : [])].map((h) => {
+                const isValue = h === '值'
+                const isUnit = h === '单位'
+                const thPadding = isValue ? '10px 4px 10px 12px' : isUnit ? '10px 12px 10px 4px' : '10px 12px'
                 if (h === '来源') {
                   const sortIcon = yearSort === 'desc' ? ' ↓' : yearSort === 'asc' ? ' ↑' : ' ↕'
                   const sortTip = yearSort === 'none'
@@ -298,9 +426,9 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                       aria-sort={yearSort === 'asc' ? 'ascending' : yearSort === 'desc' ? 'descending' : 'none'}
                       title={sortTip}
                       style={{
-                        textAlign: 'left', padding: '10px 12px', fontWeight: 510,
+                        textAlign: 'left', padding: thPadding, fontWeight: 550,
                         color: yearSort !== 'none' ? 'var(--accent)' : 'var(--content-fg-tertiary)',
-                        fontSize: 'var(--text-note)', whiteSpace: 'nowrap', cursor: 'pointer',
+                        fontSize: 12, whiteSpace: 'nowrap', cursor: 'pointer',
                         userSelect: 'none',
                       }}
                     >
@@ -309,7 +437,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                   )
                 }
                 return (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontWeight: 510, color: 'var(--content-fg-tertiary)', fontSize: 'var(--text-note)', whiteSpace: 'nowrap' }}>
+                  <th key={h} style={{ textAlign: 'left', padding: thPadding, fontWeight: 550, color: 'var(--content-fg-tertiary)', fontSize: 12, whiteSpace: 'nowrap' }}>
                     {h}
                   </th>
                 )
@@ -317,11 +445,19 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
             </tr>
           </thead>
           <tbody data-page-content>
-            {!pageRows.length && <tr><td colSpan={onDeleteRecord ? 6 : 5} className="records-no-match"><p>没有找到符合当前条件的记录</p>{hasFilters && <Button variant="outline" size="sm" onClick={clearFilters}>清除筛选，查看全部记录</Button>}</td></tr>}
+            {!pageRows.length && <tr><td colSpan={onDeleteRecord ? 7 : 6} className="records-no-match"><p>没有找到符合当前条件的记录</p>{hasFilters && <Button variant="outline" size="sm" onClick={clearFilters}>清除筛选，查看全部记录</Button>}</td></tr>}
             {pageRows.map((r) => {
               const rowDup = dupIndex?.byRecordId?.[r.record_id] || null
               // 仅非代表成员行追加徽标；组散（现存成员 <2）后不再标注
               const showDupBadge = !!rowDup && !rowDup.isRepresentative && rowDup.group.liveCount >= 2
+              const condText = [(r.context?.conditions || []).find(c=>c.key === 'source_subject_and_measurand' && c.state === 'known')?.value,
+                ...readingConditions(r.context?.conditions).map(c=>c.value)]
+                .filter(v=>typeof v === 'string')
+                .map(v=>v.replace(new RegExp(`^${r.entity_name}[:;\\s]*`, 'i'), '').trim())
+                .filter(v=>v && v !== r.entity_name && !v.toLowerCase().startsWith(r.entity_name.toLowerCase()))
+                .slice(0, 2).join(' · ') || null
+              const condBadge = extractShortConditionBadge(condText)
+
               return (
               <tr
                 key={r.record_id}
@@ -337,25 +473,44 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                 tabIndex={0}
                 onKeyDown={event => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openRow(r) } }}
               >
-                <td style={{ ...tdStyle, fontFamily: 'inherit', fontWeight: 510 }} title={r.field_name}>{propertyLabel(r.field_name)}</td>
-                {/* 用户重设计：值列左对齐等宽 */}
-                <td style={{ ...tdStyle, fontFamily: 'inherit', textAlign: 'right', fontVariantNumeric:'tabular-nums' }}>
-                  <span className="table-measurement"><b>{r.field_value}</b> <span>{r.field_unit}</span></span>
-                  {rowDup?.group.archive && <details onClick={event => event.stopPropagation()}><summary>{rowDup.group.liveCount} 处原报</summary><p>{rowDup.group.reason}</p>{rowDup.group.recordIds.map(id => { const member = records.find(item => item.record_id === id); return member && <p key={id}><button className="text-link" onClick={() => openRow(member)}>{member.field_value} {member.field_unit} {(member.source?.uncertainty?.components||[]).map(c=>c.raw_text).join('；')} · {sourceName(sourceMap.get(member.source_id),member.source_id)}</button></p> })}</details>}
-                  {showDupBadge && !rowDup.group.archive && <DupBadge group={rowDup.group} recordId={r.record_id} />}
+                {/* 1. 实体 */}
+                <td style={{ ...tdStyle, color: 'var(--content-fg)', fontWeight: 500, whiteSpace: 'nowrap' }} title={r.entity_name}>
+                  {r.entity_name}
                 </td>
-                <td style={tdStyle} className="record-condition-cell"><span>{[(r.context?.conditions || []).find(c=>c.key === 'source_subject_and_measurand' && c.state === 'known')?.value,
-                    ...readingConditions(r.context?.conditions).map(c=>c.value)].filter(v=>typeof v === 'string' && v !== r.entity_name).slice(0,2).join('；') || '—'}</span></td>
-                <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)', fontSize: 'var(--text-note)' }}>
-                  {/* 用户重设计：期刊缩写+年份（完整 bibcode 见 title） */}
+
+                {/* 2. 性质（单行对齐，含紧凑条件徽标） */}
+                <td style={{ ...tdStyle, fontFamily: 'inherit', whiteSpace: 'nowrap' }} title={condText ? `${r.field_name} (${condText})` : r.field_name}>
+                  <div className="table-property-inline">
+                    <span className="table-property-name">{propertyLabel(r.field_name)}</span>
+                    {condBadge && <span className="table-property-cond-pill" title={condText}>{condBadge}</span>}
+                  </div>
+                </td>
+
+                {/* 3. 值（严格左对齐等宽 Tabular，靠拢单位列） */}
+                <td style={{ ...tdStyle, fontFamily: MONO, textAlign: 'left', fontVariantNumeric: 'tabular-nums', fontWeight: 600, paddingRight: 4 }}>
+                  <span className="table-value-num">{r.field_value}</span>
+                  {showDupBadge && !rowDup.group.archive && <DupBadge group={rowDup.group} recordId={r.record_id} />}
+                  {rowDup?.group.archive && <details onClick={event => event.stopPropagation()}><summary>{rowDup.group.liveCount} 处原报</summary><p>{rowDup.group.reason}</p>{rowDup.group.recordIds.map(id => { const member = records.find(item => item.record_id === id); return member && <p key={id}><button className="text-link" onClick={() => openRow(member)}>{member.field_value} {member.field_unit} {(member.source?.uncertainty?.components||[]).map(c=>c.raw_text).join('；')} · {sourceName(sourceMap.get(member.source_id),member.source_id)}</button></p> })}</details>}
+                </td>
+
+                {/* 4. 单位（独立列、次级色，靠拢值列） */}
+                <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)', fontSize: 12.5, whiteSpace: 'nowrap', paddingLeft: 4 }}>
+                  {r.field_unit || '—'}
+                </td>
+
+                {/* 5. 来源（期刊缩写+年份） */}
+                <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)', fontSize: 12.5 }}>
                   <span className="record-source-cell" title={sourceName(sourceMap.get(r.source_id), r.source_id)}>
                     <Icon.FileText style={{ width: 11, height: 11, flexShrink: 0, color: 'var(--content-fg-tertiary)' }} />
                     <span>{sourceName(sourceMap.get(r.source_id), r.source_id, true)}</span>
                   </span>
                 </td>
-                <td style={{ ...tdStyle, fontSize: 'var(--text-note)' }}>
+
+                {/* 6. 提取方式 */}
+                <td style={{ ...tdStyle, fontSize: 12.5 }}>
                   <MethodBadge method={r.extraction_method} />
                 </td>
+
                 {onDeleteRecord && <td style={{ ...tdStyle, width: 32, color: 'var(--content-fg-tertiary)', textAlign: 'center' }}>
                   {/* 操作列：… 点击弹出下拉菜单（查看详情 / 删除）；菜单关闭即收起（2026-09-02）
                       readOnly（样例本体）不渲染入口——记录只读 */}
@@ -468,10 +623,12 @@ const menuItemStyle = {
 }
 
 const tdStyle = {
-  padding: '9px 12px',
+  padding: '0 12px',
+  height: 44,
   borderTop: '1px solid var(--surface-border-subtle)',
   userSelect: 'text',
   WebkitUserSelect: 'text',
+  verticalAlign: 'middle',
 }
 
 export function SourcesList({ sources, onOpenSource }) {

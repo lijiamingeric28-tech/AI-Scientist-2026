@@ -1,6 +1,13 @@
 """Read the published science inputs. External candidate imports still verify the entire author package."""
 import lzma
 import hashlib
+if not hasattr(hashlib, 'file_digest'):
+    def _file_digest(fileobj, digest_name='sha256'):
+        h = getattr(hashlib, digest_name)() if isinstance(digest_name, str) else digest_name()
+        for chunk in iter(lambda: fileobj.read(65536), b''):
+            h.update(chunk)
+        return h
+    hashlib.file_digest = _file_digest
 import os
 import shutil
 import tempfile

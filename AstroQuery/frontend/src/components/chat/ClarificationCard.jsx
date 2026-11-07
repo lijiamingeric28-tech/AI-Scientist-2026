@@ -65,10 +65,10 @@ export default function ClarificationCard({ payload, onSubmit }) {
           alignItems: 'center',
           gap: 8,
           padding: '9px 14px',
-          background: 'var(--status-progress-bg)',
+          background: 'var(--surface-secondary, #fafcfb)',
           fontSize: 'var(--text-note)',
           fontWeight: 510,
-          color: 'var(--status-progress)',
+          color: 'var(--title-section, #3d6a50)',
         }}
       >
         <span className="animate-pulse-dot" style={{ color: 'var(--status-running, #5097B1)' }}>●</span>

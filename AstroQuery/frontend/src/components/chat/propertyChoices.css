@@ -1,6 +1,6 @@
-.query-question.draft-question { margin: 8px 0 18px 38px; padding: 20px 24px; border: 1px solid var(--surface-border); border-radius: 12px; background: var(--surface-bg); color: var(--content-fg); font-size: 16px; line-height: 1.6; }
+.query-question.draft-question { margin: 8px 0 18px 38px; padding: 18px 22px; border: 1px solid var(--surface-border, #dce4df); border-left: 3.5px solid var(--accent, #44785b); border-radius: 10px; background: var(--surface-bg, #ffffff); color: var(--content-fg); font-size: 14.5px; line-height: 1.6; box-shadow: 0 2px 8px rgba(68, 120, 91, 0.05); }
 .property-choice > header, .choice-submit, .draft-secondary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.draft-question h3 { margin: 0; font-size: var(--text-section); line-height: 1.45; font-weight: 600; }
+.draft-question h3 { margin: 0; font-size: 14.5px; line-height: 1.45; font-weight: 650; color: var(--title-section, #3d6a50); }
 .property-choice > header > span, .choice-submit > span, .choice-unit, .choice-symbol { color: var(--content-fg-secondary); font-size: 14px; }
 .choice-group, .choice-scope { min-width: 0; padding: 0; margin: 20px 0 0; border: 0; }
 .choice-group legend, .choice-scope legend { padding: 0; margin-bottom: 6px; font-size: var(--text-body); font-weight: 600; }

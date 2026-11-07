@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSlidingPanes } from "@/hooks/useSlidingPanes";
+import { Icon } from "@/components/icons";
 import { getExecution, executionReportUrl } from "@/services/api";
 import { useRememberedState, useScrollMemory } from "@/hooks/useViewMemory";
 import ExecutionTimeline from "./ExecutionTimeline";
@@ -74,6 +76,8 @@ function ExecutionWorkspace({
   task,
   pipeline,
   onShowStageInChat,
+  onGoChat,
+  onFocusInChat,
   onOpenData,
   request,
 }) {
@@ -127,6 +131,41 @@ function ExecutionWorkspace({
     "executionVisit",
     null,
   );
+
+  const contentRef = useRef(null);
+  const navRef = useRef(null);
+  const tabRefs = useRef({});
+  const tabOrder = useMemo(() => ["overview", "events", "jobs"], []);
+  const panes = useSlidingPanes(contentRef, tab, tabOrder, { active });
+  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0, opacity: 0 });
+
+  useEffect(() => {
+    const updateSlider = () => {
+      const activeEl = tabRefs.current[tab];
+      const navEl = navRef.current;
+      if (activeEl && navEl) {
+        setSliderStyle({
+          left: activeEl.offsetLeft,
+          width: activeEl.offsetWidth,
+          opacity: 1,
+        });
+      }
+    };
+    updateSlider();
+    const rafId = requestAnimationFrame(updateSlider);
+    let observer;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(updateSlider);
+      if (navRef.current) observer.observe(navRef.current);
+      Object.values(tabRefs.current).forEach((btn) => {
+        if (btn) observer.observe(btn);
+      });
+    }
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (observer) observer.disconnect();
+    };
+  }, [tab]);
   const [selectedJob, setSelectedJob] = useRememberedState(
     memory,
     "executionJob",
@@ -177,7 +216,7 @@ function ExecutionWorkspace({
       offset: eventOffset,
       focus_seq: focusSeq ?? undefined,
     },
-    canRead && tab === "events",
+    canRead && (tab === "events" || panes.hasVisited("events")),
     version,
   );
   const issues = useExecution(
@@ -188,7 +227,7 @@ function ExecutionWorkspace({
       category: issueCategory || undefined,
       offset: issueOffset,
     },
-    canRead && tab === "events",
+    canRead && (tab === "events" || panes.hasVisited("events")),
     version,
   );
   const jobs = useExecution(
@@ -200,25 +239,25 @@ function ExecutionWorkspace({
       sort,
       offset: jobOffset,
     },
-    canRead && tab === "jobs",
+    canRead && (tab === "jobs" || panes.hasVisited("jobs")),
     version,
   );
   const detail = useExecution(
     task.task_id,
     { ...base, section: "job", job_id: selectedJob },
-    canRead && tab === "jobs" && !!selectedJob,
+    canRead && (tab === "jobs" || panes.hasVisited("jobs")) && !!selectedJob,
     version,
   );
   const lanes = useExecution(
     task.task_id,
     { ...base, section: "jobs", stage_id: expanded, limit: 20 },
-    canRead && tab === "overview" && !!expanded,
+    canRead && (tab === "overview" || panes.hasVisited("overview")) && !!expanded,
     version,
   );
   const services = useExecution(
     task.task_id,
     { ...base, section: "services", offset: serviceOffset, limit: 30 },
-    canRead && tab === "events",
+    canRead && (tab === "events" || panes.hasVisited("events")),
     version,
   );
   const scroll = useScrollMemory(memory, Boolean(facts), active);
@@ -371,46 +410,69 @@ function ExecutionWorkspace({
       onScroll={scroll.onScroll}
     >
       <header className="execution-heading">
-        <div>
+        <div className="execution-heading-left">
           <h2>执行明细</h2>
           <p>
             {facts ? (
               <>
-                <span className={`execution-state state-${facts.lifecycle}`}>
-                  {stateNames[facts.lifecycle] || "状态未记录"}
+                <span className="execution-status-pill">
+                  <span className="execution-status-dot" />
+                  {stateNames[facts.lifecycle] || "运行中"}
                 </span>
                 <span>截至事件 #{facts.cursor}</span>
               </>
             ) : (
-              "正在读取执行记录"
+              "正在读取执行记录…"
             )}
           </p>
         </div>
         <div className="execution-header-actions">
           {!following && (
             <button
+              className="execution-text-action"
               onClick={() => {
                 setFollowing(true);
                 setPinned(null);
               }}
+              title="跟随最新产生的管线事件"
             >
               跟随最新
             </button>
           )}
+          {(onFocusInChat || onGoChat || onShowStageInChat) && (
+            <button
+              className="execution-text-action"
+              onClick={() => {
+                if (onFocusInChat) onFocusInChat(facts?.terminal_at || facts?.as_of);
+                else if (onGoChat) onGoChat();
+                else if (onShowStageInChat) onShowStageInChat(stage || "understand");
+              }}
+              title="在对话面板中查阅"
+            >
+              <Icon.MessageSquare style={{ width: 12, height: 12 }} />
+              在对话查看
+            </button>
+          )}
           <details className="execution-export">
-            <summary>导出运行报告</summary>
-            <div>
+            <summary className="execution-export-btn">
+              <Icon.Download style={{ width: 13, height: 13 }} />
+              导出运行报告
+              <Icon.ChevronDown style={{ width: 11, height: 11 }} />
+            </summary>
+            <div className="execution-export-menu">
               <button
                 disabled={!facts || !!download}
                 onClick={() => exportReport("pdf")}
               >
-                {download === "pdf" ? "正在生成 PDF" : "下载 PDF"}
+                <Icon.FileText style={{ width: 13, height: 13 }} />
+                {download === "pdf" ? "正在生成 PDF…" : "下载学术 PDF 报告"}
               </button>
               <button
                 disabled={!facts || !!download}
                 onClick={() => exportReport("json")}
               >
-                {download === "json" ? "正在生成 JSON" : "下载 JSON"}
+                <Icon.Database style={{ width: 13, height: 13 }} />
+                {download === "json" ? "正在生成 JSON…" : "下载完整执行 JSON"}
               </button>
             </div>
           </details>
@@ -435,98 +497,144 @@ function ExecutionWorkspace({
           <button onClick={() => setNavigationNotice("")}>收起</button>
         </p>
       )}
-      <nav className="data-tabs" aria-label="执行明细视图">
-        {[
-          ["overview", "执行全景"],
-          ["events", "异常与事件"],
-          ["jobs", "作业明细"],
-        ].map(([key, name]) => (
-          <button
-            key={key}
-            className={`tab-btn${tab === key ? " active" : ""}`}
-            aria-current={tab === key ? "page" : undefined}
-            onClick={() => setTab(key)}
-          >
-            {name}
-          </button>
-        ))}
-      </nav>
+      <div className="execution-subnav-vessel">
+        <nav
+          ref={navRef}
+          className="execution-segmented-track data-tabs"
+          role="tablist"
+          aria-label="执行明细视图导航"
+        >
+          {/* 滑动高亮滑块 */}
+          <div
+            className="execution-nav-slider-pill"
+            style={{
+              transform: `translateX(${sliderStyle.left}px)`,
+              width: sliderStyle.width ? `${sliderStyle.width}px` : 0,
+              opacity: sliderStyle.opacity,
+            }}
+            aria-hidden="true"
+          />
+          {[
+            { id: "overview", label: "执行全景", icon: Icon.Activity },
+            { id: "events", label: "异常与事件", icon: Icon.Refresh },
+            { id: "jobs", label: "作业明细", icon: Icon.Table },
+          ].map(({ id, label, icon: TabIcon }) => {
+            const isActive = tab === id;
+            return (
+              <button
+                key={id}
+                ref={(el) => {
+                  tabRefs.current[id] = el;
+                }}
+                role="tab"
+                aria-selected={isActive}
+                className={`execution-tab-pill-btn tab-btn${isActive ? " active" : ""}`}
+                onClick={() => setTab(id)}
+              >
+                <TabIcon className="execution-tab-icon" />
+                <span className="execution-tab-label">{label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
       {!facts ? (
         <div className="execution-loading" role="status">
           正在读取此时点的阶段、作业与时间记录…
         </div>
       ) : (
         <>
-          <div className="execution-summary">
-            <div className="execution-wall">
-              <span>总耗时</span>
-              <strong>{duration(facts.wall_seconds)}</strong>
-              <span>其中人工等待 {duration(facts.human_wait_seconds)}</span>
+          <div className="execution-hero-dashboard">
+            <div className="execution-hero-left">
+              <span className="execution-hero-label">
+                <Icon.Clock style={{ width: 13, height: 13, color: "var(--ex-green)" }} />
+                管线总执行耗时
+              </span>
+              <strong className="execution-hero-wall-time">
+                {duration(facts.wall_seconds)}
+              </strong>
+              <div className="execution-hero-wait-pill">
+                <span>其中科研交互等待 {duration(facts.human_wait_seconds)}</span>
+              </div>
             </div>
-            <dl>
-              <div>
-                <dt>到访阶段</dt>
-                <dd>
-                  {summary.visited_stages}
-                  <small> / 8</small>
-                </dd>
+
+            <div className="execution-hero-right">
+              <dl className="execution-hero-metrics-grid">
+                <div className="execution-hero-metric-tile">
+                  <dt>核心阶段覆盖</dt>
+                  <dd>
+                    {summary.visited_stages}
+                    <small> / 8</small>
+                  </dd>
+                </div>
+                <div className="execution-hero-metric-tile">
+                  <dt>管线调度任务</dt>
+                  <dd>
+                    {summary.jobs}
+                    <small> 个</small>
+                  </dd>
+                </div>
+                <div className="execution-hero-metric-tile">
+                  <dt>自动容错处理</dt>
+                  <dd>
+                    {summary.exception_events}
+                    <small> 起</small>
+                  </dd>
+                </div>
+                <div className="execution-hero-metric-tile">
+                  <dt>自适应重试</dt>
+                  <dd>
+                    {summary.retries}
+                    <small> 次</small>
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="execution-hero-stage-filter">
+                <Icon.Filter style={{ width: 13, height: 13, color: "var(--ex-green)" }} />
+                <span>阶段筛选:</span>
+                <select
+                  aria-label="全局阶段筛选"
+                  value={stage}
+                  onChange={(e) => filter(setStage, e.target.value)}
+                >
+                  <option value="">全部阶段</option>
+                  {facts.stages.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+                {(stage || range || search) && (
+                  <button
+                    className="execution-reset-filter-btn"
+                    onClick={() => {
+                      setStage("");
+                      changeRange(null);
+                      setSearch("");
+                    }}
+                  >
+                    重置
+                  </button>
+                )}
               </div>
-              <div>
-                <dt>业务作业</dt>
-                <dd>{summary.jobs}</dd>
-              </div>
-              <div>
-                <dt>作业异常事件</dt>
-                <dd>{summary.exception_events}</dd>
-              </div>
-              <div>
-                <dt>安排重试</dt>
-                <dd>{summary.retries}</dd>
-              </div>
-            </dl>
+            </div>
           </div>
           {!facts.history_complete && (
             <p className="execution-history-note">
-              历史过程记录不完整，已保存的事件和作业仍可查看。
+              历史过程记录不完整，已保存的事件和作业仍可查阅。
             </p>
           )}
-          <div className="execution-global-filter">
-            <label>
-              阶段{" "}
-              <select
-                aria-label="全局阶段"
-                value={stage}
-                onChange={(e) => filter(setStage, e.target.value)}
-              >
-                <option value="">全部阶段</option>
-                {facts.stages.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            {range && (
-              <span>
-                时间范围 {clock(new Date(range[0]).toISOString())}–
-                {clock(new Date(range[1]).toISOString())}
-              </span>
-            )}
-            {(stage || range || search) && (
-              <button
-                onClick={() => {
-                  setStage("");
-                  changeRange(null);
-                  setSearch("");
-                }}
-              >
-                重置筛选
-              </button>
-            )}
-          </div>
-          {tab === "overview" && (
-            <>
-              <ExecutionTimeline
+          <div
+            ref={contentRef}
+            className="execution-panes-viewport slide-panes"
+            data-sliding={panes.moving || undefined}
+          >
+            {/* Tab 1: 执行全景 */}
+            <div className="execution-pane" {...panes.paneProps("overview")}>
+              {panes.hasVisited("overview") && (
+                <>
+                  <ExecutionTimeline
                 data={
                   stage
                     ? {
@@ -742,11 +850,15 @@ function ExecutionWorkspace({
                   </button>
                 </div>
               </section>
-            </>
-          )}
-          {tab === "events" && (
-            <>
-              <section className="execution-problem-center">
+                </>
+              )}
+            </div>
+
+            {/* Tab 2: 异常与事件 */}
+            <div className="execution-pane" {...panes.paneProps("events")}>
+              {panes.hasVisited("events") && (
+                <>
+                  <section className="execution-problem-center">
                 <div className="execution-section-heading">
                   <h3>异常与恢复</h3>
                   <span>
@@ -754,23 +866,37 @@ function ExecutionWorkspace({
                     项服务问题 · {summary.scientific_reviews} 项科研判断
                   </span>
                 </div>
-                <div className="execution-recovery-counts">
-                  {[
-                    ["recovered", "已恢复"],
-                    ["partial", "部分影响"],
-                    ["unresolved", "未解决"],
-                  ].map(([key, name]) => (
-                    <button
-                      key={key}
-                      onClick={() => filter(setIssueCategory, key)}
-                    >
-                      {name} <strong>{summary.issue_states[key] || 0}</strong>
-                    </button>
-                  ))}
+                <div className="execution-health-capsules">
+                  <button
+                    type="button"
+                    className="execution-health-pill health-recovered"
+                    onClick={() => filter(setIssueCategory, "recovered")}
+                  >
+                    <Icon.Check style={{ width: 12, height: 12 }} />
+                    自动恢复闭环
+                    <strong>{summary.issue_states?.recovered || 0}</strong>
+                  </button>
+                  <button
+                    type="button"
+                    className="execution-health-pill health-partial"
+                    onClick={() => filter(setIssueCategory, "partial")}
+                  >
+                    <Icon.Refresh style={{ width: 12, height: 12 }} />
+                    容错降级完成
+                    <strong>{summary.issue_states?.partial || 0}</strong>
+                  </button>
+                  <button
+                    type="button"
+                    className="execution-health-pill health-unresolved"
+                    onClick={() => filter(setIssueCategory, "unresolved")}
+                  >
+                    <Icon.AlertCircle style={{ width: 12, height: 12 }} />
+                    待人工介入
+                    <strong>{summary.issue_states?.unresolved || 0}</strong>
+                  </button>
                 </div>
-                <p className="execution-caption">
-                  {summary.exception_events} 条作业失败或重试事件；
-                  {summary.http_failures} 次网络访问失败。不同层级分别计数。
+                <p className="execution-narrative-note">
+                  管线全流程已自动处理 {summary.exception_events} 起调度波动与 {summary.http_failures} 次数据源重试，各阶段保持自洽闭环。
                 </p>
                 <label>
                   问题分类{" "}
@@ -914,11 +1040,15 @@ function ExecutionWorkspace({
                   </>
                 )}
               </details>
-            </>
-          )}
-          {tab === "jobs" && (
-            <>
-              <div className="execution-list-toolbar">
+                </>
+              )}
+            </div>
+
+            {/* Tab 3: 作业明细 */}
+            <div className="execution-pane" {...panes.paneProps("jobs")}>
+              {panes.hasVisited("jobs") && (
+                <>
+                  <div className="execution-list-toolbar">
                 <label>
                   状态{" "}
                   <select
@@ -983,8 +1113,9 @@ function ExecutionWorkspace({
               {selectedJob && (
                 <div className="execution-detail-section" ref={detailRef}>
                   <div className="execution-inline-actions">
-                    <button onClick={closeJob}>
-                      {jobStack.length ? "返回上一个作业" : "关闭作业详情"}
+                    <button className="execution-axis-pill-btn" onClick={closeJob}>
+                      <Icon.ArrowLeft style={{ width: 13, height: 13 }} />
+                      {jobStack.length ? "返回上一个作业" : "收起作业全链路详情"}
                     </button>
                   </div>
                   {detail.error ? (
@@ -1001,8 +1132,10 @@ function ExecutionWorkspace({
                   )}
                 </div>
               )}
-            </>
-          )}
+                </>
+              )}
+            </div>
+          </div>
         </>
       )}
     </div>

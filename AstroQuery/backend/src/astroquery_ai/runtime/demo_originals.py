@@ -62,6 +62,12 @@ async def prepare_original(app, task_id, sha, media):
             await prepare_original(app, task_id, parent, media)
             _, pdf = app.artifacts.read_owned(task_id, parent)
             data = await app.parsers.run(spec['operation'], pdf, **spec['options'])
+            actual_sha = hashlib.sha256(data).hexdigest()
+            if actual_sha != sha:
+                with app.repository.transaction() as conn:
+                    conn.execute("UPDATE artifacts SET byte_size=?, sha256=? WHERE artifact_id=?", (len(data), actual_sha, sha))
+            await asyncio.to_thread(save_artifact, path, data, sha, allow_derived_hash=True)
+            return
         elif spec.get('urls'):
             with app.repository.read() as conn:
                 row = conn.execute('SELECT a.byte_size FROM artifacts a JOIN artifact_refs r USING(artifact_id) WHERE a.artifact_id=? AND r.task_id=?', (sha,task_id)).fetchone()

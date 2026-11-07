@@ -72,8 +72,8 @@ async function resource(taskId, deliveryId, name, revision, query='') {
   items.snapshot_ref = first.snapshot_ref
   return items
 }
-function adaptRecord(item,deliveryId,revision) {
-  if (item.legacy_version === 1) return item
+function adaptRecord(item,deliveryId,revision,taskId) {
+  if (item.legacy_version === 1) return { ...item, task_id: taskId || item.task_id }
   const { source, derived, property_binding: binding } = item
   const ready = derived?.main_state === 'ready'
   const value = ready ? derived.value_typed : source.value
@@ -84,7 +84,9 @@ function adaptRecord(item,deliveryId,revision) {
   const shownUnit = ['log10', 'ln'].includes(representation) && !nativeIsCoordinate
     ? (dimensionless && nativeUnit === '1' ? `${representation}（无量纲原生坐标）` : `${representation}（${nativeUnit || '参考单位未明确'}基准）`) : nativeUnit
   const display=limitedValueText(value,ready?derived.limit??source.limit:source.limit)
-  return { ...item, protocol_version: 2, delivery_id: deliveryId, delivery_revision: revision, record_id: source.measurement_id,
+  const resolvedTaskId = taskId || source.task_id || item.task_id
+  return { ...item, task_id: resolvedTaskId, protocol_version: 2, delivery_id: deliveryId, delivery_revision: revision, record_id: source.measurement_id,
+    source: { ...source, task_id: resolvedTaskId },
     entity_name: item.target?.main_id || source.target_ref.id, field_name: binding.definition.name_cn,
     property_id: binding.property_id, field_value: display, field_unit: shownUnit, field_representation: representation,
     source_id: source.source_ref.id, source_kind: source.source_kind, extraction_method: source.source_kind,
@@ -93,11 +95,11 @@ function adaptRecord(item,deliveryId,revision) {
 }
 export const getRecords = async (taskId,deliveryId,revision)=>{
   const rows=await resource(taskId,deliveryId,'records',revision,'&view=list')
-  const result=rows.map(item=>adaptRecord(item,deliveryId,revision))
+  const result=rows.map(item=>adaptRecord(item,deliveryId,revision,taskId))
   result.snapshot_ref=rows.snapshot_ref
   return result
 }
-export const getRecord = async (taskId,deliveryId,revision,recordId)=>adaptRecord((await resource(taskId,deliveryId,'records',revision,`&record_id=${id(recordId)}`))[0],deliveryId,revision)
+export const getRecord = async (taskId,deliveryId,revision,recordId)=>adaptRecord((await resource(taskId,deliveryId,'records',revision,`&record_id=${id(recordId)}`))[0],deliveryId,revision,taskId)
 export const getSources = async (taskId, deliveryId, revision) => (await resource(taskId, deliveryId, 'sources', revision)).map(source => ({ ...source, year:source.work?.records?.[0]?.year, authors:source.work?.records?.[0]?.authors, abstract:source.work?.records?.[0]?.abstract, protocol_version: source.legacy_version === 1 ? 1 : 2, task_id: taskId }))
 export const getFigures = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'figures', revision)
 export const getCoverage = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'coverage', revision)

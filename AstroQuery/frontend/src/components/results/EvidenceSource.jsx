@@ -3,6 +3,7 @@ import { artifactUrl } from '@/services/api'
 import SourceImageLightbox from './SourceImageLightbox'
 import { titleText } from '@/lib/researchDisplay'
 import { rawCells } from '@/lib/scienceReading'
+import FormattedExcerpt from './FormattedExcerpt'
 
 const ROLES = {
   main_excerpt: '测量摘录',
@@ -113,13 +114,10 @@ export function OriginalPage({ taskId, artifact, point }) {
       ) : (
         <p role="status">原页预览暂时无法读取，可打开原 PDF。</p>
       )}
-      <details className="evidence-excerpts">
-        <summary>查看保存的摘录</summary>
-        <section>
-          <h5>{(fragment.roles || [fragment.role]).map(roleName).join('、')}</h5>
-          <blockquote>{fragment.excerpt}</blockquote>
-        </section>
-      </details>
+      <FormattedExcerpt
+        excerpt={fragment.excerpt}
+        role={(fragment.roles || [fragment.role]).map(roleName).join('、')}
+      />
       {open && (
         <SourceImageLightbox
           label={'原文定位图 · PDF 物理第 ' + point.page + ' 页'}
@@ -273,8 +271,16 @@ export default function EvidenceSource({
         {Number.isInteger(locator.row) && ' · 原记录零基行索引 ' + locator.row}
         {locator.column && ' · ' + locator.column + ' 列'}
       </p>
-      {rawCells(evidence) ? <NativeCells cells={rawCells(evidence)}/> :
-        evidence?.raw_text && <details><summary>查看保存的摘录</summary><blockquote>{evidence.raw_text}</blockquote></details>}
+      {rawCells(evidence) ? (
+        <NativeCells cells={rawCells(evidence)} />
+      ) : (
+        evidence?.raw_text && (
+          <FormattedExcerpt
+            excerpt={evidence.raw_text}
+            role={evidence.role ? roleName(evidence.role) : '原始数据摘录'}
+          />
+        )
+      )}
       {evidence?.artifact_ref?.id && (
         <a href={artifactUrl(taskId, evidence.artifact_ref.id)} target="_blank" rel="noreferrer">
           打开保存的原件

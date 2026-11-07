@@ -113,11 +113,27 @@ export default function SettingsDialog({ open, onClose, onboarding = false, onCo
   if (!open) return null
   const activeChanges = changed.filter(field => tab === 'preferences' ? PREFERENCE_KEYS.includes(field.key) : tab === 'connections' ? !PREFERENCE_KEYS.includes(field.key) : false)
   return <div className="settings-overlay" data-closing={dismissal.closing || undefined} onClick={close}>
-    <section ref={dialogRef} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="settings-title" className="settings-dialog preferences-dialog animate-modal-in" onClick={event => event.stopPropagation()}>
-      <header className="settings-header"><div><h2 id="settings-title">{onboarding ? '连接科研服务，开始你的查询' : '设置'}</h2><p>{onboarding ? '可先浏览演示样例，稍后再完成连接。' : ''}</p></div><Button variant="ghost" size="icon" aria-label="关闭设置" onClick={close} disabled={saving}><Icon.Close /></Button></header>
-      <div className="settings-body">
+    <section
+      ref={dialogRef}
+      data-closing={dismissal.closing || undefined}
+      onAnimationEnd={dismissal.onAnimationEnd}
+      onKeyDownCapture={dismissal.onKeyDownCapture}
+      tabIndex={-1}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-title"
+      className="settings-dialog preferences-dialog animate-modal-in"
+      onClick={event => event.stopPropagation()}
+      style={{
+        backgroundColor: 'var(--surface-primary, #ffffff)',
+        backgroundImage: 'none',
+        opacity: 1,
+      }}
+    >
+      <header className="settings-header" style={{ backgroundColor: 'var(--surface-primary, #ffffff)' }}><div><h2 id="settings-title">{onboarding ? '连接科研服务，开始你的查询' : '设置'}</h2><p>{onboarding ? '可先浏览演示样例，稍后再完成连接。' : ''}</p></div><Button variant="ghost" size="icon" aria-label="关闭设置" onClick={close} disabled={saving}><Icon.Close /></Button></header>
+      <div className="settings-body" style={{ backgroundColor: 'var(--surface-primary, #ffffff)' }}>
         <nav ref={navRef} className="settings-nav" aria-label="设置分类">{[['preferences', '使用偏好'], ['connections', '服务连接'], ['system', '模型与科学库']].map(([key, label]) => <button key={key} className={tab === key ? 'selected' : undefined} aria-current={tab === key ? 'page' : undefined} onClick={() => setTab(key)}>{label}</button>)}</nav>
-        <div className="settings-content">
+        <div className="settings-content" style={{ backgroundColor: 'var(--surface-primary, #ffffff)' }}>
           {loading && <p role="status">正在读取服务配置…</p>}
           {error && <div className="resource-error" role="alert">{error}<Button variant="outline" size="sm" onClick={load} disabled={saving || loading}>重新读取</Button></div>}
           <div ref={contentRef} className="settings-panes slide-panes" data-sliding={panes.moving || undefined}>
