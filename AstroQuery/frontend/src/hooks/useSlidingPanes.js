@@ -9,14 +9,15 @@ export function useSlidingPanes(ref, selection, order, { active = true, identity
   const [moving, setMoving] = useState(false)
   const [, settle] = useState(0)
   const previous = useRef({ key: selection, identity, active })
-  const visited = useRef(new Set([selection]))
+  const visited = useRef({ identity, keys: new Set([selection]) })
   const controller = useRef(null)
   controller.current ||= createNavigationMotion()
   const changed = previous.current.key !== selection
   const sameContext = previous.current.identity === identity && previous.current.active && active
   const motionEnabled = typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof Element.prototype.animate === 'function'
   const outgoing = sameContext && motionEnabled ? (changed ? previous.current.key : exitKey) : null
-  visited.current.add(selection)
+  if (visited.current.identity !== identity) visited.current = { identity, keys: new Set() }
+  visited.current.keys.add(selection)
   const orderKey = order.join('|')
 
   useLayoutEffect(() => {
@@ -49,7 +50,7 @@ export function useSlidingPanes(ref, selection, order, { active = true, identity
 
   return {
     moving: motionEnabled && (moving || (changed && sameContext)),
-    hasVisited: key => visited.current.has(key),
+    hasVisited: key => visited.current.keys.has(key),
     paneProps: (key, display) => ({
       'data-slide-pane': key,
       'data-slide-exit': outgoing === key ? '' : undefined,

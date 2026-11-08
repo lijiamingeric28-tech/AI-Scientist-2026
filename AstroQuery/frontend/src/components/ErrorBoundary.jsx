@@ -22,6 +22,13 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.error) {
+      if (this.props.label) return (
+        <div className={`workspace-loading${this.props.onDismiss ? ' workspace-floating-feedback' : ''}`} role="alert">
+          <p>{this.props.label}暂时无法显示。</p>
+          <button type="button" className="text-link" onClick={() => this.setState({ error: null })}>重试显示</button>
+          {this.props.onDismiss && <button type="button" className="text-link" onClick={this.props.onDismiss}>关闭</button>}
+        </div>
+      )
       return (
         <div style={{ padding: 24, color: 'var(--content-fg)' }}>
           <div style={{ fontSize: 14, fontWeight: 590, color: 'var(--status-error)', marginBottom: 8 }}>

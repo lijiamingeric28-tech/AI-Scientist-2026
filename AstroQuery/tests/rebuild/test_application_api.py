@@ -56,6 +56,20 @@ def test_import_and_startup_do_not_create_scientific_calls(tmp_path):
         assert client.get("/api/config").json()["setup_complete"] is False
 
 
+def test_workspace_open_during_live_task_uses_the_current_lifecycle(tmp_path):
+    with TestClient(create_app(tmp_path, start_worker=False)) as client:
+        task = client.post('/api/tasks', json={'query': 'SYNTHETIC * catalogue designation',
+                                             'operation_id': str(uuid4())}).json()
+        path = f"/api/tasks/{task['task_id']}/state"
+        compact = client.get(path, params={'view': 'workspace'}).json()
+        full = client.get(path, params={'view': 'conversation'}).json()
+        for key in ('task_id', 'revision', 'lifecycle', 'core_event_cursor', 'delivery_ref'):
+            assert compact[key] == full[key]
+        assert compact['presentation']['active_stage'] == 'understand'
+        assert compact['presentation']['request']['original_query'] == 'SYNTHETIC * catalogue designation'
+        assert client.get('/api/budget').json()['actual_micros'] == 0
+
+
 def test_ordinary_creation_cannot_enable_pilot_or_supply_scientific_answers(tmp_path):
     api = create_app(tmp_path, start_worker=False)
     with TestClient(api) as client:

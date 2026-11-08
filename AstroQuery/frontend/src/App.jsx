@@ -1,19 +1,14 @@
 import { PropertyNamesProvider } from '@/lib/propertyLabel'
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { StatusBadge } from '@/components/status'
 import { ToastProvider, useToast } from '@/components/ui/toast'
-import HelpPage from '@/components/help/HelpPage'
 import Sidebar from '@/components/layout/Sidebar'
-import ContextDrawer from '@/components/layout/ContextDrawer'
-import DataView from '@/components/results/DataView'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { useTaskData } from '@/hooks/useTaskData'
 import { getConfig } from '@/services/api'
-import ChatView from '@/components/chat/ChatView'
-import WorkflowView from '@/components/workflow/WorkflowView'
-import SettingsDialog, { loadReplaySpeed } from '@/components/settings/SettingsDialog'
-import DeleteTaskDialog from '@/components/layout/DeleteTaskDialog'
+import { loadReplaySpeed } from '@/lib/playbackPreferences'
 import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, pauseTask as apiPauseTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks, replayTask as apiReplayTask, updateTaskTitle as apiUpdateTaskTitle } from '@/services/api'
 import { usePipeline } from '@/hooks/usePipeline'
 import { useTheme } from '@/hooks/useTheme'
@@ -23,8 +18,22 @@ import { useSlidingUnderline } from '@/hooks/useSlidingUnderline'
 import { useContentTransition } from '@/hooks/useContentTransition'
 import { useClickFeedback } from '@/hooks/useClickFeedback'
 import { usePlayback } from '@/hooks/usePlayback'
-import PlaybackControls from '@/components/chat/PlaybackControls'
-import { getState, getRecord } from '@/services/api'
+import { getWorkspaceState, getRecord } from '@/services/api'
+
+const ChatView = lazy(() => import('@/components/chat/ChatView'))
+const DataView = lazy(() => import('@/components/results/DataView'))
+const WorkflowView = lazy(() => import('@/components/workflow/WorkflowView'))
+const HelpPage = lazy(() => import('@/components/help/HelpPage'))
+const SettingsDialog = lazy(() => import('@/components/settings/SettingsDialog'))
+const ContextDrawer = lazy(() => import('@/components/layout/ContextDrawer'))
+const DeleteTaskDialog = lazy(() => import('@/components/layout/DeleteTaskDialog'))
+const PlaybackControls = lazy(() => import('@/components/chat/PlaybackControls'))
+
+function ViewLoading({ label, floating }) { return <p className={`workspace-loading${floating ? ' workspace-floating-feedback' : ''}`} role="status">正在读取{label}…</p> }
+
+function ViewContent({ label, resetKey, onDismiss, children }) {
+  return <ErrorBoundary key={resetKey} label={label} onDismiss={onDismiss}><Suspense fallback={<ViewLoading label={label} floating={Boolean(onDismiss)} />}>{children}</Suspense></ErrorBoundary>
+}
 
 /* ===== 主应用：三栏布局（块 1 定案）
  * 侧边栏 240px（可折叠） + 主区（工具栏 + 对话/工作流视图） + 右侧详情面板（可折叠）
@@ -55,6 +64,7 @@ function AppInner() {
   const [selectedId, setSelectedId] = useState(initialRoute.current.get('task'))
   const [directTask, setDirectTask] = useState(null)
   const [playbackRequest, setPlaybackRequest] = useState(null)
+  const playbackRequestRef = useRef(playbackRequest); playbackRequestRef.current = playbackRequest
   const [finalReplayResult, setFinalReplayResult] = useState(null)
   const player = usePlayback(playbackRequest)
   const [filter, setFilter] = useState('all')
@@ -121,10 +131,11 @@ function AppInner() {
   listingContextRef.current = { mode, filter }
   const loadTasks = async (o = 0, append = false) => {
     const seq = ++loadSeqRef.current
-    if (!append) setTaskListLoading(true)
     const context = listingContextRef.current
-    // 演示样例模式忽略『我的查询』遗留的状态筛选（服务端同样不带 status）
-    const status = context.mode === 'user' && context.filter !== 'all' ? context.filter : undefined
+    // The gallery uses the published manifest; only personal history is paged.
+    if (context.mode === 'sample') { setTaskListLoading(false); return }
+    if (!append) setTaskListLoading(true)
+    const status = context.filter !== 'all' ? context.filter : undefined
     try {
       const data = await apiListTasks(50, o, status, context.mode)
       if (seq !== loadSeqRef.current || context.mode !== listingContextRef.current.mode || context.filter !== listingContextRef.current.filter) return
@@ -180,6 +191,7 @@ function AppInner() {
     setDetail(null)
     setView('chat')
     setSamplesExpanded(true)
+    history.replaceState(null, '', location.pathname)
   }
 
   const handleNew = () => {
@@ -197,10 +209,10 @@ function AppInner() {
   }
 
   // 新任务创建成功（ChatView submitQuery 回调）
-  const handleNewTask = async (taskId) => {
-    await loadTasks(0)
+  const handleNewTask = (taskId) => {
     viewMemory.current[taskId] = 'chat'
     setSelectedId(taskId); setView('chat'); setDetail(null)
+    void loadTasks(0)
   }
 
   // 失败任务重试（契约 D2-4：POST retry 重建任务）
@@ -262,11 +274,13 @@ function AppInner() {
   const showFinalReplayResult = async () => {
     if(!player)return
     const taskId=player.taskId
+    const origin = playbackRequestRef.current
     player.setPlaying(false)
     try {
-      const state=await getState(taskId)
+      const state=await getWorkspaceState(taskId)
+      if (playbackRequestRef.current !== origin) return
       setFinalReplayResult({taskId,state});setView('data')
-    } catch(error) { toast(error.message,'error') }
+    } catch(error) { if (playbackRequestRef.current === origin) toast(error.message,'error') }
   }
 
   // 2026-08-24: 任务删除（单个内容级 + 批量整删）
@@ -319,12 +333,6 @@ function AppInner() {
     }
   }
 
-  // task_title_ready（契约 D8-2）：SSE 补发标题 → 按 ev.task_id 归属更新列表
-  // L-01: 接收完整 payload 而非只透传 title——切换竞态下标题不串台/不丢失
-  const handleTaskTitle = (ev) => {
-    setTasks((prev) => prev.map((t) => (t.task_id === ev.task_id ? { ...t, title: ev.title } : t)))
-  }
-
   // 工作流视图"在对话中查看" → 切对话视图并定位到对应阶段卡
   const handleShowStageInChat = (stageId, reviewId) => {
     setDetail(null)
@@ -364,37 +372,46 @@ function AppInner() {
 
   // pipeline 状态上提：SSE 事件流驱动的实时阶段状态，对话/工作流视图共享。
   // （放在各 handler 定义之后，避免 const 暂时性死区）
-  const pipelineState = usePipeline(selected, { onTaskDone: handleTaskDone, onTaskTitle: handleTaskTitle,
-    playback: player, onTaskUpdate: state => {const facts={status:state.lifecycle,revision:state.revision,delivery_ref:state.delivery_ref,query_ref:state.query_ref};setTasks(prev=>prev.map(item=>item.task_id===state.task_id?{...item,...facts}:item));setDirectTask(prev=>({...((prev?.task_id===state.task_id && prev)||{}),task_id:state.task_id,title:state.title,kind:state.kind,legacy_version:state.legacy_version,...facts}))},
+  const pipelineState = usePipeline(selected, { onTaskDone: handleTaskDone,
+    playback: player, conversation: !helpOpen && view === 'chat',
+    onTaskUpdate: state => {const facts={title:state.title,status:state.lifecycle,revision:state.revision,delivery_ref:state.delivery_ref,query_ref:state.query_ref};setTasks(prev=>prev.map(item=>item.task_id===state.task_id?{...item,...facts}:item));setDirectTask(prev=>({...((prev?.task_id===state.task_id && prev)||{}),task_id:state.task_id,kind:state.kind,legacy_version:state.legacy_version,...facts}))},
   })
   // Terminal tasks keep clarification history, but no longer offer a live reply.
   const ended = ['completed', 'cancelled', 'failed', 'error', 'budget_exhausted', 'definition_invalidated'].includes(selected?.status) || (pipelineState.taskId === selected?.task_id && pipelineState.taskDone)
   const pipeline = ended ? { ...pipelineState, pending: null } : pipelineState
 
-  const [resultRevision,setResultRevision]=useState(null)
-  useEffect(()=>setResultRevision(null),[selectedId,Boolean(player)])
+  const revisionScope = `${selectedId}:${Boolean(player)}`
+  const [revisionChoice, setRevisionChoice] = useState(null)
+  const resultRevision = revisionChoice?.scope === revisionScope ? revisionChoice.revision : null
+  const setResultRevision = revision => setRevisionChoice({scope: revisionScope, revision})
   const automaticDataTask=selected ? (player && finalReplayResult?.taskId===selectedId && view==='data' ?
     {...finalReplayResult.state,readOnly:true} :
     player&&!pipeline.snapshot ? {...selected,delivery_ref:null,query_ref:null,readOnly:true} : {...selected,...pipeline.snapshot,readOnly:pipeline.readOnly}) : null
   const dataTask=automaticDataTask&&resultRevision&&automaticDataTask.delivery_ref ? {...automaticDataTask,
     delivery_ref:{...automaticDataTask.delivery_ref,version:resultRevision},
     historicalRevision:resultRevision!==automaticDataTask.delivery_ref.version} : automaticDataTask
-  const data = useTaskData(dataTask, pipeline.taskDone && pipeline.taskId === selected?.task_id, Boolean(dataTask?.legacy_version))
+  const data = useTaskData(dataTask, pipeline.taskDone && pipeline.taskId === selected?.task_id, Boolean(dataTask?.legacy_version), view === 'data' && !helpOpen)
   const pending = pipeline.pending
-  const contextEpoch=useRef(0)
-  useEffect(()=>{contextEpoch.current++;setDetail(null)},[selectedId,dataTask?.delivery_ref?.version])
-  const closeDetail = () => { contextEpoch.current++; setDetail(null) }
+  const contextEpoch=useRef(0), contextRead = useRef(null)
+  useEffect(() => { contextEpoch.current++; setDetail(null); return () => contextRead.current?.abort() }, [selectedId,dataTask?.delivery_ref?.version])
+  const closeDetail = () => { contextEpoch.current++; contextRead.current?.abort(); setDetail(null) }
   const openContext = async next => {
     const epoch = ++contextEpoch.current
+    contextRead.current?.abort()
+    if (next?.type === 'source') data.ensure('records', 'sources', 'materials')
+    if (next?.type === 'figure') data.ensure('sources', 'figures')
+    if (next?.type === 'record') data.ensure('sources', 'quality')
     if (next?.type === 'record' && next.record.details_loaded === false) {
       setDetail({type:'loading-record',record:next.record})
+      const controller = new AbortController()
+      contextRead.current = controller
       try {
         const targetTaskId = selectedId || next.record.task_id || next.record.source?.task_id
-        const record = await getRecord(targetTaskId,next.record.delivery_id,next.record.delivery_revision,next.record.record_id)
-        if (epoch !== contextEpoch.current) return
+        const record = await getRecord(targetTaskId,next.record.delivery_id,next.record.delivery_revision,next.record.record_id,{signal:controller.signal})
+        if (controller.signal.aborted || epoch !== contextEpoch.current) return
         next = {...next,record}
       } catch (error) {
-        if (epoch === contextEpoch.current) { setDetail(null); toast('记录详情读取失败：'+error.message,'error') }
+        if (!controller.signal.aborted && epoch === contextEpoch.current) { setDetail(null); toast('记录详情读取失败：'+error.message,'error') }
         return
       }
     }
@@ -417,7 +434,7 @@ function AppInner() {
   const targetName = facts?.target?.main_id
   const displayName = facts?.target?.user_mentions?.[0] || targetName
   const propertyNames = facts?.properties?.map(property => property.name).filter(Boolean) || []
-  const originalQuestion = pipeline.messages.find(message => message.role === 'user')?.content
+  const originalQuestion = facts?.request?.original_query || pipeline.messages.find(message => message.role === 'user')?.content
   const customTitle = originalQuestion && selected?.title && originalQuestion !== selected.title
   const heading = helpOpen ? '使用帮助' : (customTitle ? selected.title : displayName) || selected?.title || (mode === 'sample' ? '演示样例' : '新建科研查询')
   const openHelp = () => { setDetail(null); setHelpOpen(true) }
@@ -427,9 +444,9 @@ function AppInner() {
   useSlidingUnderline(primaryNavRef, `${memoryKey}:${view}:${helpOpen}`)
   useClickFeedback()
   return (
-    <PropertyNamesProvider properties={pipeline.stages.find(stage => stage.id === 'understand')?.output?.properties}><div className="theme-transition app-shell">
-      <SettingsDialog open={settingsOpen} onboarding={onboarding} onClose={() => setSettingsOpen(false)} onConfigChange={acceptConfig} theme={theme} onToggleTheme={toggleTheme} />
-      {deleteTarget && <DeleteTaskDialog mode={deleteTarget.mode} task={deleteTarget.task} count={deleteTarget.count} onClose={() => setDeleteTarget(null)} onConfirm={handleDeleteConfirm} />}
+    <PropertyNamesProvider properties={facts?.properties || pipeline.stages.find(stage => stage.id === 'understand')?.output?.properties}><div className="theme-transition app-shell">
+      {settingsOpen && <ViewContent label="设置" onDismiss={() => setSettingsOpen(false)}><SettingsDialog open onboarding={onboarding} onClose={() => setSettingsOpen(false)} onConfigChange={acceptConfig} theme={theme} onToggleTheme={toggleTheme} /></ViewContent>}
+      {deleteTarget && <ViewContent label="任务管理" onDismiss={() => setDeleteTarget(null)}><DeleteTaskDialog mode={deleteTarget.mode} task={deleteTarget.task} count={deleteTarget.count} onClose={() => setDeleteTarget(null)} onConfirm={handleDeleteConfirm} /></ViewContent>}
       {sidebarOpen && <Sidebar playbackActive={Boolean(player)} currentPresentation={player ? null : facts} demos={publishedDemos} tasks={tasks} loadingTasks={taskListLoading} total={total} selectedId={selectedId} onSelect={handleSelect} onNew={handleNew} onCollapse={() => setSidebarOpen(false)} onRetry={handleRetry} onReplay={handleReplay} onOpenHelp={openHelp} onOpenSettings={() => { setOnboarding(false); setSettingsOpen(true) }} onLoadMore={handleLoadMore} filter={filter} onFilterChange={setFilter} onDeleteTask={handleDeleteRequest} onBatchDelete={handleBatchDeleteRequest} mode={mode} onModeChange={handleModeChange} samplesExpanded={samplesExpanded} onToggleSamples={handleNew} />}
       <div className="task-workspace">
         <main className="app-main">
@@ -448,7 +465,7 @@ function AppInner() {
                     <Icon.ArrowLeft />
                   </button>
                 )}
-                {editingTitle && !helpOpen ? <input aria-label="任务名称" autoFocus ref={titleInputRef} value={titleDraft} onChange={event => setTitleDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) commitTitle(); if (event.key === 'Escape') setEditingTitle(false) }} onBlur={() => setEditingTitle(false)} /> : <div className="task-heading-text"><h1 title={originalQuestion || selected?.title}>{heading}{!helpOpen && !customTitle && displayName !== targetName && <small className="catalog-name">{targetName}</small>}</h1>{!helpOpen && targetName && propertyNames.length > 0 && <p>{propertyNames.join(' · ')}</p>}</div>}
+                {editingTitle && !helpOpen ? <input aria-label="任务名称" autoFocus ref={titleInputRef} value={titleDraft} onChange={event => setTitleDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) commitTitle(); if (event.key === 'Escape') setEditingTitle(false) }} onBlur={() => setEditingTitle(false)} /> : <div className="task-heading-text"><h1 title={originalQuestion || selected?.title}><span>{heading}</span>{!helpOpen && !customTitle && targetName && displayName !== targetName && <small className="catalog-name">{targetName}</small>}</h1>{!helpOpen && targetName && propertyNames.length > 0 && <p>{propertyNames.join(' · ')}</p>}</div>}
               </div>
               {!player && selected && !helpOpen && <StatusBadge status={selected.status} />}
               {!pipeline.readOnly && mode !== 'sample' && selected && !helpOpen && ['queued', 'running', 'clarifying', 'waiting_input', 'waiting_review', 'paused', 'interrupted'].includes(selected.status) && <Button variant="outline" size="sm" disabled={cancelling} onClick={handleCancel}>{cancelling ? '取消中…' : '取消任务'}</Button>}
@@ -460,7 +477,7 @@ function AppInner() {
               {pending && <Button variant="outline" size="sm" onClick={() => handleShowStageInChat(pending.stageId || 'understand')}>{pipeline.snapshot?.reviews?.some(r=>r.status==='pending') ? '待审核' : '待确认'} · 去处理</Button>}
             </nav>}
           </header>
-          {player && <PlaybackControls player={player} onExit={()=>exitPlayback(false)} onFinal={showFinalReplayResult} />}
+          {player && <Suspense fallback={<ViewLoading label="播放器" />}><PlaybackControls player={player} onExit={()=>exitPlayback(false)} onFinal={showFinalReplayResult} /></Suspense>}
           {player && view==='data' && finalReplayResult?.taskId===selectedId && <div className="app-notice">原任务最终交付
             <button onClick={()=>{setFinalReplayResult(null);setView('chat')}}>返回原回放位置</button></div>}
           {mode==='sample'&&demoError&&<p className="resource-error">{demoError}；没有显示旧的未发布样例。</p>}{managementResults.length>0&&<div className="app-notice task-management-errors"><span>部分任务未删除：</span>{managementResults.map(r=><p key={r.task_id}>{tasks.find(t=>t.task_id===r.task_id)?.title||r.task_id}：{r.error?.message||'未完成'}</p>)}<button onClick={()=>setManagementResults([])}>关闭提示</button></div>}
@@ -468,22 +485,22 @@ function AppInner() {
           {configError ? <div className="app-notice error">服务配置读取失败：{configError}<button onClick={() => refreshConfig(true)}>重试读取</button></div> : config?.restart_required && <div className="app-notice">连接配置已保存，请重启服务后发起新的实操任务。<button onClick={() => { setOnboarding(false); setSettingsOpen(true) }}>查看配置</button></div>}
           {view==='workflow' && !pipeline.readOnly && pipeline.snapshot?.execution_context?.mode === 'isolated_live_pilot' && <div className="app-notice">真实接口隔离试运行：使用候选性质定义，尚未正式验收。最多读取 {pipeline.snapshot.execution_context.maximum_body_works} 篇正文，按页分批读取{pipeline.snapshot.execution_context.maximum_core_pages_per_work != null && `，每篇最多${pipeline.snapshot.execution_context.maximum_core_pages_per_work}个核心页`}；未覆盖部分将单独列出。</div>}
           {view==='workflow' && !pipeline.readOnly && pipeline.snapshot?.validation_alerts?.filter(item => item.simulated_human_review).map((item, index) => <div className="app-notice" key={`simulation-${index}`}>{item.message}</div>)}
-          {selected && pipeline.error && (!pipeline.snapshot || player) && <div className="app-notice error" role="alert">{player?'回放画面未载入':'任务状态读取失败'}：{pipeline.error}<button onClick={pipeline.reconnect}>重新读取</button></div>}
+          {selected && pipeline.error && (!pipeline.snapshot || player || view === 'chat' && !pipeline.conversationReady) && <div className="app-notice error" role="alert">{player?'回放画面未载入':'任务状态读取失败'}：{pipeline.error}<button onClick={pipeline.reconnect}>重新读取</button></div>}
           {view!=='chat' && !pipeline.readOnly && pipeline.snapshot?.validation_alerts?.filter(item => item.state === 'failed').map(item => <div className="app-notice" role="alert" key={item.validation_id}>科学核验未通过：{item.summary}</div>)}
           {pipeline.stages.some(stage => stage.errors?.some(error => /401|403|auth|api.?key|token|鉴权|密钥/i.test(error.message || ''))) && <div className="app-notice error">任务报告连接或鉴权错误，请核对科研连接。<button onClick={() => { setOnboarding(false); setSettingsOpen(true) }}>打开设置</button></div>}
           {selected && !pipeline.taskDone && ['reconnecting', 'disconnected'].includes(pipeline.connectionStatus) && <div className="app-notice error">{pipeline.connectionStatus === 'reconnecting' ? '进度连接中断，正在重新连接。' : '进度连接中断，已有执行内容已保留。'}{pipeline.connectionStatus === 'disconnected' && <button onClick={pipeline.reconnect}>重新连接</button>}</div>}
           <div ref={pageRef} className="app-reading" data-context-moving={pageMoving || undefined}>
-          {helpOpen && <HelpPage onReturn={() => setHelpOpen(false)} onSamples={() => { setHelpOpen(false);handleModeChange('sample') }} onQuery={() => { handleModeChange('user'); handleNew() }} onSettings={() => { setOnboarding(false); setSettingsOpen(true) }} pending={pending} onPending={() => { setHelpOpen(false); handleShowStageInChat(pending?.stageId || 'understand') }} />}
+          {helpOpen && <ViewContent label="帮助"><HelpPage onReturn={() => setHelpOpen(false)} onSamples={() => { setHelpOpen(false);handleModeChange('sample') }} onQuery={() => { handleModeChange('user'); handleNew() }} onSettings={() => { setOnboarding(false); setSettingsOpen(true) }} pending={pending} onPending={() => { setHelpOpen(false); handleShowStageInChat(pending?.stageId || 'understand') }} /></ViewContent>}
           <div ref={viewsRef} data-sliding={views.moving || undefined} style={{ display: helpOpen ? 'none' : 'flex' }} key={memoryKey} className="task-views slide-panes">
             <div className="task-view" {...views.paneProps('chat', 'flex')}>
-              <ChatView config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} />
+              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
             </div>
-            <div className="task-view" {...views.paneProps('data', 'flex')}><DataView key={memoryKey} memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} active={!helpOpen && view === 'data'} /></div>
-            <div className="task-view" {...views.paneProps('workflow', 'flex')}><WorkflowView request={executionRequest} memory={taskMemory.workflow} active={!helpOpen && view === 'workflow'} onOpenData={openData} task={selected} pipeline={pipeline} data={data} onGoChat={() => handleShowStageInChat(pending?.stageId || 'understand')} onShowStageInChat={handleShowStageInChat} onOpenDetail={openContext} /></div>
+            <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
+            <div className="task-view" {...views.paneProps('workflow', 'flex')}>{views.hasVisited('workflow') && <ViewContent label="执行明细"><WorkflowView request={executionRequest} memory={taskMemory.workflow} active={!helpOpen && view === 'workflow'} onOpenData={openData} task={selected} pipeline={pipeline} data={data} onGoChat={() => handleShowStageInChat(pending?.stageId || 'understand')} onShowStageInChat={handleShowStageInChat} onOpenDetail={openContext} /></ViewContent>}</div>
           </div>
           </div>
         </main>
-        <ContextDrawer onOpenResults={openData} detail={detail} data={data} pipeline={pipeline} onClose={closeDetail} onChange={setDetail} onShowStageInChat={handleShowStageInChat} />
+        {detail && <ViewContent label="详情" resetKey={memoryKey} onDismiss={closeDetail}><ContextDrawer onOpenResults={openData} detail={detail} data={data} pipeline={pipeline} onClose={closeDetail} onChange={setDetail} onShowStageInChat={handleShowStageInChat} /></ViewContent>}
       </div>
     </div></PropertyNamesProvider>
   )

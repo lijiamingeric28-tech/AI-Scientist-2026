@@ -18,6 +18,7 @@ const post = (path, body) => request(path, { method: 'POST', body: JSON.stringif
 const id = encodeURIComponent
 export const getState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state`, options)
 export const getConversationState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=conversation`, options)
+export const getWorkspaceState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=workspace`, options)
 export const getTask = getState
 export const getReplayClock = (taskId, options = {}) => request(`/tasks/${id(taskId)}/replay-clock`, options)
 export const createTask = (query, operationId = newOperationId(), retrievalPreferences) => post('/tasks', { query, operation_id: operationId, ...(retrievalPreferences ? {retrieval_preferences:retrievalPreferences} : {}) })
@@ -42,21 +43,21 @@ export function openEventStream(taskId, handlers, afterSeq = 0) {
   return source
 }
 export const getEvents = (taskId, afterSeq = 0) => request(`/tasks/${id(taskId)}/events?after_seq=${afterSeq}`)
-export const getDelivery = (taskId, revision) => request(`/tasks/${id(taskId)}/delivery${revision ? '?delivery_revision='+id(revision) : ''}`)
-export async function getPreview(taskId) {
-  const first = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500`)
+export const getDelivery = (taskId, revision, options) => request(`/tasks/${id(taskId)}/delivery${revision ? '?delivery_revision='+id(revision) : ''}`, options)
+export async function getPreview(taskId, options) {
+  const first = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500`, options)
   const items = [...first.items]
   while (items.length < first.total) {
-    const page = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500&offset=${items.length}&expected_preview_id=${id(first.preview_id)}`)
+    const page = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500&offset=${items.length}&expected_preview_id=${id(first.preview_id)}`, options)
     if (page.preview_id !== first.preview_id || !page.items.length) throw new Error('临时数据已有更新，请重新读取')
     items.push(...page.items)
   }
   return { ...first, items }
 }
-async function resource(taskId, deliveryId, name, revision, query='') {
+async function resource(taskId, deliveryId, name, revision, query='', options) {
   if (!deliveryId) throw new Error('读取结果必须指定交付版本')
   const suffix = revision ? `&expected_delivery_revision=${revision}&delivery_revision=${revision}` : ''
-  const first = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?limit=500${suffix}${query}`)
+  const first = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?limit=500${suffix}${query}`, options)
   if (first.delivery_id !== deliveryId) throw new Error('结果响应的交付版本不一致')
   if (revision && first.delivery_revision && first.delivery_revision !== revision) throw new Error('结果响应的交付修订不一致')
   if (first.body !== undefined) return first.body
@@ -64,7 +65,7 @@ async function resource(taskId, deliveryId, name, revision, query='') {
   if (first.legacy_version === 1) for (const item of items) item.legacy_version=1
   while (items.length < first.total) {
     const pinned = first.delivery_revision ? `&expected_delivery_revision=${first.delivery_revision}&delivery_revision=${first.delivery_revision}` : suffix
-    const page = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?limit=500&offset=${items.length}${pinned}${query}`)
+    const page = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?limit=500&offset=${items.length}${pinned}${query}`, options)
     if (page.delivery_id !== deliveryId || page.delivery_revision !== first.delivery_revision || JSON.stringify(page.snapshot_ref) !== JSON.stringify(first.snapshot_ref) || !page.items.length) throw new Error('结果分页版本或范围不一致')
     items.push(...page.items.map(item=>page.legacy_version===1?{...item,legacy_version:1}:item))
   }
@@ -93,38 +94,45 @@ function adaptRecord(item,deliveryId,revision,taskId) {
     uncertainty_source: source.uncertainty, uncertainty_normalized: derived?.uncertainty_typed,
     normalization_status: derived?.status || 'not_run', provenance: { evidence_refs: source.evidence_refs }, raw_text: source.raw_value }
 }
-export const getRecords = async (taskId,deliveryId,revision)=>{
-  const rows=await resource(taskId,deliveryId,'records',revision,'&view=list')
+export const getRecords = async (taskId,deliveryId,revision,options)=>{
+  const rows=await resource(taskId,deliveryId,'records',revision,'&view=list',options)
   const result=rows.map(item=>adaptRecord(item,deliveryId,revision,taskId))
   result.snapshot_ref=rows.snapshot_ref
   return result
 }
-export const getRecord = async (taskId,deliveryId,revision,recordId)=>adaptRecord((await resource(taskId,deliveryId,'records',revision,`&record_id=${id(recordId)}`))[0],deliveryId,revision,taskId)
-export const getSources = async (taskId, deliveryId, revision) => (await resource(taskId, deliveryId, 'sources', revision)).map(source => ({ ...source, year:source.work?.records?.[0]?.year, authors:source.work?.records?.[0]?.authors, abstract:source.work?.records?.[0]?.abstract, protocol_version: source.legacy_version === 1 ? 1 : 2, task_id: taskId }))
-export const getFigures = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'figures', revision)
-export const getCoverage = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'coverage', revision)
-export const getQuality = async (taskId, deliveryId, revision) => {
-  const report = await resource(taskId, deliveryId, 'quality', revision)
+export const getRecord = async (taskId,deliveryId,revision,recordId,options)=>adaptRecord((await resource(taskId,deliveryId,'records',revision,`&record_id=${id(recordId)}`,options))[0],deliveryId,revision,taskId)
+async function readSources(taskId, deliveryId, revision, query, options) {
+  const rows = await resource(taskId, deliveryId, 'sources', revision, query, options)
+  const sources = rows.map(source => ({ ...source, year:source.work?.records?.[0]?.year ?? source.year, authors:source.work?.records?.[0]?.authors ?? source.authors, abstract:source.work?.records?.[0]?.abstract ?? source.abstract, protocol_version: source.legacy_version === 1 ? 1 : 2, task_id: taskId }))
+  sources.snapshot_ref = rows.snapshot_ref
+  return sources
+}
+export const getSources = (taskId, deliveryId, revision, options) => readSources(taskId, deliveryId, revision, '', options)
+export const getSourceList = (taskId, deliveryId, revision, options) => readSources(taskId, deliveryId, revision, '&view=list', options)
+export const getFigures = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'figures', revision, '', options)
+export const getCoverage = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'coverage', revision, '', options)
+export const getQuality = async (taskId, deliveryId, revision, options) => {
+  const report = await resource(taskId, deliveryId, 'quality', revision, '', options)
   return report.legacy_version === 1 ? report : { protocol_version: 2, delivery_id: deliveryId, report }
 }
-export const getInsights = async (taskId, deliveryId, revision) => {
-  const reports = await resource(taskId, deliveryId, 'insights', revision)
+export const getInsights = async (taskId, deliveryId, revision, options) => {
+  const reports = await resource(taskId, deliveryId, 'insights', revision, '', options)
   const report = reports.find(item => item.delivery_id === deliveryId)
   if (!report) return { status:'not_recorded', cards:[], delivery_id:deliveryId, delivery_revision:revision, snapshot_ref:reports.snapshot_ref }
   return report.legacy_report || report
 }
-export const getDifferences = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'differences', revision)
-export const getMaterials = async (taskId, deliveryId, revision) => {
-  const rows=await resource(taskId,deliveryId,'materials',revision)
+export const getDifferences = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'differences', revision, '', options)
+export const getMaterials = async (taskId, deliveryId, revision, options) => {
+  const rows=await resource(taskId,deliveryId,'materials',revision,'',options)
   const result=rows.map(item=>({...item,task_id:taskId,protocol_version:item.legacy_version===1?1:2}))
   result.snapshot_ref=rows.snapshot_ref
   return result
 }
-export const getChanges = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'changes', revision)
-export const getActivity = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'changes', revision, '&view=activity')
-export const getCoverageMatrix = (taskId, deliveryId, revision) => resource(taskId, deliveryId, 'coverage', revision, '&view=matrix')
+export const getChanges = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '', options)
+export const getActivity = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '&view=activity', options)
+export const getCoverageMatrix = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'coverage', revision, '&view=matrix', options)
 export const getMaterial = async (taskId, deliveryId, revision, materialId) => (await resource(taskId, deliveryId, 'materials', revision, `&material_id=${id(materialId)}`))[0]
-export const getExports = async (taskId, deliveryId, revision) => (await request(`/tasks/${id(taskId)}/exports`)).filter(m=>(!deliveryId||m.delivery_id===deliveryId)&&(!revision||m.delivery_revision===revision)).flatMap(manifest => manifest.artifacts.map(artifact => ({ ...artifact,
+export const getExports = async (taskId, deliveryId, revision, options) => (await request(`/tasks/${id(taskId)}/exports`, options)).filter(m=>(!deliveryId||m.delivery_id===deliveryId)&&(!revision||m.delivery_revision===revision)).flatMap(manifest => manifest.artifacts.map(artifact => ({ ...artifact,
   name: artifact.artifact_id, display_name: `${manifest.format} · ${manifest.selected_count} 条`, size: artifact.byte_size,
   created_at:manifest.created_at, format:manifest.format, selected_count:manifest.selected_count, delivery_revision:manifest.delivery_revision, snapshot_ref:manifest.snapshot_ref, description: `交付修订 ${manifest.delivery_revision}`, delivery_id: manifest.delivery_id, export_id: manifest.export_id })))
 export const createExport = (taskId, body) => post(`/tasks/${id(taskId)}/exports`, body)

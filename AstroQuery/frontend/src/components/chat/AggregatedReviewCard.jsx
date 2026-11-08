@@ -189,7 +189,7 @@ export default function AggregatedReviewCard({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
               gap: 12,
             }}
           >
@@ -234,6 +234,8 @@ export default function AggregatedReviewCard({
                     padding: '12px 14px',
                     display: 'flex',
                     flexDirection: 'column',
+                    minWidth: 0,
+                    overflowWrap: 'anywhere',
                     gap: 8,
                     boxShadow: '0 1px 4px rgba(0,0,0,0.02)',
                   }}

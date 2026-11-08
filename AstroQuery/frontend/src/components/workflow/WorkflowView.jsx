@@ -16,21 +16,25 @@ import {
 import "./execution.css";
 
 function useExecution(taskId, query, active, version) {
-  const key = JSON.stringify([taskId, query]),
+  const key = JSON.stringify([taskId, query, version]),
     [result, setResult] = useState({ key: null, data: null, error: null });
+  const loaded = useRef(null);
   useEffect(() => {
-    if (!taskId || !active) return;
+    if (!taskId || !active || loaded.current === key) return;
     const controller = new AbortController();
     getExecution(taskId, query, { signal: controller.signal })
       .then((data) => {
-        if (!controller.signal.aborted) setResult({ key, data, error: null });
+        if (!controller.signal.aborted) {
+          loaded.current = key;
+          setResult({ key, data, error: null });
+        }
       })
       .catch((error) => {
         if (!controller.signal.aborted)
           setResult({ key, data: null, error: error.message });
       });
     return () => controller.abort();
-  }, [key, active, version]);
+  }, [key, active]);
   return result.key === key ? result : { data: null, error: null };
 }
 
@@ -177,6 +181,7 @@ function ExecutionWorkspace({
     [version, setVersion] = useState(0);
   const [ranking, setRanking] = useState("duration"),
     [stageFilter, setStageFilter] = useState("all");
+  const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const [serviceOffset, setServiceOffset] = useState(0);
   const [download, setDownload] = useState(""),
     [downloadError, setDownloadError] = useState("");
@@ -190,7 +195,7 @@ function ExecutionWorkspace({
     : !following && pinned != null
       ? pinned
       : pipeline.presentation?.cursor;
-  const canRead = active && (!pipeline.readOnly || cursor != null);
+  const canRead = active && cursor != null;
   const base = { at_seq: cursor ?? undefined };
   const overview = useExecution(
     task.task_id,
@@ -216,7 +221,7 @@ function ExecutionWorkspace({
       offset: eventOffset,
       focus_seq: focusSeq ?? undefined,
     },
-    canRead && (tab === "events" || panes.hasVisited("events")),
+    canRead && tab === "events",
     version,
   );
   const issues = useExecution(
@@ -227,7 +232,7 @@ function ExecutionWorkspace({
       category: issueCategory || undefined,
       offset: issueOffset,
     },
-    canRead && (tab === "events" || panes.hasVisited("events")),
+    canRead && tab === "events",
     version,
   );
   const jobs = useExecution(
@@ -239,25 +244,25 @@ function ExecutionWorkspace({
       sort,
       offset: jobOffset,
     },
-    canRead && (tab === "jobs" || panes.hasVisited("jobs")),
+    canRead && tab === "jobs",
     version,
   );
   const detail = useExecution(
     task.task_id,
     { ...base, section: "job", job_id: selectedJob },
-    canRead && (tab === "jobs" || panes.hasVisited("jobs")) && !!selectedJob,
+    canRead && tab === "jobs" && !!selectedJob,
     version,
   );
   const lanes = useExecution(
     task.task_id,
     { ...base, section: "jobs", stage_id: expanded, limit: 20 },
-    canRead && (tab === "overview" || panes.hasVisited("overview")) && !!expanded,
+    canRead && tab === "overview" && !!expanded,
     version,
   );
   const services = useExecution(
     task.task_id,
     { ...base, section: "services", offset: serviceOffset, limit: 30 },
-    canRead && (tab === "events" || panes.hasVisited("events")),
+    canRead && tab === "events" && diagnosticsOpen,
     version,
   );
   const scroll = useScrollMemory(memory, Boolean(facts), active);
@@ -870,36 +875,36 @@ function ExecutionWorkspace({
                   <button
                     type="button"
                     className="execution-health-pill health-recovered"
+                    aria-pressed={issueCategory === "recovered"}
                     onClick={() => filter(setIssueCategory, "recovered")}
                   >
                     <Icon.Check style={{ width: 12, height: 12 }} />
-                    自动恢复闭环
+                    {stateNames.recovered}
                     <strong>{summary.issue_states?.recovered || 0}</strong>
                   </button>
                   <button
                     type="button"
                     className="execution-health-pill health-partial"
+                    aria-pressed={issueCategory === "partial"}
                     onClick={() => filter(setIssueCategory, "partial")}
                   >
                     <Icon.Refresh style={{ width: 12, height: 12 }} />
-                    容错降级完成
+                    {stateNames.partial}
                     <strong>{summary.issue_states?.partial || 0}</strong>
                   </button>
                   <button
                     type="button"
                     className="execution-health-pill health-unresolved"
+                    aria-pressed={issueCategory === "unresolved"}
                     onClick={() => filter(setIssueCategory, "unresolved")}
                   >
                     <Icon.AlertCircle style={{ width: 12, height: 12 }} />
-                    待人工介入
+                    {stateNames.unresolved}
                     <strong>{summary.issue_states?.unresolved || 0}</strong>
                   </button>
                 </div>
-                <p className="execution-narrative-note">
-                  管线全流程已自动处理 {summary.exception_events} 起调度波动与 {summary.http_failures} 次数据源重试，各阶段保持自洽闭环。
-                </p>
-                <label>
-                  问题分类{" "}
+                <label className="execution-issue-filter">
+                  <span>问题分类</span>
                   <select
                     aria-label="问题分类"
                     value={issueCategory}
@@ -999,11 +1004,13 @@ function ExecutionWorkspace({
                   <p role="status">正在读取执行事件…</p>
                 )}
               </section>
-              <details className="execution-diagnostic">
+              <details className="execution-diagnostic" onToggle={(event) => setDiagnosticsOpen(event.currentTarget.open)}>
                 <summary>
                   任务级服务访问诊断 · {summary.http_attempts} 次访问
                 </summary>
                 <p>此处按任务归集；历史没有记录具体作业关联。</p>
+                {services.error ? <p role="alert">服务访问记录读取失败。<button onClick={() => setVersion(value => value + 1)}>重试</button></p>
+                  : diagnosticsOpen && !services.data && <p role="status">正在读取服务访问记录…</p>}
                 {services.data && (
                   <>
                     <div className="execution-table-scroll">

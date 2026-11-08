@@ -1,4 +1,5 @@
 import { ADS_SORTS, papersValue } from '@/lib/retrievalPreferences'
+import './settings.css'
 
 export default function RetrievalPreferences({ value, onChange, disabled = false, id = 'retrieval', overridden = [] }) {
   const invalid = papersValue(value.papers_per_property) === null

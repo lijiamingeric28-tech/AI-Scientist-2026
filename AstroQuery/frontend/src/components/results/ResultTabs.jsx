@@ -3,7 +3,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useRememberedState } from '@/hooks/useViewMemory'
 import { usePageTransition } from '@/hooks/usePageTransition'
 import { usePropertyLabel } from '@/lib/propertyLabel'
-import { Pagination } from './AnalysisView'
+import Pagination from './Pagination'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
@@ -14,7 +14,7 @@ import { journalLabel } from '@/lib/journal'
 import { sourceName } from '@/lib/readableData'
 import { DUP_REASON_TEXT } from '@/lib/dupMarkers'
 import { matchesRecordSearch } from '@/lib/recordSearch'
-import { readingConditions } from '@/lib/scienceReading'
+import { recordConditionText } from '@/lib/scienceReading'
 
 /* 结果组件库（契约 D7-1：主区只留记录表格；来源/质量/下载移右侧面板）
  * 导出：RecordsTable（主区全宽）/ SourcesList / OutputFiles（右侧面板）
@@ -144,7 +144,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
   const [yearSort, setYearSort] = useRememberedState(memory, 'yearSort', 'none') // 'none' | 'desc' | 'asc'
   const [page, setPage] = useRememberedState(memory, 'page', 1)
   const [pageSize, setPageSize] = useRememberedState(memory, 'pageSize', 20)  // 用户重设计：默认 20 条/页
-  const narrowFilters=useMediaQuery('(max-width:479px)'),[filterOpen,setFilterOpen]=useState(false),[draftFilters,setDraftFilters]=useState({})
+  const narrowFilters=useMediaQuery('(max-width:479px)') && !onSearchChange,[filterOpen,setFilterOpen]=useState(false),[draftFilters,setDraftFilters]=useState({})
   const [menuFor, setMenuFor] = useState(null)  // 下拉菜单打开的 record_id
   useEffect(() => {
     const applyField = forcedField && memory.appliedField !== forcedField.seq
@@ -275,7 +275,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
 
   return (
     <div className="records-workspace">
-      {/* 单行紧凑流线型工具栏 */}
+      {/* Keep related controls together when the workspace is narrow. */}
       {onSearchChange ? (
         <div className="record-filters-bar" hidden={narrowFilters && !filterOpen}>
           <div className="filter-search-box">
@@ -401,8 +401,8 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
       )}
 
       {/* 表格（科学 6 列：实体 | 性质(含条件) | 值 | 单位 | 来源 | 提取方式） */}
-      <div ref={tableScrollRef} className="records-table-region" tabIndex={-1} aria-label="测量记录表格" onScroll={event => { if (active) { memory.tableTop = event.currentTarget.scrollTop; memory.tableLeft = event.currentTarget.scrollLeft } }}>
-        <table className="records-table" style={{ width: '100%', minWidth: 760, borderCollapse: 'collapse', fontSize: 13 }}>
+      <div ref={tableScrollRef} className="records-table-region" tabIndex={0} aria-label="测量记录表格" onScroll={event => { if (active) { memory.tableTop = event.currentTarget.scrollTop; memory.tableLeft = event.currentTarget.scrollLeft } }}>
+        <table className="records-table">
           <thead>
             <tr style={{ background: 'var(--surface-secondary)' }}>
               {['实体', '性质', '值', '单位', '来源', '提取方式', ...(onDeleteRecord ? ['操作'] : [])].map((h) => {
@@ -450,12 +450,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
               const rowDup = dupIndex?.byRecordId?.[r.record_id] || null
               // 仅非代表成员行追加徽标；组散（现存成员 <2）后不再标注
               const showDupBadge = !!rowDup && !rowDup.isRepresentative && rowDup.group.liveCount >= 2
-              const condText = [(r.context?.conditions || []).find(c=>c.key === 'source_subject_and_measurand' && c.state === 'known')?.value,
-                ...readingConditions(r.context?.conditions).map(c=>c.value)]
-                .filter(v=>typeof v === 'string')
-                .map(v=>v.replace(new RegExp(`^${r.entity_name}[:;\\s]*`, 'i'), '').trim())
-                .filter(v=>v && v !== r.entity_name && !v.toLowerCase().startsWith(r.entity_name.toLowerCase()))
-                .slice(0, 2).join(' · ') || null
+              const condText = recordConditionText(r.context?.conditions, r.entity_name)
               const condBadge = extractShortConditionBadge(condText)
 
               return (

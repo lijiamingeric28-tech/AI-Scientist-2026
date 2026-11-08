@@ -2,15 +2,12 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 
-/* Catalog order and the editorial recommendation are supplied by the curator. */
-
 function fmtScore(v) {
   if (typeof v !== 'number') return '—'
   return String(Number(v * 100).toFixed(2)).replace(/0+$/, '').replace(/\.$/, '')
 }
 
 export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitchToUser }) {
-  const [hoverId, setHoverId] = useState(null)
   const [search, setSearch] = useState('')
   const filtered = samples.filter((s) =>
     JSON.stringify([s.name, s.title, s.object, s.properties, s.query])
@@ -30,30 +27,10 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {/* 头部：标题 + 说明（评审叙事：内嵌真实查询，离线免费回放） */}
-      <div>
-        <div style={{ fontSize: 'var(--text-body)', fontWeight: 550, color: 'var(--content-fg)' }}>
-          演示样例 <span style={{ fontSize: 'var(--text-note)', fontWeight: 400, color: 'var(--content-fg-tertiary)' }}>· {samples.length} 组真实科学查询</span>
-        </div>
-        <div style={{ fontSize: 'var(--text-note)', color: 'var(--content-fg-secondary)', lineHeight: 1.6, marginTop: 4 }}>
-          这些已保存查询包含原始文献提取事实与图文证据链。点击“查看成果”查阅多源交叉数据与科研图表，
-          或点“回放过程”重演完整执行步骤（无需消耗算力与密钥）。
-          <button
-            onClick={onSwitchToUser}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              cursor: 'pointer',
-              padding: '0 0 0 8px',
-              color: 'var(--accent-text)',
-              fontSize: 'var(--text-note)',
-              textDecoration: 'underline',
-            }}
-          >
-            发起真实查询请切回「我的查询」
-          </button>
-        </div>
-      </div>
+      <p className="sample-gallery-intro">
+        <span>查看科研成果，或回放查询过程。</span>
+        <button type="button" className="text-link" onClick={onSwitchToUser}>前往我的查询</button>
+      </p>
 
       <input
         className="workspace-search"
@@ -67,7 +44,6 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
       {/* 精选目录：一行放两个（宽屏双列，窄屏自动单列） */}
       <div className="sample-grid-2col">
         {filtered.map((s) => {
-          const isHovered = hoverId === s.task_id
           const objectName = s.object || s.name?.split('·')[0]?.trim() || s.name
 
           return (
@@ -78,8 +54,6 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                 if (sel && sel.toString().trim().length > 0) return
                 onOpen?.(s.task_id)
               }}
-              onMouseEnter={() => setHoverId(s.task_id)}
-              onMouseLeave={() => setHoverId(null)}
               className="sample-card hover-lift"
               role="button"
               tabIndex={0}
@@ -91,7 +65,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
               }}
               title="点击查看数据成果"
             >
-              {/* 1. 顶部：天体对象名称 + 天体类型微标 + 标杆微章 + 任务分 */}
+              {/* 天体名称、类型与任务分 */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
                   <span
@@ -120,21 +94,6 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                       title={`SIMBAD 天体类型：${s.otype}`}
                     >
                       {s.otype}
-                    </span>
-                  )}
-                  {s.featured && (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        padding: '1.5px 7px',
-                        borderRadius: 4,
-                        background: 'var(--accent)',
-                        color: '#ffffff',
-                        fontWeight: 500,
-                        flexShrink: 0,
-                      }}
-                    >
-                      首选演示
                     </span>
                   )}
                 </div>

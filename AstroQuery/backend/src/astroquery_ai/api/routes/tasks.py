@@ -149,7 +149,11 @@ def register(app, application, scheduler):
     @app.get("/api/tasks/{task_id}")
     @app.get("/api/tasks/{task_id}/state")
     def state(task_id: str, view: str | None = None):
-        return application.view(task_id, for_conversation=True) if view == 'conversation' else application.view(task_id)
+        if view == 'workspace':
+            return application.view(task_id, for_workspace=True)
+        if view == 'conversation':
+            return application.view(task_id, for_conversation=True)
+        return application.view(task_id)
 
     @app.get('/api/tasks/{task_id}/presentation')
     def presentation(task_id: str, at_seq: int | None = None, include_chat_activity: bool = False, activity_limit: int = 5):

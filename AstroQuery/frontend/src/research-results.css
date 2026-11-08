@@ -1257,9 +1257,12 @@
 /* 1. 顶部任务标题行与主导航舒适度重塑 (Ergonomic Header & Prominent Nav Tabs) */
 .task-title-row {
   min-height: 64px !important;
-  gap: 16px !important;
+  gap: 8px 16px !important;
+  flex-wrap: wrap;
   padding: 10px 0 6px !important;
 }
+.task-title-row .task-title { flex: 1 1 min(100%, 22rem); min-width: 0; }
+.task-title-row > :not(.task-title) { flex-shrink: 0; }
 .task-heading-text {
   padding: 2px 0 !important;
 }
@@ -1267,15 +1270,24 @@
   font-size: 21px !important;
   font-weight: 700 !important;
   line-height: 1.3 !important;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
+.task-heading-text h1 { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 10px; }
+.task-heading-text h1 > span, .task-heading-text .catalog-name { min-width:0; overflow-wrap:anywhere; }
+.task-heading-text .catalog-name { margin-inline-start:0; }
 .task-heading-text p {
   margin: 3px 0 0 !important;
   font-size: 12.5px !important;
   color: var(--content-fg-secondary, #4b6354) !important;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .primary-nav {
-  height: 44px !important;
-  gap: 10px !important;
+  height: auto !important;
+  min-height: 44px;
+  gap: 3px 10px !important;
+  flex-wrap: wrap;
   margin: 0 !important;
 }
 .primary-tab {
@@ -1311,6 +1323,8 @@
   margin-bottom: 0 !important;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
   gap: 6px;
 }
 .data-view-unified-header .data-tabs .tab-btn {
@@ -1323,6 +1337,8 @@
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
 }
 .data-header-right-tools .result-summary.result-stat-strip {
   display: flex;
@@ -1331,11 +1347,16 @@
   margin: 0;
   border: 0;
   padding: 0;
+  min-width: 0;
 }
 .data-header-right-tools .result-stat-item {
   display: flex;
   align-items: baseline;
   gap: 5px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
 }
 .data-header-right-tools .result-stat-item strong {
   font-size: 14px;
@@ -1346,14 +1367,15 @@
   font-size: 12px;
   color: var(--content-fg-secondary);
 }
-.data-header-right-tools .stat-divider {
-  color: var(--surface-border);
-  margin-left: 6px;
-}
+.records-table td:is(:nth-child(1), :nth-child(4)) { white-space:normal !important; overflow-wrap:anywhere; }
+.records-table-region:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.research-record-detail, .research-material-detail, .research-figure-detail { overflow-wrap:anywhere; }
+.research-table-scroll, .execution-table-scroll { min-width:0; max-width:100%; }
 .compact-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .compact-actions .result-version {
   font-size: 12px;
@@ -1369,6 +1391,30 @@
   padding: 4px 12px;
   font-size: 12.5px;
 }
+
+@container task-workspace (max-width: 920px) {
+  .data-header-right-tools { flex:1 1 100%; justify-content:space-between; gap:8px 14px; }
+  .data-header-right-tools .result-summary.result-stat-strip { flex:1 1 auto; }
+  .primary-nav .primary-tab { padding-inline:12px !important; }
+}
+
+@container task-workspace (max-width: 600px) {
+  .data-workbench { padding-inline:14px !important; }
+  .records-table { min-width:0; }
+  .records-count-status { flex-basis:100%; margin-inline-start:0; }
+  .task-title-row .task-title { flex-basis:min(14rem,100%); }
+}
+
+@container task-workspace (max-width: 480px) {
+  .quality-segmented-track.data-tabs { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); width:100%; }
+  .quality-segmented-track.data-tabs > .tab-btn { padding-inline:6px !important; white-space:normal; }
+  .quality-segmented-track.data-tabs > .tab-btn.active { background:var(--surface-bg) !important; }
+  .quality-segmented-track .quality-nav-slider-pill { display:none; }
+}
+
+.workspace-loading { margin:20px 24px; color:var(--content-fg-secondary); }
+.workspace-floating-feedback { position:fixed; z-index:80; inset:auto 20px 20px auto; max-width:calc(100vw - 40px); margin:0; padding:12px 16px; background:var(--surface-bg); border:1px solid var(--surface-border); border-radius:8px; }
+.workspace-floating-feedback button + button { margin-inline-start:12px; }
 
 /* 4. 资料与图像单行集成工具栏：左侧分段切换器 + 中部搜索 + 右侧筛选下拉同行融聚 */
 .materials-unified-toolbar {
@@ -1603,37 +1649,10 @@
   word-break: break-word;
 }
 
-/* 目标行核验上下文通知卡 (Catalog Evidence Context Note) */
 .catalog-evidence-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 18px;
-  background: #f8faf8;
-  border: 1px solid #dce8e0;
-  border-left: 4px solid var(--accent);
-  border-radius: 8px;
-  margin: 12px 0 16px;
-}
-.evidence-note-icon {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: var(--accent);
-}
-.evidence-note-content {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.evidence-note-title {
-  font-size: 13.5px;
-  font-weight: 650;
-  color: #1e4d34;
-}
-.evidence-note-desc {
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: #436151;
+  margin: 0 0 12px;
+  font-size: var(--text-ui);
+  color: var(--content-fg-secondary);
 }
 
 

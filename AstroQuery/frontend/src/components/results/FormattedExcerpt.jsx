@@ -185,7 +185,7 @@ function tryReconstructTable(tokens) {
   return null
 }
 
-export default function FormattedExcerpt({ excerpt, role = '原文摘录', defaultOpen = false }) {
+export default function FormattedExcerpt({ excerpt, role, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen)
   const [mode, setMode] = useState('formatted') // 'formatted' | 'raw'
   const [copied, setCopied] = useState(false)
@@ -213,54 +213,42 @@ export default function FormattedExcerpt({ excerpt, role = '原文摘录', defau
         onClick={() => setOpen(!open)}
         aria-expanded={open}
       >
-        <span className="excerpt-trigger-left">
-          <Icon.FileText className="excerpt-icon" />
-          <span className="excerpt-label">查看保存的摘录</span>
-          {role && <span className="excerpt-role-pill">{role}</span>}
-        </span>
-        <span className="excerpt-trigger-right">
-          <span className="excerpt-meta-pill">
-            {rawLines.length} 行 · {text.length} 字符
-          </span>
-          <Icon.ChevronDown className={`excerpt-chevron ${open ? 'is-rotated' : ''}`} />
-        </span>
+        <Icon.FileText className="excerpt-icon" aria-hidden="true" />
+        <span className="excerpt-label">原文摘录</span>
+        <Icon.ChevronDown className={`excerpt-chevron ${open ? 'is-rotated' : ''}`} aria-hidden="true" />
       </button>
 
       {open && (
         <div className="excerpt-body-wrapper">
+          {role && <p className="excerpt-roles">{role}</p>}
           <div className="excerpt-toolbar">
-            <div className="excerpt-toolbar-left">
-              <span className="excerpt-status-hint">
-                {mode === 'formatted' ? '结构化智能排版 (已规整段落与表格)' : 'PDF 提取逐行原样 (带行号)'}
-              </span>
-            </div>
-            <div className="excerpt-toolbar-right">
-              <div className="excerpt-mode-toggle" role="group" aria-label="排版视图切换">
-                <button
-                  type="button"
-                  className={`mode-btn ${mode === 'formatted' ? 'active' : ''}`}
-                  onClick={() => setMode('formatted')}
-                >
-                  自然排版
-                </button>
-                <button
-                  type="button"
-                  className={`mode-btn ${mode === 'raw' ? 'active' : ''}`}
-                  onClick={() => setMode('raw')}
-                >
-                  逐行原样
-                </button>
-              </div>
+            <div className="excerpt-mode-toggle" role="group" aria-label="摘录显示方式">
               <button
                 type="button"
-                className="excerpt-copy-btn"
-                onClick={handleCopy}
-                title="复制摘录文本"
+                className={`mode-btn ${mode === 'formatted' ? 'active' : ''}`}
+                aria-pressed={mode === 'formatted'}
+                onClick={() => setMode('formatted')}
               >
-                {copied ? <Icon.Check className="copy-icon is-copied" /> : <Icon.Copy className="copy-icon" />}
-                <span>{copied ? '已复制' : '复制'}</span>
+                排版文本
+              </button>
+              <button
+                type="button"
+                className={`mode-btn ${mode === 'raw' ? 'active' : ''}`}
+                aria-pressed={mode === 'raw'}
+                onClick={() => setMode('raw')}
+              >
+                逐行原样
               </button>
             </div>
+            <button
+              type="button"
+              className="excerpt-copy-btn"
+              onClick={handleCopy}
+              title="复制摘录文本"
+            >
+              {copied ? <Icon.Check className="copy-icon is-copied" /> : <Icon.Copy className="copy-icon" />}
+              <span>{copied ? '已复制' : '复制'}</span>
+            </button>
           </div>
 
           <div className="excerpt-content-area">

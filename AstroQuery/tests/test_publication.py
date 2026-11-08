@@ -23,6 +23,19 @@ def test_published_history_is_pinned_and_read_only(tmp_path):
         result = client.get(prefix + '/delivery').json()
         assert result['snapshot_ref'] == sample['snapshot_ref']
         assert result['display_counts']['records'] == sample['record_count']
+        workspace = client.get(prefix + '/state', params={'view': 'workspace'}).json()
+        assert workspace['lifecycle'] == 'completed'
+        assert (workspace['delivery_ref']['id'], workspace['delivery_ref']['version']) == (result['delivery_id'], result['revision'])
+        assert workspace['presentation']['cursor'] == workspace['core_event_cursor']
+        assert [p['name'] for p in workspace['presentation']['properties']]
+        assert 'jobs' not in workspace and 'messages' not in workspace
+        url = f"{prefix}/deliveries/{result['delivery_id']}/sources"
+        full = client.get(url).json()
+        compact = client.get(url, params={'view': 'list', 'delivery_revision': result['revision']}).json()
+        assert compact['snapshot_ref'] == full['snapshot_ref']
+        assert [s['source_id'] for s in compact['items']] == [s['source_id'] for s in full['items']]
+        assert [s.get('title') for s in compact['items']] == [s.get('title') for s in full['items']]
+        assert len(json.dumps(compact)) < len(json.dumps(full))
         clock = client.get(prefix + '/replay-clock').json()
         assert clock['terminal_at'] and clock['timeline']
         assert client.post(prefix + '/retry', json={}).status_code == 405

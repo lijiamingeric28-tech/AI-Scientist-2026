@@ -28,7 +28,15 @@ def register(app, application, scheduler):
             cursor = after_seq
             first = True
             while not await request.is_disconnected():
-                view = application.view(task_id)
+                # Heartbeats only need the event watermark and lifecycle.
+                # The client fetches the requested projection when they change.
+                with application.repository.read() as conn:
+                    task = application.repository.task(conn, task_id)
+                if task['kind'] in {'legacy', 'replay'}:
+                    view = application.view(task_id)
+                else:
+                    view = {'revision': task['revision'], 'core_event_cursor': task['last_event_seq'],
+                            'lifecycle': task['lifecycle']}
                 if first:
                     yield (
                         "event: handshake\ndata: "

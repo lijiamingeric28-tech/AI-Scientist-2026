@@ -997,11 +997,16 @@
   background: #eaefeb;
 }
 
-.execution-narrative-note {
-  font-size: 13.5px;
-  color: var(--ex-muted);
-  line-height: 1.6;
-  margin: 8px 0 16px;
+.execution-issue-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.execution-issue-filter select {
+  max-width: 100%;
 }
 
 .execution-issues {

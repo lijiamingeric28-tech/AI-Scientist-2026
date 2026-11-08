@@ -286,6 +286,9 @@ def register(app, application, scheduler):
             elif resource == 'coverage' and view == 'matrix':
                 rows = research_views.coverage_matrix(body, pinned_report('quality'), pinned_report('difference'), insight_report(),
                     research_views.process_facts(conn, source_task, cutoff))
+            elif resource == 'sources' and view == 'list':
+                from astroquery_ai.application.result_views import source_list
+                rows = source_list(body)
             elif resource in {"sources", "coverage", "contexts"}:
                 rows = body[resource]
             elif resource == "insights":

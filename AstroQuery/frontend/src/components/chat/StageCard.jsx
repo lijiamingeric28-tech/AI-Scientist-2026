@@ -6,7 +6,8 @@ import Markdown from '@/lib/markdown'
 import FlowBlocks from '@/components/workflow/FlowBlocks'
 import { FLOW_LABELS } from '@/lib/stages'   // 2026-08-27：卡头 statusText（runningFlow 显示"第 N 轮"）仍用——此前删 FlowNodes 时误删 import 导致 ReferenceError 白屏
 import { cleanCliQuestion, fmtPair, fmtRaDec } from '@/lib/format'
-import { ModificationTable, ResourceState } from '@/components/results/DataView'
+import ResourceState from '@/components/results/ResourceState'
+import { lazy } from 'react'
 import { QualityScoreSection } from '@/components/results/QualityScore'
 import { Button } from '@/components/ui/button'
 import { RuntimeQuality } from '@/components/results/RuntimeMeasurement'
@@ -666,6 +667,8 @@ const StageCard = React.memo(function StageCard({ stage, expanded, onToggle, onO
     </div>
   )
 })
+const ModificationTable = lazy(() => import('@/components/results/AnalysisView').then(m => ({ default: m.ModificationRecords })))
+
 export default function StageCardView(props) {
   if (props.stage.business && props.presentation !== 'workflow') {
     const { target, properties } = props.stage

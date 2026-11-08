@@ -7,7 +7,7 @@ import { useDismissTransition } from '@/hooks/useDismissTransition'
 import { useSlidingPanes } from '@/hooks/useSlidingPanes'
 import RetrievalPreferences from './RetrievalPreferences'
 import { papersValue } from '@/lib/retrievalPreferences'
-import './settings.css'
+import { loadReplaySpeed, saveReplaySpeed } from '@/lib/playbackPreferences'
 import * as api from '@/services/api'
 import LibraryStatus from './LibraryStatus'
 
@@ -21,14 +21,6 @@ const FIELDS = [
   { key: 'unpaywall_email', label: 'Unpaywall Email', group: '论文检索', note: '开放获取查询使用的联系邮箱。' },
 ]
 const MODELS = { text: '文字检索与性质选择', vision: '正文读取与原文质检', normalization: '清洗与标准化', property: '天体名称识别', insight: '科研洞察', dashscope_model: '任务理解', p1_model: '性质标准化', dashscope_vlm_model: 'VLM 提取', dashscope_bbox_model: '原文定位', dashscope_quality_model: '质量处理', default_research_domain: '研究领域' }
-export const REPLAY_SPEED_KEY = 'astro_replay_speed'
-export function loadReplaySpeed() {
-  try { const n = Number(localStorage.getItem(REPLAY_SPEED_KEY)); return Number.isFinite(n) && n >= 0.25 && n <= 100 ? n : 10 } catch { return 10 }
-}
-export function saveReplaySpeed(value) {
-  try { localStorage.setItem(REPLAY_SPEED_KEY, String(Math.max(0.25, Math.min(100, value)))) } catch { /* preferences only */ }
-}
-
 export default function SettingsDialog({ open, onClose, onboarding = false, onConfigChange, theme, onToggleTheme }) {
   const [cfg, setCfg] = useState(null), [error, setError] = useState(''), [loading, setLoading] = useState(false)
   const [values, setValues] = useState({}), [baseline, setBaseline] = useState({}), [revealed, setRevealed] = useState({})

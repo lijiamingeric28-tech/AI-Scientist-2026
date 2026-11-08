@@ -107,17 +107,17 @@ export function IssueList({ items, onEvent, onJob, onLinks, onTime }) {
                 {isRecovered ? (
                   <span className="issue-recovery-badge health-recovered">
                     <Icon.Check style={{ width: 11, height: 11 }} />
-                    自动恢复闭环
+                    {stateNames[issue.recovery]}
                   </span>
                 ) : isPartial ? (
                   <span className="issue-recovery-badge health-partial">
                     <Icon.Refresh style={{ width: 11, height: 11 }} />
-                    容错降级完成
+                    {stateNames.partial}
                   </span>
                 ) : (
                   <span className="issue-recovery-badge health-unresolved">
                     <Icon.AlertCircle style={{ width: 11, height: 11 }} />
-                    待人工介入
+                    {stateNames[issue.recovery] || stateNames.unknown}
                   </span>
                 )}
                 <span className="issue-category-badge">
@@ -125,7 +125,7 @@ export function IssueList({ items, onEvent, onJob, onLinks, onTime }) {
                 </span>
                 {issue.occurrences > 1 && (
                   <span className="issue-category-badge">
-                    累计记入 {issue.occurrences} 次波动
+                    发生 {issue.occurrences} 次
                   </span>
                 )}
               </div>
@@ -140,7 +140,7 @@ export function IssueList({ items, onEvent, onJob, onLinks, onTime }) {
 
             {issue.impact && (
               <div className="issue-academic-box">
-                <span className="issue-academic-box-label">容错与影响评估</span>
+                <span className="issue-academic-box-label">影响</span>
                 <p style={{ margin: 0 }}>{issue.impact}</p>
               </div>
             )}

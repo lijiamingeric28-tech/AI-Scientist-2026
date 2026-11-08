@@ -1268,7 +1268,7 @@ button:focus-visible {
 .relationship-formula p { margin-top: 12px; font-size: 16px; line-height: 1.8; overflow-wrap: anywhere; }
 
 /* Revision four: guidance, evidence sections and chronological record history. */
-.sample-sidebar-search { padding:4px 12px 12px; }.sample-sidebar-search input { width:100%; border:1px solid var(--surface-border); background:var(--surface-bg); color:var(--content-fg); border-radius:7px; padding:8px 10px; font-size: var(--text-note); }.sample-recommended { color:var(--accent-text); font-size: var(--text-note); flex-shrink:0; }
+.sample-sidebar-search { padding:4px 12px 12px; }.sample-sidebar-search input { width:100%; border:1px solid var(--surface-border); background:var(--surface-bg); color:var(--content-fg); border-radius:7px; padding:8px 10px; font-size: var(--text-note); }
 .sidebar-help { display:flex; align-items:center; gap:8px; background:transparent; color:var(--sidebar-text-secondary); border:0; font-size: var(--text-note); padding:13px 16px; text-align:left; cursor:pointer; }.sidebar-help:hover { background:var(--sidebar-hover); }
 .provenance-part { margin:22px 0; }.provenance-part > h4 { font-size: var(--text-note); color:var(--content-fg-secondary); font-weight:550; margin-bottom:10px; }.record-source-title { font-size: 14px; line-height:1.75; }.provenance-part .source-excerpt { margin-top:0; }.measurement-conditions { font-size: var(--text-note); margin-top:10px; }.record-location { margin:10px 0; }.record-location dd { margin:0; }
 .record-changes h3 small { font-size: var(--text-note); color:var(--content-fg-secondary); font-weight:400; margin-left:8px; }.record-history { list-style:none; padding:0; margin:22px 0 0; }.record-history > li { display:flex; gap:16px; position:relative; padding-bottom:26px; }.record-history > li:not(:last-child)::before { content:''; position:absolute; left:12px; top:28px; bottom:0; width:1px; background:var(--surface-border); }.history-number { width:25px; height:25px; display:flex; align-items:center; justify-content:center; background:var(--accent-light); color:var(--accent-text); border-radius:50%; flex-shrink:0; font-size: var(--text-note); }.history-dot { width:9px; height:9px; border-radius:50%; background:var(--surface-border); margin:8px; flex-shrink:0; }.history-snapshot.final .history-dot { background:var(--accent); }.record-history article,.history-snapshot > div { flex:1; min-width:0; }.record-history .record-change { margin:0; padding:0 0 8px; }.record-history h4 { font-size: var(--text-note); font-weight:550; line-height:1.8; }.operation-original,.history-meta { font-size: var(--text-note); color:var(--content-fg-secondary); overflow-wrap:anywhere; margin:6px 0; line-height:1.7; }.record-history .value-change { margin-top:12px; flex-wrap:wrap; line-height:1.8; }.history-snapshot p { margin-top:7px; line-height:1.7; font-size: 14px; }.source-coverage { font-size: var(--text-note); color:var(--content-fg-secondary); }
@@ -1576,9 +1576,6 @@ details[open] > .excerpt-toggle .excerpt-collapse { display:inline; }
 .radar-data { animation:fade-in .22s var(--motion-ease); }
 .sample-item { min-height:48px; padding:12px; margin-bottom:4px; display:flex; flex-direction:column; justify-content:center; }
 .sidebar-task-scroll [data-radix-scroll-area-viewport] > div { display:block!important; min-width:0!important; }
-.sample-item .task-item-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:20px; font-size: 14px; color:var(--content-fg-secondary); overflow-wrap:anywhere; }
-.sample-item.selected .task-item-title { color:var(--title-strong); font-weight:600!important; }
-.sample-item .sample-recommended { width:36px; text-align:center; font-size: var(--text-note); line-height:18px; border-radius:4px; color:var(--title-section); background:var(--title-tint); flex-shrink:0; }
 
 /* Press feedback does not scale glyphs. Exit nodes stay mounted until completion. */
 :is(.ui-button,.primary-tab,.tab-btn,.filter-chip,.pager-btn,.task-item,.active-press,.hover-lift,.insight-section-toggle):active:not(:disabled) { transform:translateY(2px); box-shadow:inset 0 2px 4px color-mix(in srgb,var(--title-strong) 16%,transparent); transition-duration:90ms; }
@@ -1615,7 +1612,6 @@ details[open] > .excerpt-toggle .excerpt-collapse { display:inline; }
 .result-stat-strip strong,.processing-counts strong { color:var(--title-strong); }
 .distribution-bars i { background:linear-gradient(90deg,var(--sage-soft),var(--sage),var(--accent)); }
 .task-item.selected { background:var(--sidebar-active); }
-.sample-item.selected .sample-recommended { background:var(--accent); color:var(--accent-on); }
 .ui-button { transition-duration:180ms; }
 
 /* Only two original panes coexist during explicit navigation. No new scrollbox. */

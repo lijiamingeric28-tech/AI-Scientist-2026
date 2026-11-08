@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {readingConditions,reviewRows,reviewWording,rawCells} from './scienceReading.js'
+import {readingConditions,recordConditionText,reviewRows,reviewWording,rawCells} from './scienceReading.js'
 import {buildDupIndex} from './dupMarkers.js'
 
 test('common reading fields exclude registry bookkeeping; original row retains nulls and zeros',()=>{
@@ -15,6 +15,17 @@ test('selection and evidence remain attached to each reported measurement',()=>{
     two:{record:{raw_value:'27',unit:'mÅ'},proposal:{result_role:'model_prediction'},evidence_refs:[{id:'b'}]}}}
   assert.equal(reviewWording(review).original,review.question)
   assert.deepEqual(reviewRows(review).map(r=>[r.unit,...r.evidence]),[['Å','a'],['mÅ','b']])
+})
+
+test('record conditions treat real catalogue designations as literal text', () => {
+  const subject = value => ({key:'source_subject_and_measurand',state:'known',value})
+  for (const name of ['* alf Lyr', '* alf Boo', 'PSR B0329+54', '[ABC] (1).?']) {
+    assert.equal(recordConditionText([subject(`${name.toUpperCase()}：整体恒星`)], name), '整体恒星')
+    assert.equal(recordConditionText([subject(name)], name), '')
+  }
+  assert.equal(recordConditionText([subject('M31 companion'), null], 'M3'), 'M31 companion')
+  assert.equal(recordConditionText([subject('已报告的测量')], null), '已报告的测量')
+  assert.equal(recordConditionText(null, '* alf Lyr'), '')
 })
 test('archive groups still fold when the scoring report has not been opened',()=>{
   const group={group_id:'g',member_refs:[{id:'a'},{id:'b'}],display_anchor:{id:'b'}}

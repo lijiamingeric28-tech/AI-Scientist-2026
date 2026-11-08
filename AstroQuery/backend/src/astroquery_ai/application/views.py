@@ -6,7 +6,19 @@ from astroquery_ai.runtime.codec import loads
 from astroquery_ai.science.evidence_views import review_evidence
 
 
-def view(self, task_id, *, for_conversation=False):
+def _execution_context(repo, conn, task_id):
+    scopes = repo.objects(conn, task_id, 'pilot_scope')
+    if not scopes:
+        return None
+    return {
+        'mode': 'isolated_live_pilot',
+        'scientific_profile_validated': False,
+        'formal_release_ready': False,
+        **{key: scopes[0][key] for key in ('maximum_body_works', 'maximum_core_pages_per_work', 'maximum_cost_micros')},
+    }
+
+
+def view(self, task_id, *, for_conversation=False, for_workspace=False):
     repo = self.repository
     with repo.read() as conn:
         task = repo.task(conn, task_id)
@@ -19,6 +31,8 @@ def view(self, task_id, *, for_conversation=False):
         row = conn.execute("SELECT payload FROM objects WHERE task_id=? AND kind='draft' AND object_id=? "
                            "ORDER BY version DESC LIMIT 1", (task_id,task_id)).fetchone()
         draft = loads(row[0]) if row else None
+        if for_workspace:
+            return _workspace_view(self, conn, task, draft)
         omission_context = self.omission_hash(draft) if draft is not None else None
         if for_conversation and draft is not None and task['query_ref'] and not draft.get('pending_question'):
             draft = {k: draft.get(k) for k in ('target', 'original_query', 'revision', 'status', 'last_error',
@@ -58,7 +72,6 @@ def view(self, task_id, *, for_conversation=False):
                     (j["status"] == "ready" and j["reason"] == "waiting_resource" for j in members)
                 ),
             }
-        pilot_scopes = repo.objects(conn, task_id, "pilot_scope")
         simulated_operator=any(s.get('schema_version')=='NormalQueryAcceptance/1'
             and s.get('task_id')==task_id and s.get('simulation_authorized') is True
             and s.get('operator_mode')=='simulation'
@@ -134,16 +147,7 @@ def view(self, task_id, *, for_conversation=False):
                 'kind':'simulated_test_operator' if simulated_operator else 'local_user'},
             **task,
             "status": task["lifecycle"],
-            "execution_context": {
-                "mode": "isolated_live_pilot",
-                "scientific_profile_validated": False,
-                "formal_release_ready": False,
-                "maximum_body_works": pilot_scopes[0]["maximum_body_works"],
-                "maximum_core_pages_per_work": pilot_scopes[0]["maximum_core_pages_per_work"],
-                "maximum_cost_micros": pilot_scopes[0]["maximum_cost_micros"],
-            }
-            if pilot_scopes
-            else None,
+            'execution_context': _execution_context(repo, conn, task_id),
             "protocol_version": 2,
             "source": "user",
             "draft": draft,
@@ -159,3 +163,42 @@ def view(self, task_id, *, for_conversation=False):
             "insight_ref": loads(task["insight_ref"]) if task["insight_ref"] else None,
             "messages": repo.objects(conn, task_id, "message"),
         }
+
+
+def _workspace_view(self, conn, task, draft):
+    """Open results and execution without constructing the conversation."""
+    from astroquery_ai.application.presentation import EXECUTION
+    from astroquery_ai.runtime.stages import current_stage
+
+    task_id = task['task_id']
+    draft = draft or {}
+    query_ref = loads(task['query_ref']) if task['query_ref'] else None
+    delivery_ref = loads(task['delivery_ref']) if task['delivery_ref'] else None
+    spec = (self.repository.object(conn, task_id, 'confirmed_query', query_ref['id'], query_ref['version'])
+            if query_ref else {})
+    bindings = spec.get('properties') or [binding for binding in (draft.get('property_support') or {}).get('bindings', [])
+                                         if binding['property_id'] in draft.get('selected_property_ids', [])]
+    stage = current_stage(conn, task_id)
+    cursor = task['last_event_seq']
+    pending = draft.get('pending_question')
+    reviews = [{'review_id': review['review_id'], 'status': review['status']}
+               for review in self.reviews.list(conn, task_id)] if task['lifecycle'] == 'waiting_review' else []
+    return {
+        'workspace_only': True,
+        **{key: task[key] for key in ('task_id', 'kind', 'title', 'lifecycle', 'revision', 'science_state')},
+        'status': task['lifecycle'], 'query_ref': task['query_ref'], 'delivery_ref': delivery_ref,
+        'pending': {'title': pending.get('title')} if pending else None,
+        'reviews': reviews, 'core_event_cursor': cursor,
+        'execution_context': _execution_context(self.repository, conn, task_id),
+        'validation_alerts': self.repository.objects(conn, task_id, 'post_delivery_validation'),
+        'presentation': {
+            'task_id': task_id, 'cursor': cursor, 'latest_cursor': cursor, 'historical': False,
+            'lifecycle': task['lifecycle'], 'delivery_ref': delivery_ref,
+            'target': spec.get('target') or draft.get('target'),
+            'properties': [{'property_id': binding['property_id'], 'name': binding['definition']['name_cn']}
+                           for binding in bindings],
+            'active_stage': EXECUTION.get(stage['stage_id'], 'understand') if stage else 'understand',
+            'request': {'original_query': draft.get('original_query') or spec.get('original_query'),
+                        'confirmed': bool(spec)},
+        },
+    }

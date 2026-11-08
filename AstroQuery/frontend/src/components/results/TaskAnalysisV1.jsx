@@ -183,7 +183,9 @@ export default function TaskAnalysisV1({
   requestKey,
   memory = {},
   resourceErrors = {},
+  resourceLoading = {},
   onRetry,
+  onVisibleTab,
   active = true,
 }) {
   const [tab, setTab] = useRememberedState(memory, 'tab', 'overview'),
@@ -193,6 +195,7 @@ export default function TaskAnalysisV1({
     [date, setDate] = useState(''),
     [effect, setEffect] = useState('all'),
     [page, setPage] = useState(1)
+  useEffect(() => { if (active) onVisibleTab?.(tab) }, [active, tab, onVisibleTab])
 
   const contentRef = useRef(null)
   const navRef = useRef(null)
@@ -241,13 +244,13 @@ export default function TaskAnalysisV1({
   useEffect(() => setPage(1), [property, action, source, date, effect])
 
   const report = quality.report
-  const propertyNames = Object.fromEntries([
+  const propertyNames = useMemo(() => Object.fromEntries([
     ...records.map((r) => [r.property_id, r.field_name]),
     ...matrix.map((r) => [r.property_id, r.name]),
-  ])
+  ]), [records, matrix])
   const groups = differences?.archive_groups || report.archive_groups || []
   const checks = differences?.checks || report.comparison_checks || []
-  const selected = activity.filter(
+  const selected = useMemo(() => activity.filter(
     (a) =>
       (property === 'all' || a.property_id === property) &&
       (action === 'all' || a.kind === action) &&
@@ -256,13 +259,18 @@ export default function TaskAnalysisV1({
       (effect === 'all' ||
         (effect === 'changed' && a.actual_change) ||
         (effect === 'no_change' && a.status === 'no_change')),
-  )
+  ), [activity, property, action, source, date, effect])
 
   const contributions = useMemo(
-    () =>
-      sources
-        .map((s) => ({ ...s, records: records.filter((r) => r.source_id === s.source_id) }))
-        .filter((s) => s.records.length),
+    () => {
+      const bySource = new Map()
+      for (const record of records) {
+        if (!bySource.has(record.source_id)) bySource.set(record.source_id, [])
+        bySource.get(record.source_id).push(record)
+      }
+      return sources.filter(source => bySource.has(source.source_id))
+        .map(source => ({ ...source, records: bySource.get(source.source_id) }))
+    },
     [sources, records],
   )
   const openRecord = (id) => onLocateRecord?.(id)
@@ -325,7 +333,7 @@ export default function TaskAnalysisV1({
             value &&
             ((tab === 'insights' && key === 'insights') ||
               (tab === 'trace' && key === 'activity') ||
-              (tab === 'comparison' && ['matrix', 'differences'].includes(key))),
+              (tab === 'comparison' && ['matrix', 'differences', 'activity'].includes(key))),
         )
         .map(([key, value]) => (
           <p className="resource-error" role="alert" key={key}>
@@ -425,7 +433,8 @@ export default function TaskAnalysisV1({
             Tab 2: 科学处理溯源时间线 (Trace - 图三美化)
             ========================================================================= */}
         <div className="analysis-pane quality-pane" {...panes.paneProps('trace')}>
-          {panes.hasVisited('trace') && (
+          {tab === 'trace' && resourceLoading.activity && <p className="hint" role="status">正在读取处理溯源…</p>}
+          {panes.hasVisited('trace') && !resourceLoading.activity && (
         <section className="research-trace-section">
           {/* 筛选器一体化容器 */}
           <div className="trace-toolbar-vessel">
@@ -531,7 +540,8 @@ export default function TaskAnalysisV1({
             Tab 3: 对照与覆盖矩阵 (Comparison - 图四美化)
             ========================================================================= */}
         <div className="analysis-pane quality-pane" {...panes.paneProps('comparison')}>
-          {panes.hasVisited('comparison') && (
+          {tab === 'comparison' && (resourceLoading.matrix || resourceLoading.differences) && <p className="hint" role="status">正在读取对照与覆盖…</p>}
+          {panes.hasVisited('comparison') && !resourceLoading.matrix && !resourceLoading.differences && (
         <section className="research-comparison-section">
           {/* 矩阵容器 */}
           <div className="academic-matrix-vessel">
@@ -761,7 +771,8 @@ export default function TaskAnalysisV1({
             Tab 4: 科学洞察 (Insights)
             ========================================================================= */}
         <div className="analysis-pane quality-pane" {...panes.paneProps('insights')}>
-          {panes.hasVisited('insights') && (
+          {tab === 'insights' && resourceLoading.insights && <p className="hint" role="status">正在读取科学洞察…</p>}
+          {panes.hasVisited('insights') && !resourceLoading.insights && (
         <section className="research-insights-section">
           {insights?.cards?.length ? (
             <PropertyInsightCards

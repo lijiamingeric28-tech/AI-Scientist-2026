@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRememberedState } from '@/hooks/useViewMemory'
 import { artifactUrl } from '@/services/api'
 import { titleText, stateText } from '@/lib/researchDisplay'
@@ -20,8 +20,13 @@ export default function MaterialsV1({
   memory = {},
   active = true,
   properties = [],
+  onVisibleTab,
+  figuresLoading = false,
+  figuresError = false,
+  onRetryFigures,
 }) {
   const [tab, setTab] = useRememberedState(memory, 'tab', 'materials')
+  useEffect(() => { if (active) onVisibleTab?.(tab) }, [active, tab, onVisibleTab])
   const [kind, setKind] = useRememberedState(memory, 'kind', 'all')
   const [search, setSearch] = useRememberedState(memory, 'search', '')
   const [property, setProperty] = useRememberedState(memory, 'property', 'all')
@@ -203,7 +208,7 @@ export default function MaterialsV1({
           </>
         ) : (
           <>
-            <span>当前展示 <strong>{chosen.length}</strong> 幅科学研究图像</span>
+            {!figuresLoading && !figuresError && <span>当前展示 <strong>{chosen.length}</strong> 幅科学研究图像</span>}
             <span className="stats-dot">·</span>
             <span>涉及 <strong>{new Set(chosen.map((f) => f.source_id)).size}</strong> 份文献来源</span>
           </>
@@ -348,6 +353,7 @@ export default function MaterialsV1({
                 >
                   <img
                     loading="lazy"
+                    decoding="async"
                     src={
                       f.image_url ||
                       (f.task_id && f.image_artifact?.artifact_id
@@ -392,7 +398,9 @@ export default function MaterialsV1({
             ))}
           </div>
 
-          {!chosen.length && <div className="materials-empty-box">当前筛选条件下未检索到匹配的科学研究图像。</div>}
+          {figuresLoading && <p className="materials-empty-box" role="status">正在读取研究图像…</p>}
+          {figuresError && <p className="resource-error" role="alert">研究图像读取失败。 <button className="text-link" onClick={onRetryFigures}>重新读取</button></p>}
+          {!figuresLoading && !figuresError && !chosen.length && <div className="materials-empty-box">当前筛选条件下未检索到匹配的科学研究图像。</div>}
 
           {/* 图像分页控制条 */}
           <div className="research-pagination-bar">

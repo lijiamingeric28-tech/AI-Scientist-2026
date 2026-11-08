@@ -498,21 +498,7 @@ export default function ResearchMaterialDetail({
                 onOpenSource={onOpenSource}
               />
             ))
-          ) : (
-            <div className="catalog-evidence-note">
-              <div className="evidence-note-icon">
-                <Icon.Layers style={{ width: 18, height: 18 }} />
-              </div>
-              <div className="evidence-note-content">
-                <div className="evidence-note-title">跨样本参照星表与全局背景律</div>
-                <div className="evidence-note-desc">
-                  {loaded
-                    ? '本修订记录未直接绑定单一目标的切片行列，该数据表作为多目标比对样本或全局背景消光参照依据收录。可通过查阅下方完整表结构及保存的原件获取全部数据。'
-                    : '正在读取已保存的行列证据…'}
-                </div>
-              </div>
-            </div>
-          )}
+          ) : loaded && <p className="catalog-evidence-note">未保存目标行定位。</p>}
 
           {item.metadata?.columns?.length > 0 && (
             <div className="schema-table-card">

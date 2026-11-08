@@ -60,6 +60,8 @@ class PublishedDemos:
         """Return True for an imported demo. A user's original task always takes precedence."""
         if task_id not in self.index:
             return False
+        if task_id in self.loaded:
+            return self.loaded[task_id]
         with self.install_lock:
             if task_id in self.loaded:
                 return self.loaded[task_id]
@@ -105,7 +107,11 @@ class PublishedDemos:
         path = request.url.path.strip('/').split('/')
         if len(path) < 3 or path[:2] != ['api', 'tasks'] or path[2] not in self.index:
             return
-        replica = await asyncio.to_thread(self.open, path[2])
+        task_id = path[2]
+        # Already mounted samples need no disk read or wait on another import.
+        replica = self.loaded.get(task_id)
+        if replica is None:
+            replica = await asyncio.to_thread(self.open, task_id)
         if replica and request.method not in ('GET', 'HEAD', 'OPTIONS') and path[3:] != ['exports']:
             raise DomainError('READ_ONLY_DEMO', '演示样例仅供阅读和回放', 405)
         if replica and request.method == 'GET' and len(path) >= 5 and path[3] == 'artifacts':

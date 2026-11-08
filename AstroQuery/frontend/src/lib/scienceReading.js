@@ -8,15 +8,33 @@ const roles = {reported_result:'文中报告结果', model_prediction:'模型预
 export const measurementRole = proposal => roles[proposal?.result_role] || roles[proposal?.value_type]
 export function readingConditions(conditions = [], schema = []) {
   const seen = new Set()
-  return conditions.flatMap(c => {
-    if (c.state !== 'known' || !['string','number','boolean'].includes(typeof c.value)) return []
+  return (Array.isArray(conditions) ? conditions : []).flatMap(c => {
+    if (c?.state !== 'known' || typeof c.key !== 'string' || !['string','number','boolean'].includes(typeof c.value)) return []
     const value = typeof c.value === 'boolean' ? (c.value ? '是' : '否') : String(c.value).trim()
-    const declared = schema.find(field => field.key === c.key)
+    const declared = Array.isArray(schema) ? schema.find(field => field?.key === c.key) : null
     const label = conditionLabels[c.key] || (!c.key?.startsWith('source_') && (declared?.label || declared?.name_cn))
     if (!label || !value || seen.has(value)) return []
     seen.add(value)
     return [{label, value}]
   })
+}
+
+// Catalogue names are literal text, including leading asterisks, brackets and
+// plus signs. Only strip a complete name at the start of a condition.
+export function recordConditionText(conditions, entityName) {
+  const entries = Array.isArray(conditions) ? conditions : []
+  const subject = entries.find(item => item?.key === 'source_subject_and_measurand' && item.state === 'known')?.value
+  const name = typeof entityName === 'string' ? entityName.trim() : ''
+  const foldedName = name.toLowerCase()
+  return [...new Set([subject, ...readingConditions(entries).map(item => item.value)].flatMap(item => {
+    if (typeof item !== 'string') return []
+    let text = item.trim()
+    if (name && text.slice(0, name.length).toLowerCase() === foldedName) {
+      const suffix = text.slice(name.length)
+      if (!suffix || /^[:;：；\s]/u.test(suffix)) text = suffix.replace(/^[:;：；\s]+/u, '')
+    }
+    return text ? [text] : []
+  }))].slice(0, 2).join(' · ')
 }
 export function reviewRows(review) {
   const records = Object.entries(review.record_interpretations || {})

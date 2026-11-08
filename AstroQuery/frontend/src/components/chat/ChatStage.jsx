@@ -697,55 +697,39 @@ function Insights({stage, onOpenData, data, onOpenInsights}) {
   )
 }
 
-function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
+function Outcome({ stage, onOpenData, onReplay, onOpenInsights }) {
   const s = stage.deliverySummary
-  const targetId = stage.target?.main_id || '本次科研查询'
-  const targetOtype = stage.target?.primary_otype || 'SN*'
-  const durationText = elapsedTime(stage.wallSeconds)
-  const propCount = stage.properties?.length || 0
-  const recordsTotal = s?.records ?? data?.resources?.records?.data?.length ?? 154
-  const sourcesTotal = s?.sources ?? data?.resources?.sources?.data?.length ?? 35
-  const figuresTotal = s?.figures ?? data?.resources?.figures?.data?.length ?? 55
-  const insightsTotal = s?.insights ?? 1
-  const scoreValue = s?.score != null ? Number(s.score).toFixed(s.score % 1 !== 0 ? 2 : 0) : '85'
-  const comparisonChecked = s?.comparison_checked ?? propCount
-
-  // 物理性质测量分布计算 (学习旧版 V4 核心精髓并现代化升级)
-  const propDist = (stage.properties || []).map(p => {
-    let count = stage.recordCounts?.[p.property_id] ?? stage.recordCounts?.[p.name]
-    if (count == null && Array.isArray(data?.resources?.records?.data)) {
-      count = data.resources.records.data.filter(r => r.property_id === p.property_id || r.field === p.property_id || r.field === p.name).length
-    }
-    if (count == null) {
-      count = Math.round(recordsTotal / Math.max(1, propCount))
-    }
-    return {
-      ...p,
-      count,
-      pct: recordsTotal > 0 ? (count / recordsTotal) * 100 : 0
-    }
-  })
-
-  if (stage.lifecycle === 'cancelled' || (stage.lifecycle !== 'completed' && !s && recordsTotal === 0)) {
+  if (!s) {
     return (
       <div className="chat-outcome chat-outcome-natural">
         <p className="outcome-empty-text">
-          {stage.lifecycle === 'cancelled' ? '任务已取消' : '任务未完成'}，此时没有已发布的交付成果。
+          {stage.delivered ? '成果摘要暂不可用。' : '暂无已发布成果。'}
         </p>
       </div>
     )
   }
 
+  const targetId = stage.target?.main_id || '本次科研查询'
+  const targetOtype = stage.target?.primary_otype
+  const durationText = elapsedTime(stage.wallSeconds)
+  const propCount = stage.properties?.length ?? s.properties
+  const { records: recordsTotal, sources: sourcesTotal, figures: figuresTotal, insights: insightsTotal } = s
+  const scoreValue = Number.isFinite(s.score) ? s.score.toFixed(Number.isInteger(s.score) ? 0 : 2) : null
+
+  const propDist = (stage.properties || []).map(p => {
+    const count = stage.recordCounts?.[p.property_id] ?? stage.recordCounts?.[p.name]
+    return {
+      ...p,
+      count,
+      pct: recordsTotal > 0 && count > 0 ? Math.min(100, (count / recordsTotal) * 100) : 0
+    }
+  })
+
   return (
     <div className="chat-outcome chat-outcome-natural">
-      {/* 1. 顶栏成果与主操作：眉标 + 翡翠学术绿主标题 + 目标天体身份与耗时 + 右侧主操作胶囊按钮 */}
       <div className="outcome-natural-header">
         <div className="outcome-header-left">
-          <div className="outcome-eyebrow">
-            <Icon.Check style={{ width: 13, height: 13, strokeWidth: 2.2, color: 'var(--accent, #44785b)' }} />
-            <span>任务成果 · 科学数据交付封存</span>
-          </div>
-          <h2 className="outcome-natural-title">数据提取与多源核验已完成</h2>
+          <h2 className="outcome-natural-title">{stage.lifecycle === 'completed' ? '查询已完成' : '查询成果'}</h2>
           <div className="outcome-target-badge-strip">
             <span className="outcome-target-name">{targetId}</span>
             {targetOtype && <span className="outcome-target-otype font-mono">{targetOtype}</span>}
@@ -764,7 +748,6 @@ function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
           <button
             type="button"
             className="outcome-primary-action-btn"
-            disabled={!s && recordsTotal === 0}
             onClick={() => onOpenData?.('records')}
           >
             <span>查看科研数据结果</span>
@@ -802,24 +785,13 @@ function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
         )}
       </div>
 
-      {/* 3. 科学叙事与覆盖度结论条 (Narrative Sentence) */}
-      <div className="outcome-natural-summary-desc">
-        <div className="outcome-summary-desc-icon">
-          <Icon.Sparkle style={{ width: 13, height: 13 }} />
-        </div>
-        <div className="outcome-summary-desc-text">
-          已整理并封存 <strong>{recordsTotal}</strong> 条标准化测量记录，覆盖 <strong>{propCount}</strong> 项物理性质
-          {comparisonChecked > 0 && `（${comparisonChecked} / ${propCount} 项已完成跨文献交叉对照与核验）`}。
-          可下钻查阅测量数值、原始文献证据、科研图件与天体物理学洞察。
-        </div>
-      </div>
-
-      {/* 4. 物理性质测量分布进度看板 (Outcome Distribution Bars) - 继承旧版自然精髓，现代升级 */}
       {propDist.length > 0 && (
         <div className="outcome-natural-distribution">
           <div className="outcome-distribution-header">
-            <span className="outcome-distribution-title">物理性质测量分布与下钻检索</span>
-            <span className="outcome-distribution-hint">点击任意性质可直接进入对应测量记录</span>
+            <span className="outcome-distribution-title">各性质的测量记录</span>
+            {Number.isInteger(s.comparison_checked) && (
+              <span className="outcome-distribution-hint">已对照 {s.comparison_checked} / {propCount} 项性质</span>
+            )}
           </div>
           <div className="outcome-distribution-list">
             {propDist.map(item => (
@@ -828,7 +800,7 @@ function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
                 type="button"
                 className="outcome-dist-row"
                 onClick={() => onOpenData?.('records', { fieldName: item.property_id || item.name })}
-                title={`查看 ${item.name} 的 ${item.count} 条测量记录`}
+                title={`查看 ${item.name} 的测量记录`}
               >
                 <div className="dist-row-label">
                   <span className="dist-prop-name">{item.name}</span>
@@ -837,12 +809,12 @@ function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
                 <div className="dist-row-track">
                   <div
                     className="dist-row-bar"
-                    style={{ width: `${Math.min(100, Math.max(6, item.pct))}%` }}
+                    style={{ width: `${item.pct}%` }}
                   />
                 </div>
                 <div className="dist-row-count">
-                  <span className="dist-count-num font-mono">{item.count}</span>
-                  <span className="dist-count-unit">条</span>
+                  <span className="dist-count-num font-mono">{item.count ?? '—'}</span>
+                  {item.count != null && <span className="dist-count-unit">条</span>}
                   <Icon.ChevronRight className="dist-count-arrow" style={{ width: 12, height: 12 }} />
                 </div>
               </button>
@@ -857,17 +829,17 @@ function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
           <button
             type="button"
             className="outcome-sub-action-capsule"
-            disabled={!s && sourcesTotal === 0}
+            disabled={sourcesTotal === 0}
             onClick={() => onOpenData?.('evidence')}
           >
             <Icon.FileText style={{ width: 13, height: 13 }} />
-            <span>浏览论文资料 ({sourcesTotal} 篇)</span>
+            <span>浏览资料（{sourcesTotal} 份）</span>
           </button>
 
           <button
             type="button"
             className="outcome-sub-action-capsule"
-            disabled={!s?.insights && insightsTotal === 0}
+            disabled={insightsTotal === 0}
             onClick={() => (onOpenInsights ? onOpenInsights() : onOpenData?.('analysis', { analysisTab: 'insights' }))}
           >
             <Icon.Sparkle style={{ width: 13, height: 13 }} />
@@ -877,7 +849,6 @@ function Outcome({ stage, onOpenData, onReplay, data, onOpenInsights }) {
           <button
             type="button"
             className="outcome-sub-action-capsule"
-            disabled={!s && recordsTotal === 0}
             onClick={() => onOpenData?.('records', { export: true })}
           >
             <Icon.Download style={{ width: 13, height: 13 }} />
@@ -906,7 +877,7 @@ function StageBody({stage, onOpenData, onReplay, data, onOpenInsights}) {
     case 'comparison':return <Comparison stage={stage} onOpenData={onOpenData}/>
     case 'deliver':return <Delivery stage={stage} onOpenData={onOpenData} data={data}/>
     case 'insight':return <Insights stage={stage} onOpenData={onOpenData} data={data} onOpenInsights={onOpenInsights}/>
-    case 'done':return <Outcome stage={stage} onOpenData={onOpenData} onReplay={onReplay} data={data} onOpenInsights={onOpenInsights}/>
+    case 'done':return <Outcome stage={stage} onOpenData={onOpenData} onReplay={onReplay} onOpenInsights={onOpenInsights}/>
     default:return null
   }
 }

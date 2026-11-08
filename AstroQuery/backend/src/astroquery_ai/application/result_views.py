@@ -39,6 +39,24 @@ def record_list(body):
     return rows
 
 
+def source_list(body):
+    """Only the citation identity needed to label, filter and sort measurements."""
+    result = []
+    keys = ('source_id', 'kind', 'source_type', 'title', 'journal', 'year',
+            'bibcode', 'canonical_key', 'table_id', 'catalog_id')
+    for source in body['sources']:
+        item = {key: source[key] for key in keys if key in source}
+        work = source.get('work') or {}
+        if work:
+            record = (work.get('records') or [{}])[0]
+            item['work'] = {key: work[key] for key in ('work_id', 'canonical_key') if key in work}
+            item['work']['records'] = [{key: record[key] for key in ('titles', 'year') if key in record}]
+        if (source.get('metadata') or {}).get('catalog_id'):
+            item['metadata'] = {'catalog_id': source['metadata']['catalog_id']}
+        result.append(item)
+    return result
+
+
 def materials(body):
     records=body['measurements'];names={b['property_id']:b['definition']['name_cn'] for b in body['definitions']}
     result=[];by_work={}

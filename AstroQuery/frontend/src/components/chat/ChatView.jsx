@@ -1,21 +1,19 @@
 import AstroQueryLogo from '@/components/icons/AstroQueryLogo'
-import ReadOnlyInteractions from './ReadOnlyInteractions'
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
-import Markdown from '@/lib/markdown'
-import StageCard from './StageCard'
 import { chatStageState } from '@/lib/chatStageState'
-import ClarificationCard from './ClarificationCard'
 import { useToast } from '@/components/ui/toast'
 import SampleGallery from './SampleGallery'
-import ReviewInteraction from './ReviewInteraction'
-import ReviewReceipts from './ReviewReceipts'
-import AggregatedReviewCard from './AggregatedReviewCard'
 import RetrievalPreferences from '@/components/settings/RetrievalPreferences'
 import { ADS_SORTS, papersValue, preferencesFromConfig } from '@/lib/retrievalPreferences'
 import { artifactUrl } from '@/services/api'
-import { CompletionOutcome } from '@/components/results/DataView'
+const ReadOnlyInteractions = lazy(() => import('./ReadOnlyInteractions'))
+const StageCard = lazy(() => import('./StageCard'))
+const ClarificationCard = lazy(() => import('./ClarificationCard'))
+const AggregatedReviewCard = lazy(() => import('./AggregatedReviewCard'))
+const Markdown = lazy(() => import('@/lib/markdown'))
+const CompletionOutcome = lazy(() => import('@/components/results/DataView').then(m => ({ default: m.CompletionOutcome })))
 // 精选目录由产品的只读发布清单提供；初始为空。
 
 

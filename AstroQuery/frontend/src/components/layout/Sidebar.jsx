@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { queryKey, sidebarIdentity } from '@/hooks/useSidebarIdentity'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -8,26 +8,30 @@ import { StatusDot, STATUS_LABELS } from '@/components/status'
 /* 左栏宽度（可拖拽 200-400px，默认 305px） */
 const SIDEBAR_MIN_W = 200
 const SIDEBAR_MAX_W = 400
-const SAMPLE_PINS = ['昴星团 M45（09-01 版）', '昂星团 M45 (09-01 版)', '参宿四', 'M87']
 
-/* 相对时间格式化 */
-function formatRelativeTime(iso) {
-  if (!iso || !Number.isFinite(Date.parse(iso))) return '历史归档'
-  const diff = Date.now() - new Date(iso).getTime()
-  const min = Math.floor(diff / 60000)
-  if (min < 1) return '刚刚'
-  if (min < 60) return `${min} 分钟前`
-  const hr = Math.floor(min / 60)
-  if (hr < 24) return `${hr} 小时前`
-  const day = Math.floor(hr / 24)
-  if (day < 30) return `${day} 天前`
-  return new Date(iso).toLocaleDateString('zh-CN')
-}
+const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }
+const queryDate = new Intl.DateTimeFormat('zh-CN', dateOptions)
+const fullQueryTime = new Intl.DateTimeFormat('zh-CN', {
+  ...dateOptions, hour: '2-digit', minute: '2-digit', hour12: false,
+})
 
-/* 标题截断防御 */
-function fitTitle(t) {
-  if (!t) return ''
-  return t.length > 18 ? `${t.slice(0, 18)}…` : t
+function formatQueryTime(iso, now) {
+  if (!iso) return null
+  const date = new Date(iso)
+  const timestamp = date.getTime()
+  if (!Number.isFinite(timestamp)) return null
+
+  const minutes = Math.floor((now - timestamp) / 60_000)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
+  let label
+  if (minutes < 1) label = '刚刚'
+  else if (minutes < 60) label = `${minutes} 分钟前`
+  else if (hours < 24) label = `${hours} 小时前`
+  else if (days < 30) label = `${days} 天前`
+  else label = queryDate.format(date)
+
+  return { label, exact: fullQueryTime.format(date) }
 }
 
 const FILTERS = [
@@ -70,7 +74,13 @@ export default function Sidebar({
   const [manageMode, setManageMode] = useState(false)
   const [checked, setChecked] = useState(() => new Set())
   const [width, setWidth] = useState(288)
+  const [now, setNow] = useState(Date.now)
   const dragRef = useRef(null)
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 60_000)
+    return () => window.clearInterval(timer)
+  }, [])
 
   // 拖拽宽度调节
   const startDrag = (e) => {
@@ -372,7 +382,7 @@ export default function Sidebar({
 
       {/* 任务列表滚动区 */}
       <ScrollArea
-        className="flex-1"
+        className="sidebar-task-scroll flex-1"
         style={{ padding: '6px 8px 12px' }}
         onScroll={(e) => {
           const el = e.currentTarget
@@ -397,7 +407,7 @@ export default function Sidebar({
               ? '正在读取查询列表…'
               : '当前筛选下暂无科研任务'}
           </div>        ) : (
-          filteredRows.map((t, idx) => {
+          filteredRows.map((t) => {
             const isSelected = t.task_id === selectedId
             const isChecked = checked.has(t.task_id)
             const meta =
@@ -407,10 +417,8 @@ export default function Sidebar({
             const title =
               meta && (!meta.question || t.title === meta.question) ? meta.target : t.title || t.query
             const isSample = mode === 'sample' && !t.replay_of
-            const isRecommended =
-              isSample &&
-              (SAMPLE_PINS.some((p) => (t.name || t.title || '').includes(p)) ||
-                (!sampleSearch.trim() && idx < 3))
+            const queryTime = formatQueryTime(t.created_at, now)
+            const statusLabel = !isSample && (STATUS_LABELS[t.status] || t.status)
 
             return (
               <div
@@ -439,166 +447,67 @@ export default function Sidebar({
                   borderLeft: isSelected
                     ? '3px solid var(--accent)'
                     : '3px solid transparent',
-                  display: 'flex',
-                  flexDirection: isSample ? 'row' : 'column',
-                  alignItems: isSample ? 'center' : 'stretch',
                   minHeight: isSample ? 38 : 50,
                   boxSizing: 'border-box',
                 }}
               >
-                {/* 第一行：状态指示点 + 任务主标题 + 推荐徽标 / 回放徽标 */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', minWidth: 0 }}>
-                  {manageMode && (
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => toggleCheck(t.task_id)}
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ accentColor: 'var(--accent)', flexShrink: 0 }}
-                    />
-                  )}
-
-                  {/* 状态呼吸灯 */}
-                  <StatusDot status={t.status} size={6} />
-
-                  {/* 任务名称 */}
-                  <span
-                    style={{
-                      fontSize: 13,
-                      fontWeight: isSelected ? 560 : 450,
-                      color: isSelected ? 'var(--title-strong, var(--accent))' : 'var(--content-fg)',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      flex: 1,
-                      minWidth: 0,
-                    }}
-                    title={meta?.question || t.title || t.query}
-                  >
-                    {isSample ? (t.name || t.title || t.query) : fitTitle(title)}
-                  </span>
-
-                  {/* 样例推荐徽标 */}
-                  {isRecommended && (
-                    <span
-                      className="sample-recommended"
-                      style={{
-                        padding: '1px 6px',
-                        borderRadius: 4,
-                        fontSize: 11,
-                        lineHeight: '16px',
-                        background: isSelected ? 'var(--accent)' : 'var(--accent-light)',
-                        color: isSelected ? '#ffffff' : 'var(--accent-text)',
-                        fontWeight: 500,
-                        flexShrink: 0,
-                      }}
-                    >
-                      推荐
-                    </span>
-                  )}
-
-                  {/* 回放徽标 */}
-                  {t.replay_of && (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        padding: '1px 6px',
-                        borderRadius: 'var(--radius-pill)',
-                        background: 'var(--accent-light)',
-                        color: 'var(--accent-text)',
-                        flexShrink: 0,
-                        fontWeight: 510,
-                      }}
-                    >
-                      回放
-                    </span>
-                  )}
-                </div>
-
-                {/* 提取物理性质小副标题（如有） */}
-                {!isSample && meta?.properties && (
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: 'var(--content-fg-secondary)',
-                      marginTop: 2,
-                      paddingLeft: manageMode ? 26 : 14,
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {meta.properties}
-                  </div>
-                )}
-
-                {/* 第二行：底部时间信息与悬停浮动动作栏（仅在非样例模式渲染） */}
-                {!isSample && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginTop: 3,
-                      paddingLeft: manageMode ? 26 : 14,
-                      fontSize: 11,
-                      color: 'var(--sidebar-text-secondary)',
-                      lineHeight: '16px',
-                    }}
-                  >
-                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {STATUS_LABELS[t.status] || t.status} · {formatRelativeTime(t.created_at)}
-                    </span>
-
-                    {/* 悬停微动作按钮 */}
-                    {!manageMode && hoveredId === t.task_id && (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 4,
-                          flexShrink: 0,
-                        }}
+                <div className="task-list-row-body">
+                  <div className="task-list-leading">
+                    {manageMode && (
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleCheck(t.task_id)}
                         onClick={(e) => e.stopPropagation()}
-                      >
-                        {['completed', 'cancelled', 'error', 'failed'].includes(t.status) && (
-                          <button
-                            title="只读回放"
-                            aria-label={`回放：${t.title}`}
-                            onClick={() => onReplay?.(t.task_id)}
-                            style={{
-                              border: 'none',
-                              background: 'transparent',
-                              cursor: 'pointer',
-                              color: 'var(--accent-text)',
-                              padding: 2,
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <Icon.Play style={{ width: 12, height: 12 }} />
-                          </button>
+                        style={{ accentColor: 'var(--accent)' }}
+                      />
+                    )}
+                    <StatusDot status={t.status} size={6} />
+                  </div>
+                  <div className="task-list-main">
+                    <div className="task-list-heading">
+                      <span className="task-item-title" title={meta?.question || t.title || t.query}>
+                        {isSample ? (t.name || t.title || t.query) : title}
+                        {meta?.properties && (
+                          <span className="task-item-properties"> · {meta.properties}</span>
                         )}
-                        <button
-                          title="管理或删除"
-                          aria-label={`管理：${t.title}`}
-                          onClick={() => onDeleteTask?.(t)}
-                          style={{
-                            border: 'none',
-                            background: 'transparent',
-                            cursor: 'pointer',
-                            color: 'var(--content-fg-tertiary)',
-                            padding: 2,
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Icon.Ellipsis style={{ width: 13, height: 13 }} />
-                        </button>
+                      </span>
+
+                      {t.replay_of && <span className="task-list-replay-tag">回放</span>}
+
+                      {!isSample && !manageMode && hoveredId === t.task_id && (
+                        <div className="task-list-actions" onClick={(e) => e.stopPropagation()}>
+                          {['completed', 'cancelled', 'error', 'failed'].includes(t.status) && (
+                            <button
+                              type="button"
+                              title="只读回放"
+                              aria-label={`回放：${t.title}`}
+                              onClick={() => onReplay?.(t.task_id)}
+                            >
+                              <Icon.Play style={{ width: 12, height: 12 }} />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            title="管理或删除"
+                            aria-label={`管理：${t.title}`}
+                            onClick={() => onDeleteTask?.(t)}
+                          >
+                            <Icon.Ellipsis style={{ width: 13, height: 13 }} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {(queryTime || statusLabel) && (
+                      <div className="task-list-meta">
+                        {queryTime && <time dateTime={t.created_at} title={queryTime.exact}>{queryTime.label}</time>}
+                        {queryTime && statusLabel && <span aria-hidden="true">·</span>}
+                        {statusLabel && <span className="task-list-state" title={statusLabel}>{statusLabel}</span>}
                       </div>
                     )}
                   </div>
-                )}
+                </div>
               </div>
             )
           })

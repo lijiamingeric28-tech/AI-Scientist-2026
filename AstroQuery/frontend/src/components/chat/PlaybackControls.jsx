@@ -1,4 +1,5 @@
 import { Icon } from '@/components/icons'
+import './chatStage.css'
 
 const time = (n) => `${Math.floor(Math.round(n) / 60)}:${String(Math.round(n) % 60).padStart(2, '0')}`
 
