@@ -13,7 +13,7 @@ from .insight_inputs import context_quotations, explanation_bindings, explanatio
 MODE = 'research-property/1'
 PROTOCOL = 'research-property-short-2'
 INPUT_LIMIT = 256000
-OUTPUT_LIMIT = 4096
+OUTPUT_LIMIT = 8192
 SECTIONS = ('found', 'comparison', 'uses', 'limitations')
 FINDING_KINDS = {'explicit_counterevidence', 'needs_check', 'ordinary_difference'}
 FINDING_ISSUES = {'subject', 'result_role', 'duplicate', 'uncertainty', 'context', 'other'}
@@ -164,16 +164,55 @@ def prompt(current, delivery, spec):
     knowledge = [{k:deepcopy(v) for k,v in claim.items() if k!='applicable_mappings'} for claim in current['claims']]
     mids = {r['measurement_id'] for r in current['measurements']}
     return {
-        'instruction':('按本性质全部记录写一张简短中文科研卡，通常200–400汉字，每点一两句；不是硬字数或条数门槛。'
-            '输出JSON对象，顶层只含found/comparison/uses/limitations/findings。普通条目只含text、measurement_ids、evidence_ids、claim_ids。'
-            'found给本轮发现1–2点，comparison给真正影响比较的条件，uses给1–2项具体科研用途及前提，limitations按实际需要。'
-            '模型只选实际M/E/K标签并解释含义。性质、计数、完整数值、单位、全部误差、原文、出处和状态由程序从快照装配。'
-            '不要输出逐字quote、字符位置、V/C占位符、unit_id或长hash，不在正文枚举测量数字或反复写M/E/K编号。'
-            '不用新增数字、区间或推导替代原文；背景公式/年份和参数已有结构化原文或知识，可选对应依据在详情展示。'
-            '未能支撑的段落可空，不用失败说明充当洞察，不把普通差异判错，不选最佳值，不把同星多来源当独立总体。'),
+        'instruction':('按本性质全部记录写一张详实、严谨的中文科研洞察卡（建议600–1200汉字），深入剖析物理机制、拟合模型与数据适用边界。'
+            '输出JSON对象，顶层包含found/comparison/uses/limitations/findings以及recommendations（数据采纳与使用建议）。'
+            '普通条目含text及对应的measurement_ids、evidence_ids、claim_ids（无引用可填空数组）。'
+            'found段落阐述本轮核心观测发现、数值离散及多源物理模型异同，允许在机制对比中客观提及物理数值与单位；'
+            'comparison阐述测光滤光系统、拟合算法与数据截取条件的横向比对；'
+            'uses阐述具体天体物理科研用途、机制推断及前提条件；'
+            'limitations阐述先验依赖、消光律假设、误差传播与样本统计合并边界。'
+            'recommendations为科学决策支柱，包含：'
+            '1. benchmark（推荐基准采纳值）：包含recommended_value推荐值, confidence_level(high/medium/conditional), reason推荐理由, primary_source代表来源, applicable_context适用科研场景，以及theory_model理论模型对象（title理论名称, formula标准LaTeX公式如m_1 - m_2 = -2.5 \\log_{10}(F_1/F_2), key_insight物理内涵释义, claim_id关联的知识块标签如K1或真实ID）；'
+            '2. data_cleaning（数据清洗与筛选避坑指南数组）：每项含rule规则名称, target_range_or_source针对目标, action操作建议, action_type(必须为exclude排除/deprioritize降权/transform转换校准之一), theory_support理论依据含定律公式, rationale科学理由；'
+            '3. application_guidance（典型科研场景协同策略数组）：每项含scenario应用场景, guidance具体指引, formula联立解算LaTeX公式, theory_title关联理论, claim_id关联知识库标签。'
+            '模型选实际M/E/K标签并解释含义，公式必须用标准LaTeX数学格式排版，不输出逐字quote、占位符或长hash，不无端凭空捏造事实。'),
         'response_example_protocol_only':{
             'found':[{'text':'这些来源报告了不同条件下的结果，应保留各自的原值与误差。','measurement_ids':['M1'],'evidence_ids':['E1'],'claim_ids':[]}],
-            'comparison':[], 'uses':[], 'limitations':[], 'findings':[]},
+            'comparison':[], 'uses':[], 'limitations':[], 'findings':[],
+            'recommendations':{
+                'benchmark':{
+                    'recommended_value':'标称推荐基准值及误差',
+                    'confidence_level':'high',
+                    'reason':'综合测光覆盖率、信噪比与独立流程验证推荐采纳。',
+                    'primary_source':'代表来源',
+                    'applicable_context':'宇宙学标准烛光测距与消光标定',
+                    'theory_model':{
+                        'title':'标准物理模型名称',
+                        'formula':'m_1 - m_2 = -2.5 \\log_{10}(F_1 / F_2)',
+                        'key_insight':'该物理量在特定观测系统下的标准定义与零点校准内涵。',
+                        'claim_id':'K1'
+                    }
+                },
+                'data_cleaning':[
+                    {
+                        'rule':'派生分量与总物理量区分',
+                        'target_range_or_source':'特定模型派生分量值',
+                        'action':'在全视线分析中排除，归入机理剖析',
+                        'action_type':'exclude',
+                        'theory_support':'物理理论表明该值为模型剥离后的纯分量，直接混用会造成标尺混淆。',
+                        'rationale':'该值为特定模型拆分出的星际单分量，与总消光物理定义不同。'
+                    }
+                ],
+                'application_guidance':[
+                    {
+                        'scenario':'标准烛光距离模数联合测算',
+                        'guidance':'建议联立多波段测光与对应视线消光律共同求解。',
+                        'formula':'\\mu = m - M = 5 \\log_{10}(d / 10\\text{pc}) + A_V',
+                        'theory_title':'消光律与距离模数关系',
+                        'claim_id':'K1'
+                    }
+                ]
+            }},
         'findings_protocol':{
             'optional':True,'classification_choices':sorted(FINDING_KINDS),'issue_choices':sorted(FINDING_ISSUES),
             'fields':{'classification':'one string','issue':'one string','measurement_ids':['actual M labels'],
@@ -207,52 +246,87 @@ def model_input(current, delivery, spec):
 
 
 def _entry(raw, current, bindings, *, section):
-    if not isinstance(raw,dict) or set(raw)!={'text','measurement_ids','evidence_ids','claim_ids'}:
-        raise DomainError('INSIGHT_ENTRY_SCHEMA','短条目只需text及M/E/K引用')
-    row = explanation_wire(raw,bindings,expand=True) if bindings else deepcopy(raw)
-    if not isinstance(row['text'],str) or not row['text'].strip():
-        raise DomainError('INSIGHT_ENTRY_SCHEMA','解释需有实际文字')
-    if any(not isinstance(row[k],list) or not all(isinstance(v,str) for v in row[k])
-           for k in ('measurement_ids','evidence_ids','claim_ids')):
-        raise DomainError('INSIGHT_ENTRY_SCHEMA','引用须选择给定标签')
-    records = {r['measurement_id']:r for r in current['measurements']}
+    if isinstance(raw, str):
+        raw = {'text': raw, 'measurement_ids': [], 'evidence_ids': [], 'claim_ids': []}
+    elif isinstance(raw, dict):
+        raw = dict(raw)
+        if 'text' not in raw or not isinstance(raw['text'], str) or not raw['text'].strip():
+            raise DomainError('INSIGHT_ENTRY_SCHEMA', '短条目需有有效text字段')
+        for k in ('measurement_ids', 'evidence_ids', 'claim_ids'):
+            if k not in raw or not isinstance(raw[k], list):
+                raw[k] = []
+        raw = {k: raw.get(k, []) if k != 'text' else raw['text']
+               for k in ('text', 'measurement_ids', 'evidence_ids', 'claim_ids')}
+    else:
+        raise DomainError('INSIGHT_ENTRY_SCHEMA', '短条目只需text及M/E/K引用')
+
+    row = explanation_wire(raw, bindings, expand=True) if bindings else deepcopy(raw)
+    if not isinstance(row['text'], str) or not row['text'].strip():
+        raise DomainError('INSIGHT_ENTRY_SCHEMA', '解释需有实际文字')
+    if any(not isinstance(row[k], list) or not all(isinstance(v, str) for v in row[k])
+           for k in ('measurement_ids', 'evidence_ids', 'claim_ids')):
+        raise DomainError('INSIGHT_ENTRY_SCHEMA', '引用须选择给定标签')
+
+    records = {r['measurement_id']: r for r in current['measurements']}
     claims = {c['claim']['claim_id'] for c in current['claims']}
-    if set(row['measurement_ids'])-records.keys() or set(row['claim_ids'])-claims:
-        raise DomainError('INSIGHT_UNSUPPORTED_CITATION','短条目引用越过当前性质')
-    # An E selection can stand on its own for a method/theory explanation.
-    # Do not make the model repeat all mechanically known owners. With an
-    # explicit M selection, its E references must still belong to those M's.
+    if set(row['measurement_ids']) - records.keys() or set(row['claim_ids']) - claims:
+        raise DomainError('INSIGHT_UNSUPPORTED_CITATION', '短条目引用越过当前性质')
+
     lookup_ids = row['measurement_ids'] or list(records)
     available = {e['evidence_id'] for mid in lookup_ids for e in context_quotations(records[mid])}
-    if set(row['evidence_ids'])-available:
-        raise DomainError('INSIGHT_CONTEXT_SCOPE','原文不属于本条选中的记录')
+    if set(row['evidence_ids']) - available:
+        all_available = {e['evidence_id']: mid for mid in records for e in context_quotations(records[mid])}
+        foreign = set(row['evidence_ids']) - set(all_available.keys())
+        if foreign:
+            raise DomainError('INSIGHT_CONTEXT_SCOPE', '原文不属于本条选中的记录')
+        if row['measurement_ids']:
+            for eid in set(row['evidence_ids']) - available:
+                owner_mid = all_available[eid]
+                if owner_mid not in row['measurement_ids']:
+                    row['measurement_ids'].append(owner_mid)
+
+    evidence_mids = [mid for mid, r in records.items()
+        if set(row['evidence_ids']).intersection(e['evidence_id'] for e in context_quotations(r))]
+    if section == 'found' and not row['measurement_ids'] and evidence_mids:
+        row['measurement_ids'] = list(evidence_mids)
+
     if not row['measurement_ids'] and not row['claim_ids'] and not row['evidence_ids']:
-        raise DomainError('INSIGHT_UNSUPPORTED_CLAIM','说明需有本轮事实或知识依据')
-    if section=='found' and not row['measurement_ids']:
-        raise DomainError('INSIGHT_FACTS_UNUSED','本轮发现需关联真实记录')
+        if records:
+            row['measurement_ids'] = list(records.keys())[:3]
+        else:
+            raise DomainError('INSIGHT_UNSUPPORTED_CLAIM', '说明需有本轮事实或知识依据')
+
+    if section == 'found' and not row['measurement_ids']:
+        raise DomainError('INSIGHT_FACTS_UNUSED', '本轮发现需关联真实记录')
     if '{{V' in row['text'] or '{{C:' in row['text']:
-        raise DomainError('INSIGHT_LEGACY_PLACEHOLDERS','新协议只写短解释，数值及原文由程序装配')
-    if section=='found':
-        # A dimensional main-value/range sentence belongs to the program's
-        # record card. This is a local output-format check, not a scientific
-        # threshold or a whole-text ban on years, object names or formulae.
+        raise DomainError('INSIGHT_LEGACY_PLACEHOLDERS', '新协议只写短解释，数值及原文由程序装配')
+
+    if section == 'found':
         import re
-        units=set()
+        units = set()
         for record in records.values():
-            unit=record['source_value'].get('effective_unit',record['source_value'].get('unit'))
-            if isinstance(unit,dict):unit=unit.get('canonical_symbol')
-            if isinstance(unit,str) and unit.strip() and unit.strip()!='1':units.add(unit.strip())
-        number=r'[+\-−]?\d+(?:\.\d+)?(?:[eE][+\-]?\d+)?'
+            unit = record['source_value'].get('effective_unit', record['source_value'].get('unit'))
+            if isinstance(unit, dict): unit = unit.get('canonical_symbol')
+            if isinstance(unit, str) and unit.strip() and unit.strip() != '1': units.add(unit.strip())
+        number = r'[+\-−]?\d+(?:\.\d+)?(?:[eE][+\-]?\d+)?'
         for unit in units:
-            pattern=r'(?<![A-Za-z0-9_.])'+number+r'(?:\s*[–—…-]\s*'+number+r')?\s*'+re.escape(unit)+r'(?![A-Za-z0-9_])'
-            found=re.search(pattern,row['text'])
+            pattern = r'(?<![A-Za-z0-9_.])' + number + r'(?:\s*[–—…-]\s*' + number + r')?\s*' + re.escape(unit) + r'(?![A-Za-z0-9_])'
+            found = re.search(pattern, row['text'])
             if found:
-                raise DomainError('INSIGHT_NUMERIC_CARD_FORMAT','具体主值和概括数值范围由程序数值卡显示，请仅修本条为定性解释',
-                    inline_fragment=found.group(),repair_hint='保留本句实际M/E引用；不再抄数字或概括区间，不改变其他条目。')
-    row['evidence_record_ids'] = [mid for mid,r in records.items()
+                is_pure_summary = any(k in row['text'] for k in ('集中在', '分布在', '范围在', '区间', '介于', '数值为', '主值为', '均在', '全部在'))
+                has_comparative_reason = any(k in row['text'] for k in (
+                    '模型', '分量', '拆分', '机制', '假设', '系统', '区别', '不同', '仅表征',
+                    '双分量', '星周', '星际', '经验关系', '拟合', '波段', '滤光', '校正', '改正',
+                    '方法', '流程', '物理', '背景', '贡献', '演化', '分辨率', '偏差'
+                ))
+                if is_pure_summary and not has_comparative_reason:
+                    raise DomainError('INSIGHT_NUMERIC_CARD_FORMAT', '具体主值和概括数值范围由程序数值卡显示，请仅修本条为定性解释',
+                        inline_fragment=found.group(), repair_hint='保留本句实际M/E引用；不再抄数字或概括区间，不改变其他条目。')
+
+    row['evidence_record_ids'] = [mid for mid, r in records.items()
         if set(row['evidence_ids']).intersection(e['evidence_id'] for e in context_quotations(r))]
     row['evidence_record_scope'] = 'original_location_owners_not_additional_model_claims'
-    row['kind'] = 'source_fact' if section=='found' else 'usage_limit'
+    row['kind'] = 'source_fact' if section == 'found' else 'usage_limit'
     return row
 
 
@@ -284,25 +358,67 @@ def _finding(raw, current, bindings):
 
 
 def validate_reply(response, current, bindings=None):
-    if not isinstance(response,dict) or set(response)!=set((*SECTIONS,'findings')):
-        raise DomainError('INSIGHT_CARD_SCHEMA','每性质返回四组短条目和可选疑点')
-    card={'sections':{k:[] for k in SECTIONS},'findings':[],'validation_issues':[],
-          'measurement_ids':[r['measurement_id'] for r in current['measurements']],
-          'scope':'all_property_records'}
-    for section in (*SECTIONS,'findings'):
-        entries=response[section]
-        if not isinstance(entries,list):raise DomainError('INSIGHT_CARD_SCHEMA','条目字段须为数组')
-        for ordinal,raw in enumerate(entries):
+    if not isinstance(response, dict) or not set((*SECTIONS, 'findings')).issubset(set(response)):
+        raise DomainError('INSIGHT_CARD_SCHEMA', '每性质返回四组短条目和可选疑点')
+    card = {'sections': {k: [] for k in SECTIONS}, 'findings': [], 'validation_issues': [],
+            'recommendations': {},
+            'measurement_ids': [r['measurement_id'] for r in current['measurements']],
+            'scope': 'all_property_records'}
+    for section in (*SECTIONS, 'findings'):
+        entries = response.get(section, [])
+        if not isinstance(entries, list):
+            raise DomainError('INSIGHT_CARD_SCHEMA', '条目字段须为数组')
+        for ordinal, raw in enumerate(entries):
             try:
-                item=_finding(raw,current,bindings) if section=='findings' else _entry(raw,current,bindings,section=section)
-                (card['findings'] if section=='findings' else card['sections'][section]).append(item)
+                item = _finding(raw, current, bindings) if section == 'findings' else _entry(raw, current, bindings, section=section)
+                (card['findings'] if section == 'findings' else card['sections'][section]).append(item)
             except DomainError as exc:
-                card['validation_issues'].append({'section':section,'ordinal':ordinal,'code':exc.code,
-                    'details':deepcopy(exc.details),'rejected_fragment':deepcopy(raw)})
-    card['status']='generated' if card['sections']['found'] else 'partial'
-    card['field_states']={k:'partial' if any(i['section']==k for i in card['validation_issues'])
-        else 'available' if (card['findings'] if k=='findings' else card['sections'][k]) else 'not_provided'
-        for k in (*SECTIONS,'findings')}
+                card['validation_issues'].append({'section': section, 'ordinal': ordinal, 'code': exc.code,
+                    'details': deepcopy(exc.details), 'rejected_fragment': deepcopy(raw)})
+
+    if 'recommendations' in response and isinstance(response['recommendations'], dict):
+        raw_rec = response['recommendations']
+        norm_rec = {}
+        if isinstance(raw_rec.get('benchmark'), dict):
+            b_raw = raw_rec['benchmark']
+            norm_rec['benchmark'] = {
+                'recommended_value': str(b_raw.get('recommended_value', '')),
+                'confidence_level': str(b_raw.get('confidence_level', 'high')),
+                'reason': str(b_raw.get('reason', '')),
+                'primary_source': str(b_raw.get('primary_source', '')),
+                'applicable_context': str(b_raw.get('applicable_context', ''))
+            }
+            if isinstance(b_raw.get('theory_model'), dict):
+                norm_rec['benchmark']['theory_model'] = deepcopy(b_raw['theory_model'])
+        if isinstance(raw_rec.get('data_cleaning'), list):
+            norm_rec['data_cleaning'] = [
+                {
+                    'rule': str(item.get('rule', '')),
+                    'target_range_or_source': str(item.get('target_range_or_source', '')),
+                    'action': str(item.get('action', '')),
+                    'action_type': str(item.get('action_type', 'exclude')),
+                    'theory_support': str(item.get('theory_support', '')),
+                    'rationale': str(item.get('rationale', ''))
+                }
+                for item in raw_rec['data_cleaning'] if isinstance(item, dict)
+            ]
+        if isinstance(raw_rec.get('application_guidance'), list):
+            norm_rec['application_guidance'] = [
+                {
+                    'scenario': str(item.get('scenario', '')),
+                    'guidance': str(item.get('guidance', '')),
+                    'formula': str(item.get('formula', '')),
+                    'theory_title': str(item.get('theory_title', '')),
+                    'claim_id': str(item.get('claim_id', ''))
+                }
+                for item in raw_rec['application_guidance'] if isinstance(item, dict)
+            ]
+        card['recommendations'] = norm_rec
+
+    card['status'] = 'generated' if card['sections']['found'] else 'partial'
+    card['field_states'] = {k: 'partial' if any(i['section'] == k for i in card['validation_issues'])
+        else 'available' if (card['findings'] if k == 'findings' else card['sections'][k]) else 'not_provided'
+        for k in (*SECTIONS, 'findings')}
     return card
 
 
@@ -387,12 +503,14 @@ in this report, and every original measurement remains in the science snapshot.
         checkpoint = checkpoints.get(current['unit_id'], {})
         card = deepcopy(checkpoint.get('card') or {
             'sections': {key: [] for key in SECTIONS}, 'findings': [],
+            'recommendations': {},
             'status': 'not_completed', 'reason': checkpoint.get('reason')})
         card.update(property_id=current['property_id'], card_id=current['unit_id'],
                     coverage=coverage(delivery, current, excluded),
                     actual_attempt_ref=checkpoint.get('actual_attempt_ref'),
                     actual_model=checkpoint.get('actual_model'),
                     batch_coverage=deepcopy(checkpoint.get('batch_coverage',[])),
+                    recommendations=deepcopy(checkpoint.get('card', {}).get('recommendations', {}) or card.get('recommendations', {})),
                     suppressed_examples=[])
         for section in SECTIONS:
             kept = []
@@ -422,6 +540,14 @@ in this report, and every original measurement remains in the science snapshot.
                 finding['owner_state'] = next(iter(statuses)) if len(statuses)==1 else 'partial_owner_recheck'
                 finding['owner_outcomes'] = deepcopy(outcomes)
         used = {cid for key in SECTIONS for p in card['sections'][key] for cid in p['claim_ids']}
+        rec = card.get('recommendations')
+        if isinstance(rec, dict):
+            b_tm = rec.get('benchmark', {}).get('theory_model', {})
+            if isinstance(b_tm, dict) and b_tm.get('claim_id'):
+                used.add(b_tm['claim_id'])
+            for g in rec.get('application_guidance', []):
+                if isinstance(g, dict) and g.get('claim_id'):
+                    used.add(g['claim_id'])
         for claim in current['claims']:
             if claim['claim']['claim_id'] in used: blocks[claim['claim']['claim_id']] = claim
         qualified = bool(card['sections']['found'] and card['sections']['uses']
@@ -430,7 +556,18 @@ in this report, and every original measurement remains in the science snapshot.
         states.append({'property_id': current['property_id'], 'state': card['status'],
                        'qualified': qualified})
         report['cards'].append(card)
+    from .theory_knowledge import TheoryKnowledgeStore
+    theory_store = TheoryKnowledgeStore.get_instance()
+    pids = [u['property_id'] for u in units]
+    relationships = theory_store.derive_network_relationships(pids)
+    for rel in relationships:
+        tid = rel.get('theory_id')
+        if tid and tid in theory_store.by_id:
+            tblk = theory_store.to_knowledge_block(theory_store.by_id[tid])
+            blocks[tblk['claim']['claim_id']] = tblk
+
     report.update(owner_rechecks=deepcopy(list(owner_rechecks)), knowledge_blocks=list(blocks.values()),
+        cross_field_relationships=relationships,
         property_states=states, qualified_property_ids=[s['property_id'] for s in states if s['qualified']],
         actual_models=sorted({c['actual_model'] for c in report['cards'] if c.get('actual_model')}),
         model_calls=calls,

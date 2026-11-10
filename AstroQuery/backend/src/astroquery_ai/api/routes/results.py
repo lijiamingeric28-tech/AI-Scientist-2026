@@ -97,11 +97,37 @@ def register(app, application, scheduler):
                 if reference:
                     return application.repository.object(conn, source_task, name, reference['id'], reference['version'])
                 return None
+            def _enrich_theory(report):
+                if not isinstance(report, dict):
+                    return report
+                try:
+                    from astroquery_ai.science.theory_knowledge import TheoryKnowledgeStore
+                    store = TheoryKnowledgeStore.get_instance()
+                    pids = [p['property_id'] for p in body.get('definitions', [])]
+                    if not pids and 'cards' in report:
+                        pids = [c['property_id'] for c in report['cards']]
+                    if not report.get('cross_field_relationships'):
+                        report['cross_field_relationships'] = store.derive_network_relationships(pids)
+                    existing_bids = {b.get('claim', {}).get('claim_id') for b in report.get('knowledge_blocks', [])}
+                    blocks = list(report.get('knowledge_blocks', []))
+                    for rel in report.get('cross_field_relationships', []):
+                        tid = rel.get('theory_id')
+                        if tid and tid in store.by_id:
+                            tblk = store.to_knowledge_block(store.by_id[tid])
+                            if tblk['claim']['claim_id'] not in existing_bids:
+                                existing_bids.add(tblk['claim']['claim_id'])
+                                blocks.append(tblk)
+                    report['knowledge_blocks'] = blocks
+                except Exception:
+                    pass
+                return report
+
             def insight_report():
                 report = pinned_report('insight')
                 if report is not None:
-                    return report
-                return next(iter(research_views.historical_insights(conn, source_task, body, cutoff)), None)
+                    return _enrich_theory(report)
+                rep = next(iter(research_views.historical_insights(conn, source_task, body, cutoff)), None)
+                return _enrich_theory(rep) if rep is not None else None
             if resource == "records" and view == "list":
                 from astroquery_ai.application.result_views import record_list
                 rows = record_list(body)

@@ -65,7 +65,8 @@ def synthesis_input(current, delivery, spec, batch_cards, batch_coverage=()):
     body=cards.prompt(current,delivery,spec)
     body['original_materials']=[{k:v for k,v in e.items() if k!='raw_text'} for e in body['original_materials']]
     body['batch_notes']=[{'measurement_ids':b['measurement_ids'],'sections':b['sections'],
-                         'findings':b['findings'],'field_states':b['field_states']} for b in batch_cards]
+                         'findings':b['findings'],'field_states':b['field_states'],
+                         'recommendations':b.get('recommendations',{})} for b in batch_cards]
     body['batch_coverage']=deepcopy(list(batch_coverage))
     body['instruction'] += (' 这是按来源上下文读完后的性质综合。使用全量简明科学行和已验证引用的批内短条目，'
         '只合成一张卡，不重复批次开头。原文已由各批读取，本次只保留位置索引，不把大原文拼回来。'

@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 
-from .routes import settings, tasks, events, results, retired
+from .routes import settings, tasks, events, results, retired, agent
 
 from contextlib import asynccontextmanager
 
@@ -118,16 +118,23 @@ def create_app(
             origin = request.headers.get("origin")
             from urllib.parse import urlsplit
 
-            if origin and urlsplit(origin).netloc != request.url.netloc:
-                return JSONResponse(
-                    {
-                        "detail": {
-                            "code": "CROSS_ORIGIN_WRITE",
-                            "message": "不允许跨来源修改本地科研任务",
-                        }
-                    },
-                    status_code=403,
+            if origin:
+                origin_parts = urlsplit(origin)
+                req_parts = urlsplit(str(request.url))
+                is_local = (
+                    origin_parts.hostname in {"127.0.0.1", "localhost", "::1"}
+                    and req_parts.hostname in {"127.0.0.1", "localhost", "::1"}
                 )
+                if origin_parts.netloc != request.url.netloc and not is_local:
+                    return JSONResponse(
+                        {
+                            "detail": {
+                                "code": "CROSS_ORIGIN_WRITE",
+                                "message": "不允许跨来源修改本地科研任务",
+                            }
+                        },
+                        status_code=403,
+                    )
             if request.headers.get("sec-fetch-site") == "cross-site":
                 return JSONResponse(
                     {
@@ -149,6 +156,7 @@ def create_app(
     events.register(app, application, scheduler)
     results.register(app, application, scheduler)
     retired.register(app, application, scheduler)
+    agent.register(app, application, scheduler)
     app.add_api_route("/api/tasks/{task_id}/{action}", control, methods=["POST"])
     frontend = frontend_dist()
     if frontend.is_dir():
