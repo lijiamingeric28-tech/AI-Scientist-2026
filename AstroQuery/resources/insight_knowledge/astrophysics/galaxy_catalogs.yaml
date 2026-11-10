@@ -1,0 +1,2200 @@
+entries:
+- id: galaxy_absolute_magnitude
+  title: 星系绝对星等与距离换算
+  category: reference_range
+  tags:
+  - galaxy
+  - absolute_magnitude
+  - abs_mag
+  - distance_modulus
+  - luminosity
+  hypothetical_queries:
+  - 星系绝对星等 M_B 典型范围 矮星系 旋涡 巨椭圆
+  - absolute magnitude distance modulus m - 5 log10 d - 25
+  - K 修正 高红移星系 绝对星等 换算 消光
+  applies_to:
+    fields:
+    - abs_mag
+    - abs_magnitude
+    - m_b
+    - absolute_magnitude
+    - abs_gmag
+    - abs_mag_g
+    - abs_mag_ugriz
+    - abs_v_mag
+    - absolute_g_mag
+    - absolute_mag_j
+    - absolute_mag_ks
+    - absolute_v_mag
+    - absolute_v_mag_system
+    - absolute_v_mag_wr
+    - m_abs_b
+    - mag_abs
+    - mag_abs_b
+    - mag_abs_r
+    - mag_abs_v
+    - peak_abs_mag
+    - peak_absolute_magnitude
+    - host_abs_mag
+    - r_abs_mag
+    - gaia_g_abs_mag
+    - m_uv_abs
+    - phot_mag_abs_v
+    - mid_ir_absolute_mag_w1
+    entities:
+    - galaxy
+    - G
+    - dwarf_galaxy
+    - elliptical_galaxy
+    - spiral_galaxy
+  content: '绝对星等 M 与视星等 m 的换算: M = m - 5 log10(d[pc]/10) = m - 5 log10(d[Mpc]) - 25。
+
+    星系绝对星等 (B 波段, 全星系积分光度) 典型范围:
+
+    - 矮星系: M_B ~ -14 至 -18 (矮椭球更暗, 可至 -8)
+
+    - 普通旋涡/椭圆 (银河系级): M_B ~ -19 至 -22
+
+    - 巨椭圆星系 (cD): M_B ~ -23 至 -24
+
+    - 最亮团星系 (BCG): 可至 ~ -25
+
+    M_K (K 波段) 与 M_B 同量级, 但受尘埃消光影响小 (A_K ~ 0.11 A_V)。
+
+    完整换算必须含修正项: M = m - 5 log10(d[pc]) + 5 - A - K, A 为消光,
+
+    K 为 K-correction (高红移星系 K 修正可达 0.5-1.5 mag)。
+
+    判定线索: 星系 M_B > -10 或 < -26 多为距离/星等口径混淆; 恒星与星系的
+
+    绝对星等应分对象类型统计, 不可混用。'
+  source: Binggeli 1987; Faber & Gallagher 1979; Blanton & Moustakas 2009
+  confidence: established
+  ranges:
+    abs_mag:
+      lo: -24
+      hi: -14
+      unit: mag
+- id: interstellar_extinction_av
+  title: 星际消光 A_V 与波段换算
+  category: reference_range
+  tags:
+  - extinction
+  - a_v
+  - reddening
+  - dust
+  - interstellar
+  hypothetical_queries:
+  - 星际消光 A_V 典型范围 银盘视线 分子云
+  - E(B-V) 红化 R_V = 3.1 消光律 波段换算 A_B A_J
+  - 河外源 银河系消光改正 高银纬 洁净天区 A_V
+  applies_to:
+    fields:
+    - a_v
+    - av
+    - extinction
+    - extinction_av
+    - e_bv
+    - a_b_gal
+    - a_ks
+    - a_sin_i
+    - ak
+    - av_extinction
+    - extinction_aj
+    - extinction_ebv
+    - v_extinction_av
+    - galactic_extinction
+    - interstellar_extinction
+    - reddening
+    - reddening_ebv
+    - reddening_e_bv
+    - reddening_e44m55
+    - reddening_ejk
+    - ebv
+    - e_jk
+    - cluster_extinction
+    - cluster_reddening
+    entities:
+    - star
+    - galaxy
+    - field_star
+  content: '星际消光 A_V (V 波段) 典型范围:
+
+    - 高银纬洁净天区: A_V ~ 0-0.1 mag
+
+    - 典型银盘视线: A_V ~ 0.5-3 mag
+
+    - 分子云/恒星形成区: A_V ~ 5-30 mag (银心方向可达 ~30)
+
+    - 河外源 (非银盘方向): 一般 < 1 mag
+
+    换算 (标准消光律, R_V = A_V/E(B-V) = 3.1):
+
+    - A_B = 1.32 A_V; A_J = 0.28 A_V; A_H = 0.18 A_V; A_Ks = 0.11 A_V
+
+    - 红外: A_12um ~ 0.03 A_V; A_25/60/100um < 0.01 A_V (远红外消光可忽略)
+
+    - E(B-V) = A_V / 3.1
+
+    判定线索: 河外记录 A_V > 3 (非银盘方向) = 多为银河系内前景星混入或
+
+    河内源误标为河外; A_V < 0 必为错误。'
+  source: Cardelli, Clayton & Mathis 1989; Schlegel et al. 1998; 2MASS 文档
+  confidence: established
+  ranges:
+    a_v:
+      lo: 0
+      hi: 30
+      unit: mag
+    e_bv:
+      lo: 0
+      hi: 10
+      unit: mag
+- id: galaxy_redshift_typical
+  title: 星系红移典型范围与距离换算
+  category: reference_range
+  tags:
+  - galaxy
+  - redshift
+  - cz
+  - distance
+  - hubble_flow
+  hypothetical_queries:
+  - 星系红移典型范围 近邻 中等深度 深场 z
+  - cz/H0 线性近似 距离换算 4280 倍 Mpc
+  - 本动速度 低红移星系 单源距离 不可靠
+  applies_to:
+    fields:
+    - redshift
+    - z
+    - cz
+    - photo_z
+    - z_spec
+    - z_phot
+    - z_gal
+    - phot_redshift
+    - group_redshift
+    - group_mean_redshift
+    - cluster_redshift
+    - host_galaxy_redshift
+    - void_redshift
+    entities:
+    - galaxy
+    - G
+    - dwarf_galaxy
+    - elliptical_galaxy
+    - spiral_galaxy
+  content: '星系红移典型范围 (z):
+
+    - 本星系群/近邻成员: -0.005 至 0.05 (负 z 为蓝移, 仅见于本星系群)
+
+    - 近邻巡天主样本 (SDSS 类): 0.02-0.3
+
+    - 中等深度巡天: 0.3-1.5
+
+    - 深场巡天 (CANDELS/COSMOS 类): 1.5-5
+
+    - 极亮类星体: 至 z ~ 7.6 (见高红移类星体条目)
+
+    小 z 线性换算 (H0 = 70 km/s/Mpc): d[Mpc] ~ cz/70 ~ 4280 × z
+
+    (z = 0.001 → ~4.3 Mpc; z = 0.05 → ~210 Mpc)
+
+    z > 0.1 后线性近似失效, 需宇宙学模型求光度距离 d_L (见距离阶梯条目)。
+
+    判定: z < 0.005 的径向速度被本动速度 (±300-1000 km/s) 主导, 单源距离
+
+    不可靠; 单一星系 z > 10 需极高置信证据 (photo-z 灾难性失败风险)。'
+  source: Steed & Weinberg; SDSS 巡天文献; COSMOS 深场
+  confidence: established
+  ranges:
+    redshift:
+      lo: -0.005
+      hi: 5.0
+      unit: dimensionless
+- id: gaia_astrometry_fields
+  title: Gaia 天体测量字段与精度
+  category: reference_range
+  tags:
+  - gaia
+  - astrometry
+  - parallax
+  - proper_motion
+  - ruwe
+  hypothetical_queries:
+  - Gaia 视差精度 亮源 暗源 mas 误差 星等依赖
+  - 负视差 处理 视差距离 1000/pi 换算 贝叶斯
+  - RUWE 单星解 质量标志 Gaia DR3 天体测量
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - ra
+    - dec
+    - parallax
+    - parallax_error
+    - proper_motion_ra
+    - proper_motion_dec
+    - pmra
+    - pmdec
+    - ruwe
+    - annual_parallax
+    - trigonometric_parallax
+    - plx
+    - gaia_parallax
+    - ast_plx
+    - ast_plx_zp
+    - ast_ra
+    - ast_dec
+    - ast_pmra
+    - ast_pmdec
+    - ast_ruwe
+    - ruwe_flag
+    - pm_ra
+    - pm_dec
+    - pm_total
+    - proper_motion
+    - total_proper_motion
+    - ra_deg
+    - dec_deg
+    - ra_j2000
+    - dec_j2000
+    - pos_ra
+    - pos_dec
+    - ra_dec
+    - radec
+    - pos_eq_ra
+    - pos_eq_dec
+    - equatorial_coordinates
+    - equatorial_position
+    - coordinates
+    - sky_position
+    - gal_lon
+    - gal_lat
+    - glon
+    - glat
+    - gal_longitude
+    - gal_latitude
+    - galactic_longitude
+    - galactic_latitude
+    - galactic_coordinates
+    - galactic_coords
+    - sglon
+    - sglat
+    entities:
+    - star
+    - high_proper_motion_star
+  content: 'Gaia 天体测量 5 参数解: ra, dec, parallax, pmra, pmdec (光谱另算;
+
+    BP/RP 光度为独立口径)。
+
+    视差-距离: d[pc] = 1000 / π[mas] (π = 1 mas → 1 kpc; π = 0.1 mas → 10 kpc)
+
+    视差精度 (DR3):
+
+    - 亮源 G < 13: σ(π) ~ 0.02-0.03 mas
+
+    - 中等 G ~ 17: σ(π) ~ 0.1-0.2 mas
+
+    - 暗源 G ~ 19-21: σ(π) ~ 0.5-1 mas
+
+    系统误差 ~ 0.02-0.03 mas (zonal); 负视差 = 测量噪声, 不可取倒数。
+
+    自行典型: 盘恒星 1-20 mas/yr; 近邻/高自行天体 100-8000 mas/yr。
+
+    质量标志: RUWE < 1.4 (单星解); σ(π)/π > 0.2 的记录不得直接换算距离
+
+    (应改用贝叶斯/光度约束, 否则距离偏差不可控)。'
+  source: Gaia Collaboration 2016, 2023; Lindegren et al. 2021 (EDR3)
+  confidence: established
+  ranges:
+    parallax:
+      lo: 0.02
+      hi: 800
+      unit: mas
+    proper_motion:
+      lo: 0.1
+      hi: 8000
+      unit: mas/yr
+    parallax_error:
+      lo: 0.02
+      hi: 1.0
+      unit: mas
+- id: photometric_redshift_precision
+  title: 测光红移精度与判据
+  category: reference_range
+  tags:
+  - photo_z
+  - photometric_redshift
+  - redshift
+  - sed_fitting
+  hypothetical_queries:
+  - 测光红移 精度 sigma_z/(1+z) 宽带 深场 0.02 0.06
+  - photo-z 灾难性失败 判据 0.15 光谱红移 交叉验证
+  - SED 模板拟合 Lyman break Balmer break 简并 测光红移
+  applies_to:
+    fields:
+    - redshift
+    - photo_z
+    - photometric_redshift
+    - z_ph
+    - zphot
+    - z_phot
+    - phot_redshift
+    methods:
+    - photometry
+    entities:
+    - galaxy
+    - G
+    - quasar
+  content: '测光红移 (photo-z) 精度与判据:
+
+    - 方法: 多波段颜色 (ugriz + 近红外 JHK) 与 SED 模板/机器学习拟合 → 红移
+
+    - 精度 σ_z/(1+z): 宽带 4-5 色 ~ 0.03-0.06; 多波段深场 (含 NIR) ~ 0.02-0.05
+
+    - 灾难性失败比例: 1-10% (混染/红移简并), 深场与密集场更高
+
+    - 与光谱红移区别: spec-z 精度 1e-4-1e-5 (发射线直接测量); photo-z 只有
+
+    统计意义 — 单天体不可依赖, 大样本统计可用
+
+    - 系统偏差来源: SED 模板不完备 (缺罕见类型), Lyman break 与 Balmer break
+
+    简并, 相邻天体孔径混染
+
+    - 判定: |photo_z - spec_z|/(1+z) > 0.15 视为灾难性失败候选;
+
+    photo-z 结论必须与 spec-z 交叉验证后使用。'
+  source: Hildebrandt et al. 2012; Ilbert et al. 2009; Salvato et al. 2019
+  confidence: established
+  ranges:
+    photo_z_sigma:
+      lo: 0.02
+      hi: 0.06
+      unit: sigma_z/(1+z)
+- id: galaxy_rotation_curve
+  title: 旋涡星系旋转曲线与 Tully-Fisher
+  category: reference_range
+  tags:
+  - galaxy
+  - rotation_curve
+  - tully_fisher
+  - v_rot
+  - dark_matter
+  hypothetical_queries:
+  - 旋涡星系 旋转曲线 平坦段速度 典型范围 km/s
+  - Tully-Fisher 关系 光度 正比 V 四次方 散射
+  - 倾角改正 旋转速度 V/sin i HI 21cm 谱线宽度 W20
+  applies_to:
+    fields:
+    - rot_velocity
+    - v_rot
+    - v_max
+    - v_circ
+    - rotation_velocity
+    - rotational_velocity
+    - projected_rotation_velocity
+    - hi_line_width
+    - hi_linewidth
+    entities:
+    - spiral_galaxy
+    - galaxy
+    - G
+    - low_surface_brightness_galaxy
+  content: '旋涡星系旋转曲线: 内部上升段 → 平坦段 (暗物质晕主导)。
+
+    - V_flat (平坦段旋转速度): 普通旋涡 100-300 km/s (银河系级 ~ 220)
+
+    - 矮/不规则星系: 20-80 km/s
+
+    - 椭圆星系/矮椭球无旋转曲线, 用速度弥散 σ_v (~150-400 km/s)
+
+    Tully-Fisher 关系: L ∝ V_flat^4 → M = const - 10 log10 V_flat
+
+    (B 波段散射 ~ 0.4-0.5 mag; 近红外散射 ~ 0.3 mag)
+
+    观测注意: 视速度需倾角改正 V_rot = V_obs / sin i; face-on 盘不可测旋转;
+
+    HI 21cm 谱线宽度 W20/W50 比光学曲线更稳健。
+
+    判定: 旋涡星系 V_flat < 20 或 > 400 km/s 需复核; 椭圆星系标注旋转速度
+
+    = 类型/字段混淆。'
+  source: Sofue & Rubin 2001; Courteau et al. 2007; Tully & Fisher 1977
+  confidence: established
+  ranges:
+    rot_velocity:
+      lo: 20
+      hi: 300
+      unit: km/s
+- id: stellar_metallicity_dex
+  title: 恒星金属丰度 [Fe/H] 范围
+  category: reference_range
+  tags:
+  - metallicity
+  - fe_h
+  - abundance
+  - dex
+  - stellar
+  hypothetical_queries:
+  - 恒星金属丰度 [Fe/H] 典型范围 晕星 盘星 dex
+  - 12 + log(O/H) 氧丰度 太阳值 8.69 换算
+  - 超贫金属星 [Fe/H] 极低 核球 富金属 判据
+  applies_to:
+    fields:
+    - metallicity
+    - fe_h
+    - feh
+    - metal_abundance
+    - oxygen_abundance
+    - metallicity_fe_h
+    - metallicity_feh
+    - stellar_metallicity
+    - sp_feh
+    - spec_fe_h
+    - star_feh
+    - cluster_feh
+    - cluster_metallicity
+    - gas_metallicity
+    - gas_phase_metallicity
+    - o_h
+    - log_o_h
+    - o_abundance
+    - o_abund
+    - abund_o_logeps
+    - abund_c_logeps
+    - chemical_abundance
+    - individual_element_abundance
+    - he_abundance
+    - helium_abundance
+    entities:
+    - star
+    - halo_star
+    - disk_star
+    - red_giant_star
+    - galaxy
+  content: '金属丰度 [Fe/H] = log10(Fe/H)_star - log10(Fe/H)_sun, 太阳 = 0 (dex 单位)。
+
+    银河系典型范围:
+
+    - 极贫金属晕星: -4.0 至 -2.5 (超贫金属星, 极罕见)
+
+    - 普通晕星: -2.5 至 -0.5
+
+    - 盘星 (薄盘/厚盘): -0.5 至 +0.3
+
+    - 超富金属星 (核球区): +0.3 至 +0.5 (极端可达 +0.8)
+
+    - 河外星系: 矮星系 -2.5 至 -1.0; 巨椭圆 ~ 太阳值附近
+
+    氧丰度口径: 12 + log(O/H), 太阳 = 8.69; Z/Zsun = 10^(12+log(O/H) - 8.69)。
+
+    判定: [Fe/H] < -4 或 > +1 需复核; 发射线星系常用氧丰度而非 [Fe/H],
+
+    两口径不可混用 (差异可达 0.5 dex 以上)。'
+  source: Beers & Christlieb 2005; McWilliam 1997; Freeman & Bland-Hawthorn 2002
+  confidence: established
+  ranges:
+    fe_h:
+      lo: -4.0
+      hi: 0.5
+      unit: dex
+- id: quasar_luminosity_range
+  title: 类星体光度与 Eddington 上限
+  category: reference_range
+  tags:
+  - quasar
+  - qso
+  - luminosity
+  - eddington
+  - m_b
+  hypothetical_queries:
+  - 类星体绝对星等 M_B 范围 与 Seyfert 分界 -23
+  - Eddington 光度 类星体 黑洞质量 1e9 Msun erg/s
+  - 高红移类星体 光度 红移 z 6 极亮 光变
+  applies_to:
+    fields:
+    - abs_mag
+    - m_b
+    - luminosity
+    - bolometric_luminosity
+    - redshift
+    - l_bol
+    - lum_bol
+    - bol_mag
+    - m_bol
+    - bolometric_magnitude
+    - log_lum
+    - log_luminosity
+    - source_bolometric_luminosity
+    entities:
+    - quasar
+    - QSO
+    - blazar
+    - AGN
+  content: '类星体 (QSO) 光度与红移范围:
+
+    - 绝对星等 M_B: -23 至 -29 (M_B < -23 是类星体与 Seyfert 的分界)
+
+    - 热光度 L_bol: 1e45-1e47 erg/s (~1e11-1e13 Lsun)
+
+    - Eddington 光度: L_Edd = 1.26e38 × (M_BH/Msun) erg/s (1e9 Msun 黑洞 →
+
+    L_Edd ~ 1e47 erg/s; 持续超 Eddington 需要非球对称吸积几何)
+
+    - 红移分布: z ~ 0-7.6 (最高已知 z ~ 7.64); z > 6 的亮类星体极罕见
+
+    - 光变: 典型 0.1-1 mag, 时标 天-年 — 跨历元星等口径需对齐
+
+    判定: L_bol > 1e47 erg/s 且红移未知 → 先怀疑距离/光度单位; M_B > -23 的
+
+    ''类星体'' 实为 Seyfert 或测光污染。'
+  source: Richards et al. 2006; Shen et al. 2011; Vanden Berk et al. 2001
+  confidence: established
+  ranges:
+    abs_mag:
+      lo: -29
+      hi: -23
+      unit: mag
+    bolometric_luminosity:
+      lo: 1e45
+      hi: 1e47
+      unit: erg/s
+    redshift:
+      lo: 0.0
+      hi: 7.6
+      unit: dimensionless
+- id: radio_flux_typical
+  title: 射电 1.4 GHz 通量典型范围
+  category: reference_range
+  tags:
+  - radio
+  - flux_density
+  - spectral_index
+  - synchrotron
+  - jy
+  hypothetical_queries:
+  - 射电 1.4 GHz 通量密度 典型范围 mJy Jy 巡天极限
+  - 射电谱指数 同步加速 陡谱 平谱 AGN 热辐射
+  - 射电 K 修正 (1+z)^(alpha-1) 跨频率 同频比较
+  applies_to:
+    fields:
+    - flux_density
+    - fnu
+    - s_1_4ghz
+    - s1_4
+    - radio_flux
+    - fnu_1400
+    - spectral_index
+    - radio_flux_density
+    - radio_flux_density_1400
+    - radio_flux_density_20cm
+    - radio_flux_density_400
+    - radio_flux_density_6cm
+    - radio_flux_density_multi
+    - radio_flux_1_4ghz
+    - radio_flux_20cm
+    - radio_flux_5ghz
+    - radio_flux_6cm
+    - radio_flux_845mhz
+    - flux_radio_1p4ghz
+    - flux_radio_15ghz
+    - radio_peak_flux
+    - radio_core_flux
+    - f_radio_2cm
+    - f_radio_6cm
+    - radio_spectral_index
+    entities:
+    - galaxy
+    - AGN
+    - quasar
+    - supernova_remnant
+    - radio_galaxy
+  content: '射电连续谱 (1.4 GHz) 通量密度典型范围:
+
+    - 深巡天极限: ~1e-5 Jy (10 µJy, VLA 深场) 至 1e-4 Jy
+
+    - 普通恒星形成星系 (z < 0.1): 0.1-30 mJy
+
+    - 亮恒星形成/星暴星系: 30 mJy - 0.1 Jy
+
+    - 射电星系/亮 AGN: 0.1-10 Jy
+
+    - 最亮银道面射电源 (SNR): 可达 1e3 Jy 量级
+
+    谱指数: S ∝ ν^(-α); 同步加速 α ~ 0.7-0.8 (陡谱), 平谱 AGN α < 0.5,
+
+    热辐射 α ~ +0.1 (低频翻转)。
+
+    K 修正: S_rest = S_obs × (1+z)^(α-1) (同频比较必用)。
+
+    1 Jy = 1e-26 W m^-2 Hz^-1。
+
+    判定: 河外源 S > 10 Jy 需复核 (多为银河系内源); 跨巡天 (如 1.4 GHz 与
+
+    150 MHz) 比较必须做谱指数外推, 不可直接比通量。'
+  source: Condon 1992, ARA&A 30; NVSS/TGSS 巡天文档
+  confidence: established
+  ranges:
+    flux_density:
+      lo: 0.001
+      hi: 1000
+      unit: Jy
+- id: galaxy_distance_ladder
+  title: 河外距离阶梯
+  category: reference_range
+  tags:
+  - distance_ladder
+  - cepheid
+  - sn_ia
+  - trgb
+  - parallax
+  - distance_modulus
+  hypothetical_queries:
+  - 河外距离阶梯 Cepheid TRGB SN Ia 精度 范围 Mpc
+  - 距离模数 m-M = 5 log10 d - 5 换算
+  - 光度距离 d_L 高红移 宇宙学距离 线性近似失效
+  applies_to:
+    fields:
+    - distance
+    - distance_modulus
+    - dm
+    - d_l
+    - dist_modulus
+    - distance_modulus_ks
+    - adopted_distance
+    - distance_pc
+    - dist_pc
+    - distance_sun
+    - distance_heliocentric
+    - heliocentric_distance
+    - stat_distance
+    - phys_distance
+    - parallax_distance
+    - system_distance
+    - group_distance
+    - cluster_distance
+    - cluster_distance_modulus
+    - cluster_distance_sun
+    - nearest_cluster_distance
+    - dist
+    entities:
+    - galaxy
+    - G
+    - cepheid
+    - supernova_ia
+  content: '河外距离阶梯 (逐级校准, 系统误差逐级累积):
+
+    - 几何视差 (Gaia): 可靠至 ~1 kpc (亮源 σ ~ 0.02-0.03 mas, 可延伸至 ~10 kpc)
+
+    - Cepheid 周期-光度关系 (PL): 至 ~30 Mpc, 精度 ~5-8%
+
+    - TRGB (红巨星支尖): 与 Cepheid 同级 (~30 Mpc), 精度 ~5%
+
+    - SN Ia (Phillips 光变形状-光度关系): 至 ~1000 Mpc, 精度 ~7%
+
+    - 辅助台阶: Tully-Fisher (L ∝ V^4)、SBF 面亮度涨落
+
+    距离模数: m - M = 5 log10(d[pc]) - 5 = 5 log10(d[Mpc]) + 25
+
+    判定: 同一系统多方法距离差异 > 10% 需复核; z > 0.1 后必须用宇宙学
+
+    光度距离 d_L, 不可用 cz/H0 线性近似 (见星系红移条目)。'
+  source: Freedman & Madore 2010; Riess et al. 2022 (SH0ES); Beaton et al. 2016
+  confidence: established
+  ranges:
+    distance:
+      lo: 0.001
+      hi: 1000
+      unit: Mpc
+- id: iras_color_color
+  title: IRAS 颜色-颜色图分区判据
+  category: reference_range
+  tags:
+  - iras
+  - color_color
+  - far_infrared
+  - starburst
+  - agn
+  - dust
+  hypothetical_queries:
+  - IRAS 颜色颜色图 log(F60/F12) 分区 星暴 恒星 星系
+  - log(F100/F25) AGN 25um 增强 热尘埃 判据
+  - 远红外光度 L_FIR 尘埃温度 60 100 um 通量
+  applies_to:
+    fields:
+    - fnu_12
+    - fnu_25
+    - fnu_60
+    - fnu_100
+    - f60_f12
+    - f100_f25
+    - flux_density
+    entities:
+    - galaxy
+    - star
+    - AGN
+    - seyfert_galaxy
+    - starburst_galaxy
+    - ulirg
+  content: 'IRAS 颜色-颜色图 (纵轴 log(F60/F12), 横轴 log(F100/F25)) 分区判据:
+
+    - 恒星 (光球辐射): log(F60/F12) < -0.5 (12um 主导)
+
+    - 正常星系 (暖尘埃 T ~ 20-30 K): 0 < log(F60/F12) < 0.6 且 log(F100/F25) > 0.4
+
+    - 星暴星系: log(F60/F12) > 0.6 (冷尘埃主导)
+
+    - AGN/Seyfert (热尘埃 T ~ 200 K): log(F100/F25) < 0.3 (25um 相对增强)
+
+    - 超亮红外星系 (ULIRG): log(F60/F12) > 0.8
+
+    物理: 尘埃温度决定通量比 — 冷源 60/100um 主导, 热源 25um 增强。
+
+    远红外光度: L_FIR ~ 1.26e39 × D[Mpc]^2 × (2.58×F60 + F100) [erg/s]。
+
+    判定: 12um 源多为恒星; log(F60/F12) < -1 的 ''星系'' 实为恒星;
+
+    25um 峰 + 陡红外 SED = AGN 特征。'
+  source: Helou et al. 1988; Spinoglio & Malkan 1989; Soifer et al. 1987
+  confidence: established
+  ranges:
+    log_f60_f12:
+      lo: -2.0
+      hi: 1.5
+      unit: dex
+    log_f100_f25:
+      lo: -0.5
+      hi: 2.0
+      unit: dex
+    fnu_60:
+      lo: 0.01
+      hi: 1000
+      unit: Jy
+- id: hyperleda_field_semantics
+  title: HYPERLEDA 常用列语义与单位
+  category: reference_range
+  tags:
+  - hyperleda
+  - leda
+  - pgc
+  - logd25
+  - v_helio
+  - catalog_columns
+  hypothetical_queries:
+  - HYPERLEDA logd25 等光度直径 单位 0.1 arcmin
+  - v_helio v3k CMB 参考系 速度 差异 300 km/s
+  - PGC 目录 列语义 bt_cg pa25 logr25 轴比
+  applies_to:
+    fields:
+    - logd25
+    - d25
+    - v_helio
+    - v3k
+    - rv21
+    - bt_cg
+    - loga26
+    - logr25
+    - pa25
+    - v21
+    - vel_helio
+    - bt_magnitude
+    - total_blue_mag_bt
+    entities:
+    - galaxy
+    - G
+  content: "HYPERLEDA/PGC 常用列语义与单位:\n- logd25: log10(D25), D25 为 B 波段 25 mag/arcsec^2 等光度直径, 单位 0.1 arcmin\n  (D25[arcmin] = 0.1 × 10^logd25; logd25 = 1.5 → 3.2 arcmin)\n- v_helio: 日心视向速度 (km/s)\n- v3k:\
+    \ CMB (3K 背景) 参考系速度 (km/s), 用于大尺度结构研究\n- rv21: HI 21cm 谱线视向速度 (km/s), 气体运动学口径\n- bt_cg: 已改正银河系消光的总 B 波段视星等 (RC3 B_T 口径)\n- loga26: log10 长轴等光度直径 (26 mag/arcsec^2, 单位 0.1 arcmin)\n- logr25: log10(a/b)\
+    \ 轴比 (25 等光度; edge-on 星系 ~ 1.0)\n- pa25: 长轴位置角 (度, 0-180, 自北向东)\n口径注意: RC3/2MASS XSC/HYPERLEDA 直径定义不同, 交叉比较差异 10-20%;\nv3k 与 v_helio 相差太阳本动 + 银河系旋转项 (~ 300 km/s 量级)。"
+  source: Paturel et al. 2003 (HYPERLEDA I); Makarov et al. 2014 (PGC); RC3
+  confidence: established
+  ranges:
+    logd25:
+      lo: 0.0
+      hi: 3.0
+      unit: 0.1 arcmin (log10)
+    v_helio:
+      lo: -1000
+      hi: 30000
+      unit: km/s
+    bt_cg:
+      lo: 8
+      hi: 18
+      unit: mag
+    pa25:
+      lo: 0
+      hi: 180
+      unit: deg
+- id: sdss_photometry_fields
+  title: 'SDSS 测光: ugriz 波段深度与星等口径'
+  category: reference_range
+  tags:
+  - sdss
+  - photometry
+  - ugriz
+  - psf_mag
+  - model_mag
+  - c_model_mag
+  - petrosian
+  hypothetical_queries:
+  - SDSS 星等口径 psfMag modelMag cModelMag 区别
+  - SDSS ugriz 点源 完备极限 深度 22 mag
+  - fiberMag 3 角秒 光纤星等 光谱测光 口径
+  applies_to:
+    fields:
+    - sdss_u_mag
+    - sdss_g_mag
+    - sdss_r_mag
+    - sdss_i_mag
+    - sdss_z_mag
+    - psf_mag
+    - model_mag
+    - c_model_mag
+    - petro_mag
+    - fiber_mag
+    - photometric_flag
+    - sdss_g_magnitude
+    - sdss_ugriz
+    - sdss_ugriz_magnitudes
+    - sdss_u_g_color
+    - sdss_g_r_color
+    - u_g_color
+    - petrosian_mag_ugriz
+    - mag_g_sdss
+    - mag_ugriz
+    entities:
+    - galaxy
+    - star
+    - quasar
+    - G
+  content: 'SDSS 五波段测光系统 (u g r i z, 有效波长 3551/4686/6165/7481/8931 Å), 星等系统
+
+    近似 AB (仅 u/z 有 ~0.02-0.04 mag 偏差)。点源 95% 完备极限 (DR7, AB):
+
+    u 22.0, g 22.2, r 22.2, i 21.3, z 20.5 mag; 亮源测光精度 ~0.01-0.02 mag,
+
+    g ~ 14.5 mag 以下开始饱和 (需减饱和模型)。星等口径 (同源不同值, 不可混用):
+
+    - psfMag: PSF 拟合 (点源/恒星专用, 星系会漏外晕光)
+
+    - modelMag: 指数与 deVaucouleurs 拟合中更优者 (星系)
+
+    - cModelMag: 复合模型星等 (星系首选总量口径)
+
+    - petroMag: Petrosian 星等 (2 倍 Petrosian 半径内积分, 大星系总量近似)
+
+    - fiberMag: 3 角秒光纤星等 (光谱测光专用)
+
+    判定: 同源 psfMag 与 modelMag 差 > 0.5 mag 多为星系 (点源两者几乎相等);
+
+    跨目录比较必须统一口径 (SDSS 星系用 cModelMag/petroMag, 点源用 psfMag)。'
+  source: Abazajian et al. 2009 (SDSS DR7); Stoughton et al. 2002; SDSS 巡天文档
+  confidence: established
+  ranges:
+    sdss_95pct_depth:
+      lo: 20.5
+      hi: 22.2
+      unit: mag (AB)
+    photometric_error:
+      lo: 0.01
+      hi: 0.02
+      unit: mag
+- id: wise_photometry_bands
+  title: 'WISE 四波段测光: 波长/深度/系统'
+  category: reference_range
+  tags:
+  - wise
+  - mid_infrared
+  - w1
+  - w2
+  - w3
+  - w4
+  - photometry
+  - vega
+  hypothetical_queries:
+  - WISE 四波段 波长 3.4 4.6 12 22 um 灵敏度 mJy
+  - AllWISE 5σ 深度 极限星等 Vega mag
+  - WISE 饱和 星等 w?snr 上限 处理 W1-W2 颜色
+  applies_to:
+    fields:
+    - w1_mag
+    - w2_mag
+    - w3_mag
+    - w4_mag
+    - w1_mpro
+    - w2_mpro
+    - w1_snr
+    - w2_snr
+    - w3_snr
+    - w4_snr
+    - w1sigmpro
+    - mag_w1
+    - mag_w2
+    - wise_mag
+    - wise_magnitude
+    - wise_w1
+    - wise_w1_magnitude
+    - phot_mag_wise
+    - phot_mag_wise_w1
+    - phot_mag_wise_w2
+    - phot_mag_wise_w3
+    - phot_mag_wise_w4
+    - mag_wise
+    - mag_wise_w1
+    - w1w2_mag
+    - wise_w1_w2_color
+    - wise_w2_w3_w4
+    - wise_ir_color
+    - wise_midir_mag
+    - color_w1_minus_w2
+    - ir_3_4um_mag
+    - ir_4_6um_mag
+    - ir_21_24um_mag
+    entities:
+    - galaxy
+    - star
+    - AGN
+    - quasar
+    - starburst_galaxy
+  content: 'WISE 四波段红外测光 (Vega 系统):
+
+    - W1 3.4 μm (分辨率 6.1"), W2 4.6 μm (6.4"), W3 12 μm (6.5"), W4 22 μm (12.0")
+
+    - All-Sky 5σ 点源灵敏度: 0.08 / 0.11 / 1 / 6 mJy (黄道面附近, 极区更浅/深随覆盖变化)
+
+    - AllWISE 在 W1/W2 更深: 0.054 / 0.071 mJy (≈ W1 16.9, W2 16.1 Vega mag)
+
+    - W3/W4 典型 5σ: ~11.0-11.6 / ~7.9-8.0 Vega mag (覆盖率低, 灵敏度随黄纬变化)
+
+    WISE 为 Vega 系统, 转 AB 需加偏移: W1 +2.7, W2 +3.3, W3 +5.2, W4 +6.6 (平谱近似,
+
+    详见 AB-Vega 转换条目)。质量注意: w?mpro 为点源最优拟合星等, w?sigmpro 为误差;
+
+    W1/W2 亮于 ~8 Vega mag 饱和; w?snr < 2 的记录应视为上限而非探测。
+
+    判定: 星系 W1-W2 > 0.8 或 W3 增强为尘埃/AGN 特征; 跨波段深度比较必须同波段同系统。'
+  source: Wright et al. 2010; Cutri et al. 2021 (AllWISE Explanatory Supplement); Mainzer et al. 2011
+  confidence: established
+  ranges:
+    allwise_5sigma_flux:
+      lo: 0.054
+      hi: 6.0
+      unit: mJy
+    wise_5sigma_mag:
+      lo: 7.9
+      hi: 16.9
+      unit: Vega mag
+- id: hipparcos_tycho_astrometry
+  title: 'Hipparcos/Tycho 天体测量: 精度与星等范围'
+  category: reference_range
+  tags:
+  - hipparcos
+  - tycho2
+  - astrometry
+  - parallax
+  - proper_motion
+  - icrs
+  hypothetical_queries:
+  - Hipparcos 视差误差 1 mas 亮星 完备 Hp 9
+  - Tycho-2 无数值视差 位置 自行 精度 BT VT
+  - Hipparcos Gaia 历元 自行 交叉验证 25 年
+  applies_to:
+    fields:
+    - ra
+    - dec
+    - parallax
+    - parallax_error
+    - pmra
+    - pmdec
+    - hpmag
+    - bt
+    - vt
+    - hip_id
+    - tycho_id
+    entities:
+    - star
+    - field_star
+    - high_proper_motion_star
+  content: "Hipparcos/Tycho 天体测量 (ICRS 参考系, 观测历元 J1991.25):\n- Hipparcos: ~11.8 万颗亮星, 完备至 Hp ~ 9 mag (极限 ~12.4);\n  中位视差/位置/自行误差 ~1 mas (1997 版; van Leeuwen 2007 修订版亮源 ~0.3 mas)\n- Tycho-2: 250 万颗, 99%\
+    \ 完备至 V_T ~ 11.0, 90% 至 ~11.5;\n  位置误差 60 mas (V_T < 9 为 7 mas), 自行误差 ~1.0-2.5 mas/yr;\n  BT/VT 双色测光 (V_T 亮源精度 0.013 mag, 全集 0.10 mag)\n- 关键差异: Tycho-2 无数值视差 (只有位置/自行); 视差须用 Hipparcos 或 Gaia\n- 星等范围:\
+    \ Hp 极限 12.4; Tycho V_T 约 1.9-15.2\nHipparcos 视差精度不足以直接测量 > 1 kpc 距离 (σπ/π 大), 主要作 Gaia 亮端补充\n与历史自行基线 (1991.25 vs Gaia 2016 历元差 ~25 年, 可交叉验证自行)。\n判定: 声称源自 Tycho 的视差/距离必为错误 (该目录无数值);\nHipparcos 与 Gaia\
+    \ 位置差 > 100 mas 多为自行未外推或源不同。"
+  source: Perryman et al. 1997 (Hipparcos); Hog et al. 2000 (Tycho-2); van Leeuwen 2007
+  confidence: established
+  ranges:
+    hipparcos_parallax_error:
+      lo: 0.3
+      hi: 1.0
+      unit: mas
+    tycho2_position_error:
+      lo: 7
+      hi: 60
+      unit: mas
+    tycho2_pm_error:
+      lo: 1.0
+      hi: 2.5
+      unit: mas/yr
+- id: catalog_crossmatch_practice
+  title: '目录 cross-match 规范: 匹配半径与自行外推'
+  category: reference_range
+  tags:
+  - crossmatch
+  - match_radius
+  - positional_error
+  - proper_motion
+  - catalog
+  hypothetical_queries:
+  - 目录 cross-match 匹配半径 1 3 角秒 规范
+  - 高自行星 历元外推 匹配 位移 PM 乘 dt
+  - 球面角距 匹配 虚警率 最近邻 似然比 交叉证认
+  applies_to:
+    fields:
+    - ra
+    - dec
+    - ra_err
+    - dec_err
+    - pmra
+    - pmdec
+    - match_radius
+    - separation
+    - dist_arcsec
+    - ang_separation
+    - angular_separation
+    - separation_arcmin
+    - proj_separation
+    entities:
+    - star
+    - galaxy
+    - G
+    - quasar
+  content: "目录 cross-match 规范 (球面角距, 单位角秒):\n- 典型巡天对 (Gaia/SDSS/2MASS/WISE 之间) 匹配半径: 1-3 角秒\n- 半径须涵盖位置误差与自行位移两项:\n  R = Hγ × sqrt(σ1² + σ2²) + PM_max × Δt (Hγ ~ 3-5 置信因子; σ 为位置误差角秒;\n  PM 为 mas/yr 上限; Δt\
+    \ 为两目录历元差, 年)\n- 历元差自行位移: Δθ[arcsec] = PM[mas/yr] × Δt[yr] / 1000\n  (20 mas/yr × 25 yr = 0.5\"; 200 mas/yr × 25 yr = 5\" — 高自行源必须先外推再匹配)\n- 真/假匹配判据: 真匹配分离分布集中在 ~0.1-0.5\", 假匹配随距离均匀分布;\n  半径 r 内随机源期望数\
+    \ ~ πr²n (n 为源面密度, 角秒⁻²)\n- 一配多处理: 最近邻 + 次近邻比对, 或似然比评分 (位置+星等+颜色联合)\n判定: 分离 > 2\" 的匹配需复核 (双星/邻近源/星系核); 大样本须报告匹配率与\n虚警率; 匹配后核对物理量一致性 (如星等差、颜色) 防错配。"
+  source: Marrese et al. 2019 (Gaia 预计算交叉匹配); Pineau et al. 2017; TOPCAT/STILTS 文档
+  confidence: established
+  ranges:
+    match_radius:
+      lo: 1
+      hi: 3
+      unit: arcsec
+    pm_displacement:
+      lo: 0.01
+      hi: 10
+      unit: arcsec
+- id: ab_vega_conversion
+  title: AB 与 Vega 星等系统转换
+  category: reference_range
+  tags:
+  - ab_magnitude
+  - vega_magnitude
+  - zeropoint
+  - photometric_system
+  - mjy
+  hypothetical_queries:
+  - AB Vega 星等系统 转换 零点 3631 Jy 偏移
+  - 2MASS J H Ks AB 转换 +0.91 +1.39 +1.85
+  - WISE IRAC 平谱偏移 星等系统 统一 SED
+  applies_to:
+    fields:
+    - j_mag
+    - h_mag
+    - ks_mag
+    - mag_system
+    - flux_density
+    - fnu
+    - w1_mag
+    - w2_mag
+    - w3_mag
+    - w4_mag
+    - sdss_u_mag
+    - sdss_r_mag
+    entities:
+    - galaxy
+    - star
+    - G
+    - quasar
+  content: "AB 与 Vega 星等系统转换:\n- AB: m_AB = -2.5 log10(Fν/Jy) + 8.90, 零点通量 3631 Jy (所有波段同一零点)\n- Vega: m_Vega = -2.5 log10(Fν / F0_band), 零点为织女星在该波段流量 (随波段不同)\n- 平谱近似偏移 m_AB - m_Vega (随源颜色有微差):\n  SDSS:\
+    \ u +0.9, g -0.1, r +0.2, i +0.4, z +0.6 (SDSS 本身 ≈ AB, 仅 u/z 偏 ~0.02-0.04)\n  2MASS: J +0.91, H +1.39, Ks +1.85\n  IRAC: 3.6μm +2.79, 4.5μm +3.26, 5.8μm +3.73, 8.0μm +4.60\n  WISE: W1 +2.70, W2 +3.34,\
+    \ W3 +5.17, W4 +6.62\n- 精确转换必须用源 SED 卷积滤波曲线, 平谱偏移仅参考 (对真实源差异可达 0.1-0.3 mag)\n- Fλ 口径: m_AB = -2.5 log10(Fλ) - 21.10 (Fλ 单位 erg/s/cm²/Å)\n判定: 混合星等系统直接比较会引入 1-7 mag 虚假颜色 (红外波段最严重);\n记录缺 mag_system 时按来源目录默认系统处理并显式标注。"
+  source: Oke & Gunn 1983; Fukugita et al. 1996; Blanton & Roweis 2007; Reach et al. 2005 (IRAC); Jarrett et al. 2011 (WISE)
+  confidence: established
+  ranges:
+    ab_vega_offset_sdss:
+      lo: -0.1
+      hi: 0.9
+      unit: mag
+    ab_vega_offset_2mass:
+      lo: 0.91
+      hi: 1.85
+      unit: mag
+    ab_vega_offset_midir:
+      lo: 2.7
+      hi: 6.6
+      unit: mag
+- id: catalog_flag_semantics
+  title: '目录标志位语义: 缺测/上限/质量标志'
+  category: reference_range
+  tags:
+  - flags
+  - ph_qual
+  - rd_flg
+  - upper_limit
+  - missing_value
+  - cc_flg
+  - quality_flag
+  hypothetical_queries:
+  - 2MASS ph_qual 标志 A B C U 上限 含义
+  - rd_flg 未探测 上限星等 饱和 外部源 无效
+  - 目录 缺测 99 mag 填充 上限记录 过滤 SED
+  applies_to:
+    fields:
+    - ph_qual
+    - rd_flg
+    - cc_flg
+    - gal_contam
+    - w1phqual
+    - flags
+    - is_upper_limit
+    - upper_limit_mag
+    - snr
+    - sextractor_flags
+    - contamination_flag
+    - blend_flag
+    - phot_quality_flags
+    - edge_flag
+    entities:
+    - galaxy
+    - star
+    - G
+    - quasar
+    - AGN
+  content: "目录标志位语义 (缺测/上限/质量):\n- 2MASS ph_qual (JHK 每波段一字符): A = SNR>10 且 cmsig<0.109 mag; B = SNR>7,\n  cmsig<0.155; C = SNR>5, cmsig<0.217; D = 有效但弱; U = 上限 (rd_flg=0 未探测或\n  6 未一致分解); E = 拟合质量差/不收敛;\
+    \ F = 误差不可靠; X = 有探测但无数值\n  (星等为 null)\n- rd_flg: 0 = 该波段未探测, 星等为 4\" 孔径 95% 置信上限; 1/2 = 正常; 3/4 = 饱和\n  或极不可靠; 8/9 = 外部源/无效\n- 上限值 ≠ 探测: 参与 SED 拟合须用截尾 (censored) 方法或下限约束, 直接当探测\n  值使用会虚高通量\n- 缺测约定各目录不同:\
+    \ 2MASS 上限为数值、X 为 null; 部分目录用 99.0/999.9 填充\n- SDSS 类标志: SATUR/BRIGHT/BLENDED/EDGE/DEBLEND 异常需剔除或修正\n- WISE: w?sigmpro 大 (SNR<3) 视作上限; w?sat = 1 为饱和\n判定: 星等直方图在探测限或 99 mag 附近堆积 = 上限记录混入; 下游分析必须过滤\n\
+    ph_qual=U/X 类记录或携带 is_upper_limit 标记。"
+  source: 2MASS All-Sky Explanatory Supplement (Cutri et al. 2003); Cutri et al. 2021 (AllWISE); SDSS 文档
+  confidence: established
+  ranges:
+    twomass_cmsig_A_C:
+      lo: 0.10857
+      hi: 0.21714
+      unit: mag (ph_qual A-C 上限)
+    ph_qual_valid_snr:
+      lo: 5.0
+      hi: 100.0
+      unit: dimensionless
+- id: sed_construction_bands
+  title: '多波段 SED 构建: 波段覆盖与流量单位统一'
+  category: reference_range
+  tags:
+  - sed
+  - multi_wavelength
+  - kron
+  - petrosian
+  - matched_aperture
+  - mjy
+  - flux_unit
+  hypothetical_queries:
+  - 多波段 SED 构建 波段覆盖 0.1 30 um 波段数
+  - Kron Petrosian 等光度 测光口径 系统差 0.5 mag
+  - Fnu Fλ 流量单位 换算 mJy erg/s/cm2/Å 统一
+  applies_to:
+    fields:
+    - fnu_12
+    - fnu_25
+    - fnu_60
+    - fnu_100
+    - j_mag
+    - h_mag
+    - ks_mag
+    - sdss_u_mag
+    - sdss_g_mag
+    - sdss_r_mag
+    - sdss_i_mag
+    - sdss_z_mag
+    - flux_density
+    - f_lambda
+    - flux_ubvri
+    - opt_bvri_mag
+    - ubvri_mag
+    - mag_bvic
+    - optical_magnitudes
+    - optical_multiband_mag
+    - multiband_phot
+    - multiband_flux
+    - multi_band_mag
+    - phot_opt
+    - phot_nir
+    - nir_magnitudes
+    - nir_magnitudes_jhk
+    - jhk_mag
+    - jhk_2mass
+    - jhk_irsf
+    - twomass_jhk
+    - jhkl_magnitude
+    - phot_mag_2mass_jhk
+    - mag_jhk
+    - mag_jhkl
+    - flux_2mass_jhk
+    - infrared_photometry
+    - ir_photometry
+    entities:
+    - galaxy
+    - G
+    - quasar
+    - AGN
+    - starburst_galaxy
+  content: "多波段 SED 构建规范:\n- 波段覆盖: 至少 4-5 个波段 (光学 3 + 近红外 2) 才能约束红移/星族;\n  0.1-30 μm 广覆盖可区分恒星形成与 AGN (中红外幂律/尘埃峰)\n- 测光口径统一: 所有波段用同口径总量 (Kron/Petrosian/等光度) 或同尺寸孔径;\n  不同口径混用引入 0.1-0.5 mag 系统差 (星系点源口径会漏外晕光)\n\
+    - 流量单位统一: 全部转 mJy 或 νFν (erg/s/cm²), 禁止混合 mJy 与 Jy、Fν 与 Fλ\n  Fν↔Fλ: Fν = Fλ × λ²/c (Fλ 单位 erg/s/cm²/Å, λ 用 Å)\n- 星等系统统一: AB 或 Vega 全波段一致 (见 AB-Vega 条目); 高红移源加 K-correction\n- 银河系消光改正 (如 Schlegel 图)\
+    \ 与孔径改正后再拟合\n- 典型星系 SED: 光学峰 (~0.5-1 μm) + 中远红外尘埃峰 (星暴 60-100 μm);\n  AGN 呈幂律 fν ∝ ν^(-1) 至 (-0.5), 中红外增强\n判定: SED 相邻波段跳动 > 0.3 mag (同口径) 多为单位/系统混用或标志位污染;\n同源多目录通量差 > 3σ 需查口径与系统差异。"
+  source: Blanton & Roweis 2007 (kcorrect); Ilbert et al. 2009; Galametz et al. 2013 (CIGALE); Gwyn 2008 (CFHTLS)
+  confidence: established
+  ranges:
+    sed_wavelength_range:
+      lo: 0.1
+      hi: 30.0
+      unit: micron
+    sed_band_count:
+      lo: 4
+      hi: 11
+      unit: bands
+- id: proper_motion_catalog_use
+  title: '自行与历元外推: 位置随自行变化'
+  category: reference_range
+  tags:
+  - proper_motion
+  - epoch
+  - extrapolation
+  - pmra
+  - pmdec
+  - astrometry
+  hypothetical_queries:
+  - 自行 历元外推 位置变化 公式 mas/yr 位移
+  - 高自行天体 位移 角秒 跨目录 匹配 先外推
+  - 河外天体 自行为 0 前景恒星 混入 判据
+  applies_to:
+    fields:
+    - ra
+    - dec
+    - pmra
+    - pmdec
+    - epoch
+    - pm_ra_error
+    - pm_dec_error
+    - parallax
+    - pm_ra
+    - pm_dec
+    - proper_motion
+    - total_proper_motion
+    - pm_total
+    entities:
+    - star
+    - high_proper_motion_star
+    - field_star
+  content: "自行与历元外推 (位置随自行线性变化):\n- α(t) = α0 + μα·Δt / cosδ; δ(t) = δ0 + μδ·Δt (μα, μδ 单位 mas/yr, Δt 为年)\n- 位移量级: 1 mas/yr × 10 yr = 10 mas; 银盘恒星典型自行 1-20 mas/yr;\n  高自行天体 100-8000 mas/yr (极端源可达 10\"/yr\
+    \ 量级)\n- 历元差效应: 25 年 (Hipparcos 1991.25 → Gaia 2016) 内 20 mas/yr 源位移 0.5\",\n  200 mas/yr 源位移 5\" — 跨目录匹配必须先外推 (见 cross-match 条目)\n- 外推局限: 无加速度项; 双星轨道摆动可达 ~100 mas; 超过 50-100 年外推不可靠;\n  极高自行源须含透视加速改正\
+    \ (径向速度已知时)\n- 使用方法: 外推到共同历元后匹配, 新增修正列不覆盖原始坐标;\n  Gaia 自行精度 0.02-0.2 mas/yr, 为现行最佳基线\n判定: 两历元位置差与 PM×Δt 不符 > 3σ 提示双星/混染/源变化;\n河外天体 (星系/类星体) 自行为 0 — 记录大自行多为前景恒星混入。"
+  source: Gaia Collaboration 2023 (DR3); van Leeuwen 2007; astropy.coordinates (space motion)
+  confidence: established
+  ranges:
+    proper_motion_disk:
+      lo: 1.0
+      hi: 20.0
+      unit: mas/yr
+    proper_motion_high:
+      lo: 100.0
+      hi: 8000.0
+      unit: mas/yr
+    epoch_span_reliable:
+      lo: 5.0
+      hi: 50.0
+      unit: yr
+- id: galaxy_catalog_photometry_units
+  title: 星系目录测光单位与口径 (等光度 vs 总量)
+  category: reference_range
+  tags:
+  - galaxy_photometry
+  - isophotal
+  - total_magnitude
+  - kron
+  - k20
+  - xsc
+  - surface_brightness
+  hypothetical_queries:
+  - 2MASS XSC k20fe 等光度星等 孔径 半长轴 arcsec
+  - 等光度 vs 总量星等 差异 0.2 0.5 mag 外晕光
+  - 面亮度 mag/arcsec2 等光度级 20 26 直径 D25
+  applies_to:
+    fields:
+    - j_mag
+    - h_mag
+    - ks_mag
+    - j_m_k20fe
+    - h_m_k20fe
+    - k_m_k20fe
+    - r_k20fe
+    - j_m_ext
+    - k_m_ext
+    - mag_system
+    - surface_brightness
+    - d25
+    - logd25
+    - isophotal_diameter
+    - isophotal_area
+    - major_diameter_arcmin
+    - ang_size
+    - ang_size_opt
+    - angular_size
+    - eff_radius
+    - kron_radius
+    - sb_central
+    - sb_mean_eff
+    - surface_brightness_peak
+    - sersic_index
+    entities:
+    - galaxy
+    - G
+    - elliptical_galaxy
+    - spiral_galaxy
+  content: "星系目录测光单位与口径 (2MASS XSC 为例):\n- 星等系统: Vega (2MASS/IRAS/WISE); AB (SDSS/Gaia) — 跨目录必须转换 (见 AB-Vega 条目)\n- XSC 常用量: j_m_k20fe/h_m_k20fe/k_m_k20fe = Ks 20 mag/arcsec² 等光度椭圆孔径\n  内积分星等 (K 波段定标孔径并施于\
+    \ JHK 三波段); r_k20fe 为孔径半长轴 (arcsec);\n  j_m_ext/k_m_ext 为外推总量星等 (Sérsic/修正指数轮廓外推至 ~4 倍标长)\n- '等光度' vs '总量': 等光度 (isophotal) 偏暗 (缺外晕光), 总量 (total/extrapolated)\n  更全; 大星系两者差 0.2-0.5 mag; Kron (2.5 ×\
+    \ 一阶矩半径) 与 Petrosian 亦为总量口径\n- 面亮度单位: mag/arcsec² (等光度级常用 20-26); 直径定义: D25 = B 波段\n  25 mag/arcsec² 等光度直径, logd25 为其 log10 (单位 0.1 arcmin)\n- 负通量约定: 积分通量为负时星等 = 99 - (zp - 2.5 log10|F|), 值 75-99 mag\n\
+    判定: 点源口径列 (如 j_mag PSF 值) 与扩展口径列 (k20fe) 不可互换 — 点源口径\n漏外晕光; 跨目录比较必须同口径 (等光度 vs 总量 vs 固定孔径)。"
+  source: Jarrett et al. 2000 (2MASS XSC); Kron 1980; Blanton et al. 2001 (Petrosian); Paturel et al. 2003 (HYPERLEDA)
+  confidence: established
+  ranges:
+    isophote_level:
+      lo: 20.0
+      hi: 26.0
+      unit: mag/arcsec2
+    iso_total_diff:
+      lo: 0.0
+      hi: 0.5
+      unit: mag
+    xsc_aperture_semimajor:
+      lo: 5.0
+      hi: 200.0
+      unit: arcsec
+- id: ukidss_near_infrared_photometry
+  title: UKIDSS 近红外巡天测光 (YJHK)
+  category: reference_range
+  tags:
+  - ukidss
+  - near_infrared
+  - yjhk
+  - wfcam
+  - vega
+  - survey_depth
+  hypothetical_queries:
+  - UKIDSS LAS 深度 K 波段 5σ 18.4 Vega mag
+  - UKIDSS DXS UDS 深度 J H K 极限星等
+  - UKIDSS mergeClass pstar 恒星 星系 分类
+  applies_to:
+    fields:
+    - y_mag
+    - j_mag
+    - h_mag
+    - k_mag
+    - ukidss_j_mag
+    - ukidss_k_mag
+    - aper_mag
+    - merge_class
+    - pstar
+    entities:
+    - galaxy
+    - star
+    - G
+    - quasar
+  content: "UKIDSS 近红外巡天测光 (WFCAM 相机, Vega 系统):\n- 波段: Y 1.03, J 1.25, H 1.63, K 2.20 μm (部分区域含 Z 0.88 μm)\n- 五大子巡天: LAS (大天区亮端, ~4000 deg²), GCS, GPS, DXS, UDS\n- LAS 5σ 点源设计深度 (Vega): Y ~20.2-20.5, J\
+    \ ~20.1, H ~18.9, K ~18.4\n  (K 波段 100% 完备至 17.7, 50% 完备在 18.2-18.4); DXS 深度: J 22.3, H 21.8, K 20.8\n- 星等口径: 目录提供 aperMag (2\" 固定孔径) 等; mergeClass 为恒星/星系分类\n  (-1 星系, 1 恒星), pstar 为恒星概率\n- 测光零点: 由\
+    \ 2MASS 恒星场测定, 随空气质量改正; 消光用 A_K 图\n- 与 2MASS 关系: UKIDSS 深 2-4 mag, 同为 Vega 系统可直接颜色比较 (零点差 ~0.03 mag)\n判定: LAS 亮于 K ~ 10 mag 的源饱和; 星系分类用合并 K 波段 mergeClass;\n深度比较: UKIDSS LAS K 18.4 (5σ) vs 2MASS Ks 14.3\
+    \ (10σ) — 差约 4 mag。"
+  source: Lawrence et al. 2007 (UKIDSS 设计); Warren et al. 2007 (DR2); UKIDSS DR8/DR9
+  confidence: established
+  ranges:
+    ukidss_las_depth_k:
+      lo: 18.2
+      hi: 18.4
+      unit: Vega mag
+    ukidss_dxs_depth_k:
+      lo: 20.8
+      hi: 21.0
+      unit: Vega mag
+- id: twomass_photometry_fields
+  title: 2MASS 点源目录测光字段与完备限
+  category: reference_range
+  tags:
+  - 2mass
+  - psc
+  - jhks
+  - vega
+  - completeness
+  - saturation
+  - cc_flg
+  hypothetical_queries:
+  - 2MASS 10σ 完备限 J 15.8 H 15.1 Ks 14.3
+  - 2MASS 饱和 星等 Ks 8 J 9 短曝光 动态范围
+  - 2MASS cc_flg 污染标志 邻近源 混淆 扩展源
+  applies_to:
+    fields:
+    - j_mag
+    - h_mag
+    - ks_mag
+    - j_msig
+    - h_msig
+    - ks_msig
+    - j_snr
+    - h_snr
+    - ks_snr
+    - ph_qual
+    - rd_flg
+    - cc_flg
+    - gal_contam
+    - j_mag_2mass
+    - h_mag_2mass
+    - k_mag_2mass
+    - j_mag_2mass_pagb
+    - h_mag_2mass_pagb
+    - k_mag_2mass_pagb
+    - j_magnitude
+    - h_magnitude
+    - k_magnitude
+    - ks_magnitude
+    - mag_j
+    - mag_h
+    - mag_k
+    - mag_ks
+    - kmag
+    - apparent_mag_2mass
+    - phot_mag_2mass_jhk
+    - hk_color_2mass
+    - jh_color_2mass
+    - j_minus_ks
+    - color_j_minus_k
+    - color_jks
+    entities:
+    - galaxy
+    - star
+    - G
+    - quasar
+  content: "2MASS 点源目录 (PSC) 测光字段:\n- 波段: J 1.235, H 1.662, Ks 2.159 μm (Vega 系统)\n- 10σ 点源完备限 (|b| > 30°, 99% 完备): J 15.8, H 15.1, Ks 14.3 mag;\n  实际达到 ~ J 16.0, H 15.0, Ks 14.7 (低银纬混淆噪声使完备拐点亮 ~1 mag)\n\
+    - 亮端饱和: Ks ~8, H ~8.5, J ~9 mag (更亮用 51 ms 短曝光读数, 可到 J 4.5/H 4/Ks 3.5);\n  动态范围 > 20 mag; 测光误差下限 (cmsig) ~0.02-0.05 mag\n- 关键列: j_m/h_m/ks_m 默认星等; j_msig 等误差; j_snr 等信噪比;\n  ph_qual 质量标志 (见标志位条目); rd_flg\
+    \ 读数来源; cc_flg 污染标志\n  (0 = 干净, 2 = 光学邻近源, 3 = 红外邻近源, 4 = 混淆, 5 = 扩展);\n  gal_contam = 1 提示星系污染\n- 默认星等 = 未饱和时的 profile-fit 值; 扩展源应改用 XSC (k20fe 等光度口径)\n判定: 星等堆积在完备限附近多为上限/非探测; cc_flg ≠ 0 的匹配结果须降权;\n\
+    J-H 与 H-Ks 颜色超出行星/恒星/星系典型区间的点源多为标志位或混淆问题。"
+  source: Skrutskie et al. 2006; Cutri et al. 2003 (2MASS All-Sky Explanatory Supplement)
+  confidence: established
+  ranges:
+    twomass_10sigma_limit:
+      lo: 14.3
+      hi: 15.8
+      unit: Vega mag
+    twomass_saturation:
+      lo: 8.0
+      hi: 9.0
+      unit: Vega mag
+- id: galex_uv_photometry
+  title: 'GALEX 紫外测光: FUV/NUV 波段、深度与口径'
+  category: reference_range
+  tags:
+  - galex
+  - ultraviolet
+  - fuv
+  - nuv
+  - photometry
+  - ab_magnitude
+  hypothetical_queries:
+  - GALEX FUV NUV 深度 AIS MIS DIS AB 星等
+  - GALEX 零点 18.82 20.08 AB 测光重复性 0.05
+  - FUV-NUV 颜色 星族年龄 消光 恒星形成 示踪
+  applies_to:
+    fields:
+    - fuv_mag
+    - nuv_mag
+    - fuv_flux
+    - nuv_flux
+    - fuv_nuv
+    - galex_fuv
+    - galex_nuv
+    - uv_mag
+    - mag_fuv
+    - mag_nuv
+    - mag_fuv_nuv
+    - ultraviolet_magnitude
+    - apparent_mag_uv
+    - phot_flux_uv
+    - uv_flux
+    entities:
+    - galaxy
+    - star
+    - quasar
+    - AGN
+    - G
+  content: "GALEX 双波段紫外测光 (AB 系统, 2003-2013 轨道望远镜, 消费字段 fuv_mag/nuv_mag/fuv_flux 等):\n- FUV 远紫外: 有效波长 1516 A (通带 1350-1750 A); NUV 近紫外: 2267 A (通带 1750-2800 A)\n- 角分辨率: FUV PSF FWHM ~4.2\", NUV ~5.3\" (1.5\"\
+    /pix); 天测精度 ~0.5-0.6\"\n- 5σ 点源深度 (AB): AIS 全天巡天 FUV ~19.9 / NUV ~20.8 mag; MIS 中等深度 FUV ~22.6 / NUV ~22.7;\n  DIS 深场 FUV ~24.8 / NUV ~24.4 mag (深度随曝光 100-30000 s 变化)\n- 测光重复性 ~0.03-0.05 mag; 零点 FUV\
+    \ 18.82 / NUV 20.08 AB mag\n- 物理: FUV/NUV 追踪年轻热星 (OBA 星) 与恒星形成; FUV-NUV 颜色对星族年龄/消光敏感\n判定: 星系 NUV 探测但 FUV 缺失 = 年老星族或强消光; FUV-NUV < 0 (FUV 反而更亮) 需查零点/口径;\n紫外星等一律按 AB, 与其他系统比较必须先转换。"
+  source: Morrissey et al. 2007 (ApJS 173, 682); Gil de Paz et al. 2007; Bianchi et al. 2014 (GALEX DR6/7)
+  confidence: established
+  ranges:
+    galex_ais_depth:
+      lo: 19.9
+      hi: 22.7
+      unit: mag (AB)
+    galex_dis_depth:
+      lo: 24.4
+      hi: 24.8
+      unit: mag (AB)
+    galex_psf_fwhm:
+      lo: 4.2
+      hi: 5.3
+      unit: arcsec
+- id: spitzer_irac_bands
+  title: 'Spitzer IRAC 四波段测光: 波长/灵敏度/系统'
+  category: reference_range
+  tags:
+  - spitzer
+  - irac
+  - mid_infrared
+  - photometry
+  - vega
+  - 3.6um
+  - 4.5um
+  hypothetical_queries:
+  - Spitzer IRAC 5σ 灵敏度 6 54 uJy 200s 四波段
+  - '[3.6]-[4.5] 颜色 AGN 幂律 判据 0.8'
+  - IRAC AB Vega 偏移 +2.79 +4.60 星等系统
+  applies_to:
+    fields:
+    - irac_mag_3_6
+    - irac_mag_4_5
+    - irac_mag_5_8
+    - irac_mag_8_0
+    - flux_3_6um
+    - flux_4_5um
+    - flux_5_8um
+    - flux_8_0um
+    - m36
+    - m45
+    - irac_mag
+    - irac_flux
+    - mag_irac
+    - mag_irac36
+    - mag_irac45
+    - mag_irac58
+    - mag_irac80
+    - spitzer_midir_mag
+    entities:
+    - galaxy
+    - star
+    - AGN
+    - quasar
+    - starburst_galaxy
+    - G
+  content: "Spitzer IRAC 四波段中红外测光 (Vega 系统):\n- 波段: 3.6 / 4.5 / 5.8 / 8.0 um (PSF FWHM 1.7/1.7/1.9/2.0\", 像素 1.2\", 视场 5.2'x5.2')\n- 官方 5σ 点源灵敏度 (200 s): 6 / 7 / 36 / 54 uJy (3.6/4.5/5.8/8.0 um); 深场 (1000\
+    \ s+) 可达 ~1 uJy 量级\n- 灵敏度趋势: 3.6 um 最深, 5.8 um 最浅 (约差 5-9 倍); 8.0 um 受背景噪声限制\n- 物理: 3.6/4.5 um 追踪恒星 (瑞利-金斯区), [3.6]-[4.5] 颜色区分幂律 AGN 与正常星族;\n  5.8/8.0 um 含 PAH 发射 (8.0 um 中心在 PAH 7.7 um 带), 恒星形成示踪\n\
+    - AB-Vega 偏移: +2.79 / +3.26 / +3.73 / +4.60 mag (平谱, 见 AB-Vega 条目); 8 um 以上 8-9 Vega mag 饱和\n判定: 星系 [3.6]-[4.5] > 0.8 为 AGN/幂律特征; IRAC 与 WISE (3.4/4.6 um) 波长近似但系统不同,\n比较须先统一零点与口径 (WISE 6.1\" 束 vs IRAC\
+    \ 1.7\" PSF)。"
+  source: Fazio et al. 2004 (IRAC 仪器论文); Reach et al. 2005; IRAC Instrument Handbook
+  confidence: established
+  ranges:
+    irac_5sigma_200s:
+      lo: 6
+      hi: 54
+      unit: uJy
+    irac_ab_vega_offset:
+      lo: 2.79
+      hi: 4.6
+      unit: mag
+    irac_psf_fwhm:
+      lo: 1.7
+      hi: 2.0
+      unit: arcsec
+- id: vla_radio_survey
+  title: 'VLA 射电巡天: NVSS 1.4 GHz 参数与字段'
+  category: reference_range
+  tags:
+  - nvss
+  - vla
+  - radio
+  - 1.4ghz
+  - flux_density
+  - survey
+  hypothetical_queries:
+  - NVSS 1.4 GHz 完备限 2.5 mJy rms 0.45 mJy/beam
+  - NVSS 45 角秒 束 延展源 混入 位置精度 0.3 5 角秒
+  - NVSS FIRST VLASS 频率 分辨率 射电巡天 比较
+  applies_to:
+    fields:
+    - s_1_4ghz
+    - s1_4
+    - nvss_flux
+    - flux_density
+    - fnu_1400
+    - radio_flux
+    - major_axis
+    - minor_axis
+    - radio_flux_1_4ghz
+    - radio_flux_20cm
+    - radio_flux_density
+    - radio_flux_density_1400
+    - radio_flux_density_20cm
+    - flux_radio_1p4ghz
+    - radio_peak_flux
+    - radio_core_flux
+    - ang_size_radio
+    entities:
+    - galaxy
+    - AGN
+    - quasar
+    - radio_galaxy
+    - supernova_remnant
+  content: 'NVSS (NRAO VLA Sky Survey, 1.4 GHz/20 cm) 巡天参数:
+
+    - 覆盖: δ > -40° 全天区 (~82% 天球); 束大小 ~45" FWHM (专为大束高面亮度灵敏度设计)
+
+    - 灵敏度: 2.5 mJy 完备限, rms ~0.45 mJy/beam (Stokes I); 目录 ~180 万源 (中位通量 ~5.6 mJy)
+
+    - 位置精度: 亮源 (S > 30 mJy) ~0.3", 暗端 (2.5 mJy) ~5"
+
+    - 目录列: 峰值/积分通量 (S_peak/S_int), 源尺寸与位置角, 当地 rms; 45" 束下延展源被积分
+
+    - 同族巡天: FIRST 5.4" 束 ~1 mJy (高分辨); VLASS 3 GHz 2.5"-3" 束 3 历元 (时域) — 见 FIRST 条目
+
+    - 物理: 1.4 GHz 通量来自同步加速辐射, S_int/S_peak 比值反映延展程度
+
+    判定: 跨巡天 (NVSS/FIRST/VLASS) 比较必须同频率同束; 45" 束会混入邻近源, 亮源位置以
+
+    FIRST/Gaia 为准; 声称 NVSS 暗端亚角秒位置必为口径混淆。'
+  source: Condon et al. 1998 (AJ 115, 1693); NVSS Explanatory Supplement; Lacy et al. 2020 (VLASS)
+  confidence: established
+  ranges:
+    nvss_completeness_limit:
+      lo: 2.5
+      hi: 2.5
+      unit: mJy
+    nvss_beam_fwhm:
+      lo: 45
+      hi: 45
+      unit: arcsec
+    nvss_position_error:
+      lo: 0.3
+      hi: 5.0
+      unit: arcsec
+    nvss_rms:
+      lo: 0.45
+      hi: 0.45
+      unit: mJy/beam
+- id: redshift_survey_fields
+  title: '红移巡天: SDSS/2dF/6dF 深度与覆盖'
+  category: reference_range
+  tags:
+  - redshift
+  - redshift_survey
+  - sdss
+  - 2df
+  - 6df
+  - spectroscopy
+  hypothetical_queries:
+  - SDSS 主星系样本 红移范围 0.02 0.3 中位
+  - 6dFGS 2dFGRS 光谱红移巡天 深度 极限星等 覆盖
+  - 光谱红移 精度 30 50 km/s 1e-4 量级
+  applies_to:
+    fields:
+    - redshift
+    - z
+    - spec_z
+    - cz
+    - z_err
+    - v_helio
+    - z_spec
+    - z_phot
+    - z_gal
+    - vel_helio
+    - rad_vel
+    - heliocentric_velocity
+    - recession_velocity
+    - systemic_rv
+    - systemic_radial_velocity
+    - spect_radial_velocity
+    - optical_radial_velocity
+    - mean_radial_velocity
+    - galaxy_radial_velocity
+    - group_radial_velocity
+    - cluster_radial_velocity
+    - radial_velocity_comp
+    - spec_rv
+    - rv_sys
+    - predicted_rv
+    entities:
+    - galaxy
+    - G
+  content: "大样本光谱红移巡天深度与覆盖 (近邻宇宙参考):\n- 6dFGS (南天, Ks < 12.65, ~17,000 deg², ~11 万星系): 中位 z ~ 0.053 — 最浅, 近邻结构研究\n- 2dFGRS (北/南天, bJ < 19.45, ~1,500 deg², ~22 万星系): 中位 z ~ 0.11\n- SDSS 主星系样本 (MGS, r_petro\
+    \ < 17.77, ~10,000+ deg², ~90 万星系): z 约 0.02-0.3,\n  常用子样本 0.05-0.25, 中位 ~0.1; LRG 样本延伸至 z ~ 0.4-0.7\n- 光谱红移精度: 典型 σ ~ 30-50 km/s (SDSS 内部 ~30 km/s, 对应 σ_z ~ 1e-4 量级)\n- 本动速度 ±300-1000 km/s 使 z < 0.005\
+    \ 的单源距离不可靠 (见红移条目)\n判定: 声称出自 6dFGS 的 z > 0.2 记录多为口径/字段错误 (超样本极限); 多巡天拼接样本在\n接缝红移处须检验系统差; 光谱 z 与 photo-z 差异 > 0.15(1+z) 提示谱线错认。"
+  source: Jones et al. 2009 (6dFGS); Colless et al. 2001 (2dFGRS); Strauss et al. 2002 (SDSS MGS); Abazajian et al. 2009
+  confidence: established
+  ranges:
+    survey_median_z:
+      lo: 0.053
+      hi: 0.11
+      unit: dimensionless
+    sdss_mgs_z:
+      lo: 0.02
+      hi: 0.3
+      unit: dimensionless
+    spec_z_velocity_error:
+      lo: 30
+      hi: 50
+      unit: km/s
+- id: gaia_dr3_astrophysical_params
+  title: 'Gaia DR3 天体物理参数: 来源口径与精度'
+  category: reference_range
+  tags:
+  - gaia
+  - dr3
+  - astrophysical_parameters
+  - teff
+  - logg
+  - feh
+  - extinction
+  - apsis
+  hypothetical_queries:
+  - Gaia DR3 GSP-Phot 参数 teff logg mh 精度 K dex
+  - Gaia 天体物理参数 [M/H] 系统偏差 经验校准
+  - GSP-Spec GSP-Phot 区别 口径 亮源 RVS 光谱
+  applies_to:
+    fields:
+    - teff
+    - logg
+    - fe_h
+    - teff_gspphot
+    - logg_gspphot
+    - mh_gspphot
+    - azero_gspphot
+    - ag_gspphot
+    - distance_gspphot
+    - a_v
+    - extinction
+    entities:
+    - star
+    - field_star
+    - giant_star
+    - dwarf_star
+  content: "Gaia DR3 Apsis 流水线的恒星天体物理参数 (~4.7 亿源, G < 19; BP/RP 低分辨光谱 + 视差 + G 星等联合拟合):\n- GSP-Phot 列: teff_gspphot (Teff), logg_gspphot, mh_gspphot ([M/H]), azero_gspphot (A0),\n  ag_gspphot (AG), distance_gspphot;\
+    \ 各参数附 MCMC 样本与质量标志\n- 精度 (vs 文献基准): Teff ~110 K; logg ~0.2-0.25 dex; A0/AG 消光 ~0.07-0.09 mag;\n  [M/H] 存在明显系统偏差, 仅定性可用 (目录提供经验校准)\n- 可靠性: 视差信噪比 pi/sig_pi > 20 (~2 kpc 内) 时参数最可靠; 更远处距离被系统性高估\n- GSP-Spec\
+    \ (RVS 光谱, ~5-6 百万亮源) 为独立口径, 与 GSP-Phot 存在 Teff ~100 K 量级系统差\n判定: GSP-Phot 与 GSP-Spec 或光谱目录参数拼接必须同源同口径; 冷矮星 (Teff < 4000 K)\n与热 OB 星参数不可靠; 使用前检查质量标志 (如 per_gspphot 类标志位)。"
+  source: Gaia Collaboration 2023 (A&A 674, A1); Fouesneau et al. 2023 (GSP-Phot); Recio-Blanco et al. 2023 (GSP-Spec)
+  confidence: established
+  ranges:
+    gsp_phot_teff_err:
+      lo: 100
+      hi: 150
+      unit: K
+    gsp_phot_logg_err:
+      lo: 0.2
+      hi: 0.25
+      unit: dex
+    gsp_phot_extinction_err:
+      lo: 0.07
+      hi: 0.09
+      unit: mag
+- id: stellar_parameter_catalogs
+  title: '恒星参数光谱目录: APOGEE/LAMOST/PaSTeL'
+  category: reference_range
+  tags:
+  - apogee
+  - lamost
+  - pastel
+  - spectroscopy
+  - teff
+  - logg
+  - feh
+  - stellar_parameters
+  hypothetical_queries:
+  - APOGEE 恒星参数 精度 Teff 50 100 K [Fe/H] 0.02 dex
+  - LAMOST 恒星参数 误差 S/N 依赖 千万星 统计
+  - 恒星参数目录 交叉定标 系统差 拼接 口径 零点
+  applies_to:
+    fields:
+    - teff
+    - logg
+    - fe_h
+    - alpha_fe
+    - rv
+    - spectral_type
+    - stellar_parameter_flag
+    - sp_teff
+    - sp_logg
+    - sp_feh
+    - sp_vsini
+    - spec_teff
+    - spec_logg
+    - spec_fe_h
+    - spec_alpha_fe
+    - star_teff
+    - star_logg
+    - star_feh
+    - star_vsini
+    - log_g
+    - surface_gravity_logg
+    - logg_corr
+    - vsini
+    - vsini_rotational_velocity
+    - rotation_velocity_vsini
+    - v_microturb
+    - vmic
+    - vmac
+    - microturbulence
+    - phys_temperature_effective
+    - phys_gravity_surface
+    - phys_abund_fe
+    - alpha_abundance
+    - sp_type
+    - sp_type_mk
+    - spec_sp_type
+    - spect_type
+    - spectral_class
+    - spectral_qualifier
+    - spectral_type_mk
+    - spectral_type_numeric
+    - spectral_type_primary
+    - spectral_type_secondary
+    - sp_class
+    - star_spt
+    entities:
+    - star
+    - red_giant_star
+    - dwarf_star
+    - halo_star
+  content: "光谱恒星参数目录 (Teff/logg/[Fe/H]/[alpha/Fe], 谱源与口径各异, 不可盲目拼接):\n- APOGEE (SDSS, H 波段 R~22500, 银河系 ~65 万星): [Fe/H] ~0.02-0.05 dex, logg ~0.02-0.05 dex,\n  Teff ~50-100 K (红巨星星震校准), 含 15+ 元素丰度 — 近红外尘埃穿透强\n\
+    - LAMOST (R~1800 低分辨, 千万星光谱): Teff ~100-150 K, [Fe/H] ~0.05-0.2 dex (强依赖 S/N);\n  中分辨 (R~7500) 子集精度更高; 大样本统计优势\n- PaSTeL (ELODIE 光谱库经典等值宽度/谱线拟合, 亮星): Teff/logg/[Fe/H] 高精度基准, 常用于交叉定标\n- 交叉比较: APOGEE\
+    \ 与 LAMOST 系统差 Teff ~50-150 K (冷星更大), [Fe/H] ~0.1 dex 量级\n判定: 跨目录参数拼接必须统一零点/口径 (星震 vs 等值宽度 vs 模板拟合); S/N < 20 的光谱\nlogg 误差可超 0.2 dex; 目录间差异超过各自误差 2-3 倍需查系统差而非随机误差。"
+  source: Abdurro'uf et al. 2022 (APOGEE DR17); Cui et al. 2012 (LAMOST); Soubiran et al. 2010 (PaSTeL)
+  confidence: established
+  ranges:
+    apogee_feh_precision:
+      lo: 0.02
+      hi: 0.05
+      unit: dex
+    lamost_feh_precision:
+      lo: 0.05
+      hi: 0.2
+      unit: dex
+    cross_survey_teff_diff:
+      lo: 50
+      hi: 150
+      unit: K
+- id: galex_sdss_wise_multiwavelength
+  title: '多波段组合: GALEX+SDSS+WISE 的 SED 覆盖'
+  category: reference_range
+  tags:
+  - multiwavelength
+  - sed
+  - galex
+  - sdss
+  - wise
+  - star_formation
+  hypothetical_queries:
+  - GALEX SDSS WISE 组合 11 波段 SED 0.15 22 um
+  - 紫外 光学 中红外 恒星形成 尘埃 星族年龄 示踪
+  - 多巡天 星等系统 统一 AB Vega 拼接 SED 跳动
+  applies_to:
+    fields:
+    - fuv_mag
+    - nuv_mag
+    - sdss_u_mag
+    - sdss_g_mag
+    - sdss_r_mag
+    - sdss_i_mag
+    - sdss_z_mag
+    - w1_mag
+    - w2_mag
+    - w3_mag
+    - w4_mag
+    entities:
+    - galaxy
+    - star
+    - quasar
+    - AGN
+    - G
+  content: "GALEX + SDSS + WISE 三巡天组合: 11 波段覆盖 0.15-22 um, 近邻星系 SED 标准组合:\n- 波段清单: FUV 0.15, NUV 0.23, ugriz 0.36/0.47/0.62/0.75/0.89, W1-W4 3.4/4.6/12/22 um\n- 物理: UV 追踪年轻热星 (恒星形成), 光学追踪整体星族, 中红外追踪尘埃 (PAH\
+    \ 3.3/6.2/7.7 um\n  与热尘埃); 组合可同时约束星族年龄+消光+恒星形成率 (如 SFR 校准 SED 拟合)\n- 口径注意: 星系在 UV 与红外角尺度不同, 各波段须用匹配总量/孔径口径 (见 SED 构建条目)\n- 深度匹配: GALEX MIS (~22.7 AB) 深于 SDSS 成像 (~22.2); WISE W3/W4 浅 (11.5/8 Vega mag),\n\
+    \  是近邻星系样本的限制深度\n- 系统: GALEX 与 SDSS 为 AB, WISE 为 Vega — 组合前必须统一 (见 AB-Vega 条目)\n判定: 拼接 SED 相邻波段跳动 > 0.3 mag (同口径) = 系统/口径未统一; FUV-NUV-W1 三点\n趋势背离 (蓝 UV 配红中红外) 多为消光或 AGN 污染。"
+  source: Salim et al. 2007; Gil de Paz et al. 2007; Wright et al. 2010 (WISE); Bianchi et al. 2007
+  confidence: established
+  ranges:
+    multiwavelength_cover:
+      lo: 0.15
+      hi: 22.0
+      unit: micron
+    combined_band_count:
+      lo: 11
+      hi: 11
+      unit: bands
+- id: source_catalog_quality_metrics
+  title: '源目录质量指标: SNR/混淆度/天测精度列'
+  category: reference_range
+  tags:
+  - snr
+  - confusion
+  - astrometry
+  - position_error
+  - quality_flag
+  - catalog
+  hypothetical_queries:
+  - 源目录 信噪比 阈值 探测 3 5 可靠测光 10
+  - 位置误差 典型量级 Gaia SDSS 2MASS WISE NVSS
+  - 混淆度 密集天区 银盘 星团 污染标志 cc_flg
+  applies_to:
+    fields:
+    - snr
+    - sigra
+    - sigdec
+    - pos_err
+    - major_err
+    - minor_err
+    - cc_flg
+    - ph_qual
+    - confusion_flag
+    - astrometric_error
+    - xpos_err
+    - ypos_err
+    entities:
+    - galaxy
+    - star
+    - G
+    - quasar
+  content: "源目录通用质量列 (跨目录语义, 见具体目录条目):\n- 信噪比 SNR = F/sig_F: 探测限 SNR > 3-5; 可靠测光/星等要求 SNR > 10 (如 2MASS ph_qual A);\n  SNR < 5 的星等应视为上限而非探测值 (见标志位条目)\n- 位置误差列 (sigra/sigdec 等): 典型量级 Gaia ~0.02-0.5 mas,\
+    \ SDSS ~50-100 mas,\n  2MASS 亮源 ~50-100 mas / 暗源 ~200-300 mas, WISE < 100 mas, NVSS 暗端 ~5\"\n- 点源位置误差随 SNR 增大而改善: sigma_pos ∝ beam/SNR (高斯拟合极限)\n- 混淆度: 源面密度高时邻近源污染 (2MASS 在恒星密度 > 10^3.3 deg^-2 天区扩展源不可靠,\n\
+    \  亮星掩盖损失 > 20%); cc_flg 类污染标志位记录旁瓣/条纹/邻近源\n- 天测基线: 跨目录匹配须用历元外推与误差叠加 (见 cross-match 条目)\n判定: 高精度天测但无误差列 = 口径不明; SNR 与位置误差不成反比提示混染/双星;\n密集天区 (银盘/星团) 记录须检查混淆标志。"
+  source: Cutri et al. 2003 (2MASS Explanatory Supplement); SDSS 文档; Gaia Collaboration 2023; Condon et al. 1998
+  confidence: established
+  ranges:
+    detection_snr_threshold:
+      lo: 3
+      hi: 5
+      unit: dimensionless
+    reliable_photometry_snr:
+      lo: 10
+      hi: 100
+      unit: dimensionless
+    astrometric_error_best:
+      lo: 0.02
+      hi: 1.0
+      unit: mas
+    astrometric_error_optical:
+      lo: 50
+      hi: 300
+      unit: mas
+- id: photometric_redshift_catalogs
+  title: '测光红移目录: 误差列/PDZ/离群率'
+  category: reference_range
+  tags:
+  - photo_z
+  - photometric_redshift
+  - pdz
+  - redshift_pdf
+  - outlier
+  - catalog
+  hypothetical_queries:
+  - 测光红移 目录 质量列 PDZ odds 截断 0.2 0.8
+  - photo-z 离群率 eta 1% 10% sigma_NMAD 统计
+  - 红移概率分布 zpdf 点估计 误差 深场 交叉验证
+  applies_to:
+    fields:
+    - photo_z
+    - z_ph
+    - z_best
+    - zpdf
+    - pdz
+    - z_ph_err
+    - odds
+    - outlier_flag
+    - z_phot_chi2
+    - qf
+    - z_phot
+    - phot_redshift
+    entities:
+    - galaxy
+    - G
+    - quasar
+  content: "现代测光红移目录 (深场/COSMOS 类) 必备质量列:\n- 点估计: z_best/z_ph + 误差列 z_ph_err (1σ); 精度常用 sigma_NMAD 统计: 宽带 ~0.02-0.06\n- PDZ: 红移概率分布 (网格/函数形式), 可导出 z_mean/z_median/z_mode 与 odds\n  (概率落在 (1+z)*0.05 窗口内的积分,\
+    \ 常用截断 0.2-0.8 过滤不可靠源)\n- 离群率 eta: |z_ph - z_spec|/(1+z) > 0.15 的占比, 典型 1-10%, 暗端与密集场更高;\n  目录常提供 ODDS/QF 类标志与模板 chi2 用于过滤\n- 系统差来源: SED 模板不完备, Lyman/Balmer break 简并, 邻近源孔径混染 (见 photo-z 精度条目)\n- 质量依赖:\
+    \ 亮端与多波段 (含近红外) 更准; 单源 photo-z 不可靠, 统计用途须按 odds 加权\n判定: 无 PDZ 或误差列的 photo-z 记录不可用于单源结论; 样本统计须先剔除离群率高的\n子集并交叉验证 spec-z 子样本的 sigma_NMAD 与 eta。"
+  source: Ilbert et al. 2009; Hildebrandt et al. 2012; Salvato et al. 2019; Weaver et al. 2022 (COSMOS2020)
+  confidence: established
+  ranges:
+    photo_z_nmad:
+      lo: 0.02
+      hi: 0.06
+      unit: sigma_z/(1+z)
+    photo_z_outlier_rate:
+      lo: 0.01
+      hi: 0.1
+      unit: fraction
+    odds_cut:
+      lo: 0.2
+      hi: 0.8
+      unit: dimensionless
+- id: morphological_catalogs
+  title: '形态分类目录: Galaxy Zoo 投票分数与标志'
+  category: reference_range
+  tags:
+  - morphology
+  - galaxy_zoo
+  - spiral
+  - elliptical
+  - bar
+  - merger
+  - vote_fraction
+  hypothetical_queries:
+  - Galaxy Zoo 投票分数 星系形态 分类 阈值 0.5 0.8
+  - GZ2 细分类 棒 臂数 隆起 合并 投票分数
+  - 星系形态 众包 深度学习 Zoobot 高红移 可靠
+  applies_to:
+    fields:
+    - morphology
+    - morph_type
+    - p_elliptical
+    - p_spiral
+    - bar_flag
+    - merger_flag
+    - t_type
+    - vote_fraction
+    - morph_class
+    - morphology_class
+    - morphology_type
+    - morphology_probability
+    - morphology_vote_fractions
+    - merger_vote_fraction
+    - galaxy_class
+    - morph_type_extended
+    - host_galaxy_morphology
+    - host_galaxy_morphological_type
+    - host_morphology
+    - bcg_class
+    - elg_class
+    - class_prob
+    - class_probability
+    entities:
+    - galaxy
+    - G
+    - spiral_galaxy
+    - elliptical_galaxy
+    - irregular_galaxy
+  content: "Galaxy Zoo 系列形态目录 (志愿众包投票分数, 无硬分类):\n- GZ1 (SDSS MGS): ~90 万星系螺旋/椭圆投票分数 (p_elliptical, p_spiral, p_merger 等)\n- GZ2: ~30 万星系细分类 (11 任务/37 答案: 光滑/盘、棒、臂数、隆起、环、透镜、潮汐扰动、合并),\n  每星系数十至上百票; 输出 *_count/*_fraction/*_weighted_fraction/*_debiased\
+    \ (红移校正概率)\n- GZ DESI (Zoobot 深度学习): 870 万星系预测投票分数 (z < 0.1 子样本最可靠)\n- 判据: debiased 概率 > 0.5 得二分类 (is_barred/is_spiral 等); > 0.8 为高置信子样本;\n  近邻大质量星系主要合并比例 ~1-3%\n- 与参数关系: 形态-颜色 (红序列) 交叉验证; 棒旋与恒星形成抑制/中心质量相关\n\
+    判定: 投票分数 0.4-0.6 之间为模糊分类, 不宜硬划分; 高 z 图像分辨率下降使细分类\n(棒/臂) 不可靠 — 只用 z < 0.1 子样本做细形态统计。"
+  source: Lintott et al. 2008 (GZ1); Willett et al. 2013 (GZ2); Darg et al. 2010 (合并); Walmsley et al. 2023 (GZ DESI)
+  confidence: established
+  ranges:
+    vote_fraction_threshold:
+      lo: 0.5
+      hi: 0.8
+      unit: dimensionless
+    major_merger_fraction:
+      lo: 0.01
+      hi: 0.03
+      unit: fraction
+- id: akari_ir
+  title: 'AKARI 红外巡天: 6 波段覆盖与灵敏度'
+  category: reference_range
+  tags:
+  - akari
+  - infrared
+  - all_sky
+  - 9um
+  - 18um
+  - 90um
+  - 140um
+  - far_infrared
+  hypothetical_queries:
+  - AKARI 红外巡天 9 18 65 90 140 160 um 灵敏度 Jy
+  - AKARI IRC 点源目录 FIS 亮源 目录 波长
+  - 远红外 SED 峰 尘埃温度 冷尘 热尘 判据
+  applies_to:
+    fields:
+    - fnu_9
+    - fnu_18
+    - fnu_65
+    - fnu_90
+    - fnu_140
+    - fnu_160
+    - akari_flux
+    - f9
+    - f18
+    entities:
+    - galaxy
+    - star
+    - AGN
+    - G
+    - starburst_galaxy
+  content: "AKARI (2006-2011 日欧红外卫星) 全天巡天, 6 波段: IRC 中红外 9/18 um + FIS 远红外 65/90/140/160 um\n- 50% 完备点源灵敏度: 9 um ~0.09 Jy, 18 um ~0.17 Jy, 65 um ~2.6 Jy, 90 um ~0.39 Jy,\n  140 um ~2.9 Jy, 160 um ~5.9 Jy\
+    \ — 比 IRAS 全天巡天深 ~3-10 倍\n- 目录: IRC 点源目录 ~87 万源 (9 um 84 万 / 18 um 19 万); FIS 亮源目录 ~43 万源\n- 分辨率: IRC PSF ~5.6\"; FIS 37-61\" (65/90/140/160 um 依次变粗)\n- 物理: 9/18 um 热尘埃/PAH (与 IRAS 12/25 um 波长不同, 须谱指数外推再比);\n\
+    \  65/90 um 冷尘埃与恒星形成示踪, 140/160 um 极端冷尘埃 (与 IRAS 60/100 互补)\n- 与 WISE (3.4-22 um) 波长衔接互补, 构成中远红外完整 SED\n判定: 远红外 SED 峰位置定尘埃温度 (峰 60-100 um 冷尘/25 um 热尘); 跨巡天\n(IRAS/WISE/AKARI) 通量比较必须同波长同孔径并做 K 修正。"
+  source: Murakami et al. 2007 (PASJ 59, S369); Ishihara et al. 2010 (IRC PSC); Yamamura et al. 2010 (FIS BSC)
+  confidence: established
+  ranges:
+    akari_midir_limit:
+      lo: 0.09
+      hi: 0.17
+      unit: Jy
+    akari_farir_limit:
+      lo: 0.39
+      hi: 5.9
+      unit: Jy
+    akari_fis_psf:
+      lo: 37
+      hi: 61
+      unit: arcsec
+- id: first_radio_catalog
+  title: 'FIRST 射电目录: 高分辨 1.4 GHz 与 NVSS 配合'
+  category: reference_range
+  tags:
+  - first
+  - radio
+  - vla
+  - 1.4ghz
+  - faint_sources
+  - sidelobe
+  - catalog
+  hypothetical_queries:
+  - FIRST 射电目录 5.4 角秒 束 探测限 1 mJy
+  - FIRST 位置精度 1 角秒 光学 红外 交叉证认
+  - Fpeak Fint 峰值 积分通量 CLEAN bias 延展源
+  applies_to:
+    fields:
+    - s_1_4ghz
+    - first_flux
+    - fpeak
+    - fint
+    - major_axis
+    - minor_axis
+    - sidelobe_flag
+    - rms
+    - radio_flux
+    - radio_peak_flux
+    entities:
+    - galaxy
+    - AGN
+    - quasar
+    - radio_galaxy
+    - supernova_remnant
+  content: "FIRST (Faint Images of the Radio Sky at Twenty-cm, VLA 1.4 GHz):\n- 分辨率 5.4\" 束 (南天 6.4x5.4\" 椭圆), 探测限 ~1 mJy (5x 当地 rms, rms ~0.15 mJy/beam),\n  覆盖南北银冠 ~10,500 deg², 目录 ~95 万源\n- 位置精度: 暗点源优于\
+    \ 1\" (90% 置信), 亮源更高 — 光学/红外交叉证认的首选射电位置\n- 目录列: Fpeak 峰值通量, Fint 积分通量 (CLEAN bias 改正), 去卷积源尺寸/位置角,\n  旁瓣警告标志 (sidelobe), 当地 rms\n- 与 NVSS 配合: 点源位置用 FIRST, 积分通量用 NVSS — FIRST 缺短基线会漏延展结构通量,\n  NVSS 45\"\
+    \ 束会混入邻近源; 延展源两目录 Fint 差可达 ~30%\n- 物理: 5\" 分辨率可解析射电核/喷流/延展瓣, 星系-AGN 区分能力强\n判定: Fint/Fpeak 明显 > 1 为延展源, 与 NVSS 通量对比须谨慎; 旁瓣标志源应剔除;\n暗端 (< 1 mJy) 记录注意银道面混淆与消隐。"
+  source: Becker et al. 1995 (ApJ 450, 559); White et al. 1997; Helfand et al. 2015 (FIRST 目录)
+  confidence: established
+  ranges:
+    first_detection_limit:
+      lo: 1.0
+      hi: 1.0
+      unit: mJy
+    first_beam_fwhm:
+      lo: 5.4
+      hi: 5.4
+      unit: arcsec
+    first_position_error:
+      lo: 0.5
+      hi: 1.0
+      unit: arcsec

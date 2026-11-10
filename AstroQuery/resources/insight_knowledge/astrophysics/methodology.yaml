@@ -1,0 +1,1230 @@
+entries:
+- id: cross_instrument_dm_comparison
+  title: 跨仪器 DM 比较方法论
+  category: methodology
+  tags:
+  - DM
+  - comparison
+  - instrument
+  - systematic
+  - methodology
+  applies_to:
+    fields:
+    - dispersion_measure
+  content: "跨仪器 DM 比较的判断标准:\n\n1. 系统性差异 (<2%):\n   - 同频段不同望远镜: FAST vs Parkes L-band DM 差异通常 < 2%\n   - 正常范围, 来自仪器校准和 S/N 差异\n\n2. 频率依赖性差异 (2-10%):\n   - 不同频段: L-band vs C-band DM 差异可达 5%\n   - 原因: 脉冲轮廓频率演化\
+    \ + cold plasma dispersion 近似不完美\n   - 此时不是数据冲突, 而是多频段信息的体现\n\n3. 异常差异 (>10%):\n   - 需进一步排查: 方向/时间不同 (银河系 DM 时变)?\n   - 仪器故障? 数据分析 pipeline 差异?\n\n建议: 报告 DM 时注明观测频率和仪器, 以便正确比较\n"
+  source: Cordes & Shannon 2010, astro-ph; Petroff et al. 2016, PASA
+  confidence: consensus
+  hypothetical_queries:
+  - 同一脉冲星不同望远镜测量的 DM 差异多少算正常
+  - 色散量随观测频率变化是数据冲突吗
+  - 比较不同仪器测量的 DM 时需要注意什么
+- id: frb_statistical_guidelines
+  title: FRB 数据统计分析指南
+  category: best_practice
+  tags:
+  - FRB
+  - statistics
+  - sample
+  - analysis
+  - limitation
+  applies_to:
+    entities:
+    - FRB
+  content: "FRB 数据统计分析的注意事项:\n\n1. 样本量:\n   - n<10: 仅适合描述性统计, 不适合推断性统计\n   - n=10-50: 可做基本假设检验, 但需要非参数方法\n   - n>50: 可做参数估计和模型拟合\n\n2. 选择效应:\n   - 亮端偏倚: 检测到的都是亮的, fluence 分布不完整\n   - 色散选择: 高 DM FRB 在低频\
+    \ (CHIME) 中更容易被检测\n\n3. 仪器异质性:\n   - 不同仪器的 fluence 阈值不同 → 不能直接合并 fluence 分布\n   - DM 测量的精度差异 → 加权分析 (按 DM 误差逆方差)\n\n4. 重复暴 vs 非重复暴:\n   - 不能假设同一 FRB 的多次爆发独立同分布\n"
+  source: Petroff et al. 2019, A&ARv; CHIME/FRB Collaboration 2021, ApJS
+  confidence: consensus
+  hypothetical_queries:
+  - FRB 样本量小于 10 时能做什么统计分析
+  - 重复暴与非重复暴可以合并统计吗
+  - FRB 亮端偏倚和色散选择效应如何影响统计结论
+- id: data_quality_interpretation
+  title: 天体物理数据质量评分解读指南
+  category: best_practice
+  tags:
+  - quality
+  - score
+  - interpretation
+  - caveat
+  - limitation
+  content: "质量评分解读:\n\n1. excellent (≥0.90):\n   - 数据可直接用于高精度科学分析\n   - 但仍需注意: 未知系统误差可能仍然存在\n\n2. good (≥0.75):\n   - 适合多数统计分析\n   - 建议对权重敏感的分析使用加权方法 (高评分来源赋更高权重)\n\n3. fair (≥0.60):\n   - 适合探索性分析, 不适合精确模型拟合\n\
+    \   - 建议标注特定字段的不确定度\n\n4. poor (<0.60):\n   - 仅适合数据完整性评估和元分析 (识别数据缺口)\n   - 强烈建议在使用前进行人工复核\n\n通用注意事项:\n- 质量评分衡量的是元数据完整性和格式规范性, 不是科学正确性\n- 一个 poor 评分的数据集可能包含科学上正确的值 (只是文档不全)\n- 始终结合领域知识判断, 不要仅凭评分做决策\n"
+  source: Internal methodology
+  confidence: established
+  hypothetical_queries:
+  - 质量评分 excellent 的数据可以直接用于高精度分析吗
+  - fair 评分的数据集适合做什么分析
+  - 质量评分低是否代表数据科学上不正确
+- id: catalog_cross_match_guidelines
+  title: 星表交叉证认方法论
+  category: best_practice
+  tags:
+  - catalog
+  - cross_match
+  - database
+  - astrometry
+  - positional
+  - methodology
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - parallax
+  content: "星表交叉证认 (cross-match) 注意事项:\n\n1. 位置匹配半径:\n   - 高精度 (Gaia/Hipparcos): 1-5 arcsec\n   - 中精度 (2MASS/SDSS): 3-10 arcsec\n   - 低精度 (IRAS): 30-120 arcsec (IRAS 位置误差可达 30\")\n   - 匹配半径过小 → 漏匹配; 过大\
+    \ → 误匹配 (邻近源污染)\n\n2. 证认唯一性:\n   - 多源候选时用贝叶斯/似然比方法 (如 NWAY, 匹配概率)\n   - 亮度信息辅助: 波段差异可排除部分候选\n\n3. 参考系一致性:\n   - 确认坐标历元 (J2000 vs B1950) 和参考系 (ICRS vs FK5)\n   - 自行 (proper motion) 大的天体需外推到相同历元\n\n4.\
+    \ 常见陷阱:\n   - 同一物理天体被多个星表 ID 收录 (如 Gaia 源 vs 2MASS 源)\n   - 双星/复合源导致位置偏移\n   - 数据库 key_column/key_value 不一致造成错误关联\n"
+  source: Pineau et al. 2017, A&A; Gaia Collaboration 2023, A&A
+  confidence: consensus
+  hypothetical_queries:
+  - Gaia 与 2MASS 星表交叉匹配半径取多少 arcsec
+  - IRAS 目录与光学星表匹配用什么半径
+  - 交叉证认出现多候选源时怎么选最可信的
+- id: database_source_reliability
+  title: 数据库来源可信度评估
+  category: best_practice
+  tags:
+  - database
+  - catalog
+  - reliability
+  - VizieR
+  - Gaia
+  - reference
+  applies_to:
+    entities:
+    - Star
+    - galaxy
+    - quasar
+    - FRB
+  content: "天文数据库来源可信度评估:\n\n1. 数据发布级别 (DR):\n   - DR3 > DR2 > DR1 (后期发布通常修正前期系统误差)\n   - 同一任务的最终数据发布 (如 Gaia DR3) 是最权威版本\n\n2. 官方文档与基准论文:\n   - 有官方 benchmark 论文 (reference_paper) + 文档的数据库更可信\n   - 有独立验证\
+    \ (cross-validation) 的目录优于未验证的\n\n3. 已知系统误差:\n   - Gaia: 视差 zonal errors ~0.02-0.03 mas\n   - 2MASS: 测光零点稳定, 但饱和源 (J<8) 不可靠\n   - IRAS: 位置误差大, 远红外通量受 Cirrus 污染\n\n4. 使用建议:\n   - 关键科学结论需用独立数据库交叉验证\n\
+    \   - 注意 catalog 版本差异 (同一来源不同发布)\n   - VizieR 镜像可能与官方源有微小差异\n"
+  source: Gaia Collaboration 2023, A&A; IRAS Explanatory Supplement 1988
+  confidence: consensus
+  hypothetical_queries:
+  - 天文数据库来源可信度怎么评估
+  - Gaia 后续数据发布是否一定优于前期版本
+  - 引用星表数据时要注意哪些版本和系统误差问题
+- id: simbad_otype_classification_rule
+  title: Simbad 对象类型分类规则
+  category: methodology
+  tags:
+  - simbad
+  - otype
+  - taxonomy
+  applies_to:
+    entities:
+    - star
+    - galaxy
+    - agn
+    - radio_source
+    - xray_source
+  content: 'Simbad 对象类型分类 (otypes.list) 的规则:
+
+    - 层级分类 (最多 4 级, 如 Star→Variable→Pulsating→Cepheid)
+
+    - 物理本质优先于波长: 只有本质未知时才用波长类 (Radio/IR/UV/X/gamma)
+
+    - 一个天体可携带多个 otype (主类型 + 附加波长类)
+
+    - CANDI 列 = 候选类型 (需确认)
+
+    判定意义: 波长类标签 (Rad/IR/X 等) 是''未知本质''的占位符而非物理类型 —
+
+    记录里只有 ''IR source'' 而无物理类型时, 应视为待证认对象;
+
+    ''err''/''mul''/''?'' 分别表示伪影/混合/未知。'
+  source: Simbad guide chF; Oberto 2018; IVOA Object Types Vocabulary
+  confidence: consensus
+  hypothetical_queries:
+  - Simbad otype 里的 IR source 波长类标签代表什么
+  - 只有波长类标签没有物理类型的记录该怎么理解
+  - Simbad 对象类型分类规则和层级结构
+- id: extragalactic_catalog_crossmatch
+  title: 河外多目录交叉证认
+  category: methodology
+  tags:
+  - crossmatch
+  - catalog
+  applies_to:
+    entities:
+    - galaxy
+  content: '河外目录交叉证认需按位置精度分级:
+
+    - IRAS (60/100 μm): 位置误差 30-120″ (远红外 PSF 大)
+
+    - PGC/HYPERLEDA: 光学位置 ~1-3″
+
+    - 2MASS XSC: 近红外位置 3-10″
+
+    - NED/ANames/IDType: 别名与目录身份解析
+
+    物理原理: 不同波段的源可能对应不同物理成分 (IRAS 尘埃、2MASS 恒星质量、
+
+    光学星族), 位置重合 ≠ 同一对象 (投影污染)。
+
+    判定线索: 高精度 (2MASS) 与低精度 (IRAS) 匹配半径必须按较差分级,
+
+    盲目用单一半径会造成误匹配 (IRAS 源错配到相邻 2MASS 源)。'
+  source: VizieR 目录文档; 交叉证认方法文献; Contini 1998
+  confidence: consensus
+  hypothetical_queries:
+  - 河外源 IRAS 与 2MASS 位置差多少还能证认
+  - 多波段河外目录交叉匹配半径怎么按精度分级
+  - 河外源位置重合但物理成分不同该怎么处理
+- id: sample_selection_bias
+  title: 样本选择效应
+  category: methodology
+  tags:
+  - selection
+  - bias
+  applies_to:
+    entities:
+    - galaxy
+    - agn
+    - quasar
+  content: '巡天选择效应决定样本物理构成:
+
+    - IRAS 60 μm 选择 → 尘埃恒星形成星系偏置 (冷色星暴优先)
+
+    - 2MASS K 波段 → 红/质量星系偏置
+
+    - 可见光 → 星族主导
+
+    - WISE W1-W2 ≥ 0.8 → AGN (但要求 MIR 中 AGN 占优, 宿主 >50% 时失效)
+
+    - 蓝/UV 超 (Markarian) → 主要命中星暴核 (82% 星暴 vs 9% Seyfert)
+
+    物理原理: 各波段示踪不同物理成分 (尘埃/恒星质量/电离);
+
+    判定线索: 跨目录比较统计性质时必须说明选择函数;
+
+    表面亮度受限巡天 (LSB 星系) 与星等受限巡天的完备性完全不同。'
+  source: Helou; Stern 2012; Markarian 星系光谱分类
+  confidence: consensus
+  hypothetical_queries:
+  - IRAS 60 微米选样偏置哪种类型的星系
+  - WISE W1-W2 颜色选 AGN 在什么条件下失效
+  - 不同波段巡天样本的物理构成有什么差异
+- id: photometric_system_conversion
+  title: 测光系统转换
+  category: method_comparison
+  tags:
+  - photometry
+  - vega
+  - ab
+  applies_to:
+    fields:
+    - apparent_magnitude
+    entities:
+    - star
+    - galaxy
+  content: '测光零点系统: Vega (2MASS/BVRI, 恒星为 0) vs AB (SDSS/JWST, 常数通量);
+
+    同一源两系统差值随颜色变化 (Vega-AB: u~0.9, g~0.1, z~-0.5 mag 量级)。
+
+    物理原理: 零点定义不同 (Vega 星 = 0 mag vs 1e-23 erg/s/Hz 常数)。
+
+    换算: mag ↔ Jy 需波段有效频率。
+
+    判定线索: 跨系统比较星等必须先转换 — G (Gaia) 与 V 差 0.1-0.5 mag 随
+
+    颜色变化, 直接相减会误判变光; 2MASS JHK 同为 Vega 可直接比较;
+
+    光变曲线跨系统拼接是变星研究的常见错误源。'
+  source: Jordi 2010; 2MASS Explanatory Supplement; SDSS 文档
+  confidence: consensus
+  hypothetical_queries:
+  - Vega 星等与 AB 星等之间怎么换算
+  - Gaia G 星等与 V 星等能直接比较吗
+  - 2MASS JHK 与 SDSS 测光零点系统能否混用
+- id: multi_source_redshift_compare
+  title: 多来源红移比较
+  category: method_comparison
+  tags:
+  - redshift
+  - compare
+  applies_to:
+    fields:
+    - redshift
+    entities:
+    - galaxy
+  content: '同一星系多个红移来源的比较规则:
+
+    - spec-z 精度 1e-3-1e-4 (基准); photo-z 3-6%
+
+    - 目录间 spec-z 差异 <0.001 属测量系统差
+
+    - photo-z vs spec-z 差异 >0.1 (1+z) = 灾难性失败 (颜色简并)
+
+    物理原理: 不同测量方法误差机制独立 (谱线位移 vs SED 模板);
+
+    判定线索: 汇总多来源红移时用中位数/加权平均并报告离散度;
+
+    单一 photo-z 高红移结论必须标注不确定性;
+
+    z > 4 时 photo-z 与 spec-z 系统性偏差是常态而非数据错误。'
+  source: COSMOS/EDisCS photo-z 研究; PAU 窄带
+  confidence: consensus
+  hypothetical_queries:
+  - 同一星系 spec-z 与 photo-z 差多少算正常
+  - photo-z 与 spec-z 相差多大算灾难性失败
+  - 多个来源的红移值怎么汇总成单一估计
+- id: agn_host_galaxy_interpretation
+  title: AGN 宿主星系解读
+  category: methodology
+  tags:
+  - agn
+  - host
+  applies_to:
+    entities:
+    - agn
+    - quasar
+  content: 'AGN 宿主星系性质解读:
+
+    - 典型 X 选 AGN (z~0.5-1.4) 宿主恒星质量 7.8e10-1.2e11 Msun (大质量星系)
+
+    - 高红移类星体宿主 (3-5)e11 Msun — 高红移宿主偏亮是选择效应
+
+    - M_BH 与宿主恒星质量比 ~0.5% (经典核球/椭圆适用)
+
+    物理原理: AGN 与宿主共同演化 (M_BH-σ 反馈); 光度选择偏向亮宿主;
+
+    判定线索: 宿主质量与 M_BH 明显不匹配 (差 >2 dex) = 伪核球
+
+    (pseudobulge) 或并合中星系 (M_BH-σ 不适用);
+
+    M_BH/M_bulge 0.1% 是旧值 (样本污染), 现代值 0.5%。'
+  source: Alonso-Herrero 2008; Kormendy & Ho 2013
+  confidence: consensus
+  hypothetical_queries:
+  - X 选 AGN 宿主星系恒星质量典型值是多少
+  - 黑洞质量与宿主星系质量比 0.5% 的适用范围
+  - 高红移类星体宿主星系为什么看起来偏亮
+- id: catalog_documentation_check
+  title: 目录文档核对
+  category: best_practice
+  tags:
+  - catalog
+  - documentation
+  applies_to:
+    entities:
+    - galaxy
+    - star
+  content: '使用 VizieR/目录数据前的核对清单:
+
+    - 核对列描述/readme: 单位、口径 (等照度 vs PSF)、质量标志列 (q_*)
+
+    - waveband 与 research_methodology 字段: 确认波段与测量方法
+
+    - 版本口径: 同一目录不同发布 (IRAS v2.1 vs PSC) 数值可能不同
+
+    - 质量标志: q_* = 2 可靠, 低质量标志需标注或排除
+
+    物理原理: 目录列语义 (尤其口径与质量标志) 决定数值可比性;
+
+    判定线索: 跨目录比较前必须确认口径一致 (K20e vs K_psf 不可混用);
+
+    红外源 (IRAS) 位置误差大, 与高精度目录匹配需分级半径。'
+  source: VizieR 文档; IRAS Explanatory Supplement; 2MASS XSC
+  confidence: consensus
+  hypothetical_queries:
+  - VizieR 目录里质量标志 q 列的含义是什么
+  - 等照度星等与 PSF 星等能混用吗
+  - 同一目录不同发布版本的数值不同怎么办
+- id: bayesian_inference_astro
+  title: 贝叶斯推断在天文中的应用
+  category: methodology
+  tags:
+  - bayesian
+  - statistics
+  - prior
+  - posterior
+  - inference
+  applies_to:
+    fields:
+    - redshift
+    - stellar_mass
+    - luminosity
+    - effective_temperature
+  content: "贝叶斯推断流程: 后验 = 似然 x 先验 / 证据\nposterior = P(theta|D) = L(D|theta) x pi(theta) / P(D)\n\n1. 似然: 观测误差通常取高斯, L ~ exp(-chi2/2); 误差棒必须真实, 误差被低估会伪造后验显著性\n2. 先验选择规则:\n   - 位置参数 (红移、星等): 均匀先验 (需物理范围截断)\n\
+    \   - 尺度参数 (光度、质量等跨数量级): 对数均匀 (Jeffreys 先验, pi ~ 1/theta)\n   - 有界物理参数: 检查后验是否堆积在边界 (提示先验截断过紧或模型错误)\n3. 输出: 后验中位数/众数 + 68% 最高后验密度区间 (HPDI)\n\n判定线索:\n- 样本少/信噪比低时后验由先验主导, 必须报告先验形式\n- 均匀先验在数据弱时低估不确定度 (置信区间过窄)\n\
+    - 两来源参数不一致用贝叶斯因子 B 判断: B > 10 强证据, B < 0.1 强反证, 不能只看差几个 sigma\n- 报告参数应给出完整后验分布或至少分位数, 而非仅最佳值"
+  source: Trotta 2008, Contemporary Physics; Foreman-Mackey et al. 2013, PASP
+  confidence: consensus
+  hypothetical_queries:
+  - 贝叶斯推断中尺度参数应该用什么先验
+  - 贝叶斯因子怎么判断两个来源参数不一致
+  - 后验分布堆积在参数边界说明什么问题
+- id: least_squares_fitting
+  title: 最小二乘与卡方拟合
+  category: methodology
+  tags:
+  - chi_square
+  - fitting
+  - least_squares
+  - statistics
+  applies_to:
+    fields:
+    - redshift
+    - stellar_mass
+    - luminosity
+    - radial_velocity
+    - orbital_period
+  content: "最小二乘拟合: 最小化加权残差平方和\nchi2 = sum_i (y_i - f(x_i))^2 / sigma_i^2\n\n1. 权重: 每点按 1/sigma_i^2 加权; 误差未知时先等权拟合, 用残差标准差估计误差后重拟合 (迭代)\n2. 约化卡方: chi2_nu = chi2 / (N - k), N 为点数, k 为自由参数数\n   - chi2_nu\
+    \ ~ 1: 拟合良好, 误差估计正确\n   - chi2_nu >> 1: 模型不适用或误差被低估 (需查系统误差/遗漏项)\n   - chi2_nu << 1: 误差被高估或过拟合\n3. 参数置信区间: 1 参数 68% 区间对应 delta chi2 = 1 (2 参数时 delta chi2 = 2.30), 不是 delta chi2_nu = 1\n\n判定线索:\n- 残差应随机分布;\
+    \ 残差呈系统性弯曲 = 模型形式错误\n- 简单把误差缩放至 chi2_nu = 1 来导出参数误差是错误做法 (Andrae 2010)\n- 数据清洗中误差棒系统性偏小会伪造高显著结果, 先查误差来源再下结论"
+  source: Andrae, Schulze-Hartung & Melchior 2010, arXiv:1012.3754; Bevington & Robinson, Data Reduction and Error Analysis
+  confidence: consensus
+  hypothetical_queries:
+  - 约化卡方远大于 1 说明什么
+  - 最小二乘拟合的参数置信区间怎么取
+  - 拟合残差呈系统性弯曲说明什么
+- id: cross_match_angular
+  title: 角距匹配与误差椭圆
+  category: methodology
+  tags:
+  - cross_match
+  - angular_separation
+  - error_ellipse
+  - astrometry
+  - matching_radius
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - parallax
+    - proper_motion_ra
+    - proper_motion_dec
+  content: "角距匹配 (cross-match) 几何:\n大圆距离 sep = arccos(sin d1 sin d2 + cos d1 cos d2 cos(a1 - a2)); 小角距近似 sep ~ sqrt((dRA cos d)^2 + (dDec)^2)\n\n1. 匹配半径参考: 高精度 (Gaia/Hipparcos) 1-5 arcsec; 中精度 (2MASS/SDSS)\
+    \ 3-10 arcsec; 低精度 (IRAS) 30-120 arcsec\n   - 半径过小漏匹配; 过大误匹配 (邻近源污染)\n2. 误差椭圆: 位置误差为椭圆 (长半轴 a, 短半轴 b, 位置角 PA); 两源综合误差 sigma = sqrt(sig1^2 + sig2^2) 沿分离方向投影\n   - 95% 置信误差转 1 sigma: 乘 0.4085 (即除以 sqrt(2\
+    \ ln 20))\n3. 概率匹配: 归一化分离 sep/sigma > 3 判为不同源; 多候选用似然比/贝叶斯方法 (NWAY), 结合亮度与颜色排除\n\n物理原理: 高斯位置误差卷积后, 归一化分离服从瑞利型分布, 阈值由两源误差共同决定\n\n判定线索: 匹配前核对历元 (J2000 vs B1950) 与参考系 (ICRS vs FK5); 自行大的源需外推至相同历元; 已知系统误差\
+    \ (如 0.2 arcsec) 平方相加"
+  source: Pineau et al. 2011/2017, A&A; CDS xMatch 文档; Budavari & Szalay 2008, ApJ
+  confidence: consensus
+  hypothetical_queries:
+  - 两个星表的位置误差椭圆怎么合并匹配
+  - 归一化分离大于多少判定为不同源
+  - 大自行天体跨历元匹配时怎么处理
+- id: spectral_classification_mk
+  title: MK 光谱分类体系 (应用与校验)
+  category: methodology
+  tags:
+  - spectral_type
+  - mk_classification
+  - stellar
+  - taxonomy
+  - effective_temperature
+  applies_to:
+    fields:
+    - spectral_type
+    - effective_temperature
+    - surface_gravity
+    entities:
+    - star
+  content: 'MK 光谱分类应用与校验 (测量原理见 measurement_theory 的 mk_spectral_classification 条目):
+
+    格式: 光谱型[数字小数] + 光度级, 如 G2V, K0III, M5.5Ia
+
+    温度序 OBAFGKM (O 最热), 每型 0-9 细分; 光度级 I (超巨星) II (亮巨星) III (巨星) IV (亚巨星) V (主序) VI/sd (亚矮星)
+
+
+    典型主序有效温度 (K): O 28000-50000, B 10000-28000, A 7500-10000, F 6000-7500, G 5000-6000 (G2 ~ 5800), K 3500-5000, M 2500-3500
+
+
+    判定线索:
+
+    - SpT 与 Teff 矛盾 (标 M 型却给 20000 K) = 字段错位或解析错误
+
+    - 光度级对应 log g (dex): V ~ 4.0-4.5, III ~ 2.5-3.0, I ~ 0-1; 与 log g 不符需复核
+
+    - 同一源跨目录 SpT 差 1-2 子型属正常 (目视分类主观性); 差 > 3 子型或跨光度级 = 数据冲突
+
+    - 低金属丰度使金属线变弱, 易误判为更热型; 双星 (SB2) 线型模糊
+
+    - 格式校验: 正则 [OBAFGKM][0-9](\.5)?(I|II|III|IV|V|VI|sd)? 筛出解析错误; 白矮星 D 型、褐矮星 L/T/Y 型超出主序列'
+  source: Morgan, Keenan & Kellman 1943; Gray & Corbally 2009, Stellar Spectral Classification; Pecaut & Mamajek 2013, ApJS
+  confidence: consensus
+  ranges:
+    effective_temperature:
+      lo: 2500
+      hi: 50000
+      unit: K
+  hypothetical_queries:
+  - M 型恒星记录 20000 K 有效温度是否正确
+  - 跨目录光谱型差多少子型算数据冲突
+  - MK 光谱分类格式和光度级的含义
+- id: stellar_mass_function_imf
+  title: 恒星初始质量函数 (IMF)
+  category: methodology
+  tags:
+  - imf
+  - mass_function
+  - salpeter
+  - kroupa
+  - chabrier
+  - stellar_mass
+  applies_to:
+    fields:
+    - stellar_mass
+    - luminosity
+    entities:
+    - star
+    - galaxy
+  content: '恒星初始质量函数 IMF: 恒星形成时刻的质量分布, 对数形式 xi(log M) = dN/dlog M
+
+
+    1. Salpeter (1955): 单幂律 dN/dM ~ M^-2.35 (对数斜率 -1.35), 适用 0.4-10 Msun
+
+    2. Kroupa (2001): 分段幂律, 低质量端变平: 0.08-0.5 Msun 斜率 -1.3; 0.5-1 Msun 斜率 -2.3; > 1 Msun 恢复 Salpeter 斜率
+
+    3. Chabrier (2003): < 1 Msun 用对数正态分布 (峰值 ~0.2 Msun), > 1 Msun 幂律 -2.35
+
+
+    物理原理: 质量分布由湍流与反馈的统计决定, 大体普适但低质量端偏离单幂律
+
+
+    判定线索:
+
+    - 低质量端受亮度限制探测不全, 统计斜率必须做完整度/选择效应改正
+
+    - Salpeter 与 Kroupa 归一化的质量-光比相差约 1.5 倍, 两者不可混用
+
+    - 高速度弥散星系 (中心 sigma > 200 km/s) 倾向 bottom-heavy IMF (低质量占比更高)
+
+    - 由观测质量函数反推 IMF 需扣除恒星演化损失与未分辨双星效应'
+  source: Salpeter 1955, ApJ; Kroupa 2001, MNRAS; Chabrier 2003, PASP; La Barbera et al. 2013, MNRAS
+  confidence: consensus
+  ranges:
+    stellar_mass:
+      lo: 0.08
+      hi: 120
+      unit: Msun
+  hypothetical_queries:
+  - Salpeter 与 Kroupa 初始质量函数的质量光比差多少
+  - 由观测质量函数反推 IMF 需要做什么改正
+  - 速度弥散大的星系倾向哪种类型的 IMF
+- id: source_detection_deblend
+  title: 源检测与去混叠 (deblending)
+  category: methodology
+  tags:
+  - source_detection
+  - deblending
+  - sextractor
+  - photometry
+  - segmentation
+  applies_to:
+    fields:
+    - flux_density
+    - apparent_magnitude
+    - right_ascension
+    - declination
+    entities:
+    - star
+    - galaxy
+  content: '源检测与去混叠流程 (SExtractor 范式):
+
+    1. 背景估计: 网格化去除天空面形 (mesh 尺寸影响亮源外延与拥挤场表现)
+
+    2. 阈值检测: 像素需高于 DETECT_THRESH (通常 1.5-3.5 sigma, 相对局部背景噪声) 且连通像素 >= DETECT_MINAREA (通常 4-10)
+
+    3. 去混叠: 多阈值树分裂 — DEBLEND_NTHRESH (层数, 默认 32); DEBLEND_MINCONT (最小对比度, 默认 0.005, 拥挤场降至 0.00005 可找回亮源翅膀中的弱源)
+
+    4. 测量: 等照度测光 vs Kron 自动孔径 (MAG_AUTO); 拥挤场用 PSF 拟合分离
+
+
+    判定线索:
+
+    - 阈值过低 -> 噪声假源; 过高 -> 丢弱源
+
+    - 拥挤场 (星系团、银道面) 未去混叠的测光系统性偏亮 (混合光)
+
+    - 分割图双峰/非对称 = 去混叠失败信号
+
+    - 点/延展判别: 星象尖锐度 CLASS_STAR < 0.5 为延展源; 混用不同孔径测光跨目录比较会引入系统差'
+  source: Bertin & Arnouts 1996, A&AS; SExtractor v2.x 文档
+  confidence: consensus
+  hypothetical_queries:
+  - SExtractor 检测阈值和最小面积怎么设置
+  - 拥挤场源去混叠参数 DEBLEND_MINCONT 怎么调
+  - 未去混叠的测光会有什么系统偏差
+- id: lomb_scargle_periodogram
+  title: Lomb-Scargle 周期图
+  category: methodology
+  tags:
+  - periodogram
+  - period_search
+  - time_series
+  - lomb_scargle
+  - variability
+  applies_to:
+    fields:
+    - orbital_period
+    - apparent_magnitude
+    - flux_density
+    entities:
+    - star
+    - galaxy
+    - agn
+  content: "Lomb-Scargle 周期图: 非均匀采样时间序列周期搜索的标准方法, 等价于对正弦 y = A sin(2 pi f t) + B cos(2 pi f t) 做最小二乘拟合; 传统 FFT 在缺测/非等间隔数据上不可用\n\n1. 功率谱峰值对应候选周期; 峰值高度本身不是显著性\n2. 假警报概率 FAP: 噪声产生同高功率的几率\n   - FAP < 0.01 (或\
+    \ 0.001) 才认为显著, 需考虑独立频率数修正\n   - 计算: Baluev (2008) 解析公式 或 蒙特卡洛置换检验 (bootstrap)\n3. 窗口函数: 采样模式产生混叠峰 — 地面观测 1 天混叠 (f_alias = f_true +- n/day), 月相 ~1/27 天; 分析前先检查窗口函数\n\n判定线索:\n- 周期接近观测基线长度或采样间隔倍数的峰不可信\n\
+    - 谐波峰 (P/2, 2P) 常见, 需确认基频\n- 报告必须给出 FAP 而非裸功率; 不同 FAP 方法结果差异大时取保守值\n- 周期值跨目录比较: 核对采样基线是否覆盖周期 (基线过短测不到长周期)"
+  source: Lomb 1976, Ap&SS; Scargle 1982, ApJ; VanderPlas 2018, ApJS; Baluev 2008, MNRAS
+  confidence: consensus
+  hypothetical_queries:
+  - Lomb-Scargle 周期图显著性 FAP 怎么评估
+  - 非均匀采样光变数据怎么搜索周期
+  - 地面观测一天采样产生的混叠峰怎么识别
+- id: extinction_correction_method
+  title: 消光改正方法
+  category: methodology
+  tags:
+  - extinction
+  - reddening
+  - color_excess
+  - E(B-V)
+  - rv
+  applies_to:
+    fields:
+    - extinction
+    - apparent_magnitude
+    - absolute_magnitude
+    entities:
+    - star
+    - galaxy
+  content: '消光改正流程:
+
+    1. 色余法: E(B-V) = (B-V)_obs - (B-V)_0; 本征色 (B-V)_0 由光谱型校准表给出
+
+    2. 消光换算: A_V = R_V x E(B-V); 弥散星际介质 R_V = 3.1 +- 0.2 (CCM 消光律), 视线方向实测 2.5-4.7 (大 R_V = 尘埃颗粒偏大)
+
+    3. 多波段: A_lambda 由消光律 (CCM/Fitzpatrick) 内插; 近红外 A_lambda ~ lambda^-1.6~-2.6, 对消光不敏感
+
+    4. 标准星法: 用光谱型已知的 OB 星测多波段色余, 拟合得到 R_V 与 A_V
+
+
+    判定线索:
+
+    - E(B-V) < 0 = 本征色估计错误或非恒星污染 (双星/发射线星)
+
+    - 银河系前景尘埃图 (SFD/3D 消光图) 与观测色余矛盾时, 用近红外交叉验证 (红外对消光不敏感)
+
+    - 远红外/射电波段无需光学消光改正
+
+    - 改正后颜色应落回恒星/星系本征色序列; 改正过量会使颜色异常过蓝'
+  source: Cardelli, Clayton & Mathis 1989, ApJ; Rieke & Lebofsky 1985, ApJ; Fitzpatrick 1999, PASP; Schlafly et al. 2016, ApJ
+  confidence: consensus
+  hypothetical_queries:
+  - E(B-V) 为负说明什么
+  - 消光换算 R_V 取 3.1 还是按视线方向实测值
+  - 近红外波段需要做光学消光改正吗
+- id: mcmc_sampling_astro
+  title: 马尔可夫链蒙特卡洛 (MCMC) 参数采样
+  category: methodology
+  tags:
+  - mcmc
+  - markov_chain
+  - monte_carlo
+  - sampling
+  - emcee
+  - posterior
+  applies_to:
+    fields:
+    - redshift
+    - stellar_mass
+    - luminosity
+    - orbital_period
+    - effective_temperature
+  content: "MCMC: 从后验分布采样的标准方法, 贝叶斯参数估计的默认工具 (常用 affine-invariant 集成采样器 emcee)\n\n1. 配置: walkers 通常 30-100, 每链数万步量级; 初始位置散布整个先验范围\n2. 收敛判据 (结果报告必须包含):\n   - burn-in: 丢弃未收敛初始段 (通常前 10-30%)\n   - 自相关时间 tau:\
+    \ 有效样本数 N_eff = N / tau, N_eff > 100 才可靠 (粗略)\n   - 多链混合检验: Gelman-Rubin R_hat < 1.1\n3. 输出: 后验中位数 + 16%/84% 分位或 HPDI; 参数高度相关时只报边缘分布会误导\n\n判定线索:\n- 结果缺少链长度与收敛诊断 = 可靠性存疑\n- 后验峰堆积在参数边界 = 先验或模型问题\n- 后验与最小二乘最佳值相差\
+    \ > 3 sigma 且非对称 = 非高斯后验, 均值不可靠\n- 与贝叶斯推断条目配套使用: 先验选择决定采样空间"
+  source: Foreman-Mackey et al. 2013, PASP (emcee); Hogg & Foreman-Mackey 2018, ApJS
+  confidence: consensus
+  hypothetical_queries:
+  - MCMC 采样结果的收敛判据有哪些
+  - emcee 采样器 walkers 数量和链长怎么设置
+  - 有效样本数 N_eff 达到多少才算可靠
+- id: pca_dimensionality_reduction
+  title: 数据降维与可视化 (PCA)
+  category: methodology
+  tags:
+  - pca
+  - dimensionality_reduction
+  - visualization
+  - spectra
+  - machine_learning
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+    - effective_temperature
+    - surface_gravity
+    entities:
+    - star
+    - galaxy
+  content: "数据降维方法 (光谱/多波段测光高维观测):\n1. 主成分分析 (PCA): 找方差最大正交方向\n   - 光谱数据前 3-5 个主成分通常解释 > 90% 方差\n   - 输入必须标准化 (均值 0, 方差 1), 否则亮端主导; 不能含 NaN (需先插补或迭代加权 PCA)\n   - 用途: 光谱自动分类、SED 模板族构建、参数空间可视化\n2. 非线性方法 t-SNE/UMAP:\
+    \ 适合可视化聚类结构; 超参数 (perplexity/n_neighbors) 影响结果, 需多组参数验证稳健性\n\n判定线索:\n- 降维后聚类边界清晰且物理量 (红移/温度/质量) 沿流形连续 = 结构真实\n- 孤立离群簇先查数据错误 (单位/零点混用、坐标错位), 再考虑新物理\n- 数据质量校验应用: 同一源多来源参数经 PCA 投影应邻近, 偏离远 = 冲突或错误\n- 强相关维度直接作距离度量会放大冗余影响,\
+    \ 需先降维再聚类"
+  source: Jolliffe 2002, Principal Component Analysis; McInnes et al. 2018 (UMAP); VanderPlas 2018, ApJS
+  confidence: consensus
+  hypothetical_queries:
+  - 光谱 PCA 前几个主成分能解释多少方差
+  - PCA 降维输入需要标准化处理吗
+  - 降维聚类出现孤立簇时先查什么
+- id: selection_bias_correction
+  title: 选择偏差 (Malmquist 偏差) 识别与改正
+  category: methodology
+  tags:
+  - selection
+  - bias
+  - malmquist
+  - completeness
+  - luminosity_function
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+    - luminosity
+    - redshift
+    entities:
+    - galaxy
+    - agn
+    - quasar
+    - star
+  content: "选择偏差 (Malmquist 偏差) 的识别与改正:\n\n1. 物理原理: 流量受限 (星等受限) 巡天在远处丢失本征暗源, 观测样本的平均绝对星等系统性偏亮; 在星等 m 处偏亮量 delta M ~ sigma^2 d ln A(m)/dm (sigma 为绝对星等弥散, A(m) 为源计数函数, Malmquist 1920)\n\n2. 选择函数: 探测概率 p(S|F)\
+    \ = 0.5[1 + erf((F - F_th)/(sqrt(2) sigma(F)))], 由流量极限与测量噪声决定\n\n3. 改正方法:\n   - 1/Vmax 加权: 每个源按其可探测最大体积倒数加权, 等效构造体积受限样本\n   - 极大似然法: 光度函数建模时显式包含不完备函数 f(m)\n   - 贝叶斯前向建模: 选择函数写入似然, 同时改正 Malmquist 与 Eddington\
+    \ 偏差 (阈值附近噪声散射)\n\n4. 判定线索:\n   - 光度函数亮端过陡或暗端人为截断 = 选择效应未改正\n   - 视星等分布堆积在极限星等附近 = 样本不完备\n   - 平均亮度随红移系统性增加 = 亮端偏倚, 跨样本比较统计量前必须检查"
+  source: Malmquist 1920; Schmidt 1968, ApJ 151; Sandage, Tammann & Yahil 1979, ApJ; Lauer et al. 2021, ApJ
+  confidence: consensus
+  hypothetical_queries:
+  - Malmquist 偏差怎么识别和改正
+  - 1/Vmax 加权法怎么构造等效体积受限样本
+  - 视星等堆积在极限星等附近说明什么
+- id: volume_limited_sample
+  title: 体积受限样本与 V/Vmax 检验
+  category: methodology
+  tags:
+  - volume_limited
+  - v_over_vmax
+  - completeness
+  - redshift
+  - sample
+  applies_to:
+    fields:
+    - redshift
+    - apparent_magnitude
+    - luminosity
+    - distance
+    entities:
+    - galaxy
+    - agn
+    - quasar
+  content: "体积受限样本与 V/Vmax 检验:\n\n1. 构造: 按红移 (距离) 上限 z_max 截断, 使该体积内所有亮于光度阈值的源全部纳入; 与流量受限样本不同, 完备性不随距离恶化\n\n2. V/Vmax 检验 (Schmidt 1968): V = 源所在红移对应的体积, Vmax = 该源仍可被探测的最大红移对应体积\n   - 空间分布均匀时 V/Vmax 在 [0,1]\
+    \ 均匀分布, 均值 0.5, 标准差 1/sqrt(12) ~ 0.288\n   - <V/Vmax> 显著大于 0.5 = 空间密度演化或样本不完备; 小于 0.5 = 密度随距离衰减\n   - 用 KS 检验检验均匀性; 多个流量极限 (如射电+光学) 时取先达到者的 Vmax\n\n3. 用途: 检验流量受限样本完备性; 光度函数/质量函数数密度估计的参照基准\n\n4. 判定线索:\n\
+    \   - 声称体积受限的样本在 z_max 内仍缺亮源 = 不完备\n   - 体积受限与流量受限样本光度函数亮端不一致 = 改正或截断错误"
+  source: Schmidt 1968, ApJ 151; Avni & Bahcall 1980, ApJ 235
+  confidence: consensus
+  hypothetical_queries:
+  - V/Vmax 检验怎么操作
+  - 体积受限样本与流量受限样本有什么区别
+  - V/Vmax 均值显著大于 0.5 说明什么
+- id: cluster_analysis_method
+  title: 聚类分析方法 (DBSCAN/FoF/层次聚类)
+  category: methodology
+  tags:
+  - clustering
+  - dbscan
+  - friends_of_friends
+  - hierarchy
+  - membership
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - redshift
+    - velocity_dispersion
+    entities:
+    - galaxy
+    - galaxy_cluster
+    - galaxy_group
+    - star
+  content: "天文聚类分析方法 (DBSCAN/层次/图聚类):\n\n1. DBSCAN: 参数 eps (邻域半径) + min_samples (核心点最小邻居数); 无需预设簇数, 抗噪, 支持任意形状\n   - 天文惯例: min_samples ~ 2 x 维数 (5D Gaia 天体测量数据取 ~10); eps 由 k 近邻距离曲线拐点确定\n   - 密度不均的场用 HDBSCAN\
+    \ (层次扩展版, 自动选尺度)\n\n2. Friends-of-Friends (FoF): 链接长度内互相连通的点成团; 宇宙学模拟找暗晕的标准工具 (链接长度取 ~0.2 x 平均粒子间距量级)\n   - 链接长度过大合并簇, 过小分裂簇\n\n3. 层次/图聚类: 树状图按成员数或致密度切分; 谱聚类用于速度场/组群划分\n\n4. 判定线索:\n   - 成员数低于场污染预期 =\
+    \ 虚假簇 (需背景扣除)\n   - 位置聚集但红移弥散大 = 前景/背景混合, 需速度信息确认\n   - 结果对超参数敏感时不可靠; 用轮廓系数等内部指标评估稳健性"
+  source: Ester et al. 1996, KDD (DBSCAN); Huchra & Geller 1982, ApJ (FoF); Castro-Ginard et al. 2018, A&A; Hunt & Reffert 2021, A&A
+  confidence: consensus
+  hypothetical_queries:
+  - DBSCAN 聚类 eps 参数怎么确定
+  - FoF 链接长度怎么选取
+  - 星系团成员判定用什么聚类方法
+- id: robust_fitting_outliers
+  title: 鲁棒拟合与离群值处理
+  category: methodology
+  tags:
+  - robust
+  - fitting
+  - outliers
+  - sigma_clipping
+  - mad
+  - lad
+  applies_to:
+    fields:
+    - flux_density
+    - radial_velocity
+    - redshift
+    entities:
+    - star
+    - galaxy
+  content: "鲁棒拟合与离群值处理:\n\n1. 最小二乘 (L2) 对离群值敏感 (破坏点 0%): 单个坏点即可拉偏拟合\n   - 鲁棒替代: LAD/L1 最小绝对偏差 (破坏点 ~50%), Huber 损失 (c = 1.345, 大残差转线性惩罚), Tukey 双权估计\n\n2. 迭代 sigma 裁剪: 以中位数 (或裁剪均值) 为中心, 剔除超过 2-3 sigma 的点,\
+    \ 迭代至收敛\n   - 散布用 MAD: sigma_MAD = 1.4826 x median(|x - median|), 高斯数据下与标准差等价但抗污染\n\n3. 天文场景: 测光零点拟合、径向速度测量、视差批量解算、目录间参考系旋转角估计均需鲁棒拟合\n\n4. 判定线索:\n   - 残差重尾/尖峰时普通最小二乘的参数误差被低估\n   - 裁剪阈值过小或迭代过多会削掉真实信号\
+    \ (如变源/发射线)\n   - 裁剪前后统计量变化超过 1 sigma = 离群值在主导结果, 必须报告两种结果"
+  source: Huber 1964, Ann. Math. Statist.; Hampel et al. 1986, Robust Statistics; astropy.stats 文档; Martin & Mortlock 2024, MNRAS
+  confidence: consensus
+  hypothetical_queries:
+  - MAD 估计散布与标准差怎么换算
+  - 迭代 sigma 裁剪的剔除阈值取多少合适
+  - 离群值主导拟合结果时应该怎么办
+- id: monte_carlo_simulation
+  title: 蒙特卡洛模拟 (不确定度传播与合成观测)
+  category: methodology
+  tags:
+  - monte_carlo
+  - simulation
+  - uncertainty
+  - synthetic
+  - injection
+  applies_to:
+    fields:
+    - flux_density
+    - luminosity
+    - redshift
+    - stellar_mass
+    entities:
+    - galaxy
+    - star
+    - agn
+  content: "蒙特卡洛模拟 (不确定度传播与合成观测):\n\n1. 不确定度传播: 对每个测量按其误差分布采样 N 次 (通常 N = 1000-10000), 重算导出量, 由结果分布给出中位数与 68%/95% 区间\n   - 适用于非线性公式与相关误差 (相关时需按误差协方差联合采样)\n\n2. 合成观测 (mock catalog): 按物理模型生成模拟巡天并注入真实选择函数与噪声,\
+    \ 用于:\n   - 注入-回收试验: 注入已知源统计回收率, 得到完备函数与检测极限\n   - 估计系统偏差与协方差矩阵 (外部误差参考)\n\n3. 注意: 模拟结果的统计误差 ~ 1/sqrt(N); 采样分布必须反映真实误差, 误差低估会伪造显著性\n\n4. 判定线索:\n   - 报告误差仅来自解析传播而无 MC 检验 = 未计入系统误差\n   - 注入-回收完备曲线在极限星等/流量处陡降是正常形态,\
+    \ 非数据错误"
+  source: Metropolis & Ulam 1949, JASA; Andrae 2010, arXiv:1009.2755; Norberg et al. 2009, MNRAS 396
+  confidence: consensus
+  hypothetical_queries:
+  - 蒙特卡洛不确定度传播一般采样多少次
+  - 注入回收实验怎么测量巡天完备性
+  - 相关误差在蒙特卡洛模拟里怎么联合采样
+- id: k_correction_method
+  title: K 改正 (波段平移改正)
+  category: methodology
+  tags:
+  - k_correction
+  - photometry
+  - redshift
+  - bandshift
+  - absolute_magnitude
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - absolute_magnitude
+    - redshift
+    - flux_density
+    entities:
+    - galaxy
+    - agn
+    - quasar
+  content: "K 改正 (波段平移):\n\n1. 定义 (Hogg et al. 2002): m_R = M_Q + DM + K_QR, 即观测波段 R 的视星等与发射系波段 Q 的绝对星等之间的桥; DM = 5 log10(D_L/10 pc)\n   不做 K 改正直接比较不同红移源 = 比较不同静止波段的光, 结果无物理意义\n\n2. 波段平移特例: 改正到蓝移 (1+z)\
+    \ 的波段时 K = -2.5 log10(1+z) (AB 系统), 与源 SED 无关 — SDSS 的 0.1r 带即采用此思路\n\n3. 幂律近似: SED 为 f_nu ~ nu^-alpha 时经典 K = 2.5(alpha - 1) log10(1+z); alpha = 1 (nu f_nu 常数) 时 K = 0\n\n4. 典型值: 光学波段红星系 z ~ 0.3-0.7\
+    \ 时 K ~ +0.3 至 +1.0 mag; 忽略改正会使绝对星等偏暗、光度偏低\n\n5. 判定线索:\n   - 高红移源绝对星等/光度系统性偏小 = 未做 K 改正\n   - 外推远超模板覆盖波长范围时 K 改正不确定度剧增, 应标注"
+  source: Oke & Sandage 1968, ApJ; Hogg et al. 2002, PASP 114; Blanton & Roweis 2007, AJ
+  confidence: consensus
+  hypothetical_queries:
+  - K 改正公式怎么使用
+  - 不做 K 改正直接比较高红移星系会有什么偏差
+  - 红移 0.5 附近红星系 K 改正典型值多少
+- id: spectral_template_fitting
+  title: 光谱模板拟合 (红移/恒星参数/发射线分解)
+  category: methodology
+  tags:
+  - template_fitting
+  - photometric_redshift
+  - sed
+  - stellar_parameters
+  - emission_line
+  applies_to:
+    fields:
+    - redshift
+    - spectral_type
+    - effective_temperature
+    - surface_gravity
+    - metallicity
+    - flux_density
+    entities:
+    - galaxy
+    - star
+    - agn
+  content: "光谱模板拟合 (红移估计/恒星参数/发射线分解):\n\n1. 红移估计 (SED 模板法): 在模板网格 x 红移网格上最小化 chi2 = sum (m_obs - m_model)^2 / sigma^2 (BPZ/LePhare/EAzY 范式), 结合光度函数先验与断带位置约束\n   - 亮样本典型精度 sigma ~ 0.02-0.03 (NMAD ~3% 量级);\
+    \ 深场有 1-3% 灾难性失败 (photo-z 偏差 > 0.1(1+z), 颜色简并)\n\n2. 恒星参数: 观测光谱与合成谱网格 (Teff/log g/[Fe/H], 如 PHOENIX/BT-Settl) 匹配或机器学习回归, 高信噪比时 Teff 误差 ~100 K 量级\n\n3. 发射线分解: 每根线用高斯/洛伦兹分量拟合 (宽窄线成分、恒星形成区多分量), 线比如 [OIII]/Hbeta\
+    \ 用于激发分类\n\n4. 判定线索:\n   - 红移后验多峰 = 模板简并 (年轻恒星+消光与高红移模式相似)\n   - 拟合残差含强发射线特征 = 模板缺发射线成分\n   - 恒星参数与光谱型矛盾时优先怀疑模板覆盖范围而非数据"
+  source: Arnouts et al. 1999, MNRAS; Benitez 2000, ApJ (BPZ); Ilbert et al. 2006, A&A; Brammer et al. 2008, ApJ (EAzY); Cavuoti et al. 2017, MNRAS
+  confidence: consensus
+  hypothetical_queries:
+  - SED 模板拟合测光红移的精度是多少
+  - 红移后验出现多峰说明什么问题
+  - 恒星光谱模板拟合的有效温度误差量级
+- id: photometry_astrometry_quality_control
+  title: 测光/天测数据质量控制
+  category: best_practice
+  tags:
+  - quality_control
+  - photometry
+  - astrometry
+  - repeatability
+  - systematic
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - right_ascension
+    - declination
+    - parallax
+    - proper_motion_ra
+    - proper_motion_dec
+    - flux_density
+    entities:
+    - star
+    - galaxy
+  content: "测光/天测数据质量控制 (重复观测与系统差检测):\n\n1. 内部一致性: 重复观测同一源的弥散决定精度地板\n   - 例: 2MASS 要求 SNR >> 20 点源测光重复性 < 5% (0.054 mag); 大巡天全天空零点一致性可达 7-12 mmag (随波段)\n\n2. 系统差检测: 与独立外部目录对比残差 vs 位置/星等/气根\n   - 零点空间变化可达\
+    \ 30-50 mmag (平场/孔径改正不足的典型信号); 天测亮星系统差地板 ~16 mas, 框架级 ~5 mas\n\n3. 交叉验证手段: 标准星场反复观测、相邻天区重叠区残差图、恒星色-色轨迹 (零点偏移使轨迹整体平移)\n\n4. 判定线索:\n   - 多个波段零点同向偏移 = 系统零点问题; 仅单波段偏移 = 该波段响应异常\n   - 残差随视位置/时间/气根变化 = 改正项缺失\n\
+    \   - 不同仪器同类测量直接合并前必须完成零点一致性检验"
+  source: 2MASS Explanatory Supplement; Magnier et al. 2020, ApJS (Pan-STARRS1); Gaia Collaboration 2023, A&A
+  confidence: established
+  hypothetical_queries:
+  - 重复观测测光重复性多少算合格
+  - 多波段测光零点同向偏移说明什么
+  - 不同仪器同类测量合并前要做什么检验
+- id: machine_learning_classification
+  title: 机器学习分类 (随机森林/神经网络/不平衡处理)
+  category: methodology
+  tags:
+  - machine_learning
+  - random_forest
+  - neural_network
+  - classification
+  - class_imbalance
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - redshift
+    - flux_density
+    - spectral_type
+    entities:
+    - galaxy
+    - star
+    - agn
+    - quasar
+  content: "机器学习分类 (随机森林/神经网络/不平衡处理):\n\n1. 常用模型: 随机森林/梯度提升树 (XGBoost) 在星-星系-类星体分离上准确率可达 99% 量级且可解释 (特征重要度); 神经网络 (MLP/CNN) 适合光谱/图像分类, 但需大数据量与调参\n\n2. 样本不平衡: 稀有类 (类星体、暂现源) 占比很低时:\n   - SMOTE/SMOTEENN 过采样、类别权重、代价敏感学习\n\
+    \   - 评估用精确率/召回率/F1 与 ROC-AUC; 总体准确率会掩盖稀有类全漏\n\n3. 交叉验证: 分层 K 折保持类别比例; 训练集必须与目标巡天同源、同选择函数\n\n4. 判定线索:\n   - 验证集精度高但独立巡天数据上骤降 = 选择函数/零点差异导致的分布漂移\n   - 准确率高而稀有类召回率过低 = 不平衡未处理\n   - 输出概率接近 0.5 的样本应标注待确认,\
+    \ 不要强制归类"
+  source: Breiman 2001, Machine Learning; Chawla et al. 2002, JAIR (SMOTE); Ball et al. 2006, ApJ
+  confidence: established
+  hypothetical_queries:
+  - 星-星系-类星体分离用什么机器学习模型
+  - 分类样本类别不平衡怎么处理
+  - 模型在独立巡天数据上精度骤降为什么
+- id: bootstrap_resampling
+  title: Bootstrap/Jackknife 重采样误差估计
+  category: methodology
+  tags:
+  - bootstrap
+  - resampling
+  - jackknife
+  - error_estimation
+  applies_to:
+    fields:
+    - redshift
+    - luminosity
+    - flux_density
+    entities:
+    - galaxy
+    - star
+  content: "Bootstrap/Jackknife 重采样误差估计:\n\n1. Bootstrap (Efron 1979): 从样本有放回重抽样 B 次 (通常 1000-10000), 每次重算统计量, 由分布给出标准误与 68%/95% 百分位区间\n   - 适用于任意统计量 (中位数、相关、拟合参数), 无需解析误差公式\n\n2. Jackknife: 依次剔除一个 (或一块)\
+    \ 观测后重算 n 次; 计算量小但方差估计有偏\n\n3. 天文注意事项:\n   - 强相关/成团数据 (如星系相关函数) 须按子体积块重采样, 逐天体 bootstrap 使方差偏高 ~40%\n   - 样本过小 (n < 20) 时 bootstrap 区间不稳; 非对称分布用 BCa 偏差校正区间\n\n4. 判定线索:\n   - 误差报告无方法说明时优先怀疑简单高斯假设\n \
+    \  - bootstrap 与解析误差显著不一致 = 分布非高斯或存在相关结构"
+  source: Efron 1979, Ann. Statist.; Barrow, Bhavsar & Sonoda 1984, MNRAS; Norberg et al. 2009, MNRAS 396
+  confidence: consensus
+  hypothetical_queries:
+  - bootstrap 重采样次数取多少合适
+  - 成团相关数据怎么进行 bootstrap 重采样
+  - bootstrap 与解析误差不一致说明什么
+- id: censored_data_upper_limits
+  title: 上限值 (未检出) 数据处理 — 生存分析
+  category: methodology
+  tags:
+  - upper_limit
+  - censored
+  - survival_analysis
+  - kaplan_meier
+  - nondetection
+  applies_to:
+    fields:
+    - flux_density
+    - luminosity
+    - apparent_magnitude
+    entities:
+    - galaxy
+    - agn
+    - quasar
+    - star
+  content: "上限值 (未检出) 数据处理 — 生存分析:\n\n1. 问题: 未检出的源给出流量上限而非真实值; 丢弃上限、填 0 或填流量极限都会系统性偏倚统计量 (光度分布/光度函数偏亮)\n\n2. Kaplan-Meier 乘积限估计 (Feigelson & Nelson 1985 引入天文): 无参数估计含删失数据的分布, 得到均值/中位数/百分位\n   - 上限是左删失,\
+    \ 用变换 Y = M - X 转为右删失后处理 (ASURV 软件)\n\n3. 两样本检验 (Gehan/logrank/Peto-Prentice) 与删失回归 (Schmitt, Buckley-James) 用于子样本比较与相关性检验\n\n4. 有效性条件: 删失必须与变量本身无关 (随机删失); 最亮源也删失时均值未定义, 中位数始终可定义\n\n5. 判定线索:\n   - 数据库上限标记\
+    \ (is_upper_limit 类字段) 被当作真实值 = 统计结论不可信\n   - 仅用检测源推导的分布系统性偏亮, 与含上限的 KM 估计对比可量化偏差"
+  source: Kaplan & Meier 1958, JASA; Feigelson & Nelson 1985, ApJ; Isobe, Feigelson & Nelson 1986, ApJ; ASURV (LaValley, Isobe & Feigelson 1992)
+  confidence: consensus
+  hypothetical_queries:
+  - 未检出的流量上限数据怎么估计分布
+  - Kaplan-Meier 方法怎么处理含上限的样本
+  - 上限值被当作真实值会带来什么统计偏差
+- id: limiting_magnitude_estimation
+  title: 极限星等估计 (曝光/口径/天光公式)
+  category: methodology
+  tags:
+  - limiting_magnitude
+  - signal_to_noise
+  - exposure_time
+  - sky_background
+  - depth
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+  content: '极限星等估计 (背景受限点源):
+
+    m_lim = zp - 2.5 log10(SNR x sqrt(n B / t))  (zp 零点星等, n 源覆盖像素数, B 天光每像素电子数, t 总曝光秒)
+
+
+    三种噪声区制: 源噪声受限 SNR ~ t^0.5; 背景受限 (最常见) SNR = N_src/sqrt(N_sky);
+
+    读出噪声受限 SNR ~ t (读出噪声不随曝光累积) — 极限星等 ~ zp - 1.25 log10(t)
+
+
+    经验标度: 曝光 4 倍 -> 深 0.75 mag; 天光亮 2 倍 -> 曝光需 2 倍补偿;
+
+    视宁度差 2 倍 -> 损失 0.4-0.75 mag (源像素 n ~ FWHM^2);
+
+    SNR 要求 3 -> 5 -> 暗 0.4-0.55 mag、需 ~2.8 倍曝光。
+
+
+    物理原理: 泊松统计 + 天光本底主导噪声; 深度随 t 只按 1.25 log10(t) 增长。
+
+
+    判定线索: 声称极限星等与曝光/口径/天光组合不符时用公式核算;
+
+    深场叠加深度 m_coadd = 1.25 log10(Σ 10^(0.8 m_i))。
+
+    '
+  source: McLean 1997; LSST Science Requirements SM TN-016; INGRID/LIRIS 灵敏度文档
+  confidence: consensus
+  hypothetical_queries:
+  - 1 米望远镜 1 小时曝光在暗天光下的极限星等是多少
+  - 如何用信噪比公式估算点源探测极限星等
+  - 曝光时间翻倍极限星等能提高多少
+- id: signal_noise_trading
+  title: 信噪比权衡 (时间/波段/空间分辨率分配)
+  category: methodology
+  tags:
+  - signal_to_noise
+  - tradeoff
+  - exposure_time
+  - resolution
+  - sky_background
+  applies_to:
+    fields:
+    - flux_density
+    - apparent_magnitude
+  content: '信噪比权衡: 观测时间/波段/空间分辨率的分配规则
+
+    SNR = N_src / sqrt(N_src + N_sky + RN^2)  (N_src 源光子, N_sky 天光, RN 读出噪声)
+
+
+    关键标度 (固定其他条件): 背景受限 SNR ~ sqrt(t) (翻倍需 4 倍曝光);
+
+    读出噪声受限 SNR ~ t; 源噪声受限 SNR ~ sqrt(t);
+
+    空间分辨率: PSF 半宽减半 -> 源像素 n 减为 1/4 -> 背景受限 SNR 约增 2 倍 (拥挤场代价: 混叠);
+
+    光谱分辨率: R 翻倍 -> 每像素光子减半 -> 连续谱 SNR 降 ~sqrt(2), 线/连续对比提高;
+
+    天光: 月夜亮 1-3 mag, 暗弱源需大幅加曝光或换窄带。
+
+
+    物理原理: 背景受限时天光是独立于源的泊松本底;
+
+    分辨率-深度权衡由源像素数 n 与孔径范围决定。
+
+
+    判定线索: 声称配置 A 比 B 深 1 mag 而曝光/口径相同, 用上式核算;
+
+    比较不同空间/光谱采样配置必须固定总光子预算。
+
+    '
+  source: LSST SM TN-016; 曝光时间计算器文档; 观测策略文献
+  confidence: consensus
+  hypothetical_queries:
+  - 观测时间与信噪比如何权衡
+  - 空间分辨率和光谱分辨率如何影响信噪比
+  - 暗弱源观测选择窄带还是宽带
+- id: astrometric_calibration_method
+  title: 天体测量校准 (参考网/畸变模型/内部一致性)
+  category: methodology
+  tags:
+  - astrometry
+  - calibration
+  - plate_solution
+  - gaia
+  - reference_frame
+  applies_to:
+    fields:
+    - right_ascension
+    - declination
+    - parallax
+    - proper_motion_ra
+    - proper_motion_dec
+  content: '天体测量校准: 参考星网 + 畸变模型两步
+
+    1. 参考网: 用 Gaia 参考星 (G~20 时精度 ~0.7 mas) 或自建合成主框架
+
+    2. 匹配: 星象检测 -> 参考目录匹配 -> 拟合切平面多项式/几何畸变模型 (SCAMP 范式)
+
+    3. 残差评估: 内部 RMS 与外部 RMS 分开报告
+
+
+    典型值: 地面 CCD 单帧天测解算 ~10 mas (受畸变模型限制, 非 Gaia 精度限制);
+
+    底片扫描重归算内部 RMS ~20-40 mas, 外部 ~0.15-0.3 arcsec;
+
+    差分天测 (小视场相对测量) 可至微角秒级; Gaia DR2 亮星框架旋转 ~0.15 mas/yr (EDR3 已修正)。
+
+
+    物理原理: 位置误差 = 星象定心、畸变模型与参考网误差的卷积;
+
+    参考网不自洽时拟合会把系统差吸收进畸变模型。
+
+
+    判定线索: 单帧残差 > 50 mas 提示畸变阶数不足/参考星太少/含自行大源;
+
+    跨历元合并前必须统一参考框架 (ICRS) 并外推自行到共同历元。
+
+    '
+  source: Zheng, Peng & Lin 2021, MNRAS; Lindegren et al. 2021, A&A (Gaia EDR3); NAROO 项目
+  confidence: consensus
+  hypothetical_queries:
+  - 用 Gaia 参考星做天体测量校准的精度能达到多少
+  - CCD 图像天测解算内部一致性多少 mas
+  - 底片扫描天测校准方法
+- id: spectroscopy_template_redshift
+  title: 光谱红移模板匹配 (交叉相关/发射线红移)
+  category: methodology
+  tags:
+  - redshift
+  - cross_correlation
+  - emission_line
+  - spectroscopy
+  - spec_z
+  applies_to:
+    fields:
+    - redshift
+    - spectral_type
+  content: "光谱红移测量 (模板匹配法):\n1. 交叉相关法 (Tonry & Davis 1979): 观测谱与模板谱傅里叶交叉相关, 峰位移给红移/速度;\n   误差估计 sigma_v ~ k/(1+r) (r 为相关峰信噪比), 可靠性阈值 r >= 3-4\n2. 发射线拟合法: 拟合 [O II] 3727/H-beta/[O III] 4959,5007 等多线联合定红移;\n\
+    \   单线精度 ~30-70 km/s (波长定标限制), 弱谱 ~150-300 km/s\n3. 吸收线星系: 模板匹配精度 ~50-100 km/s, 模板失配是主要误差源\n\n典型精度: spec-z 相对误差 1e-3 到 1e-4; photo-z 3-6% — 两者不可混用\n\n物理原理: 谱线位移 z = (lambda_obs - lambda_rest)/lambda_rest;\n\
+    交叉相关把整谱信息压缩为单峰, 抗噪且自动按强线加权。\n\n判定线索: r < 3 的红移应标注不可靠; 单发射线红移须警惕\n[O II] 3727 与 H-alpha 6563 错认 (对应 z 差 ~0.76);\n与 photo-z 差 > 0.1(1+z) 属灾难性失败。\n"
+  source: Tonry & Davis 1979, AJ 84, 1511; Kurtz & Mink 1998, PASP (RVSAO); SDSS 光谱处理文档
+  confidence: consensus
+  hypothetical_queries:
+  - 光谱红移交叉相关法 r 值多少才可靠
+  - 发射线星系光谱红移测量精度多少 km/s
+  - 如何判断光谱红移是否可靠
+- id: photometric_variability_detect
+  title: 变光检测 (统计显著性/超额方差/结构函数)
+  category: methodology
+  tags:
+  - variability
+  - excess_variance
+  - fvar
+  - structure_function
+  - significance
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+  content: "变光检测 (统计显著性):\n1. 常量假设检验: chi2 = Σ (m_i - <m>)^2 / sigma_i^2, 自由度 N-1;\n   概率 < 1e-3 判显著变光 (注意误差低估会伪造显著性)\n2. 超额方差/分数变幅: sigma_XS^2 = chi2/(N-1) - <err^2>;\n   Fvar = sqrt((sigma_XS^2)/<m>^2)\
+    \ (Vaughan 2003) — 单段光变 Fvar 散布大,\n   跨段/跨源比较需蒙特卡洛 (红噪声使方差逐段跳动)\n3. 结构函数 SF(dt) = sqrt(<(m_i - m_j)^2>): 幅度-时标关系,\n   平稳红噪声 SF ~ dt^gamma (DRW: gamma ~ 0.5, 见 agn_variability_model)\n\n物理原理: 天文光变为红噪声\
+    \ (PSD ~ f^-alpha, alpha ~ 1-2),\n短窗口方差估计剧烈涨落 — 显著性必须对红噪声蒙特卡洛校准。\n\n判定线索: 仅两点星等差 > 3 sigma 仍可能是噪声; 报告必须含\nFAP 或卡方概率; 先排除孔径/零点系统漂移再谈变光。\n"
+  source: Vaughan et al. 2003, MNRAS 345, 1271; Kozlowski 2016, ApJ 826, 118; Sesar et al. 2010, ApJ
+  confidence: consensus
+  hypothetical_queries:
+  - 如何判断一颗恒星的光变是否显著
+  - 超额方差 Fvar 计算变光幅度
+  - 光变结构函数怎么计算
+- id: multi_epoch_combination
+  title: 多历元合并 (加权平均/去趋势/系统差处理)
+  category: methodology
+  tags:
+  - multi_epoch
+  - coadd
+  - weighted_mean
+  - zero_point
+  - detrending
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+  content: '多历元合并 (加权平均/叠加):
+
+    1. 历元间零点归一: 每帧先校准到共同零点; 随时间/位置变化的零点需模型化
+
+    2. 加权平均: m = Σ(w_i m_i)/Σ(w_i), w_i = 1/sigma_i^2; 合并误差 sigma_comb = 1/sqrt(Σ w_i)
+
+    3. 超散检验: chi2 = Σ (m_i - m_comb)^2/sigma_i^2 >> N-1 -> 历元间系统差未消除 (或真实变光)
+
+    4. 图像叠加 (coadd): 加权平均 + sigma 裁剪剔坏帧; 深度 m_coadd = 1.25 log10(Σ 10^(0.8 m_i))
+
+    5. 去趋势: 剔除大气/仪器慢漂移, 注意别削掉真实长时标信号
+
+
+    物理原理: 独立高斯误差的加权平均最优; 残留系统差 (零点/PSF 变化)
+
+    是合并精度天花板, 大巡天相对零点一致性 ~3-10 mmag。
+
+
+    判定线索: 合并后 chi2 过大 -> 零点未对齐而非随机误差;
+
+    声称精度好于单历元散布/sqrt(N) 需系统差已完全消除的证据。
+
+    '
+  source: LSST DRP coadd 文档; DES DR1 校准; 2MASS Explanatory Supplement
+  confidence: consensus
+  hypothetical_queries:
+  - 多历元测光加权平均怎么合并
+  - 多帧图像叠加如何提高信噪比
+  - 历元间零点差异如何校正
+- id: survey_completeness
+  title: 巡天完备性 (完备函数/注入-回收/选择函数)
+  category: methodology
+  tags:
+  - completeness
+  - selection_function
+  - injection_recovery
+  - limiting_magnitude
+  - sample
+  applies_to:
+    fields:
+    - apparent_magnitude
+    - flux_density
+    - redshift
+  content: "巡天完备性 (选择函数):\n1. 注入-回收检验: 在真实图像中注入人工源 -> 统计回收率 vs 星等/流量,\n   得完备函数 c(m) (常报 50%/80%/90% 完备星等为指标)\n2. 形态依赖: 点源与延展源完备性不同; 延展源由表面亮度而非总流量决定\n   (低面亮度星系最易丢失)\n3. 几何依赖: 探测器边缘/离轴响应/掩星区 -> 完备性与天区位置有关\n\
+    4. 运动学完备: 自行/速度受限样本 (如白矮星、高速星) 需在速度空间做完备改正\n5. 统计使用: 光度函数/质量函数/事件率必须除以 c(m) 或按 1/c(m) 加权;\n   90% 完备点通常比 50% 点亮 0.5-1 mag, 报道极限星等须注明完备度水平\n\n物理原理: 探测是阈值过程, 阈值附近噪声散射使回收率平滑下降 (erf 形)。\n\n判定线索: 样本完备在极限附近陡降是正常形态;\n\
+    统计量在 50% 完备点附近急剧变化 = 未做完备性改正。\n"
+  source: Hopkins et al. 2003 (Phoenix Deep Survey); 注入-回收完备性范式综述
+  confidence: consensus
+  hypothetical_queries:
+  - 巡天完备性函数如何测量
+  - 注入回收实验 50% 完备星等是多少
+  - 样本选择函数对统计结果的影响
