@@ -20,4 +20,6 @@ secrets.json
 connection-status.json
 *.log
 *.local
+scratch/
+frontend/scratch/
 !tools/packaging/windows.spec
