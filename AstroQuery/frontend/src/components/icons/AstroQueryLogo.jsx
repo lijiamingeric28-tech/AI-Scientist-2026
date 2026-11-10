@@ -37,78 +37,78 @@ export default function AstroQueryLogo({
   <defs>
     <linearGradient id="aq-letter" gradientUnits="userSpaceOnUse"
                     x1="500" y1="350" x2="550" y2="600">
-      <stop offset="0" stopColor="#b8cfc2"/>
-      <stop offset="0.1577" stopColor="#bad0c4"/>
-      <stop offset="0.25" stopColor="#bcd2c6"/>
-      <stop offset="0.3462" stopColor="#c1d5ca"/>
-      <stop offset="0.4615" stopColor="#c9dbd1"/>
-      <stop offset="0.5769" stopColor="#d1e0d7"/>
-      <stop offset="0.6731" stopColor="#dae6df"/>
-      <stop offset="0.7692" stopColor="#e2ebe6"/>
-      <stop offset="0.8654" stopColor="#eaf1ed"/>
-      <stop offset="1" stopColor="#f1f5f3"/>
+      <stop offset="0" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))"/>
+      <stop offset="0.1577" stopColor="color-mix(in srgb, var(--seed-accent) 40%, var(--seed-bg))"/>
+      <stop offset="0.25" stopColor="color-mix(in srgb, var(--seed-accent) 35%, var(--seed-bg))"/>
+      <stop offset="0.3462" stopColor="color-mix(in srgb, var(--seed-accent) 30%, var(--seed-bg))"/>
+      <stop offset="0.4615" stopColor="color-mix(in srgb, var(--seed-accent) 25%, var(--seed-bg))"/>
+      <stop offset="0.5769" stopColor="color-mix(in srgb, var(--seed-accent) 20%, var(--seed-bg))"/>
+      <stop offset="0.6731" stopColor="color-mix(in srgb, var(--seed-accent) 15%, var(--seed-bg))"/>
+      <stop offset="0.7692" stopColor="color-mix(in srgb, var(--seed-accent) 10%, var(--seed-bg))"/>
+      <stop offset="0.8654" stopColor="color-mix(in srgb, var(--seed-accent) 6%, var(--seed-bg))"/>
+      <stop offset="1" stopColor="var(--seed-bg)"/>
     </linearGradient>
     <linearGradient id="aq-letter-sweep" gradientUnits="userSpaceOnUse" x1="0" y1="554" x2="0" y2="669">
-      <stop offset="0" stopColor="#e1eae5"/>
-      <stop offset="0.2174" stopColor="#e4ede8"/>
-      <stop offset="0.4783" stopColor="#ebf2ee"/>
-      <stop offset="0.7565" stopColor="#f2f6f4"/>
-      <stop offset="1" stopColor="#f8faf9"/>
+      <stop offset="0" stopColor="color-mix(in srgb, var(--seed-accent) 18%, white)"/>
+      <stop offset="0.2174" stopColor="color-mix(in srgb, var(--seed-accent) 14%, white)"/>
+      <stop offset="0.4783" stopColor="color-mix(in srgb, var(--seed-accent) 10%, white)"/>
+      <stop offset="0.7565" stopColor="color-mix(in srgb, var(--seed-accent) 6%, white)"/>
+      <stop offset="1" stopColor="#ffffff"/>
     </linearGradient>
     <linearGradient id="aq-letter-foot" gradientUnits="userSpaceOnUse" x1="0" y1="604" x2="0" y2="710">
-      <stop offset="0" stopColor="#f2f7f3"/>
-      <stop offset="0.283" stopColor="#f5f9f6"/>
-      <stop offset="0.5849" stopColor="#f9fbfa"/>
-      <stop offset="0.8113" stopColor="#fdfefd"/>
+      <stop offset="0" stopColor="color-mix(in srgb, var(--seed-accent) 12%, white)"/>
+      <stop offset="0.283" stopColor="color-mix(in srgb, var(--seed-accent) 8%, white)"/>
+      <stop offset="0.5849" stopColor="color-mix(in srgb, var(--seed-accent) 4%, white)"/>
+      <stop offset="0.8113" stopColor="color-mix(in srgb, var(--seed-accent) 2%, white)"/>
       <stop offset="1" stopColor="#ffffff"/>
     </linearGradient>
     <linearGradient id="aq-orbit-rim" gradientUnits="userSpaceOnUse" x1="186" y1="0" x2="841" y2="0">
-      <stop offset="0" stopColor="#fafcfb"/>
-      <stop offset="0.0595" stopColor="#f6f9f7"/>
-      <stop offset="0.1603" stopColor="#f3f8f5"/>
-      <stop offset="0.2656" stopColor="#f4f8f6"/>
-      <stop offset="0.3435" stopColor="#f0f6f3"/>
-      <stop offset="0.4031" stopColor="#e7f0eb"/>
-      <stop offset="0.4794" stopColor="#e0ece5"/>
-      <stop offset="0.5557" stopColor="#ddeae3"/>
-      <stop offset="0.6702" stopColor="#dbe9e1"/>
-      <stop offset="0.7389" stopColor="#ddeae3"/>
-      <stop offset="0.8076" stopColor="#e4eee8"/>
-      <stop offset="0.8763" stopColor="#ebf3ee"/>
-      <stop offset="0.9221" stopColor="#f3f8f5"/>
-      <stop offset="0.9603" stopColor="#fafcfb"/>
+      <stop offset="0" stopColor="#ffffff"/>
+      <stop offset="0.0595" stopColor="color-mix(in srgb, var(--seed-accent) 4%, white)"/>
+      <stop offset="0.1603" stopColor="color-mix(in srgb, var(--seed-accent) 8%, white)"/>
+      <stop offset="0.2656" stopColor="color-mix(in srgb, var(--seed-accent) 10%, white)"/>
+      <stop offset="0.3435" stopColor="color-mix(in srgb, var(--seed-accent) 14%, white)"/>
+      <stop offset="0.4031" stopColor="color-mix(in srgb, var(--seed-accent) 18%, white)"/>
+      <stop offset="0.4794" stopColor="color-mix(in srgb, var(--seed-accent) 22%, white)"/>
+      <stop offset="0.5557" stopColor="color-mix(in srgb, var(--seed-accent) 24%, white)"/>
+      <stop offset="0.6702" stopColor="color-mix(in srgb, var(--seed-accent) 24%, white)"/>
+      <stop offset="0.7389" stopColor="color-mix(in srgb, var(--seed-accent) 22%, white)"/>
+      <stop offset="0.8076" stopColor="color-mix(in srgb, var(--seed-accent) 16%, white)"/>
+      <stop offset="0.8763" stopColor="color-mix(in srgb, var(--seed-accent) 10%, white)"/>
+      <stop offset="0.9221" stopColor="color-mix(in srgb, var(--seed-accent) 6%, white)"/>
+      <stop offset="0.9603" stopColor="color-mix(in srgb, var(--seed-accent) 2%, white)"/>
       <stop offset="1" stopColor="#ffffff"/>
     </linearGradient>
     <linearGradient id="aq-orbit-face" gradientUnits="userSpaceOnUse" x1="186" y1="0" x2="841" y2="0">
-      <stop offset="0" stopColor="#fafbfa"/>
-      <stop offset="0.0519" stopColor="#f7faf8"/>
-      <stop offset="0.0977" stopColor="#f4f7f5"/>
-      <stop offset="0.174" stopColor="#f0f5f2"/>
-      <stop offset="0.2504" stopColor="#e7efea"/>
-      <stop offset="0.2885" stopColor="#dde8e2"/>
-      <stop offset="0.3267" stopColor="#d4e2da"/>
-      <stop offset="0.3649" stopColor="#cadbd2"/>
-      <stop offset="0.4031" stopColor="#c5d8cd"/>
-      <stop offset="0.4412" stopColor="#bfd4c8"/>
-      <stop offset="0.5099" stopColor="#bbd1c4"/>
-      <stop offset="0.6397" stopColor="#b8cfc2"/>
-      <stop offset="0.8229" stopColor="#b9cfc3"/>
-      <stop offset="0.8855" stopColor="#bcd2c6"/>
-      <stop offset="0.9145" stopColor="#c2d6cb"/>
-      <stop offset="0.9374" stopColor="#ccdcd3"/>
-      <stop offset="0.9603" stopColor="#dce7e1"/>
-      <stop offset="0.9802" stopColor="#f2f6f3"/>
-      <stop offset="0.9939" stopColor="#fcfdfd"/>
+      <stop offset="0" stopColor="#ffffff"/>
+      <stop offset="0.0519" stopColor="color-mix(in srgb, var(--seed-accent) 5%, white)"/>
+      <stop offset="0.0977" stopColor="color-mix(in srgb, var(--seed-accent) 10%, white)"/>
+      <stop offset="0.174" stopColor="color-mix(in srgb, var(--seed-accent) 15%, white)"/>
+      <stop offset="0.2504" stopColor="color-mix(in srgb, var(--seed-accent) 22%, white)"/>
+      <stop offset="0.2885" stopColor="color-mix(in srgb, var(--seed-accent) 28%, white)"/>
+      <stop offset="0.3267" stopColor="color-mix(in srgb, var(--seed-accent) 34%, white)"/>
+      <stop offset="0.3649" stopColor="color-mix(in srgb, var(--seed-accent) 38%, white)"/>
+      <stop offset="0.4031" stopColor="color-mix(in srgb, var(--seed-accent) 42%, white)"/>
+      <stop offset="0.4412" stopColor="color-mix(in srgb, var(--seed-accent) 40%, white)"/>
+      <stop offset="0.5099" stopColor="color-mix(in srgb, var(--seed-accent) 36%, white)"/>
+      <stop offset="0.6397" stopColor="color-mix(in srgb, var(--seed-accent) 34%, white)"/>
+      <stop offset="0.8229" stopColor="color-mix(in srgb, var(--seed-accent) 32%, white)"/>
+      <stop offset="0.8855" stopColor="color-mix(in srgb, var(--seed-accent) 28%, white)"/>
+      <stop offset="0.9145" stopColor="color-mix(in srgb, var(--seed-accent) 22%, white)"/>
+      <stop offset="0.9374" stopColor="color-mix(in srgb, var(--seed-accent) 16%, white)"/>
+      <stop offset="0.9603" stopColor="color-mix(in srgb, var(--seed-accent) 10%, white)"/>
+      <stop offset="0.9802" stopColor="color-mix(in srgb, var(--seed-accent) 5%, white)"/>
+      <stop offset="0.9939" stopColor="color-mix(in srgb, var(--seed-accent) 2%, white)"/>
       <stop offset="1" stopColor="#ffffff"/>
     </linearGradient>
     <linearGradient id="aq-orbit-rise" gradientUnits="userSpaceOnUse" x1="246" y1="650" x2="292" y2="584">
-      <stop stopColor="#b8cfc1" stopOpacity="0"/>
-      <stop offset=".08" stopColor="#b8cfc1" stopOpacity=".1"/>
-      <stop offset=".2" stopColor="#b8cfc1" stopOpacity=".33"/>
-      <stop offset=".39" stopColor="#b8cfc1" stopOpacity=".6"/>
-      <stop offset=".63" stopColor="#b8cfc1" stopOpacity=".85"/>
-      <stop offset=".86" stopColor="#b8cfc1" stopOpacity=".98"/>
-      <stop offset="1" stopColor="#b8cfc1"/>
+      <stop stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))" stopOpacity="0"/>
+      <stop offset=".08" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))" stopOpacity=".1"/>
+      <stop offset=".2" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))" stopOpacity=".33"/>
+      <stop offset=".39" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))" stopOpacity=".6"/>
+      <stop offset=".63" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))" stopOpacity=".85"/>
+      <stop offset=".86" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))" stopOpacity=".98"/>
+      <stop offset="1" stopColor="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))"/>
     </linearGradient>
     <linearGradient id="aq-orbit-left-bevel" gradientUnits="userSpaceOnUse" x1="229" y1="656" x2="341" y2="550">
       <stop stopColor="#fff" stopOpacity="0"/>
@@ -153,7 +153,7 @@ export default function AstroQueryLogo({
           d="M 602.6 630.3 L 670.5 604.7 L 719.2 711 H 637.8 Z"/>
   </g>
 
-  <path id="aq-star" fill="#b9cfc2"
+  <path id="aq-star" fill="color-mix(in srgb, var(--seed-accent) 45%, var(--seed-bg))"
         d="M 509.4 461.6
            C 515.3 508.2 511.1 516.9 569.4 522.6
            C 511.7 528.2 515.4 537.6 509.4 585.8

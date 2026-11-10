@@ -23,49 +23,53 @@ import { recordConditionText } from '@/lib/scienceReading'
 const PAGE_SIZES = [10, 20, 50]
 const MONO = 'ui-monospace, Menlo, Consolas, monospace'
 
-/* 提取方式 badge（用户重设计：VLM 文本=蓝 / VLM 表格=绿 / 其他=灰） */
+/* 提取方式 badge（论文/标准提取=品牌主色，星表/数据库=辅助指示色，LLM/VLM文本=辅助指示色，图像=深色） */
 function MethodBadge({ method }) {
   const m = typeof method === 'string' ? method : ''
-  const vlm = m.startsWith('vlm')
+  const isDb = ['catalog', 'database', 'database_query', 'db'].includes(m)
+  const isLlm = m === 'llm_text' || m === 'vlm_text' || m === 'vlm_pdf' || m === 'llm'
+  const isFigure = m === 'vlm_figure' || m === 'figure'
   const style = {
-    padding: '2px 9px',
-    borderRadius: 12,
-    fontSize: '11.5px',
-    fontWeight: 500,
-    display: 'inline-block',
-    lineHeight: '15px',
+    padding: '2px 8px',
+    borderRadius: 'var(--radius-pill, 999px)',
+    fontSize: 'var(--text-l6, 11px)',
+    fontWeight: 600,
+    display: 'inline-flex',
+    alignItems: 'center',
+    lineHeight: '16px',
     whiteSpace: 'nowrap',
+    letterSpacing: '0.01em',
   }
-  if (!vlm) {
+  if (isDb || isLlm) {
     return (
       <span style={{
         ...style,
-        background: '#eef3f0',
-        color: '#466052',
-        border: '1px solid #d4dfd8',
+        background: 'var(--surface-aux-tint)',
+        color: 'var(--seed-aux)',
+        border: '1px solid color-mix(in srgb, var(--seed-aux) 25%, transparent)',
       }}>
         {extractionLabel(m)}
       </span>
     )
   }
-  if (m === 'vlm_table') {
+  if (isFigure) {
     return (
       <span style={{
         ...style,
-        background: '#e8f5ec',
-        color: '#1e7e48',
-        border: '1px solid #c2e2cc',
+        background: 'color-mix(in srgb, var(--seed-aux) 10%, var(--surface-card))',
+        color: 'color-mix(in srgb, var(--seed-aux) 80%, var(--seed-ink))',
+        border: '1px solid color-mix(in srgb, var(--seed-aux) 25%, transparent)',
       }}>
-        VLM 表格
+        {extractionLabel(m)}
       </span>
     )
   }
   return (
     <span style={{
       ...style,
-      background: '#eef4ff',
-      color: '#2563eb',
-      border: '1px solid #c9dcfe',
+      background: 'var(--surface-accent-tint)',
+      color: 'var(--seed-accent)',
+      border: '1px solid color-mix(in srgb, var(--seed-accent) 25%, transparent)',
     }}>
       {extractionLabel(m)}
     </span>
@@ -426,9 +430,9 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                       aria-sort={yearSort === 'asc' ? 'ascending' : yearSort === 'desc' ? 'descending' : 'none'}
                       title={sortTip}
                       style={{
-                        textAlign: 'left', padding: thPadding, fontWeight: 550,
-                        color: yearSort !== 'none' ? 'var(--accent)' : 'var(--content-fg-tertiary)',
-                        fontSize: 12, whiteSpace: 'nowrap', cursor: 'pointer',
+                        textAlign: 'left', padding: thPadding, fontWeight: 600,
+                        color: yearSort !== 'none' ? 'var(--seed-accent)' : 'var(--text-primary)',
+                        fontSize: 13.5, whiteSpace: 'nowrap', cursor: 'pointer',
                         userSelect: 'none',
                       }}
                     >
@@ -437,7 +441,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                   )
                 }
                 return (
-                  <th key={h} style={{ textAlign: 'left', padding: thPadding, fontWeight: 550, color: 'var(--content-fg-tertiary)', fontSize: 12, whiteSpace: 'nowrap' }}>
+                  <th key={h} style={{ textAlign: 'left', padding: thPadding, fontWeight: 600, color: 'var(--text-primary)', fontSize: 13.5, whiteSpace: 'nowrap' }}>
                     {h}
                   </th>
                 )
@@ -469,14 +473,14 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                 onKeyDown={event => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openRow(r) } }}
               >
                 {/* 1. 实体 */}
-                <td style={{ ...tdStyle, color: 'var(--content-fg)', fontWeight: 500, whiteSpace: 'nowrap' }} title={r.entity_name}>
+                <td style={{ ...tdStyle, color: 'var(--seed-accent)', fontWeight: 550, whiteSpace: 'nowrap' }} title={r.entity_name}>
                   {r.entity_name}
                 </td>
 
                 {/* 2. 性质（单行对齐，含紧凑条件徽标） */}
                 <td style={{ ...tdStyle, fontFamily: 'inherit', whiteSpace: 'nowrap' }} title={condText ? `${r.field_name} (${condText})` : r.field_name}>
                   <div className="table-property-inline">
-                    <span className="table-property-name">{propertyLabel(r.field_name)}</span>
+                    <span className="table-property-name" style={{ fontWeight: 400, color: 'var(--text-body)' }}>{propertyLabel(r.field_name)}</span>
                     {condBadge && <span className="table-property-cond-pill" title={condText}>{condBadge}</span>}
                   </div>
                 </td>
@@ -494,9 +498,9 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                 </td>
 
                 {/* 5. 来源（期刊缩写+年份） */}
-                <td style={{ ...tdStyle, color: 'var(--content-fg-secondary)', fontSize: 12.5 }}>
+                <td style={{ ...tdStyle, color: 'var(--seed-accent)', fontSize: 12.5 }}>
                   <span className="record-source-cell" title={sourceName(sourceMap.get(r.source_id), r.source_id)}>
-                    <Icon.FileText style={{ width: 11, height: 11, flexShrink: 0, color: 'var(--content-fg-tertiary)' }} />
+                    <Icon.FileText style={{ width: 11, height: 11, flexShrink: 0, color: 'var(--seed-accent)' }} />
                     <span>{sourceName(sourceMap.get(r.source_id), r.source_id, true)}</span>
                   </span>
                 </td>

@@ -163,3 +163,74 @@ export const replayTask = (taskId, speed = 10, operationId = newOperationId()) =
 export const updateTaskTitle = (taskId, title) => request(`/tasks/${id(taskId)}/title`, { method: 'PUT', body: JSON.stringify({ title }) })
 export const openFile = (taskId, artifactId) => post(`/tasks/${id(taskId)}/open-file`, { artifact_id: artifactId })
 export const eventHistoryUrl = taskId => `${BASE}/tasks/${id(taskId)}/events/history`
+
+/* ── 问答智能体 (Agent Copilot Harness 2.0) ── */
+export function getAgentMessages(taskId) {
+  return request(`/tasks/${id(taskId)}/agent/messages`)
+}
+
+export function deleteAgentMessages(taskId) {
+  return request(`/tasks/${id(taskId)}/agent/messages`, { method: 'DELETE' })
+}
+
+export async function sendAgentChat(taskId, content, onEvent, signal) {
+  const url = `${BASE}/tasks/${id(taskId)}/agent/chat`
+  console.log('[api.sendAgentChat] fetch url:', url)
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: content }),
+    signal,
+  })
+  console.log('[api.sendAgentChat] res status:', res.status, res.headers.get('content-type'))
+  if (!res.ok) {
+    const errText = await res.text()
+    throw new Error(`智能体请求失败 (${res.status}): ${errText}`)
+  }
+
+  const reader = res.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  let buffer = ''
+  let currentEvent = 'message'
+  let currentData = []
+
+  const dispatch = () => {
+    if (currentData.length > 0) {
+      const raw = currentData.join('\n')
+      try {
+        onEvent?.(currentEvent, JSON.parse(raw))
+      } catch {
+        onEvent?.(currentEvent, raw)
+      }
+      currentData = []
+    }
+    currentEvent = 'message'
+  }
+
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split(/\r?\n/)
+    buffer = lines.pop() ?? ''
+
+    for (const line of lines) {
+      const trimmed = line.trim()
+      if (!trimmed) {
+        dispatch()
+        continue
+      }
+      if (trimmed.startsWith(':')) {
+        continue
+      }
+      if (trimmed.startsWith('event:')) {
+        currentEvent = trimmed.slice(6).trim()
+      } else if (trimmed.startsWith('data:')) {
+        currentData.push(trimmed.slice(5).trim())
+      }
+    }
+  }
+
+  dispatch()
+}
+

@@ -3,19 +3,19 @@
   background: transparent !important;
   color: var(--content-fg);
   border: none !important;
-  border-bottom: 1px solid var(--surface-border-subtle, rgba(68, 120, 91, 0.16)) !important;
+  border-bottom: 1px solid var(--surface-border-subtle, color-mix(in srgb, var(--seed-accent) 16%, transparent)) !important;
   border-radius: 0 !important;
   overflow: visible;
   transition: border-color 200ms ease;
   box-shadow: none !important;
 }
 .chat-stage:hover {
-  border-bottom-color: rgba(68, 120, 91, 0.35) !important;
+  border-bottom-color: color-mix(in srgb, var(--seed-accent) 35%, transparent) !important;
   box-shadow: none !important;
 }
 .chat-stage[data-state="running"] {
-  border-bottom: 1.5px solid var(--accent, #44785b) !important;
-  box-shadow: 0 1px 0 0 var(--accent, #44785b) !important;
+  border-bottom: 1.5px solid var(--seed-accent) !important;
+  box-shadow: 0 1px 0 0 var(--seed-accent) !important;
 }
 .chat-stage[data-state="waiting"] {
   border-bottom: 1px dashed rgba(220, 140, 40, 0.45) !important;
@@ -28,14 +28,14 @@
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  background: rgba(68, 120, 91, 0.12);
-  color: var(--accent-text, #345844);
+  background: color-mix(in srgb, var(--seed-accent) 12%, transparent);
+  color: var(--accent-text, var(--seed-accent));
   padding: 2.5px;
   flex-shrink: 0;
   transition: transform 180ms ease, background 180ms ease;
 }
 .chat-stage:hover .stage-check {
-  background: rgba(68, 120, 91, 0.2);
+  background: color-mix(in srgb, var(--seed-accent) 20%, transparent);
   transform: scale(1.06);
 }
 .chat-stage .chat-stage-head {
@@ -54,7 +54,7 @@
   transition: background 160ms ease;
 }
 .chat-stage .chat-stage-head:hover {
-  background: rgba(68, 120, 91, 0.04);
+  background: color-mix(in srgb, var(--seed-accent) 4%, transparent);
 }
 .chat-stage .chat-stage-head strong,
 .chat-stage-head strong,
@@ -63,21 +63,21 @@
   font-family: var(--font-ui) !important;
   font-size: 14px;
   font-weight: 600 !important;
-  color: var(--title-strong, #325843) !important;
+  color: var(--title-strong, var(--seed-accent)) !important;
   white-space: nowrap;
   letter-spacing: -0.01em;
 }
 .chat-column .markdown strong {
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
   font-weight: 600;
 }
 .stage-duration-chip {
   font-family: var(--font-mono, "JetBrains Mono", ui-monospace, monospace);
   font-size: 11px;
   font-weight: 500;
-  color: var(--content-fg-tertiary, #6e8276);
-  background: rgba(68, 120, 91, 0.05);
-  border: 1px solid rgba(68, 120, 91, 0.1);
+  color: var(--content-fg-tertiary);
+  background: color-mix(in srgb, var(--seed-accent) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--seed-accent) 10%, transparent);
   border-radius: 4px;
   padding: 1px 6px;
   line-height: 16px;
@@ -95,8 +95,8 @@
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: var(--accent-text, #325843);
-  border: 1px solid rgba(68, 120, 91, 0.16);
+  color: var(--accent-text, var(--seed-accent));
+  border: 1px solid color-mix(in srgb, var(--seed-accent) 16%, transparent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -109,8 +109,8 @@
 }
 .chat-stage:hover .stage-summary-pill {
   background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(68, 120, 91, 0.35);
-  box-shadow: 0 2px 8px rgba(68, 120, 91, 0.08);
+  border-color: color-mix(in srgb, var(--seed-accent) 35%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--seed-accent) 8%, transparent);
 }
 .chat-stage-status { font-size: 14px; color: var(--content-fg-secondary); white-space: nowrap; }
 .chat-chevron {
@@ -119,15 +119,15 @@
   height: 14px;
   transform: rotate(-90deg);
   transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), color 160ms ease;
-  color: var(--content-fg-tertiary, #76887d);
+  color: var(--content-fg-tertiary);
   margin-left: 4px;
 }
 .chat-stage:hover .chat-chevron {
-  color: var(--accent-text, #345844);
+  color: var(--accent-text, var(--seed-accent));
 }
 .chat-stage-head[aria-expanded="true"] .chat-chevron {
   transform: rotate(0deg);
-  color: var(--accent-text, #345844);
+  color: var(--accent-text, var(--seed-accent));
 }
 .chat-return {
   margin-left: 38px;
@@ -165,9 +165,9 @@
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(68, 120, 91, 0.14);
+  border: 1px solid color-mix(in srgb, var(--seed-accent) 14%, transparent);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(40, 80, 55, 0.04);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--seed-accent) 4%, transparent);
   font-size: 14px;
   line-height: 1.65;
 }
@@ -205,7 +205,7 @@
   align-items: center;
   padding: 2px 8px;
   border-radius: var(--radius-pill, 999px);
-  background: var(--accent-light, rgba(68,120,91,0.12));
+  background: var(--accent-light, color-mix(in srgb, var(--seed-accent) 12%, transparent));
   color: var(--accent-text);
   font-size: 12px;
   font-weight: 550;
@@ -402,7 +402,7 @@
   line-height: 1.5;
   margin: 0;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -414,7 +414,7 @@
   display: inline-block;
   width: 3.5px;
   height: 13px;
-  background: var(--accent, #44785b);
+  background: var(--seed-accent);
   border-radius: 2px;
   flex-shrink: 0;
 }
@@ -422,7 +422,7 @@
 /* 提问原问引用舱与意图识别芯片 */
 .understand-original-box {
   background: var(--surface-secondary, rgba(0, 0, 0, 0.025));
-  border-left: 2.5px solid var(--accent, #44785b);
+  border-left: 2.5px solid var(--seed-accent);
   padding: 8px 12px;
   border-radius: 0 8px 8px 0;
   font-size: 13px;
@@ -439,8 +439,8 @@
 }
 
 .intent-chip {
-  background: var(--accent-light, #eff5f0);
-  color: var(--accent-text, #345844);
+  background: var(--surface-accent-tint);
+  color: var(--accent-text, var(--seed-accent));
   border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
   font-size: 12px;
   font-weight: 500;
@@ -475,7 +475,7 @@
   line-height: 1.35;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 /* 已确认性质卡片网格 */
@@ -500,13 +500,13 @@
 
 .confirmed-property-card:hover {
   border-color: color-mix(in srgb, var(--accent) 35%, var(--surface-border));
-  box-shadow: 0 2px 8px rgba(68, 120, 91, 0.06);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--seed-accent) 6%, transparent);
 }
 
 .confirmed-property-card .prop-name {
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 .prop-unit-pill {
@@ -573,7 +573,7 @@
 
 .materials-subdued-summary:hover {
   background: var(--surface-secondary, rgba(0, 0, 0, 0.03));
-  color: var(--accent-text, #345844);
+  color: var(--accent-text, var(--seed-accent));
 }
 
 .materials-subdued-summary::-webkit-details-marker {
@@ -686,7 +686,7 @@
 .prop-wf-name {
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 .prop-wf-status {
@@ -697,8 +697,8 @@
 .prop-wf-count {
   font-size: 12px;
   font-weight: 600;
-  color: var(--accent-text, #345844);
-  background: var(--accent-light, #eff5f0);
+  color: var(--accent-text, var(--seed-accent));
+  background: var(--surface-accent-tint);
   padding: 1px 7px;
   border-radius: 4px;
 }
@@ -706,7 +706,7 @@
 /* 数据提取：阅读横幅与候选胶囊 */
 .reading-summary-banner {
   background: var(--surface-secondary, rgba(0, 0, 0, 0.02));
-  border-left: 2.5px solid var(--accent, #44785b);
+  border-left: 2.5px solid var(--seed-accent);
   padding: 7px 12px;
   border-radius: 0 6px 6px 0;
   font-size: 12.5px;
@@ -755,7 +755,7 @@
 
 .cand-prop-num {
   font-size: 13.5px;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 .cand-prop-num small {
@@ -819,11 +819,11 @@
 }
 
 .quality-stat-card.is-supported {
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border-color: color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .quality-stat-card.is-supported strong {
-  color: var(--accent-text, #345844);
+  color: var(--accent-text, var(--seed-accent));
 }
 
 .quality-stat-card.is-warning strong {
@@ -856,8 +856,8 @@
 
 .reextract-status-pill {
   font-size: 11px;
-  color: var(--accent-text, #345844);
-  background: var(--accent-light, #eff5f0);
+  color: var(--accent-text, var(--seed-accent));
+  background: var(--surface-accent-tint);
   padding: 1px 7px;
   border-radius: 4px;
 }
@@ -917,11 +917,11 @@
 }
 
 .cleaning-stat-card.is-changed {
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border-color: color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .cleaning-stat-card.is-changed b {
-  color: var(--accent-text, #345844);
+  color: var(--accent-text, var(--seed-accent));
 }
 
 .normalization-list {
@@ -987,12 +987,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
   border-radius: 8px;
   padding: 7px 12px;
   font-size: 12px;
-  color: var(--accent-text, #345844);
+  color: var(--accent-text, var(--seed-accent));
   line-height: 1.5;
 }
 
@@ -1016,7 +1016,7 @@
 
 .comparison-prop-card:hover {
   border-color: color-mix(in srgb, var(--accent) 35%, var(--surface-border));
-  box-shadow: 0 2px 8px rgba(68, 120, 91, 0.05);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--seed-accent) 5%, transparent);
 }
 
 .comp-card-head {
@@ -1029,7 +1029,7 @@
 .comp-prop-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 .comp-status-pill {
@@ -1041,8 +1041,8 @@
 }
 
 .comp-status-pill.is-checked {
-  background: var(--accent-light, #eff5f0);
-  color: var(--accent-text, #345844);
+  background: var(--surface-accent-tint);
+  color: var(--accent-text, var(--seed-accent));
   border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
   font-weight: 550;
 }
@@ -1088,7 +1088,7 @@
   gap: 7px;
   background: var(--surface-bg, #ffffff);
   border: 1px solid var(--surface-border);
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
   font-size: 12.5px;
   font-weight: 550;
   padding: 7px 14px;
@@ -1098,7 +1098,7 @@
 }
 
 .comp-open-analysis-btn:hover {
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border-color: var(--accent);
 }
 
@@ -1107,9 +1107,9 @@
 
 /* 1. HITL 人机协同审核样式优化 */
 .hitl-submit-btn {
-  background: var(--accent, #44785b) !important;
+  background: var(--seed-accent) !important;
   color: #ffffff !important;
-  border: 1px solid var(--accent, #44785b) !important;
+  border: 1px solid var(--seed-accent) !important;
   border-radius: 8px !important;
   font-weight: 600 !important;
   padding: 8px 18px !important;
@@ -1123,8 +1123,8 @@
 }
 
 .hitl-submit-btn:hover {
-  background: var(--accent-hover, #275f3e) !important;
-  box-shadow: 0 2px 8px rgba(68, 120, 91, 0.3) !important;
+  background: var(--accent-hover, var(--seed-accent)) !important;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--seed-accent) 30%, transparent) !important;
 }
 
 .hitl-submit-btn:disabled {
@@ -1158,8 +1158,8 @@
 }
 
 .review-reading .review-values button[aria-pressed="true"] {
-  background: var(--accent-light, #eff5f0);
-  border-color: var(--accent, #44785b);
+  background: var(--surface-accent-tint);
+  border-color: var(--seed-accent);
   box-shadow: 0 0 0 1px var(--accent);
 }
 
@@ -1172,7 +1172,7 @@
 .review-reading .review-values button strong {
   font-size: 14.5px;
   font-weight: 650;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
   font-family: var(--font-mono, ui-monospace, monospace);
 }
 
@@ -1238,7 +1238,7 @@
 .player-badge {
   font-size: 12.5px;
   font-weight: 650;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
   letter-spacing: -0.01em;
 }
 
@@ -1254,9 +1254,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--accent, #44785b);
+  background: var(--seed-accent);
   color: #ffffff;
-  border: 1px solid var(--accent, #44785b);
+  border: 1px solid var(--seed-accent);
   border-radius: 999px;
   padding: 5px 14px;
   font-size: 12.5px;
@@ -1266,8 +1266,8 @@
 }
 
 .player-play-btn:hover {
-  background: var(--accent-hover, #275f3e);
-  box-shadow: 0 2px 8px rgba(68, 120, 91, 0.3);
+  background: var(--accent-hover, var(--seed-accent));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--seed-accent) 30%, transparent);
 }
 
 .player-play-btn:disabled {
@@ -1344,7 +1344,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent, #44785b);
+  background: var(--seed-accent);
   border: 2.5px solid #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -1353,14 +1353,14 @@
 
 .player-range-slider::-webkit-slider-thumb:hover {
   transform: scale(1.25);
-  box-shadow: 0 2px 8px rgba(68, 120, 91, 0.4);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--seed-accent) 40%, transparent);
 }
 
 .player-range-slider::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent, #44785b);
+  background: var(--seed-accent);
   border: 2.5px solid #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -1387,7 +1387,7 @@
 
 .player-link-final {
   font-size: 12px;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
 }
 
 
@@ -1422,7 +1422,7 @@
   gap: 8px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
 }
 
 .historical-confirm-badge {
@@ -1430,12 +1430,12 @@
   align-items: center;
   gap: 4px;
   padding: 2px 8px;
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 999px;
   font-size: 11.5px;
   font-weight: 550;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
 }
 
 .confirm-target-row {
@@ -1452,7 +1452,7 @@
 
 .confirm-target-value {
   font-weight: 650;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   background: var(--surface-bg, #ffffff);
   border: 1px solid var(--surface-border, #dce4df);
   padding: 2px 8px;
@@ -1490,7 +1490,7 @@
 }
 
 .confirm-mapping-arrow {
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   font-weight: bold;
 }
 
@@ -1502,8 +1502,8 @@
 }
 
 .confirm-prop-tag {
-  color: var(--accent, #44785b);
-  background: var(--accent-light, #eff5f0);
+  color: var(--seed-accent);
+  background: var(--surface-accent-tint);
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -1526,7 +1526,7 @@
   gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
 }
 
 .confirm-selected-pills {
@@ -1538,9 +1538,9 @@
 
 .confirm-selected-pill {
   padding: 3px 10px;
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   font-size: 12px;
   font-weight: 550;
   border-radius: 999px;
@@ -1560,7 +1560,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 8px;
   flex-wrap: wrap;
@@ -1576,7 +1576,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   font-size: 13px;
   font-weight: 650;
 }
@@ -1587,7 +1587,7 @@
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 999px;
   font-size: 11.5px;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   font-weight: 550;
 }
 
@@ -1625,14 +1625,14 @@
 }
 
 .delivery-stat-card:hover {
-  border-color: var(--accent, #44785b);
+  border-color: var(--seed-accent);
   transform: translateY(-1px);
 }
 
 .delivery-stat-num {
   font-size: 20px;
   font-weight: 700;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   line-height: 1.2;
 }
 
@@ -1659,30 +1659,31 @@
   margin: 4px 0;
 }
 
-/* 彻底废除黑色大方块按钮，升级为学术翡翠绿胶囊主按钮 */
+/* 行动指引胶囊主按钮 (Action Capsule Button) */
 .delivery-primary-action-btn,
 .outcome-primary-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 9px 18px;
-  background: var(--accent, #44785b);
-  color: #ffffff;
+  padding: 8px 18px;
+  min-height: var(--size-h-m, 36px);
+  background: var(--seed-accent);
+  color: var(--seed-bg, #ffffff);
   border: 1px solid transparent;
-  border-radius: 20px;
-  font-size: 13.5px;
+  border-radius: var(--radius-pill, 999px);
+  font-size: var(--text-l4, 13.5px);
   font-weight: 550;
   cursor: pointer;
   transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 1px 3px rgba(68, 120, 91, 0.2);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--seed-accent) 25%, transparent);
 }
 
 .delivery-primary-action-btn:hover,
 .outcome-primary-action-btn:hover {
-  background: var(--accent-hover, #275f3e);
+  background: color-mix(in srgb, var(--seed-accent) 82%, black);
   transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(68, 120, 91, 0.28);
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--seed-accent) 35%, transparent);
 }
 
 .delivery-primary-action-btn:disabled,
@@ -1709,7 +1710,7 @@
   gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
 }
 
 .delivery-export-grid {
@@ -1734,8 +1735,8 @@
 }
 
 .export-pill-btn:hover {
-  border-color: var(--accent, #44785b);
-  background: var(--accent-light, #eff5f0);
+  border-color: var(--seed-accent);
+  background: var(--surface-accent-tint);
 }
 
 .export-pill-btn:disabled {
@@ -1746,7 +1747,7 @@
 .export-pill-label {
   font-size: 12px;
   font-weight: 600;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
 }
 
 .export-pill-desc {
@@ -1779,14 +1780,14 @@
   gap: 10px;
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
   flex-wrap: wrap;
 }
 
 .insight-track-badge {
   font-size: 11px;
-  color: var(--accent, #44785b);
-  background: var(--accent-light, #eff5f0);
+  color: var(--seed-accent);
+  background: var(--surface-accent-tint);
   padding: 2px 8px;
   border-radius: 999px;
   font-weight: 500;
@@ -1822,8 +1823,8 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent-light, #eff5f0);
-  color: var(--accent, #44785b);
+  background: var(--surface-accent-tint);
+  color: var(--seed-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1835,7 +1836,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent, #44785b);
+  background: var(--seed-accent);
   animation: pulse 1.2s infinite ease-in-out;
 }
 
@@ -1897,7 +1898,7 @@
 .insight-prop-name {
   font-size: 14px;
   font-weight: 650;
-  color: var(--title-strong, #44785b);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 .insight-unit-pill {
@@ -1914,8 +1915,8 @@
   align-items: center;
   gap: 4px;
   font-size: 11.5px;
-  color: var(--accent, #44785b);
-  background: var(--accent-light, #eff5f0);
+  color: var(--seed-accent);
+  background: var(--surface-accent-tint);
   padding: 2px 8px;
   border-radius: 999px;
   font-weight: 550;
@@ -1948,7 +1949,7 @@
 }
 
 .insight-dim-box.dim-found {
-  border-left: 3px solid var(--accent, #44785b);
+  border-left: 3px solid var(--seed-accent);
 }
 
 .insight-dim-title {
@@ -1957,7 +1958,7 @@
   gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
 }
 
 .insight-dim-icon {
@@ -1988,8 +1989,8 @@
 
 .insight-model-badge {
   font-size: 11px;
-  color: var(--accent, #44785b);
-  background: var(--accent-light, #eff5f0);
+  color: var(--seed-accent);
+  background: var(--surface-accent-tint);
   padding: 1px 6px;
   border-radius: 4px;
 }
@@ -2020,8 +2021,8 @@
 
 .insight-fallback-status {
   font-size: 11.5px;
-  color: var(--accent, #44785b);
-  background: var(--accent-light, #eff5f0);
+  color: var(--seed-accent);
+  background: var(--surface-accent-tint);
   padding: 2px 8px;
   border-radius: 999px;
   font-weight: 550;
@@ -2039,9 +2040,9 @@
   gap: 8px;
   padding: 8px 14px;
   background: var(--surface-bg, #ffffff);
-  border: 1px solid var(--accent, #44785b);
+  border: 1px solid var(--seed-accent);
   border-radius: 8px;
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
@@ -2049,9 +2050,9 @@
 }
 
 .insight-deep-action-btn:hover {
-  background: var(--accent-light, #eff5f0);
+  background: var(--surface-accent-tint);
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(68, 120, 91, 0.15);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--seed-accent) 15%, transparent);
 }
 
 
@@ -2088,7 +2089,7 @@
 .outcome-natural-title {
   font-size: 18.5px;
   font-weight: 650;
-  color: var(--title-strong, #3d6a50);
+  color: var(--title-strong, var(--seed-accent));
   margin: 0 0 7px;
   letter-spacing: -0.015em;
   line-height: 1.35;
@@ -2105,11 +2106,11 @@
 
 .outcome-target-name {
   font-weight: 650;
-  color: var(--title-strong, #44785b);
-  background: var(--accent-light, #eff5f0);
+  color: var(--title-strong, var(--seed-accent));
+  background: var(--surface-accent-tint);
   padding: 2px 8px;
   border-radius: 4px;
-  border: 1px solid var(--accent-soft, #cde0d4);
+  border: 1px solid var(--border-accent);
   font-size: 12.5px;
 }
 
@@ -2171,7 +2172,7 @@
 .outcome-stat-val {
   font-size: 20px;
   font-weight: 700;
-  color: var(--title-strong, #3d6a50);
+  color: var(--title-strong, var(--seed-accent));
   letter-spacing: -0.02em;
 }
 
@@ -2205,7 +2206,7 @@
 .outcome-distribution-title {
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--title-section, #3d6a50);
+  color: var(--title-section, var(--seed-accent));
   letter-spacing: 0.01em;
 }
 
@@ -2236,8 +2237,8 @@
 }
 
 .outcome-dist-row:hover {
-  background: var(--accent-light, #eff6f1);
-  border-color: var(--accent-soft, #cde0d4);
+  background: var(--surface-accent-tint);
+  border-color: var(--border-accent);
   transform: translateX(2px);
 }
 
@@ -2258,7 +2259,7 @@
 }
 
 .outcome-dist-row:hover .dist-prop-name {
-  color: var(--accent-text, #44785b);
+  color: var(--accent-text, var(--seed-accent));
 }
 
 .dist-prop-unit {
@@ -2276,7 +2277,7 @@
 
 .dist-row-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent, #44785b), #5ea57d);
+  background: linear-gradient(90deg, var(--seed-accent), color-mix(in srgb, var(--seed-accent) 65%, white));
   border-radius: 8px;
   transition: width 0.4s ease;
 }
@@ -2288,7 +2289,7 @@
   gap: 4px;
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--title-strong, #3d6a50);
+  color: var(--title-strong, var(--seed-accent));
 }
 
 .dist-count-unit {
@@ -2305,7 +2306,7 @@
 
 .outcome-dist-row:hover .dist-count-arrow {
   transform: translateX(2px);
-  color: var(--accent, #44785b);
+  color: var(--seed-accent);
 }
 
 /* 5. 科学工作栈二级操作舱 (Utility Action Bar) - 优雅收敛，次级轻量操作胶囊 */
@@ -2343,11 +2344,11 @@
 }
 
 .outcome-sub-action-capsule:hover:not(:disabled) {
-  background: var(--accent-light, #eff6f1);
-  border-color: var(--accent, #44785b);
-  color: var(--accent-text, #44785b);
+  background: var(--surface-accent-tint);
+  border-color: var(--seed-accent);
+  color: var(--accent-text, var(--seed-accent));
   transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(68, 120, 91, 0.12);
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--seed-accent) 12%, transparent);
 }
 
 .outcome-sub-action-capsule:disabled {
@@ -2372,9 +2373,9 @@
 }
 
 .outcome-replay-capsule:hover {
-  color: var(--accent-text, #44785b);
-  border-color: var(--accent, #44785b);
-  background: var(--accent-light, #eff6f1);
+  color: var(--accent-text, var(--seed-accent));
+  border-color: var(--seed-accent);
+  background: var(--surface-accent-tint);
 }
 
 @media (max-width: 820px) {

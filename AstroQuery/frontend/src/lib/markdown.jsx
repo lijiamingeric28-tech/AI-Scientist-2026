@@ -1,8 +1,11 @@
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import remarkMath from "remark-math"
+import rehypeKatex from "rehype-katex"
+import "katex/dist/katex.min.css"
 
 /* Markdown 渲染组件
- * 支持 GFM（表格、任务列表、删除线等）
+ * 支持 GFM（表格、任务列表、删除线等）以及 KaTeX 数学公式渲染
  * P1-7：components 样式覆盖 — 标题/列表/表格/code/引用/链接统一走 CSS 变量
  * 与工作流卡片体系（圆角/二级底色/等宽 code），替代 react-markdown 默认样式。
  */
@@ -14,11 +17,17 @@ const components = {
   ul: ({ children }) => <ul style={{ margin: '0 0 8px', paddingLeft: 20 }}>{children}</ul>,
   ol: ({ children }) => <ol style={{ margin: '0 0 8px', paddingLeft: 20 }}>{children}</ol>,
   li: ({ children }) => <li style={{ marginBottom: 4 }}>{children}</li>,
-  code: ({ children }) => (
-    <code style={{ fontFamily: 'ui-monospace, Menlo, Consolas, monospace', fontSize: '0.92em', background: 'var(--surface-secondary)', padding: '1px 5px', borderRadius: 4, color: 'var(--accent-text)' }}>
-      {children}
-    </code>
-  ),
+  code: ({ children, className }) => {
+    // 兼容 KaTeX 数学代码或普通行内代码
+    if (className?.includes('math')) {
+      return <code className={className}>{children}</code>
+    }
+    return (
+      <code style={{ fontFamily: 'ui-monospace, Menlo, Consolas, monospace', fontSize: '0.92em', background: 'var(--surface-secondary)', padding: '1px 5px', borderRadius: 4, color: 'var(--accent-text)' }}>
+        {children}
+      </code>
+    )
+  },
   pre: ({ children }) => (
     <pre style={{ margin: '0 0 8px', padding: '8px 10px', background: 'var(--surface-secondary)', borderRadius: 'var(--radius-md)', overflowX: 'auto', fontFamily: 'ui-monospace, Menlo, Consolas, monospace', fontSize: '0.9em', lineHeight: 1.6 }}>
       {children}
@@ -47,10 +56,19 @@ const components = {
   hr: () => <hr style={{ border: 'none', borderTop: '1px solid var(--surface-border)', margin: '10px 0' }} />,
 }
 
-export default function Markdown({ children, className, ...props }) {
+export default function Markdown({ children, className, components: customComponents, ...props }) {
+  const mergedComponents = customComponents
+    ? { ...components, ...customComponents }
+    : components
   return (
     <div className={className} style={{ fontSize: 14, lineHeight: 1.7, color: "var(--content-fg-secondary)" }} {...props}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>{children}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: true }]]}
+        rehypePlugins={[rehypeKatex]}
+        components={mergedComponents}
+      >
+        {children}
+      </ReactMarkdown>
     </div>
   )
 }

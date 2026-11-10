@@ -54,7 +54,7 @@ export default function ReadOnlyInteractions({ presentation, taskId, stageId }) 
           {!!p.properties?.length && (
             <div className="confirm-selected-box">
               <div className="confirm-selected-header">
-                <Icon.Check style={{ width: 13, height: 13, color: 'var(--accent, #44785b)' }} />
+                <Icon.Check style={{ width: 13, height: 13, color: 'var(--seed-accent)' }} />
                 <span>执行时选定进入流水线的标准性质（{p.properties.length} 项）</span>
               </div>
               <div className="confirm-selected-pills">

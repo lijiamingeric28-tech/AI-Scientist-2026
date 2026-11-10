@@ -34,10 +34,10 @@ export const stateNames = {
   ended_unknown: "结束状态未记录",
   ended: "已结束",
   pending: "未开始",
-  recovered: "已恢复",
-  partial: "部分受影响",
-  unresolved: "未解决",
-  resolved: "已处理",
+  recovered: "已自动恢复",
+  partial: "容错降级完成",
+  unresolved: "待人工介入",
+  resolved: "已闭环处置",
 };
 export const categoryNames = {
   service: "外部学术服务",

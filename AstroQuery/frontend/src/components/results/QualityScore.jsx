@@ -58,7 +58,7 @@ function resolveDimensionScores(qScoring, qState) {
   return dimensionSummary(qScoring, qState).scores
 }
 
-function RadarChart({ dims, size = 270 }) {
+export function RadarChart({ dims, size = 270 }) {
   const [hoveredIdx, setHoveredIdx] = useState(null)
   const gradientId = `radar-${useId().replace(/:/g, '')}`
   const cx = 130

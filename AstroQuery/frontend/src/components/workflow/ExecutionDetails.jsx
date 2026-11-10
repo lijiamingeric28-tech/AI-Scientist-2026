@@ -326,7 +326,7 @@ export function JobTable({ items, onJob }) {
                   )}
                 </td>
                 <td>
-                  <span style={{ color: "#314b3c" }}>
+                  <span style={{ color: "var(--text-secondary)" }}>
                     {job.dependency_count > 0
                       ? `${job.dependency_count} 项依赖`
                       : "首节点"}
@@ -402,7 +402,7 @@ export function JobDetail({ job, onJob, onEvent, onLinks }) {
             <span style={{ fontVariantNumeric: "tabular-nums" }}>
               {clock(run.start)} → {clock(run.end)}
             </span>
-            <strong style={{ color: "#24583b" }}>{duration(run.seconds)}</strong>
+            <strong style={{ color: "var(--seed-accent)" }}>{duration(run.seconds)}</strong>
             <span className="job-stage-pill">{stateNames[run.status] || run.status}</span>
             <button
               className="execution-text-action"
@@ -474,8 +474,8 @@ export function JobDetail({ job, onJob, onEvent, onLinks }) {
         <summary>学术模型调用与诊断（{job.model_attempts.length} 次记录）</summary>
         {!job.model_attempts.length && <p>此作业未保存独立模型调用日志。</p>}
         {job.model_attempts.map((attempt, i) => (
-          <article key={attempt.attempt_id} style={{ padding: "8px 0", borderBottom: "1px solid #eef3ef" }}>
-            <strong style={{ color: "#24583b" }}>
+          <article key={attempt.attempt_id} style={{ padding: "8px 0", borderBottom: "1px solid var(--border-subtle)" }}>
+            <strong style={{ color: "var(--seed-accent)" }}>
               调用 #{i + 1} · {attempt.model || "默认天体物理推理模型"}
             </strong>
             <p style={{ margin: "4px 0" }}>

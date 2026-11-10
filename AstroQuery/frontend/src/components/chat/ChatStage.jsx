@@ -535,7 +535,7 @@ function Delivery({stage, onOpenData, data}) {
       {/* 多格式规范导出工作舱 */}
       <div className="delivery-export-cabin">
         <div className="delivery-export-header">
-          <Icon.Sparkle style={{ width: 13, height: 13, color: 'var(--accent, #44785b)' }} />
+          <Icon.Sparkle style={{ width: 13, height: 13, color: 'var(--seed-accent)' }} />
           <span>标准科研格式成果导出</span>
         </div>
         <div className="delivery-export-grid">
@@ -587,7 +587,7 @@ function Insights({stage, onOpenData, data, onOpenInsights}) {
       {/* 1. 洞察生成 4 智能体工作流轨道 */}
       <div className="insight-agent-track">
         <div className="insight-track-header">
-          <Icon.Sparkle style={{ width: 13, height: 13, color: 'var(--accent, #44785b)' }} />
+          <Icon.Sparkle style={{ width: 13, height: 13, color: 'var(--seed-accent)' }} />
           <span>天体物理洞察智能体管线</span>
           <span className="insight-track-badge">
             {ended ? '4 个评估 Agent 分析完成' : '多智能体流水线协同分析中'}

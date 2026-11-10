@@ -5,7 +5,18 @@ export function useClickFeedback() {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
     const pending = new Map()
     let press = null
-    const targetFor = target => target?.closest?.('button, .task-item, [role="button"]')
+    const targetFor = target => {
+      const el = target?.closest?.('button, .task-item, [role="button"]')
+      if (!el) return null
+      // Tab navigation controls have their own sliding indicators and should never show expanding ink blobs
+      if (el.closest('.primary-nav, .data-tabs, .reading-tabs, .execution-segmented-track, .quality-segmented-track, [role="tablist"]')) {
+        return null
+      }
+      if (el.classList.contains('primary-tab') || el.classList.contains('tab-btn') || el.getAttribute('role') === 'tab') {
+        return null
+      }
+      return el
+    }
     const down = event => { press = { target: targetFor(event.target), x: event.clientX, y: event.clientY, dragged: false } }
     const move = event => { if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 8) press.dragged = true }
     const clear = target => {

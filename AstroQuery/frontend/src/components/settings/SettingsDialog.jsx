@@ -6,6 +6,7 @@ import { useDialogFocus } from '@/hooks/useDialogFocus'
 import { useDismissTransition } from '@/hooks/useDismissTransition'
 import { useSlidingPanes } from '@/hooks/useSlidingPanes'
 import RetrievalPreferences from './RetrievalPreferences'
+import ThemePaletteSettings from './ThemePaletteSettings'
 import { papersValue } from '@/lib/retrievalPreferences'
 import { loadReplaySpeed, saveReplaySpeed } from '@/lib/playbackPreferences'
 import * as api from '@/services/api'
@@ -30,7 +31,7 @@ export default function SettingsDialog({ open, onClose, onboarding = false, onCo
   const changed = FIELDS.filter(field => (values[field.key] || '').trim() !== (baseline[field.key] || ''))
   const dismissal = useDismissTransition(() => { setValues({}); setRevealed({}); setDiscardOpen(false); onClose() }, { active: open })
   const contentRef = useRef(null), navRef = useRef(null)
-  const panes = useSlidingPanes(contentRef, tab, ['connections', 'preferences', 'system'], { active: open })
+  const panes = useSlidingPanes(contentRef, tab, ['connections', 'preferences', 'theme', 'system'], { active: open })
   const close = () => {
     if (savingRef.current) return
     if (changed.length) { setDiscardOpen(true); return }
@@ -116,16 +117,11 @@ export default function SettingsDialog({ open, onClose, onboarding = false, onCo
       aria-labelledby="settings-title"
       className="settings-dialog preferences-dialog animate-modal-in"
       onClick={event => event.stopPropagation()}
-      style={{
-        backgroundColor: 'var(--surface-primary, #ffffff)',
-        backgroundImage: 'none',
-        opacity: 1,
-      }}
     >
-      <header className="settings-header" style={{ backgroundColor: 'var(--surface-primary, #ffffff)' }}><div><h2 id="settings-title">{onboarding ? '连接科研服务，开始你的查询' : '设置'}</h2><p>{onboarding ? '可先浏览演示样例，稍后再完成连接。' : ''}</p></div><Button variant="ghost" size="icon" aria-label="关闭设置" onClick={close} disabled={saving}><Icon.Close /></Button></header>
-      <div className="settings-body" style={{ backgroundColor: 'var(--surface-primary, #ffffff)' }}>
-        <nav ref={navRef} className="settings-nav" aria-label="设置分类">{[['preferences', '使用偏好'], ['connections', '服务连接'], ['system', '模型与科学库']].map(([key, label]) => <button key={key} className={tab === key ? 'selected' : undefined} aria-current={tab === key ? 'page' : undefined} onClick={() => setTab(key)}>{label}</button>)}</nav>
-        <div className="settings-content" style={{ backgroundColor: 'var(--surface-primary, #ffffff)' }}>
+      <header className="settings-header"><div><h2 id="settings-title">{onboarding ? '连接科研服务，开始你的查询' : '设置'}</h2><p>{onboarding ? '可先浏览演示样例，稍后再完成连接。' : ''}</p></div><Button variant="ghost" size="icon" aria-label="关闭设置" onClick={close} disabled={saving}><Icon.Close /></Button></header>
+      <div className="settings-body">
+        <nav ref={navRef} className="settings-nav" aria-label="设置分类">{[['preferences', '使用偏好'], ['theme', '外观与配色'], ['connections', '服务连接'], ['system', '模型与科学库']].map(([key, label]) => <button key={key} className={tab === key ? 'selected' : undefined} aria-current={tab === key ? 'page' : undefined} onClick={() => setTab(key)}>{label}</button>)}</nav>
+        <div className="settings-content">
           {loading && <p role="status">正在读取服务配置…</p>}
           {error && <div className="resource-error" role="alert">{error}<Button variant="outline" size="sm" onClick={load} disabled={saving || loading}>重新读取</Button></div>}
           <div ref={contentRef} className="settings-panes slide-panes" data-sliding={panes.moving || undefined}>
@@ -155,6 +151,9 @@ export default function SettingsDialog({ open, onClose, onboarding = false, onCo
               <div className="preference-setting"><label htmlFor="replay-speed">默认回放速度</label><select id="replay-speed" value={String(speed)} onChange={e=>{setSpeed(Number(e.target.value));saveReplaySpeed(Number(e.target.value))}}>{[...new Set([0.25,0.5,1,2,5,10,20,50,100,Number(speed)].filter(n=>Number.isFinite(n)&&n>=0.25&&n<=100))].sort((a,b)=>a-b).map(n=><option key={n} value={n}>{n}×</option>)}</select></div>
               <div className="preference-setting"><label htmlFor="custom-replay-speed">自定义倍率</label><input id="custom-replay-speed" type="number" min="0.25" max="100" step="0.25" value={speed} onChange={e=>{setSpeed(e.target.value);const n=Number(e.target.value);if(n>=0.25&&n<=100)saveReplaySpeed(n)}} onBlur={()=>setSpeed(loadReplaySpeed())}/></div>
             </section>
+          </div>
+          <div {...panes.paneProps('theme')}>
+            <ThemePaletteSettings theme={theme} onToggleTheme={onToggleTheme} onToast={(msg, type) => toast(msg, type)} />
           </div>
           <div {...panes.paneProps('system')}>{cfg && <div className="settings-group"><h3>当前生效模型</h3>{Object.entries(cfg.models || {}).map(([key, value]) => <div key={key} className="preference-row"><span>{MODELS[key] || key}</span><span className="model-value">{value || '未提供'}</span></div>)}<h3>系统信息</h3><div className="preference-row"><span>软件版本</span><span>{cfg.version || '未提供'}</span></div></div>}<LibraryStatus active={open && tab === 'system'}/></div>
           </div>

@@ -1,5 +1,5 @@
 import AstroQueryLogo from '@/components/icons/AstroQueryLogo'
-import { Fragment, lazy, useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { chatStageState } from '@/lib/chatStageState'
@@ -14,6 +14,7 @@ const ClarificationCard = lazy(() => import('./ClarificationCard'))
 const AggregatedReviewCard = lazy(() => import('./AggregatedReviewCard'))
 const Markdown = lazy(() => import('@/lib/markdown'))
 const CompletionOutcome = lazy(() => import('@/components/results/DataView').then(m => ({ default: m.CompletionOutcome })))
+const AgentCopilot = lazy(() => import('./AgentCopilot'))
 // 精选目录由产品的只读发布清单提供；初始为空。
 
 
@@ -111,7 +112,7 @@ function getStageNarrative(stageId, stages, targetName) {
 }
 
 export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
-  mode = 'user', samplesExpanded = false, samples = [], onOpenSample, onReplaySample, onSwitchToUser }) {
+  mode = 'user', samplesExpanded = false, samples = [], onOpenSample, onOpenSampleChat, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState(memory.input || '')
   const [queryPreferences, setQueryPreferences] = useState(memory.retrievalPreferences || null)
@@ -302,6 +303,17 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
 
           {pipeline.snapshot?.legacy_version && pipeline.snapshot.delivery_ref && <Button variant="outline" onClick={()=>onOpenData?.('records')}>查看归档结果</Button>}
           {!pipeline.presentation && pipeline.snapshot?.kind !== 'replay' && data.availability === 'ready' && <CompletionOutcome data={data} onOpenData={onOpenData} />}
+          {(data.availability === 'ready' || Boolean(data.deliveryId)) && (
+            <Suspense fallback={null}>
+              <AgentCopilot
+                task={task}
+                data={data}
+                pipeline={pipeline}
+                onOpenDetail={onOpenDetail}
+                onOpenData={onOpenData}
+              />
+            </Suspense>
+          )}
 
           {/* 兜底：澄清卡 stageId 未匹配时渲染在时间线末尾 */}
           {pending && pending.type !== 'greeting' && !timeline.some((t) => t.kind === 'stage' && t.id === pending.stageId) && (
@@ -325,8 +337,11 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                   <SampleGallery
                     samples={samples}
                     onOpen={onOpenSample}
+                    onOpenChat={onOpenSampleChat}
                     onReplay={onReplaySample}
                     onSwitchToUser={onSwitchToUser}
+                    onOpenData={onOpenData}
+                    onOpenDetail={onOpenDetail}
                   />
                 </div>
               )
@@ -338,7 +353,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                     fontFamily: 'var(--font-display)',
                     fontSize: 21,
                     fontWeight: 650,
-                    color: 'var(--title-strong, #325843)',
+                    color: 'var(--title-strong, var(--seed-accent))',
                     letterSpacing: '-0.015em',
                     lineHeight: 1.35,
                   }}
@@ -524,7 +539,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                 borderRadius: 28,
                 background: 'var(--surface-bg)',
                 border: '1px solid var(--surface-border)',
-                boxShadow: '0 2px 12px rgba(68,120,91,0.06)',
+                boxShadow: '0 2px 12px color-mix(in srgb, var(--seed-accent) 6%, transparent)',
                 opacity: (running && !pending) || clarifying || submitting ? 0.7 : 1,
                 transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
               }}

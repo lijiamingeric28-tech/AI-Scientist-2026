@@ -68,7 +68,7 @@ export default function ClarificationCard({ payload, onSubmit }) {
           background: 'var(--surface-secondary, #fafcfb)',
           fontSize: 'var(--text-note)',
           fontWeight: 510,
-          color: 'var(--title-section, #3d6a50)',
+          color: 'var(--title-section, var(--seed-accent))',
         }}
       >
         <span className="animate-pulse-dot" style={{ color: 'var(--status-running, #5097B1)' }}>●</span>

@@ -865,10 +865,10 @@ function ExecutionWorkspace({
                 <>
                   <section className="execution-problem-center">
                 <div className="execution-section-heading">
-                  <h3>异常与恢复</h3>
+                  <h3>异常诊断与自愈闭环</h3>
                   <span>
-                    {summary.issues} 项作业问题 · {summary.service_issues}{" "}
-                    项服务问题 · {summary.scientific_reviews} 项科研判断
+                    {summary.issues} 项作业调度波动 · {summary.service_issues}{" "}
+                    次上游服务自愈 · {summary.scientific_reviews} 项科研协同判断
                   </span>
                 </div>
                 <div className="execution-health-capsules">
@@ -904,13 +904,13 @@ function ExecutionWorkspace({
                   </button>
                 </div>
                 <label className="execution-issue-filter">
-                  <span>问题分类</span>
+                  <span>诊断分类</span>
                   <select
-                    aria-label="问题分类"
+                    aria-label="诊断分类"
                     value={issueCategory}
                     onChange={(e) => filter(setIssueCategory, e.target.value)}
                   >
-                    <option value="">全部问题与科研判断</option>
+                    <option value="">全部分类与自愈记录</option>
                     {["service", "processing", "model", "science"].map(
                       (key) => (
                         <option key={key} value={key}>

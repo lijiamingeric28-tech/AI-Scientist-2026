@@ -77,7 +77,7 @@ export default function PlaybackControls({ player, onExit, onFinal }) {
           type="range"
           className="player-range-slider"
           style={{
-            background: `linear-gradient(to right, var(--accent, #44785b) 0%, var(--accent, #44785b) ${pct}%, var(--surface-border, #dce4df) ${pct}%, var(--surface-border, #dce4df) 100%)`
+            background: `linear-gradient(to right, var(--seed-accent) 0%, var(--seed-accent) ${pct}%, var(--border-subtle) ${pct}%, var(--border-subtle) 100%)`
           }}
           aria-label="原任务时间轴"
           aria-valuetext={time(player.elapsed)}

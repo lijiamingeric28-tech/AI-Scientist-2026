@@ -116,7 +116,7 @@ export default function AggregatedReviewCard({
           ) : (
             <Icon.Check className="stage-check" aria-hidden="true" />
           )}
-          <strong style={{ fontSize: 'var(--text-section)', fontWeight: 600, color: 'var(--title-strong, #44785b)' }}>
+          <strong style={{ fontSize: 'var(--text-section)', fontWeight: 600, color: 'var(--title-strong, var(--seed-accent))' }}>
             人机协同审核 (HITL)
           </strong>
           <span
@@ -141,9 +141,9 @@ export default function AggregatedReviewCard({
               fontSize: 12.5,
               padding: '4px 12px',
               borderRadius: 999,
-              background: hasPending ? 'var(--status-waiting-bg, #fef7ed)' : 'var(--accent-light, #eff5f0)',
-              color: hasPending ? 'var(--status-waiting, #c67d16)' : 'var(--accent-text, #345844)',
-              border: `1px solid ${hasPending ? 'rgba(198,125,22,0.3)' : 'rgba(68,120,91,0.22)'}`,
+              background: hasPending ? 'var(--status-waiting-bg, #fef7ed)' : 'var(--surface-accent-tint)',
+              color: hasPending ? 'var(--status-waiting, #c67d16)' : 'var(--seed-accent)',
+              border: `1px solid ${hasPending ? 'rgba(198,125,22,0.3)' : 'var(--border-accent)'}`,
               fontWeight: 550,
             }}
           >
@@ -265,8 +265,8 @@ export default function AggregatedReviewCard({
                         fontSize: 11.5,
                         padding: '2px 8px',
                         borderRadius: 4,
-                        background: isPending ? 'var(--status-waiting-bg, #fef7ed)' : 'var(--accent-light, #eff5f0)',
-                        color: isPending ? 'var(--status-waiting, #c67d16)' : 'var(--accent-text, #345844)',
+                        background: isPending ? 'var(--status-waiting-bg, #fef7ed)' : 'var(--surface-accent-tint)',
+                        color: isPending ? 'var(--status-waiting, #c67d16)' : 'var(--seed-accent)',
                         fontWeight: 550,
                         flexShrink: 0,
                       }}

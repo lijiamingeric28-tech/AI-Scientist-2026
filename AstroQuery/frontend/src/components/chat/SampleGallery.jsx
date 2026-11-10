@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
+import SampleBenchmarkShowcase from './SampleBenchmarkShowcase'
 
 function fmtScore(v) {
   if (typeof v !== 'number') return '—'
   return String(Number(v * 100).toFixed(2)).replace(/0+$/, '').replace(/\.$/, '')
 }
 
-export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitchToUser }) {
+export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitchToUser, onOpenChat, onOpenData, onOpenDetail }) {
   const [search, setSearch] = useState('')
   const filtered = samples.filter((s) =>
     JSON.stringify([s.name, s.title, s.object, s.properties, s.query])
@@ -72,7 +73,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                     style={{
                       fontSize: 16.5,
                       fontWeight: 650,
-                      color: 'var(--title-strong, #44785b)',
+                      color: 'var(--title-strong, var(--seed-accent))',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -216,6 +217,13 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
           )
         })}
       </div>
+
+      {/* 智能体 6 大交付样例实测成果展示展台 (Agent Harness 2.0 Benchmark) */}
+      <SampleBenchmarkShowcase
+        onOpenSample={onOpenChat || onOpen}
+        onOpenData={onOpenData || onOpen}
+        onOpenDetail={onOpenDetail}
+      />
     </div>
   )
 }
