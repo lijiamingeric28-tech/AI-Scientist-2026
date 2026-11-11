@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { Icon } from '@/components/icons'
-import { LatexMath, LatexText } from '@/components/results/LatexMath'
-import { KNOWLEDGE_CATEGORIES, getCategoryInfo, isValidFormula } from './knowledgeConstants'
+import { KNOWLEDGE_CATEGORIES, getCategoryInfo } from './knowledgeConstants'
 
 function toAlphaColor(colorStr, alpha = 0.25) {
   if (!colorStr) return `rgba(20, 184, 166, ${alpha})`
@@ -68,7 +67,6 @@ export default function KnowledgeGraphView({
   // Selected node in local state
   const [activeNode, setActiveNode] = useState(null)
   const [hoveredNode, setHoveredNode] = useState(null)
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
 
   // Simulation nodes and links
   const simNodesRef = useRef([])
@@ -289,6 +287,8 @@ export default function KnowledgeGraphView({
     if (selectedNodeId) {
       const found = filteredNodes.find(n => n.id === selectedNodeId)
       if (found) setActiveNode(found)
+    } else {
+      setActiveNode(null)
     }
   }, [selectedNodeId, filteredNodes])
 
@@ -564,6 +564,9 @@ export default function KnowledgeGraphView({
     const mouseX = e.clientX - rect.left
     const mouseY = e.clientY - rect.top
 
+    dragRef.current.startX = e.clientX
+    dragRef.current.startY = e.clientY
+
     const hitNode = getNodeAtPosition(mouseX, mouseY)
     if (hitNode) {
       dragRef.current.isDraggingNode = true
@@ -573,8 +576,6 @@ export default function KnowledgeGraphView({
       setIsSimRunning(true)
     } else {
       dragRef.current.isPanning = true
-      dragRef.current.startX = e.clientX
-      dragRef.current.startY = e.clientY
       dragRef.current.lastPanX = transformRef.current.x
       dragRef.current.lastPanY = transformRef.current.y
     }
@@ -614,22 +615,32 @@ export default function KnowledgeGraphView({
   }, [getNodeAtPosition, hoveredNode])
 
   const handleMouseUp = useCallback((e) => {
+    const rect = canvasRef.current?.getBoundingClientRect()
+    const mouseX = rect ? e.clientX - rect.left : 0
+    const mouseY = rect ? e.clientY - rect.top : 0
+    const dist = Math.hypot(
+      e.clientX - dragRef.current.startX,
+      e.clientY - dragRef.current.startY
+    )
+
     if (dragRef.current.isDraggingNode && dragRef.current.draggedNode) {
-      dragRef.current.draggedNode.fixed = false
+      const node = dragRef.current.draggedNode
+      node.fixed = false
       dragRef.current.isDraggingNode = false
       dragRef.current.draggedNode = null
+
+      // 点击节点判定（位移小于 6px）
+      if (dist < 6) {
+        setActiveNode(node)
+        onSelectNode?.(node.id)
+      }
       return
     }
 
     if (dragRef.current.isPanning) {
-      const dist = Math.hypot(
-        e.clientX - dragRef.current.startX,
-        e.clientY - dragRef.current.startY
-      )
       dragRef.current.isPanning = false
-      if (dist < 4) {
-        const rect = canvasRef.current.getBoundingClientRect()
-        const hit = getNodeAtPosition(e.clientX - rect.left, e.clientY - rect.top)
+      if (dist < 6 && rect) {
+        const hit = getNodeAtPosition(mouseX, mouseY)
         setActiveNode(hit)
         onSelectNode?.(hit?.id || null)
       }
@@ -815,283 +826,6 @@ export default function KnowledgeGraphView({
           <Icon.Tag style={{ width: 12, height: 12, color: 'var(--accent)' }} />
           <span>查看图例</span>
         </button>
-      )}
-
-      {/* Unified Context Drawer & Fullscreen Backdrop */}
-      {activeNode && (
-        <>
-          <div
-            className="kw-drawer-backdrop"
-            onClick={() => setActiveNode(null)}
-            aria-label="关闭侧边栏"
-          />
-          <aside
-            className="kw-graph-drawer"
-            role="dialog"
-            aria-label={activeNode.label || activeNode.title || '理论详情'}
-          >
-            <header className="kw-drawer-header">
-              <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                  <span
-                    className="kw-badge"
-                    style={{
-                      background: `${getCategoryInfo(activeNode.category, dynamicCategories).color}22`,
-                      color: getCategoryInfo(activeNode.category, dynamicCategories).color,
-                      border: `1px solid ${getCategoryInfo(activeNode.category, dynamicCategories).color}44`,
-                    }}
-                  >
-                    {getCategoryInfo(activeNode.category, dynamicCategories).label}
-                  </span>
-                  {activeNode.preferred && (
-                    <span
-                      className="kw-badge"
-                      style={{ background: 'rgba(234, 179, 8, 0.15)', color: '#d97706', border: '1px solid rgba(234, 179, 8, 0.35)' }}
-                    >
-                      科研优选
-                    </span>
-                  )}
-                  {activeNode.is_override && (
-                    <span
-                      className="kw-badge"
-                      style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#2563eb', border: '1px solid rgba(59, 130, 246, 0.35)' }}
-                    >
-                      用户自定义已修改
-                    </span>
-                  )}
-                </div>
-                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 650, color: 'var(--content-fg)', lineHeight: 1.4 }}>
-                  {activeNode.label || activeNode.title || activeNode.name}
-                </h3>
-              </div>
-              <button
-                type="button"
-                className="kw-icon-btn"
-                onClick={() => setActiveNode(null)}
-                aria-label="关闭详情"
-              >
-                <Icon.Close style={{ width: 16, height: 16 }} />
-              </button>
-            </header>
-
-            <div className="kw-drawer-body">
-              {/* Universal Action Buttons: Preferred, Edit (ALL items), Fork, Delete, Restore */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                <button
-                  type="button"
-                  className={`kw-filter-pref-btn ${activeNode.preferred ? 'active' : ''}`}
-                  style={{ flex: 1, minWidth: 140, justifyContent: 'center' }}
-                  onClick={() => {
-                    const nextPref = !activeNode.preferred
-                    setActiveNode(prev => ({ ...prev, preferred: nextPref }))
-                    onTogglePreference?.(activeNode.id, nextPref)
-                  }}
-                >
-                  {activeNode.preferred ? (
-                    <Icon.StarFilled style={{ width: 14, height: 14 }} />
-                  ) : (
-                    <Icon.Star style={{ width: 14, height: 14 }} />
-                  )}
-                  <span>{activeNode.preferred ? '已设为科研优选' : '设为科研优选'}</span>
-                </button>
-
-                {/* Direct Edit Button for ALL entries */}
-                <button
-                  type="button"
-                  className="kw-filter-pref-btn"
-                  onClick={() => onEdit?.(activeNode)}
-                  title="直接修改该理论内容与分类"
-                >
-                  <Icon.Edit style={{ width: 14, height: 14 }} />
-                  <span>编辑理论</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="kw-filter-pref-btn"
-                  onClick={() => onFork?.(activeNode)}
-                  title="以此理论为模板派生新知识"
-                >
-                  <Icon.Fork style={{ width: 14, height: 14 }} />
-                  <span>派生</span>
-                </button>
-
-                {/* Delete Entry Button */}
-                <button
-                  type="button"
-                  className="kw-filter-pref-btn"
-                  style={{ color: 'var(--status-error, #ef4444)' }}
-                  onClick={() => setDeleteConfirmOpen(true)}
-                  title="从个人理论知识库中删除此条目"
-                >
-                  <Icon.Trash style={{ width: 14, height: 14 }} />
-                  <span>删除</span>
-                </button>
-
-                {/* Restore Default Button for Overridden Base Entries */}
-                {(activeNode.is_override || activeNode.is_user === false) && (
-                  <button
-                    type="button"
-                    className="kw-filter-pref-btn"
-                    onClick={() => {
-                      onRestore?.(activeNode.id)
-                      setActiveNode(null)
-                    }}
-                    title="清除全部修改，重置为系统出厂预置状态"
-                  >
-                    <Icon.History style={{ width: 14, height: 14 }} />
-                    <span>恢复默认</span>
-                  </button>
-                )}
-              </div>
-
-              {/* Delete Confirmation Modal */}
-              {deleteConfirmOpen && (
-                <div
-                  style={{
-                    padding: 12,
-                    background: 'rgba(239, 68, 68, 0.08)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    borderRadius: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 8,
-                  }}
-                >
-                  <div style={{ fontSize: 13, color: 'var(--content-fg)', fontWeight: 500 }}>
-                    确定要从知识库中删除「{activeNode.label || activeNode.title}」吗？
-                  </div>
-                  <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-                    <button
-                      type="button"
-                      className="kw-mode-btn"
-                      style={{ padding: '4px 10px', fontSize: 12 }}
-                      onClick={() => setDeleteConfirmOpen(false)}
-                    >
-                      取消
-                    </button>
-                    <button
-                      type="button"
-                      style={{
-                        padding: '4px 12px',
-                        fontSize: 12,
-                        background: 'var(--status-error, #ef4444)',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        setDeleteConfirmOpen(false)
-                        onDelete?.(activeNode.id)
-                        setActiveNode(null)
-                      }}
-                    >
-                      确认删除
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* LaTeX Formula with Validity Check to prevent truncation / squashing */}
-              {activeNode.formula && isValidFormula(activeNode.formula) && (
-                <div className="kw-formula-box">
-                  <LatexMath math={activeNode.formula} displayMode />
-                </div>
-              )}
-
-              {/* Core Theoretical Description */}
-              {(activeNode.description || (activeNode.formula && !isValidFormula(activeNode.formula))) && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                    核心理论机制阐述
-                  </span>
-                  <div style={{ margin: 0, fontSize: 13, lineHeight: 1.68, color: 'var(--content-fg)' }}>
-                    <LatexText
-                      text={
-                        activeNode.description ||
-                        activeNode.formula
-                      }
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Scientific Conditions / Assumptions */}
-              {Array.isArray(activeNode.conditions) && activeNode.conditions.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                    适用物理条件与边界假定
-                  </span>
-                  <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, lineHeight: 1.6, color: 'var(--content-fg)' }}>
-                    {activeNode.conditions.map((cond, ci) => (
-                      <li key={ci}>{cond}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Associated Properties & Celestial Parameters */}
-              {Array.isArray(activeNode.properties) && activeNode.properties.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                    关联物理量与天体性质
-                  </span>
-                  <div className="kw-tag-list">
-                    {activeNode.properties.map((prop, i) => (
-                      <span key={i} className="kw-tag">
-                        <Icon.Tag style={{ width: 10, height: 10 }} />
-                        <span>{prop}</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Topology Links */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                  图谱拓扑关联
-                </span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 12 }}>
-                  {simLinksRef.current
-                    .filter(l => l.source?.id === activeNode.id || l.target?.id === activeNode.id)
-                    .map((link, idx) => {
-                      const other = link.source?.id === activeNode.id ? link.target : link.source
-                      return (
-                        <div
-                          key={idx}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '6px 10px',
-                            borderRadius: 6,
-                            background: 'var(--surface-secondary, rgba(0,0,0,0.02))',
-                            border: '1px solid var(--surface-border)',
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => {
-                            if (other) {
-                              setActiveNode(other)
-                              onSelectNode?.(other.id)
-                            }
-                          }}
-                        >
-                          <span style={{ fontWeight: 500, color: 'var(--content-fg)' }}>
-                            {other.label || other.id}
-                          </span>
-                          <span style={{ fontSize: 11, color: 'var(--accent)' }}>
-                            {link.label || '相互约束'} →
-                          </span>
-                        </div>
-                      )
-                    })}
-                </div>
-              </div>
-            </div>
-          </aside>
-        </>
       )}
     </div>
   )

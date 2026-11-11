@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Icon } from '@/components/icons'
 import { LatexMath, LatexText } from '@/components/results/LatexMath'
-import { KNOWLEDGE_CATEGORIES, getCategoryInfo, isValidFormula } from './knowledgeConstants'
+import {
+  KNOWLEDGE_CATEGORIES,
+  getCategoryInfo,
+  isValidFormula,
+  translateProperty,
+} from './knowledgeConstants'
 
 export default function KnowledgeListView({
   items = [],
@@ -15,6 +20,20 @@ export default function KnowledgeListView({
   onSelectNode,
 }) {
   const [collapsedCategories, setCollapsedCategories] = useState({})
+  const [expandedLimits, setExpandedLimits] = useState({})
+
+  useEffect(() => {
+    setExpandedLimits({})
+  }, [selectedCategory, items.length])
+
+  const defaultLimit = selectedCategory === 'all' ? 12 : 36
+
+  const showMoreForCategory = (catId, total, showAll = false) => {
+    setExpandedLimits(prev => ({
+      ...prev,
+      [catId]: showAll ? total : (prev[catId] || defaultLimit) + 24,
+    }))
+  }
 
   const toggleCategoryCollapse = (catId) => {
     setCollapsedCategories(prev => ({
@@ -86,17 +105,29 @@ export default function KnowledgeListView({
             </header>
 
             {!isCollapsed && (
-              <div className="kw-card-grid">
-                {groupItems.map(item => {
+              <>
+                <div className="kw-card-grid">
+                  {groupItems.slice(0, expandedLimits[category.id] || defaultLimit).map(item => {
                   const isPreferred = Boolean(
                     item.user_preference === 'preferred' || item.preferred
                   )
                   const catInfo = getCategoryInfo(item.category, categories)
 
+                  // 过滤内部英文枚举伪假定，只保留真正学术条件
+                  const validConditions = Array.isArray(item.conditions)
+                    ? item.conditions.filter(c => {
+                        const s = String(typeof c === 'string' ? c : c?.text || '').trim().toLowerCase()
+                        return s && !['established', 'consensus', 'provisional', 'empirical'].includes(s)
+                      })
+                    : []
+
                   return (
                     <article
                       key={item.id}
                       className={`kw-card ${isPreferred ? 'is-preferred' : ''}`}
+                      onClick={() => onSelectNode?.(item.id)}
+                      style={{ cursor: 'pointer' }}
+                      title="点击查看完整理论详情、推导公式与关联拓扑"
                     >
                       <header className="kw-card-header">
                         <div className="kw-card-title-group">
@@ -111,6 +142,18 @@ export default function KnowledgeListView({
                             >
                               {catInfo.label}
                             </span>
+                            {item.confidence_label && (
+                              <span
+                                className="kw-badge"
+                                style={{
+                                  background: 'rgba(16, 185, 129, 0.12)',
+                                  color: '#059669',
+                                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                                }}
+                              >
+                                {item.confidence_label}
+                              </span>
+                            )}
                             {item.is_override && (
                               <span
                                 className="kw-badge"
@@ -152,10 +195,14 @@ export default function KnowledgeListView({
                         </div>
 
                         <div className="kw-card-actions">
+                          {/* 优选切换 */}
                           <button
                             type="button"
                             className={`kw-icon-btn ${isPreferred ? 'is-active-star' : ''}`}
-                            onClick={() => onTogglePreference(item.id, !isPreferred)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onTogglePreference(item.id, !isPreferred)
+                            }}
                             title={isPreferred ? '已设为科研优先理论（点击取消）' : '设为科研优先理论'}
                             aria-label={isPreferred ? '取消优选' : '设为优选'}
                           >
@@ -166,50 +213,60 @@ export default function KnowledgeListView({
                             )}
                           </button>
 
-                          {/* Universal Edit Button for ALL entries */}
+                          {/* 编辑理论 */}
                           <button
                             type="button"
                             className="kw-icon-btn"
-                            onClick={() => onEdit(item)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onEdit(item)
+                            }}
                             title="直接修改该理论内容与分类"
                             aria-label="编辑理论"
                           >
                             <Icon.Edit style={{ width: 14, height: 14 }} />
                           </button>
 
+                          {/* 派生理论 */}
                           <button
                             type="button"
                             className="kw-icon-btn"
-                            onClick={() => onFork(item)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onFork(item)
+                            }}
                             title="以此为基础派生新理论"
                             aria-label="派生理论"
                           >
                             <Icon.Fork style={{ width: 14, height: 14 }} />
                           </button>
 
-                          {/* Universal Delete Button */}
+                          {/* 删除理论 */}
                           <button
                             type="button"
-                            className="kw-icon-btn"
-                            onClick={() => {
+                            className="kw-icon-btn kw-delete-action-btn"
+                            onClick={(e) => {
+                              e.stopPropagation()
                               if (window.confirm(`确定要删除理论条目「${item.title || item.name}」吗？`)) {
                                 onDelete(item.id)
                               }
                             }}
                             title="从知识库中删除理论条目"
                             aria-label="删除理论"
-                            style={{ color: 'var(--status-failed, #ef4444)' }}
                           >
                             <Icon.Trash style={{ width: 14, height: 14 }} />
                           </button>
 
-                          {/* Restore Default Button */}
-                          {(item.is_override || item.is_user === false) && (
+                          {/* 仅在用户实际修改过内置条目时才显示恢复出厂默认按钮 */}
+                          {Boolean(item.is_override) && (
                             <button
                               type="button"
                               className="kw-icon-btn"
-                              onClick={() => onRestore(item.id)}
-                              title="重置为系统出厂预置状态"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onRestore(item.id)
+                              }}
+                              title="清除修改，重置为系统出厂预置状态"
                               aria-label="恢复默认"
                             >
                               <Icon.History style={{ width: 14, height: 14 }} />
@@ -218,22 +275,25 @@ export default function KnowledgeListView({
                         </div>
                       </header>
 
+                      {/* 纯正数学公式展示区 */}
                       {item.formula && isValidFormula(item.formula) && (
                         <div className="kw-formula-box">
                           <LatexMath math={item.formula} displayMode />
                         </div>
                       )}
 
+                      {/* 理论描述正文 */}
                       {(item.description || (item.formula && !isValidFormula(item.formula))) && (
                         <p className="kw-card-desc">
                           <LatexText text={item.description || item.formula} />
                         </p>
                       )}
 
-                      {Array.isArray(item.conditions) && item.conditions.length > 0 && (
+                      {/* 真实物理假定条件 */}
+                      {validConditions.length > 0 && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 3, fontSize: 12, color: 'var(--content-fg-secondary)' }}>
-                          <span style={{ fontWeight: 500, color: 'var(--content-fg)' }}>适用条件与假定：</span>
-                          {item.conditions.map((cond, i) => (
+                          <span style={{ fontWeight: 500, color: 'var(--content-fg)' }}>适用物理条件与假定：</span>
+                          {validConditions.map((cond, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                               <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor', flexShrink: 0 }} />
                               <span><LatexText text={typeof cond === 'string' ? cond : cond.text || cond.description} /></span>
@@ -242,6 +302,7 @@ export default function KnowledgeListView({
                         </div>
                       )}
 
+                      {/* 参数区间定义 */}
                       {Array.isArray(item.parameters) && item.parameters.length > 0 && (
                         <div className="kw-param-grid">
                           <div style={{ fontWeight: 500, color: 'var(--content-fg)', marginBottom: 2 }}>参数区间定义：</div>
@@ -259,15 +320,25 @@ export default function KnowledgeListView({
                         </div>
                       )}
 
+                      {/* 关联物理量（学术中文转换） */}
                       {Array.isArray(item.properties) && item.properties.length > 0 && (
                         <div className="kw-tag-list">
                           <span style={{ fontSize: 11, color: 'var(--content-fg-secondary)' }}>关联物理量:</span>
-                          {item.properties.map((prop, i) => (
-                            <span key={i} className="kw-tag">
-                              <Icon.Tag style={{ width: 10, height: 10 }} />
-                              <span>{prop}</span>
+                          {item.properties.slice(0, 8).map((prop, i) => {
+                            const cleanProp = typeof prop === 'string' ? prop : prop.name || prop.id || ''
+                            const displayProp = translateProperty(cleanProp)
+                            return (
+                              <span key={i} className="kw-tag">
+                                <Icon.Tag style={{ width: 10, height: 10 }} />
+                                <span>{displayProp}</span>
+                              </span>
+                            )
+                          })}
+                          {item.properties.length > 8 && (
+                            <span className="kw-tag" title="点击卡片查看全部关联物理量">
+                              +{item.properties.length - 8} 项
                             </span>
-                          ))}
+                          )}
                         </div>
                       )}
 
@@ -279,7 +350,28 @@ export default function KnowledgeListView({
                     </article>
                   )
                 })}
-              </div>
+                </div>
+                {groupItems.length > (expandedLimits[category.id] || defaultLimit) && (
+                  <div className="kw-load-more-row">
+                    <button
+                      type="button"
+                      className="kw-load-more-btn"
+                      onClick={() => showMoreForCategory(category.id, groupItems.length, false)}
+                    >
+                      展开更多「{category.label}」（还有 {groupItems.length - (expandedLimits[category.id] || defaultLimit)} 条）
+                    </button>
+                    {groupItems.length <= 120 && (
+                      <button
+                        type="button"
+                        className="kw-load-more-btn secondary"
+                        onClick={() => showMoreForCategory(category.id, groupItems.length, true)}
+                      >
+                        显示本类全部 ({groupItems.length})
+                      </button>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </section>
         )

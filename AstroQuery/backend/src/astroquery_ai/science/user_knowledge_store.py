@@ -83,19 +83,45 @@ def normalize_category(cat: Optional[str]) -> str:
     return safe_cat or "user_custom"
 
 
+CONFIDENCE_LABELS = {
+    "established": "学界公认",
+    "consensus": "广泛共识",
+    "empirical": "经验模型",
+    "provisional": "前沿假说",
+}
+
+
+def _clean_formula(s: str) -> str:
+    import re
+    s = s.strip().lstrip("→").strip()
+    chinese_match = re.search(r'[\u4e00-\u9fa5]', s)
+    if chinese_match:
+        idx = chinese_match.start()
+        left = s[:idx].strip()
+        if len(left) >= 4 and any(sym in left for sym in ["=", "∝", "≈", "~"]):
+            return left
+    return s
+
+
 def _extract_formula(entry: dict[str, Any]) -> str:
     explicit = entry.get("formula")
     if explicit and isinstance(explicit, str) and explicit.strip():
-        return explicit.strip()
+        return _clean_formula(explicit)
     content = entry.get("content") or entry.get("description") or ""
+    import re
     for line in str(content).split("\n"):
-        line_clean = line.strip()
-        if any(sym in line_clean for sym in ["=", r"\propto", "∝", r"\approx", "≈", r"\sim", "~"]):
-            if len(line_clean) < 140 and not line_clean.startswith("#") and not line_clean.startswith("-"):
-                res = line_clean.replace("`", "")
-                if ":" in res and "=" in res:
-                    res = res.split(":", 1)[1].strip()
-                return res
+        line_clean = line.strip().replace("`", "")
+        if ":" in line_clean:
+            left_part = line_clean.split(":", 1)[0].strip()
+            if any(sym in left_part for sym in ["=", r"\propto", "∝", r"\approx", "≈"]):
+                chinese_chars = len(re.findall(r'[\u4e00-\u9fa5]', left_part))
+                if chinese_chars <= 6:
+                    return _clean_formula(left_part)
+        if any(sym in line_clean for sym in ["=", r"\propto", "∝", r"\approx", "≈"]):
+            if not line_clean.startswith("#") and not line_clean.startswith("-") and not line_clean.startswith("•"):
+                chinese_chars = len(re.findall(r'[\u4e00-\u9fa5]', line_clean))
+                if chinese_chars <= 6 and len(line_clean) < 100:
+                    return _clean_formula(line_clean)
     return ""
 
 
@@ -175,13 +201,23 @@ class UserKnowledgeStore:
                             continue
                         applies = entry.get("applies_to") or {}
                         norm_cat = normalize_category(entry.get("category"))
+                        conf = entry.get("confidence")
+                        raw_cond = entry.get("assumptions") or entry.get("conditions") or []
+                        if isinstance(raw_cond, str):
+                            cond_list = [raw_cond]
+                        elif isinstance(raw_cond, list):
+                            cond_list = [c for c in raw_cond if isinstance(c, str) and c.strip()]
+                        else:
+                            cond_list = []
                         item = {
                             "id": eid,
                             "title": entry.get("title", eid),
                             "category": norm_cat,
                             "formula": _extract_formula(entry),
                             "description": entry.get("content", "").strip(),
-                            "conditions": [entry.get("confidence")] if entry.get("confidence") else [],
+                            "conditions": cond_list,
+                            "confidence": conf,
+                            "confidence_label": CONFIDENCE_LABELS.get(conf, conf or ""),
                             "parameters": entry.get("parameters", []),
                             "properties": applies.get("fields", []),
                             "entity_types": applies.get("entities", []),
@@ -837,12 +873,19 @@ class UserKnowledgeStore:
             nodes.append({
                 "id": nid,
                 "label": e.get("title", nid),
+                "title": e.get("title", nid),
                 "category": e.get("category", "physical_laws"),
                 "formula": e.get("formula", ""),
                 "description": e.get("description", ""),
+                "conditions": e.get("conditions", []),
+                "confidence": e.get("confidence", ""),
+                "confidence_label": e.get("confidence_label", ""),
+                "sources": e.get("sources", ""),
+                "parameters": e.get("parameters", []),
                 "preferred": e.get("preferred", False),
                 "user_preference": e.get("preference", "neutral"),
                 "is_user": e.get("is_user", False),
+                "is_override": e.get("is_override", False),
                 "properties": e.get("properties", []),
                 "tags": e.get("tags", []),
             })
@@ -858,10 +901,11 @@ class UserKnowledgeStore:
                 e_props = [p.lower() for p in e.get("properties", [])]
                 e_tags = [t.lower() for t in e.get("tags", [])]
                 if any(alias in p or p in alias for alias in p_aliases for p in e_props + e_tags):
+                    cn_prop_name = pnode["properties"][1] if len(pnode["properties"]) > 1 else pnode["properties"][0]
                     edges.append({
                         "source": e["id"],
                         "target": pid,
-                        "label": f"关联{pnode['properties'][0]}",
+                        "label": f"关联{cn_prop_name}",
                     })
                     connected = True
 

@@ -187,8 +187,7 @@
   padding: 10px 20px;
   border-bottom: 1px solid var(--surface-border);
   background: var(--surface-bg);
-  overflow-x: auto;
-  scrollbar-width: thin;
+  flex-wrap: wrap;
 }
 
 .kw-category-chip {
@@ -443,6 +442,8 @@
   gap: 12px;
   transition: all 0.2s ease;
   position: relative;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .kw-card:hover {
@@ -528,6 +529,15 @@
   background: rgba(234, 179, 8, 0.12);
 }
 
+.kw-icon-btn.kw-delete-action-btn {
+  color: var(--content-fg-secondary);
+}
+
+.kw-icon-btn.kw-delete-action-btn:hover {
+  color: var(--status-error, #ef4444);
+  background: rgba(239, 68, 68, 0.12);
+}
+
 /* 公式展示区 */
 .kw-formula-box {
   background: var(--surface-secondary, rgba(0, 0, 0, 0.02));
@@ -543,8 +553,42 @@
 .kw-card-desc {
   font-size: var(--text-body, 13px);
   color: var(--content-fg);
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.kw-load-more-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0 4px;
+}
+
+.kw-load-more-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  color: var(--content-fg);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kw-load-more-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.kw-load-more-btn.secondary {
+  color: var(--content-fg-secondary);
+  background: transparent;
 }
 
 /* 参数范围网格 */

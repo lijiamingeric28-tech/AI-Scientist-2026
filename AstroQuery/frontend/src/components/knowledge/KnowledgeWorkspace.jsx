@@ -5,6 +5,7 @@ import { useToast } from '@/components/ui/toast'
 import KnowledgeGraphView from './KnowledgeGraphView'
 import KnowledgeListView from './KnowledgeListView'
 import KnowledgeEditorModal from './KnowledgeEditorModal'
+import KnowledgeDrawer from './KnowledgeDrawer'
 import {
   KNOWLEDGE_CATEGORIES,
   INITIAL_KNOWLEDGE_ENTRIES,
@@ -72,8 +73,22 @@ export default function KnowledgeWorkspace({
     memory.taskScoped = taskScoped
   }, [mode, searchQuery, selectedCategory, preferredOnly, taskScoped, memory])
 
-  // Load data from backend with fallback
-  const loadKnowledgeData = useCallback(async () => {
+  // Fetch full knowledge corpus (limit=-1) so category counts & client filtering cover all 900+ entries
+  const loadAllEntries = useCallback(async () => {
+    try {
+      const res = await getKnowledge({ limit: -1 })
+      if (Array.isArray(res)) {
+        setItems(res)
+      } else if (res && Array.isArray(res.items)) {
+        setItems(res.items)
+      }
+    } catch (err) {
+      console.warn('Backend knowledge API not reachable yet, using built-in theoretical corpus:', err.message)
+    }
+  }, [])
+
+  // Fetch filtered graph topology (capped cleanly on backend for interactive force layout)
+  const loadGraphTopology = useCallback(async () => {
     setLoading(true)
     try {
       const filters = {
@@ -81,36 +96,28 @@ export default function KnowledgeWorkspace({
         ...(preferredOnly ? { preferred_only: true } : {}),
         ...(searchQuery.trim() ? { keyword: searchQuery.trim() } : {}),
       }
-
-      // 1. Fetch entries
-      try {
-        const res = await getKnowledge(filters)
-        if (Array.isArray(res)) {
-          setItems(res)
-        } else if (res && Array.isArray(res.items)) {
-          setItems(res.items)
-        }
-      } catch (err) {
-        console.warn('Backend knowledge API not reachable yet, using built-in theoretical corpus:', err.message)
+      const graphRes = await getKnowledgeGraph(filters)
+      if (graphRes && Array.isArray(graphRes.nodes)) {
+        setGraphData(graphRes)
       }
-
-      // 2. Fetch graph topology
-      try {
-        const graphRes = await getKnowledgeGraph(filters)
-        if (graphRes && Array.isArray(graphRes.nodes)) {
-          setGraphData(graphRes)
-        }
-      } catch (err) {
-        console.warn('Backend knowledge graph API not reachable yet, using built-in topology:', err.message)
-      }
+    } catch (err) {
+      console.warn('Backend knowledge graph API not reachable yet, using built-in topology:', err.message)
     } finally {
       setLoading(false)
     }
   }, [selectedCategory, preferredOnly, searchQuery])
 
+  const loadKnowledgeData = useCallback(async () => {
+    await Promise.all([loadAllEntries(), loadGraphTopology()])
+  }, [loadAllEntries, loadGraphTopology])
+
   useEffect(() => {
-    loadKnowledgeData()
-  }, [loadKnowledgeData])
+    loadAllEntries()
+  }, [loadAllEntries])
+
+  useEffect(() => {
+    loadGraphTopology()
+  }, [loadGraphTopology])
 
   // Dynamic category list combining default with all custom categories in items & graph
   const allCategories = useMemo(() => {
@@ -252,6 +259,7 @@ export default function KnowledgeWorkspace({
 
   // Delete item (user item or soft-delete base item)
   const handleDeleteItem = async (entryId) => {
+    if (selectedNodeId === entryId) setSelectedNodeId(null)
     // Optimistic delete
     setItems(prev => prev.filter(item => item.id !== entryId))
     setGraphData(prev => ({
@@ -468,6 +476,25 @@ export default function KnowledgeWorkspace({
           />
         )}
       </main>
+
+      {/* 统一理论详情抽屉 (图谱与矩阵视图全局联动响应) */}
+      <KnowledgeDrawer
+        item={
+          items.find(it => it.id === selectedNodeId) ||
+          graphData?.nodes?.find(n => n.id === selectedNodeId) ||
+          null
+        }
+        categories={allCategories}
+        allNodes={graphData?.nodes || []}
+        topologyLinks={graphData?.edges || []}
+        onClose={() => setSelectedNodeId(null)}
+        onSelectNode={setSelectedNodeId}
+        onTogglePreference={handleTogglePreference}
+        onEdit={handleEditItem}
+        onFork={handleForkItem}
+        onDelete={handleDeleteItem}
+        onRestore={handleRestoreItem}
+      />
 
       {/* 编辑/新增/派生模态弹窗 */}
       <KnowledgeEditorModal

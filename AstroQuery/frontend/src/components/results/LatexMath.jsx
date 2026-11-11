@@ -34,7 +34,22 @@ export function LatexText({ text, className = '' }) {
   if (!hasDelimiters && !/\\[a-zA-Z]+|[a-zA-Z0-9][_^][{0-9]/.test(text)) {
     return <span className={className}>{text}</span>
   }
-  if (!hasDelimiters) return <LatexMath math={text} className={className} />
+  if (!hasDelimiters) {
+    // Only render the full string in KaTeX when it is concise pure math without Chinese prose or newlines
+    const hasChineseOrMultiline = /[\u4e00-\u9fa5\n]/.test(text)
+    if (!hasChineseOrMultiline && text.length <= 100) {
+      return <LatexMath math={text} className={className} />
+    }
+    // Extract bare math tokens inside mixed prose so Chinese paragraphs wrap naturally
+    const inlineParts = text.split(/(\\[a-zA-Z]+(?:\{[^}]*\})?|[A-Za-z0-9\u0370-\u03FF]+(?:\^(?:\{[^}]+\}|[0-9+\-]+)|_(?:\{[^}]+\}|[0-9]+))+)/g)
+    return (
+      <span className={className}>
+        {inlineParts.map((part, i) =>
+          i % 2 ? <LatexMath math={part} key={i} /> : part
+        )}
+      </span>
+    )
+  }
   const pieces = text.split(/(\$\$[\s\S]+?\$\$|\$[^$\n]+\$|\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\])/g)
   return <span className={className}>{pieces.map((piece, i) =>
     i % 2 ? <LatexMath math={piece} key={i} /> : piece,

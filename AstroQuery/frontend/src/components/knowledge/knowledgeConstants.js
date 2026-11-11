@@ -58,13 +58,181 @@ export function getCategoryInfo(categoryId, dynamicList = []) {
 export function isValidFormula(str) {
   if (!str || typeof str !== 'string') return false
   const trimmed = str.trim()
-  if (!trimmed || trimmed.length > 200) return false
-  // Contains common math symbols or LaTeX control sequences
-  const hasMath = /[=\\_\^∝≈~<>\+\-\*\/\(\)]/.test(trimmed)
-  // If it's predominantly Chinese characters without math structure, it's text not a formula
+  if (!trimmed || trimmed.length > 150) return false
+  if (trimmed.includes('\n')) return false
+  // Contains common math symbols
+  const hasMath = /[=\\_\^∝≈~<>\+\-\*\/]/.test(trimmed)
+  if (!hasMath) return false
+  // If Chinese characters count > 6, it is descriptive text not a standalone formula
   const chineseCount = (trimmed.match(/[\u4e00-\u9fa5]/g) || []).length
-  if (chineseCount > 15 && !trimmed.includes('=')) return false
-  return hasMath
+  if (chineseCount > 6) return false
+  return true
+}
+
+// 天体物理常见性质、目录列标识与拓扑枢纽 ID 的统一学术中文对照表
+export const PROPERTY_TRANSLATIONS = {
+  prop_luminosity: '光度 (Luminosity)',
+  prop_teff: '有效温度 (Teff)',
+  prop_mass: '天体质量 (Mass)',
+  prop_radius: '天体半径 (Radius)',
+  prop_distance: '天体距离 (Distance)',
+  prop_extinction: '星际消光 (Extinction)',
+  prop_reddening: '色余红化 (Reddening)',
+  prop_parallax: '天体测量视差 (Parallax)',
+  prop_period: '轨道周期 (Period)',
+  prop_metallicity: '金属丰度 (Metallicity)',
+  prop_surface_gravity: '表面重力 (Surface Gravity)',
+  prop_density: '物质密度 (Density)',
+  prop_dispersion: '色散量 (Dispersion Measure)',
+  prop_radial_velocity: '视向速度 (Radial Velocity)',
+  stellar_radius: '恒星半径',
+  effective_temperature: '有效温度',
+  'effective temperature': '有效温度',
+  teff: '有效温度 (Teff)',
+  teff_gspphot: 'Gaia GSP-Phot 有效温度',
+  temperature: '温度',
+  luminosity: '光度',
+  bolometric_luminosity: '热光度',
+  l_bol: '热光度 (L_bol)',
+  lum_bol: '热光度 (L_bol)',
+  mass: '天体质量',
+  stellar_mass: '恒星质量',
+  pl_mass: '行星质量',
+  pl_radius: '行星半径',
+  radius: '天体半径',
+  eff_radius: '等效半径',
+  kron_radius: 'Kron 半径',
+  einstein_radius: '爱因斯坦半径',
+  distance: '天体距离',
+  distance_gspphot: 'Gaia GSP-Phot 距离',
+  distance_modulus: '距离模数',
+  dist_modulus: '距离模数',
+  luminosity_distance: '光度距离',
+  angular_diameter_distance: '角直径距离',
+  heliocentric_distance: '日心距离',
+  redshift: '红移 (z)',
+  z: '红移 (z)',
+  photo_z: '测光红移',
+  photometric_redshift: '测光红移',
+  spec_z: '光谱红移',
+  dispersion_measure: '色散量 (DM)',
+  'dispersion measure': '色散量 (DM)',
+  dm: '色散量 (DM)',
+  metallicity: '金属丰度 [Fe/H]',
+  fe_h: '金属丰度 [Fe/H]',
+  'fe/h': '金属丰度 [Fe/H]',
+  feh: '金属丰度 [Fe/H]',
+  mh_gspphot: 'Gaia GSP-Phot 金属丰度',
+  alpha_abundance: 'α 元素丰度',
+  alpha_fe: '[α/Fe] 丰度比',
+  chemical_abundance: '化学元素丰度',
+  abundance: '元素丰度',
+  oxygen_abundance: '氧元素丰度',
+  surface_gravity: '表面重力 (log g)',
+  'surface gravity': '表面重力 (log g)',
+  logg: '表面重力 (log g)',
+  log_g: '表面重力 (log g)',
+  logg_gspphot: 'Gaia GSP-Phot 表面重力',
+  density: '物质密度',
+  central_density: '中心密度',
+  orbital_period: '轨道周期',
+  'orbital period': '轨道周期',
+  period: '周期',
+  spin_period: '自转周期',
+  variability_period: '光变周期',
+  radial_velocity: '视向速度',
+  'radial velocity': '视向速度',
+  rv: '视向速度',
+  v_helio: '日心视向速度',
+  velocity_dispersion: '速度弥散',
+  extinction: '星际消光 (A_v)',
+  a_v: '视觉消光 (A_V)',
+  av: '视觉消光 (A_V)',
+  ag_gspphot: 'Gaia G 波段消光',
+  azero_gspphot: '550nm 单色消光 (A_0)',
+  galactic_extinction: '银河系前景消光',
+  interstellar_extinction: '星际消光',
+  color_excess: '色余红化 E(B-V)',
+  'color excess': '色余红化 E(B-V)',
+  reddening: '星际红化',
+  'e(b-v)': '色余 E(B-V)',
+  e_bv: '色余 E(B-V)',
+  ebv: '色余 E(B-V)',
+  parallax: '天体测量视差',
+  plx: '天体测量视差',
+  gaia_parallax: 'Gaia 视差',
+  trigonometric_parallax: '三角视差',
+  flux_density: '流量密度',
+  radio_flux_density: '射电流量密度',
+  radio_flux: '射电流量',
+  fnu: '频率流量密度 (F_ν)',
+  f_lambda: '波长流量密度 (F_λ)',
+  abs_mag: '绝对星等',
+  absolute_magnitude: '绝对星等',
+  apparent_magnitude: '视星等',
+  bolometric_magnitude: '热星等',
+  m_bol: '热星等 (M_bol)',
+  surface_brightness: '表面亮度',
+  age: '天体年龄',
+  proper_motion: '自行',
+  pmra: '赤经自行 (μ_α*)',
+  pmdec: '赤纬自行 (μ_δ)',
+  coordinates: '天球坐标',
+  equatorial_coordinates: '赤道坐标',
+  galactic_coordinates: '银道坐标',
+  ra: '赤经 (RA)',
+  dec: '赤纬 (Dec)',
+  sky_position: '天区位置',
+  spectral_type: '光谱型',
+  sp_type: '光谱型',
+  spectral_class: '光谱分类',
+  spectral_index: '谱指数',
+  radio_spectral_index: '射电谱指数',
+  magnetic_field_strength: '磁场强度',
+  mass_loss_rate: '质量损失率',
+  star_formation_rate: '恒星形成率 (SFR)',
+  morphology: '形态学分类',
+  morph_type: '星系形态型',
+  sersic_index: 'Sérsic 轮廓指数',
+  equivalent_width: '等值宽度',
+  ruwe: 'Gaia 天体测量拟合度 (RUWE)',
+  vsini: '自转投影速度 (v sin i)',
+  rotational_velocity: '自转速度',
+  rotation_velocity: '自转速度',
+  accretion_rate: '吸积率',
+  eddington_ratio: '爱丁顿比',
+  object_class: '天体分类',
+  designation: '天体编号',
+  angular_size: '角尺度',
+  angular_separation: '角距',
+  snr: '信噪比 (SNR)',
+}
+
+export function translateProperty(rawProp) {
+  if (!rawProp) return ''
+  const raw = String(rawProp).trim()
+  const lower = raw.toLowerCase()
+  if (PROPERTY_TRANSLATIONS[lower]) return PROPERTY_TRANSLATIONS[lower]
+  const spaced = lower.replace(/_/g, ' ')
+  if (PROPERTY_TRANSLATIONS[spaced]) return PROPERTY_TRANSLATIONS[spaced]
+  // Clean band-magnitude or band-flux identifiers like w1_mag / j_mag / sdss_r_mag
+  const magMatch = lower.match(/^(?:sdss_|ukidss_|wise_|2mass_|twomass_)?([ugrizjhkw1234]+)_mag(?:nitude)?$/)
+  if (magMatch) return `${magMatch[1].toUpperCase()} 波段星等`
+  const fluxMatch = lower.match(/^([a-z0-9]+)_flux(?:_density)?$/)
+  if (fluxMatch) return `${fluxMatch[1].toUpperCase()} 波段流量`
+  return raw
+}
+
+export function translateEdgeLabel(label) {
+  if (!label) return '相互约束'
+  const s = String(label).trim()
+  if (s.startsWith('关联')) {
+    const rest = s.slice(2).trim()
+    if (!rest) return s
+    const translated = translateProperty(rest)
+    return `关联${translated}`
+  }
+  return s
 }
 
 export const INITIAL_KNOWLEDGE_ENTRIES = [

@@ -70,6 +70,7 @@ test('KnowledgeWorkspace and components exist and have no emojis in JSX', () => 
     'src/components/knowledge/KnowledgeWorkspace.jsx',
     'src/components/knowledge/KnowledgeGraphView.jsx',
     'src/components/knowledge/KnowledgeListView.jsx',
+    'src/components/knowledge/KnowledgeDrawer.jsx',
     'src/components/knowledge/KnowledgeEditorModal.jsx',
     'src/components/knowledge/knowledgeConstants.js',
     'src/components/knowledge/knowledge.css',
@@ -81,6 +82,18 @@ test('KnowledgeWorkspace and components exist and have no emojis in JSX', () => 
     const content = readFile(rel)
     assert.ok(!emojiRegex.test(content), `${rel} must strictly contain NO emojis`)
   }
+})
+
+test('knowledgeConstants exports Chinese property & edge translation helpers', async () => {
+  const { translateProperty, translateEdgeLabel, isValidFormula } = await import(
+    '../src/components/knowledge/knowledgeConstants.js'
+  )
+  assert.equal(translateProperty('flux_density'), '流量密度')
+  assert.equal(translateProperty('prop_luminosity'), '光度 (Luminosity)')
+  assert.equal(translateProperty('w1_mag'), 'W1 波段星等')
+  assert.equal(translateEdgeLabel('关联Luminosity'), '关联光度')
+  assert.equal(isValidFormula('L = 4πR^2 σ T^4'), true)
+  assert.equal(isValidFormula('电子简并压支撑白矮星的极限质量'), false)
 })
 
 test('KnowledgeDetail.jsx contains in-situ actions for preference and edit/fork without emojis', () => {
