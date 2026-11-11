@@ -3,6 +3,34 @@ import { Icon } from '@/components/icons'
 import { LatexMath, LatexText } from '@/components/results/LatexMath'
 import { KNOWLEDGE_CATEGORIES, getCategoryInfo, isValidFormula } from './knowledgeConstants'
 
+function toAlphaColor(colorStr, alpha = 0.25) {
+  if (!colorStr) return `rgba(20, 184, 166, ${alpha})`
+  const str = String(colorStr).trim()
+  if (str.startsWith('#')) {
+    let hex = str.slice(1)
+    if (hex.length === 3) hex = hex.split('').map(c => c + c).join('')
+    if (hex.length >= 6) {
+      const r = parseInt(hex.slice(0, 2), 16)
+      const g = parseInt(hex.slice(2, 4), 16)
+      const b = parseInt(hex.slice(4, 6), 16)
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`
+    }
+  }
+  if (str.startsWith('hsl')) {
+    if (str.startsWith('hsla')) {
+      return str.replace(/,\s*[\d.]+\)$/, `, ${alpha})`)
+    }
+    return str.replace(/^hsl\((.+)\)$/, `hsla($1, ${alpha})`)
+  }
+  if (str.startsWith('rgb')) {
+    if (str.startsWith('rgba')) {
+      return str.replace(/,\s*[\d.]+\)$/, `, ${alpha})`)
+    }
+    return str.replace(/^rgb\((.+)\)$/, `rgba($1, ${alpha})`)
+  }
+  return str
+}
+
 export default function KnowledgeGraphView({
   graphData,
   selectedCategory = 'all',
@@ -77,17 +105,36 @@ export default function KnowledgeGraphView({
 
   // Step physics simulation by 1 tick
   const stepPhysicsTick = useCallback((nodes, links, width, height, clusterAnchors) => {
-    const centerX = width / 2
-    const centerY = height / 2
+    const safeW = Math.max(width || 900, 300)
+    const safeH = Math.max(height || 650, 200)
+    const centerX = safeW / 2
+    const centerY = safeH / 2
 
     // 1. Repulsion between node pairs (Barnes-Hut approximation via distance cut)
     for (let i = 0; i < nodes.length; i++) {
       const n1 = nodes[i]
+      if (!Number.isFinite(n1.x) || !Number.isFinite(n1.y)) {
+        n1.x = centerX + (Math.random() - 0.5) * 100
+        n1.y = centerY + (Math.random() - 0.5) * 100
+        n1.vx = 0
+        n1.vy = 0
+      }
       for (let j = i + 1; j < nodes.length; j++) {
         const n2 = nodes[j]
+        if (!Number.isFinite(n2.x) || !Number.isFinite(n2.y)) {
+          n2.x = centerX + (Math.random() - 0.5) * 100
+          n2.y = centerY + (Math.random() - 0.5) * 100
+          n2.vx = 0
+          n2.vy = 0
+        }
         const dx = n2.x - n1.x
         const dy = n2.y - n1.y
-        const distSq = dx * dx + dy * dy || 1
+        const distSq = dx * dx + dy * dy
+        if (distSq < 0.04) {
+          n2.x += (Math.random() - 0.5) * 4
+          n2.y += (Math.random() - 0.5) * 4
+          continue
+        }
         if (distSq > 360000) continue // Distance cutoff for performance
         const dist = Math.sqrt(distSq)
         const repulsionK = n1.is_property || n2.is_property ? 900 : 2200
@@ -110,7 +157,7 @@ export default function KnowledgeGraphView({
     for (const link of links) {
       const s = link.source
       const t = link.target
-      if (!s || !t) continue
+      if (!s || !t || !Number.isFinite(s.x) || !Number.isFinite(s.y) || !Number.isFinite(t.x) || !Number.isFinite(t.y)) continue
       const dx = t.x - s.x
       const dy = t.y - s.y
       const dist = Math.sqrt(dx * dx + dy * dy) || 1
@@ -252,8 +299,8 @@ export default function KnowledgeGraphView({
     const ctx = canvas.getContext('2d')
     let animId
 
-    const width = canvas.width / (window.devicePixelRatio || 1)
-    const height = canvas.height / (window.devicePixelRatio || 1)
+    const width = Math.max(containerRef.current?.clientWidth || canvas.width / (window.devicePixelRatio || 1) || 900, 300)
+    const height = Math.max(containerRef.current?.clientHeight || canvas.height / (window.devicePixelRatio || 1) || 650, 200)
     const validCats = dynamicCategories.filter(c => c.id !== 'all')
     const clusterAnchors = {}
     validCats.forEach((cat, idx) => {
@@ -331,6 +378,9 @@ export default function KnowledgeGraphView({
       for (const link of links) {
         const s = link.source
         const target = link.target
+        if (!s || !target || !Number.isFinite(s.x) || !Number.isFinite(s.y) || !Number.isFinite(target.x) || !Number.isFinite(target.y)) {
+          continue
+        }
         const isConnected = focusTarget && (s.id === focusTarget.id || target.id === focusTarget.id)
         const isInSpotlight = !focusTarget || isConnected
 
@@ -339,7 +389,7 @@ export default function KnowledgeGraphView({
         ctx.lineTo(target.x, target.y)
 
         if (isConnected) {
-          ctx.strokeStyle = 'var(--accent, #14b8a6)'
+          ctx.strokeStyle = '#14b8a6'
           ctx.lineWidth = 2.4
           ctx.globalAlpha = 0.95
         } else {
@@ -355,7 +405,7 @@ export default function KnowledgeGraphView({
           const midX = (s.x + target.x) / 2
           const midY = (s.y + target.y) / 2
           ctx.font = '10.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-          ctx.fillStyle = isConnected ? 'var(--accent, #14b8a6)' : 'rgba(100, 116, 139, 0.85)'
+          ctx.fillStyle = isConnected ? '#0f766e' : 'rgba(100, 116, 139, 0.85)'
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
           ctx.fillText(link.label, midX, midY - 6)
@@ -364,6 +414,9 @@ export default function KnowledgeGraphView({
 
       // 2. Draw Nodes
       for (const n of nodes) {
+        if (!Number.isFinite(n.x) || !Number.isFinite(n.y) || !Number.isFinite(n.radius) || n.radius <= 0) {
+          continue
+        }
         const isSelected = activeNode?.id === n.id
         const isHovered = hoveredNode?.id === n.id
         const isFocus = isSelected || isHovered
@@ -388,7 +441,7 @@ export default function KnowledgeGraphView({
         if (isFocus) {
           ctx.beginPath()
           ctx.arc(n.x, n.y, n.radius + (isPreferred ? 9 : 6), 0, Math.PI * 2)
-          ctx.strokeStyle = 'var(--accent, #14b8a6)'
+          ctx.strokeStyle = '#14b8a6'
           ctx.lineWidth = 2.8
           ctx.stroke()
         }
@@ -398,7 +451,7 @@ export default function KnowledgeGraphView({
         ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2)
         ctx.fillStyle = n.is_property
           ? 'rgba(148, 163, 184, 0.18)'
-          : `${catInfo.color}44`
+          : toAlphaColor(catInfo.color, 0.25)
         ctx.fill()
 
         ctx.strokeStyle = n.is_property
@@ -446,15 +499,15 @@ export default function KnowledgeGraphView({
             ctx.rect(rectX, rectY, textW, textH)
           }
           ctx.fillStyle = isFocus
-            ? 'var(--surface-bg, rgba(255, 255, 255, 0.96))'
-            : 'var(--surface-bg, rgba(255, 255, 255, 0.88))'
+            ? 'rgba(255, 255, 255, 0.96)'
+            : 'rgba(255, 255, 255, 0.90)'
           ctx.fill()
-          ctx.strokeStyle = isFocus ? 'var(--accent, #14b8a6)' : 'var(--surface-border, rgba(0,0,0,0.08))'
+          ctx.strokeStyle = isFocus ? '#14b8a6' : 'rgba(203, 213, 225, 0.9)'
           ctx.lineWidth = 1
           ctx.stroke()
 
           // Text content
-          ctx.fillStyle = isFocus ? 'var(--accent, #14b8a6)' : 'var(--content-fg, #1e293b)'
+          ctx.fillStyle = isFocus ? '#0f766e' : '#1e293b'
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
           ctx.fillText(displayLabel, n.x, rectY + textH / 2)
