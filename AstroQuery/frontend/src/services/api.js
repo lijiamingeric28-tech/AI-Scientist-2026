@@ -131,7 +131,7 @@ export const getMaterials = async (taskId, deliveryId, revision, options) => {
 export const getChanges = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '', options)
 export const getActivity = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '&view=activity', options)
 export const getCoverageMatrix = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'coverage', revision, '&view=matrix', options)
-export const getMaterial = async (taskId, deliveryId, revision, materialId) => (await resource(taskId, deliveryId, 'materials', revision, `&material_id=${id(materialId)}`))[0]
+export const getMaterial = async (taskId, deliveryId, revision, materialId, options) => (await resource(taskId, deliveryId, 'materials', revision, `&material_id=${id(materialId)}`, options))[0]
 export const getExports = async (taskId, deliveryId, revision, options) => (await request(`/tasks/${id(taskId)}/exports`, options)).filter(m=>(!deliveryId||m.delivery_id===deliveryId)&&(!revision||m.delivery_revision===revision)).flatMap(manifest => manifest.artifacts.map(artifact => ({ ...artifact,
   name: artifact.artifact_id, display_name: `${manifest.format} · ${manifest.selected_count} 条`, size: artifact.byte_size,
   created_at:manifest.created_at, format:manifest.format, selected_count:manifest.selected_count, delivery_revision:manifest.delivery_revision, snapshot_ref:manifest.snapshot_ref, description: `交付修订 ${manifest.delivery_revision}`, delivery_id: manifest.delivery_id, export_id: manifest.export_id })))
@@ -165,8 +165,20 @@ export const openFile = (taskId, artifactId) => post(`/tasks/${id(taskId)}/open-
 export const eventHistoryUrl = taskId => `${BASE}/tasks/${id(taskId)}/events/history`
 
 /* ── 问答智能体 (Agent Copilot Harness 2.0) ── */
-export function getAgentMessages(taskId) {
-  return request(`/tasks/${id(taskId)}/agent/messages`)
+function agentScope(scope) {
+  return scope?.delivery_id ? '?' + new URLSearchParams({ delivery_id: scope.delivery_id, delivery_revision: scope.delivery_revision }) : ''
+}
+
+export function getAgentMessages(taskId, scope, options) {
+  return request(`/tasks/${id(taskId)}/agent/messages${agentScope(scope)}`, options)
+}
+
+export function getAgentCitation(taskId, messageId, citationId, scope, options) {
+  return request(`/tasks/${id(taskId)}/agent/messages/${id(messageId)}/citations/${id(citationId)}${agentScope(scope)}`, options)
+}
+
+export function stopAgentReply(taskId, messageId) {
+  return post(`/tasks/${id(taskId)}/agent/messages/${id(messageId)}/stop`, {})
 }
 
 export function deleteAgentMessages(taskId) {
@@ -175,17 +187,18 @@ export function deleteAgentMessages(taskId) {
 
 export async function sendAgentChat(taskId, content, onEvent, signal) {
   const url = `${BASE}/tasks/${id(taskId)}/agent/chat`
-  console.log('[api.sendAgentChat] fetch url:', url)
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: content }),
+    body: JSON.stringify(typeof content === 'string' ? { query: content } : content),
     signal,
   })
-  console.log('[api.sendAgentChat] res status:', res.status, res.headers.get('content-type'))
   if (!res.ok) {
-    const errText = await res.text()
-    throw new Error(`智能体请求失败 (${res.status}): ${errText}`)
+    const detail = await res.json().then(body => body.detail, () => null)
+    const error = new Error(detail?.message || '暂时无法发送问题')
+    error.status = res.status
+    error.code = detail?.code
+    throw error
   }
 
   const reader = res.body.getReader()
@@ -197,11 +210,9 @@ export async function sendAgentChat(taskId, content, onEvent, signal) {
   const dispatch = () => {
     if (currentData.length > 0) {
       const raw = currentData.join('\n')
-      try {
-        onEvent?.(currentEvent, JSON.parse(raw))
-      } catch {
-        onEvent?.(currentEvent, raw)
-      }
+      let payload
+      try { payload = JSON.parse(raw) } catch { payload = raw }
+      onEvent?.(currentEvent, payload)
       currentData = []
     }
     currentEvent = 'message'

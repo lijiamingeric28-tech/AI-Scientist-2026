@@ -56,6 +56,14 @@ const components = {
   hr: () => <hr style={{ border: 'none', borderTop: '1px solid var(--surface-border)', margin: '10px 0' }} />,
 }
 
+function mathDelimiters(text) {
+  if (typeof text !== 'string' || !text.includes('\\')) return text
+  return text.split(/(`{3}[\s\S]*?`{3}|`[^`\n]*`)/g).map((part, index) => index % 2 ? part :
+    part.replace(/\\\[([\s\S]+?)\\\]/g, (_, math) => '\n\n$$\n' + math + '\n$$\n\n')
+      .replace(/\\\(([\s\S]+?)\\\)/g, (_, math) => '$' + math + '$'),
+  ).join('')
+}
+
 export default function Markdown({ children, className, components: customComponents, ...props }) {
   const mergedComponents = customComponents
     ? { ...components, ...customComponents }
@@ -64,10 +72,10 @@ export default function Markdown({ children, className, components: customCompon
     <div className={className} style={{ fontSize: 14, lineHeight: 1.7, color: "var(--content-fg-secondary)" }} {...props}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: true }]]}
-        rehypePlugins={[rehypeKatex]}
+        rehypePlugins={[[rehypeKatex, { trust: false, maxExpand: 500, maxSize: 18 }]]}
         components={mergedComponents}
       >
-        {children}
+        {mathDelimiters(children)}
       </ReactMarkdown>
     </div>
   )

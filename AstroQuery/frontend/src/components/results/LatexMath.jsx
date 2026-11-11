@@ -1,112 +1,44 @@
-import React, { useMemo } from 'react';
-import katex from 'katex';
-import 'katex/dist/katex.min.css';
+import React, { useMemo } from 'react'
+import katex from 'katex'
+import 'katex/dist/katex.min.css'
 
-/**
- * Renders a LaTeX mathematical formula or block equation.
- * If displayMode is true, renders as a standalone block formula.
- */
+export function renderMath(input, displayMode) {
+  if (typeof input !== 'string') return null
+  const raw = input.trim()
+  const delimiters = [['$$', '$$'], ['\\[', '\\]'], ['\\(', '\\)'], ['$', '$']]
+  const pair = delimiters.find(([start, end]) => raw.length > start.length + end.length && raw.startsWith(start) && raw.endsWith(end))
+  const expression = pair ? raw.slice(pair[0].length, -pair[1].length).trim() : raw
+  if (!expression) return null
+  try {
+    return katex.renderToString(expression, {
+      displayMode, trust: false, throwOnError: true, maxExpand: 500, maxSize: 18, output: 'htmlAndMathml',
+    })
+  } catch {
+    return null
+  }
+}
+
 export function LatexMath({ math, formula, displayMode = false, className = '' }) {
-  const rawInput = math || formula;
-  if (!rawInput || typeof rawInput !== 'string') {
-    return null;
-  }
-
-  const renderedHtml = useMemo(() => {
-    let cleaned = rawInput.trim();
-    if (!cleaned) return '';
-
-    // Strip enclosing $$, $, or \[ \]
-    if (cleaned.startsWith('$$') && cleaned.endsWith('$$')) {
-      cleaned = cleaned.slice(2, -2).trim();
-    } else if (cleaned.startsWith('$') && cleaned.endsWith('$') && cleaned.length > 2) {
-      cleaned = cleaned.slice(1, -1).trim();
-    } else if (cleaned.startsWith('\\[') && cleaned.endsWith('\\]')) {
-      cleaned = cleaned.slice(2, -2).trim();
-    }
-
-    try {
-      return katex.renderToString(cleaned, {
-        displayMode: displayMode,
-        throwOnError: false,
-        output: 'htmlAndMathml',
-      });
-    } catch (err) {
-      console.warn('KaTeX render error:', err);
-      return `<code class="katex-fallback">${cleaned}</code>`;
-    }
-  }, [rawInput, displayMode]);
-
-  return (
-    <div
-      className={`latex-math-container ${displayMode ? 'is-display' : 'is-inline'} ${className}`}
-      dangerouslySetInnerHTML={{ __html: renderedHtml }}
-    />
-  );
+  const input = math || formula
+  const html = useMemo(() => renderMath(input, displayMode), [input, displayMode])
+  if (typeof input !== 'string' || !input) return null
+  const Element = displayMode ? 'div' : 'span'
+  const styles = 'latex-math-container ' + (displayMode ? 'is-display ' : 'is-inline ') + className
+  return html ? <Element className={styles} dangerouslySetInnerHTML={{ __html: html }} /> :
+    <Element className={styles}><code className="katex-fallback">{input}</code></Element>
 }
 
-/**
- * Renders prose text that may contain inline math denoted by $...$
- */
 export function LatexText({ text, className = '' }) {
-  if (!text || typeof text !== 'string') {
-    return null;
+  if (typeof text !== 'string' || !text) return null
+  const hasDelimiters = /(\$|\\\(|\\\[)/.test(text)
+  if (!hasDelimiters && !/\\[a-zA-Z]+|[a-zA-Z0-9][_^][{0-9]/.test(text)) {
+    return <span className={className}>{text}</span>
   }
-
-  const renderedHtml = useMemo(() => {
-    const raw = text.trim();
-    if (!raw) return '';
-
-    // If string has raw LaTeX commands without $, render the whole expression
-    if (!raw.includes('$') && /(\\[a-zA-Z]+|\^|\_)/.test(raw)) {
-      try {
-        return katex.renderToString(raw, {
-          displayMode: false,
-          throwOnError: false,
-          output: 'htmlAndMathml',
-        });
-      } catch (err) {
-        // Fall back
-      }
-    }
-
-    // Check if contains $...$
-    if (!raw.includes('$')) {
-      return null; // Let React render plain text directly
-    }
-
-    try {
-      const parts = raw.split(/(\$[^$]+\$)/g);
-      return parts.map(part => {
-        if (part.startsWith('$') && part.endsWith('$') && part.length > 2) {
-          const formula = part.slice(1, -1);
-          return katex.renderToString(formula, {
-            displayMode: false,
-            throwOnError: false,
-            output: 'htmlAndMathml',
-          });
-        }
-        return part
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-      }).join('');
-    } catch (err) {
-      console.warn('KaTeX inline render error:', err);
-      return null;
-    }
-  }, [text]);
-
-  if (!renderedHtml) {
-    return <span className={className}>{text}</span>;
-  }
-
-  return (
-    <span
-      className={`latex-prose-text ${className}`}
-      dangerouslySetInnerHTML={{ __html: renderedHtml }}
-    />
-  );
+  if (!hasDelimiters) return <LatexMath math={text} className={className} />
+  const pieces = text.split(/(\$\$[\s\S]+?\$\$|\$[^$\n]+\$|\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\])/g)
+  return <span className={className}>{pieces.map((piece, i) =>
+    i % 2 ? <LatexMath math={piece} key={i} /> : piece,
+  )}</span>
 }
 
-export default LatexMath;
+export default LatexMath

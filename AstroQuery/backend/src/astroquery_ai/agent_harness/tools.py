@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 import re
 from typing import Any, Dict, List, Optional
-from .data_loader import TaskDataBundle
+from .data_loader import TaskDataBundle, source_metadata
 
 
 class DomainTools:
@@ -209,17 +209,18 @@ class DomainTools:
                 if kw in cname or kw in sym or kw in p_ref.lower():
                     matched.append(m)
 
-        if not matched:
+        if not matched and not property_name.strip():
             matched = self.bundle.measurements[:limit]
 
         if source_id:
-            s_clean = source_id.strip().lower()
+            source = self.bundle.source(source_id)
+            s_clean = (source["source_id"] if source else source_id).strip().lower()
             matched = [
                 m for m in matched
                 if s_clean in str((m.get("source_ref") or {}).get("id") or "").lower()
             ]
 
-        sliced = matched[:max(1, limit)]
+        sliced = matched[:min(40, max(1, limit))]
         if not sliced:
             return f"未在任务数据中检索到与「{property_name}」匹配的测定记录。"
 
@@ -235,7 +236,11 @@ class DomainTools:
             p_cn = (binding.get("definition") or {}).get("name_cn") or pref
             sref = (m.get("source_ref") or {}).get("id") or "未知文献"
             source_obj = self.bundle.sources_by_id.get(sref, {})
-            bibcode = source_obj.get("bibcode") or sref
+            bibcode = source_metadata(source_obj).get("bibcode") or sref
+            context = self.bundle.contexts_by_id.get((m.get("context_ref") or {}).get("id"), {})
+            conditions = "；".join(
+                f"{c.get('key')}: {c['value']}" for c in context.get("conditions", []) if c.get("value") is not None
+            )
 
             # 不确定度
             unc = m.get("uncertainty") or {}
@@ -256,7 +261,9 @@ class DomainTools:
                     norm_str = f" [归一化值: {d_val} {d_unit}]"
 
             lines.append(
-                f"{idx}. [{p_cn}] 数值: {val_str}{unc_str} {unit_str}{norm_str} | 引用标识: [REC:{mid}] | 出处文献: [SOURCE:{bibcode}]"
+                f"{idx}. [{p_cn}] 原报: {raw_val or val_str}{unc_str} {unit_str}{norm_str} | [REC:{mid}] "
+                f"| [SOURCE:{bibcode}] {source_metadata(source_obj).get('title') or ''}"
+                + (f" | 条件: {conditions[:320]}" if conditions else "")
             )
 
         return "\n".join(lines)
@@ -264,14 +271,6 @@ class DomainTools:
     # ── 2. 底层溯源与证据链调阅 ──────────────────────────
     def _get_measurement_provenance(self, measurement_id: str) -> str:
         m = self.bundle.measurements_by_id.get(measurement_id)
-        if not m:
-            # 容错模糊匹配
-            for mid, rec in self.bundle.measurements_by_id.items():
-                if measurement_id in mid or mid in measurement_id:
-                    m = rec
-                    measurement_id = mid
-                    break
-
         if not m:
             return f"未找到标识符为 {measurement_id} 的测定记录。"
 
@@ -285,7 +284,7 @@ class DomainTools:
         # 出处
         sref = (m.get("source_ref") or {}).get("id") or ""
         source_obj = self.bundle.sources_by_id.get(sref, {})
-        bibcode = source_obj.get("bibcode") or sref
+        bibcode = source_metadata(source_obj).get("bibcode") or sref
         lines.append(f"- 出处文献/星表: [SOURCE:{bibcode}]《{source_obj.get('title', '未知论文')}》")
 
         # 原文证据摘录 (evidence_refs)
@@ -297,7 +296,8 @@ class DomainTools:
                 ev = self.bundle.evidence_by_id.get(eid, {})
                 page = (ev.get("locator") or {}).get("page")
                 raw_text = ev.get("raw_text") or "（无摘录文本）"
-                page_info = f"文献物理第 {page} 页" if page else "正文/表格"
+                locator = ev.get("locator") or {}
+                page_info = f"文献物理第 {page} 页" if page else f"表格位置 {json.dumps(locator, ensure_ascii=False)}"
                 lines.append(f"  * 位于 [SOURCE:{bibcode}{f':p.{page}' if page else ''}] {page_info}:")
                 lines.append(f"    「{raw_text.strip()}」")
 
@@ -351,29 +351,28 @@ class DomainTools:
         if bibcode:
             b_clean = bibcode.strip().lower()
             for s in self.bundle.sources:
-                if b_clean in str(s.get("bibcode") or "").lower() or b_clean in str(s.get("source_id") or "").lower():
+                if b_clean == str(source_metadata(s).get("bibcode") or "").lower() or b_clean == str(s.get("source_id") or "").lower():
                     matched.append(s)
         else:
             q_clean = query_terms.strip().lower()
             for s in self.bundle.sources:
-                title = str(s.get("title") or "").lower()
-                authors = " ".join(str(a) for a in (s.get("authors") or [])).lower()
-                year = str(s.get("year") or "")
-                bib = str(s.get("bibcode") or "").lower()
+                meta = source_metadata(s)
+                title = str(meta.get("title") or "").lower()
+                authors = " ".join(str(a) for a in (meta.get("authors") or [])).lower()
+                year = str(meta.get("year") or "")
+                bib = str(meta.get("bibcode") or "").lower()
                 if q_clean in title or q_clean in authors or q_clean in year or q_clean in bib:
                     matched.append(s)
-
-        if not matched:
-            matched = self.bundle.sources[:5]
 
         sliced = matched[:6]
         lines = [f"检索到 {len(sliced)} 篇涉及本次任务提取的文献出处："]
         for idx, s in enumerate(sliced, 1):
-            bib = s.get("bibcode") or s.get("source_id") or "UNKNOWN"
-            title = s.get("title") or "（无题名）"
-            year = s.get("year") or "未知年份"
-            authors = s.get("authors") or []
-            auth_str = authors[0] + " 等" if len(authors) > 1 else (authors[0] if authors else "团队文献")
+            meta = source_metadata(s)
+            bib = meta.get("bibcode") or s.get("source_id")
+            title = meta.get("title") or "未提供题名"
+            year = meta.get("year") or "未知年份"
+            authors = meta.get("authors") or []
+            auth_str = ", ".join(map(str, authors[:3]))
             # 统计从该文献提取的测定数
             recs = self.bundle.measurements_by_source.get(str(s.get("source_id") or "").lower(), [])
             lines.append(
@@ -385,19 +384,18 @@ class DomainTools:
     # ── 5. 分歧仲裁案卷调阅 ──────────────────────────────
     def _inspect_differences_and_arbitration(self, property_name: str) -> str:
         lines = ["【多源测定分歧案卷与质检仲裁记录】"]
-        groups = self.bundle.archive_groups or []
-        comparisons = self.bundle.result_comparisons.get("groups") or []
-
-        all_groups = list(groups) + list(comparisons)
+        pid = self.bundle.resolve_property_id(property_name)
+        all_groups = [group for group in self.bundle.comparisons_by_id.values()
+                      if not pid or group.get("property_id") == pid]
         if not all_groups:
-            return "本次任务的多源数据比对中未发现显著测量分歧，各文献观测结果具有高度一致性或属于同源测定。"
+            return "本交付没有找到对应的对照或归档组。"
 
         for idx, g in enumerate(all_groups[:4], 1):
-            gid = g.get("group_id") or f"ARB-GROUP-{idx}"
+            gid = g["group_id"]
             pref = g.get("property_id") or "核心物理量"
             binding = self.bundle.definitions_by_id.get(pref, {})
             p_cn = (binding.get("definition") or {}).get("name_cn") or pref
-            meaning = g.get("meaning") or g.get("reason") or "多源测量分歧仲裁组"
+            meaning = g.get("meaning") or g.get("reason") or g.get("question") or "已保存的对照组"
             mids = g.get("measurement_ids") or [r.get("id") for r in (g.get("member_refs") or [])]
 
             lines.append(f"\n[仲裁案卷: [ARB:{gid}]] - 涉及物理量: {p_cn}")
@@ -412,16 +410,18 @@ class DomainTools:
         if figure_id:
             fid_clean = figure_id.strip().lower()
             for f in self.bundle.figures:
-                if fid_clean in str(f.get("figure_id") or "").lower():
+                if fid_clean == str(f.get("figure_id") or "").lower():
                     matched.append(f)
         elif property_keyword:
-            kw = property_keyword.strip().lower()
+            keywords = [word.strip().lower() for word in property_keyword.split("|") if word.strip()]
+            properties = {self.bundle.resolve_property_id(word) for word in keywords}
+            properties.discard(None)
             for f in self.bundle.figures:
                 cap = str(f.get("caption") or "").lower()
-                if kw in cap:
+                if any(word in cap for word in keywords) or properties.intersection(f.get("property_ids") or []):
                     matched.append(f)
 
-        if not matched:
+        if not matched and not figure_id:
             matched = self.bundle.figures[:4]
 
         sliced = matched[:4]
@@ -484,12 +484,13 @@ class DomainTools:
 
         lines = ["【天体物理学理论底座与推演公式调阅】"]
         for idx, b in enumerate(matched[:3], 1):
+            self.bundle.index_theory(b)
             claim = b.get("claim") or {}
             cid = claim.get("claim_id") or b.get("theory_id") or f"THEORY-{idx}"
             title = claim.get("title") or b.get("title") or "经典天体物理规律"
             formula = b.get("formula") or {}
-            latex = formula.get("latex") or formula.get("expression") or ""
-            mech = b.get("physical_mechanism") or claim.get("statement") or ""
+            latex = formula if isinstance(formula, str) else formula.get("latex") or formula.get("expression") or ""
+            mech = b.get("physical_mechanism") or claim.get("text") or claim.get("statement") or ""
 
             lines.append(f"\n{idx}. 理论标识: [THEORY:{cid}] 《{title}》")
             if latex:

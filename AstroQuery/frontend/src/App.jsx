@@ -18,7 +18,7 @@ import { useSlidingUnderline } from '@/hooks/useSlidingUnderline'
 import { useContentTransition } from '@/hooks/useContentTransition'
 import { useClickFeedback } from '@/hooks/useClickFeedback'
 import { usePlayback } from '@/hooks/usePlayback'
-import { getWorkspaceState, getRecord } from '@/services/api'
+import { getWorkspaceState, getRecord, getAgentCitation } from '@/services/api'
 
 const ChatView = lazy(() => import('@/components/chat/ChatView'))
 const DataView = lazy(() => import('@/components/results/DataView'))
@@ -211,6 +211,7 @@ function AppInner() {
   // 新任务创建成功（ChatView submitQuery 回调）
   const handleNewTask = (taskId) => {
     viewMemory.current[taskId] = 'chat'
+    setMode('user')
     setSelectedId(taskId); setView('chat'); setDetail(null)
     void loadTasks(0)
   }
@@ -398,6 +399,37 @@ function AppInner() {
   const openContext = async next => {
     const epoch = ++contextEpoch.current
     contextRead.current?.abort()
+    if (next?.type === 'agent-citation') {
+      const controller = new AbortController()
+      contextRead.current = controller
+      const { taskId, messageId, citationId, scope: requested } = next
+      setDetail({ type: 'agent-ref-loading', agentContext: true })
+      try {
+        const { citation, scope } = await getAgentCitation(taskId, messageId, citationId, requested, { signal: controller.signal })
+        const { payload } = citation
+        const source = payload.source && { ...payload.source, task_id: taskId, protocol_version: 2 }
+        let detail = { type: 'agent-reference', citation, taskId, scope }
+        if (citation.type === 'record') {
+          const record = await getRecord(taskId, scope.delivery_id, scope.delivery_revision, payload.measurement_id, { signal: controller.signal })
+          if (!record) throw new Error('这版交付未保存该测量')
+          detail = { type: 'record', record, linkedSource: source }
+        } else if (citation.type === 'source' && !payload.page) {
+          detail = { type: 'source', source }
+        } else if (citation.type === 'figure') {
+          detail = { type: 'figure', figure: { ...payload.figure, task_id: taskId }, linkedSource: source }
+        } else if (citation.type === 'theory') {
+          detail = { type: 'knowledge', block: payload.block }
+        }
+        if (controller.signal.aborted || epoch !== contextEpoch.current) return
+        if (detail.type === 'source') data.ensure('materials')
+        if (detail.type === 'record') data.ensure('sources', 'quality')
+        setDetail({ ...detail, agentContext: true, answerScope: scope })
+      } catch (error) {
+        if (!controller.signal.aborted && epoch === contextEpoch.current)
+          setDetail({ type: 'agent-reference', agentContext: true, error: error.message, retry: () => openContext(next) })
+      }
+      return
+    }
     if (next?.type === 'source') data.ensure('records', 'sources', 'materials')
     if (next?.type === 'figure') data.ensure('sources', 'figures')
     if (next?.type === 'record') data.ensure('sources', 'quality')
@@ -493,7 +525,7 @@ function AppInner() {
           {helpOpen && <ViewContent label="帮助"><HelpPage onReturn={() => setHelpOpen(false)} onSamples={() => { setHelpOpen(false);handleModeChange('sample') }} onQuery={() => { handleModeChange('user'); handleNew() }} onSettings={() => { setOnboarding(false); setSettingsOpen(true) }} pending={pending} onPending={() => { setHelpOpen(false); handleShowStageInChat(pending?.stageId || 'understand') }} /></ViewContent>}
           <div ref={viewsRef} data-sliding={views.moving || undefined} style={{ display: helpOpen ? 'none' : 'flex' }} key={memoryKey} className="task-views slide-panes">
             <div className="task-view" {...views.paneProps('chat', 'flex')}>
-              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onOpenSampleChat={id=>{handleSelect(id);setView('chat')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
+              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView isReplaying={Boolean(player || playbackRequest || selected?.kind === 'replay')} theme={theme} config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onOpenSampleChat={id=>{handleSelect(id);setView('chat')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
             </div>
             <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
             <div className="task-view" {...views.paneProps('workflow', 'flex')}>{views.hasVisited('workflow') && <ViewContent label="执行明细"><WorkflowView request={executionRequest} memory={taskMemory.workflow} active={!helpOpen && view === 'workflow'} onOpenData={openData} task={selected} pipeline={pipeline} data={data} onGoChat={() => handleShowStageInChat(pending?.stageId || 'understand')} onShowStageInChat={handleShowStageInChat} onOpenDetail={openContext} /></ViewContent>}</div>
