@@ -14,8 +14,31 @@ export async function request(path, options = {}) {
   }
   return response.json()
 }
-const post = (path, body) => request(path, { method: 'POST', body: JSON.stringify(body) })
+const post = (path, body, options = {}) => request(path, { ...options, method: 'POST', body: JSON.stringify(body) })
+const put = (path, body, options = {}) => request(path, { ...options, method: 'PUT', body: JSON.stringify(body) })
+const del = (path, options = {}) => request(path, { ...options, method: 'DELETE' })
 const id = encodeURIComponent
+
+export const getKnowledge = (filters = {}, options = {}) => {
+  const query = new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([, v]) => v != null && v !== '')))
+  const qs = query.toString()
+  return request(`/knowledge${qs ? `?${qs}` : ''}`, options)
+}
+export const getKnowledgeItem = (entryId, options = {}) => request(`/knowledge/${id(entryId)}`, options)
+export const createKnowledge = (data, options = {}) => post('/knowledge', data, options)
+export const updateKnowledge = (entryId, data, options = {}) => put(`/knowledge/${id(entryId)}`, data, options)
+export const deleteKnowledge = (entryId, options = {}) => del(`/knowledge/${id(entryId)}`, options)
+export const setKnowledgePreference = (entryId, preferenceOrObj, weightBoost, options = {}) => {
+  const body = typeof preferenceOrObj === 'object' && preferenceOrObj !== null
+    ? preferenceOrObj
+    : { preference: preferenceOrObj, ...(weightBoost != null ? { weight_boost: weightBoost } : {}) }
+  return post(`/knowledge/${id(entryId)}/preference`, body, options)
+}
+export const getKnowledgeGraph = (filters = {}, options = {}) => {
+  const query = new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([, v]) => v != null && v !== '')))
+  const qs = query.toString()
+  return request(`/knowledge/graph${qs ? `?${qs}` : ''}`, options)
+}
 export const getState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state`, options)
 export const getConversationState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=conversation`, options)
 export const getWorkspaceState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=workspace`, options)

@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 
-from .routes import settings, tasks, events, results, retired, agent
+from .routes import settings, tasks, events, results, retired, agent, knowledge
 
 from contextlib import asynccontextmanager
 
@@ -159,6 +159,7 @@ def create_app(
     results.register(app, application, scheduler)
     retired.register(app, application, scheduler)
     agent.register(app, application, scheduler)
+    knowledge.register(app, application, scheduler)
     app.add_api_route("/api/tasks/{task_id}/{action}", control, methods=["POST"])
     frontend = frontend_dist()
     if frontend.is_dir():

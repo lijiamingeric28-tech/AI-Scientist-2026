@@ -441,20 +441,43 @@ class DomainTools:
 
         return "\n".join(lines)
 
-    # ── 7. 294 理论知识库与公式调阅 ────────────────────────
+    # ── 7. 统一理论知识库与公式调阅 (集成用户优先理论与派生模型) ───────
     def _get_scientific_theory(self, property_name: str, theory_id: Optional[str]) -> str:
         matched = []
+        user_store = None
+        try:
+            from astroquery_ai.science.user_knowledge_store import UserKnowledgeStore
+            user_store = UserKnowledgeStore.get_instance()
+        except Exception:
+            pass
+
         if theory_id:
             tid_clean = theory_id.strip().lower()
+            if user_store:
+                entry = user_store.get_entry(theory_id)
+                if entry:
+                    matched.append(user_store.to_knowledge_block(entry))
             for b in self.bundle.theories:
                 claim = b.get("claim") or {}
                 cid = str(claim.get("claim_id") or b.get("theory_id") or "").lower()
-                if tid_clean in cid:
+                if tid_clean in cid and not any(m.get("entry_id") == b.get("theory_id") for m in matched):
                     matched.append(b)
         else:
             pid = self.bundle.resolve_property_id(property_name)
+            if user_store:
+                query_fields = [pid, property_name] if pid else [property_name]
+                cands = user_store.search(
+                    field_names=query_fields,
+                    keywords=[property_name],
+                    top_k=6,
+                )
+                for c in cands:
+                    matched.append(user_store.to_knowledge_block(c))
+
             if pid and pid.lower() in self.bundle.theories_by_prop:
-                matched = self.bundle.theories_by_prop[pid.lower()]
+                for b in self.bundle.theories_by_prop[pid.lower()]:
+                    if not any(m.get("entry_id") == b.get("theory_id") for m in matched):
+                        matched.append(b)
             else:
                 kw = property_name.strip().lower()
                 for b in self.bundle.theories:
@@ -462,28 +485,30 @@ class DomainTools:
                     title = str(claim.get("title") or b.get("title") or "").lower()
                     mech = str(b.get("physical_mechanism") or "").lower()
                     if kw in title or kw in mech:
-                        matched.append(b)
+                        if not any(m.get("entry_id") == b.get("theory_id") for m in matched):
+                            matched.append(b)
 
         if not matched:
             matched = self.bundle.theories[:3]
 
-        if not matched:
-            # 动态回退到 TheoryKnowledgeStore 单例调阅
-            try:
-                from astroquery_ai.science.theory_knowledge import TheoryKnowledgeStore
-                store = TheoryKnowledgeStore.get_instance()
-                pids = list(self.bundle.definitions_by_id.keys())
-                cand = store.get_theories_for_properties(pids)
-                if cand:
-                    matched = [store.to_knowledge_block(c) for c in cand[:3]]
-            except Exception:
-                pass
+        if not matched and user_store:
+            pids = list(self.bundle.definitions_by_id.keys())
+            cands = user_store.search(field_names=pids, top_k=3)
+            matched = [user_store.to_knowledge_block(c) for c in cands]
 
         if not matched:
             return f"理论知识库中未查得关于「{property_name}」的特定天体物理公式。"
 
+        def _rank(b):
+            is_pref = 1 if (b.get("user_preferred") or b.get("preferred") or b.get("user_preference") == "preferred") else 0
+            boost = b.get("weight_boost", 1.0)
+            is_user = 1 if b.get("is_user") else 0
+            return (is_pref, boost, is_user)
+
+        matched.sort(key=_rank, reverse=True)
+
         lines = ["【天体物理学理论底座与推演公式调阅】"]
-        for idx, b in enumerate(matched[:3], 1):
+        for idx, b in enumerate(matched[:4], 1):
             self.bundle.index_theory(b)
             claim = b.get("claim") or {}
             cid = claim.get("claim_id") or b.get("theory_id") or f"THEORY-{idx}"
@@ -492,10 +517,19 @@ class DomainTools:
             latex = formula if isinstance(formula, str) else formula.get("latex") or formula.get("expression") or ""
             mech = b.get("physical_mechanism") or claim.get("text") or claim.get("statement") or ""
 
-            lines.append(f"\n{idx}. 理论标识: [THEORY:{cid}] 《{title}》")
+            pref_tag = ""
+            if b.get("user_preferred") or b.get("preferred") or b.get("user_preference") == "preferred":
+                pref_tag += " ★ [科研优先理论 (User Preferred)]"
+            if b.get("is_user"):
+                pref_tag += " [用户派生/私有模型]"
+
+            lines.append(f"\n{idx}. 理论标识: [THEORY:{cid}] 《{title}》{pref_tag}")
             if latex:
                 lines.append(f"   核心公式: $${latex}$$")
             if mech:
                 lines.append(f"   物理机制阐释: {mech}")
+            conds = b.get("conditions")
+            if conds and isinstance(conds, list) and conds:
+                lines.append(f"   适用条件: {', '.join(str(c) for c in conds[:2])}")
 
         return "\n".join(lines)

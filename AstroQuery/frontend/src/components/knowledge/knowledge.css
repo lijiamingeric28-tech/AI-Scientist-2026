@@ -1,0 +1,742 @@
+/* AstroQuery Knowledge Studio & Graph Interface Styles
+ * STRICT: NO emojis. Clean Monoline typography matching system theme variables.
+ */
+
+.knowledge-workspace {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--surface-bg);
+  color: var(--content-fg);
+  overflow: hidden;
+  position: relative;
+}
+
+/* 顶部操作工具栏 */
+.kw-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.03));
+  flex-wrap: wrap;
+  z-index: 10;
+}
+
+.kw-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.kw-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 视图双模切换器 */
+.kw-mode-switcher {
+  display: inline-flex;
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.kw-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: var(--text-ui, 13px);
+  font-weight: 500;
+  color: var(--content-fg-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.kw-mode-btn:hover {
+  color: var(--content-fg);
+  background: var(--surface-hover, rgba(128, 128, 128, 0.08));
+}
+
+.kw-mode-btn.active {
+  background: var(--surface-elevated, #2a2d32);
+  color: var(--accent-text, var(--accent));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* 搜索框 */
+.kw-search-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 240px;
+  transition: all 0.2s ease;
+}
+
+.kw-search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light, rgba(20, 184, 166, 0.15));
+  width: 280px;
+}
+
+.kw-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--text-ui, 13px);
+  color: var(--content-fg);
+  width: 100%;
+}
+
+.kw-search-box input::placeholder {
+  color: var(--content-fg-secondary);
+  opacity: 0.7;
+}
+
+.kw-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.kw-clear-btn:hover {
+  color: var(--content-fg);
+}
+
+/* 任务作用域联动过滤按钮 */
+.kw-task-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: var(--text-note, 12px);
+  border: 1px dashed var(--surface-border);
+  background: transparent;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kw-task-filter-pill:hover {
+  border-color: var(--accent);
+  color: var(--content-fg);
+}
+
+.kw-task-filter-pill.active {
+  border: 1px solid var(--accent);
+  background: var(--accent-light, rgba(20, 184, 166, 0.12));
+  color: var(--accent-text, var(--accent));
+  font-weight: 500;
+}
+
+.kw-filter-pref-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: var(--text-note, 12px);
+  border: 1px solid var(--surface-border);
+  background: transparent;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kw-filter-pref-btn:hover {
+  border-color: #eab308;
+  color: #eab308;
+}
+
+.kw-filter-pref-btn.active {
+  border-color: #eab308;
+  background: rgba(234, 179, 8, 0.12);
+  color: #eab308;
+  font-weight: 500;
+}
+
+/* 分类胶囊栏 */
+.kw-category-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.kw-category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: var(--text-note, 12px);
+  border: 1px solid var(--surface-border);
+  background: transparent;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.kw-category-chip:hover {
+  color: var(--content-fg);
+  border-color: var(--surface-border-strong, #888);
+}
+
+.kw-category-chip.active {
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.06));
+  color: var(--content-fg);
+  border-color: currentColor;
+  font-weight: 600;
+}
+
+.kw-cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.kw-cat-count {
+  font-size: 11px;
+  opacity: 0.75;
+  background: rgba(128, 128, 128, 0.15);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+/* 主内容区域 */
+.kw-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== 知识图谱视图 ===== */
+.kw-graph-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-bg);
+}
+
+.kw-graph-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+.kw-graph-canvas:active {
+  cursor: grabbing;
+}
+
+/* 图谱悬浮控制器 */
+.kw-floating-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--surface-elevated, #24272c);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 20;
+}
+
+.kw-control-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kw-control-btn:hover {
+  background: var(--surface-hover, rgba(128, 128, 128, 0.15));
+  color: var(--content-fg);
+}
+
+.kw-control-btn.active {
+  color: var(--accent);
+}
+
+/* 图谱图例 */
+.kw-graph-legend {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  background: var(--surface-elevated, #24272c);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  font-size: var(--text-note, 12px);
+  z-index: 15;
+  max-width: 240px;
+  backdrop-filter: blur(8px);
+}
+
+.kw-legend-header {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--content-fg);
+}
+
+.kw-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kw-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--content-fg-secondary);
+  font-size: 11px;
+}
+
+/* 图谱侧边抽屉/详情卡片 */
+.kw-graph-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: 90%;
+  background: var(--surface-bg);
+  border-left: 1px solid var(--surface-border);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 25;
+  animation: slideInRight 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.kw-drawer-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--surface-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kw-drawer-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== 分类矩阵视图 ===== */
+.kw-list-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.kw-category-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kw-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.kw-section-title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-section, 15px);
+  font-weight: 600;
+  color: var(--content-fg);
+}
+
+.kw-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+/* 理论知识卡片 */
+.kw-card {
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--surface-border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.kw-card:hover {
+  border-color: var(--surface-border-strong, #666);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.kw-card.is-preferred {
+  border-color: rgba(234, 179, 8, 0.4);
+  background: linear-gradient(180deg, rgba(234, 179, 8, 0.04) 0%, transparent 100%), var(--surface-secondary, rgba(255, 255, 255, 0.02));
+}
+
+.kw-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.kw-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.kw-card-title {
+  font-size: var(--text-section, 15px);
+  font-weight: 600;
+  color: var(--content-fg);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.kw-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.kw-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kw-icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--content-fg-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kw-icon-btn:hover {
+  background: var(--surface-hover, rgba(128, 128, 128, 0.12));
+  color: var(--content-fg);
+}
+
+.kw-icon-btn.is-active-star {
+  color: #eab308;
+}
+
+.kw-icon-btn.is-active-star:hover {
+  background: rgba(234, 179, 8, 0.12);
+}
+
+/* 公式展示区 */
+.kw-formula-box {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border-subtle, var(--surface-border));
+  border-radius: 6px;
+  padding: 10px 14px;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.kw-card-desc {
+  font-size: var(--text-body, 13px);
+  color: var(--content-fg);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 参数范围网格 */
+.kw-param-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--surface-bg);
+  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--surface-border-subtle, var(--surface-border));
+  font-size: 12px;
+}
+
+.kw-param-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--content-fg-secondary);
+}
+
+.kw-param-name {
+  color: var(--content-fg);
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+}
+
+.kw-param-val {
+  color: var(--accent-text, var(--accent));
+  font-family: var(--font-mono, monospace);
+}
+
+/* 标签列表 */
+.kw-tag-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.kw-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(128, 128, 128, 0.08);
+  color: var(--content-fg-secondary);
+  font-size: 11px;
+}
+
+/* 出处文献 */
+.kw-sources {
+  font-size: 11px;
+  color: var(--content-fg-secondary);
+  border-top: 1px dashed var(--surface-border);
+  padding-top: 8px;
+  overflow-wrap: anywhere;
+}
+
+/* ===== 知识编辑/新建模态弹窗 ===== */
+.kw-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.kw-modal-dialog {
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  width: 680px;
+  max-width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalScaleUp 0.18s ease-out;
+}
+
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.kw-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kw-modal-header h3 {
+  margin: 0;
+  font-size: var(--text-section, 16px);
+  font-weight: 600;
+  color: var(--content-fg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kw-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kw-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kw-form-label {
+  font-size: var(--text-ui, 13px);
+  font-weight: 500;
+  color: var(--content-fg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kw-form-hint {
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--content-fg-secondary);
+}
+
+.kw-input,
+.kw-select,
+.kw-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.03));
+  color: var(--content-fg);
+  font-size: var(--text-ui, 13px);
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.kw-input:focus,
+.kw-select:focus,
+.kw-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light, rgba(20, 184, 166, 0.15));
+}
+
+.kw-textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.kw-latex-preview-card {
+  border: 1px dashed var(--accent);
+  background: var(--accent-light, rgba(20, 184, 166, 0.05));
+  border-radius: 6px;
+  padding: 12px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.kw-modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.02));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 空状态 */
+.kw-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  gap: 12px;
+  color: var(--content-fg-secondary);
+}
+
+.kw-empty-state h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--content-fg);
+}
+
+.kw-empty-state p {
+  margin: 0;
+  font-size: 13px;
+  max-width: 360px;
+}

@@ -560,13 +560,65 @@ in this report, and every original measurement remains in the science snapshot.
     theory_store = TheoryKnowledgeStore.get_instance()
     pids = [u['property_id'] for u in units]
     relationships = theory_store.derive_network_relationships(pids)
+    theory_blocks = {}
     for rel in relationships:
         tid = rel.get('theory_id')
         if tid and tid in theory_store.by_id:
             tblk = theory_store.to_knowledge_block(theory_store.by_id[tid])
-            blocks[tblk['claim']['claim_id']] = tblk
+            theory_blocks[tblk['claim']['claim_id']] = tblk
 
-    report.update(owner_rechecks=deepcopy(list(owner_rechecks)), knowledge_blocks=list(blocks.values()),
+    try:
+        from .user_knowledge_store import UserKnowledgeStore
+        user_store = UserKnowledgeStore.get_instance()
+        pref_ids = user_store.get_preferred_ids()
+
+        user_cands = user_store.search(field_names=pids, top_k=6)
+        for entry in user_cands:
+            tblk = user_store.to_knowledge_block(entry)
+            cid = tblk['claim']['claim_id']
+            if entry.get('preferred') or entry.get('user_preference') == 'preferred' or entry.get('id') in pref_ids:
+                tblk['user_preferred'] = True
+                tblk['preferred'] = True
+                tblk['weight_boost'] = entry.get('weight_boost', 2.0)
+            if cid not in theory_blocks and cid not in blocks:
+                theory_blocks[cid] = tblk
+
+        for rel in relationships:
+            tid = rel.get('theory_id')
+            if tid in pref_ids or any(p in str(tid) for p in pref_ids):
+                rel['user_preferred'] = True
+                rel['ranking_boost'] = 2.0
+            else:
+                rel['user_preferred'] = False
+                rel['ranking_boost'] = 1.0
+
+        relationships.sort(
+            key=lambda r: (1 if r.get('user_preferred') else 0, r.get('ranking_boost', 1.0)),
+            reverse=True,
+        )
+
+        for blk in list(blocks.values()) + list(theory_blocks.values()):
+            eid = blk.get('entry_id')
+            if eid in pref_ids or blk.get('user_preferred'):
+                blk['user_preferred'] = True
+                blk['preferred'] = True
+                blk['weight_boost'] = blk.get('weight_boost', 2.0)
+    except Exception:
+        pass
+
+    # Card-cited claims remain primary in knowledge_blocks, followed by preference-ranked theory blocks
+    sorted_theory_blocks = sorted(
+        theory_blocks.values(),
+        key=lambda b: (
+            1 if (b.get('user_preferred') or b.get('preferred')) else 0,
+            b.get('weight_boost', 1.0),
+            1 if b.get('is_user') else 0,
+        ),
+        reverse=True,
+    )
+    combined_blocks = list(blocks.values()) + sorted_theory_blocks
+
+    report.update(owner_rechecks=deepcopy(list(owner_rechecks)), knowledge_blocks=combined_blocks,
         cross_field_relationships=relationships,
         property_states=states, qualified_property_ids=[s['property_id'] for s in states if s['qualified']],
         actual_models=sorted({c['actual_model'] for c in report['cards'] if c.get('actual_model')}),

@@ -23,6 +23,7 @@ import { getWorkspaceState, getRecord, getAgentCitation } from '@/services/api'
 const ChatView = lazy(() => import('@/components/chat/ChatView'))
 const DataView = lazy(() => import('@/components/results/DataView'))
 const WorkflowView = lazy(() => import('@/components/workflow/WorkflowView'))
+const KnowledgeWorkspace = lazy(() => import('@/components/knowledge/KnowledgeWorkspace'))
 const HelpPage = lazy(() => import('@/components/help/HelpPage'))
 const SettingsDialog = lazy(() => import('@/components/settings/SettingsDialog'))
 const ContextDrawer = lazy(() => import('@/components/layout/ContextDrawer'))
@@ -92,7 +93,7 @@ function AppInner() {
 
   const selected = tasks.find((t) => t.task_id === selectedId) || (directTask?.task_id === selectedId ? directTask : selectedId ? {task_id:selectedId,title:'正在读取任务…'} : null)  // CR-03: 契约 D8-4 键名 task_id
   useEffect(()=>{
-    const restore=()=>{const route=new URLSearchParams(location.hash.slice(1));setPlaybackRequest(null);setSelectedId(route.get('task'));setView(['chat','data','workflow'].includes(route.get('view'))?route.get('view'):'chat');setDetail(null);setRouteRevision(n=>n+1)}
+    const restore=()=>{const route=new URLSearchParams(location.hash.slice(1));setPlaybackRequest(null);setSelectedId(route.get('task'));setView(['chat','data','workflow','knowledge'].includes(route.get('view'))?route.get('view'):'chat');setDetail(null);setRouteRevision(n=>n+1)}
     window.addEventListener('hashchange',restore);window.addEventListener('popstate',restore)
     return()=>{window.removeEventListener('hashchange',restore);window.removeEventListener('popstate',restore)}
   },[])
@@ -114,7 +115,10 @@ function AppInner() {
   }, [])
 
   useEffect(() => {
-    if (!selectedId) return
+    if (!selectedId) {
+      if (view === 'knowledge') history.replaceState(null, '', '#view=knowledge')
+      return
+    }
     const previous=new URLSearchParams(location.hash.slice(1));const params=new URLSearchParams({task:selectedId,view});if(previous.get('task')===selectedId&&previous.get('record'))params.set('record',previous.get('record'));history.replaceState(null,'',`#${params}`)
   },[selectedId,view])
 
@@ -461,7 +465,7 @@ function AppInner() {
   },[selectedId,view,data.resources.records.data,routeRevision])
   const changeView = next => { setHelpOpen(false); setView(next); closeDetail() }
   const memoryKey = player ? 'playback:'+selectedId : selectedId || mode
-  const taskMemory = uiMemory.current[memoryKey] ||= { chat: {}, data: {}, workflow: {} }
+  const taskMemory = uiMemory.current[memoryKey] ||= { chat: {}, data: {}, workflow: {}, knowledge: {} }
   const facts = pipeline.presentation
   const targetName = facts?.target?.main_id
   const displayName = facts?.target?.user_mentions?.[0] || targetName
@@ -472,7 +476,7 @@ function AppInner() {
   const openHelp = () => { setDetail(null); setHelpOpen(true) }
   const viewsRef = useRef(null), primaryNavRef = useRef(null), pageRef = useRef(null)
   const pageMoving = useContentTransition(pageRef, `${memoryKey}:${helpOpen}`, { distance: 8, duration: 220 })
-  const views = useSlidingPanes(viewsRef, view, ['chat', 'data', 'workflow'], { active: !helpOpen, identity: memoryKey })
+  const views = useSlidingPanes(viewsRef, view, ['chat', 'data', 'workflow', 'knowledge'], { active: !helpOpen, identity: memoryKey })
   useSlidingUnderline(primaryNavRef, `${memoryKey}:${view}:${helpOpen}`)
   useClickFeedback()
   return (
@@ -504,10 +508,37 @@ function AppInner() {
               {!pipeline.readOnly && mode !== 'sample' && selected?.query_ref && !helpOpen && ['queued', 'running', 'waiting_review'].includes(selected.status) && <Button variant="outline" size="sm" onClick={async () => { try { await apiPauseTask(selected.task_id); toast('暂停请求已保存', 'info'); await loadTasks(0) } catch (err) { toast(err.message, 'error') } }}>暂停执行</Button>}
               {!pipeline.readOnly && mode !== 'sample' && selected && !helpOpen && <details ref={taskMenuRef} className="task-menu" onClick={event => { if (event.target.closest('button')) taskMenuRef.current.open = false }}><summary aria-label="任务操作"><Icon.Ellipsis /></summary><div className="task-menu-items"><button onClick={startEditTitle}>修改任务名</button>{['completed','cancelled','error','failed'].includes(selected.status) && selected.kind !== 'replay' && <button onClick={() => handleReplay(selected.task_id)}>回放任务</button>}{!(selected.source === 'sample' && !selected.replay_of) && <button onClick={() => handleDeleteRequest(selected)}>删除／清理任务</button>}</div></details>}
             </div>
-            {!helpOpen && selected && <nav ref={primaryNavRef} className="primary-nav" aria-label="任务主页面">
-              {[['chat', '对话', Icon.MessageSquare], ['data', '数据结果', Icon.Table], ['workflow', '执行明细', Icon.Network]].map(([key, label, Glyph]) => <button key={key} aria-current={view === key ? 'page' : undefined} className={`primary-tab${view === key ? ' active' : ''}`} onClick={() => changeView(key)}>{Glyph && <Glyph />}{label}</button>)}
-              {pending && <Button variant="outline" size="sm" onClick={() => handleShowStageInChat(pending.stageId || 'understand')}>{pipeline.snapshot?.reviews?.some(r=>r.status==='pending') ? '待审核' : '待确认'} · 去处理</Button>}
-            </nav>}
+            {!helpOpen && (
+              <nav ref={primaryNavRef} className="primary-nav" aria-label="任务主页面">
+                {(selected
+                  ? [
+                      ['chat', '对话', Icon.MessageSquare],
+                      ['data', '数据结果', Icon.Table],
+                      ['workflow', '执行明细', Icon.Network],
+                      ['knowledge', '知识图谱与理论库', Icon.Atom],
+                    ]
+                  : [
+                      ['chat', '对话', Icon.MessageSquare],
+                      ['knowledge', '知识图谱与理论库', Icon.Atom],
+                    ]
+                ).map(([key, label, Glyph]) => (
+                  <button
+                    key={key}
+                    aria-current={view === key ? 'page' : undefined}
+                    className={`primary-tab${view === key ? ' active' : ''}`}
+                    onClick={() => changeView(key)}
+                  >
+                    {Glyph && <Glyph />}
+                    {label}
+                  </button>
+                ))}
+                {pending && selected && (
+                  <Button variant="outline" size="sm" onClick={() => handleShowStageInChat(pending.stageId || 'understand')}>
+                    {pipeline.snapshot?.reviews?.some((r) => r.status === 'pending') ? '待审核' : '待确认'} · 去处理
+                  </Button>
+                )}
+              </nav>
+            )}
           </header>
           {player && <Suspense fallback={<ViewLoading label="播放器" />}><PlaybackControls player={player} onExit={()=>exitPlayback(false)} onFinal={showFinalReplayResult} /></Suspense>}
           {player && view==='data' && finalReplayResult?.taskId===selectedId && <div className="app-notice">原任务最终交付
@@ -529,6 +560,7 @@ function AppInner() {
             </div>
             <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
             <div className="task-view" {...views.paneProps('workflow', 'flex')}>{views.hasVisited('workflow') && <ViewContent label="执行明细"><WorkflowView request={executionRequest} memory={taskMemory.workflow} active={!helpOpen && view === 'workflow'} onOpenData={openData} task={selected} pipeline={pipeline} data={data} onGoChat={() => handleShowStageInChat(pending?.stageId || 'understand')} onShowStageInChat={handleShowStageInChat} onOpenDetail={openContext} /></ViewContent>}</div>
+            <div className="task-view" {...views.paneProps('knowledge', 'flex')}>{views.hasVisited('knowledge') && <ViewContent label="知识图谱与理论库"><KnowledgeWorkspace task={selected} pipeline={pipeline} active={!helpOpen && view === 'knowledge'} memory={taskMemory.knowledge} onOpenDetail={openContext} /></ViewContent>}</div>
           </div>
           </div>
         </main>
