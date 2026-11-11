@@ -1,5 +1,5 @@
 import AstroQueryLogo from '@/components/icons/AstroQueryLogo'
-import { Fragment, Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { chatStageState } from '@/lib/chatStageState'
@@ -7,7 +7,10 @@ import { useToast } from '@/components/ui/toast'
 import SampleGallery from './SampleGallery'
 import RetrievalPreferences from '@/components/settings/RetrievalPreferences'
 import { ADS_SORTS, papersValue, preferencesFromConfig } from '@/lib/retrievalPreferences'
-import { artifactUrl } from '@/services/api'
+import { artifactUrl, newOperationId } from '@/services/api'
+import QueryComposer from './QueryComposer'
+import { useFollowup } from './useFollowup'
+import { savedAnswerSelection } from './followupState'
 const ReadOnlyInteractions = lazy(() => import('./ReadOnlyInteractions'))
 const StageCard = lazy(() => import('./StageCard'))
 const ClarificationCard = lazy(() => import('./ClarificationCard'))
@@ -112,7 +115,7 @@ function getStageNarrative(stageId, stages, targetName) {
 }
 
 export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
-  mode = 'user', samplesExpanded = false, samples = [], onOpenSample, onOpenSampleChat, onReplaySample, onSwitchToUser }) {
+  mode = 'user', isReplaying = false, theme, samplesExpanded = false, samples = [], onOpenSample, onOpenSampleChat, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState(memory.input || '')
   const [queryPreferences, setQueryPreferences] = useState(memory.retrievalPreferences || null)
@@ -121,13 +124,62 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
   const changePreferences = value => { setQueryPreferences(value); memory.retrievalPreferences = value }
   useEffect(() => { memory.input = input }, [input, memory])
   const [submitting, setSubmitting] = useState(false)
-  const [isSliding, setIsSliding] = useState(false)
   const isEmptyState = mode === 'user' && !task && !started && timeline.length === 0
-  useEffect(() => {
-    if (!submitting && !task) {
-      setIsSliding(false)
+  const followupEnabled = !isReplaying && !!(task?.task_id && data.deliveryId && data.deliveryRevision)
+  const scope = useMemo(() => ({ delivery_id: data.deliveryId, delivery_revision: data.deliveryRevision }), [data.deliveryId, data.deliveryRevision])
+  const followup = useFollowup(task?.task_id, data.deliveryId, data.deliveryRevision, followupEnabled)
+  const [composeMode, setComposeMode] = useState('followup')
+  const [context, setContext] = useState(null)
+  const textarea = useRef(null)
+  const activeDraft = followupEnabled && composeMode === 'followup' && !pending
+  const draftKey = 'astroquery.followup.draft.' + task?.task_id + '.' + data.deliveryId + '.' + data.deliveryRevision
+  const [draft, setDraft] = useState({ key: '', text: '' })
+  const followupText = draft.key === draftKey ? draft.text : ''
+  const draftRef = useRef(followupText)
+  draftRef.current = followupText
+  const submissionRef = useRef({})
+  const readSubmission = useCallback(() => {
+    if (submissionRef.current.key !== draftKey) {
+      let value = null
+      try { value = JSON.parse(sessionStorage.getItem(draftKey + '.submission')) } catch { /* keep draft usable */ }
+      submissionRef.current = { key: draftKey, value }
     }
-  }, [task?.task_id, submitting, task, active, mode])
+    return submissionRef.current.value
+  }, [draftKey])
+  const writeSubmission = useCallback(value => {
+    submissionRef.current = { key: draftKey, value }
+    try {
+      if (value) sessionStorage.setItem(draftKey + '.submission', JSON.stringify(value))
+      else sessionStorage.removeItem(draftKey + '.submission')
+    } catch { /* this page can still resume */ }
+  }, [draftKey])
+  const saveFollowupText = useCallback(text => {
+    draftRef.current = text
+    setDraft({ key: draftKey, text })
+    try { localStorage.setItem(draftKey, text) } catch { /* session still works */ }
+  }, [draftKey])
+  useEffect(() => {
+    if (!followupEnabled) return
+    try { setDraft({ key: draftKey, text: localStorage.getItem(draftKey) || '' }) } catch { /* session still works */ }
+    setContext(null)
+    setComposeMode('followup')
+  }, [draftKey, followupEnabled])
+  useEffect(() => {
+    if (!followupEnabled || draft.key !== draftKey) return
+    const sent = readSubmission()
+    if (!sent || !followup.rows.some(row => row.request_id === sent.id)) return
+    writeSubmission(null)
+    if (draftRef.current === sent.raw && (!context || JSON.stringify(context) === JSON.stringify(sent.selection))) {
+      saveFollowupText('')
+      setContext(null)
+    }
+  }, [followupEnabled, draft.key, draftKey, followup.rows, context, readSubmission, writeSubmission, saveFollowupText])
+  const askContext = useCallback(selection => {
+    setComposeMode('followup')
+    setContext(selection)
+    if (selection.prompt && !followupText.trim()) saveFollowupText(selection.prompt)
+    requestAnimationFrame(() => textarea.current?.focus())
+  }, [followupText, saveFollowupText])
   const { toast } = useToast()
   // 历史阶段默认折叠；当前阶段自动展开，用户手动操作优先。
   const [expandedByUser, setExpandedByUser] = useState(memory.expanded || {})
@@ -198,48 +250,68 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
   // 用户阅读历史时停止跟随，任务完成和晚到结果不抢夺阅读位置。
   useEffect(() => {
     const el = scrollRef.current
-    if (!task || !active || (!running && !pipeline.readOnly) || !el || !el.getClientRects().length || !stickToBottomRef.current) return
+    if (!task || !active || (!running && !isReplaying && !followup.rows.length && !followup.busy) || !el || !el.getClientRects().length || !stickToBottomRef.current) return
     const frame = requestAnimationFrame(() => { if (stickToBottomRef.current) el.scrollTop = el.scrollHeight })
     return () => cancelAnimationFrame(frame)
-  }, [messages, stages, pending, taskDone, active, autoExpandedStage, readingHistory])
+  }, [messages, stages, pending, taskDone, active, autoExpandedStage, readingHistory, followup.rows, followup.busy, isReplaying])
 
   const handleSubmit = async () => {
-    const text = input.trim()
-    if (!text || (running && !pending) || clarifying || submitRef.current || papersValue(effectivePreferences.papers_per_property) === null) return
-
+    const text = (activeDraft ? followupText : input).trim()
+    if (!text || isReplaying || clarifying || submitRef.current || (running && !pending)) return
+    if (activeDraft) {
+      if (followup.busy) return
+      const visible = followup.rows.filter(row => !row.question_id ||
+        (followup.selectedAnswers[row.question_id] || followup.rows.findLast(item => item.question_id === row.question_id)?.id) === row.id)
+      const previous = readSubmission()
+      const reuse = previous?.text === text &&
+        (!context || JSON.stringify(context) === JSON.stringify(previous.selection))
+      const selected = reuse ? previous.selection : context || savedAnswerSelection(visible)
+      const requestId = reuse ? previous.id : newOperationId()
+      // Keep the draft and its operation until the server acknowledges this exact request.
+      writeSubmission({ id: requestId, text, raw: followupText, selection: selected })
+      stickToBottomRef.current = true
+      setReadingHistory(false)
+      await followup.ask({ ...selected, text, requestId })
+      return
+    }
+    const count = papersValue(effectivePreferences.papers_per_property)
+    if (count === null) return
     submitRef.current = true
     setSubmitting(true)
     try {
       if (pending) {
-        // greeting 等澄清期：主栏输入即回答
         await submitAnswer(text)
-        setInput('')
       } else {
-        // 新查询：先校验科研连接（若未就绪将弹出设置弹窗，不应下沉输入框）
-        if (beforeCreate && !(await beforeCreate())) {
-          setIsSliding(false)
-          return
-        }
-        // 校验通过后，如果处于居中空状态，执行平滑下沉接力动效
-        if (isEmptyState) {
-          setIsSliding(true)
-          await new Promise((r) => setTimeout(r, 260))
-        }
-        const taskId = await submitQuery(text, { ...effectivePreferences, papers_per_property: papersValue(effectivePreferences.papers_per_property) })
+        if (beforeCreate && !(await beforeCreate())) return
+        const taskId = await submitQuery(text, { ...effectivePreferences, papers_per_property: count })
         changePreferences(null)
         setPreferencesOpen(false)
         onNewTask?.(taskId)
-        // 成功建立任务后清空输入框
-        setInput('')
       }
+      setInput('')
     } catch (err) {
-      setIsSliding(false)
-      toast(`提交失败：${err.message}`, 'error')
+      toast('提交失败：' + err.message, 'error')
     } finally {
       submitRef.current = false
       setSubmitting(false)
     }
   }
+
+  const composer = <QueryComposer textarea={textarea} mode={activeDraft ? 'followup' : 'new'}
+    value={activeDraft ? followupText : input} onChange={activeDraft ? saveFollowupText : setInput}
+    canSwitch={followupEnabled && !running && !pending}
+    onSwitch={value => { setComposeMode(value); requestAnimationFrame(() => textarea.current?.focus()) }}
+    onStop={followup.stop} busy={activeDraft && followup.busy}
+    disabled={(running && !pending) || clarifying || submitting}
+    onSubmit={handleSubmit} selectionCount={context?.recordIds?.length || context?.markers?.length || context?.selections?.length || (context?.prompt ? 1 : 0)}
+    onClearSelection={() => setContext({})}
+    placeholder={clarifying ? '请在上方回答问题…' : (running && !pending) ? '查询正在运行…' : undefined}
+    preferenceControls={!task && mode === 'user' || followupEnabled && !activeDraft && !pending ?
+      <><button type="button" className="research-action" aria-expanded={preferencesOpen} onClick={() => setPreferencesOpen(value => !value)}>
+        每项 {effectivePreferences.papers_per_property} 篇 · {ADS_SORTS.find(([key]) => key === effectivePreferences.ads_sort)?.[1] || '相关度'}
+      </button>
+      {preferencesOpen && <RetrievalPreferences id="query-retrieval" value={effectivePreferences} onChange={changePreferences} disabled={submitting} />}</> : null}
+  />
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
@@ -303,17 +375,10 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
 
           {pipeline.snapshot?.legacy_version && pipeline.snapshot.delivery_ref && <Button variant="outline" onClick={()=>onOpenData?.('records')}>查看归档结果</Button>}
           {!pipeline.presentation && pipeline.snapshot?.kind !== 'replay' && data.availability === 'ready' && <CompletionOutcome data={data} onOpenData={onOpenData} />}
-          {(data.availability === 'ready' || Boolean(data.deliveryId)) && (
-            <Suspense fallback={null}>
-              <AgentCopilot
-                task={task}
-                data={data}
-                pipeline={pipeline}
-                onOpenDetail={onOpenDetail}
-                onOpenData={onOpenData}
-              />
-            </Suspense>
-          )}
+          {followupEnabled && (followup.rows.length > 0 || followup.busy || followup.error) && <Suspense fallback={null}>
+            <AgentCopilot followup={followup} taskId={task.task_id} scope={scope} dark={theme === 'dark'}
+              onOpenDetail={onOpenDetail} onAsk={askContext} />
+          </Suspense>}
 
           {/* 兜底：澄清卡 stageId 未匹配时渲染在时间线末尾 */}
           {pending && pending.type !== 'greeting' && !timeline.some((t) => t.kind === 'stage' && t.id === pending.stageId) && (
@@ -373,78 +438,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                   描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
                 </div>
 
-                {/* 中央英雄窄胶囊输入舱（外圈顺时针流动深绿光环） */}
-                <div className={`hero-composer-container ${isSliding ? 'sliding-down' : ''}`}>
-                  <div className="hero-flowing-border-wrap">
-                    <div
-                      className="composer"
-                      style={{
-                        position: 'relative',
-                        zIndex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        padding: '7px 8px 7px 18px',
-                        borderRadius: 28,
-                        background: 'var(--bg-ambient)',
-                        backgroundAttachment: 'fixed',
-                        border: 'none',
-                        boxShadow: 'none',
-                      }}
-                    >
-                    <Icon.Sparkle style={{ width: 17, height: 17, color: 'var(--accent)', flexShrink: 0 }} />
-                    <textarea
-                      rows={1}
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
-                          e.preventDefault()
-                          handleSubmit()
-                        }
-                      }}
-                      disabled={submitting}
-                      placeholder="输入天体名称和想了解的物理性质…"
-                      style={{
-                        flex: 1,
-                        minWidth: 0,
-                        padding: '9px 4px',
-                        fontSize: 14.5,
-                        lineHeight: 1.5,
-                        color: 'var(--content-fg)',
-                        background: 'transparent',
-                        border: 'none',
-                        outline: 'none',
-                        resize: 'none',
-                        minHeight: 22,
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={handleSubmit}
-                      disabled={!input.trim() || submitting}
-                      title="开始查询"
-                      className="active-press"
-                      style={{
-                        width: 38,
-                        height: 38,
-                        borderRadius: '50%',
-                        flexShrink: 0,
-                        border: !input.trim() || submitting ? '1px solid var(--surface-border)' : '1px solid transparent',
-                        cursor: !input.trim() || submitting ? 'not-allowed' : 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        background: !input.trim() || submitting ? 'var(--surface-secondary)' : 'var(--accent)',
-                        color: !input.trim() || submitting ? 'var(--content-fg-tertiary)' : '#ffffff',
-                        transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
-                      }}
-                    >
-                      <Icon.Send style={{ width: 16, height: 16 }} />
-                    </button>
-                    </div>
-                  </div>
-                </div>
+                <div className="research-hero-composer">{composer}</div>
 
                 {/* 居中 Prompt 示例药丸 */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12, width: '100%', maxWidth: 440, padding: '0 12px' }}>
@@ -454,8 +448,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                       type="button"
                       onClick={() => {
                         setInput(prompt)
-                        const ta = document.querySelector('.hero-composer-container textarea, .composer textarea')
-                        if (ta) ta.focus()
+                        textarea.current?.focus()
                       }}
                       className="filter-chip active-press"
                       style={{
@@ -480,130 +473,14 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
         </div>
       </div>
 
-      {readingHistory && running && !clarifying && <div className="latest-progress"><Button variant="outline" size="sm" onClick={() => { stickToBottomRef.current = true; setReadingHistory(false) }}>查看最新进展 ↓</Button></div>}
-      {/* 输入栏（块 6 定案：附件 chips / 状态禁用；玻璃输入舱）
-          2026-09-02：演示样例模式 → 禁发提示条（防误触发起真实计费查询） */}
-      {/* 底部窄胶囊输入舱 / 样例提示栏 */}
-      {pipeline.readOnly || pipeline.snapshot?.kind === 'replay' ? null : mode === 'sample' && task ? (
-        <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
-          <div className="chat-column" style={{ maxWidth: 760, margin: '0 auto' }}>
-            <div
-              className="composer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '11px 16px',
-                borderRadius: 28,
-                background: 'var(--surface-bg)',
-                border: '1px solid var(--surface-border)',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
-              }}
-            >
-              <Icon.Sparkle style={{ width: 15, height: 15, color: 'var(--accent-text)', flexShrink: 0 }} />
-              <span style={{ flex: 1, fontSize: 13, color: 'var(--content-fg-secondary)', lineHeight: 1.5 }}>
-                演示样例模式：当前呈现为只读归档过程。
-              </span>
-              <button
-                onClick={onSwitchToUser}
-                title="切回我的查询发起新的真实查询"
-                className="active-press"
-                style={{
-                  border: '1px solid color-mix(in srgb, var(--accent) 45%, transparent)',
-                  background: 'var(--accent-light)',
-                  color: 'var(--accent-text)',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  padding: '5px 12px',
-                  borderRadius: 'var(--radius-pill)',
-                  cursor: 'pointer',
-                  flexShrink: 0,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                发起真实查询
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : mode === 'user' && !isEmptyState ? (
-        <div style={{ padding: '12px 24px 20px', flexShrink: 0 }}>
-          <div className="chat-column bottom-composer-enter" style={{ maxWidth: 760, margin: '0 auto' }}>
-            <div
-              className="composer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '6px 8px 6px 16px',
-                borderRadius: 28,
-                background: 'var(--surface-bg)',
-                border: '1px solid var(--surface-border)',
-                boxShadow: '0 2px 12px color-mix(in srgb, var(--seed-accent) 6%, transparent)',
-                opacity: (running && !pending) || clarifying || submitting ? 0.7 : 1,
-                transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-              }}
-            >
-              <Icon.Sparkle style={{ width: 16, height: 16, color: 'var(--accent)', flexShrink: 0 }} />
-              <textarea
-                rows={1}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
-                    e.preventDefault()
-                    handleSubmit()
-                  }
-                }}
-                disabled={(running && !pending) || clarifying || submitting}
-                placeholder={clarifying ? '请在上方确认框中回复…' : pending ? '正在处理确认…' : running ? '运行中，可查看上方进展…' : '输入需求以发起新的科研查询…'}
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  padding: '9px 4px',
-                  fontSize: 14,
-                  lineHeight: 1.5,
-                  color: 'var(--content-fg)',
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  resize: 'none',
-                  minHeight: 22,
-                  ...((running || clarifying) ? { cursor: 'not-allowed' } : {}),
-                }}
-              />
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={!input.trim() || (running && !pending) || clarifying || submitting}
-                title="发送查询"
-                className="active-press"
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: '50%',
-                  flexShrink: 0,
-                  border: 'none',
-                  cursor: !input.trim() || ((running && !pending) || clarifying || submitting) ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: ((running && !pending) || clarifying || submitting || !input.trim())
-                    ? 'var(--surface-secondary)'
-                    : 'var(--accent)',
-                  color: ((running && !pending) || clarifying || submitting || !input.trim())
-                    ? 'var(--content-fg-tertiary)'
-                    : '#ffffff',
-                  transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-              >
-                <Icon.Send style={{ width: 16, height: 16 }} />
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
+      {readingHistory && (running || followup.busy) && !clarifying &&
+        <div className="latest-progress"><Button variant="outline" size="sm" onClick={() => {
+          stickToBottomRef.current = true
+          setReadingHistory(false)
+          if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+        }}>查看最新进展 ↓</Button></div>}
+      {!isReplaying && task && !isEmptyState && (!pipeline.readOnly || followupEnabled) &&
+        <div className="research-composer-area">{composer}</div>}
     </div>
   )
 }

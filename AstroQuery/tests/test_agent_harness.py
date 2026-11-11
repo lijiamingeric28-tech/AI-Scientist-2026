@@ -1,35 +1,29 @@
-"""自动化回归测试：验证科研问答智能体 (Agent Harness 2.0) 全链路真实性与去硬编码特性。
-测试覆盖：
-1. TaskDataBundle 2.0 数据装载与全要素真实索引
-2. 7 大领域只读工具的无网高精度调阅
-3. GroundingVerifier 2.0 的防幻觉校验、非真实 ID 安全降级与 Emoji 清洗
-4. AgentStore 多轮交互 SQLite 持久化
-5. AgentController ReAct 编排循环与离线真实数据合成保底
-"""
+"""Offline follow-up contract checks using a shipped scientific delivery."""
 
 import asyncio
-import pytest
-from pathlib import Path
+import json
+from types import SimpleNamespace
 
-from astroquery_ai.agent_harness import (
-    AgentController,
-    AgentMemory,
-    AgentStore,
-    DomainTools,
-    GroundingVerifier,
-    TaskDataBundle,
-    load_task_bundle,
-)
-from astroquery_ai.runtime.paths import data_root
+import pytest
+from fastapi.testclient import TestClient
+
+from astroquery_ai.agent_harness import AgentController, AgentStore, DomainTools, GroundingVerifier, load_task_bundle
+from astroquery_ai.agent_harness.answer import AnswerProjection, provider_format, stream_specs
+from astroquery_ai.agent_harness.controller import selected_view
+from astroquery_ai.api.http import create_app
 from astroquery_ai.runtime.application import Application
+from astroquery_ai.runtime.errors import DomainError
+from astroquery_ai.runtime.published_demos import PublishedDemos
 
 SAMPLE_TASK_ID = "e030fefb-3db1-479e-af8b-eb710233e539"
 
 
 @pytest.fixture(scope="module")
-def app():
-    root = data_root()
-    return Application(root)
+def app(tmp_path_factory):
+    application = Application(tmp_path_factory.mktemp("agent"))
+    application.configuration.runtime = {}
+    assert PublishedDemos(application).open(SAMPLE_TASK_ID)
+    return application
 
 
 @pytest.fixture(scope="module")
@@ -37,152 +31,203 @@ def bundle(app):
     return load_task_bundle(SAMPLE_TASK_ID, app)
 
 
-def test_bundle_loader_truth_anchoring(bundle):
-    """验证数据加载器对真实交付快照的解构与实体完整性。"""
-    assert bundle.task_id == SAMPLE_TASK_ID
-    assert "J0437" in bundle.target_name or "PSR" in bundle.target_name
-    assert len(bundle.measurements) > 0
-    assert len(bundle.definitions_list) > 0
-    assert len(bundle.sources) > 0
-
-    # 验证内存索引
-    assert len(bundle.measurements_by_id) == len(bundle.measurements)
-    assert len(bundle.definitions_by_id) == len(bundle.definitions_list)
-
-    # 验证事实摘要文本
-    summary = bundle.get_grounded_summary()
-    assert "当前任务事实基底" in summary
-    assert bundle.target_name in summary
-
-
-def test_domain_tools_read_only(bundle):
-    """验证 7 大领域只读工具在无外部网络依赖下的检索与学术表达。"""
+def test_tools_read_frozen_delivery(bundle):
     tools = DomainTools(bundle)
-
-    # 1. query_measurements
-    res_m = tools.execute_tool("query_measurements", {"property_name": "色散量", "limit": 4})
-    assert "[REC:" in res_m
-    assert "[SOURCE:" in res_m
-
-    # 2. get_measurement_provenance
+    assert bundle.measurements_by_id and bundle.definitions_by_id and bundle.sources_by_id
     mid = bundle.measurements[0]["measurement_id"]
-    res_prov = tools.execute_tool("get_measurement_provenance", {"measurement_id": mid})
-    assert f"[REC:{mid}]" in res_prov
-    assert "底层溯源链" in res_prov
-
-    # 3. get_property_definition
-    res_def = tools.execute_tool("get_property_definition", {"property_name": "色散量"})
-    assert "[DEF:" in res_def
-    assert "物理量约定与量纲定义" in res_def
-
-    # 4. search_literature
-    res_lit = tools.execute_tool("search_literature", {"query_terms": "pulsar"})
-    assert "[SOURCE:" in res_lit
-
-    # 5. inspect_differences_and_arbitration
-    res_diff = tools.execute_tool("inspect_differences_and_arbitration", {"property_name": "色散量"})
-    assert "多源测定分歧案卷" in res_diff or "一致性" in res_diff
-
-    # 6. get_figure_evidence
-    res_fig = tools.execute_tool("get_figure_evidence", {"property_keyword": "dispersion"})
-    assert "科学图表切片" in res_fig
-
-    # 7. get_scientific_theory
-    res_theory = tools.execute_tool("get_scientific_theory", {"property_name": "色散"})
-    assert "理论底座" in res_theory
+    assert f"[REC:{mid}]" in tools.execute_tool("get_measurement_provenance", {"measurement_id": mid})
+    requests = {
+        "query_measurements": ({"property_name": "色散量", "limit": 4}, "[REC:"),
+        "get_property_definition": ({"property_name": "色散量"}, "[DEF:"),
+        "search_literature": ({"query_terms": "pulsar"}, "[SOURCE:"),
+        "get_figure_evidence": ({"property_keyword": "dispersion"}, "[FIG:"),
+        "get_scientific_theory": ({"property_name": "色散量"}, "[THEORY:"),
+    }
+    for name, (args, expected) in requests.items():
+        assert expected in tools.execute_tool(name, args)
+    assert tools.execute_tool("inspect_differences_and_arbitration", {"property_name": "色散量"})
 
 
-def test_grounding_verifier_strictness(bundle):
-    """验证防幻觉校验器：过滤非真实伪造 ID、抽取合法引用元数据、剔除全部 Emoji。"""
-    verifier = GroundingVerifier(bundle)
-
-    real_mid = bundle.measurements[0]["measurement_id"]
-    real_src = bundle.sources[0]["source_id"]
-
-    # 构造混合测试文本：包含真实 ID、伪造 ID、Emoji 表情、LaTeX
-    raw_text = (
-        f"💡 发现科学规律！测定值符合 [REC:{real_mid}]，出处参考 [SOURCE:{real_src}]。\n"
-        f"同时存在虚构引用 [REC:fake_invented_id_999] 和未知图证 [FIG:fake_fig_888] 🚀✨。"
-    )
-
-    clean_text, citations = verifier.verify_and_clean(raw_text)
-
-    # 1. 严格断言：杜绝任何 Emoji
-    assert "💡" not in clean_text
-    assert "🚀" not in clean_text
-    assert "✨" not in clean_text
-
-    # 2. 真实 ID 获得保留并挂载 payload
-    assert f"[REC:{real_mid}]" in clean_text
-    found_types = {c["type"] for c in citations}
-    assert "record" in found_types
-
-    # 3. 虚构 ID 必须被降级为纯文本，防止前端 404
-    assert "[REC:fake_invented_id_999]" not in clean_text
-    assert "测定记录 fake_invented_id_999" in clean_text
-    assert "[FIG:fake_fig_888]" not in clean_text
-    assert "图证 fake_fig_888" in clean_text
+def test_bound_records_reject_invented_values_and_markers(bundle):
+    resolver = GroundingVerifier(bundle)
+    projection = AnswerProjection(bundle, resolver)
+    record = bundle.measurements[0]
+    mid = record["measurement_id"]
+    block, citations = projection.block({"type": "chart", "record_ids": [mid, "invented", mid]}, 0)
+    assert [row["id"] for row in block["rows"]] == [mid]
+    assert block["rows"][0]["original"] == record["raw_value"]
+    assert block["rows"][0]["original_unit"] == record["unit"]
+    assert {item["type"] for item in citations} >= {"record", "source"}
+    clean, refs = resolver.verify_and_clean(f"原报 [REC:{mid}] 与 [REC:invented]")
+    assert "[REC:invented]" not in clean
+    assert len(refs) == 1 and refs[0]["payload"]["measurement_id"] == mid
+    binding = bundle.definitions_list[0]
+    definition = resolver.resolve("DEF:" + binding["property_id"])
+    assert definition["payload"]["binding"]["definition"]["name_cn"]
+    invalid, _ = projection.block({"type": "table", "record_ids": ["invented"]}, 1)
+    assert invalid == {"id": "b2", "type": "unavailable", "kind": "table", "title": ""}
 
 
-def test_agent_store_persistence(app):
-    """验证智能体多轮历史在 SQLite 中的增删查改。"""
+def test_stream_shows_partial_prose_and_only_complete_components():
+    partial = '{"blocks":[{"type":"text","markdown":"可见内容","title":"","refs":[]'
+    blocks, tail = stream_specs(partial)
+    assert not blocks and tail["markdown"] == "可见内容"
+    partial += '},{"type":"chart","record_ids":["r1"'
+    blocks, tail = stream_specs(partial)
+    assert len(blocks) == 1 and not tail
+    assert provider_format()["json_schema"]["schema"]["properties"]["blocks"]
+
+
+def test_store_deduplicates_retries_and_recovers_partial(app, bundle):
     store = AgentStore(app.repository)
-    test_task = SAMPLE_TASK_ID
-
-    # 清理初始测试数据
-    store.delete_messages(test_task)
-    assert len(store.get_messages(test_task)) == 0
-
-    # 写入用户消息
-    store.add_message(test_task, "user", "请问该天体的自转周期是多少？")
-    msgs = store.get_messages(test_task)
-    assert len(msgs) == 1
-    assert msgs[0]["content"] == "请问该天体的自转周期是多少？"
-
-    # 写入助手消息（带思考步骤与引用）
-    steps = [{"step": 1, "thought": "正在检索测定记录..."}]
-    cites = [{"type": "record", "id": "rec-1", "label": "REC-01"}]
-    store.add_message(test_task, "assistant", "根据测定，其值为 5.74 ms。", steps, cites)
-
-    msgs2 = store.get_messages(test_task)
-    assert len(msgs2) == 2
-    assert msgs2[1]["thought_steps"] == steps
-    assert msgs2[1]["citations"] == cites
-
-    # 再次清理还原
-    store.delete_messages(test_task)
-    assert len(store.get_messages(test_task)) == 0
+    store.delete_messages(SAMPLE_TASK_ID)
+    task = SAMPLE_TASK_ID
+    try:
+        reply, user, history, _ = store.start(task, bundle.scope, "一条问题", "req-test", {})
+        assert not history
+        duplicate, duplicate_user, *_ = store.start(task, bundle.scope, "一条问题", "req-test", {})
+        assert duplicate["id"] == reply["id"] and duplicate_user is None
+        with pytest.raises(DomainError):
+            store.start(task, bundle.scope, "别的问题", "req-test", {})
+        with pytest.raises(DomainError):
+            store.start(task, bundle.scope, "另开一轮", "req-busy", {})
+        store.save(task, reply["id"], content="留下的文字", blocks=[], citations=[], trace=[])
+        store.recover()
+        assert store.get_message(task, reply["id"])["status"] == "interrupted"
+        retried, same_user, previous, _ = store.start(task, bundle.scope, "", "req-retry", {}, reply["id"])
+        assert retried["id"] != reply["id"] and same_user["id"] == user["id"] and not previous
+        assert store.get_message(task, reply["id"])["content"] == "留下的文字"
+    finally:
+        store.recover()
+        store.delete_messages(task)
 
 
-def test_agent_controller_react_stream(bundle, app):
-    """验证 ReAct 控制器全流程流式交互与确定性学术保底。"""
-    async def _run():
-        ctrl = AgentController(bundle, application=app)
+def test_http_persists_before_done_and_keeps_scope(app, bundle, monkeypatch):
+    store = AgentStore(app.repository)
+    mid = bundle.measurements[0]["measurement_id"]
+    source = (bundle.measurements[0]["source_ref"])["id"]
 
-        events = []
-        async for ev in ctrl.run_react_stream([], "核查该天体的色散量与轨道周期测定值"):
-            events.append(ev)
+    async def generate(self, history, prompt, *, context=None):
+        assert all(item["content"] != prompt for item in history)
+        for i, spec in enumerate((
+            {"type": "text", "markdown": f"已读取 [REC:{mid}]"},
+            {"type": "table", "record_ids": [mid], "columns": ["original", "source"]},
+            {"type": "formula", "latex": r"\begin{pmatrix}1&2\\3&4\end{pmatrix}"},
+        )):
+            block, refs = self.projection.block(spec, i)
+            yield {"event": "agent_block", "data": {"block": block, "citations": refs}}
+        yield {"event": "agent_done", "data": {"model": "qwen3.8-max", "model_calls": [], "fallback": False}}
 
-        event_types = [e["event"] for e in events]
-        assert "agent_thought" in event_types
-        assert "agent_tool_call" in event_types
-        assert "agent_tool_result" in event_types
-        assert "agent_token" in event_types
-        assert "agent_done" in event_types
+    monkeypatch.setattr(AgentController, "run_react_stream", generate)
+    api = "/api/tasks/" + SAMPLE_TASK_ID + "/agent"
+    try:
+        with TestClient(create_app(app.root, start_worker=False, application=app)) as client:
+            payload = {**bundle.scope, "content": "看原始测量", "request_id": "test-http-1"}
+            response = client.post(api + "/chat", json=payload)
+            assert response.status_code == 200
+            events = [json.loads(line[6:]) for line in response.text.splitlines() if line.startswith("data: ")]
+            done = events[-1]
+            assert done["status"] == "complete" and done["scope"] == bundle.scope
+            assert store.get_message(SAMPLE_TASK_ID, done["id"])["answer"] == done["answer"]
+            replay_request = client.post(api + "/chat", json=payload)
+            assert replay_request.text.count("event: agent_done") == 1 and "agent_started" not in replay_request.text
+            query = {key: bundle.scope[key] for key in ("delivery_id", "delivery_revision")}
+            found = client.get(api + "/messages", params=query).json()["messages"]
+            assert [row["role"] for row in found] == ["user", "assistant"]
+            for citation in done["citations"]:
+                path = f"{api}/messages/{done['id']}/citations/{citation['citation_id']}"
+                data = client.get(path, params=query).json()
+                assert data["citation"]["marker"] in {f"REC:{mid}", f"SOURCE:{source}"}
+                assert client.get(path, params={**query, "delivery_revision": 99}).status_code >= 400
+    finally:
+        store.delete_messages(SAMPLE_TASK_ID)
 
-        done_ev = next(e for e in events if e["event"] == "agent_done")
-        data = done_ev["data"]
 
-        content = data["content"]
-        citations = data["citations"]
+def test_missing_connection_keeps_scoped_records(bundle):
+    async def run():
+        ctrl = AgentController(bundle, application=SimpleNamespace(configuration=SimpleNamespace(runtime={})))
+        events = [event async for event in ctrl.run_react_stream([], "核查色散量")]
+        result = events[-1]["data"]
+        assert result["fallback"] and result["model"] is None
+        assert result["answer"]["blocks"][1]["rows"]
+        assert result["citations"]
+    asyncio.run(run())
 
-        # 严格校验：内容不得包含任何 Emoji
-        for char in content:
-            code = ord(char)
-            assert not (0x1F600 <= code <= 0x1F64F or 0x1F300 <= code <= 0x1F5FF or 0x2700 <= code <= 0x27BF)
 
-        # 真实性检验：必须包含目标天体名称与实际引用
-        assert "J0437" in content or "PSR" in content
-        assert len(citations) > 0
+def test_http_handles_malformed_components_and_empty_model_output(app, bundle, monkeypatch):
+    async def generate(self, history, prompt, *, context=None):
+        if "有正文" in prompt:
+            for i, spec in enumerate((
+                {"type": "text", "markdown": "应当保存的正文"},
+                {"type": "table", "title": {"bad": "unexpected object"}, "record_ids": []},
+            )):
+                block, refs = self.projection.block(spec, i)
+                yield {"event": "agent_block", "data": {"block": block, "citations": refs}}
+        yield {"event": "agent_done", "data": {"model": "qwen3.8-max", "model_calls": [], "fallback": False}}
 
-    asyncio.run(_run())
+    monkeypatch.setattr(AgentController, "run_react_stream", generate)
+    api = "/api/tasks/" + SAMPLE_TASK_ID + "/agent"
+    store = AgentStore(app.repository)
+    try:
+        with TestClient(create_app(app.root, start_worker=False, application=app)) as client:
+            def send(content, request_id, **kwargs):
+                res = client.post(api + "/chat", json={**bundle.scope, "content": content,
+                                  "request_id": request_id, **kwargs})
+                assert res.status_code == 200
+                assert res.text.count("event: agent_done") == 1
+                return [json.loads(line[6:]) for line in res.text.splitlines()
+                        if line.startswith("data: ")][-1]
+            partial = send("有正文，但表格结构异常", "bad-block")
+            assert partial["status"] == "complete" and partial["content"] == "应当保存的正文"
+            assert [b["type"] for b in partial["answer"]["blocks"]] == ["text", "unavailable"]
+            empty = send("没有任何输出", "empty-answer")
+            assert empty["status"] == "failed" and "重试" in empty["message"]
+            retried = send("", "retry-empty", retry_of=empty["id"])
+            assert retried["status"] == "failed" and retried["question_id"] == empty["question_id"]
+    finally:
+        store.delete_messages(SAMPLE_TASK_ID)
+
+
+def test_explicit_chart_of_selected_records_still_renders_if_model_omits_it(bundle, monkeypatch):
+    class StubClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *exc):
+            pass
+
+        chat = SimpleNamespace(completions=SimpleNamespace())
+
+    async def plan(**kwargs):
+        return SimpleNamespace(model="fixture", id="plan", choices=[
+            SimpleNamespace(message=SimpleNamespace(tool_calls=[])),
+        ])
+
+    async def answer(self, client, messages, calls):
+        yield self.projection.block({"type": "text", "markdown": "解释这批测量的条件。"}, 0)
+
+    StubClient.chat.completions.create = plan
+    monkeypatch.setattr(AgentController, "_get_client", lambda self: StubClient())
+    monkeypatch.setattr(AgentController, "_generate", answer)
+    rows = [{"id": row["measurement_id"]} for row in bundle.measurements[:2]]
+    context = {"records": rows}
+
+    async def run():
+        ctrl = AgentController(bundle)
+        stream = [event async for event in ctrl.run_react_stream(
+            [], "把选中的记录画成带原报误差的点图，不填缺失误差。", context=context,
+        )]
+        chart = stream[-1]["data"]["answer"]["blocks"][-1]
+        assert chart["type"] == "chart" and chart["chart_type"] == "interval"
+        assert [row["id"] for row in chart["rows"]] == [row["id"] for row in rows]
+        assert len([item for item in stream if item["event"] == "agent_block"]) == 2
+
+    asyncio.run(run())
+    assert selected_view("用表格重排刚才两条。", context)["type"] == "table"
+    assert selected_view("不要画点图，只解释原报。", context) is None
+    assert selected_view("解释画成点图时读者容易误解什么。", context) is None
+    assert selected_view("把它画成点图。", {}) is None
+    last = {"role": "assistant", "answer": {"blocks": [{"type": "table", "rows": rows}]}}
+    assert selected_view("画成图，带上误差。", {}, [last])["record_ids"] == [r["id"] for r in rows]
+    last["answer"]["blocks"].append({"type": "table", "rows": rows[:1]})
+    assert selected_view("画成图，带上误差。", {}, [last]) is None

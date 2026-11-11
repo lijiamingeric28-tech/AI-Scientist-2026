@@ -63,6 +63,7 @@ def create_app(
         warmup = None
         try:
             application.repository.recover()
+            app.state.recover_followups()
             app.state.scientific_startup = 'preparing'
             # The historical reader can open immediately after recovery. New work
             # still waits for the same registry preflight before taking any lease.
@@ -71,6 +72,7 @@ def create_app(
         finally:
             closing.set()
             try:
+                await app.state.close_followups()
                 if warmup:
                     await warmup
             finally:

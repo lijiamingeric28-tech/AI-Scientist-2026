@@ -24,6 +24,7 @@ MODELS = {
     "normalization": "qwen3.8-flash",
     "property": "qwen3.8-max",
     "insight": "qwen3.8-max",
+    "copilot": "qwen3.8-max",
 }
 _CONFIG_LOCKS = {}
 

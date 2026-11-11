@@ -1,15 +1,29 @@
-"""任务已沉淀数据真实性加载器与索引构建器 (Task Data Loader 2.0)
-直接对接新版 DeliveryService.read_for_display 与 Repository 不可变快照，
-为问答智能体构建 100% 真实、零幻觉的高性能内存索引（TaskDataBundle）。
-"""
+"""Load the frozen delivery and index the evidence available to follow-up tools."""
 
 from __future__ import annotations
 
 import logging
 import re
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
+
+from astroquery_ai.runtime.errors import DomainError
 
 logger = logging.getLogger("agent_harness.data_loader")
+
+def source_metadata(source):
+    """Bibliography of the edition actually saved with this delivery."""
+    work = source.get("work") or {}
+    records = work.get("records") or []
+    identity = source.get("identity") or {}
+    record = next((item for item in records if item.get("bibcode") == identity.get("bibcode")),
+                  records[0] if records else {})
+    metadata = {key: source.get(key) or record.get(key) or identity.get(key)
+                for key in ("title", "authors", "year", "bibcode")}
+    if isinstance(metadata["title"], list):
+        metadata["title"] = next((title for title in metadata["title"] if isinstance(title, str) and title.strip()), None)
+    if isinstance(metadata["authors"], str):
+        metadata["authors"] = [metadata["authors"]]
+    return metadata
 
 
 class TaskDataBundle:
@@ -19,6 +33,11 @@ class TaskDataBundle:
         self.task_id = task_id
         self.raw_task = raw_task or {}
         self.body = delivery_body
+        self.scope = {
+            "delivery_id": delivery_body.get("delivery_id"),
+            "delivery_revision": delivery_body.get("revision"),
+            "snapshot_ref": delivery_body.get("snapshot_ref"),
+        }
 
         # 1. 目标天体信息
         target = delivery_body.get("target") or {}
@@ -95,6 +114,19 @@ class TaskDataBundle:
         self.evidence_by_id: Dict[str, Dict[str, Any]] = {
             e.get("evidence_id"): e for e in (delivery_body.get("evidence_index") or []) if e.get("evidence_id")
         }
+        self.evidence_views = {item["evidence_id"]: item for item in delivery_body.get("evidence_views", [])}
+        self.paper_pages = {}
+        for eid, view in self.evidence_views.items():
+            source_id = self.evidence_by_id.get(eid, {}).get("source_id")
+            if view.get("kind") == "pdf":
+                for point in view.get("points", []):
+                    if source_id and type(point.get("page")) is int:
+                        self.paper_pages.setdefault((source_id, point["page"]), []).append((view, point))
+        self.provenance = delivery_body.get("provenance_bundle") or {}
+        self.interpretations = {
+            i["interpretation_id"]: i for i in self.provenance.get("interpretations", [])
+            if i.get("interpretation_id")
+        }
         self.contexts_by_id: Dict[str, Dict[str, Any]] = {
             c.get("context_id"): c for c in (delivery_body.get("contexts") or []) if c.get("context_id")
         }
@@ -108,12 +140,25 @@ class TaskDataBundle:
         self.dispositions: List[Dict[str, Any]] = delivery_body.get("dispositions") or []
         self.archive_groups: List[Dict[str, Any]] = delivery_body.get("archive_groups") or []
         self.result_comparisons = delivery_body.get("result_comparisons") or {}
+        report = delivery_body.get("difference_report") or {}
+        self.comparisons_by_id = {
+            g["group_id"]: g for g in [*self.archive_groups, *self.result_comparisons.get("groups", []),
+                                       *report.get("groups", []), *report.get("suspicions", [])]
+            if g.get("group_id")
+        }
+        record_properties = {m["measurement_id"]: (m.get("property_ref") or {}).get("id") for m in self.measurements}
+        for group_id, group in self.comparisons_by_id.items():
+            if not group.get("property_id"):
+                ids = group.get("measurement_ids") or [ref["id"] for ref in group.get("member_refs", [])]
+                property_ids = {record_properties[mid] for mid in ids if record_properties.get(mid)}
+                if len(property_ids) == 1:
+                    self.comparisons_by_id[group_id] = {**group, "property_id": next(iter(property_ids))}
 
         # 8. 科学洞察与理论知识底座 (insights & theories)
         insight_obj = delivery_body.get("insight_report") or delivery_body.get("insight") or {}
         if isinstance(insight_obj, dict):
             self.insight_report = insight_obj
-            self.theories: List[Dict[str, Any]] = insight_obj.get("knowledge_blocks") or []
+            self.theories: List[Dict[str, Any]] = list(insight_obj.get("knowledge_blocks") or [])
             self.insight_cards: List[Dict[str, Any]] = insight_obj.get("cards") or []
             self.cross_field_relationships: List[Dict[str, Any]] = insight_obj.get("cross_field_relationships") or []
         else:
@@ -150,10 +195,9 @@ class TaskDataBundle:
             sid = str(s.get("source_id") or "")
             if sid:
                 self.sources_by_id[sid] = s
-            bib = str(s.get("bibcode") or "")
+            bib = str(source_metadata(s).get("bibcode") or "")
             if bib:
                 self.sources_by_bibcode[bib] = s
-                self.sources_by_id[bib] = s
 
         # C. 图表证据索引
         self.figures_by_id: Dict[str, Dict[str, Any]] = {}
@@ -174,38 +218,45 @@ class TaskDataBundle:
         self.theories_by_prop: Dict[str, List[Dict[str, Any]]] = {}
         self.theories_by_id: Dict[str, Dict[str, Any]] = {}
 
-        for b in self.theories:
-            claim = b.get("claim") or {}
-            cid = str(claim.get("claim_id") or b.get("theory_id") or "")
-            if cid:
-                self.theories_by_id[cid] = b
-            pid = claim.get("property_id") or b.get("property_id") or ""
-            if pid:
-                self.theories_by_prop.setdefault(pid.lower(), []).append(b)
+        for block in self.theories:
+            self.index_theory(block)
+
+    def index_theory(self, block):
+        claim = block.get("claim") or {}
+        cid = claim.get("claim_id") or block.get("theory_id")
+        if cid and cid not in self.theories_by_id:
+            self.theories_by_id[cid] = block
+            pids = {claim.get("property_id"), block.get("property_id"),
+                    *((mapping.get("definition_ref") or {}).get("id") for mapping in block.get("applicable_mappings", []))}
+            for pid in pids - {None, ""}:
+                self.theories_by_prop.setdefault(pid.lower(), []).append(block)
+
+    def source(self, key):
+        return self.sources_by_id.get(key) or self.sources_by_bibcode.get(key)
 
     def resolve_property_id(self, query: str) -> Optional[str]:
         """将用户输入的属性名（如'周期'、'轨道周期'、'P_orb'）泛化解析为标准 property_id。"""
         q = query.strip().lower()
+        if not q:
+            return None
         if q in self.property_name_map:
             return self.property_name_map[q]
-        # 部分包含匹配
-        for alias, pid in self.property_name_map.items():
-            if alias in q or q in alias:
-                return pid
-        return None
+        matches = {pid for alias, pid in self.property_name_map.items()
+                   if len(alias) >= 2 and (alias in q or q in alias)}
+        return next(iter(matches)) if len(matches) == 1 else None
 
     def get_grounded_summary(self) -> str:
         """为智能体生成极简任务基底事实文本（Tier 1 Grounded Context）。"""
         prop_labels = []
         for d in self.definitions_list:
             meta = d.get("definition") or {}
-            name = meta.get("name_cn") or d.get("property_id")
-            unit = (d.get("output_profile") or {}).get("unit") or meta.get("unit") or ""
-            prop_labels.append(f"{name} ({unit})" if unit else name)
+            pid = d["property_id"]
+            name = meta.get("name_cn") or pid
+            unit = ((d.get("output_profile") or {}).get("unit") or {}).get("canonical_symbol")
+            suffix = f"，单位 {unit}" if unit else ""
+            prop_labels.append(f"{name} [DEF:{pid}]（{len(self.measurements_by_prop.get(pid.lower(), []))} 条{suffix}）")
 
         props_str = "、".join(prop_labels) if prop_labels else "多项天体物理量"
-
-        task_title = self.raw_task.get("title") or f"关于 {self.target_name} 的科研数据提取任务"
 
         lines = [
             f"【当前任务事实基底 (Grounded Task Facts)】",
@@ -215,15 +266,25 @@ class TaskDataBundle:
             f"- 已交付科学测定记录: 共 {len(self.measurements)} 条有效记录",
             f"- 涉及科学文献/星表: 共 {len(self.sources)} 篇 (ADS 核心论著与权威巡天表)",
             f"- 多模态科研图表切片: 共 {len(self.figures)} 幅 (包含光变曲线、拟合图、残差图等)",
-            f"- 多源比对案卷与仲裁: {'存在多源分歧比对或归一化处理' if self.archive_groups or self.result_comparisons else '单源一致或无需仲裁'}",
+            f"- 保存的归档与对照组: {len(self.comparisons_by_id)} 组",
         ]
         return "\n".join(lines)
 
 
-def load_task_bundle(task_id: str, application) -> TaskDataBundle:
-    """从 Application 权威实例加载交付快照并构造 TaskDataBundle。"""
+def load_task_bundle(task_id: str, application, delivery_id=None, revision=None, snapshot_ref=None) -> TaskDataBundle:
+    """Pin this turn to one published delivery, including its reports."""
     with application.repository.read() as conn:
         task = application.repository.task(conn, task_id)
-        # 获取最新的 delivery 快照
-        body = application.delivery.read_for_display(conn, task_id)
+        if task["kind"] == "replay":
+            raise DomainError("REPLAY_READ_ONLY", "退出回放后即可追问", 409)
+        body = dict(application.delivery.read_for_display(conn, task_id, delivery_id, revision))
+        if snapshot_ref is not None and body.get("snapshot_ref") != snapshot_ref:
+            raise DomainError("DELIVERY_CHANGED", "交付版本已变化，请刷新后再问", 409)
+        source_task = application.history.source(conn, task_id)
+        for kind in ("insight", "difference", "quality"):
+            ref = (body.get(kind) or {}).get("report_ref")
+            if ref:
+                body[kind + "_report"] = application.repository.object(
+                    conn, source_task, kind, ref["id"], ref["version"]
+                )
         return TaskDataBundle(task_id, body, raw_task=task)

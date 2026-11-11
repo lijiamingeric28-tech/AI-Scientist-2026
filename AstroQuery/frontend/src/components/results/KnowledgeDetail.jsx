@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button'
-import { LatexText } from './LatexMath'
+import { LatexMath, LatexText } from './LatexMath'
 
 export default function KnowledgeDetail({ block, onClose }) {
   if (!block) return null
+  const text = block.claim?.text || block.claim?.statement || block.description || block.text
+  const formulas = [block.formula, block.claim?.formula, ...(block.formulas || [])].filter(Boolean)
   const basisLabel =
     block.authoring_basis === 'source_checked'
       ? '来源已核读'
@@ -25,13 +27,13 @@ export default function KnowledgeDetail({ block, onClose }) {
           {basisLabel}
           {block.category && ` · 分类：${block.category}`}
         </p>
-        <blockquote className="evidence-text" style={{ whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>
-          <LatexText text={block.claim?.text || ''} />
-        </blockquote>
+        {text && <blockquote className="evidence-text" style={{ whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>
+          <LatexText text={text} />
+        </blockquote>}
+        {formulas.map((formula, i) => <LatexMath key={i} math={typeof formula === 'string' ? formula : formula.latex} displayMode />)}
         {(block.conditions || []).map((c, i) => (
           <p key={i} className="theory-condition-line">
-            <strong>{c.startsWith('适用') ? '' : '适用条件：'}</strong>
-            <LatexText text={c} />
+            <LatexText text={typeof c === 'string' ? c : c.text || c.description} />
           </p>
         ))}
         {(block.sources || []).map((s, i) => (
