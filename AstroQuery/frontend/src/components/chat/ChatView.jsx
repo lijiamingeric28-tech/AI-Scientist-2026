@@ -115,7 +115,7 @@ function getStageNarrative(stageId, stages, targetName) {
 }
 
 export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
-  mode = 'user', isReplaying = false, theme, samplesExpanded = false, samples = [], onOpenSample, onOpenSampleChat, onReplaySample, onSwitchToUser }) {
+  mode = 'user', isReplaying = false, theme, samplesExpanded = false, samples = [], onOpenSample, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState(memory.input || '')
   const [queryPreferences, setQueryPreferences] = useState(memory.retrievalPreferences || null)
@@ -402,11 +402,8 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                   <SampleGallery
                     samples={samples}
                     onOpen={onOpenSample}
-                    onOpenChat={onOpenSampleChat}
                     onReplay={onReplaySample}
                     onSwitchToUser={onSwitchToUser}
-                    onOpenData={onOpenData}
-                    onOpenDetail={onOpenDetail}
                   />
                 </div>
               )
