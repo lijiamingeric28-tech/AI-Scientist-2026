@@ -247,7 +247,16 @@
   border-radius: 7px; font-size: .88rem;
 }
 .research-composer-preferences { display: flex; flex-wrap: wrap; gap: 6px; padding-inline: 5px; }
-.research-hero-composer { width: min(100%, 670px); }
+.research-hero-composer, .hero-composer-container { width: min(100%, 670px); margin: 0 auto; }
+.hero-flowing-border-wrap > .research-composer {
+  position: relative;
+  z-index: 1;
+  border: none;
+  box-shadow: none;
+  border-radius: 28px;
+  background: var(--surface-bg);
+  padding: 8px 12px 10px 16px;
+}
 .research-reference { font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
 .research-reference > h3, .research-reference-definition h3 { margin: 0 0 8px; font-size: 1.14rem; }
 .research-reference-nav, .research-reference-definition { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 9px; }

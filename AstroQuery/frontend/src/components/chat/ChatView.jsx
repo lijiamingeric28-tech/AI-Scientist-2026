@@ -435,7 +435,11 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                   描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
                 </div>
 
-                <div className="research-hero-composer">{composer}</div>
+                <div className="hero-composer-container">
+                  <div className="hero-flowing-border-wrap">
+                    {composer}
+                  </div>
+                </div>
 
                 {/* 居中 Prompt 示例药丸 */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12, width: '100%', maxWidth: 440, padding: '0 12px' }}>
