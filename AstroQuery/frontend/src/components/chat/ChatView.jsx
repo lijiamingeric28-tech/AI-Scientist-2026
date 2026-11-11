@@ -435,9 +435,76 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                   描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
                 </div>
 
+                {/* 中央英雄窄胶囊输入舱（外圈顺时针流动深绿光环） */}
                 <div className="hero-composer-container">
                   <div className="hero-flowing-border-wrap">
-                    {composer}
+                    <div
+                      className="composer"
+                      style={{
+                        position: 'relative',
+                        zIndex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '7px 8px 7px 18px',
+                        borderRadius: 28,
+                        background: 'var(--surface-bg)',
+                        border: 'none',
+                        boxShadow: 'none',
+                      }}
+                    >
+                      <Icon.Sparkle style={{ width: 17, height: 17, color: 'var(--accent)', flexShrink: 0 }} />
+                      <textarea
+                        ref={textarea}
+                        rows={1}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
+                            e.preventDefault()
+                            handleSubmit()
+                          }
+                        }}
+                        disabled={submitting}
+                        placeholder="输入天体名称和想了解的物理性质…"
+                        style={{
+                          flex: 1,
+                          minWidth: 0,
+                          padding: '9px 4px',
+                          fontSize: 14.5,
+                          lineHeight: 1.5,
+                          color: 'var(--content-fg)',
+                          background: 'transparent',
+                          border: 'none',
+                          outline: 'none',
+                          resize: 'none',
+                          minHeight: 22,
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={!input.trim() || submitting}
+                        title="开始查询"
+                        className="active-press"
+                        style={{
+                          width: 38,
+                          height: 38,
+                          borderRadius: '50%',
+                          flexShrink: 0,
+                          border: !input.trim() || submitting ? '1px solid var(--surface-border)' : '1px solid transparent',
+                          cursor: !input.trim() || submitting ? 'not-allowed' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: !input.trim() || submitting ? 'var(--surface-secondary)' : 'var(--accent)',
+                          color: !input.trim() || submitting ? 'var(--content-fg-tertiary)' : '#ffffff',
+                          transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      >
+                        <Icon.Send style={{ width: 16, height: 16 }} />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
