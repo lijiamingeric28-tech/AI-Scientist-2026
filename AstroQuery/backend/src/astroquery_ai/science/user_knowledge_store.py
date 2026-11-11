@@ -73,8 +73,14 @@ COMMON_ALIASES: dict[str, str] = {
 def normalize_category(cat: Optional[str]) -> str:
     if not cat:
         return "physical_laws"
-    c_lower = str(cat).lower().strip()
-    return _CATEGORY_MAP.get(c_lower, "physical_laws")
+    c_clean = str(cat).strip()
+    c_lower = c_clean.lower()
+    if c_lower in _CATEGORY_MAP:
+        return _CATEGORY_MAP[c_lower]
+    # 保留用户自由定义的分类名称（清洗换行和制表符）
+    import re
+    safe_cat = re.sub(r'[\r\n\t]+', ' ', c_clean).strip()
+    return safe_cat or "user_custom"
 
 
 def _extract_formula(entry: dict[str, Any]) -> str:
@@ -881,10 +887,24 @@ class UserKnowledgeStore:
             if e.get("base_id") and e["base_id"] in node_ids:
                 edges.append({"source": e["id"], "target": e["base_id"], "label": "派生自基准理论"})
 
+        # Collect all active categories including dynamic user-defined categories
+        all_cats = list(KNOWLEDGE_CATEGORIES)
+        existing_cat_ids = {c["id"] for c in all_cats}
+        for n in nodes:
+            c = n.get("category")
+            if c and c not in existing_cat_ids and not n.get("is_property"):
+                existing_cat_ids.add(c)
+                all_cats.append({
+                    "id": c,
+                    "label": c,
+                    "color": "#0ea5e9",
+                    "is_custom": True,
+                })
+
         return {
             "nodes": nodes,
             "edges": edges,
-            "categories": KNOWLEDGE_CATEGORIES,
+            "categories": all_cats,
         }
 
     # ── 7. Transform to AstroQuery Standard Knowledge Block ───────────────────

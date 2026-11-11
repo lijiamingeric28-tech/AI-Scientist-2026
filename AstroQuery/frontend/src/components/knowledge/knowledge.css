@@ -71,9 +71,11 @@
 }
 
 .kw-mode-btn.active {
-  background: var(--surface-elevated, #2a2d32);
+  background: var(--surface-bg);
   color: var(--accent-text, var(--accent));
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
 }
 
 /* 搜索框 */
@@ -266,11 +268,12 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: var(--surface-elevated, #24272c);
+  background: var(--surface-bg);
   border: 1px solid var(--surface-border);
   border-radius: 8px;
   padding: 4px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
   z-index: 20;
 }
 
@@ -302,15 +305,17 @@
   position: absolute;
   top: 16px;
   left: 20px;
-  background: var(--surface-elevated, #24272c);
+  background: var(--surface-bg);
   border: 1px solid var(--surface-border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   font-size: var(--text-note, 12px);
   z-index: 15;
-  max-width: 240px;
-  backdrop-filter: blur(8px);
+  max-width: 250px;
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
 }
 
 .kw-legend-header {
@@ -336,21 +341,32 @@
   font-size: 11px;
 }
 
+/* 统一抽屉毛玻璃遮罩 */
+.kw-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 68;
+  background: color-mix(in srgb, var(--seed-ink, #0f172a) 18%, transparent);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  animation: backdrop-in 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* 图谱侧边抽屉/详情卡片 */
 .kw-graph-drawer {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 380px;
-  max-width: 90%;
+  width: 560px;
+  max-width: 92vw;
   background: var(--surface-bg);
   border-left: 1px solid var(--surface-border);
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  z-index: 25;
-  animation: slideInRight 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 70;
+  animation: slideInRight 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideInRight {
@@ -514,12 +530,14 @@
 
 /* 公式展示区 */
 .kw-formula-box {
-  background: var(--surface-bg);
-  border: 1px solid var(--surface-border-subtle, var(--surface-border));
-  border-radius: 6px;
-  padding: 10px 14px;
+  background: var(--surface-secondary, rgba(0, 0, 0, 0.02));
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 12px 16px;
   overflow-x: auto;
   text-align: center;
+  max-width: 100%;
+  line-height: 1.6;
 }
 
 .kw-card-desc {

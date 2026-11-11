@@ -13,21 +13,58 @@ export const KNOWLEDGE_CATEGORIES = [
   { id: 'user_private', label: '用户私有', color: '#eab308', altNames: ['用户私有', 'user_private', 'user', 'custom', 'private'] },
 ]
 
-export function normalizeCategory(cat) {
+export function getCustomCategoryColor(catName) {
+  if (!catName) return '#14b8a6'
+  let hash = 0
+  for (let i = 0; i < catName.length; i++) {
+    hash = catName.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  const hue = Math.abs(hash % 360)
+  return `hsl(${hue}, 72%, 46%)`
+}
+
+export function normalizeCategory(cat, dynamicList = []) {
   if (!cat) return 'physical_laws'
-  const lower = String(cat).toLowerCase().trim()
+  const clean = String(cat).trim()
+  const lower = clean.toLowerCase()
   for (const item of KNOWLEDGE_CATEGORIES) {
     if (item.id === 'all') continue
-    if (item.id === lower || item.label === cat || item.altNames?.some(alt => alt.toLowerCase() === lower)) {
+    if (item.id === lower || item.label.toLowerCase() === lower || item.altNames?.some(alt => alt.toLowerCase() === lower)) {
       return item.id
     }
   }
-  return 'physical_laws'
+  for (const item of dynamicList) {
+    if (item.id === clean || item.label === clean) {
+      return item.id
+    }
+  }
+  return clean
 }
 
-export function getCategoryInfo(categoryId) {
-  const norm = normalizeCategory(categoryId)
-  return KNOWLEDGE_CATEGORIES.find(c => c.id === norm) || KNOWLEDGE_CATEGORIES[1]
+export function getCategoryInfo(categoryId, dynamicList = []) {
+  const norm = normalizeCategory(categoryId, dynamicList)
+  const builtIn = KNOWLEDGE_CATEGORIES.find(c => c.id === norm)
+  if (builtIn) return builtIn
+  const custom = dynamicList.find(c => c.id === norm || c.label === norm)
+  if (custom) return { ...custom, color: custom.color || getCustomCategoryColor(custom.label || custom.id) }
+  return {
+    id: norm,
+    label: norm,
+    color: getCustomCategoryColor(norm),
+    is_custom: true,
+  }
+}
+
+export function isValidFormula(str) {
+  if (!str || typeof str !== 'string') return false
+  const trimmed = str.trim()
+  if (!trimmed || trimmed.length > 200) return false
+  // Contains common math symbols or LaTeX control sequences
+  const hasMath = /[=\\_\^∝≈~<>\+\-\*\/\(\)]/.test(trimmed)
+  // If it's predominantly Chinese characters without math structure, it's text not a formula
+  const chineseCount = (trimmed.match(/[\u4e00-\u9fa5]/g) || []).length
+  if (chineseCount > 15 && !trimmed.includes('=')) return false
+  return hasMath
 }
 
 export const INITIAL_KNOWLEDGE_ENTRIES = [

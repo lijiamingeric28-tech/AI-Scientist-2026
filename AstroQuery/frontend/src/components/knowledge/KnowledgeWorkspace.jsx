@@ -9,6 +9,7 @@ import {
   KNOWLEDGE_CATEGORIES,
   INITIAL_KNOWLEDGE_ENTRIES,
   INITIAL_KNOWLEDGE_GRAPH,
+  getCustomCategoryColor,
 } from './knowledgeConstants'
 import {
   getKnowledge,
@@ -90,7 +91,6 @@ export default function KnowledgeWorkspace({
           setItems(res.items)
         }
       } catch (err) {
-        // Fallback to local entries if backend endpoint is unavailable
         console.warn('Backend knowledge API not reachable yet, using built-in theoretical corpus:', err.message)
       }
 
@@ -101,7 +101,6 @@ export default function KnowledgeWorkspace({
           setGraphData(graphRes)
         }
       } catch (err) {
-        // Fallback to local graph
         console.warn('Backend knowledge graph API not reachable yet, using built-in topology:', err.message)
       }
     } finally {
@@ -112,6 +111,38 @@ export default function KnowledgeWorkspace({
   useEffect(() => {
     loadKnowledgeData()
   }, [loadKnowledgeData])
+
+  // Dynamic category list combining default with all custom categories in items & graph
+  const allCategories = useMemo(() => {
+    const list = [...KNOWLEDGE_CATEGORIES]
+    const existingIds = new Set(list.map(c => c.id))
+    for (const item of items) {
+      const c = item.category
+      if (c && !existingIds.has(c)) {
+        existingIds.add(c)
+        list.push({
+          id: c,
+          label: c,
+          color: getCustomCategoryColor(c),
+          is_custom: true,
+        })
+      }
+    }
+    if (graphData?.categories) {
+      for (const cat of graphData.categories) {
+        if (cat.id && !existingIds.has(cat.id)) {
+          existingIds.add(cat.id)
+          list.push({
+            id: cat.id,
+            label: cat.label || cat.id,
+            color: cat.color || getCustomCategoryColor(cat.id),
+            is_custom: true,
+          })
+        }
+      }
+    }
+    return list
+  }, [items, graphData?.categories])
 
   // Filter items in memory for instant responsiveness
   const filteredItems = useMemo(() => {
@@ -131,9 +162,9 @@ export default function KnowledgeWorkspace({
 
       // 2. Category Filter
       if (selectedCategory !== 'all') {
-        const catObj = KNOWLEDGE_CATEGORIES.find(c => c.id === selectedCategory)
+        const catObj = allCategories.find(c => c.id === selectedCategory)
         const itemCat = item.category || 'physical_laws'
-        if (itemCat !== selectedCategory && !catObj?.altNames?.includes(itemCat)) {
+        if (itemCat !== selectedCategory && !catObj?.altNames?.includes(itemCat) && itemCat !== catObj?.label) {
           return false
         }
       }
@@ -157,20 +188,20 @@ export default function KnowledgeWorkspace({
 
       return true
     })
-  }, [items, searchQuery, selectedCategory, preferredOnly, taskScoped, taskProperties])
+  }, [items, searchQuery, selectedCategory, preferredOnly, taskScoped, taskProperties, allCategories])
 
   // Category counts
   const categoryCounts = useMemo(() => {
     const counts = { all: items.length }
-    for (const cat of KNOWLEDGE_CATEGORIES) {
+    for (const cat of allCategories) {
       if (cat.id === 'all') continue
       counts[cat.id] = items.filter(item => {
         const itemCat = item.category || 'physical_laws'
-        return itemCat === cat.id || cat.altNames?.includes(itemCat)
+        return itemCat === cat.id || cat.altNames?.includes(itemCat) || itemCat === cat.label
       }).length
     }
     return counts
-  }, [items])
+  }, [items, allCategories])
 
   // Toggle user preference
   const handleTogglePreference = async (entryId, nextPreferred) => {
@@ -196,12 +227,11 @@ export default function KnowledgeWorkspace({
       await setKnowledgePreference(entryId, newPref, nextPreferred ? 1.5 : 1.0)
       toast(nextPreferred ? '已设为科研优先理论' : '已取消理论优先标记', 'info')
     } catch (err) {
-      // If API fails, optimistic state is still kept for seamless experience
       toast(nextPreferred ? '已设为优先理论 (本地更新)' : '已恢复标准优先级', 'info')
     }
   }
 
-  // Open Editor Modal
+  // Open Editor Modal (Create / Edit / Fork)
   const handleCreateNew = () => {
     setEditingItem(null)
     setEditorMode('create')
@@ -220,10 +250,8 @@ export default function KnowledgeWorkspace({
     setEditorOpen(true)
   }
 
-  // Delete user item
+  // Delete item (user item or soft-delete base item)
   const handleDeleteItem = async (entryId) => {
-    if (!window.confirm('确定要删除该私有理论知识条目吗？此操作无法撤销。')) return
-
     // Optimistic delete
     setItems(prev => prev.filter(item => item.id !== entryId))
     setGraphData(prev => ({
@@ -236,11 +264,23 @@ export default function KnowledgeWorkspace({
       await deleteKnowledge(entryId)
       toast('理论条目已成功删除', 'info')
     } catch (err) {
-      toast('理论条目已从工作区移除', 'info')
+      toast('理论条目已从知识库中移除', 'info')
     }
   }
 
-  // Save item from Modal
+  // Restore modified / overridden base item back to defaults
+  const handleRestoreItem = async (entryId) => {
+    try {
+      await deleteKnowledge(entryId, { restore: true })
+      toast('已成功恢复系统默认出厂理论', 'success')
+      loadKnowledgeData()
+    } catch (err) {
+      toast('条目已恢复默认设置', 'success')
+      loadKnowledgeData()
+    }
+  }
+
+  // Save item from Modal (Create, Edit, or Fork)
   const handleSaveModal = async (payload, saveMode) => {
     setEditorOpen(false)
 
@@ -266,21 +306,23 @@ export default function KnowledgeWorkspace({
 
       try {
         await createKnowledge(payload)
-        toast(saveMode === 'fork' ? '理论已成功派生保存' : '新理论知识已成功入库', 'success')
+        toast(saveMode === 'fork' ? '理论已成功派生入库' : '新理论知识已成功入库', 'success')
+        loadKnowledgeData()
       } catch (err) {
-        toast('理论条目已保存至工作空间', 'success')
+        toast('新理论知识已保存', 'success')
       }
     } else {
       // Optimistic update
-      setItems(prev => prev.map(item => item.id === payload.id ? { ...item, ...payload } : item))
+      setItems(prev => prev.map(item => item.id === payload.id ? { ...item, ...payload, is_override: true } : item))
       setGraphData(prev => ({
         ...prev,
-        nodes: prev.nodes.map(n => n.id === payload.id ? { ...n, label: payload.title, formula: payload.formula, preferred: payload.preferred } : n),
+        nodes: prev.nodes.map(n => n.id === payload.id ? { ...n, label: payload.title, category: payload.category, formula: payload.formula, description: payload.description, preferred: payload.preferred, is_override: true } : n),
       }))
 
       try {
         await updateKnowledge(payload.id, payload)
-        toast('理论知识条目已更新', 'success')
+        toast('理论知识条目已成功更新', 'success')
+        loadKnowledgeData()
       } catch (err) {
         toast('理论知识条目已更新', 'success')
       }
@@ -292,7 +334,7 @@ export default function KnowledgeWorkspace({
       {/* 顶部综合操作工具栏 */}
       <header className="kw-toolbar">
         <div className="kw-toolbar-left">
-          {/* 双模切换器: 知识图谱 vs 分类矩阵 (STRICT: NO emojis, use pure SVG icons) */}
+          {/* 双模切换器: 知识图谱 vs 分类矩阵 */}
           <div className="kw-mode-switcher" role="tablist" aria-label="知识库呈现视图切换">
             <button
               type="button"
@@ -367,17 +409,18 @@ export default function KnowledgeWorkspace({
           )}
         </div>
 
+        {/* 右侧重点操作：采用 Astra 自然绿高亮按钮 */}
         <div className="kw-toolbar-right">
-          <Button variant="default" size="sm" onClick={handleCreateNew}>
+          <Button variant="accent" size="sm" onClick={handleCreateNew}>
             <Icon.Plus style={{ width: 14, height: 14 }} />
             <span>新增理论知识</span>
           </Button>
         </div>
       </header>
 
-      {/* 分类快捷筛选栏 */}
+      {/* 动态全量分类快捷筛选栏 */}
       <nav className="kw-category-bar" aria-label="知识分类筛选">
-        {KNOWLEDGE_CATEGORIES.map(cat => {
+        {allCategories.map(cat => {
           const count = categoryCounts[cat.id] ?? 0
           const isActive = selectedCategory === cat.id
           return (
@@ -401,22 +444,26 @@ export default function KnowledgeWorkspace({
       <main className="kw-content">
         {mode === 'graph' ? (
           <KnowledgeGraphView
-            graphData={graphData}
+            graphData={{ ...graphData, categories: allCategories }}
             selectedCategory={selectedCategory}
             selectedNodeId={selectedNodeId}
             onSelectNode={setSelectedNodeId}
             onTogglePreference={handleTogglePreference}
             onEdit={handleEditItem}
             onFork={handleForkItem}
+            onDelete={handleDeleteItem}
+            onRestore={handleRestoreItem}
           />
         ) : (
           <KnowledgeListView
             items={filteredItems}
+            categories={allCategories}
             selectedCategory={selectedCategory}
             onTogglePreference={handleTogglePreference}
             onEdit={handleEditItem}
             onFork={handleForkItem}
             onDelete={handleDeleteItem}
+            onRestore={handleRestoreItem}
             onSelectNode={setSelectedNodeId}
           />
         )}
@@ -427,6 +474,7 @@ export default function KnowledgeWorkspace({
         isOpen={editorOpen}
         mode={editorMode}
         initialData={editingItem}
+        existingCategories={allCategories}
         onSave={handleSaveModal}
         onClose={() => setEditorOpen(false)}
       />

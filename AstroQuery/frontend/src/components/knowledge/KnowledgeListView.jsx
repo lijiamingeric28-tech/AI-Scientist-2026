@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import { Icon } from '@/components/icons'
 import { LatexMath, LatexText } from '@/components/results/LatexMath'
-import { KNOWLEDGE_CATEGORIES, getCategoryInfo } from './knowledgeConstants'
+import { KNOWLEDGE_CATEGORIES, getCategoryInfo, isValidFormula } from './knowledgeConstants'
 
 export default function KnowledgeListView({
   items = [],
+  categories = KNOWLEDGE_CATEGORIES,
   selectedCategory = 'all',
   onTogglePreference,
   onEdit,
   onFork,
   onDelete,
+  onRestore,
   onSelectNode,
 }) {
   const [collapsedCategories, setCollapsedCategories] = useState({})
@@ -22,9 +24,9 @@ export default function KnowledgeListView({
   }
 
   // Filter by category if not 'all'
-  const visibleCategories = KNOWLEDGE_CATEGORIES.filter(c => {
+  const visibleCategories = categories.filter(c => {
     if (c.id === 'all') return false
-    if (selectedCategory !== 'all' && c.id !== selectedCategory) return false
+    if (selectedCategory !== 'all' && c.id !== selectedCategory && c.label !== selectedCategory) return false
     return true
   })
 
@@ -32,7 +34,7 @@ export default function KnowledgeListView({
   const grouped = visibleCategories.map(cat => {
     const catItems = items.filter(item => {
       const itemCat = item.category || 'physical_laws'
-      return itemCat === cat.id || cat.altNames?.includes(itemCat)
+      return itemCat === cat.id || cat.altNames?.includes(itemCat) || itemCat === cat.label
     })
     return {
       category: cat,
@@ -89,7 +91,7 @@ export default function KnowledgeListView({
                   const isPreferred = Boolean(
                     item.user_preference === 'preferred' || item.preferred
                   )
-                  const catInfo = getCategoryInfo(item.category)
+                  const catInfo = getCategoryInfo(item.category, categories)
 
                   return (
                     <article
@@ -109,16 +111,28 @@ export default function KnowledgeListView({
                             >
                               {catInfo.label}
                             </span>
-                            {item.is_user && (
+                            {item.is_override && (
+                              <span
+                                className="kw-badge"
+                                style={{
+                                  background: 'rgba(59, 130, 246, 0.15)',
+                                  color: '#2563eb',
+                                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                                }}
+                              >
+                                用户已修改
+                              </span>
+                            )}
+                            {item.is_user && !item.is_override && (
                               <span
                                 className="kw-badge"
                                 style={{
                                   background: 'rgba(234, 179, 8, 0.15)',
-                                  color: '#eab308',
+                                  color: '#d97706',
                                   border: '1px solid rgba(234, 179, 8, 0.3)',
                                 }}
                               >
-                                用户私有
+                                自建理论
                               </span>
                             )}
                             {isPreferred && (
@@ -126,8 +140,8 @@ export default function KnowledgeListView({
                                 className="kw-badge"
                                 style={{
                                   background: 'rgba(234, 179, 8, 0.2)',
-                                  color: '#eab308',
-                                  border: '1px solid #eab308',
+                                  color: '#d97706',
+                                  border: '1px solid #d97706',
                                 }}
                               >
                                 科研优选
@@ -152,17 +166,16 @@ export default function KnowledgeListView({
                             )}
                           </button>
 
-                          {item.is_user ? (
-                            <button
-                              type="button"
-                              className="kw-icon-btn"
-                              onClick={() => onEdit(item)}
-                              title="编辑理论"
-                              aria-label="编辑理论"
-                            >
-                              <Icon.Edit style={{ width: 14, height: 14 }} />
-                            </button>
-                          ) : null}
+                          {/* Universal Edit Button for ALL entries */}
+                          <button
+                            type="button"
+                            className="kw-icon-btn"
+                            onClick={() => onEdit(item)}
+                            title="直接修改该理论内容与分类"
+                            aria-label="编辑理论"
+                          >
+                            <Icon.Edit style={{ width: 14, height: 14 }} />
+                          </button>
 
                           <button
                             type="button"
@@ -174,30 +187,46 @@ export default function KnowledgeListView({
                             <Icon.Fork style={{ width: 14, height: 14 }} />
                           </button>
 
-                          {item.is_user && (
+                          {/* Universal Delete Button */}
+                          <button
+                            type="button"
+                            className="kw-icon-btn"
+                            onClick={() => {
+                              if (window.confirm(`确定要删除理论条目「${item.title || item.name}」吗？`)) {
+                                onDelete(item.id)
+                              }
+                            }}
+                            title="从知识库中删除理论条目"
+                            aria-label="删除理论"
+                            style={{ color: 'var(--status-failed, #ef4444)' }}
+                          >
+                            <Icon.Trash style={{ width: 14, height: 14 }} />
+                          </button>
+
+                          {/* Restore Default Button */}
+                          {(item.is_override || item.is_user === false) && (
                             <button
                               type="button"
                               className="kw-icon-btn"
-                              onClick={() => onDelete(item.id)}
-                              title="删除私有理论"
-                              aria-label="删除私有理论"
-                              style={{ color: 'var(--status-failed, #ef4444)' }}
+                              onClick={() => onRestore(item.id)}
+                              title="重置为系统出厂预置状态"
+                              aria-label="恢复默认"
                             >
-                              <Icon.Trash style={{ width: 14, height: 14 }} />
+                              <Icon.History style={{ width: 14, height: 14 }} />
                             </button>
                           )}
                         </div>
                       </header>
 
-                      {item.formula && (
+                      {item.formula && isValidFormula(item.formula) && (
                         <div className="kw-formula-box">
                           <LatexMath math={item.formula} displayMode />
                         </div>
                       )}
 
-                      {item.description && (
+                      {(item.description || (item.formula && !isValidFormula(item.formula))) && (
                         <p className="kw-card-desc">
-                          <LatexText text={item.description} />
+                          <LatexText text={item.description || item.formula} />
                         </p>
                       )}
 
