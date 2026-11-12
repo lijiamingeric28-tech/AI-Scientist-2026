@@ -115,7 +115,7 @@ export default function ThemePaletteSettings({ theme = 'light', onToggleTheme, o
   }
 
   useEffect(() => {
-    applyPaletteToDOM(palette)
+    applyPaletteToDOM(palette, theme === 'dark')
   }, [theme])
 
   const handlePresetSelect = (preset) => {

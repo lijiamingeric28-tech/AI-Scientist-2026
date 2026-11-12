@@ -542,7 +542,7 @@ export default function Sidebar({
           style={{ color: 'var(--content-fg-secondary)', borderRadius: 7 }}
         >
           <Icon.Settings style={{ width: 13, height: 13 }} />
-          <span>服务设置</span>
+          <span>系统设置</span>
         </Button>
         <Button
           variant="ghost"

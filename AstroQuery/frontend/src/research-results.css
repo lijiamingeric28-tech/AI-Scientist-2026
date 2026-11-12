@@ -5366,7 +5366,7 @@ html[data-theme='dark'] .context-drawer .source-support-item h3 {
 .context-backdrop {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 65 !important;
+  z-index: 85 !important;
   background: rgba(15, 23, 42, 0.18) !important;
   background: color-mix(in srgb, var(--seed-ink, #0f172a) 18%, transparent) !important;
   backdrop-filter: blur(12px) saturate(130%) !important;

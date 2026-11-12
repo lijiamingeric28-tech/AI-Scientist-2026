@@ -802,3 +802,13 @@
   font-size: 13px;
   max-width: 360px;
 }
+
+/* 嵌入在大型设置工作台弹窗内部时，抽屉精准停靠于工作区边缘，不遮挡顶部返回导航 */
+.settings-studio-body .knowledge-workspace {
+  position: relative;
+}
+
+.settings-studio-body .kw-drawer-backdrop,
+.settings-studio-body .kw-graph-drawer {
+  position: absolute;
+}

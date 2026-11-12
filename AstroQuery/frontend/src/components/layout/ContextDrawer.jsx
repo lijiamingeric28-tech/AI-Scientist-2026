@@ -14,21 +14,17 @@ import { useDialogFocus } from '@/hooks/useDialogFocus'
 import { useDismissTransition } from '@/hooks/useDismissTransition'
 import { useContentTransition } from '@/hooks/useContentTransition'
 import AnswerReference from '@/components/chat/AnswerReference'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 export default function ContextDrawer({ detail, data, pipeline, onClose, onChange, onShowStageInChat, onOpenResults }) {
-  const [width, setWidth] = useState(580), [available, setAvailable] = useState(window.innerWidth)
+  const [width, setWidth] = useState(580)
   const [history, setHistory] = useState([])
   const navigation = useRef(null)
   const wasLoadingReference = useRef(false)
   const currentDetail=useRef(detail);currentDetail.current=detail
   const [loadError,setLoadError]=useState('')
   const direction = useRef(1)
-  const wide = useMediaQuery('(min-width: 1280px)')
-  const docked = Boolean(detail?.agentContext && wide && available >= 965)
-  const overlay = !docked
   const dismissal = useDismissTransition(onClose, { duration: 160, active: !!detail, identity: detail })
-  const ref = useDialogFocus(!!detail, dismissal.close, { trap: overlay })
+  const ref = useDialogFocus(!!detail, dismissal.close, { trap: true })
   useLayoutEffect(() => {
     const next = navigation.current
     navigation.current = null
@@ -52,14 +48,6 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
       ;(origin || ref.current.querySelector('[data-detail-heading]') || ref.current)?.focus({ preventScroll: true })
     }
   }, [detail])
-  useLayoutEffect(() => {
-    const parent = ref.current?.closest('.task-workspace') || document.querySelector('.task-workspace')
-    if (!parent) return
-    setAvailable(parent.clientWidth)
-    const observer = new ResizeObserver(entries => setAvailable(entries[0].contentRect.width))
-    observer.observe(parent)
-    return () => observer.disconnect()
-  }, [])
   useContentTransition(ref, detail ? `${detail.type}:${detail.record?.record_id || detail.source?.source_id || detail.stageId}:${detail.agentKey || ''}` : '', { active: Boolean(detail), selector: '.record-detail-body, .context-content', axis: 'x', distance: 16 * direction.current, duration: 240 })
   if (!detail) return null
   const loadRecord = async recordId => {
@@ -118,8 +106,8 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
   const source = detail.source
   const authors = Array.isArray(source?.authors) ? source.authors.map(readableText).filter(Boolean) : []
   return <>
-    {overlay && <div className="context-backdrop" data-closing={dismissal.closing || undefined} onClick={dismissal.close} />}
-    <aside ref={ref} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} role="dialog" aria-modal={overlay ? 'true' : undefined} aria-label="上下文详情" tabIndex={-1} className={`context-drawer animate-drawer-in${overlay ? ' overlay' : ' research-docked'}`} style={{ width: overlay ? Math.min(width, window.innerWidth - 24) : Math.min(width, Math.floor(available * .46)) }}>
+    <div className="context-backdrop" data-closing={dismissal.closing || undefined} onClick={dismissal.close} />
+    <aside ref={ref} data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture} role="dialog" aria-modal="true" aria-label="上下文详情" tabIndex={-1} className="context-drawer animate-drawer-in overlay" style={{ width }}>
       <div className="drawer-resize" onPointerDown={startResize} />
       {loadError&&<p className="resource-error">{loadError}</p>}
       {history.length > 0 && !source && detail.type !== 'figure' && <div className="drawer-back-row"><Button variant="ghost" size="sm" onClick={goBack}>← 返回上一项</Button></div>}

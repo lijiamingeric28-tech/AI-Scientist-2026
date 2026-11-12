@@ -57,15 +57,16 @@ test('api.js exports all required knowledge endpoints', () => {
   }
 })
 
-test('App.jsx provides the 4th top-level navigation tab: knowledge', () => {
+test('Knowledge Studio is hosted under Settings rather than homepage primary-nav', () => {
   const appJsx = readFile('src/App.jsx')
-  assert.match(appJsx, /const KnowledgeWorkspace = lazy\(/)
-  assert.match(appJsx, /\['knowledge',\s*'知识图谱与理论库'/)
-  assert.match(appJsx, /paneProps\('knowledge',/)
-  assert.match(appJsx, /<KnowledgeWorkspace/)
+  const studioJsx = readFile('src/components/settings/SettingsKnowledgeStudio.jsx')
+  assert.doesNotMatch(appJsx, /\['knowledge',\s*'知识图谱与理论库'/)
+  assert.doesNotMatch(appJsx, /paneProps\('knowledge',/)
+  assert.match(studioJsx, /const KnowledgeWorkspace = lazy\(/)
+  assert.match(studioJsx, /<KnowledgeWorkspace/)
 })
 
-test('KnowledgeWorkspace and components exist and have no emojis in JSX', () => {
+test('KnowledgeWorkspace, SettingsKnowledgeStudio and components exist and have no emojis in JSX', () => {
   const files = [
     'src/components/knowledge/KnowledgeWorkspace.jsx',
     'src/components/knowledge/KnowledgeGraphView.jsx',
@@ -74,6 +75,7 @@ test('KnowledgeWorkspace and components exist and have no emojis in JSX', () => 
     'src/components/knowledge/KnowledgeEditorModal.jsx',
     'src/components/knowledge/knowledgeConstants.js',
     'src/components/knowledge/knowledge.css',
+    'src/components/settings/SettingsKnowledgeStudio.jsx',
   ]
   const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u
 

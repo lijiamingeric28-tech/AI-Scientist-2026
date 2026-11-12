@@ -27,12 +27,18 @@ export default function KnowledgeWorkspace({
   pipeline,
   active = true,
   memory = {},
+  initialMode = null,
   onOpenDetail,
 }) {
   const { toast } = useToast()
 
   // View mode: 'graph' (知识图谱) vs 'matrix' (分类矩阵)
-  const [mode, setMode] = useState(memory.mode || 'graph')
+  const [mode, setMode] = useState(initialMode || memory.mode || 'graph')
+  useEffect(() => {
+    if (initialMode === 'graph' || initialMode === 'matrix') {
+      setMode(initialMode)
+    }
+  }, [initialMode])
   const [searchQuery, setSearchQuery] = useState(memory.searchQuery || '')
   const [selectedCategory, setSelectedCategory] = useState(memory.selectedCategory || 'all')
   const [preferredOnly, setPreferredOnly] = useState(memory.preferredOnly || false)

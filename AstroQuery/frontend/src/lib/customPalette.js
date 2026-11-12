@@ -78,9 +78,11 @@ export function normalizeHex(color) {
   return c.toLowerCase()
 }
 
-export function applyPaletteToDOM(palette) {
+export function applyPaletteToDOM(palette, forceDark) {
   if (typeof document === 'undefined' || !document.documentElement) return
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+  const isDark = typeof forceDark === 'boolean'
+    ? forceDark
+    : document.documentElement.getAttribute('data-theme') === 'dark'
   const root = document.documentElement.style
   if (isDark) {
     root.removeProperty('--seed-accent')

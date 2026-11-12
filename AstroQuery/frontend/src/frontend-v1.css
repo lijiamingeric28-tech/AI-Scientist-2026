@@ -702,7 +702,7 @@ input::placeholder, textarea::placeholder { color:var(--content-fg-secondary); o
 .context-backdrop {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 65 !important;
+  z-index: 85 !important;
   background: rgba(15, 23, 42, 0.18) !important;
   background: color-mix(in srgb, var(--seed-ink, #0f172a) 18%, transparent) !important;
   backdrop-filter: blur(12px) saturate(130%) !important;
@@ -730,8 +730,8 @@ html[data-theme='dark'] .context-backdrop {
   right: 0 !important;
   top: 0 !important;
   bottom: 0 !important;
-  z-index: 70 !important;
-  width: min(580px, calc(100vw - 32px)) !important;
+  z-index: 90 !important;
+  max-width: calc(100vw - 24px);
   background: var(--surface-bg, #ffffff) !important;
   border-left: 1px solid var(--surface-border) !important;
   border-radius: 14px 0 0 14px !important;
