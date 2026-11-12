@@ -67,7 +67,6 @@ export default function SettingsKnowledgeStudio({
           </div>
 
           <div className="settings-studio-header-right">
-            <span className="settings-studio-mode-hint">大尺寸工作台模式</span>
             <Button
               variant="outline"
               size="sm"

@@ -43,6 +43,7 @@ test('SettingsKnowledgeStudio provides return-to-settings and large workspace mo
   const studio = readFile('src/components/settings/SettingsKnowledgeStudio.jsx')
   assert.match(studio, /settings-studio-dialog/)
   assert.match(studio, /返回设置/)
+  assert.doesNotMatch(studio, /大尺寸工作台模式/)
   assert.match(studio, /initialMode=\{initialMode\}/)
 })
 

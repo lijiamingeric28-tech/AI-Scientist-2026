@@ -812,3 +812,78 @@
 .settings-studio-body .kw-graph-drawer {
   position: absolute;
 }
+
+/* 图谱平滑加载浮层与静态拓扑状态徽标 */
+.kw-graph-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--surface-bg, #ffffff) 78%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 18;
+  pointer-events: none;
+  animation: kwFadeIn 180ms ease-out;
+}
+
+.kw-graph-loading-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--surface-bg, #ffffff);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--content-fg);
+}
+
+.kw-graph-orbit {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--seed-accent, #24583b) 22%, transparent);
+  border-top-color: var(--seed-accent, #24583b);
+  animation: kwSpin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+.kw-graph-stats-badge {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-bg, #ffffff) 88%, transparent);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 12px;
+  color: var(--content-fg-secondary);
+  z-index: 15;
+  pointer-events: none;
+}
+
+.kw-graph-stats-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--seed-accent, #24583b);
+  flex-shrink: 0;
+}
+
+@keyframes kwSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes kwFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

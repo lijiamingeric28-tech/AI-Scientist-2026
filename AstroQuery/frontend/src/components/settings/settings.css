@@ -252,10 +252,6 @@ html[data-theme='dark'] .settings-dialog.preferences-dialog { background:#1e2722
   gap:10px;
   flex-shrink:0;
 }
-.settings-studio-mode-hint {
-  font-size:12px;
-  color:var(--text-tertiary);
-}
 .settings-studio-body {
   flex:1;
   min-height:0;
@@ -358,5 +354,4 @@ html[data-theme='dark'] .settings-studio-breadcrumb strong { color:#f1f5f2 !impo
  .preference-setting,.query-preferences .preference-setting { grid-template-columns:1fr; gap:10px; padding:12px 0; }
  .preferences-dialog .settings-footer { padding:12px 18px; flex-wrap:wrap; }
  .settings-studio-dialog { width:100%; height:calc(100dvh - 16px); max-height:calc(100dvh - 16px); }
- .settings-studio-mode-hint { display:none; }
 }

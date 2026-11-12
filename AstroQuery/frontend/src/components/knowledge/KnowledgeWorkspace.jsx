@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { useToast } from '@/components/ui/toast'
@@ -46,9 +46,11 @@ export default function KnowledgeWorkspace({
 
   // Knowledge list & graph state
   const [items, setItems] = useState(INITIAL_KNOWLEDGE_ENTRIES)
-  const [graphData, setGraphData] = useState(INITIAL_KNOWLEDGE_GRAPH)
-  const [loading, setLoading] = useState(false)
+  const [graphData, setGraphData] = useState({ nodes: [], edges: [], categories: KNOWLEDGE_CATEGORIES })
+  const [graphReady, setGraphReady] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [selectedNodeId, setSelectedNodeId] = useState(null)
+  const graphSeqRef = useRef(0)
 
   // Editor Modal state
   const [editorOpen, setEditorOpen] = useState(false)
@@ -93,8 +95,9 @@ export default function KnowledgeWorkspace({
     }
   }, [])
 
-  // Fetch filtered graph topology (capped cleanly on backend for interactive force layout)
+  // Fetch filtered graph topology with sequence guard so rapid filter switches stay calm
   const loadGraphTopology = useCallback(async () => {
+    const seq = ++graphSeqRef.current
     setLoading(true)
     try {
       const filters = {
@@ -103,13 +106,18 @@ export default function KnowledgeWorkspace({
         ...(searchQuery.trim() ? { keyword: searchQuery.trim() } : {}),
       }
       const graphRes = await getKnowledgeGraph(filters)
+      if (seq !== graphSeqRef.current) return
       if (graphRes && Array.isArray(graphRes.nodes)) {
         setGraphData(graphRes)
       }
+      setGraphReady(true)
     } catch (err) {
+      if (seq !== graphSeqRef.current) return
       console.warn('Backend knowledge graph API not reachable yet, using built-in topology:', err.message)
+      setGraphData(prev => (prev.nodes?.length ? prev : INITIAL_KNOWLEDGE_GRAPH))
+      setGraphReady(true)
     } finally {
-      setLoading(false)
+      if (seq === graphSeqRef.current) setLoading(false)
     }
   }, [selectedCategory, preferredOnly, searchQuery])
 
@@ -459,6 +467,8 @@ export default function KnowledgeWorkspace({
         {mode === 'graph' ? (
           <KnowledgeGraphView
             graphData={{ ...graphData, categories: allCategories }}
+            loading={!graphReady || loading}
+            graphReady={graphReady}
             selectedCategory={selectedCategory}
             selectedNodeId={selectedNodeId}
             onSelectNode={setSelectedNodeId}

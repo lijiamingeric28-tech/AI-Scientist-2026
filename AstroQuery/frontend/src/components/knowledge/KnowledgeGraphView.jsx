@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { Icon } from '@/components/icons'
 import { KNOWLEDGE_CATEGORIES, getCategoryInfo } from './knowledgeConstants'
 
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
+
 function toAlphaColor(colorStr, alpha = 0.25) {
   if (!colorStr) return `rgba(20, 184, 166, ${alpha})`
   const str = String(colorStr).trim()
@@ -30,30 +32,83 @@ function toAlphaColor(colorStr, alpha = 0.25) {
   return str
 }
 
+function easeOutCubic(t) {
+  const clamped = Math.max(0, Math.min(1, t))
+  return 1 - Math.pow(1 - clamped, 3)
+}
+
+function boxesOverlap(a, b, pad = 6) {
+  return !(
+    a.x + a.w + pad < b.x ||
+    b.x + b.w + pad < a.x ||
+    a.y + a.h + pad < b.y ||
+    b.y + b.h + pad < a.y
+  )
+}
+
+function computeFitTransform(nodes, viewportWidth, viewportHeight, legendOpen) {
+  const w = Math.max(viewportWidth || 900, 320)
+  const h = Math.max(viewportHeight || 620, 260)
+  if (!nodes || nodes.length === 0) {
+    return { x: 0, y: 0, scale: 1 }
+  }
+
+  let minX = Infinity
+  let maxX = -Infinity
+  let minY = Infinity
+  let maxY = -Infinity
+  for (const n of nodes) {
+    if (!Number.isFinite(n.x) || !Number.isFinite(n.y)) continue
+    const pad = (n.radius || 16) + 28
+    if (n.x - pad < minX) minX = n.x - pad
+    if (n.x + pad > maxX) maxX = n.x + pad
+    if (n.y - pad < minY) minY = n.y - pad
+    if (n.y + pad > maxY) maxY = n.y + pad
+  }
+  if (!Number.isFinite(minX)) return { x: 0, y: 0, scale: 1 }
+
+  const leftPad = legendOpen ? Math.min(220, w * 0.24) : 44
+  const rightPad = 68
+  const topPad = 62
+  const bottomPad = 48
+  const availW = Math.max(200, w - leftPad - rightPad)
+  const availH = Math.max(180, h - topPad - bottomPad)
+
+  const boxW = Math.max(120, maxX - minX)
+  const boxH = Math.max(120, maxY - minY)
+  const scale = Math.min(1.18, Math.max(0.32, Math.min(availW / boxW, availH / boxH)))
+
+  const worldCenterX = (minX + maxX) / 2
+  const worldCenterY = (minY + maxY) / 2
+  const screenCenterX = leftPad + availW / 2
+  const screenCenterY = topPad + availH / 2
+
+  return {
+    x: screenCenterX - worldCenterX * scale,
+    y: screenCenterY - worldCenterY * scale,
+    scale,
+  }
+}
+
 export default function KnowledgeGraphView({
   graphData,
+  loading = false,
+  graphReady = true,
   selectedCategory = 'all',
   selectedNodeId = null,
   onSelectNode,
-  onTogglePreference,
-  onEdit,
-  onFork,
-  onDelete,
-  onRestore,
 }) {
   const canvasRef = useRef(null)
   const containerRef = useRef(null)
 
-  // Camera transform: { x, y, scale }
   const transformRef = useRef({ x: 0, y: 0, scale: 1 })
-  const [transformState, setTransformState] = useState({ scale: 1 })
+  const fitTransformRef = useRef({ x: 0, y: 0, scale: 1 })
+  const [, setTransformState] = useState({ scale: 1 })
 
-  // Simulation state
-  const simRunningRef = useRef(true)
-  const [isSimRunning, setIsSimRunning] = useState(true)
+  const simRunningRef = useRef(false)
+  const [isSimRunning, setIsSimRunning] = useState(false)
   const [legendOpen, setLegendOpen] = useState(true)
 
-  // Dragging state
   const dragRef = useRef({
     isDraggingNode: false,
     draggedNode: null,
@@ -64,20 +119,24 @@ export default function KnowledgeGraphView({
     lastPanY: 0,
   })
 
-  // Selected node in local state
   const [activeNode, setActiveNode] = useState(null)
   const [hoveredNode, setHoveredNode] = useState(null)
+  const activeNodeRef = useRef(null)
+  const hoveredNodeRef = useRef(null)
+  const legendOpenRef = useRef(legendOpen)
+  legendOpenRef.current = legendOpen
 
-  // Simulation nodes and links
   const simNodesRef = useRef([])
   const simLinksRef = useRef([])
+  const clusterMetaRef = useRef([])
+  const revealStartRef = useRef(0)
 
-  // Dynamic categories from graph data
   const dynamicCategories = useMemo(() => {
     return Array.isArray(graphData?.categories) ? graphData.categories : KNOWLEDGE_CATEGORIES
   }, [graphData?.categories])
+  const dynamicCategoriesRef = useRef(dynamicCategories)
+  dynamicCategoriesRef.current = dynamicCategories
 
-  // Prepare nodes and links based on filters
   const { filteredNodes, filteredLinks } = useMemo(() => {
     if (!graphData || !Array.isArray(graphData.nodes)) {
       return { filteredNodes: [], filteredLinks: [] }
@@ -87,7 +146,7 @@ export default function KnowledgeGraphView({
     if (selectedCategory !== 'all') {
       const cat = dynamicCategories.find(c => c.id === selectedCategory)
       nodes = nodes.filter(n => {
-        if (n.is_property) return true // keep property connectors
+        if (n.is_property) return true
         const cId = n.category || 'physical_laws'
         return cId === selectedCategory || cat?.altNames?.includes(cId)
       })
@@ -101,45 +160,48 @@ export default function KnowledgeGraphView({
     return { filteredNodes: nodes, filteredLinks: links }
   }, [graphData, selectedCategory, dynamicCategories])
 
-  // Step physics simulation by 1 tick
-  const stepPhysicsTick = useCallback((nodes, links, width, height, clusterAnchors) => {
-    const safeW = Math.max(width || 900, 300)
-    const safeH = Math.max(height || 650, 200)
-    const centerX = safeW / 2
-    const centerY = safeH / 2
-
-    // 1. Repulsion between node pairs (Barnes-Hut approximation via distance cut)
+  // Physics step with hard non-overlap separation + ring/sector tethering
+  const stepPhysicsTick = useCallback((nodes, links, centerX, centerY, isLiveDrag = false) => {
     for (let i = 0; i < nodes.length; i++) {
       const n1 = nodes[i]
-      if (!Number.isFinite(n1.x) || !Number.isFinite(n1.y)) {
-        n1.x = centerX + (Math.random() - 0.5) * 100
-        n1.y = centerY + (Math.random() - 0.5) * 100
-        n1.vx = 0
-        n1.vy = 0
-      }
       for (let j = i + 1; j < nodes.length; j++) {
         const n2 = nodes[j]
-        if (!Number.isFinite(n2.x) || !Number.isFinite(n2.y)) {
-          n2.x = centerX + (Math.random() - 0.5) * 100
-          n2.y = centerY + (Math.random() - 0.5) * 100
-          n2.vx = 0
-          n2.vy = 0
-        }
         const dx = n2.x - n1.x
         const dy = n2.y - n1.y
         const distSq = dx * dx + dy * dy
-        if (distSq < 0.04) {
-          n2.x += (Math.random() - 0.5) * 4
-          n2.y += (Math.random() - 0.5) * 4
+        if (distSq > 260000) continue
+
+        const minSep = n1.radius + n2.radius + (n1.is_property || n2.is_property ? 22 : 30)
+        if (distSq < 0.09) {
+          const angle = ((i * 7 + j * 13) % 360) * (Math.PI / 180)
+          n2.x += Math.cos(angle) * minSep * 0.5
+          n2.y += Math.sin(angle) * minSep * 0.5
           continue
         }
-        if (distSq > 360000) continue // Distance cutoff for performance
+
         const dist = Math.sqrt(distSq)
-        const repulsionK = n1.is_property || n2.is_property ? 900 : 2200
-        const force = repulsionK / distSq
+        // Soft repulsion
+        const repulsionK = n1.is_property || n2.is_property ? 1400 : 2800
+        let force = repulsionK / distSq
+
+        // Strong anti-overlap separation when circles come too close
+        if (dist < minSep) {
+          const push = ((minSep - dist) / minSep) * (isLiveDrag ? 0.25 : 0.48)
+          const px = (dx / dist) * (minSep - dist) * push
+          const py = (dy / dist) * (minSep - dist) * push
+          if (!n1.fixed) {
+            n1.x -= px
+            n1.y -= py
+          }
+          if (!n2.fixed) {
+            n2.x += px
+            n2.y += py
+          }
+          force += (minSep - dist) * 0.08
+        }
+
         const fx = (dx / dist) * force
         const fy = (dy / dist) * force
-
         if (!n1.fixed) {
           n1.vx -= fx
           n1.vy -= fy
@@ -151,19 +213,18 @@ export default function KnowledgeGraphView({
       }
     }
 
-    // 2. Spring attraction along links
+    // Spring attraction along topology edges
     for (const link of links) {
       const s = link.source
       const t = link.target
-      if (!s || !t || !Number.isFinite(s.x) || !Number.isFinite(s.y) || !Number.isFinite(t.x) || !Number.isFinite(t.y)) continue
+      if (!s || !t) continue
       const dx = t.x - s.x
       const dy = t.y - s.y
       const dist = Math.sqrt(dx * dx + dy * dy) || 1
-      const idealDist = s.is_property || t.is_property ? 100 : 150
-      const spring = (dist - idealDist) * 0.035
+      const idealDist = s.is_property || t.is_property ? 185 : 215
+      const spring = (dist - idealDist) * 0.022
       const fx = (dx / dist) * spring
       const fy = (dy / dist) * spring
-
       if (!s.fixed) {
         s.vx += fx
         s.vy += fy
@@ -174,82 +235,193 @@ export default function KnowledgeGraphView({
       }
     }
 
-    // 3. Category Galactic Cluster Gravitation
+    // Anchor tethering + velocity damping
     let totalVel = 0
     for (const n of nodes) {
       if (!n.fixed) {
-        // Attract toward category anchor
-        const anchor = clusterAnchors[n.category] || { x: centerX, y: centerY }
-        const cfx = (anchor.x - n.x) * 0.007
-        const cfy = (anchor.y - n.y) * 0.007
-        n.vx += cfx
-        n.vy += cfy
+        const anchorX = Number.isFinite(n.anchorX) ? n.anchorX : centerX
+        const anchorY = Number.isFinite(n.anchorY) ? n.anchorY : centerY
+        const pull = n.is_property ? 0.024 : 0.015
+        n.vx += (anchorX - n.x) * pull
+        n.vy += (anchorY - n.y) * pull
 
-        // Global center gravity
-        const gx = (centerX - n.x) * 0.003
-        const gy = (centerY - n.y) * 0.003
-        n.vx += gx
-        n.vy += gy
-
-        // Damping
-        n.vx *= 0.82
-        n.vy *= 0.82
+        n.vx *= 0.78
+        n.vy *= 0.78
         n.x += n.vx
         n.y += n.vy
-
         totalVel += Math.abs(n.vx) + Math.abs(n.vy)
       }
     }
     return totalVel
   }, [])
 
-  // Initialize simulation with galactic cluster layout & offline pre-warming
+  // Deterministic dual-ring constellation layout + full pre-convergence + auto-fit
   useEffect(() => {
-    const existingMap = new Map(simNodesRef.current.map(n => [n.id, n]))
-    const width = containerRef.current?.clientWidth || 900
-    const height = containerRef.current?.clientHeight || 650
+    if (!graphReady || filteredNodes.length === 0) {
+      simNodesRef.current = []
+      simLinksRef.current = []
+      clusterMetaRef.current = []
+      return
+    }
+
+    const width = containerRef.current?.clientWidth || 960
+    const height = containerRef.current?.clientHeight || 640
     const centerX = width / 2
     const centerY = height / 2
 
-    // Compute radial galactic anchors for each category
-    const validCats = dynamicCategories.filter(c => c.id !== 'all')
-    const clusterAnchors = {}
-    validCats.forEach((cat, idx) => {
-      const angle = (idx / validCats.length) * 2 * Math.PI - Math.PI / 2
-      const radius = Math.min(width, height) * 0.38
-      clusterAnchors[cat.id] = {
-        x: centerX + Math.cos(angle) * radius,
-        y: centerY + Math.sin(angle) * radius,
-      }
-    })
+    // Build adjacency & degree counts deterministically
+    const degreeMap = new Map()
+    const neighbors = new Map()
+    for (const edge of filteredLinks) {
+      const sid = edge.source?.id || edge.source
+      const tid = edge.target?.id || edge.target
+      degreeMap.set(sid, (degreeMap.get(sid) || 0) + 1)
+      degreeMap.set(tid, (degreeMap.get(tid) || 0) + 1)
+      if (!neighbors.has(sid)) neighbors.set(sid, new Set())
+      if (!neighbors.has(tid)) neighbors.set(tid, new Set())
+      neighbors.get(sid).add(tid)
+      neighbors.get(tid).add(sid)
+    }
 
-    const newSimNodes = filteredNodes.map((n, i) => {
-      const existing = existingMap.get(n.id)
-      if (existing) {
-        return {
+    const rawNodeById = new Map(filteredNodes.map(n => [n.id, n]))
+    const propertyRaw = []
+    const theoryByCat = new Map()
+
+    for (const n of filteredNodes) {
+      if (n.is_property) {
+        propertyRaw.push(n)
+      } else {
+        const catId = n.category || 'physical_laws'
+        if (!theoryByCat.has(catId)) theoryByCat.set(catId, [])
+        theoryByCat.get(catId).push(n)
+      }
+    }
+
+    // Order active categories cleanly according to dynamicCategories order
+    const catEntries = []
+    for (const cat of dynamicCategories) {
+      if (cat.id === 'all') continue
+      const list = theoryByCat.get(cat.id)
+      if (list && list.length > 0) {
+        catEntries.push({ cat, nodes: list })
+        theoryByCat.delete(cat.id)
+      }
+    }
+    for (const [catId, list] of theoryByCat.entries()) {
+      catEntries.push({ cat: getCategoryInfo(catId, dynamicCategories), nodes: list })
+    }
+
+    // Allocate proportional angular sectors for active categories
+    const totalWeight = catEntries.reduce((acc, item) => acc + Math.max(1.2, Math.sqrt(item.nodes.length)), 0) || 1
+    const baseRadius = Math.max(360, Math.sqrt(filteredNodes.length) * 58)
+    const propRingRadius = propertyRaw.length > 0
+      ? Math.max(120, Math.min(baseRadius * 0.42, 95 + propertyRaw.length * 10))
+      : 0
+
+    let cursorAngle = -Math.PI / 2
+    const categoryAngleMap = new Map()
+    const clusterMetas = []
+    const placedNodes = []
+
+    for (const { cat, nodes: catList } of catEntries) {
+      const weight = Math.max(1.2, Math.sqrt(catList.length))
+      const sweep = (weight / totalWeight) * Math.PI * 2
+      const midAngle = cursorAngle + sweep / 2
+      cursorAngle += sweep
+      categoryAngleMap.set(cat.id, midAngle)
+
+      // Single-category view fans gently around center instead of clustering on one rim
+      const clusterRadius = catEntries.length === 1 ? 0 : baseRadius * 0.92
+      const anchorX = centerX + Math.cos(midAngle) * clusterRadius
+      const anchorY = centerY + Math.sin(midAngle) * clusterRadius
+
+      // Sort nodes: preferred + higher degree closer to core, rest spiral outward
+      const sorted = [...catList].sort((a, b) => {
+        const ap = a.preferred || a.user_preference === 'preferred' ? 0 : 1
+        const bp = b.preferred || b.user_preference === 'preferred' ? 0 : 1
+        if (ap !== bp) return ap - bp
+        const ad = degreeMap.get(a.id) || 0
+        const bd = degreeMap.get(b.id) || 0
+        if (ad !== bd) return bd - ad
+        return String(a.id).localeCompare(String(b.id))
+      })
+
+      const spreadFactor = catEntries.length === 1 ? 46 : 38
+      sorted.forEach((n, idx) => {
+        const deg = degreeMap.get(n.id) || 0
+        const isPref = Boolean(n.preferred || n.user_preference === 'preferred')
+        const radius = isPref ? 21 : (deg >= 3 ? 18 : 15)
+        const r = Math.sqrt(idx + 0.6) * spreadFactor
+        const theta = idx * GOLDEN_ANGLE + midAngle
+        placedNodes.push({
           ...n,
-          x: existing.x,
-          y: existing.y,
-          vx: existing.vx,
-          vy: existing.vy,
-          radius: n.is_property ? 14 : (n.preferred ? 20 : 16),
+          x: anchorX + Math.cos(theta) * r,
+          y: anchorY + Math.sin(theta) * r,
+          vx: 0,
+          vy: 0,
+          anchorX,
+          anchorY,
+          degree: deg,
+          radius,
+          ringOrder: 1 + r / Math.max(baseRadius, 200),
+        })
+      })
+
+      clusterMetas.push({
+        id: cat.id,
+        label: cat.label,
+        color: cat.color,
+        x: anchorX,
+        y: anchorY,
+        count: catList.length,
+        midAngle,
+      })
+    }
+
+    // Order property hub nodes by their dominant connected category angle to minimize crossings
+    const propWithAngle = propertyRaw.map((p, idx) => {
+      const nbIds = neighbors.get(p.id) || new Set()
+      let sinSum = 0
+      let cosSum = 0
+      let hits = 0
+      for (const nid of nbIds) {
+        const nb = rawNodeById.get(nid)
+        if (nb && !nb.is_property) {
+          const ang = categoryAngleMap.get(nb.category || 'physical_laws')
+          if (Number.isFinite(ang)) {
+            sinSum += Math.sin(ang)
+            cosSum += Math.cos(ang)
+            hits++
+          }
         }
       }
-      // Place near category anchor with gentle scatter
-      const anchor = clusterAnchors[n.category] || { x: centerX, y: centerY }
-      const scatterAngle = Math.random() * Math.PI * 2
-      const scatterDist = 20 + Math.random() * 90
-      return {
-        ...n,
-        x: anchor.x + Math.cos(scatterAngle) * scatterDist,
-        y: anchor.y + Math.sin(scatterAngle) * scatterDist,
+      const targetAngle = hits > 0 ? Math.atan2(sinSum, cosSum) : (idx / Math.max(1, propertyRaw.length)) * Math.PI * 2
+      return { node: p, targetAngle }
+    })
+    propWithAngle.sort((a, b) => a.targetAngle - b.targetAngle)
+
+    propWithAngle.forEach(({ node: p }, idx) => {
+      const deg = degreeMap.get(p.id) || 0
+      const angle = (idx / Math.max(1, propWithAngle.length)) * Math.PI * 2 - Math.PI / 2
+      const ringFactor = propWithAngle.length > 16 && idx % 2 === 1 ? 0.66 : 1.0
+      const r = propRingRadius * ringFactor
+      const ax = centerX + Math.cos(angle) * r
+      const ay = centerY + Math.sin(angle) * r
+      placedNodes.push({
+        ...p,
+        x: ax,
+        y: ay,
         vx: 0,
         vy: 0,
-        radius: n.is_property ? 14 : (n.preferred ? 20 : 16),
-      }
+        anchorX: ax,
+        anchorY: ay,
+        degree: deg,
+        radius: deg >= 4 ? 15 : 13,
+        ringOrder: 0.2,
+      })
     })
 
-    const simNodeMap = new Map(newSimNodes.map(n => [n.id, n]))
+    const simNodeMap = new Map(placedNodes.map(n => [n.id, n]))
     const links = filteredLinks
       .map(l => ({
         source: simNodeMap.get(l.source?.id || l.source),
@@ -258,97 +430,129 @@ export default function KnowledgeGraphView({
       }))
       .filter(l => l.source && l.target)
 
-    // Calculate node degrees (connections) to determine hierarchy
-    const degreeMap = new Map()
-    for (const link of links) {
-      degreeMap.set(link.source.id, (degreeMap.get(link.source.id) || 0) + 1)
-      degreeMap.set(link.target.id, (degreeMap.get(link.target.id) || 0) + 1)
+    // Pre-converge completely in memory BEFORE rendering frame 1 (calm, zero jitter)
+    const ticks = placedNodes.length > 220 ? 120 : 180
+    for (let tick = 0; tick < ticks; tick++) {
+      stepPhysicsTick(placedNodes, links, centerX, centerY, false)
     }
-    for (const n of newSimNodes) {
-      n.degree = degreeMap.get(n.id) || 0
-      if (!n.is_property) {
-        n.radius = n.preferred ? 22 : (n.degree >= 3 ? 19 : 15)
+
+    // Recompute exact cluster centroids from settled positions
+    for (const meta of clusterMetas) {
+      const members = placedNodes.filter(n => !n.is_property && (n.category || 'physical_laws') === meta.id)
+      if (members.length > 0) {
+        meta.x = members.reduce((s, m) => s + m.x, 0) / members.length
+        meta.y = members.reduce((s, m) => s + m.y, 0) / members.length
+        let maxR = 90
+        for (const m of members) {
+          const d = Math.hypot(m.x - meta.x, m.y - meta.y) + m.radius + 32
+          if (d > maxR) maxR = d
+        }
+        meta.haloRadius = maxR
       }
     }
 
-    // Offline pre-warming: pre-compute 80 ticks in memory to achieve calm, stable layout
-    for (let tick = 0; tick < 80; tick++) {
-      stepPhysicsTick(newSimNodes, links, width, height, clusterAnchors)
-    }
-
-    simNodesRef.current = newSimNodes
+    simNodesRef.current = placedNodes
     simLinksRef.current = links
-    simRunningRef.current = true
-    setIsSimRunning(true)
-  }, [filteredNodes, filteredLinks, dynamicCategories, stepPhysicsTick])
+    clusterMetaRef.current = clusterMetas
+    simRunningRef.current = false
+    setIsSimRunning(false)
+
+    // Auto-fit entire constellation neatly inside viewport & trigger calm radial reveal
+    const fit = computeFitTransform(placedNodes, width, height, legendOpenRef.current)
+    fitTransformRef.current = fit
+    transformRef.current = { ...fit }
+    setTransformState({ scale: fit.scale })
+    revealStartRef.current = performance.now()
+  }, [filteredNodes, filteredLinks, dynamicCategories, graphReady, stepPhysicsTick])
 
   // Sync selected node with prop
   useEffect(() => {
     if (selectedNodeId) {
-      const found = filteredNodes.find(n => n.id === selectedNodeId)
-      if (found) setActiveNode(found)
+      const found = simNodesRef.current.find(n => n.id === selectedNodeId) || filteredNodes.find(n => n.id === selectedNodeId) || null
+      setActiveNode(found)
+      activeNodeRef.current = found
     } else {
       setActiveNode(null)
+      activeNodeRef.current = null
     }
   }, [selectedNodeId, filteredNodes])
 
-  // Render loop & physics step
+  // Stable 60fps canvas render loop (never restarts on hover)
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animId
 
-    const width = Math.max(containerRef.current?.clientWidth || canvas.width / (window.devicePixelRatio || 1) || 900, 300)
-    const height = Math.max(containerRef.current?.clientHeight || canvas.height / (window.devicePixelRatio || 1) || 650, 200)
-    const validCats = dynamicCategories.filter(c => c.id !== 'all')
-    const clusterAnchors = {}
-    validCats.forEach((cat, idx) => {
-      const angle = (idx / validCats.length) * 2 * Math.PI - Math.PI / 2
-      const radius = Math.min(width, height) * 0.38
-      clusterAnchors[cat.id] = {
-        x: width / 2 + Math.cos(angle) * radius,
-        y: height / 2 + Math.sin(angle) * radius,
-      }
-    })
+    const render = (now) => {
+      const rect = containerRef.current?.getBoundingClientRect()
+      const viewW = Math.max(rect?.width || 900, 300)
+      const viewH = Math.max(rect?.height || 620, 220)
+      const dpr = window.devicePixelRatio || 1
 
-    const render = () => {
-      if (simRunningRef.current) {
+      if (canvas.width !== Math.round(viewW * dpr) || canvas.height !== Math.round(viewH * dpr)) {
+        canvas.width = Math.round(viewW * dpr)
+        canvas.height = Math.round(viewH * dpr)
+      }
+
+      if (simRunningRef.current && simNodesRef.current.length > 0) {
         const vel = stepPhysicsTick(
           simNodesRef.current,
           simLinksRef.current,
-          width,
-          height,
-          clusterAnchors
+          viewW / 2,
+          viewH / 2,
+          true
         )
-        if (vel < 0.08) {
+        if (!dragRef.current.isDraggingNode && vel < 0.12) {
           simRunningRef.current = false
           setIsSimRunning(false)
         }
       }
 
-      const dpr = window.devicePixelRatio || 1
-      const rect = containerRef.current?.getBoundingClientRect()
-      if (rect) {
-        if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
-          canvas.width = rect.width * dpr
-          canvas.height = rect.height * dpr
-        }
-      }
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+      const elapsed = Math.max(0, (now || performance.now()) - revealStartRef.current)
+      const revealRaw = revealStartRef.current > 0 ? Math.min(1, elapsed / 460) : 1
+      const reveal = easeOutCubic(revealRaw)
 
       ctx.save()
       ctx.scale(dpr, dpr)
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, viewW, viewH)
 
       const t = transformRef.current
+      const nodes = simNodesRef.current
+      const links = simLinksRef.current
+      const clusters = clusterMetaRef.current
+      const active = activeNodeRef.current
+      const hovered = hoveredNodeRef.current
+      const focusTarget = hovered || active
+
+      // Subtle background dot grid in world space
+      ctx.save()
       ctx.translate(t.x, t.y)
       ctx.scale(t.scale, t.scale)
 
-      const nodes = simNodesRef.current
-      const links = simLinksRef.current
+      ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(100, 116, 139, 0.11)'
+      const gridSize = 48
+      const startX = Math.floor((-t.x / t.scale) / gridSize) * gridSize
+      const endX = startX + viewW / t.scale + gridSize * 2
+      const startY = Math.floor((-t.y / t.scale) / gridSize) * gridSize
+      const endY = startY + viewH / t.scale + gridSize * 2
+      for (let gx = startX; gx < endX; gx += gridSize) {
+        for (let gy = startY; gy < endY; gy += gridSize) {
+          ctx.beginPath()
+          ctx.arc(gx, gy, 1 / Math.sqrt(t.scale), 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
 
-      // Spotlight focus set
-      const focusTarget = hoveredNode || activeNode
+      if (nodes.length === 0) {
+        ctx.restore()
+        ctx.restore()
+        animId = requestAnimationFrame(render)
+        return
+      }
+
+      // Spotlight neighbor set
       const connectedNodeIds = new Set()
       if (focusTarget) {
         connectedNodeIds.add(focusTarget.id)
@@ -358,162 +562,259 @@ export default function KnowledgeGraphView({
         }
       }
 
-      // Draw celestial background grid dots
-      ctx.fillStyle = 'rgba(128, 128, 128, 0.09)'
-      const gridSize = 44
-      const startX = Math.floor((-t.x / t.scale) / gridSize) * gridSize
-      const endX = startX + ((rect?.width || 800) / t.scale) + gridSize * 2
-      const startY = Math.floor((-t.y / t.scale) / gridSize) * gridSize
-      const endY = startY + ((rect?.height || 600) / t.scale) + gridSize * 2
-
-      for (let gx = startX; gx < endX; gx += gridSize) {
-        for (let gy = startY; gy < endY; gy += gridSize) {
+      // 0. Category Nebula Halos (airy spatial grouping)
+      const haloAlpha = easeOutCubic(Math.min(1, reveal * 1.4)) * (focusTarget ? 0.35 : 1)
+      if (clusters.length > 1 && haloAlpha > 0.01) {
+        for (const meta of clusters) {
+          const r = meta.haloRadius || 120
+          const grad = ctx.createRadialGradient(meta.x, meta.y, 12, meta.x, meta.y, r)
+          grad.addColorStop(0, toAlphaColor(meta.color, (isDark ? 0.11 : 0.065) * haloAlpha))
+          grad.addColorStop(1, toAlphaColor(meta.color, 0))
           ctx.beginPath()
-          ctx.arc(gx, gy, 1, 0, Math.PI * 2)
+          ctx.arc(meta.x, meta.y, r, 0, Math.PI * 2)
+          ctx.fillStyle = grad
           ctx.fill()
         }
       }
 
-      // 1. Draw Edges
-      for (const link of links) {
-        const s = link.source
-        const target = link.target
-        if (!s || !target || !Number.isFinite(s.x) || !Number.isFinite(s.y) || !Number.isFinite(target.x) || !Number.isFinite(target.y)) {
-          continue
-        }
-        const isConnected = focusTarget && (s.id === focusTarget.id || target.id === focusTarget.id)
-        const isInSpotlight = !focusTarget || isConnected
+      // 1. Edges (calm gentle alpha, stronger on focus)
+      const edgeStage = easeOutCubic(Math.max(0, (reveal - 0.08) / 0.85))
+      if (edgeStage > 0.01) {
+        for (const link of links) {
+          const s = link.source
+          const target = link.target
+          if (!s || !target) continue
+          const isConnected = focusTarget && (s.id === focusTarget.id || target.id === focusTarget.id)
 
-        ctx.beginPath()
-        ctx.moveTo(s.x, s.y)
-        ctx.lineTo(target.x, target.y)
+          ctx.beginPath()
+          ctx.moveTo(s.x, s.y)
+          ctx.lineTo(target.x, target.y)
 
-        if (isConnected) {
-          ctx.strokeStyle = '#14b8a6'
-          ctx.lineWidth = 2.4
-          ctx.globalAlpha = 0.95
-        } else {
-          ctx.strokeStyle = 'rgba(148, 163, 184, 0.28)'
-          ctx.lineWidth = 1.2
-          ctx.globalAlpha = isInSpotlight ? 0.7 : 0.12
+          if (isConnected) {
+            ctx.strokeStyle = isDark ? '#34d399' : '#0f766e'
+            ctx.lineWidth = 2.1 / Math.sqrt(t.scale)
+            ctx.globalAlpha = 0.9 * edgeStage
+          } else {
+            ctx.strokeStyle = isDark ? 'rgba(148, 163, 184, 0.24)' : 'rgba(100, 116, 139, 0.22)'
+            ctx.lineWidth = 1.0 / Math.sqrt(t.scale)
+            ctx.globalAlpha = (focusTarget ? 0.08 : 0.55) * edgeStage
+          }
+          ctx.stroke()
         }
-        ctx.stroke()
-        ctx.globalAlpha = 1.0
-
-        // Edge label (only if connected or high zoom)
-        if (link.label && (isConnected || t.scale > 1.25)) {
-          const midX = (s.x + target.x) / 2
-          const midY = (s.y + target.y) / 2
-          ctx.font = '10.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-          ctx.fillStyle = isConnected ? '#0f766e' : 'rgba(100, 116, 139, 0.85)'
-          ctx.textAlign = 'center'
-          ctx.textBaseline = 'middle'
-          ctx.fillText(link.label, midX, midY - 6)
-        }
+        ctx.globalAlpha = 1
       }
 
-      // 2. Draw Nodes
+      // 2. Nodes (staggered bloom from inner ring outward)
+      const cats = dynamicCategoriesRef.current
       for (const n of nodes) {
-        if (!Number.isFinite(n.x) || !Number.isFinite(n.y) || !Number.isFinite(n.radius) || n.radius <= 0) {
-          continue
-        }
-        const isSelected = activeNode?.id === n.id
-        const isHovered = hoveredNode?.id === n.id
+        if (!Number.isFinite(n.x) || !Number.isFinite(n.y)) continue
+        const localProgress = easeOutCubic(Math.max(0, Math.min(1, (reveal - (n.ringOrder || 0) * 0.16) / 0.72)))
+        if (localProgress <= 0.01) continue
+
+        const isSelected = active?.id === n.id
+        const isHovered = hovered?.id === n.id
         const isFocus = isSelected || isHovered
         const isPreferred = Boolean(n.preferred || n.user_preference === 'preferred')
-        const catInfo = getCategoryInfo(n.category, dynamicCategories)
+        const catInfo = getCategoryInfo(n.category, cats)
         const inSpotlight = !focusTarget || connectedNodeIds.has(n.id)
 
-        ctx.globalAlpha = inSpotlight ? 1.0 : 0.16
+        const nodeScale = 0.8 + 0.2 * localProgress
+        const drawR = n.radius * nodeScale
+        ctx.globalAlpha = (inSpotlight ? 1 : 0.16) * localProgress
 
-        // Preferred Gold Glow Ring
         if (isPreferred && !n.is_property) {
           ctx.beginPath()
-          ctx.arc(n.x, n.y, n.radius + 6, 0, Math.PI * 2)
-          ctx.strokeStyle = 'rgba(234, 179, 8, 0.55)'
-          ctx.lineWidth = 2
-          ctx.setLineDash([4, 2])
+          ctx.arc(n.x, n.y, drawR + 5, 0, Math.PI * 2)
+          ctx.strokeStyle = 'rgba(234, 179, 8, 0.6)'
+          ctx.lineWidth = 1.8
+          ctx.setLineDash([4, 2.5])
           ctx.stroke()
           ctx.setLineDash([])
         }
 
-        // Selection / Spotlight Focus Ring
         if (isFocus) {
           ctx.beginPath()
-          ctx.arc(n.x, n.y, n.radius + (isPreferred ? 9 : 6), 0, Math.PI * 2)
-          ctx.strokeStyle = '#14b8a6'
-          ctx.lineWidth = 2.8
+          ctx.arc(n.x, n.y, drawR + (isPreferred ? 8 : 5), 0, Math.PI * 2)
+          ctx.strokeStyle = isDark ? '#34d399' : '#0f766e'
+          ctx.lineWidth = 2.6
           ctx.stroke()
         }
 
-        // Node Circle Body with refined translucent fill
         ctx.beginPath()
-        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2)
+        ctx.arc(n.x, n.y, drawR, 0, Math.PI * 2)
         ctx.fillStyle = n.is_property
-          ? 'rgba(148, 163, 184, 0.18)'
-          : toAlphaColor(catInfo.color, 0.25)
+          ? (isDark ? 'rgba(148, 163, 184, 0.22)' : 'rgba(148, 163, 184, 0.18)')
+          : toAlphaColor(catInfo.color, isDark ? 0.34 : 0.22)
         ctx.fill()
 
         ctx.strokeStyle = n.is_property
-          ? 'rgba(148, 163, 184, 0.7)'
+          ? (isDark ? 'rgba(148, 163, 184, 0.75)' : 'rgba(100, 116, 139, 0.65)')
           : catInfo.color
-        ctx.lineWidth = isFocus ? 2.8 : 1.8
+        ctx.lineWidth = isFocus ? 2.6 : 1.7
         ctx.stroke()
 
-        // Inner marker: Golden Star for preferred, dot for standard
         if (isPreferred && !n.is_property) {
           ctx.beginPath()
-          ctx.arc(n.x, n.y, 4, 0, Math.PI * 2)
+          ctx.arc(n.x, n.y, 3.6, 0, Math.PI * 2)
           ctx.fillStyle = '#eab308'
           ctx.fill()
         }
+      }
 
-        // Smart LOD Labels with Capsule Backdrop (Prevent Text Overlap)
-        const showLabel =
-          isFocus ||
-          isPreferred ||
-          n.degree >= 3 ||
-          t.scale >= 1.15 ||
-          nodes.length < 35
+      ctx.globalAlpha = 1
+      ctx.restore() // exit world space to draw crisp screen-space collision-free labels
 
-        if (showLabel) {
-          const labelText = n.label || n.title || n.name || n.id
-          const displayLabel = labelText.length > 15 ? labelText.slice(0, 14) + '…' : labelText
-          const fontSize = n.is_property ? 11 : (isFocus ? 12.5 : 11.5)
-          ctx.font = `${isFocus ? '600 ' : '500 '}${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+      // 3. Screen-Space Collision-Free Labels + Cluster Headings
+      const labelAlpha = easeOutCubic(Math.max(0, (reveal - 0.38) / 0.62))
+      if (labelAlpha > 0.02) {
+        const placedBoxes = []
 
-          // Measure text to draw protective background capsule
-          const textMetrics = ctx.measureText(displayLabel)
-          const padX = 6
-          const padY = 2.5
-          const textW = textMetrics.width + padX * 2
-          const textH = fontSize + padY * 2
-          const rectX = n.x - textW / 2
-          const rectY = n.y + n.radius + 5
+        // Reserve space for floating legend, top-right stats badge & bottom-right controls
+        if (legendOpenRef.current) {
+          placedBoxes.push({ x: 16, y: 12, w: 196, h: 310 })
+        }
+        placedBoxes.push({ x: viewW - 295, y: 12, w: 285, h: 44 })
+        placedBoxes.push({ x: viewW - 68, y: viewH - 180, w: 60, h: 170 })
 
-          // Capsule background
-          ctx.beginPath()
-          if (ctx.roundRect) {
-            ctx.roundRect(rectX, rectY, textW, textH, 4)
-          } else {
-            ctx.rect(rectX, rectY, textW, textH)
+        // Draw subtle Category Cluster Title Pills at overview zoom
+        if (!focusTarget && clusters.length > 1 && t.scale < 1.25) {
+          ctx.save()
+          ctx.globalAlpha = labelAlpha * 0.92
+          ctx.font = '600 11.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+          for (const meta of clusters) {
+            const sx = meta.x * t.scale + t.x
+            const sy = (meta.y - Math.min(meta.haloRadius || 100, 130) * 0.72) * t.scale + t.y
+            if (sx < 40 || sx > viewW - 40 || sy < 24 || sy > viewH - 24) continue
+            const text = `${meta.label} · ${meta.count}`
+            const m = ctx.measureText(text)
+            const w = m.width + 18
+            const h = 22
+            const box = { x: sx - w / 2, y: sy - h / 2, w, h }
+            if (placedBoxes.some(b => boxesOverlap(b, box, 8))) continue
+            placedBoxes.push(box)
+
+            ctx.beginPath()
+            if (ctx.roundRect) ctx.roundRect(box.x, box.y, box.w, box.h, 11)
+            else ctx.rect(box.x, box.y, box.w, box.h)
+            ctx.fillStyle = isDark ? 'rgba(24, 32, 28, 0.88)' : 'rgba(255, 255, 255, 0.92)'
+            ctx.fill()
+            ctx.strokeStyle = toAlphaColor(meta.color, 0.5)
+            ctx.lineWidth = 1
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.arc(box.x + 10, box.y + box.h / 2, 3.2, 0, Math.PI * 2)
+            ctx.fillStyle = meta.color
+            ctx.fill()
+
+            ctx.fillStyle = isDark ? '#e2e8f0' : '#1e293b'
+            ctx.textAlign = 'left'
+            ctx.textBaseline = 'middle'
+            ctx.fillText(text, box.x + 17, box.y + box.h / 2)
           }
-          ctx.fillStyle = isFocus
-            ? 'rgba(255, 255, 255, 0.96)'
-            : 'rgba(255, 255, 255, 0.90)'
-          ctx.fill()
-          ctx.strokeStyle = isFocus ? '#14b8a6' : 'rgba(203, 213, 225, 0.9)'
-          ctx.lineWidth = 1
-          ctx.stroke()
-
-          // Text content
-          ctx.fillStyle = isFocus ? '#0f766e' : '#1e293b'
-          ctx.textAlign = 'center'
-          ctx.textBaseline = 'middle'
-          ctx.fillText(displayLabel, n.x, rectY + textH / 2)
+          ctx.restore()
         }
 
-        ctx.globalAlpha = 1.0
+        // Rank candidate node labels cleanly so higher-priority items never lose to noise
+        const candidates = []
+        for (const n of nodes) {
+          if (!Number.isFinite(n.x) || !Number.isFinite(n.y)) continue
+          const sx = n.x * t.scale + t.x
+          const sy = n.y * t.scale + t.y
+          if (sx < -40 || sx > viewW + 40 || sy < -30 || sy > viewH + 30) continue
+
+          const isSelected = active?.id === n.id
+          const isHovered = hovered?.id === n.id
+          const isFocus = isSelected || isHovered
+          const isNeighbor = focusTarget ? connectedNodeIds.has(n.id) : false
+          const isPref = Boolean(n.preferred || n.user_preference === 'preferred')
+
+          if (!isFocus && !isNeighbor && !isPref && n.degree < 2 && t.scale < 0.95 && nodes.length > 30) {
+            continue
+          }
+
+          let priority = n.degree || 0
+          if (isHovered) priority += 10000
+          else if (isSelected) priority += 9000
+          else if (isNeighbor) priority += 5000
+          else if (isPref && !n.is_property) priority += 1200
+          else if (!n.is_property) priority += 100
+
+          candidates.push({ n, sx, sy, isFocus, isNeighbor, priority })
+        }
+
+        candidates.sort((a, b) => b.priority - a.priority)
+
+        const maxLabels = focusTarget ? 28 : (t.scale >= 1.15 ? 48 : 18)
+        let drawnCount = 0
+
+        for (const item of candidates) {
+          if (drawnCount >= maxLabels && !item.isFocus) break
+          const { n, sx, sy, isFocus, isNeighbor } = item
+          const rawLabel = n.label || n.title || n.name || n.id
+          const displayLabel = isFocus
+            ? (rawLabel.length > 24 ? rawLabel.slice(0, 23) + '…' : rawLabel)
+            : (rawLabel.length > 15 ? rawLabel.slice(0, 14) + '…' : rawLabel)
+
+          const fontSize = isFocus ? 12 : 11
+          ctx.font = `${isFocus ? '600 ' : '500 '}${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+          const textW = ctx.measureText(displayLabel).width + 12
+          const textH = fontSize + 7
+          const box = {
+            x: sx - textW / 2,
+            y: sy + n.radius * t.scale + 5,
+            w: textW,
+            h: textH,
+          }
+
+          // Strict non-overlap culling (hovered/selected node is always drawn)
+          if (!isFocus && placedBoxes.some(b => boxesOverlap(b, box, 5))) {
+            continue
+          }
+          placedBoxes.push(box)
+          drawnCount++
+
+          ctx.save()
+          ctx.globalAlpha = labelAlpha * (!focusTarget || isFocus || isNeighbor ? 1 : 0.45)
+          ctx.beginPath()
+          if (ctx.roundRect) ctx.roundRect(box.x, box.y, box.w, box.h, 5)
+          else ctx.rect(box.x, box.y, box.w, box.h)
+          ctx.fillStyle = isDark
+            ? (isFocus ? 'rgba(22, 33, 27, 0.96)' : 'rgba(24, 30, 27, 0.88)')
+            : (isFocus ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.90)')
+          ctx.fill()
+          ctx.strokeStyle = isFocus
+            ? (isDark ? '#34d399' : '#0f766e')
+            : (isDark ? 'rgba(255, 255, 255, 0.14)' : 'rgba(203, 213, 225, 0.85)')
+          ctx.lineWidth = isFocus ? 1.4 : 1
+          ctx.stroke()
+
+          ctx.fillStyle = isFocus
+            ? (isDark ? '#34d399' : '#0f766e')
+            : (isDark ? '#e2e8f0' : '#1e293b')
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(displayLabel, sx, box.y + box.h / 2)
+          ctx.restore()
+        }
+
+        // Edge relation label on spotlight focus only
+        if (focusTarget) {
+          ctx.save()
+          ctx.font = '500 10.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+          for (const link of links) {
+            if (!link.label) continue
+            const isConnected = link.source.id === focusTarget.id || link.target.id === focusTarget.id
+            if (!isConnected) continue
+            const mx = ((link.source.x + link.target.x) / 2) * t.scale + t.x
+            const my = ((link.source.y + link.target.y) / 2) * t.scale + t.y
+            ctx.fillStyle = isDark ? '#34d399' : '#0f766e'
+            ctx.textAlign = 'center'
+            ctx.textBaseline = 'middle'
+            ctx.fillText(link.label, mx, my - 7)
+          }
+          ctx.restore()
+        }
       }
 
       ctx.restore()
@@ -522,9 +823,8 @@ export default function KnowledgeGraphView({
 
     animId = requestAnimationFrame(render)
     return () => cancelAnimationFrame(animId)
-  }, [activeNode, hoveredNode, dynamicCategories, stepPhysicsTick])
+  }, [stepPhysicsTick])
 
-  // Mouse event handlers: Pan, Zoom & Node Dragging
   const handleWheel = useCallback((e) => {
     e.preventDefault()
     const rect = canvasRef.current.getBoundingClientRect()
@@ -533,7 +833,7 @@ export default function KnowledgeGraphView({
 
     const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89
     const currentScale = transformRef.current.scale
-    const newScale = Math.min(Math.max(currentScale * zoomFactor, 0.35), 3.2)
+    const newScale = Math.min(Math.max(currentScale * zoomFactor, 0.25), 3.2)
 
     const newX = mouseX - (mouseX - transformRef.current.x) * (newScale / currentScale)
     const newY = mouseY - (mouseY - transformRef.current.y) * (newScale / currentScale)
@@ -551,7 +851,7 @@ export default function KnowledgeGraphView({
       const n = simNodesRef.current[i]
       const dx = worldX - n.x
       const dy = worldY - n.y
-      if (dx * dx + dy * dy <= (n.radius + 4) * (n.radius + 4)) {
+      if (dx * dx + dy * dy <= (n.radius + 5) * (n.radius + 5)) {
         return n
       }
     }
@@ -572,8 +872,6 @@ export default function KnowledgeGraphView({
       dragRef.current.isDraggingNode = true
       dragRef.current.draggedNode = hitNode
       hitNode.fixed = true
-      simRunningRef.current = true
-      setIsSimRunning(true)
     } else {
       dragRef.current.isPanning = true
       dragRef.current.lastPanX = transformRef.current.x
@@ -589,14 +887,10 @@ export default function KnowledgeGraphView({
 
     if (dragRef.current.isDraggingNode && dragRef.current.draggedNode) {
       const t = transformRef.current
-      const worldX = (mouseX - t.x) / t.scale
-      const worldY = (mouseY - t.y) / t.scale
-      dragRef.current.draggedNode.x = worldX
-      dragRef.current.draggedNode.y = worldY
+      dragRef.current.draggedNode.x = (mouseX - t.x) / t.scale
+      dragRef.current.draggedNode.y = (mouseY - t.y) / t.scale
       dragRef.current.draggedNode.vx = 0
       dragRef.current.draggedNode.vy = 0
-      simRunningRef.current = true
-      setIsSimRunning(true)
       return
     }
 
@@ -609,10 +903,11 @@ export default function KnowledgeGraphView({
     }
 
     const hit = getNodeAtPosition(mouseX, mouseY)
-    if (hit !== hoveredNode) {
+    if (hit !== hoveredNodeRef.current) {
+      hoveredNodeRef.current = hit
       setHoveredNode(hit)
     }
-  }, [getNodeAtPosition, hoveredNode])
+  }, [getNodeAtPosition])
 
   const handleMouseUp = useCallback((e) => {
     const rect = canvasRef.current?.getBoundingClientRect()
@@ -629,8 +924,8 @@ export default function KnowledgeGraphView({
       dragRef.current.isDraggingNode = false
       dragRef.current.draggedNode = null
 
-      // 点击节点判定（位移小于 6px）
       if (dist < 6) {
+        activeNodeRef.current = node
         setActiveNode(node)
         onSelectNode?.(node.id)
       }
@@ -641,23 +936,25 @@ export default function KnowledgeGraphView({
       dragRef.current.isPanning = false
       if (dist < 6 && rect) {
         const hit = getNodeAtPosition(mouseX, mouseY)
+        activeNodeRef.current = hit
         setActiveNode(hit)
         onSelectNode?.(hit?.id || null)
       }
     }
   }, [getNodeAtPosition, onSelectNode])
 
-  // Camera reset
   const handleResetView = useCallback(() => {
-    transformRef.current = { x: 0, y: 0, scale: 1 }
-    setTransformState({ scale: 1 })
-    simRunningRef.current = true
-    setIsSimRunning(true)
+    const width = containerRef.current?.clientWidth || 960
+    const height = containerRef.current?.clientHeight || 640
+    const fit = computeFitTransform(simNodesRef.current, width, height, legendOpenRef.current)
+    fitTransformRef.current = fit
+    transformRef.current = { ...fit }
+    setTransformState({ scale: fit.scale })
   }, [])
 
   const handleZoom = useCallback((delta) => {
     const currentScale = transformRef.current.scale
-    const newScale = Math.min(Math.max(currentScale + delta, 0.35), 3.2)
+    const newScale = Math.min(Math.max(currentScale + delta, 0.25), 3.2)
     const rect = canvasRef.current.getBoundingClientRect()
     const centerX = rect.width / 2
     const centerY = rect.height / 2
@@ -667,6 +964,9 @@ export default function KnowledgeGraphView({
     transformRef.current = { x: newX, y: newY, scale: newScale }
     setTransformState({ scale: newScale })
   }, [])
+
+  const theoryCount = filteredNodes.filter(n => !n.is_property).length
+  const propCount = filteredNodes.length - theoryCount
 
   return (
     <div
@@ -684,7 +984,25 @@ export default function KnowledgeGraphView({
         onMouseUp={handleMouseUp}
       />
 
-      {/* Floating Controls (Astra Light Glass Theme) */}
+      {/* 平滑加载态遮罩 */}
+      {loading && (
+        <div className="kw-graph-loading-overlay" role="status" aria-live="polite">
+          <div className="kw-graph-loading-card">
+            <span className="kw-graph-orbit" aria-hidden="true" />
+            <span>正在编排星系知识拓扑…</span>
+          </div>
+        </div>
+      )}
+
+      {/* 右上角轻量拓扑摘要徽标 */}
+      {graphReady && !loading && filteredNodes.length > 0 && (
+        <div className="kw-graph-stats-badge">
+          <span className="kw-graph-stats-dot" aria-hidden="true" />
+          <span>{theoryCount} 条理论 · {propCount} 个性质枢纽 · {filteredLinks.length} 条关联</span>
+        </div>
+      )}
+
+      {/* Floating Controls */}
       <div className="kw-floating-controls">
         <button
           type="button"
@@ -708,7 +1026,7 @@ export default function KnowledgeGraphView({
           type="button"
           className="kw-control-btn"
           onClick={handleResetView}
-          title="重置视角与坐标原点"
+          title="自适应居中全图"
           aria-label="重置视角"
         >
           <Icon.Focus style={{ width: 15, height: 15 }} />
@@ -720,7 +1038,7 @@ export default function KnowledgeGraphView({
             simRunningRef.current = !simRunningRef.current
             setIsSimRunning(simRunningRef.current)
           }}
-          title={isSimRunning ? '冻结物理引力布局' : '恢复物理引力布局'}
+          title={isSimRunning ? '锁定静态拓扑' : '启用动态引力微调'}
           aria-label="引力控制"
         >
           {isSimRunning ? (
@@ -731,7 +1049,7 @@ export default function KnowledgeGraphView({
         </button>
       </div>
 
-      {/* Graph Legend (Astra Glass Theme) */}
+      {/* Graph Legend */}
       {legendOpen && (
         <div className="kw-graph-legend">
           <header className="kw-legend-header">
@@ -799,7 +1117,6 @@ export default function KnowledgeGraphView({
         </div>
       )}
 
-      {/* Legend Reopen Pill Button */}
       {!legendOpen && (
         <button
           type="button"
