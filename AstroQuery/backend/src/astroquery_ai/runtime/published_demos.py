@@ -112,7 +112,8 @@ class PublishedDemos:
         replica = self.loaded.get(task_id)
         if replica is None:
             replica = await asyncio.to_thread(self.open, task_id)
-        if replica and request.method not in ('GET', 'HEAD', 'OPTIONS') and path[3:] != ['exports'] and path[3:4] != ['agent']:
+        if (replica and request.method not in ('GET', 'HEAD', 'OPTIONS')
+                and path[3:] not in (['exports'], ['exports', 'preview']) and path[3:4] != ['agent']):
             raise DomainError('READ_ONLY_DEMO', '演示样例仅供阅读和回放', 405)
         if replica and request.method == 'GET' and len(path) >= 5 and path[3] == 'artifacts':
             from .demo_originals import prepare_original

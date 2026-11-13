@@ -16,7 +16,7 @@ from astroquery_ai.tools.pack_demos import work_pdf_urls
 def test_published_history_is_pinned_and_read_only(tmp_path):
     samples = json.loads((source_product() / 'frontend/public/demo-catalog.json').read_bytes())['samples']
     sample = samples[0]
-    assert len(samples) == 6 and sample['object'] == 'SN 2014J'
+    assert len(samples) == 7 and sample['object'] == 'SN 2014J'
     assert [s['task_id'] for s in samples if s.get('featured')] == [sample['task_id']]
     prefix = '/api/tasks/' + sample['task_id']
     with TestClient(create_app(root=tmp_path, start_worker=False)) as client:
@@ -38,6 +38,16 @@ def test_published_history_is_pinned_and_read_only(tmp_path):
         assert len(json.dumps(compact)) < len(json.dumps(full))
         clock = client.get(prefix + '/replay-clock').json()
         assert clock['terminal_at'] and clock['timeline']
+        records = client.get(f"{prefix}/deliveries/{result['delivery_id']}/records",
+                             params={'limit': 1, 'view': 'list'}).json()['items']
+        preview = client.post(prefix + '/exports/preview', json={
+            'task_id': sample['task_id'], 'delivery_id': result['delivery_id'],
+            'expected_delivery_revision': result['revision'], 'export_schema_version': 3,
+            'operation_id': 'preview-published-record',
+            'selection': {'measurement_ids': [records[0]['source']['measurement_id']], 'figure_ids': []},
+            'options': {'data_format': 'csv', 'group_by': 'combined', 'container': 'direct', 'include_originals': False},
+        })
+        assert preview.status_code == 200 and preview.json()['record_count'] == 1
         assert client.post(prefix + '/retry', json={}).status_code == 405
         assert client.get('/api/tasks', params={'source':'user'}).json()['total'] == 0
         assert client.get('/api/tasks', params={'source':'sample'}).json()['total'] == 1

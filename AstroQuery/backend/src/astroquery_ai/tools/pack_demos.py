@@ -10,6 +10,8 @@ import sqlite3
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from astroquery_ai.runtime.codec import canonical, content_hash
+
 
 # Public history projections. Full text, parser indexes, model conversations, caches,
 # credentials, requests, leases and billing are deliberately outside the archive.
@@ -21,7 +23,7 @@ citation_lookup cited_work comparison_input_plan comparison_plan completion_scop
 coverage delivery delivery_serialization_check derived derived_current difference evidence evidence_page_preview
 execution_policy figure figure_coverage interpretation literature_assessment literature_candidate_evaluation
 literature_feedback_state literature_item_evaluation literature_layer literature_name_plan literature_search_plan
-literature_term_plan material_aliases material_compatibility material_preparation measurement message
+literature_term_plan material_aliases material_compatibility material_preparation material_summary measurement message
 object_match prepared_source processing_receipt property_insight_checkpoint property_insight_plan
 qualification quality quality_batch_receipt quality_candidate_link quality_candidate_root quality_decision
 quality_input_plan quality_plan quality_reextraction_action quality_reextraction_result read_ledger
@@ -41,9 +43,9 @@ def public_pdf_url(value):
     return None
 
 
-def pdf_urls(db):
+def pdf_urls(db, task):
     urls = collections.defaultdict(list)
-    for row in db.execute("SELECT payload FROM objects WHERE kind='acquisition_result'"):
+    for row in db.execute("SELECT payload FROM objects WHERE task_id=? AND kind='acquisition_result'", (task,)):
         for item in json.loads(row[0]).get('version_attempts', []):
             sha = item.get('artifact_id')
             for value in [item.get('url'), (item.get('retrieval') or {}).get('endpoint')]:
@@ -117,6 +119,28 @@ def build(db, sample, output, urls, artifact_root):
             if table in ('artifacts','artifact_refs') and row['artifact_id'] not in media:
                 continue
             data = {k: (v.decode('utf-8') if isinstance(v,bytes) else v) for k,v in dict(row).items()}
+            if table == 'objects' and row['kind'] == 'acquisition_result':
+                payload = json.loads(data['payload'])
+                changed = False
+                for attempt in payload.get('version_attempts', []):
+                    retrieval = attempt.get('retrieval') or {}
+                    if 'source_data_root' in retrieval:
+                        del retrieval['source_data_root']
+                        changed = True
+                if changed:
+                    sha = content_hash(payload)
+                    if 'content_sha256' in payload:
+                        payload['content_sha256'] = sha
+                    data.update(payload=canonical(payload).decode('utf-8'), content_sha256=sha)
+            if table == 'events':
+                event = json.loads(data['payload'])
+                if event['kind'] == 'budget_changed':
+                    event['payload'] = {key: event['payload'][key] for key in ('attempt_id', 'state')
+                                        if key in event['payload']}
+                    data['payload'] = canonical(event).decode('utf-8')
+            if table == 'jobs':
+                for key in ('lease_token', 'lease_owner', 'lease_until'):
+                    data[key] = None
             yield [table, data]
 
     with lzma.open(target, 'wb', preset=3) as stream:
@@ -160,10 +184,9 @@ def main():
     with sqlite3.connect(root.as_uri()+'?mode=ro',uri=True) as db:
         db.row_factory=sqlite3.Row
         db.execute('BEGIN')
-        urls=pdf_urls(db)
         entries={}
         for s in catalog:
-            entries[s['task_id']]=build(db,s,args.output,urls,args.runtime / 'artifacts')
+            entries[s['task_id']]=build(db,s,args.output,pdf_urls(db,s['task_id']),args.runtime / 'artifacts')
             print(s['object'], 'packed', flush=True)
     (args.output/'index.json').write_text(json.dumps({'format':'published-demos/1','samples':entries},ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
 
