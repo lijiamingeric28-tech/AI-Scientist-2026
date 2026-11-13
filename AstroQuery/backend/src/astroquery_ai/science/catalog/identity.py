@@ -16,13 +16,14 @@ async def interpret_identity_rows(self, job, spec, table, id_column, input_forma
         checked_identities,
         checked_table_identity_limitation,
         identity_protocol_repair,
+        identity_equivalence_groups, rebind_identity_check,
         VERSION,
     )
     from astroquery_ai.runtime.calls import input_upper_bound
 
-    pending = [
-        list(range(i, min(i + 32, len(table["rows"])))) for i in range(0, len(table["rows"]), 32)
-    ]
+    groups,identity_names=identity_equivalence_groups(table,id_column)
+    representatives=list(groups)
+    pending=[representatives[i:i+32] for i in range(0,len(representatives),32)]
     with self.repo.read() as conn:
         prior_checks = self.repo.objects(conn, job["task_id"], "catalog_identity_interpretation")
     results, attempts = ([], {})
@@ -102,15 +103,35 @@ async def interpret_identity_rows(self, job, spec, table, id_column, input_forma
                 repaired_messages = [{"role": "user", "content": canonical(repair).decode()}]
             if input_upper_bound(repaired_messages) <= 48000:
                 response, receipt = await ask(repaired_messages)
-                limitation=checked_table_identity_limitation(response,table,id_column,spans)
-                checked = checked_identities(
-                    response, spec["target"], table, table["rows"], indices, id_column, spans
-                )
+                try:
+                    limitation=checked_table_identity_limitation(response,table,id_column,spans)
+                    checked = checked_identities(
+                        response, spec["target"], table, table["rows"], indices, id_column, spans
+                    )
+                except (ValidationError,DomainError) as exc:
+                    if isinstance(exc,DomainError) and exc.code not in {'CATALOG_IDENTITY_RESPONSE_SCOPE','CATALOG_IDENTITY_LIMITATION_SCOPE'}:
+                        raise
+                    # An invalid repaired envelope cannot erase valid siblings
+                    # or crash the table. Duplicate/conflicting row verdicts stay
+                    # unresolved; each unique row still uses the same validator.
+                    limitation=None;checked=[]
+                    returned=response.get('rows',[]) if isinstance(response,dict) else []
+                    for i in indices:
+                        own=[r for r in returned if isinstance(r,dict) and r.get('row')==i]
+                        if len(own)==1:
+                            try:
+                                checked.extend(checked_identities({'rows':own,'table_identity_limitation':None},
+                                    spec['target'],table,table['rows'],[i],id_column,spans))
+                                continue
+                            except (ValidationError,DomainError):
+                                pass
+                        checked.append({'row':i,'state':'unresolved','reason':'source_identity_response_schema',
+                                        'protocol_failure':getattr(exc,'code','invalid_identity_response')})
         if limitation:
             unexamined=[*indices,*(i for group in pending for i in group)]
             saved_limit={'table_id':table['table_id'],'source_artifact':artifact,
                 'target_hash':content_hash(spec['target']),'limitation':limitation,'attempt_ref':receipt,
-                'validator_version':VERSION,'unexamined_row_indices':unexamined,
+                'validator_version':VERSION,'unexamined_row_indices':[i for rep in unexamined for i in groups[rep]],
                 'state':'cross_identification_required','target_absence_claimed':False}
             with self.repo.transaction() as conn:
                 self.repo.validate_lease(conn,job)
@@ -119,15 +140,23 @@ async def interpret_identity_rows(self, job, spec, table, id_column, input_forma
             checked=[{'row':i,'state':'unresolved','reason':'source_cross_identification_missing',
                 'row_examined':False,'source_scope_ref':ref} for i in unexamined]
             pending.clear()
-        results.extend(checked)
-        attempts.update({i: receipt for i in indices})
+        expanded=[]
+        for check in checked:
+            expanded.append(check)
+            for index in groups[check['row']][1:]:
+                expanded.append(rebind_identity_check(check,index,spec['target'],table,id_column,spans))
+        results.extend(expanded)
+        attempts.update({check['row']:receipt for check in expanded
+                         if not limitation or check['row'] in indices})
         saved = {
             "table_id": table["table_id"],
             "source_artifact": artifact,
             "target_hash": content_hash(spec["target"]),
             "input_hash": digest(prompt),
             "response": response,
-            "checks": checked,
+            "checks": expanded,
+            "representative_rows":indices,
+            "identity_equivalence_columns":identity_names,
             "attempt_ref": receipt,
             "validator_version": VERSION,
         }

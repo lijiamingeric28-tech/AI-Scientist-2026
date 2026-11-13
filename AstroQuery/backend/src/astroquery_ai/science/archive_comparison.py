@@ -105,10 +105,11 @@ def current_reports(repo,c,tid,records=None):
     for r in records:by_property.setdefault(r['property_ref']['id'],[]).append(reference(r))
     reports=repo.objects(c,tid,'archive_comparison')
     pointers=repo.objects(c,tid,'derived_current')
+    current = {(p['measurement_id'], p['source_hash']): p['derived_ref'] for p in pointers}
     return [r for r in reports if sorted(r['measurement_refs'],key=lambda x:x['id'])==
             sorted(by_property.get(r['property_id'],[]),key=lambda x:x['id']) and
-            r.get('representation_refs',[])==sorted([p['derived_ref'] for p in pointers if any(
-                p['measurement_id']==m['id'] and p['source_hash']==m['content_sha256'] for m in r['measurement_refs'])],key=lambda x:x['id'])]
+            r.get('representation_refs',[])==sorted([current[m['id'], m['content_sha256']]
+                for m in r['measurement_refs'] if (m['id'], m['content_sha256']) in current],key=lambda x:x['id'])]
 
 
 def schedule(service,c,tid,spec):
@@ -119,14 +120,74 @@ def schedule(service,c,tid,spec):
         own=[r for r in records if r['property_ref']['id']==binding['property_id']]
         if not own:continue
         refs=sorted([reference(r) for r in own],key=lambda x:x['id'])
-        outputs=sorted([p['derived_ref'] for p in repo.objects(c,tid,'derived_current') if any(
-            p['measurement_id']==m['id'] and p['source_hash']==m['content_sha256'] for m in refs)],key=lambda x:x['id'])
+        identities = {(m['id'], m['content_sha256']) for m in refs}
+        outputs=sorted([p['derived_ref'] for p in repo.objects(c,tid,'derived_current') if
+            (p['measurement_id'], p['source_hash']) in identities],key=lambda x:x['id'])
         identity=digest({'records':refs,'representations':outputs})
         if identity in plans:continue
         repo.put_object(c,tid,'comparison_plan','comparison-'+identity,1,
             {'input_hash':identity,'property_id':binding['property_id'],'measurement_refs':refs,'representation_refs':outputs})
         repo.enqueue(c,tid,'M09','compare_results',{'property_id':binding['property_id'],
             'measurement_refs':refs,'input_hash':identity,'representation_refs':outputs})
+
+
+def observation_coordinate(source, interpretation):
+    quality = interpretation.get('quality_verification') or {}
+    if (source['kind'] != 'official_attachment' or quality.get('state') != 'supported'
+            or quality.get('table_role') not in {None, 'observation'}
+            or quality.get('row_check', {}).get('state') != 'verified'
+            or interpretation.get('human_answer_ref')):
+        return None
+    from .structured_quality import number, time_coordinate
+    metadata = source['metadata']
+    columns = metadata['columns']
+    if len(metadata.get('time_systems', [])) > 1 or any(
+            any(term in c['name'].casefold().replace('_', '') for term in ('timescale', 'timesystem', 'timeunit'))
+            for c in columns):
+        return None
+    contexts = quality.get('checked_context_columns', {})
+    if not quality.get('shared_table_check_ref'):
+        # An individually verified record still carries the exact row that
+        # the program reopened. Use only a declared native time column.
+        try:
+            contexts = loads(interpretation['proposal']['source_quote'])['cells']
+        except (KeyError, TypeError, ValueError):
+            return None
+    epochs = [(c['name'], number(contexts[c['name']])) for c in columns if c['name'] in contexts
+              and time_coordinate(c)]
+    if len(epochs) != 1 or epochs[0][1] is None:
+        return None
+    main = interpretation['proposal']['column']
+    field = next(c for c in columns if c['name'] == main)
+    band = next((tag for tag in (field.get('ucd') or '').split(';') if tag.startswith('em.opt.')), None)
+    return [source['source_id'], epochs[0][0], str(epochs[0][1].normalize()), band]
+
+
+def different_observations(left, right):
+    return bool(left and right and left[:2] == right[:2]
+                and (left[2] != right[2] or (left[3] and right[3] and left[3] != right[3])))
+
+
+def observation_series_review(coordinates):
+    axes = list(coordinates.values())
+    if len(axes) < 2 or not all(axes) or len({tuple(a[:2]) for a in axes}) != 1:
+        return None
+    from collections import defaultdict
+    epochs = defaultdict(list)
+    for label, axis in coordinates.items():
+        epochs[axis[2]].append((label, axis[3]))
+    review = set()
+    for epoch in epochs.values():
+        if len(epoch) < 2:
+            continue
+        if any(not band for _, band in epoch):
+            review.update(label for label, _ in epoch)
+            continue
+        by_band = defaultdict(list)
+        for label, band in epoch:
+            by_band[band].append(label)
+        review.update(label for labels in by_band.values() if len(labels) > 1 for label in labels)
+    return review
 
 
 def comparison_input(repo,c,tid,spec,payload):
@@ -138,7 +199,7 @@ def comparison_input(repo,c,tid,spec,payload):
     from .results.publication import current_derived_representations
     derived={d['measurement_id']:d for d in current_derived_representations(records,spec['properties'],
         repo.objects(c,tid,'derived'),repo.objects(c,tid,'derived_current'))}
-    interpretations=repo.objects(c,tid,'interpretation')
+    interpretations={(i['interpretation_id'], i['revision']): i for i in repo.objects(c,tid,'interpretation')}
     mentions=repo.objects(c,tid,'source_mention');reported=repo.objects(c,tid,'reported_source_ref')
     for label,r in labels.items():
         refs=[*r['evidence_refs'],*[m['evidence_ref'] for m in mentions if m['measurement_id']==r['measurement_id']]]
@@ -150,12 +211,15 @@ def comparison_input(repo,c,tid,spec,payload):
                 'text':actual['raw_text'],'source_id':r['source_ref']['id']};evlabels.append(alias)
         context=repo.object(c,tid,'context',r['context_ref']['id'],r['context_ref']['version'])
         source=repo.object(c,tid,'source',r['source_ref']['id'],r['source_ref']['version'])
-        interpretation=next(i for i in interpretations if i['interpretation_id']==r['interpretation_ref']['id'] and i['revision']==r['interpretation_ref']['version'])
+        interpretation=interpretations.get((r['interpretation_ref']['id'], r['interpretation_ref']['version']))
+        if interpretation is None:
+            interpretation=repo.object(c,tid,'interpretation',r['interpretation_ref']['id'],r['interpretation_ref']['version'])
         items.append({'record':label,'native':{k:r[k] for k in ('raw_value','value','unit','representation','limit','uncertainty')},
             'processed':derived.get(r['measurement_id']),'source_label':source.get('title',source.get('table_id',source['source_id'])),
             'same_source_key':r['source_ref']['id'],'context':context.get('conditions',[]),'evidence':evlabels,
             'human_interpretation':bool(interpretation.get('human_answer_ref')),
             'result_role':interpretation['proposal']['result_role'],
+            'observation_coordinate':observation_coordinate(source, interpretation),
             'reported_references':[x for x in reported if x['measurement_id']==r['measurement_id']]})
     answered=[]
     for row in c.execute(
@@ -306,8 +370,9 @@ def comparison_index(body):
 
 
 def comparison_window(body,members,index):
-    own=[i for i in body['items'] if i['record'] in set(members)]
-    ev={k:v for k,v in body['evidence'].items() if v['record'] in set(members)}
+    members=set(members)
+    own=[i for i in body['items'] if i['record'] in members]
+    ev={k:v for k,v in body['evidence'].items() if v['record'] in members}
     result={**body,'items':own,'evidence':ev,
         'source_texts':{k:v for k,v in body.get('source_texts',{}).items() if k in {e.get('text_ref') for e in ev.values()}},
         'all_record_index':index,
@@ -421,12 +486,25 @@ async def compare_results(self,job):
     profile=self.model_profile('M06','qwen3.7-plus',version='archive-and-review-5',operation='result_comparison',
         source_format='carried_source_context',max_input_tokens=240000,max_output_tokens=8192,max_images=0,wall_seconds=480)
     receipt=None;reply=None;diagnostics=[];pending=[];checked=set();window_results=[];cross_results=[]
-    if len(labels)==1:
+    coordinates = {item['record']: item.get('observation_coordinate') for item in body['items']}
+    series_review = observation_series_review(coordinates)
+    if series_review == set():
+        reply=ComparisonReply(checked_members=list(labels),limitations=['distinct_original_observation_epochs'])
+        checked.update(labels);plan={'mode':'verified_observation_series','windows':[],'unplanned':[],'global_index':None}
+        navigation={'state':'checked_original_epoch_column','coordinates':coordinates}
+    elif len(labels)==1:
         reply=ComparisonReply(checked_members=list(labels),limitations=['single_record_no_cross_result_claim'])
         checked.update(labels);plan={'mode':'single_record','windows':[],'unplanned':[],'global_index':None}
         navigation={'state':'not_needed_single_record'}
     else:
-        plan=plan_comparison_inputs(body,profile)
+        review_body = body
+        review_labels = labels
+        if series_review is not None:
+            checked.update(set(labels) - series_review)
+            reply = ComparisonReply(checked_members=sorted(checked), limitations=['distinct_original_observation_epochs'])
+            review_body = comparison_window(body, series_review, None)
+            review_labels = {k: labels[k] for k in series_review}
+        plan=plan_comparison_inputs(review_body,profile)
         with self.repo.transaction() as c:
             self.repo.validate_lease(c,job)
             self.repo.put_object(c,tid,'comparison_input_plan','comparison-'+payload['input_hash'],1,
@@ -435,19 +513,21 @@ async def compare_results(self,job):
                  'unplanned':plan['unplanned'],'source_versions':payload['measurement_refs']})
         groups=[];navigation={'state':'whole_property_originals'}
         if plan['global_index'] is not None:
-            groups,navigation=await comparison_navigation(self,job,body,labels,profile,plan['global_index'])
+            groups,navigation=await comparison_navigation(self,job,review_body,review_labels,profile,plan['global_index'])
+        if series_review is not None:
+            navigation['program_separated_members'] = sorted(set(labels) - series_review)
         windows=list(plan['windows'])
         for group in groups:
             if any(set(group)<=set(w['members']) for w in windows):
                 cross_results.append({'members':group,'state':'covered_in_existing_original_window'});continue
-            request=comparison_window(body,group,plan['global_index']);capacity=comparison_capacity(request,profile)
+            request=comparison_window(review_body,group,plan['global_index']);capacity=comparison_capacity(request,profile)
             if capacity['repair']['fits']:
                 windows.append({'body':request,'members':group,'capacity':capacity})
                 cross_results.append({'members':group,'state':'original_window_planned'})
             else:cross_results.append({'members':group,'state':'partial','reason':'cross_group_originals_input_limit','capacity':capacity})
         seen=set()
         for window in windows:
-            own=set(window['members']) if plan['mode']!='whole_property' else set(labels)
+            own=set(window['members'])
             identity=digest(sorted(own))
             if identity in seen:continue
             seen.add(identity)
@@ -498,6 +578,10 @@ async def compare_results(self,job):
     with self.repo.transaction() as c:
         self.repo.validate_lease(c,job)
         for group in reply.duplicates if reply else []:
+            if any(different_observations(coordinates[a], coordinates[b])
+                   for i, a in enumerate(group.members) for b in group.members[i+1:]):
+                report['diagnostics'].append({'code':'DISTINCT_OBSERVATION_EPOCHS','members':group.members})
+                continue
             item={'group_id':'archive-'+digest([payload['input_hash'],group.members]),
                 'member_refs':[reference(labels[k]) for k in group.members],
                 'evidence_refs':[evidence[k]['ref'] for k in group.evidence],
@@ -507,6 +591,10 @@ async def compare_results(self,job):
                 'error_components_merged':False}
             report['duplicates'].append(item)
         for suspicion in reply.suspicions if reply else []:
+            if any(different_observations(coordinates[a], coordinates[b])
+                   for i, a in enumerate(suspicion.members) for b in suspicion.members[i+1:]):
+                report['diagnostics'].append({'code':'DISTINCT_OBSERVATION_EPOCHS','members':suspicion.members})
+                continue
             refs={labels[k]['measurement_id']:reference(labels[k]) for k in suspicion.members}
             ev=[evidence[k]['ref'] for k in suspicion.evidence]
             if suspicion.reuse_review_id:

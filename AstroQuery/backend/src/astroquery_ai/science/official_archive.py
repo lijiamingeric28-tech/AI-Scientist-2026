@@ -10,6 +10,49 @@ from astroquery_ai.runtime.errors import DomainError
 from .catalog_document import readme_url
 
 
+def metadata_export_links(raw, expected_bibcodes, *, artifact_ref):
+    """Official export fallback, qualified by RESOURCE-level data-origin cites.
+
+    A bibcode merely mentioned in a description or LINK is not enough. Preserve
+    the actual service representation; never label an export as a native .dat.
+    """
+    from xml.etree import ElementTree as ET
+    from urllib.parse import urlencode
+    from .catalogs import parse_votable
+    parsed = parse_votable(raw)
+    resources = {r['resource_id']: r for r in parsed['resources']}
+    candidates = []
+    for node in ET.fromstring(raw).iter():
+        if node.tag.rsplit('}', 1)[-1] != 'RESOURCE':
+            continue
+        catalog = node.get('name') or node.get('ID')
+        if catalog not in resources or not str(catalog).startswith('J/'):
+            continue
+        info = {n.get('name'): n.get('value') for n in node
+                if n.tag.rsplit('}', 1)[-1] == 'INFO'}
+        cited = (info.get('cites') or '').removeprefix('bibcode:')
+        if cited not in expected_bibcodes:
+            continue
+        for table in resources[catalog]['tables']:
+            tid = table['table_id']
+            if not tid.startswith(catalog + '/'):
+                continue
+            # -meta / -meta.all request headers ONLY, even with -out.max > 0.
+            # Normal VOTable data replies already include FIELD descriptions.
+            params = {'-source': tid, '-out.all': '1', '-out.max': '100000'}
+            candidates.append({'url': 'https://vizier.cds.unistra.fr/viz-bin/votable?' + urlencode(params),
+                'format': 'votable', 'vizier_export': params,
+                'association': {'rule_id': 'cds-resource-primary-publication-export-1',
+                    'parent_bibcodes': [cited], 'catalog_id': catalog, 'source_table_id': tid,
+                    'discovery_artifact_ref': artifact_ref,
+                    'discovery_sha256': hashlib.sha256(raw).hexdigest(),
+                    'dataset_citation': info.get('citation'), 'landing_url': info.get('reference_url'),
+                    'locator': 'RESOURCE/INFO[name=cites] Article or Data origin sources',
+                    'representation': 'official_vizier_export',
+                    'native_file_claimed': False}})
+    return candidates
+
+
 def archive_links(raw, catalog_id, table_ids, expected_bibcodes, *, artifact_ref=None):
     url = readme_url(catalog_id, next(iter(table_ids), catalog_id + '/_'))
     try:

@@ -184,21 +184,31 @@ export default function EvidenceSource({
   sources = [],
   onOpenSource,
 }) {
+  const location = view?.attachment_location
+  const parentId = location?.parent_work_id || view?.parent_work_id
+  const parent = parentId && sources.find((s) =>
+    s.kind === 'paper' && !s.official_supplement && s.source_id !== source?.source_id &&
+    (s.work_id === parentId || s.work?.work_id === parentId),
+  )
+  const parentButton = parent && (
+    <button className="record-source-card" onClick={() => onOpenSource?.(parent)}>
+      <strong>所属论文</strong>
+      {titleText(parent)}
+    </button>
+  )
   if (view?.kind === 'table') {
     const selected = view.cells
       .filter((c) => c.is_main || c.is_selected)
       .sort((a, b) => Number(b.is_main) - Number(a.is_main))
     const others = view.cells.filter((c) => !c.is_main && !c.is_selected)
-    const parent = sources.find(
-      (s) =>
-        s.kind === 'paper' &&
-        (s.work_id === view.parent_work_id || s.work?.work_id === view.parent_work_id),
-    )
     const readme = view.readme?.artifact || source?.readme?.artifact
     return (
       <section className="research-table-evidence">
         <div className="research-section-heading">
-          <h4>{source?.association?.declared_filename || source?.table_id || '原始数据表'}</h4>
+          <h4>
+            {location?.source_table_id || source?.association?.declared_filename ||
+              location?.member_path || source?.table_id || '原始数据表'}
+          </h4>
           {view.artifact_ref?.id && (
             <a
               className="text-link"
@@ -213,12 +223,15 @@ export default function EvidenceSource({
         <p className="table-row-position">
           {view.row_basis === 'attachment_data_row' ? '附件数据行' : '查询响应数据行'}第{' '}
           {view.row + 1} 行 <span>零基索引 {view.row}</span>
+          {view.column && <span> · {view.column} 列</span>}
+          {location?.hdu != null && <span> · FITS HDU {location.hdu}</span>}
         </p>
-        {parent && (
-          <button className="record-source-card" onClick={() => onOpenSource?.(parent)}>
-            <strong>所属论文</strong>
-            {titleText(parent)}
-          </button>
+        {parentButton}
+        {location?.container_artifact_ref && (
+          <a className="text-link" href={artifactUrl(taskId, location.container_artifact_ref)}
+            target="_blank" rel="noreferrer">
+            打开原始压缩包{location.member_path && ` · ${location.member_path}`}
+          </a>
         )}
         <NativeCells cells={selected} />
         {!!others.length && (
@@ -253,7 +266,10 @@ export default function EvidenceSource({
       page.anchors.push(p)
       page.bbox.push(...(p.bbox || []))
     }
-    return <PaperPages pages={[...pages.values()]} taskId={taskId} artifact={view.artifact_ref}/>
+    return <>
+      {parentButton}
+      <PaperPages pages={[...pages.values()]} taskId={taskId} artifact={view.artifact_ref}/>
+    </>
   }
   const locator = evidence?.locator || {}
   if (locator.page && evidence?.artifact_ref)

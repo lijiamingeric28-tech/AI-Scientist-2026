@@ -110,6 +110,41 @@ class AttachmentService(ModuleService):
         gaps.extend(archive_gaps)
         for candidate in archive_links:
             candidates.setdefault(candidate['url'], candidate)
+        from ..official_repositories import paper_zenodo_links, zenodo_files, verify_repository_checksum, repository_request
+        async def repository_fetch(url,**kwargs):
+            return await self.steps.http(job).request(tid,'M05','publisher','GET',url,**kwargs)
+        with self.repo.read() as conn:
+            indices = [x for x in self.repo.objects(conn, tid, 'document_index')
+                       if x.get('source_id', x.get('work_id')) == work_id]
+            if not indices:
+                try:
+                    indices = [self.repo.object(conn, tid, 'document_index', work_id)]
+                except DomainError as exc:
+                    if exc.code != 'OBJECT_NOT_FOUND':
+                        raise
+        repository_links = paper_zenodo_links(indices[0]) if indices else []
+        for locator in repository_links[:6]:
+            url = 'https://zenodo.org/api/records/' + locator['record_id']
+            try:
+                raw, metadata = await repository_request(repository_fetch,url,
+                    max_bytes=2*1024**2, timeout=30, max_redirects=3, resource_scope='attachment')
+                document = loads(raw)
+                artifact = self.app.artifacts.write(raw,'application/json')
+                with self.repo.transaction() as conn:
+                    self.repo.validate_lease(conn,job)
+                    self.app.artifacts.register(conn,tid,work_id+':repository-metadata',artifact)
+                found = zenodo_files(document, dois, {**locator,'parent_artifact_ref':source['artifact']['artifact_id']},
+                    metadata_artifact=artifact['artifact_id'])
+                if not found:
+                    gaps.append({'url':url,'reason':'repository_parent_relation_unverified'})
+                for candidate in found:
+                    candidates.setdefault(candidate['url'],candidate)
+            except (DomainError, ValueError) as exc:
+                if getattr(exc,'code',None) in {'DEFINITION_INVALIDATED','HTTP_DISPATCH_FORBIDDEN','LEASE_EXPIRED'}:
+                    raise
+                gaps.append({'url':url,'reason':getattr(exc,'code','repository_metadata_invalid')})
+        if len(repository_links)>6:
+            gaps.append({'reason':'repository_link_limit','unvisited':repository_links[6:]})
         readmes = []
         ordered = sorted(
             candidates.items(), key=lambda pair: (pair[1]["format"] != "readme", pair[0])
@@ -120,6 +155,19 @@ class AttachmentService(ModuleService):
                     metadata = candidate['acquired']['metadata']
                     _, path = self.app.artifacts.read_owned(tid, candidate['acquired']['artifact']['artifact_id'])
                     raw = path.read_bytes()
+                elif candidate.get('vizier_export'):
+                    from ..catalogs import VizierCatalogs, parse_votable
+                    raw, metadata = await VizierCatalogs(self.steps.http(job), owner='M05', service='publisher').request(
+                        tid, params=candidate['vizier_export'], max_bytes=32*1024**2,
+                        timeout=90, resource_scope='attachment')
+                    parsed = parse_votable(raw)
+                    tables = [t for r in parsed['resources'] for t in r['tables']]
+                    if (parsed['overflow'] or len(tables) != 1
+                        or tables[0]['table_id'] != candidate['association']['source_table_id'] or not tables[0]['rows']):
+                        raise DomainError('ATTACHMENT_EXPORT_INCOMPLETE', '官方导出缺少完整的指定表')
+                elif candidate.get('repository_checksum'):
+                    raw,metadata=await repository_request(repository_fetch,url,max_bytes=32*1024**2,
+                        timeout=90,max_redirects=5,resource_scope='attachment')
                 else:
                     raw, metadata = await self.steps.http(job).request(
                     tid,
@@ -132,6 +180,7 @@ class AttachmentService(ModuleService):
                     max_redirects=5,
                     resource_scope="attachment",
                 )
+                verify_repository_checksum(raw, candidate)
                 candidate = dict(candidate, format=acquired_format(raw, candidate, metadata))
                 if candidate["format"] == "container":
                     found, container_gaps = await self.ingest_container(
@@ -176,23 +225,21 @@ class AttachmentService(ModuleService):
                         "mrt": "text/plain",
                     }[candidate["format"]],
                 )
-                attachment_id = "attachment-" + digest(
-                    {
-                        "work_id": work_id,
-                        "artifact": artifact["sha256"],
-                        "association": candidate["association"],
-                    }
-                )
+                association = candidate["association"]
+                extensions = [None]
+                if candidate["format"] == "fits":
+                    manifest = await self.app.parsers.run('fits_manifest', self.app.artifacts.path(artifact['relative_path']))
+                    extensions = [t['hdu'] for t in manifest['tables']]
+                    if not extensions:
+                        raise DomainError('ATTACHMENT_TABLE_SELECTION', 'FITS附件没有可解析的表扩展')
                 attachment = {
                     "schema_version": "StructuredAttachment/2",
-                    "attachment_id": attachment_id,
                     "work_id": work_id,
                     "selected_property_ids": sorted(allowed),
                     "format": candidate["format"],
                     "artifact": artifact,
-                    "table_id": attachment_id + "/table",
                     "origin_url": url,
-                    "original_filename": PurePosixPath(urlsplit(url).path).name,
+                    "original_filename": candidate.get('filename') or PurePosixPath(urlsplit(url).path).name,
                     "readme": next(
                         (
                             item
@@ -203,7 +250,6 @@ class AttachmentService(ModuleService):
                         ),
                         None,
                     ),
-                    "association": candidate["association"],
                     "retrieval": metadata,
                     "actual_work_version": "published_supplement_version_unconfirmed",
                     "selection": ledger["selections"][work_id],
@@ -211,20 +257,19 @@ class AttachmentService(ModuleService):
                 }
                 with self.repo.transaction() as conn:
                     self.repo.validate_lease(conn, job)
-                    self.app.artifacts.register(conn, tid, attachment_id, artifact)
-                    self.repo.put_object(conn, tid, "attachment", attachment_id, 1, attachment)
-                    self.repo.enqueue(
-                        conn,
-                        tid,
-                        "M03",
-                        "attachment_extract",
-                        {
-                            "attachment_id": attachment_id,
-                            "table_id": attachment["table_id"],
-                            "work_id": work_id,
-                        },
-                    )
-                attachments.append(attachment_id)
+                    for hdu in extensions:
+                        locator = {'hdu': hdu} if hdu is not None else {}
+                        origin = {**association, **locator}
+                        attachment_id = 'attachment-' + digest(
+                            {'work_id': work_id, 'artifact': artifact['sha256'], 'association': origin})
+                        table_id = attachment_id + '/table'
+                        entry = {**attachment, **locator, 'attachment_id': attachment_id, 'table_id': table_id,
+                                 'association': origin}
+                        self.app.artifacts.register(conn, tid, attachment_id, artifact)
+                        self.repo.put_object(conn, tid, 'attachment', attachment_id, 1, entry)
+                        self.repo.enqueue(conn, tid, 'M03', 'attachment_extract',
+                            {'attachment_id': attachment_id, 'table_id': table_id, 'work_id': work_id})
+                        attachments.append(attachment_id)
             except DomainError as exc:
                 if exc.code in {
                     "DEFINITION_INVALIDATED",
@@ -312,7 +357,7 @@ class AttachmentService(ModuleService):
     async def archive_candidates(self, job, work):
         from ..catalogs import parse_votable
         from ..catalog_document import readme_url
-        from ..official_archive import archive_links
+        from ..official_archive import archive_links, metadata_export_links
 
         tid, candidates, gaps = job['task_id'], {}, []
         bibcodes = sorted({record.get('bibcode') for record in work['records']
@@ -323,13 +368,14 @@ class AttachmentService(ModuleService):
             try:
                 from ..catalogs import VizierCatalogs
                 raw, _ = await VizierCatalogs(self.steps.http(job), owner='M05', service='publisher').request(tid,
-                    params={'-source': bibcode, '-meta': '', '-out.max': '0'},
+                    params={'-source': bibcode, '-meta.all': '1', '-out.max': '0'},
                     max_bytes=4 * 1024**2, timeout=30, resource_scope='attachment')
                 metadata_artifact = self.app.artifacts.write(raw, 'application/x-votable+xml')
                 with self.repo.transaction() as conn:
                     self.repo.validate_lease(conn, job)
                     self.app.artifacts.register(conn, tid, work['work_id'] + ':cds-metadata', metadata_artifact)
                 parsed = parse_votable(raw)
+                exports = metadata_export_links(raw, bibcodes, artifact_ref=metadata_artifact['artifact_id'])
                 for resource in parsed['resources']:
                     catalog_id = resource['resource_id']
                     if catalog_id in seen:
@@ -337,8 +383,17 @@ class AttachmentService(ModuleService):
                     seen.add(catalog_id)
                     tables = [t['table_id'] for t in resource['tables']]
                     readme = readme_url(catalog_id, next(iter(tables), catalog_id + '/_'))
-                    data, metadata = await self.steps.http(job).request(tid, 'M05', 'publisher', 'GET', readme,
-                        max_bytes=256 * 1024, timeout=30, resource_scope='attachment')
+                    try:
+                        data, metadata = await self.steps.http(job).request(tid, 'M05', 'publisher', 'GET', readme,
+                            max_bytes=256 * 1024, timeout=30, max_redirects=3, resource_scope='attachment')
+                    except DomainError as exc:
+                        if exc.code in {'DEFINITION_INVALIDATED','HTTP_DISPATCH_FORBIDDEN','LEASE_EXPIRED'}:
+                            raise
+                        gaps.append({'url': readme, 'reason': exc.code, 'fallback': 'official_vizier_export'})
+                        for candidate in exports:
+                            if candidate['association']['catalog_id'] == catalog_id:
+                                candidates.setdefault(candidate['url'], candidate)
+                        continue
                     artifact = self.app.artifacts.write(data, 'text/plain')
                     with self.repo.transaction() as conn:
                         self.repo.validate_lease(conn, job)
@@ -378,7 +433,7 @@ class AttachmentService(ModuleService):
             tid,
             parent["artifact_id"],
             "structured_archive",
-            original_filename=PurePosixPath(urlsplit(url).path).name,
+            original_filename=candidate.get('filename') or PurePosixPath(urlsplit(url).path).name,
         )
         resources.settle(tid, reservation, parsed["expanded_bytes"])
         manifest_id = "container-manifest-" + digest(
@@ -395,6 +450,27 @@ class AttachmentService(ModuleService):
         tables = [
             item for item in parsed["members"] if item["format"] not in {"readme", "container"}
         ]
+        # Header/filename navigation only. M03 still binds the actual file/HDU
+        # declaration before admitting any row. The full package is retained.
+        from ..catalog.table_subject import identity_key
+        with self.repo.read() as conn:
+            target = self.spec(conn, tid)['target']
+        keys = {identity_key(a) for a in [target['main_id'],*target.get('aliases',[]),*target.get('submitted_mentions',[])]}
+        named = [m for m in tables if m.get('fits_metadata',{}).get('subject_headers')]
+        matches = []
+        for m in named:
+            headers = m['fits_metadata']['subject_headers']
+            values = [v for k,v in headers.items() if k != 'GAIA_DR3_SOURCE_ID']
+            if headers.get('GAIA_DR3_SOURCE_ID'):
+                values.append('Gaia DR3 ' + headers['GAIA_DR3_SOURCE_ID'])
+            if any(identity_key(v) in keys for v in values):
+                matches.append(m)
+        if matches:
+            manifest['navigation'] = {'rule':'exact_declared_file_subject_or_namespaced_id',
+                'selected_paths':[m['path'] for m in matches],
+                'unselected_named_paths':[m['path'] for m in named if m not in matches],
+                'identity_granted':False}
+            tables = [m for m in tables if m not in named or m in matches]
         selected = tables if remaining_slots is None else tables[:remaining_slots]
         gaps.extend(
             {"path": item["path"], "reason": "container_table_selection_limit"}
@@ -414,7 +490,7 @@ class AttachmentService(ModuleService):
                         {"path": member["path"], "reason": "container_readme_size_or_encoding"}
                     )
                     continue
-            artifact = self.app.artifacts.write(payload, "application/octet-stream")
+            artifact = self.app.artifacts.write(payload, "application/pdf" if member['format'] == 'pdf' else "application/octet-stream")
             if artifact["sha256"] != member["sha256"]:
                 raise DomainError("CONTAINER_MEMBER_HASH", "容器成员与隔离解析回执不一致")
             with self.repo.transaction() as conn:
@@ -434,7 +510,13 @@ class AttachmentService(ModuleService):
             manifest_ref = self.repo.put_object(
                 conn, tid, "container_manifest", manifest_id, 1, manifest
             )
+        expanded_saved = []
         for member in saved:
+            if member.get('fits_metadata',{}).get('tables'):
+                expanded_saved.extend({**member,'hdu':t['hdu']} for t in member['fits_metadata']['tables'])
+            else:
+                expanded_saved.append(member)
+        for member in expanded_saved:
             if member["format"] in {"readme", "container"}:
                 continue
             association = {
@@ -444,7 +526,20 @@ class AttachmentService(ModuleService):
                 "member_path": member["path"],
                 "member_sha256": member["sha256"],
                 "parent_chain": member["parent_chain"],
+                **({'hdu':member['hdu']} if 'hdu' in member else {}),
             }
+            if member['format'] == 'pdf':
+                _, path = self.app.artifacts.read_owned(tid, member['artifact']['artifact_id'])
+                try:
+                    aid = await self.ingest_pdf(job, work, allowed, url, {'association': association},
+                        path.read_bytes(), {'kind': 'owned_official_container_member', 'parent_retrieval': metadata})
+                except DomainError as exc:
+                    if exc.code in {'DEFINITION_INVALIDATED', 'HTTP_DISPATCH_FORBIDDEN', 'LEASE_EXPIRED'}:
+                        raise
+                    gaps.append({'path': member['path'], 'reason': exc.code})
+                else:
+                    found.append(aid)
+                continue
             attachment_id = "attachment-" + digest(
                 {"work_id": work_id, "artifact": member["sha256"], "association": association}
             )
@@ -464,6 +559,7 @@ class AttachmentService(ModuleService):
                 "work_id": work_id,
                 "selected_property_ids": sorted(allowed),
                 "format": member["format"],
+                **({'hdu':member['hdu']} if 'hdu' in member else {}),
                 "artifact": member["artifact"],
                 "table_id": attachment_id + "/table",
                 "origin_url": url,
@@ -519,7 +615,7 @@ class LocalAttachmentCatalog:
             header_only=True,
             **options,
         )
-        if options:
+        if options.get('readme_text'):
             from ..catalog_document import parse_readme
             from astroquery_ai.runtime.codec import digest
             parsed = parse_readme(options['readme_text'], self.attachment['original_filename'].rsplit('.', 1)[0])
@@ -539,6 +635,8 @@ class LocalAttachmentCatalog:
         return result, b"", {"source": "owned_structured_attachment"}
 
     def readme_options(self):
+        if self.attachment['format']=='fits' and 'hdu' in self.attachment:
+            return {'hdu':self.attachment['hdu']}
         if self.attachment["format"] != "mrt" or not self.attachment.get("readme"):
             return {}
         _, path = self.app.artifacts.read_owned(
@@ -551,26 +649,39 @@ class LocalAttachmentCatalog:
 
     async def exact_query(self, task_id, table_id, id_column, identifier, *, datatype="char"):
         alias = self.namespace + " " + identifier if self.namespace else identifier
-        result = await self.app.parse_owned(
-            task_id,
-            self.attachment["artifact"]["artifact_id"],
-            "structured_table",
-            format=self.attachment["format"],
-            table_id=table_id,
-            id_column=id_column,
-            namespace=self.namespace,
-            aliases=[alias],
-            **self.readme_options(),
-        )
+        result = await self.read_rows(table_id, id_column=id_column, namespace=self.namespace, aliases=[alias])
         return result, b"", {"source": "owned_structured_attachment"}
+
+    async def read_rows(self, table_id, **filters):
+        offset, combined = 0, None
+        while True:
+            result = await self.app.parse_owned(self.task_id, self.attachment['artifact']['artifact_id'],
+                'structured_table', format=self.attachment['format'], table_id=table_id,
+                row_offset=offset, **filters, **self.readme_options())
+            if result.get('source_overflow'):
+                raise DomainError('ATTACHMENT_EXPORT_INCOMPLETE', '已保存的官方导出本身被来源截断')
+            if combined is None:
+                from copy import deepcopy
+                combined = deepcopy(result)
+            else:
+                target = combined['resources'][0]['tables'][0]
+                page = result['resources'][0]['tables'][0]
+                target['rows'].extend(page['rows'])
+                target['source_row_numbers'].extend(page['source_row_numbers'])
+            next_offset = result.get('next_row_offset')
+            if not result['overflow']:
+                combined['overflow'] = False
+                combined['next_row_offset'] = None
+                return combined
+            if next_offset is None or next_offset <= offset:
+                raise DomainError('ATTACHMENT_CONTINUATION_MISSING', '附件未提供可验证的续读位置')
+            offset = next_offset
 
     async def identity_candidates(self, task_id, table_id, id_column, aliases, *, datatype='char', candidate_pattern=None):
         # Parsing without an ID filter preserves source row numbers. The
         # bounded result is interpreted by the same M03 source-ID consumer.
         from ..catalog_identity import navigation_patterns
         patterns = navigation_patterns(aliases)
-        result = await self.app.parse_owned(task_id, self.attachment['artifact']['artifact_id'],
-            'structured_table', format=self.attachment['format'], table_id=table_id,
-            **({'id_column': id_column, 'candidate_patterns': patterns} if patterns else {}),
-            **self.readme_options())
+        result = await self.read_rows(table_id,
+            **({'id_column': id_column, 'candidate_patterns': patterns} if patterns and id_column else {}))
         return result, b'', {'source': 'owned_structured_attachment', 'identity_granted_by_search': False}

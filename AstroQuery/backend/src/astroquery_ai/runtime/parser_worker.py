@@ -114,6 +114,14 @@ def main():
         result = structured_archive(
             Path(request["path"]), original_filename=request["original_filename"]
         )
+    elif request["operation"] == "fits_manifest":
+        from astroquery_ai.science.archives import EXPANDED_LIMIT, fits_manifest
+        from astroquery_ai.runtime.errors import DomainError
+
+        path = Path(request['path'])
+        if path.stat().st_size > EXPANDED_LIMIT:
+            raise DomainError('ATTACHMENT_FORMAT_LIMIT', 'FITS附件超过支持大小')
+        result = fits_manifest(path.read_bytes())
     elif request["operation"] == "structured_table":
         from astroquery_ai.science.attachments import structured_table
 
@@ -132,6 +140,8 @@ def main():
                     "aliases",
                     "candidate_patterns",
                     "maximum_rows",
+                    "row_offset",
+                    "hdu",
                     "readme_text",
                     "original_filename",
                 }
@@ -139,8 +149,11 @@ def main():
         )
     else:
         raise ValueError("unsupported parser operation")
+    import hashlib
+    worker_source = Path(__file__)
+    worker_sha256 = hashlib.sha256(worker_source.read_bytes()).hexdigest() if worker_source.is_file() else None
     sys.stdout.buffer.write(
-        json.dumps({"ok": True, "result": result}, ensure_ascii=False, allow_nan=False).encode(
+        json.dumps({"ok": True, "result": result, "worker_sha256":worker_sha256}, ensure_ascii=False, allow_nan=False).encode(
             "utf-8"
         )
     )

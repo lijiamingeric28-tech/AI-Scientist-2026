@@ -21,7 +21,7 @@ import unicodedata
 from astroquery_ai.runtime.errors import DomainError
 
 
-def parse_votable(raw: bytes, *, allow_unnamed=False) -> dict:
+def parse_votable(raw: bytes, *, allow_unnamed=False, allow_partial_metadata=False) -> dict:
     if len(raw) > 32 * 1024**2 or b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper():
         raise DomainError("UNSAFE_VOTABLE", "表响应大小或XML声明不受支持", 422)
     try:
@@ -43,7 +43,15 @@ def parse_votable(raw: bytes, *, allow_unnamed=False) -> dict:
         for node in root.iter()
         if local(node) == "INFO"
     ]
-    if any(
+    service_errors = [info for info in infos if (
+        info['name'] in {'QUERY_STATUS','Error'} and (info['value']=='ERROR' or info['name']=='Error'))]
+    if (any((i.get('value') or '').startswith('Table or Catalog not found:') for i in service_errors)
+        and not any(local(n)=='TABLE' for n in root.iter())):
+        raise DomainError('CATALOG_NOT_FOUND','当前来源标识没有对应的目录表',502,
+            negative_catalog_lookup=True)
+    metadata_hint_only = bool(allow_partial_metadata and service_errors and not any(
+        local(n) in {'TR','BINARY','BINARY2','STREAM','FITS'} for n in root.iter()))
+    if not metadata_hint_only and any(
         (
             info["name"] in {"QUERY_STATUS", "Error"}
             and (info["value"] == "ERROR" or info["name"] == "Error")
@@ -140,6 +148,8 @@ def parse_votable(raw: bytes, *, allow_unnamed=False) -> dict:
         resources.append(
             {"resource_id": resource_name, "description": " ".join(descriptions), "tables": tables}
         )
+    if metadata_hint_only and not resources:
+        raise DomainError('CATALOG_SERVICE_ERROR','目录检索未返回任何可用的元数据',502)
     from urllib.parse import unquote
 
     metadata_text = "\n".join(
@@ -157,7 +167,8 @@ def parse_votable(raw: bytes, *, allow_unnamed=False) -> dict:
     return {
         "resources": resources,
         "infos": infos,
-        "overflow": overflow,
+        "overflow": overflow or metadata_hint_only,
+        **({'metadata_service_warnings':service_errors,'metadata_hints_only':True} if metadata_hint_only else {}),
         "publication_hints": bibcodes,
         "response_sha256": __import__("hashlib").sha256(raw).hexdigest(),
     }
@@ -170,6 +181,22 @@ class VizierCatalogs:
         if type(maximum_attempts) is not int or not 1 <= maximum_attempts <= 3:
             raise ValueError("VizieR maximum attempts must be within 1..3")
         self.maximum_attempts = maximum_attempts
+
+    @staticmethod
+    def validate_response(raw, *, metadata_hints=False):
+        """HTTP 200 can carry a VizieR database error, not a usable table.
+
+        Keep the source parser strict for measurements. A protocol failure is
+        recoverable at another already-known official node, within route bounds.
+        """
+        try:
+            parse_votable(raw, allow_partial_metadata=metadata_hints)
+        except DomainError as exc:
+            if exc.code not in {'CATALOG_SERVICE_ERROR', 'VOTABLE_PARSE_ERROR'}:
+                raise
+            import hashlib
+            raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE', '官方表节点返回错误文档',
+                protocol_error=exc.code, response_sha256=hashlib.sha256(raw).hexdigest()) from exc
 
     async def request(self, task_id, **kwargs):
         from astroquery_ai.runtime.run_policy import current_job, catalog_window
@@ -187,13 +214,16 @@ class VizierCatalogs:
                      'https://vizier.cfa.harvard.edu/viz-bin/votable',
                      'https://vizier.idia.ac.za/viz-bin/votable')
         metadata_only=str((kwargs.get('params') or {}).get('-out.max',''))=='0'
-        capability='votable_metadata' if metadata_only else 'votable_data'
+        keyword_search = '-words' in (kwargs.get('params') or {})
+        capability='votable_search' if keyword_search else 'votable_metadata' if metadata_only else 'votable_data'
         await routes.probe(task_id, self.owner, self.service, capability, endpoints,
+            {'-words':'Cepheid','-meta':'','-meta.max':'1','-out.max':'0'} if keyword_search else
             {'-source': 'I/239/hip_main', '-out.max': '0' if metadata_only else '1', '-out': 'HIP'})
         kwargs.setdefault('timeout', 30)
         kwargs.setdefault('connect_timeout', 5)
         kwargs.setdefault('read_timeout', 20)
-        return await routes.request(task_id, self.owner, self.service, capability, endpoints, 'GET', **kwargs)
+        return await routes.request(task_id, self.owner, self.service, capability, endpoints, 'GET',
+            validate_response=lambda raw:self.validate_response(raw, metadata_hints=keyword_search), **kwargs)
 
     async def legacy_request(self, task_id, **kwargs):
         import time
@@ -238,14 +268,15 @@ class VizierCatalogs:
                     read_timeout=20,
                     **kwargs,
                 )
+                self.validate_response(raw, metadata_hints='-words' in (kwargs.get('params') or {}))
                 metadata["prior_endpoint_failures"] = history
                 preferences[task_id, "vizier_asu"] = endpoints[index]
                 return (raw, metadata)
             except DomainError as exc:
-                retryable = exc.code in {"SOURCE_HTTP_TIMEOUT", "SOURCE_TRANSPORT_ERROR"} or (
+                retryable = exc.code in {"SOURCE_HTTP_TIMEOUT", "SOURCE_TRANSPORT_ERROR", "SOURCE_PROTOCOL_UNAVAILABLE"} or (
                     exc.code == "SOURCE_HTTP_ERROR"
                     and (
-                        exc.details.get("provider_status") == 429
+                        exc.details.get("provider_status") in {404, 429}
                         or (exc.details.get("provider_status") or 0) >= 500
                     )
                 )
@@ -319,7 +350,7 @@ class VizierCatalogs:
                                 max_bytes=16 * 1024**2,
                                 timeout=min(45, remaining),
                             )
-                            parsed = parse_votable(raw)
+                            parsed = parse_votable(raw, allow_partial_metadata=True)
                             result.update(
                                 raw=raw,
                                 metadata=metadata,

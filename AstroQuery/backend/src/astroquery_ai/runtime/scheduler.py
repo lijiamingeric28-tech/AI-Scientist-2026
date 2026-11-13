@@ -140,6 +140,16 @@ class Scheduler:
                 if not operation.done():
                     operation.cancel()
                 await asyncio.gather(operation, return_exceptions=True)
+            # A sibling can end the task (for example budget exhaustion) while
+            # this call is active. Cancellation alone does not release its row.
+            with self.repository.transaction() as conn:
+                task = conn.execute('SELECT lifecycle FROM tasks WHERE task_id=?',(job['task_id'],)).fetchone()
+                if task and task['lifecycle'] in TERMINAL:
+                    released = conn.execute("UPDATE jobs SET status='cancelled',reason='terminal_task_drain',lease_token=NULL,lease_until=NULL WHERE job_id=? AND status='running' AND lease_token=?",
+                        (job['job_id'],job['lease_token'])).rowcount
+                    if released:
+                        self.repository.event(conn,job['task_id'],'job_state_changed',
+                            {'job_id':job['job_id'],'status':'cancelled','reason':'terminal_task_drain'})
 
     def interrupt_task(self, task_id, error, *, job=None, operation, cause=None):
         if isinstance(error, DomainError) and error.code in {"TASK_DELETED", "TASK_NOT_FOUND"}:

@@ -98,6 +98,12 @@ def request_policy(configuration, preferences=None):
     selected = resolve_preferences(configuration, preferences)
     policy['literature'].update(selected_limit=selected['papers_per_property'], sort=selected['ads_sort'])
     policy['scoring']['readable_target_per_property'] = selected['papers_per_property']
+    policy['quality']['official_table_review'] = 'shared_semantics/1'
+    # Local experiment launch only; no public create/draft action gains overrides.
+    import os
+    if os.environ.get('ASTROQUERY_STOP_AFTER_EXTRACTION') == '1':
+        from .extraction_experiment import VERSION
+        policy['execution'] = {'experiment': VERSION, 'stop_after_extraction': True}
     return policy
 
 

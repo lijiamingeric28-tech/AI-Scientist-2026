@@ -12,7 +12,17 @@ from pathlib import Path, PurePosixPath
 from astroquery_ai.runtime.errors import DomainError
 
 EXPANDED_LIMIT = 32 * 1024**2
-MEMBER_LIMIT = 256
+MEMBER_LIMIT = 1024
+
+
+def fits_manifest(raw):
+    from astropy.io import fits
+    with fits.open(io.BytesIO(raw), memmap=False) as file:
+        return {'subject_headers':{k:str(file[0].header[k]) for k in
+                ('OBJECT','NAME','TARGET','GAIA_DR3_SOURCE_ID') if k in file[0].header},
+            'tables':[{'hdu':i,'name':hdu.name,'rows':hdu.header.get('NAXIS2',0),
+                       'columns':[{'name':c.name,'unit':c.unit} for c in hdu.columns]}
+                      for i,hdu in enumerate(file) if isinstance(hdu,(fits.BinTableHDU,fits.TableHDU))]}
 
 
 def safe_name(name):
@@ -170,8 +180,12 @@ def structured_archive(path, *, original_filename):
                             else FORMATS.get(suffix)
                         )
                         if content.startswith(b"%PDF-") or suffix == ".pdf":
-                            entry.update(role="excluded_supplementary_pdf")
-                        elif archive_kind(member_name):
+                            if not content.startswith(b"%PDF-"):
+                                entry.update(state='rejected', reason='invalid_pdf_member')
+                                gaps.append({'path': member_name, 'reason': 'invalid_pdf_member'})
+                                continue
+                            format = 'pdf'
+                        if archive_kind(member_name) and format != 'pdf':
                             entry.update(role="container")
                             child = {"path": member_name, "sha256": sha, "bytes": len(content)}
                             members.append(
@@ -186,7 +200,7 @@ def structured_archive(path, *, original_filename):
                             visit(content, member_name, [*chain, child], depth + 1)
                         elif format:
                             entry.update(
-                                role="structured_candidate" if format != "readme" else "readme"
+                                role={'readme': 'readme', 'pdf': 'supplementary_pdf'}.get(format, 'structured_candidate')
                             )
                             members.append(
                                 {
@@ -195,6 +209,7 @@ def structured_archive(path, *, original_filename):
                                     "parent_chain": chain,
                                     "sha256": sha,
                                     "data_base64": base64.b64encode(content).decode("ascii"),
+                                    **({'fits_metadata':fits_manifest(content)} if format=='fits' else {}),
                                 }
                             )
                         else:

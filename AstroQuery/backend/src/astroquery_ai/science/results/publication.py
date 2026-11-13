@@ -212,7 +212,7 @@ def preview(self, conn, task_id, *, offset=0, limit=100, expected_preview_id=Non
 
 def delivery_provenance(snapshot):
     """Project existing snapshot evidence; citation background grants no measurements."""
-    return {
+    result = {
         key: snapshot[key]
         for key in [
             "interpretations",
@@ -256,6 +256,10 @@ def delivery_provenance(snapshot):
             "pilot_scope",
         ]
     }
+    for key in ('attachment_quality_scopes', 'attachment_quality_summaries', 'attachment_role_exclusions'):
+        if key in snapshot:
+            result[key] = snapshot[key]
+    return result
 
 
 def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
@@ -457,6 +461,22 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         for kind in ('quality_candidate_root','quality_candidate_link','quality_decision','quality_reextraction_action',
                      'quality_reextraction_result','quality_batch_receipt','candidate','completion_scope'):
             snapshot[kind]=self.repository.objects(conn,task_id,kind)
+        scope_refs = {ref['id']: ref for decision in snapshot['quality_decision']
+                      if (ref := decision.get('shared_table_check_ref'))}
+        if scope_refs:
+            scopes = []
+            for ref in scope_refs.values():
+                scope = self.repository.object(conn, task_id, 'attachment_quality_scope', ref['id'], ref['version'])
+                if content_hash(scope) != ref['content_sha256']:
+                    raise DomainError('SNAPSHOT_REFERENCE_MISMATCH', '附表共享核验引用不一致')
+                scopes.append({'reference': ref, 'scope': scope})
+            snapshot['attachment_quality_scopes'] = scopes
+        attachment_summaries = self.repository.objects(conn, task_id, 'attachment_quality_summary')
+        if attachment_summaries:
+            snapshot['attachment_quality_summaries'] = attachment_summaries
+        exclusions = self.repository.objects(conn, task_id, 'attachment_role_exclusion')
+        if exclusions:
+            snapshot['attachment_role_exclusions'] = exclusions
     # Figures are evidence-only: they never enter numeric coverage, assessment
     # or comparisons. Their immutable payload is bound to this delivery.
     figures = self.repository.objects(conn, task_id, "figure")

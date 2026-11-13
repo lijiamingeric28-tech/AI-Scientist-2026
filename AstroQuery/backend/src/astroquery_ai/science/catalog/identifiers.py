@@ -62,6 +62,17 @@ def declared_namespace(column: dict, namespace: str | None, *, table_metadata=No
         raise DomainError("INVALID_ID_NAMESPACE", "对象编号命名空间无效", 422)
     metadata = " ".join((str(column.get(key) or "") for key in ("name", "id", "description")))
     description = column.get("description") or ""
+    if namespace is None and 'meta.id' in str(column.get('ucd') or '').split(';'):
+        label = str(column.get('name') or '').upper()
+        unannotated = re.sub(r'\([^)]*\)', ' ', description)
+        declared_words = {'SN':'Supernova','HD':'Henry Draper','HIP':'Hipparcos'}
+        # Literal established catalogue prefixes in actual identifier metadata.
+        # Generic Name/Source/ID columns never acquire an invented namespace.
+        native_prefixes=[label,*([declared_words[label]] if label in declared_words else [])]
+        if label in {'HD','HIP','HR','SAO','TYC','NGC','IC','M','SN'} and any(re.search(
+                r'\b'+re.escape(word)+r'\s+(?:number|name|identifier|designation)\b', unannotated, re.I)
+                for word in native_prefixes):
+            return label
     pulsar_coordinate_name = (
         column.get("datatype") in {None, "char", "unicodeChar"}
         and re.search("\\bpulsar\\s+(?:name|identifier|designation)\\b", description, re.I)
@@ -87,7 +98,7 @@ def declared_namespace(column: dict, namespace: str | None, *, table_metadata=No
         or gaia_global_designation(column)
     ):
         context = table_metadata or {}
-        native_context = " ".join(
+        native_context = description + ' ' + " ".join(
             (str(context.get(key) or "") for key in ("table_id", "description"))
         )
         releases = {
@@ -158,8 +169,13 @@ def local_identifier(alias: str, namespace: str | None) -> str | None:
 
 def identifier_selectors(alias, namespace, column=None):
     local = local_identifier(alias, namespace)
+    # Navigation variants remove only SIMBAD's leading object-type marker.
+    # Returned cells still require exact or source-evidenced identity checks.
+    unmarked = re.sub(r'^(?:V\*|\*\*?)\s+', '', alias.strip())
+    variant = (unmarked if unmarked != alias.strip() and column
+               and column.get('datatype') in {'char','unicodeChar'} else None)
     if local is None:
-        return []
+        return [variant] if variant else []
     if namespace and namespace.casefold() == "2mass":
         return [local, "J" + local, "2MASS J" + local]
     if (
@@ -169,7 +185,7 @@ def identifier_selectors(alias, namespace, column=None):
         and gaia_global_designation(column)
     ):
         return [namespace + " " + local]
-    return [local]
+    return list(dict.fromkeys([local, *([variant] if variant else [])]))
 
 
 def exact_rows(

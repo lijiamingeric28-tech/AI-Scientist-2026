@@ -365,6 +365,13 @@ class Repository:
         """Called only after the process instance lock is acquired. Never dispatches."""
         with self.transaction() as conn:
             conn.execute("UPDATE attempts SET status='unknown' WHERE status='dispatched'")
+            # A terminal task may have stopped while sibling workers were in
+            # flight. Their dead leases must not monopolize the next task.
+            for row in conn.execute("SELECT j.job_id,j.task_id,t.lifecycle FROM jobs j JOIN tasks t USING(task_id) WHERE j.status='running'").fetchall():
+                if row['lifecycle'] in TERMINAL:
+                    conn.execute("UPDATE jobs SET status='cancelled',reason='terminal_task_recovery',lease_token=NULL,lease_until=NULL WHERE job_id=?", (row['job_id'],))
+                    self.event(conn,row['task_id'],'job_state_changed',{'job_id':row['job_id'],
+                        'status':'cancelled','reason':'terminal_task_recovery','task_lifecycle':row['lifecycle']})
             conn.execute(
                 "UPDATE http_attempts SET status='unknown',error_code='process_interrupted' WHERE status='dispatched'"
             )

@@ -121,7 +121,7 @@ def quarantine_unseen(plan, visible):
     gaps, kept = [], []
     for mapping in plan['properties']:
         missing = mapping_fields(mapping) - visible
-        if plan['id_column'] not in visible:
+        if plan['id_column'] is not None and plan['id_column'] not in visible:
             missing.add(plan['id_column'])
         if missing:
             gaps.append({'property_id': mapping['property_id'], 'value_column': mapping['value_column'],

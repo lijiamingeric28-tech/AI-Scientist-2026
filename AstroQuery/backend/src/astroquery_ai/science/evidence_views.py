@@ -124,7 +124,7 @@ def table_view(evidence,source,selected_columns=()):
     locator=evidence['locator'];columns={c['name']:c for c in source.get('metadata',{}).get('columns',[])}
     columns.update({c['name']:c for c in raw.get('columns',[])})
     selected={locator.get('column'),*selected_columns}
-    return {'schema_version':VERSION,'evidence_id':evidence['evidence_id'],
+    result = {'schema_version':VERSION,'evidence_id':evidence['evidence_id'],
         'artifact_ref':evidence['artifact_ref'],'kind':'table','table':locator.get('table'),
         'row':locator.get('row'),'row_basis':'attachment_data_row' if source.get('kind')=='official_attachment' else 'query_response_row',
         'column':locator.get('column'),
@@ -132,6 +132,16 @@ def table_view(evidence,source,selected_columns=()):
                   'is_main':key==locator.get('column'),'is_selected':key in selected} for key,val in raw['cells'].items()],
         'readme':source.get('readme') or source.get('metadata',{}).get('catalog_document'),
         'parent_work_id':source.get('work_id'),'precision':'exact_saved_cells'}
+    if source.get('kind') == 'official_attachment':
+        result['attachment_location'] = attachment_location(source)
+    return result
+
+
+def attachment_location(source):
+    association = source.get('association') or {}
+    fields = ('source_table_id', 'parent_bibcodes', 'member_path', 'hdu', 'container_artifact_ref', 'dataset_citation')
+    return {'parent_work_id': source.get('parent_work_id') or source.get('work_id'),
+            **{k: association[k] for k in fields if k in association}}
 
 
 def build_views(repository,conn,tid,evidence,sources,*,snapshot=None,cutoff=None):
@@ -156,18 +166,19 @@ def build_views(repository,conn,tid,evidence,sources,*,snapshot=None,cutoff=None
         records=snapshot['measurements'] if snapshot is not None else repository.objects(conn,tid,'measurement')
         rows=snapshot['provenance_bundle']['interpretations'] if snapshot is not None else repository.objects(conn,tid,'interpretation')
         interpretations={i['interpretation_id']:i for i in rows}
+    by_evidence = {}
+    for record in records:
+        proposal = interpretations.get(record['interpretation_ref']['id'], {}).get('proposal', {})
+        selected = [*(e.get('location') for e in proposal.get('errors', [])),
+                    *(e.get('column') for e in proposal.get('catalog_field_roles', [])),
+                    *(e.get('location') for e in proposal.get('source_references', []))]
+        for ref in record['evidence_refs']:
+            by_evidence.setdefault(ref['id'], []).extend(selected)
 
     results=[]
     for item in evidence:
         if item.get('text_origin')=='original_cells':
-            selected=[]
-            for record in records:
-                if not any(r['id']==item['evidence_id'] for r in record['evidence_refs']):continue
-                proposal=interpretations.get(record['interpretation_ref']['id'],{}).get('proposal',{})
-                selected.extend(e.get('location') for e in proposal.get('errors',[]))
-                selected.extend(e.get('column') for e in proposal.get('catalog_field_roles',[]))
-                selected.extend(e.get('location') for e in proposal.get('source_references',[]))
-            view=table_view(item,source_map.get(item['source_id'],{}),selected)
+            view=table_view(item,source_map.get(item['source_id'],{}),by_evidence.get(item['evidence_id'], []))
             if view:results.append(view)
             continue
         if not item.get('locator',{}).get('page'):continue
@@ -191,6 +202,8 @@ def build_views(repository,conn,tid,evidence,sources,*,snapshot=None,cutoff=None
                 'precision':'unique_native_lines' if boxes else 'physical_page_only',
                 'notice':None if boxes else '未能唯一定位原文坐标；摘录可能为模型转写，请核对原页。'}
             seen[key]=current;set_points.append(current)
+        source = source_map.get(item['source_id'], {})
         results.append({'schema_version':VERSION,'evidence_id':item['evidence_id'],
-            'kind':'pdf','artifact_ref':item['artifact_ref'],'page_basis':'physical_pdf_page','points':set_points})
+            'kind':'pdf','artifact_ref':item['artifact_ref'],'page_basis':'physical_pdf_page','points':set_points,
+            **({'attachment_location': attachment_location(source)} if source.get('official_supplement') else {})})
     return results

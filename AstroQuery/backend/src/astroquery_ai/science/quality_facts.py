@@ -21,8 +21,19 @@ def reusable_response(science,record,interpretation,spans):
     if same and exact_native and check.get('value_match')=='exact':
         for key in ('native_unit_representation','source_native_main_coordinate_evidenced','source_main_state_interpreted'):
             known[key]=True
-    checks=[{'key':key,'state':'supported','anchors':anchors,'reason':'reused_unified_quality_exact_original_verdict',
-             'quality_attempt_ref':quality['model_attempt_ref']} for key in semantic_keys(science) if known.get(key)]
+        if (quality.get('shared_table_check_ref') and quality.get('row_check', {}).get('state') == 'verified'
+                and record['representation'] == 'linear'
+                and not science.get('source_specific_admission_contract')
+                and not science.get('source_specific_uncertainty_contract')
+                and all(str(c.get('on_missing', '')).startswith('retain_unknown')
+                        for c in science.get('context_contracts', []))):
+            known['source_required_context_verified'] = True
+    shared = {c['key']: c['state'] for c in quality.get('checked_science', [])
+              if c['science_sha256'] == science.get('content_sha256')}
+    checks=[{'key':key,'state':shared.get(key, 'supported'), 'anchors':anchors,
+             'reason':'reused_unified_quality_exact_original_verdict',
+             'quality_attempt_ref':quality['model_attempt_ref']} for key in sorted(semantic_keys(science))
+            if known.get(key) or key in shared]
     uncertainty=[]
     for component in record['uncertainty']['components']:
         parsed=component['interpretation_state']=='parsed' and check.get('errors_match')=='exact'

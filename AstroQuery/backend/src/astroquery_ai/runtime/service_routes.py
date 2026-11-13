@@ -15,6 +15,12 @@ def retryable(exc):
                                            or exc.details.get('provider_status') == 429))
 
 
+def capability_unavailable(exc, capability):
+    return exc.code in {'SOURCE_PROTOCOL_UNAVAILABLE', 'SOURCE_REDIRECT_LIMIT'} or (
+        capability in {'readme_text','votable_search','votable_metadata','votable_data'}
+        and exc.code == 'SOURCE_HTTP_ERROR' and exc.details.get('provider_status') == 404)
+
+
 class ServiceRoutes:
     def __init__(self, http, *, health_service=None):
         self.http = http
@@ -64,9 +70,17 @@ class ServiceRoutes:
                         # An HTML error page is not a working VOTable protocol.
                         if b'VOTABLE' not in raw.upper():
                             raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE', '该入口没有返回VOTable')
+                        if capability == 'votable_search':
+                            from astroquery_ai.science.catalogs import parse_votable
+                            try:
+                                parsed = parse_votable(raw, allow_partial_metadata=True)
+                                if not parsed['resources']:
+                                    raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE','节点未提供已知关键词的目录检索')
+                            except DomainError as exc:
+                                raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE','节点未提供可用的目录检索') from exc
                         return endpoint, time.monotonic() - started, None
                     except DomainError as exc:
-                        if not retryable(exc) and exc.code not in {'SOURCE_PROTOCOL_UNAVAILABLE', 'SOURCE_REDIRECT_LIMIT'}:
+                        if not retryable(exc) and not capability_unavailable(exc, capability):
                             raise
                         return endpoint, None, exc
                 results = await asyncio.gather(*(one(e) for e in endpoints))
@@ -96,6 +110,7 @@ class ServiceRoutes:
             raise DomainError('CATALOG_ENDPOINTS_UNAVAILABLE', '官方表服务两轮探测均失败', attempts=failures)
 
     async def request(self, tid, owner, service, capability, endpoints, method, **kwargs):
+        validate_response = kwargs.pop('validate_response', None)
         kwargs['managed_routes']=True
         state = self.state(tid, service, capability)
         scope = digest(sorted(endpoints))
@@ -107,18 +122,23 @@ class ServiceRoutes:
                     attempts=state.get('probe_failures',[]), shared_unavailable=True,
                     retry_after_seconds=max(0,state['unavailable_until']-time.time()))
         def failed(endpoint,exc,round_index):
+            if exc.code == 'CATALOG_NOT_FOUND':
+                # This paper may have no VizieR dataset. It says nothing about
+                # the node's availability for other papers in the same task.
+                return {'endpoint':endpoint,'round':round_index+1,'reason':exc.code,
+                        'request_specific':True}
             # A redirect-only endpoint is unavailable for this protocol. It
             # must not abort/cancel healthy sibling probes or erase their result.
-            capability_failure = exc.code in {'SOURCE_REDIRECT_LIMIT', 'SOURCE_PROTOCOL_UNAVAILABLE'} or (
-                capability == 'readme_text' and exc.code == 'SOURCE_HTTP_ERROR'
-                and exc.details.get('provider_status') == 404)
+            capability_failure = capability_unavailable(exc, capability)
             if not retryable(exc) and not capability_failure:
                 raise exc
             if exc.details.get('provider_status') == 429:
                 raise exc  # Retry-After remains service-wide; never rotate to evade it.
             state['nodes'][endpoint] = {'cool_until':time.time()+60,'reason':exc.code}
             self.save(tid,state)
-            return {'endpoint':endpoint,'round':round_index+1,'reason':exc.code}
+            return {'endpoint':endpoint,'round':round_index+1,'reason':exc.code,
+                    **({'protocol_error':exc.details['protocol_error']} if 'protocol_error' in exc.details else {}),
+                    **({'response_sha256':exc.details['response_sha256']} if 'response_sha256' in exc.details else {})}
         def succeeded(endpoint,raw,metadata,started,failures):
             state.update(preferred=endpoint,unavailable_until=0,unavailable_scope=None)
             state['nodes'][endpoint]={'last_success':time.time(),'seconds':time.monotonic()-started,'cool_until':0}
@@ -134,6 +154,8 @@ class ServiceRoutes:
             started=time.monotonic()
             try:
                 raw,metadata=await self.http.request(tid,owner,service,method,preferred,**kwargs)
+                if validate_response:
+                    validate_response(raw)
                 return succeeded(preferred,raw,metadata,started,failures)
             except DomainError as exc:
                 failures.append(failed(preferred,exc,0));tried.add(preferred)
@@ -148,9 +170,14 @@ class ServiceRoutes:
                     started=time.monotonic()
                     try:
                         raw,metadata=await self.http.request(tid,owner,service,method,endpoint,**kwargs)
+                        if validate_response:
+                            validate_response(raw)
                     except DomainError as exc:
                         failures.append(failed(endpoint,exc,round_index));continue
                     return succeeded(endpoint,raw,metadata,started,failures)
+                if any(f.get('request_specific') for f in failures):
+                    raise DomainError('CATALOG_NOT_FOUND','所查询来源标识未在可用节点取得目录表',502,
+                        attempts=failures,shared_unavailable=False)
                 if round_index==0:
                     await asyncio.sleep(1)
             state.update(preferred=None,unavailable_until=time.time()+60,unavailable_scope=scope,

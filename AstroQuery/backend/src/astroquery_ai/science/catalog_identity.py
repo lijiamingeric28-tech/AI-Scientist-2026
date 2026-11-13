@@ -54,10 +54,47 @@ def identity_columns(table, id_column):
     return {
         c["name"]
         for c in table["columns"]
-        if c["name"] == id_column
+        if not ({'pos.eq.ra','pos.eq.dec','pos.galactic.lon','pos.galactic.lat'} & set((c.get('ucd') or '').split(';')))
+        and (c["name"] == id_column
         or c.get("datatype") in {"char", "unicodeChar"}
-        or any((v.startswith("meta.id") for v in (c.get("ucd") or "").split(";")))
+        or any((v.startswith("meta.id") for v in (c.get("ucd") or "").split(";"))))
     }
+
+
+def identity_equivalence_groups(table,id_column):
+    """Reuse only byte-equal identity inputs, never physical-value proximity."""
+    names=sorted(identity_columns(table,id_column))
+    context=' '.join(str(table.get(k) or '') for k in ('description','resource_description','catalog_document'))
+    row_sensitive=bool(re.search(r'\b(?:row|rows|line|lines)\s+[0-9]',context,re.I))
+    groups={};first={}
+    for index,row in enumerate(table['rows']):
+        key=digest({n:row.get(n) for n in names}) if not row_sensitive else str(index)
+        representative=first.setdefault(key,index)
+        groups.setdefault(representative,[]).append(index)
+    return groups,names
+
+
+def rebind_identity_check(check,index,target,table,id_column,spans):
+    """Repeat the same validator using each actual row's own cell anchors."""
+    original=check['row'];decision=check.get('interpretation')
+    if not decision or decision.get('notation_option_id') is not None:
+        # Legacy spelling-option indices are row-local. Do not promote them.
+        return {**({k:v for k,v in check.items() if k!='row'} if not decision else {}),
+                'row':index,'state':'unresolved','reason':check.get('reason','legacy_identity_option_not_reused'),
+                'reused_from_row':original}
+    names=identity_columns(table,id_column)
+    if any(table['rows'][original].get(n)!=table['rows'][index].get(n) for n in names):
+        raise ValueError('Different source identity inputs cannot share a decision')
+    prefix=f'cell:{original}:'
+    decision={**decision,'row':index,'evidence_ids':[
+        f'cell:{index}:'+key[len(prefix):] if key.startswith(prefix) else key
+        for key in decision['evidence_ids']]}
+    own_spans={key:value for key,value in spans.items() if not key.startswith('cell:')}
+    own_spans.update({f'cell:{index}:{name}':table['rows'][index][name] for name in names
+                     if isinstance(table['rows'][index].get(name),str) and table['rows'][index][name].strip()})
+    result=checked_identities({'rows':[decision],'table_identity_limitation':None},target,table,
+        table['rows'],[index],id_column,own_spans)[0]
+    return {**result,'reused_from_row':original,'identity_equivalence_columns':sorted(names)}
 
 
 def notation_options(target, table, rows, indices, id_column):
@@ -128,6 +165,10 @@ def identity_prompt(target, table, rows, indices, id_column):
     return (
         {
             "instruction": (
+                'Return exactly ONE decision for EACH candidate row index, never one decision per evidence item. '
+                'A decision may carry several evidence_ids in its one evidence list. Never repeat a row index. '
+                'For same_entity/source_notation include BOTH cell:<row>:<source_column> AND column:<source_column>. '
+                'Choose the object identifier column; separate RA/Dec coordinates are not object names and cannot grant a coordinate match. '
                 'FIRST decide the shared identifier prerequisite and explicitly return table_identity_limitation, '
                 'either null or an evidence-bound object. If ALL supplied candidate identifier columns require '
                 'a missing cross-identification mapping (e.g. author-local opaque IDs), select every such column '
@@ -148,6 +189,8 @@ def identity_prompt(target, table, rows, indices, id_column):
             },
             "id_column": id_column,
             "candidate_rows": indices,
+            'identity_evidence_pairs':{str(i):{name:[f'cell:{i}:{name}',f'column:{name}']
+                for name in sorted(names) if f'cell:{i}:{name}' in spans} for i in indices},
             "source_evidence": spans,
             "verified_aliases": {'A'+str(i+1):a for i,a in enumerate(dict.fromkeys([target['main_id'],*target.get('aliases',[])]))},
             "response_schema": schema,

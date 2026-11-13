@@ -40,7 +40,7 @@ def compatible_returned_plan(plan, planned_columns, returned_columns):
             return ['column_missing']
         return [key for key in semantic if expected[name].get(key) != actual[name].get(key)]
 
-    id_changes = changes(plan['id_column'])
+    id_changes = changes(plan['id_column']) if plan['id_column'] is not None else []
     if id_changes:
         return {**plan, 'properties': []}, [{'reason': 'identifier_schema_changed', 'column': plan['id_column'], 'changed_fields': id_changes}]
     mappings, gaps = [], []
@@ -111,7 +111,7 @@ def validate_plan(raw, columns, allowed_properties):
         raise DomainError("CATALOG_PLAN_INVALID", "星表计划结构无效")
     if raw["id_column"] is None and not raw["properties"]:
         return raw, []  # No requested quantity: no object-row lookup is needed.
-    if not isinstance(raw["id_column"], str) or raw["id_column"] not in columns:
+    if raw['id_column'] is not None and (not isinstance(raw["id_column"], str) or raw["id_column"] not in columns):
         raise DomainError("CATALOG_PLAN_INVALID", "列计划缺少可验证的对象标识列")
     valid, gaps, seen = [], [], set()
     required = {

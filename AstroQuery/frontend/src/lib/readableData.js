@@ -23,9 +23,9 @@ export function readableText(value) {
 }
 
 export const DIMENSION_LABELS = { delivery: '交付就绪', adoption: '已知采用限制', completeness: '完整性', consistency: '一致性', format: '格式规范', source_reliability: '来源可信度', conflict_risk: '多源一致性', extraction_quality: '提取质量' }
-export const SOURCE_TYPES = { paper: '论文', database: '数据库', db: '数据库', supplement: '补充材料', supplementary: '补充材料' }
-export const sourceType = type => ({ db:'database', supplementary:'supplement' })[type] || type
-const EXTRACTION_LABELS = { paper:'论文提取', catalog:'星表提取', database:'数据库查询', database_query:'数据库查询', csv_parsing:'CSV 解析', llm_text:'LLM 文本', llm_table:'LLM 表格', vlm_pdf:'VLM PDF', vlm_text:'VLM 文本', vlm_table:'VLM 表格', vlm_figure:'VLM 图像' }
+export const SOURCE_TYPES = { paper: '论文', database: '数据库', db: '数据库', supplement: '补充材料', supplementary: '补充材料', official_attachment: '官方补充材料' }
+export const sourceType = type => ({ db:'database', supplementary:'supplement', official_attachment:'supplement' })[type] || type
+const EXTRACTION_LABELS = { paper:'论文提取', catalog:'星表提取', official_attachment:'附表提取', database:'数据库查询', database_query:'数据库查询', csv_parsing:'CSV 解析', llm_text:'LLM 文本', llm_table:'LLM 表格', vlm_pdf:'VLM PDF', vlm_text:'VLM 文本', vlm_table:'VLM 表格', vlm_figure:'VLM 图像' }
 export const extractionLabel = method => EXTRACTION_LABELS[method] || (typeof method === 'string' && method) || '该记录未提供'
 export const isDatabaseRecord = (record, source) => ['database', 'db', 'catalog'].includes(source?.source_type) || ['database', 'database_query', 'catalog'].includes(record?.extraction_method)
 // Report prose may contain several independently meaningful fields. Read all
@@ -63,7 +63,8 @@ export function sourceName(source, id, short = false) {
       }
     }
     if (source?.journal) return [source.journal, source.year].filter(Boolean).join(' ')
-    const cat = source?.catalog_id || source?.table_id || source?.metadata?.catalog_id
+    const cat = source?.catalog_id || source?.metadata?.catalog_id || source?.table_id
+    if (source?.kind === 'official_attachment' && source?.association?.source_table_id) return source.association.source_table_id
     if (cat) {
       const m = cat.match(/^[A-Z]\/([A-Za-z&+-]+)\/([0-9]+)/)
       if (m) return `${m[1]} ${m[2]}`

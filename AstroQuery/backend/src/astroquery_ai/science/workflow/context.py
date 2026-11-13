@@ -97,7 +97,8 @@ class ScienceContext:
                     current_ref={'id':cid,'version':1,'content_sha256':content_hash(candidate)}
                     self.repo.put_object(conn,tid,'quality_candidate_link',cid,1,
                         {'candidate_ref':current_ref,'root_id':root,'parent_ref':result.get('quality_parent_candidate_ref')})
-                    if not any(r['root_id']==root for r in self.repo.objects(conn,tid,'quality_candidate_root')):
+                    if not conn.execute("SELECT 1 FROM objects WHERE task_id=? AND kind='quality_candidate_root' AND object_id=?",
+                                        (tid, root)).fetchone():
                         assembly=result['assembly_context']
                         self.repo.put_object(conn,tid,'quality_candidate_root',root,1,{'root_id':root,'initial_ref':current_ref,
                             'source_id':assembly['source']['source_id'],'property_id':result['proposal']['property_id'],

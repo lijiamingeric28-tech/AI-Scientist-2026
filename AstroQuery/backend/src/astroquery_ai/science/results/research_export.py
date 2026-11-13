@@ -85,7 +85,8 @@ def source_rows(body):
             'original_in_package': False} for s in body.get('sources', [])]
 
 
-def locations(body, record, evidence):
+def locations(body, record, evidence, sources=None):
+    from ..evidence_views import attachment_location
     result = []
     for ref in record.get('evidence_refs', []):
         item = evidence.get(ref['id'])
@@ -93,8 +94,11 @@ def locations(body, record, evidence):
             continue
         locator = item.get('locator') or {}
         aid = (item.get('artifact_ref') or {}).get('id')
+        source = (sources or {}).get(item.get('source_id'), {})
         result.append({'evidence_id': ref['id'], 'source_id': item.get('source_id'),
             'kind': item.get('kind'), **locator,
+            **({'attachment_location': attachment_location(source)}
+               if source.get('kind') == 'official_attachment' or source.get('official_supplement') else {}),
             'original_url': artifact_url(body, aid, locator.get('page')) if aid else None})
     return result
 
@@ -178,7 +182,7 @@ def tables(body):
         own_statements = [statements[ref['id']] for ref in context.get('source_statements', []) if ref['id'] in statements]
         detail = uncertainty_rows(record, output, units, record['unit'], unit)
         errors.extend(detail)
-        loc = locations(body, record, evidence)
+        loc = locations(body, record, evidence, sources)
         location_index.append({'measurement_id': mid, 'locations': loc})
         def unique(key):
             return '; '.join(dict.fromkeys(text(x[key]) for x in loc if x.get(key) is not None))

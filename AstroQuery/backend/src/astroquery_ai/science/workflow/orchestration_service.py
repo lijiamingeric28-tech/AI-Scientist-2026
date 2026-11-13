@@ -116,11 +116,22 @@ class OrchestrationService(ModuleService):
                 or task["lifecycle"] not in {"running", "queued"}
             ):
                 return
+            spec = self.spec(conn, tid)
+            if spec.get('run_policy', {}).get('quality', {}).get('official_table_review') == 'shared_semantics/1':
+                from astroquery_ai.runtime.stages import advance_stage, current_stage
+                checkpoint = current_stage(conn, tid)
+                kind = {'quality': 'assess_batch', 'normalization': 'normalize'}.get((checkpoint or {}).get('stage_id'))
+                if kind and conn.execute("SELECT 1 FROM jobs WHERE task_id=? AND kind=? AND status IN ('ready','running') LIMIT 1",
+                                         (tid, kind)).fetchone():
+                    # A local row consumer can create more jobs, but it does
+                    # not change source coverage or release a final delivery.
+                    advance_stage(self.repo, conn, tid)
+                    return
             # A material-only experiment uses the same preparation/acquisition
             # jobs, but must never reach quality, publication or insight. This
             # guard also covers the automatic advance following the last job.
             from ..literature_preparation import materials_only, schedule
-            if materials_only(self.spec(conn, tid)):
+            if materials_only(spec):
                 schedule(self.repo, conn, tid)
                 preparations = self.repo.objects(conn, tid, 'material_preparation')
                 if preparations and preparations[0]['closed']:
@@ -142,15 +153,19 @@ class OrchestrationService(ModuleService):
             replenish(self.repo, conn, tid)
             from astroquery_ai.science.literature_preparation import schedule
             schedule(self.repo,conn,tid)
+            from astroquery_ai.runtime.extraction_experiment import enabled, advance_extraction
+            if enabled(spec):
+                advance_extraction(self, conn, tid, spec)
+                return
             # Repeated mentions and newly available context are scientific work,
             # not separate measurements just because they arose in another batch.
             planned = {p['source_id']: p for p in self.repo.objects(conn, tid, 'source_review_plan')}
-            bounded_reading = self.spec(conn, tid).get('run_policy', {}).get('reading', {}).get('review') == 'work_property_once'
+            bounded_reading = spec.get('run_policy', {}).get('reading', {}).get('review') == 'work_property_once'
             from astroquery_ai.runtime.run_policy import consolidated
-            unified=consolidated(self.spec(conn,tid))
+            unified=consolidated(spec)
             if unified:
                 from ..unified_quality import advance_quality
-                advance_quality(self,conn,tid,self.spec(conn,tid))
+                advance_quality(self,conn,tid,spec)
             measurements = self.repo.objects(conn, tid, 'measurement')
             candidates = self.repo.objects(conn, tid, 'candidate')
             review_rows = [(row['status'], loads(row['payload'])) for row in conn.execute('SELECT status,payload FROM reviews WHERE task_id=?', (tid,))]

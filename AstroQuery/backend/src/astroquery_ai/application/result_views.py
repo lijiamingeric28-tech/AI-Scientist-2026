@@ -43,7 +43,7 @@ def source_list(body):
     """Only the citation identity needed to label, filter and sort measurements."""
     result = []
     keys = ('source_id', 'kind', 'source_type', 'title', 'journal', 'year',
-            'bibcode', 'canonical_key', 'table_id', 'catalog_id')
+            'bibcode', 'canonical_key', 'table_id', 'catalog_id', 'official_supplement')
     for source in body['sources']:
         item = {key: source[key] for key in keys if key in source}
         work = source.get('work') or {}
@@ -53,6 +53,8 @@ def source_list(body):
             item['work']['records'] = [{key: record[key] for key in ('titles', 'year') if key in record}]
         if (source.get('metadata') or {}).get('catalog_id'):
             item['metadata'] = {'catalog_id': source['metadata']['catalog_id']}
+        if source.get('kind') == 'official_attachment' and (source.get('association') or {}).get('source_table_id'):
+            item['association'] = {'source_table_id': source['association']['source_table_id']}
         result.append(item)
     return result
 
