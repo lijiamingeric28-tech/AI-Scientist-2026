@@ -365,6 +365,7 @@ class EvidenceExtractor:
                     "representation": doc["representation"],
                     "parameters": doc["representation_parameters"],
                     "evidence": evref,
+                    **({"declaration": unit_declaration} if revision > 1 and unit_declaration else {}),
                 }
             ),
             "unit_text": doc["unit"],
@@ -494,7 +495,8 @@ class EvidenceExtractor:
         references = [
             {
                 "reference_id": "reported-source-"
-                + digest({"measurement": mid, "reference": reference}),
+                + digest({"measurement": mid, "reference": reference,
+                          **({"evidence": evref} if revision > 1 else {})}),
                 "schema_version": "ReportedSourceReference/1",
                 "measurement_id": mid,
                 "raw_code": reference["raw_code"],

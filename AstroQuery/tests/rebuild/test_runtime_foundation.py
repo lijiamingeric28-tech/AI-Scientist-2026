@@ -210,6 +210,39 @@ def test_concurrent_currency_reservation_cannot_overspend(repo):
     assert budget.summary()["committed_micros"] == 2800
 
 
+@pytest.mark.parametrize("reports_usage", [True, False])
+def test_campaign_reservation_waits_for_in_flight_usage(repo, reports_usage):
+    from astroquery_ai.runtime.throughput import DispatchDeferred
+
+    budget = Budget(repo, cap_micros=4000)
+    first = reserve(budget, live(repo))
+    budget.dispatch(first["attempt_id"])
+    next_task = live(repo)
+
+    with pytest.raises(DispatchDeferred) as deferred:
+        reserve(budget, next_task, defer_for_settlement=True)
+    assert deferred.value.resource == "campaign-model-settlement"
+    assert budget.summary()["committed_micros"] == first["reserved_micros"]
+    assert repo.get_task(next_task["task_id"])["lifecycle"] not in {"budget_exhausted", "failed"}
+    with repo.read() as conn:
+        assert conn.execute("SELECT count(*) FROM attempts").fetchone()[0] == 1
+
+    budget.settle(
+        first["attempt_id"],
+        input_tokens=200 if reports_usage else None,
+        output_tokens=50 if reports_usage else None,
+        receipt={},
+    )
+    if reports_usage:
+        reserve(budget, next_task, defer_for_settlement=True)
+        assert budget.summary()["committed_micros"] == 3600
+    else:
+        with pytest.raises(DomainError) as exhausted:
+            reserve(budget, next_task, defer_for_settlement=True)
+        assert exhausted.value.code == "CAMPAIGN_BUDGET_EXHAUSTED"
+        assert budget.summary()["committed_micros"] == first["reserved_micros"]
+
+
 def test_campaign_identifier_cannot_reset_cap(repo):
     Budget(repo)
     with pytest.raises(DomainError, match="重置"):

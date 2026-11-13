@@ -45,13 +45,17 @@ def parse_votable(raw: bytes, *, allow_unnamed=False, allow_partial_metadata=Fal
     ]
     service_errors = [info for info in infos if (
         info['name'] in {'QUERY_STATUS','Error'} and (info['value']=='ERROR' or info['name']=='Error'))]
-    if (any((i.get('value') or '').startswith('Table or Catalog not found:') for i in service_errors)
-        and not any(local(n)=='TABLE' for n in root.iter())):
+    missing_catalog = (any((i.get('value') or '').startswith('Table or Catalog not found:') for i in service_errors)
+        and not any(local(n)=='TABLE' for n in root.iter()))
+    # A successful keyword search may legitimately find no catalogues. The
+    # same response to a concrete -source lookup is still an invalid source.
+    empty_search = bool(missing_catalog and allow_partial_metadata)
+    if missing_catalog and not empty_search:
         raise DomainError('CATALOG_NOT_FOUND','当前来源标识没有对应的目录表',502,
             negative_catalog_lookup=True)
-    metadata_hint_only = bool(allow_partial_metadata and service_errors and not any(
+    metadata_hint_only = bool(allow_partial_metadata and service_errors and not empty_search and not any(
         local(n) in {'TR','BINARY','BINARY2','STREAM','FITS'} for n in root.iter()))
-    if not metadata_hint_only and any(
+    if not metadata_hint_only and not empty_search and any(
         (
             info["name"] in {"QUERY_STATUS", "Error"}
             and (info["value"] == "ERROR" or info["name"] == "Error")
@@ -168,6 +172,7 @@ def parse_votable(raw: bytes, *, allow_unnamed=False, allow_partial_metadata=Fal
         "resources": resources,
         "infos": infos,
         "overflow": overflow or metadata_hint_only,
+        **({'search_no_matches': True} if empty_search else {}),
         **({'metadata_service_warnings':service_errors,'metadata_hints_only':True} if metadata_hint_only else {}),
         "publication_hints": bibcodes,
         "response_sha256": __import__("hashlib").sha256(raw).hexdigest(),
@@ -205,7 +210,10 @@ class VizierCatalogs:
         legacy = False
         if job and repo:
             with repo.read() as conn:
-                legacy = catalog_window(repo, conn, task_id) is not None
+                window = catalog_window(repo, conn, task_id)
+                # A deadline is not a transport version. Only saved historical
+                # timed tasks without a dynamic discovery contract use this route.
+                legacy = window is not None and not window['policy'].get('discovery_protocol')
         if legacy:
             return await self.legacy_request(task_id, **kwargs)
         from astroquery_ai.runtime.service_routes import ServiceRoutes
@@ -358,6 +366,7 @@ class VizierCatalogs:
                                 coverage_state="truncated_or_unknown"
                                 if parsed["overflow"] or len(parsed["resources"]) >= cap
                                 else "complete_for_expression",
+                                **({'reason':'no_matching_catalogues'} if parsed.get('search_no_matches') else {}),
                             )
                         except DomainError as exc:
                             if exc.code in {
@@ -457,13 +466,26 @@ class VizierCatalogs:
                 "INVALID_CATALOG_SELECTOR", "数值标识列只能查询已限定命名空间的数值字面量", 422
             )
         selector = ("=" if numeric else "==") + identifier
-        raw, metadata = await self.request(
-            task_id,
-            params={"-source": table_id, id_column: selector, "-out.all": "1", "-out.max": "1000"},
-            max_bytes=32 * 1024**2,
-        )
-        parsed = parse_votable(raw)
-        return (parsed, raw, metadata)
+        return await self.selected_rows(task_id, table_id, {id_column: selector})
+
+    async def selected_rows(self, task_id, table_id, selectors=None):
+        """Expand a truncated, already-scoped row query; retain the final limit.
+
+        Unfiltered use is reserved for a separately evidenced single-object
+        table. This never grants identity from position or from a row count.
+        """
+        history = []
+        for cap in (1000, 10000, 50000):
+            raw, metadata = await self.request(task_id,
+                params={'-source':table_id, **(selectors or {}), '-out.all':'1', '-out.max':str(cap)},
+                max_bytes=32 * 1024**2)
+            parsed = parse_votable(raw)
+            history.append({'limit':cap, 'response_sha256':parsed['response_sha256'],
+                            'overflow':parsed['overflow']})
+            if not parsed['overflow']:
+                break
+        return parsed, raw, {**metadata, 'row_query_limits':history,
+                             'row_query_complete':not parsed['overflow']}
 
     async def identity_candidates(
         self, task_id, table_id, id_column, aliases, *, datatype="char", candidate_pattern=None

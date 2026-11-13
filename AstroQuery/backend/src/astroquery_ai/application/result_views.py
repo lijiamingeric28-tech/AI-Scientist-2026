@@ -1,26 +1,49 @@
 """Small delivery-pinned UI projections; no scientific conclusions added."""
 
-def record_list(body):
+from collections import Counter, defaultdict
+
+
+def report_dispositions(body):
+    dispositions = defaultdict(list)
+    for check in body.get('dispositions', []):
+        if check.get('report_only') and check.get('snapshot_ref') == body['snapshot_ref']:
+            ref = check.get('measurement_ref') or {}
+            dispositions[ref.get('id'), ref.get('version'), ref.get('content_sha256')].append(check)
+    return dispositions
+
+
+def record_dispositions(record, dispositions):
+    key = record['measurement_id'], record.get('revision'), record.get('content_sha256')
+    return dispositions.get(key, [])
+
+
+def record_status(record, dispositions):
+    states = {check['status'] for check in record_dispositions(record, dispositions)}
+    return 'not_supported' if 'not_supported' in states else 'unresolved' if 'unresolved' in states else 'delivered'
+
+
+def record_list(body, measurement_ids=None, *, offset=0, limit=None):
     """List rows carry the displayed coordinates and navigation refs. Details stay on demand."""
+    from astroquery_ai.science.results.native_coordinates import table_coordinates
     properties = {b['property_id']: b for b in body['definitions']}
     outputs = {d['measurement_id']: d for d in body['derived']}
     groups = {}
     for group in body.get('archive_groups', []):
         for member in group['member_refs']:
             groups.setdefault(member['id'], []).append(group)
-    statuses = {}
-    for check in body.get('dispositions', []):
-        if check.get('report_only') and check.get('snapshot_ref') == body['snapshot_ref']:
-            ref = check.get('measurement_ref') or {}
-            statuses.setdefault((ref.get('id'), ref.get('version'), ref.get('content_sha256')), set()).add(check['status'])
+    dispositions = report_dispositions(body)
     contexts = {c['context_id']: c for c in [*body['contexts'], *body.get('resolved_contexts', [])]}
+    table_evidence = {e['evidence_id']: e for e in body.get('evidence_index', []) if e.get('text_origin') == 'original_cells'}
     rows = []
     property_order = {pid: i for i, pid in enumerate(properties)}
-    for record in sorted(body['measurements'], key=lambda r: property_order[r['property_ref']['id']]):
+    selected = body['measurements'] if measurement_ids is None else (
+        r for r in body['measurements'] if r['measurement_id'] in measurement_ids
+    )
+    ordered = sorted(selected, key=lambda r: property_order[r['property_ref']['id']])
+    for record in ordered[offset:offset+limit if limit is not None else None]:
         mid = record['measurement_id']
         binding = properties[record['property_ref']['id']]
         derived = outputs.get(mid)
-        states = statuses.get((mid, record['revision'], record['content_sha256']), ())
         source = {k: record.get(k) for k in ('task_id','measurement_id','source_ref','source_kind','target_ref',
             'raw_value','value','unit','representation','limit','evidence_refs')}
         declaration = record.get('unit_declaration') or {}
@@ -28,13 +51,15 @@ def record_list(body):
         uncertainty = record.get('uncertainty') or {}
         source['uncertainty'] = {'state': uncertainty.get('state'), 'components': [
             {'raw_text': c.get('raw_text')} for c in uncertainty.get('components', [])]}
+        coordinates = table_coordinates(record, table_evidence) if table_evidence else None
         rows.append({'source': source, 'target': {'main_id': body['target'].get('main_id')},
             'derived': {k: derived.get(k) for k in ('main_state','value_typed','status','limit')} if derived else None,
             'property_binding': {'property_id': binding['property_id'], 'definition': {'name_cn': binding['definition']['name_cn']},
                 'output_profile': {k: binding['output_profile'][k] for k in ('unit','representation')}},
             'context': {'conditions': [{k: c.get(k) for k in ('key','value','state')} for c in
                 contexts.get(record['context_ref']['id'], {}).get('conditions', [])]},
-            'record_status': 'not_supported' if 'not_supported' in states else 'unresolved' if 'unresolved' in states else 'delivered',
+            **({'native_coordinates': coordinates} if coordinates and any(coordinates.values()) else {}),
+            'record_status': record_status(record, dispositions),
             'archive_groups': groups.get(mid, []), 'details_loaded': False})
     return rows
 
@@ -60,10 +85,27 @@ def source_list(body):
 
 
 def materials(body):
-    records=body['measurements'];names={b['property_id']:b['definition']['name_cn'] for b in body['definitions']}
+    names={b['property_id']:b['definition']['name_cn'] for b in body['definitions']}
+    records = defaultdict(list)
+    figures = defaultdict(list)
+    table_originals = defaultdict(dict)
+    for evidence in body.get('evidence_index', []):
+        if evidence.get('text_origin') != 'original_cells':
+            continue
+        sid = evidence.get('source_id') or (evidence.get('source_ref') or {}).get('id')
+        ref = evidence.get('artifact_ref') or {}
+        aid = ref.get('id') or ref.get('artifact_id')
+        if sid and aid:
+            table_originals[sid][aid] = {'artifact_id': aid,
+                'sha256': ref.get('content_sha256') or ref.get('sha256')}
+    for record in body['measurements']:
+        records[record['source_ref']['id']].append(record)
+    for figure in body.get('figures', []):
+        figures[figure.get('source_id')].append(figure)
     result=[];by_work={}
     for source in body['sources']:
-        associated=[r for r in records if r['source_ref']['id']==source['source_id']]
+        associated=records[source['source_id']]
+        counts = Counter(r['property_ref']['id'] for r in associated)
         work=source.get('work') or {};meta=(work.get('records') or [{}])[0]
         wid=work.get('work_id') or source.get('work_id')
         item={**source,'material_id':source['source_id'],'roles':['source'],
@@ -71,10 +113,15 @@ def materials(body):
             'authors':meta.get('authors',[]),'year':meta.get('year'),'abstract':meta.get('abstract'),
             'bibcode':meta.get('bibcode'),'dois':meta.get('dois',[]),
             'record_ids':[r['measurement_id'] for r in associated],
-            'properties':[{'property_id':pid,'name':names.get(pid,pid),'count':sum(r['property_ref']['id']==pid for r in associated)}
-                for pid in names if any(r['property_ref']['id']==pid for r in associated)],
-            'figures':[f for f in body.get('figures',[]) if f.get('source_id')==source['source_id']],
+            'properties':[{'property_id':pid,'name':name,'count':counts[pid]}
+                for pid,name in names.items() if counts[pid]],
+            'figures':figures[source['source_id']],
             'availability':'原件已取得' if source.get('artifact') or source.get('schema_artifact') else '资料说明已保存'}
+        if source.get('kind') == 'catalog' and table_originals[source['source_id']]:
+            # The metadata VOTable may contain no rows. Open an actual saved
+            # response from this delivery; retain schema and all other responses.
+            item['data_artifacts'] = list(table_originals[source['source_id']].values())
+            item['artifact'] = source.get('artifact') or item['data_artifacts'][0]
         result.append(item)
         if wid and source.get('kind')=='paper':by_work[wid]=item
     for item in result:
@@ -83,9 +130,13 @@ def materials(body):
             item['parent_material_id']=parent['material_id'] if parent else None
     bundle=body.get('provenance_bundle',{})
     references=bundle.get('reported_references',[])
+    by_cited_work = defaultdict(list)
+    for ref in references:
+        by_cited_work[ref.get('cited_work_id')].append(ref)
+    by_bibcode = {s['bibcode']:s for s in reversed(result) if s.get('bibcode')}
     for cited in bundle.get('cited_works',[]):
-        links=[r for r in references if r.get('cited_work_id')==cited['cited_work_id']]
-        existing=next((s for s in result if cited.get('bibcode') and s.get('bibcode')==cited['bibcode']),None)
+        links=by_cited_work[cited['cited_work_id']]
+        existing=by_bibcode.get(cited.get('bibcode'))
         if existing:existing['roles'].append('cited');existing['citations']=links;continue
         result.append({'material_id':cited['cited_work_id'],'source_id':cited['cited_work_id'],
             'kind':'cited','roles':['cited'],'title':cited.get('title'),'authors':cited.get('authors',[]),

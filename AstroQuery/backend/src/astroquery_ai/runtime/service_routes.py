@@ -63,10 +63,21 @@ class ServiceRoutes:
             for round_index in range(2):
                 async def one(endpoint):
                     started = time.monotonic()
+                    def validate_probe(raw):
+                        if b'VOTABLE' not in raw.upper():
+                            raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE','该入口没有返回VOTable')
+                        if capability=='votable_search':
+                            from astroquery_ai.science.catalogs import parse_votable
+                            try:
+                                if not parse_votable(raw,allow_partial_metadata=True)['resources']:
+                                    raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE','节点未提供已知关键词的目录检索')
+                            except DomainError as exc:
+                                raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE','节点未提供可用的目录检索') from exc
                     try:
                         raw, metadata = await self.http.request(tid, owner, service, 'GET', endpoint,
                             params=params, timeout=8, connect_timeout=4, read_timeout=8,
-                            max_bytes=1024**2,managed_routes=True)
+                            max_bytes=1024**2,managed_routes=True,
+                            **({'_validate_response':validate_probe} if hasattr(self.http,'steps') else {}))
                         # An HTML error page is not a working VOTable protocol.
                         if b'VOTABLE' not in raw.upper():
                             raise DomainError('SOURCE_PROTOCOL_UNAVAILABLE', '该入口没有返回VOTable')
@@ -111,8 +122,15 @@ class ServiceRoutes:
 
     async def request(self, tid, owner, service, capability, endpoints, method, **kwargs):
         validate_response = kwargs.pop('validate_response', None)
+        if validate_response and hasattr(self.http,'steps'):
+            kwargs['_validate_response']=validate_response
         kwargs['managed_routes']=True
         state = self.state(tid, service, capability)
+        if capability=='votable_search' and state.get('probed'):
+            # A node unable to find the known probe keyword cannot turn a
+            # failed search elsewhere into a trustworthy empty result.
+            # Keep the initial qualified set for this request's finite retries.
+            endpoints=tuple(e for e in endpoints if state['nodes'].get(e,{}).get('last_success'))
         scope = digest(sorted(endpoints))
         key = (tid,self.health_service or service,capability)
         def unavailable():

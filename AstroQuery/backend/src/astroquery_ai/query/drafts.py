@@ -67,6 +67,33 @@ def _draft(self, conn, task_id):
     return self.repository.object(conn, task_id, "draft", task_id)
 
 
+def _catalog_scope(draft):
+    return {
+        "target_id": draft["target"]["target_id"],
+        "support_hash": draft["property_support"]["support_hash"],
+        "registry_release": draft["registry_release"],
+    }
+
+
+def catalog_context(draft):
+    return digest([_catalog_scope(draft), draft["revision"], draft["pending_question"]["question_id"]])
+
+
+def _selection_ready(draft):
+    if draft.get("property_selection_policy") != "model-candidates/1":
+        return True
+    if not draft["target"] or not draft["property_support"]:
+        return False
+    scope = _catalog_scope(draft)
+    manual = draft.get("explicit_catalog_selection") or {}
+    if manual.get("scope") == scope and manual.get("property_ids") == draft["selected_property_ids"]:
+        return True
+    selection = draft.get("model_property_selection") or {}
+    return bool(selection.get("resolution_ref") and selection.get("support_hash") == scope["support_hash"]
+        and selection.get("target_id") == scope["target_id"]
+        and set(draft["selected_property_ids"]) <= set(selection.get("candidate_property_ids", [])))
+
+
 def _question(self, draft):
     support = draft["property_support"]
     selected = draft["selected_property_ids"]
@@ -84,13 +111,7 @@ def _question(self, draft):
     else:
         visible_support = support
     preview = None
-    model_ready = draft.get("property_selection_policy") != "model-candidates/1" or bool(
-        selection
-        and selection.get("resolution_ref")
-        and (selection.get("support_hash") == support["support_hash"])
-        and (selection.get("target_id") == draft["target"]["target_id"])
-        and (set(selected) <= set(selection.get("candidate_property_ids", [])))
-    )
+    model_ready = _selection_ready(draft)
     if draft["target"] and 1 <= len(bindings) <= 5 and (not blockers) and model_ready:
         preview = {
             "target": draft["target"],
@@ -133,7 +154,8 @@ def _question(self, draft):
         ]
         + (["confirm"] if preview else []),
     }
-    if visible_support and visible_support["bindings"]:
+    if draft["target"] and support and support["bindings"]:
+        draft["pending_question"]["full_property_catalog"] = True
         draft["pending_question"]["allowed_actions"].append("start_selected")
 
 
@@ -174,13 +196,13 @@ def omission_hash(draft):
     )
 
 
-def apply_property_choices(draft, ids, operation_id, *, reopen_omissions=False):
+def apply_property_choices(draft, ids, operation_id, *, reopen_omissions=False, full_catalog=False):
     from astroquery_ai.query.selection import resolve_explicit_selection
 
     if not isinstance(ids, list) or not all(isinstance(pid, str) for pid in ids) or not draft["property_support"]:
         raise DomainError("INVALID_PROPERTY_SELECTION", "性质选择无效", 422)
     available = {b["property_id"] for b in draft["property_support"]["bindings"]}
-    if draft.get("property_selection_policy") == "model-candidates/1":
+    if draft.get("property_selection_policy") == "model-candidates/1" and not full_catalog:
         available &= set((draft.get("model_property_selection") or {}).get("candidate_property_ids", []))
     if len(ids) != len(set(ids)) or set(ids) - available:
         raise DomainError("INVALID_PROPERTY_SELECTION", "请选择当前列出的性质", 422)
@@ -190,6 +212,14 @@ def apply_property_choices(draft, ids, operation_id, *, reopen_omissions=False):
                 issue["status"] = "open"
                 issue.pop("acknowledgement_operation_id", None)
     draft["selected_property_ids"] = ids
+    if full_catalog:
+        draft["explicit_catalog_selection"] = {"scope": _catalog_scope(draft), "property_ids": ids,
+                                               "operation_id": operation_id}
+        for issue in draft["issues"]:
+            if issue["status"] == "open" and issue["kind"] == "property_selection_incomplete":
+                issue.update(status="resolved", resolution="explicit_catalog_selection", operation_id=operation_id)
+    else:
+        draft.pop("explicit_catalog_selection", None)
     resolve_explicit_selection(draft, ids, operation_id, keep_gaps=not reopen_omissions)
     draft["issues"] = [i for i in draft["issues"] if i["kind"] != "property_count"]
     if not 1 <= len(ids) <= 5:
@@ -250,11 +280,16 @@ def draft_action(self, task_id: str, request: dict) -> dict:
         # explicitly accepted omissions to the displayed question. All writes,
         # eligibility checks and the normal freeze run in the same transaction.
         if kind == "start_selected":
-            if set(action) != {"type", "property_ids", "omission_ids", "omission_context_hash"}:
+            keys = {"type", "property_ids", "omission_ids", "omission_context_hash"}
+            full_catalog = "catalog_context_hash" in action
+            if set(action) != keys | ({"catalog_context_hash"} if full_catalog else set()):
                 raise DomainError("INVALID_PROPERTY_SELECTION", "查询范围无效", 422)
             if action["omission_context_hash"] != self.omission_hash(draft):
                 raise DomainError("OMISSION_CONTEXT_CHANGED", "查询范围已变化，请重新查看")
-            apply_property_choices(draft, action["property_ids"], request["operation_id"])
+            if full_catalog and (not draft["pending_question"].get("full_property_catalog")
+                                 or action["catalog_context_hash"] != catalog_context(draft)):
+                raise DomainError("PROPERTY_CATALOG_CHANGED", "适用性质已变化，请重新打开目录", 409)
+            apply_property_choices(draft, action["property_ids"], request["operation_id"], full_catalog=full_catalog)
             if action["omission_ids"] != []:
                 acknowledge_omissions(draft, action["omission_ids"], request["operation_id"], open_only=True)
             if any(issue["status"] == "open" for issue in draft["issues"]):
@@ -281,18 +316,8 @@ def draft_action(self, task_id: str, request: dict) -> dict:
             if set(action) != {"type", "preview_hash"} or not draft["pending_question"]["preview"]:
                 raise DomainError("CONFIRMATION_NOT_READY", "尚不满足开始检索条件")
             preview = draft["pending_question"]["preview"]
-            if draft.get("property_selection_policy") == "model-candidates/1":
-                selection = draft.get("model_property_selection") or {}
-                if (
-                    selection.get("support_hash") != draft["property_support"]["support_hash"]
-                    or selection.get("target_id") != draft["target"]["target_id"]
-                    or (not selection.get("resolution_ref"))
-                    or set(draft["selected_property_ids"])
-                    - set(selection.get("candidate_property_ids", []))
-                ):
-                    raise DomainError(
-                        "PROPERTY_MATCH_REQUIRED", "请等待基于当前对象与性质库的模型候选并确认", 409
-                    )
+            if not _selection_ready(draft):
+                raise DomainError("PROPERTY_MATCH_REQUIRED", "请确认当前天体的适用性质", 409)
             if getattr(self, "pilot", None) and self.pilot.applies(task_id):
                 self.pilot.check_preview(preview)
             if action["preview_hash"] != preview["preview_hash"]:
@@ -333,6 +358,8 @@ def draft_action(self, task_id: str, request: dict) -> dict:
                     "actor": "local_user",
                 },
                 "property_selection": draft.get("model_property_selection"),
+                **({"explicit_catalog_selection": draft["explicit_catalog_selection"]}
+                   if "explicit_catalog_selection" in draft else {}),
             }
             from astroquery_ai.runtime.run_policy import request_policy
             from copy import deepcopy

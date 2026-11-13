@@ -1,4 +1,4 @@
-"""Single-object attachment identity from an explicit, quoted table declaration."""
+"""Single-object table identity from an explicit, quoted source declaration."""
 import re
 from astroquery_ai.runtime.codec import canonical, content_hash, digest
 from astroquery_ai.runtime.errors import DomainError
@@ -6,7 +6,8 @@ from astroquery_ai.science.catalog.identifiers import identifier_typography
 
 
 def identity_key(value):
-    return re.sub(r'\s+', '', identifier_typography(value)).casefold().removeprefix('v*').removeprefix('*')
+    unmarked=re.sub(r'^(?:V\*|\*\*?|NAME|Cl)\s+','',identifier_typography(value).strip())
+    return re.sub(r'\s+', '', unmarked).casefold()
 
 
 def check_scope(response, evidence, target):
@@ -28,7 +29,7 @@ def declaration_choices(evidence, target):
     choices={};seen=set()
     for key,text in evidence.items():
         for alias in aliases:
-            unmarked=re.sub(r'^(?:V\*|\*\*?)\s+','',alias.strip())
+            unmarked=re.sub(r'^(?:V\*|\*\*?|NAME|Cl)\s+','',alias.strip())
             if len(identity_key(unmarked))<3:
                 continue
             pattern=r'(?<![A-Za-z0-9])'+r'\s*'.join(re.escape(p) for p in unmarked.split())+r'(?![A-Za-z0-9])'
@@ -43,12 +44,16 @@ def declaration_choices(evidence, target):
 
 
 def scope_prompt(target, table, attachment):
+    attachment = attachment or {}
     evidence = {k: table[k] for k in ('description','resource_description') if table.get(k)}
+    catalog_scope = (table.get('catalog_document') or {}).get('parsed', {}).get('catalog_scope', {})
+    if catalog_scope.get('text'):
+        evidence['catalog_scope'] = catalog_scope['text']
     if table.get('readme_context', {}).get('text'):
         evidence['readme'] = table['readme_context']['text']
     if table.get('file_subject_context'):
         evidence['file_subject_context'] = canonical(table['file_subject_context']).decode()
-    evidence['table_declaration'] = canonical({'official_table_id':attachment.get('association',{}).get('source_table_id'),
+    evidence['table_declaration'] = canonical({'official_table_id':attachment.get('association',{}).get('source_table_id') or table.get('table_id'),
         'member_filename':attachment.get('original_filename'),'description':table.get('description'),
         'resource_description':table.get('resource_description')}).decode()
     aliases = list(dict.fromkeys([target['main_id'], *target.get('aliases', []),
@@ -65,6 +70,7 @@ def scope_prompt(target, table, attachment):
 
 async def extract_table_subject(self, job, spec, table, plan, catalogs, attachment, source, qualification):
     tid = job['task_id']
+    input_format = attachment['format'] if attachment else 'votable'
     prompt,evidence,choices = scope_prompt(spec['target'], table, attachment)
     checked=None;receipt=None;response={'scope':'unknown','reason':'No literal target declaration in acquired table metadata.'}
     if choices:
@@ -72,7 +78,7 @@ async def extract_table_subject(self, job, spec, table, plan, catalogs, attachme
             response, receipt = await self.steps.model(job, task_id=tid, owner='M03',
                 root_id=job['job_id']+':table-subject-v2:'+digest(prompt['source_evidence']),
                 messages=[{'role':'user','content':canonical(prompt).decode()}],
-                profile=self.model_profile('M03',source_format=attachment['format'],operation='catalog_identity',
+                profile=self.model_profile('M03',source_format=input_format,operation='catalog_identity',
                     version='source-identifier-semantics-5',max_images=0,max_input_tokens=48000,wall_seconds=60,inactivity_seconds=45),
                 job=job,purpose='production',root_limit=2)
             declaration_id=response.get('declaration_id') if isinstance(response,dict) else None
@@ -85,22 +91,37 @@ async def extract_table_subject(self, job, spec, table, plan, catalogs, attachme
                                        'previous_response':response}
     with self.repo.transaction() as c:
         self.repo.validate_lease(c,job)
-        self.repo.put_object(c,tid,'attachment_subject_check',job['job_id'],1,
+        self.repo.put_object(c,tid,'attachment_subject_check' if attachment else 'catalog_subject_check',job['job_id'],1,
             {'response':response,'accepted':bool(checked),'evidence':evidence,'declarations':choices,
              'resolved_declaration':checked,'attempt_ref':receipt})
     count = 0
+    overflow = False
     if checked:
-        result = await catalogs.read_rows(table['table_id'])
-        actual = result['resources'][0]['tables'][0]
+        if attachment:
+            result = await catalogs.read_rows(table['table_id'])
+            artifact = attachment['artifact']
+        else:
+            result, raw, metadata = await catalogs.selected_rows(tid, table['table_id'])
+            artifact = self.app.artifacts.write(raw, 'application/x-votable+xml')
+            with self.repo.transaction() as c:
+                self.repo.validate_lease(c, job)
+                self.app.artifacts.register(c, tid, job['job_id'], artifact)
+                self.repo.put_object(c,tid,'catalog_table_rows',job['job_id'],1,
+                    {'table_id':table['table_id'],'artifact':artifact,'metadata':metadata,
+                     'identity_basis':'explicit_single_object_table_scope'})
+        matches=[t for r in result['resources'] for t in r['tables'] if t['table_id']==table['table_id']]
+        if len(matches)!=1:
+            raise DomainError('CONCRETE_TABLE_SCHEMA','无法取得已确认单天体表的唯一数据')
+        actual = matches[0]
+        overflow = bool(result.get('overflow'))
         from ..catalog_plan import compatible_returned_plan
         active_plan, changes = compatible_returned_plan(plan,table['columns'],actual['columns'])
         if changes:
-            raise DomainError('SOURCE_SCHEMA_CHANGED','单天体附表结构与已解释的表头不一致',changes=changes)
-        artifact = attachment['artifact']
+            raise DomainError('SOURCE_SCHEMA_CHANGED','单天体表结构与已解释的表头不一致',changes=changes)
         rows = actual['rows'];indices = list(range(len(rows)))
         proof = {'schema_version':'EvidencedTableSubjectBinding/1','method':'explicit_single_object_table_scope',
             'target_id':spec['target']['target_id'],'target_content_sha256':content_hash(spec['target']),
-            'table_id':table['table_id'],'source_rows':actual['source_row_numbers'],
+            'table_id':table['table_id'],'source_rows':actual.get('source_row_numbers',indices),
             'source_artifact_ref':{'id':artifact['artifact_id'],'version':1,'content_sha256':artifact['sha256']},
             'source_declaration':checked,'model_attempt_ref':receipt,'relation':'same_entity',
             'measurement_subject_validation_required':True,'general_alias_rule_granted':False,
@@ -111,13 +132,14 @@ async def extract_table_subject(self, job, spec, table, plan, catalogs, attachme
             ref=self.repo.put_object(c,tid,'object_match',proof['binding_id'],1,proof)
         await self.extract_verified_rows(actual=actual,alias={'table_subject':ref['id']},artifact=artifact,
             attachment=attachment,binding_refs={i:ref for i in indices},columns={c['name'] for c in table['columns']},
-            input_format=attachment['format'],job=job,matched=indices,pending_plans=list(self.execution_plans(active_plan)),
+            input_format=input_format,job=job,matched=indices,pending_plans=list(self.execution_plans(active_plan)),
             qualification=qualification,rows=rows,seen_rows=set(),source=source,spec=spec,table=table,
             table_id=table['table_id'],tid=tid)
         count = len(rows)
     with self.repo.transaction() as c:
         self.repo.validate_lease(c,job)
         self.repo.put_object(c,tid,'coverage',job['job_id'],1,{'owner':'M03','table_id':table['table_id'],
-            'state':'processed' if checked else 'partial','verified_row_count':count,
+            'state':'processed' if checked and not overflow else 'partial','verified_row_count':count,
+            'overflow':overflow,'reason':'source_row_limit' if overflow else None,
             'identity_rule':'explicit_single_object_table_scope' if checked else 'table_subject_unresolved'})
         self.repo.finish_job(c,job)

@@ -1,6 +1,7 @@
 import AstroQueryLogo from '@/components/icons/AstroQueryLogo'
 import { Fragment, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import BackToTop from '@/components/ui/BackToTop'
 import { Icon } from '@/components/icons'
 import { chatStageState } from '@/lib/chatStageState'
 import { useToast } from '@/components/ui/toast'
@@ -72,7 +73,7 @@ const EXAMPLE_PROMPTS = [
   '收集 M31 球状星团系统的金属丰度数据',
 ]
 
-function getStageNarrative(stageId, stages, targetName) {
+function getStageNarrative(stageId, stages, targetName, materialSummary) {
   const understandStage = stages.find((s) => s.id === 'understand')
   const actualTarget = understandStage?.target?.main_id || understandStage?.target?.name || (targetName && targetName.length <= 16 ? targetName : null)
   const retrievalStage = stages.find((s) => s.id === 'retrieval')
@@ -108,13 +109,14 @@ function getStageNarrative(stageId, stages, targetName) {
     case 'deliver':
       return '已完成多源数据对照与核验，下面整理交付数据集。'
     case 'insight':
-      return '已完成数据集交付，下面生成天体物理学洞察报告。'
+      return materialSummary ? '已完成数据集交付，下面对每个资料源生成洞察报告。'
+        : '已完成数据集交付，下面生成天体物理学洞察报告。'
     default:
       return null
   }
 }
 
-export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
+export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail, followupRequest, onFollowupRequestHandled,
   mode = 'user', isReplaying = false, theme, samplesExpanded = false, samples = [], onOpenSample, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState(memory.input || '')
@@ -180,6 +182,12 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
     if (selection.prompt && !followupText.trim()) saveFollowupText(selection.prompt)
     requestAnimationFrame(() => textarea.current?.focus())
   }, [followupText, saveFollowupText])
+  useEffect(() => {
+    if (!active || !followupEnabled || !followupRequest || followupRequest.taskId !== task?.task_id
+      || followupRequest.deliveryId !== data.deliveryId || followupRequest.revision !== data.deliveryRevision) return
+    askContext(followupRequest.context)
+    onFollowupRequestHandled?.()
+  }, [active, followupEnabled, followupRequest, task?.task_id, data.deliveryId, data.deliveryRevision, askContext])
   const { toast } = useToast()
   // 历史阶段默认折叠；当前阶段自动展开，用户手动操作优先。
   const [expandedByUser, setExpandedByUser] = useState(memory.expanded || {})
@@ -356,7 +364,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
               }
               const stage = stages.find((s) => s.id === entry.id)
               if (!stage || pipeline.snapshot?.legacy_version || (stage.id === 'done' && !pipeline.presentation)) return null
-              const narrative = getStageNarrative(stage.id, stages, pipeline.presentation?.target_name || task?.title)
+              const narrative = getStageNarrative(stage.id, stages, pipeline.presentation?.target_name || task?.title, pipeline.presentation?.material_summary_mode)
               return (
                 <Fragment key={`s-${entry.id}`}>
                   {narrative && <AiMessage content={narrative} />}
@@ -468,6 +476,12 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
             )
           )}
         </div>
+        <BackToTop active={active} onBeforeScroll={() => {
+          userScroll.current = performance.now() + 1200
+          stickToBottomRef.current = false
+          memory.follow = false
+          setReadingHistory(true)
+        }} />
       </div>
 
       {readingHistory && (running || followup.busy) && !clarifying &&

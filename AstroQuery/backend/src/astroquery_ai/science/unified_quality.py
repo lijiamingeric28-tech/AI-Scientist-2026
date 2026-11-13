@@ -528,6 +528,9 @@ def plan_checks(service,conn,tid,spec):
         else:batches=[items]
         shared = (source['kind'] == 'official_attachment'
                   and spec.get('run_policy', {}).get('quality', {}).get('official_table_review') == 'shared_semantics/1')
+        if (source['kind']=='catalog' and spec.get('run_policy',{}).get('quality',{}).get('catalog_table_review')=='shared_semantics/1'):
+            from .structured_quality import single_table_candidates
+            shared=single_table_candidates(repo,conn,tid,items)
         if not shared:
             batches=[part for batch in batches for part in output_groups(batch,paper=source['kind']=='paper')]
         for batch in batches:
@@ -594,8 +597,15 @@ async def verify(self,job):
         version='unified-paper-quality-20' if paper else 'unified-catalog-quality-2',
         source_format='pdf' if paper else 'votable',max_input_tokens=96000,max_output_tokens=8192,
         max_images=4 if paper else 0,wall_seconds=480,inactivity_seconds=120)
-    if payload.get('shared_table') and source['kind'] == 'official_attachment':
+    if payload.get('shared_table') and source['kind'] in {'official_attachment','catalog'}:
         from .structured_quality import verify_table
+        if source['kind']=='catalog':
+            artifact_ids={c['evidence']['artifact_ref']['id'] for c in candidates}
+            if len(artifact_ids)!=1:
+                raise DomainError('QUALITY_INPUT_CHANGED','共享表核验必须绑定同一实际原件')
+            artifact,_=self.app.artifacts.read_owned(tid,next(iter(artifact_ids)))
+            source={**source,'artifact':{**artifact,'sha256':artifact['sha256']},
+                    'association':{'origin':'dynamic_catalogue','table_id':source['table_id']}}
         await verify_table(self, job, spec, binding, source, candidates, profile)
         return
     if paper:
@@ -654,9 +664,12 @@ async def _verify_batch(self,job,spec,binding,source,candidates,body,pages,block
             diagnostics.append({'code':type(ex).__name__,'attempt':attempt+1})
             continue
         except DomainError as ex:
-            if ex.code == 'ATTEMPT_LIMIT' and table_row_checks is not None:
-                missing_reason='quality_exception_retry_budget_exhausted'
-                diagnostics.append({'code':ex.code,'attempt':attempt+1})
+            if ex.code == 'ATTEMPT_LIMIT' and (attempt > 0 or table_row_checks is not None):
+                # A resumed repair can replay a saved first response even
+                # though the second dispatch already used the call allowance.
+                missing_reason = ('quality_exception_retry_budget_exhausted' if table_row_checks is not None
+                                  else 'quality_repair_attempt_limit')
+                diagnostics.append({'code': ex.code, 'attempt': attempt + 1})
                 break
             if ex.code not in {'INVALID_MODEL_JSON','INCOMPLETE_MODEL_RESPONSE','PROVIDER_INACTIVITY_TIMEOUT','PROVIDER_TIMEOUT'}:raise
             missing_reason='quality_model_transport_incomplete' if 'TIMEOUT' in ex.code else 'quality_item_missing_after_protocol_repair'

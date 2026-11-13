@@ -425,7 +425,7 @@ async def extract_catalog(self, job):
                 self.repo.finish_job(conn, job)
                 return
     seen_rows = set()
-    if attachment and plan['id_column'] is None and plan['properties']:
+    if plan['id_column'] is None and plan['properties']:
         from .table_subject import extract_table_subject
         await extract_table_subject(self, job, spec, table, plan, catalogs, attachment, source, qualification)
         return

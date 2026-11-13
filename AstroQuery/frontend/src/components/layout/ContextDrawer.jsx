@@ -3,6 +3,7 @@ import ResearchFigure from '@/components/results/ResearchFigure'
 import { getRecord } from '@/services/api'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import BackToTop from '@/components/ui/BackToTop'
 import { Icon } from '@/components/icons'
 import SourceDetails from '@/components/results/SourceDetails'
 import RecordDetail from '@/components/results/RecordDetail'
@@ -16,7 +17,7 @@ import { useContentTransition } from '@/hooks/useContentTransition'
 import AnswerReference from '@/components/chat/AnswerReference'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
-export default function ContextDrawer({ detail, data, pipeline, onClose, onChange, onShowStageInChat, onOpenResults }) {
+export default function ContextDrawer({ detail, data, pipeline, onClose, onChange, onShowStageInChat, onOpenResults, selection }) {
   const [width, setWidth] = useState(580), [available, setAvailable] = useState(window.innerWidth)
   const [history, setHistory] = useState([])
   const navigation = useRef(null)
@@ -144,6 +145,9 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
               <span>研究图像详情</span>
             </h2>
           </div>
+          <div className="workbench-drawer-actions">
+          {selection && detail.figure.figure_id && <Button variant="outline" size="sm" aria-pressed={selection.has('figures', detail.figure.figure_id)}
+            onClick={() => selection.toggle('figures', [detail.figure])}>{selection.has('figures', detail.figure.figure_id) ? '取消选择' : '选择图像'}</Button>}
           <button
             type="button"
             className="drawer-close-circle active-press"
@@ -152,9 +156,16 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
           >
             <Icon.Close style={{ width: 14, height: 14 }} />
           </button>
+          </div>
         </header>
-        <ResearchFigure onPrevious={gallery.length>1?()=>moveFigure(-1):undefined} onNext={gallery.length>1?()=>moveFigure(1):undefined} figure={detail.figure} sources={detail.linkedSource ? [detail.linkedSource] : sources} onOpenSource={source=>navigate({type:'source',source})}/>
-      </> : detail.type === 'knowledge' ? <KnowledgeDetail block={detail.block} onClose={dismissal.close}/> : detail.type === 'record' ? <RecordDetail key={detail.record.record_id} embedded record={detail.record} quality={quality} sources={sources} loading={['loading', 'settling', 'refreshing'].includes(data.resources.quality.status)} dup={dup} onClose={dismissal.close} onOpenComparison={pid=>onOpenResults?.('analysis',{analysisTab:'comparison',propertyId:pid})} onOpenSource={source => navigate({ type: 'source', source })} onOpenRecord={id => { const record = records.find(record => record.record_id === id); if (record) navigate({ type: 'record', record }) }} /> : detail.type === 'stage' ? <StageDetailPanel embedded stage={stage} initialAgentKey={detail.agentKey} onClose={dismissal.close} onShowStageInChat={onShowStageInChat} /> : source ? <>
+        <ResearchFigure onPrevious={gallery.length>1?()=>moveFigure(-1):undefined} onNext={gallery.length>1?()=>moveFigure(1):undefined} figure={detail.figure} sources={detail.linkedSource ? [detail.linkedSource] : sources} onOpenSource={source => {
+          if (selection && source?.source_id) onOpenResults?.('candidates', { materialId: source.source_id })
+          else navigate({type:'source',source})
+        }}/>
+      </> : detail.type === 'knowledge' ? <KnowledgeDetail block={detail.block} onClose={dismissal.close}/> : detail.type === 'record' ? <RecordDetail key={detail.record.record_id} embedded selection={selection} record={detail.record} quality={quality} sources={sources} loading={['loading', 'settling', 'refreshing'].includes(data.resources.quality.status)} dup={dup} onClose={dismissal.close} onOpenComparison={pid=>onOpenResults?.('analysis',{analysisTab:'comparison',propertyId:pid})} onOpenSource={source => {
+          if (selection && source?.source_id) onOpenResults?.('candidates', { materialId: source.source_id, propertyId: detail.record.property_id })
+          else navigate({ type: 'source', source })
+        }} onOpenRecord={id => { const record = records.find(record => record.record_id === id); if (record) navigate({ type: 'record', record }) }} /> : detail.type === 'stage' ? <StageDetailPanel embedded stage={stage} initialAgentKey={detail.agentKey} onClose={dismissal.close} onShowStageInChat={onShowStageInChat} /> : source ? <>
         <header className="context-drawer-header">
           <div className="drawer-header-left">
             {history.length > 0 && (
@@ -196,6 +207,8 @@ export default function ContextDrawer({ detail, data, pipeline, onClose, onChang
       </> : null}
       {detail.type === 'record' && data.resources.sources.status === 'error' && <div className="resource-error">来源读取失败<Button size="sm" variant="outline" onClick={() => data.reload('sources')}>重试</Button></div>}
       {detail.type === 'record' && data.resources.quality.status === 'error' && <div className="resource-error">处理信息读取失败<Button size="sm" variant="outline" onClick={() => data.reload('quality')}>重试</Button></div>}
+      <BackToTop key={`${detail.type}:${detail.record?.record_id || detail.source?.source_id || ''}`}
+        scroller=".record-detail-body, .context-content" floating />
     </aside>
   </>
 }

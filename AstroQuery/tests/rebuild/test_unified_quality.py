@@ -297,7 +297,13 @@ def test_source_check_field_alias_keeps_unknown_and_rejects_conflicts():
         'source_quality':{**source,'state':'checked'}},0)
 
 
-def test_quality_timeout_preserves_checked_sibling_and_closes_unchecked_as_technical(tmp_path, monkeypatch):
+@pytest.mark.parametrize('attempt_limit,expected_reason', [
+    (False, 'quality_model_transport_incomplete'),
+    (True, 'quality_repair_attempt_limit'),
+])
+def test_quality_repair_preserves_checked_sibling_and_closes_unchecked_as_technical(
+    tmp_path, monkeypatch, attempt_limit, expected_reason
+):
     import httpx
     from astroquery_ai.runtime.calls import ModelProfile
     from astroquery_ai.science import unified_quality as quality
@@ -314,7 +320,10 @@ def test_quality_timeout_preserves_checked_sibling_and_closes_unchecked_as_techn
     calls=[]; applied=[]
     async def model(*args,**kwargs):
         calls.append(kwargs)
-        if len(calls)==2:raise httpx.ConnectTimeout('SYNTHETIC timeout')
+        if len(calls) == 2:
+            if attempt_limit:
+                raise DomainError('ATTEMPT_LIMIT', 'SYNTHETIC repair already dispatched before interruption')
+            raise httpx.ConnectTimeout('SYNTHETIC timeout')
         return {'items':[{'item_id':['malformed']},dict(item_id='I1',subject='target',quantity_relation='same',reported_quantity='X',
             subject_scale='object',result_role='reported_result',native_representation='linear',value_match='exact',
             unit_match='exact',errors_match='not_reported',evidence_columns=['X'],reason='synthetic row')]},{'attempt_id':'one'}
@@ -325,7 +334,7 @@ def test_quality_timeout_preserves_checked_sibling_and_closes_unchecked_as_techn
                         steps=SimpleNamespace(model=model),model_profile=lambda *args,**kwargs:ModelProfile(model='qwen3.7-plus',**kwargs))
     asyncio.run(quality.verify(svc,job))
     assert len(calls)==2 and applied[0][:3]==('a',True,{'attempt_id':'one'})
-    assert applied[1]==('b',False,None,'quality_model_transport_incomplete')
+    assert applied[1]==('b',False,None,expected_reason)
     with repo.read() as conn:
         assert repo.object(conn,tid,'quality_batch_receipt',job['job_id'])['checked']==1
 

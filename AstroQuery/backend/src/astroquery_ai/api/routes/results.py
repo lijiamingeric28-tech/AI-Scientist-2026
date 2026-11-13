@@ -36,7 +36,7 @@ def register(app, application, scheduler):
             return result
 
     @app.get("/api/tasks/{task_id}/delivery")
-    def delivery(task_id: str, delivery_revision: int | None = None):
+    def delivery(task_id: str, delivery_revision: int | None = None, delivery_id: str | None = None):
         with application.repository.read() as conn:
             legacy = application.legacy.get(conn, task_id)
             if legacy:
@@ -46,25 +46,33 @@ def register(app, application, scheduler):
                     "status": "historical_read_only",
                     "scientific_validation": False,
                 }
-            body = application.delivery.read_for_display(conn, task_id, revision=delivery_revision)
+            body = application.delivery.read_for_display(conn, task_id, delivery_id, delivery_revision,
+                                                         allow_published=True)
+            source_task = application.history.source(conn, task_id)
+            overview = application.delivery.material_overview(conn, source_task, body)
             return {
                 "delivery_id": body["delivery_id"],
                 "revision": body["revision"],
                 "snapshot_ref": body["snapshot_ref"],
                 "status": body["status"],
                 "counts": body["counts"],
-                "display_counts": {key: len(body.get(field, [])) for key, field in
-                                   [('records', 'measurements'), ('sources', 'sources'), ('figures', 'figures')]},
-                "export_schema_versions": [1, 2],
+                "display_counts": {
+                    "records": len(body.get("measurements", [])), "sources": len(body.get("sources", [])),
+                    "figures": len(body.get("figures", [])), "materials": overview["total"],
+                },
+                "export_schema_versions": [1, 2, 3],
                 "available_revisions": [row[0] for row in conn.execute(
                     "SELECT version FROM objects WHERE task_id=? AND kind='delivery' AND object_id=? ORDER BY version",
-                    (application.history.source(conn, task_id), body['delivery_id']))],
+                    (source_task, body['delivery_id']))],
             }
 
     @app.get("/api/tasks/{task_id}/deliveries/{delivery_id}/{resource}")
     def resource(task_id: str, delivery_id: str, resource: str, offset: int = 0, limit: int = 100, expected_delivery_revision: int | None = None,
                  delivery_revision: int | None = None, view: str | None = None, record_id: str | None = None,
-                 material_id: str | None = None):
+                 material_id: str | None = None, property_id: str | None = None,
+                 output: str | None = None, material_type: str | None = None, search: str | None = None,
+                 candidates_only: bool = False, record_section: str | None = None, at_seq: int | None = None,
+                 sealed_only: bool = False):
         with application.repository.read() as conn:
             legacy = application.legacy.get(conn, task_id)
             if legacy:
@@ -83,7 +91,8 @@ def register(app, application, scheduler):
                     "items": rows[max(0, offset) : max(0, offset) + min(max(1, limit), 500)],
                     "total": len(rows),
                 }
-            body = application.delivery.read_for_display(conn, task_id, delivery_id, delivery_revision)
+            body = application.delivery.read_for_display(conn, task_id, delivery_id, delivery_revision,
+                                                         allow_published=True)
             if expected_delivery_revision is not None and body['revision']!=expected_delivery_revision:
                 raise DomainError('DELIVERY_CHANGED','交付报告已修订，请刷新后读取')
             source_task = application.history.source(conn, task_id)
@@ -92,6 +101,61 @@ def register(app, application, scheduler):
                 "SELECT created_at FROM objects WHERE task_id=? AND kind='delivery' AND object_id=? AND version=?",
                 (source_task, delivery_id, body['revision'])).fetchone()
             cutoff = sealed[0] if sealed else None
+            start, size = max(0, offset), min(max(1, limit), 500)
+            if resource == 'materials' and view == 'workbench' or resource in {'material_records', 'material_figures'}:
+                from astroquery_ai.application.material_workbench import figure_view
+                index = application.delivery.material_index(conn, source_task, body, cutoff)
+                result = {'delivery_id': delivery_id, 'delivery_revision': body['revision'],
+                          'snapshot_ref': body['snapshot_ref'], 'offset': start, 'limit': size}
+                if resource == 'materials' and material_id is None:
+                    selected = property_id
+                    if candidates_only and selected not in index.names:
+                        selected = next(iter(index.names), None)
+                    entries = (index.listing(property_id=selected, output=output, kind=material_type, search=search)
+                               if selected or not candidates_only else [])
+                    return {**result, 'items': entries[start:start+size], 'total': len(entries),
+                            'selected_property_id': selected,
+                            'material_count': len({entry['group_id'] for entry in entries}),
+                            'properties': [{'property_id': pid, 'name': name} for pid, name in index.names.items()]}
+                if material_id is None:
+                    raise DomainError('MATERIAL_REQUIRED', '请选择资料', 422)
+                group, pid = index.resolve(material_id, property_id)
+                items = group['by_property'][pid]
+                if resource == 'material_records':
+                    from astroquery_ai.application.result_views import record_list
+                    ids = index.record_ids(group, pid, record_section)
+                    rows = record_list(body, set(ids[start:start+size]))
+                    return {**result, 'items': rows, 'total': len(ids), 'ids': ids}
+                if resource == 'material_figures':
+                    ids = items['figures']
+                    return {**result, 'items': [figure_view(task_id, index.figures[fid]) for fid in ids[start:start+size]],
+                            'total': len(ids), 'ids': ids}
+                from astroquery_ai.science.material_summaries import read_summary
+                root = group['root']
+                related = [{key: index.materials[mid].get(key) for key in
+                            ('material_id', 'source_id', 'title', 'kind', 'association', 'table_id', 'artifact',
+                             'schema_artifact', 'origin_url', 'readme', 'metadata', 'parent_material_id')}
+                           for mid in group['member_ids'] if mid != group['group_id']]
+                _, latest = application.delivery.delivery_reference(conn, task_id)
+                before = cutoff if sealed_only or (delivery_id, body["revision"]) != (latest["id"], latest["version"]) else None
+                if at_seq is not None:
+                    from astroquery_ai.runtime.codec import loads
+
+                    frame = conn.execute("SELECT payload FROM events WHERE task_id=? AND seq=?", (source_task, at_seq)).fetchone()
+                    publication = conn.execute(
+                        "SELECT payload FROM events WHERE task_id=? AND seq<=? "
+                        "AND json_extract(payload,'$.kind')='delivery_ready' ORDER BY seq DESC LIMIT 1",
+                        (source_task, at_seq)).fetchone()
+                    frame_ref = loads(publication[0])["payload"].get("delivery_ref") if publication else None
+                    if (not frame or not frame_ref or frame_ref["id"] != delivery_id or frame_ref["version"] != body["revision"]):
+                        raise DomainError("DELIVERY_CHANGED", "此回放时点未显示该交付", 409)
+                    before = loads(frame[0])["committed_at"]
+                summary = read_summary(application.repository, conn, source_task, body, group, pid,
+                                       before=before)
+                row = {**index._entry(group, pid),
+                       'material': {key: value for key, value in root.items() if key not in {'record_ids', 'figures'}},
+                       'related_materials': related, 'summary': summary}
+                return {**result, 'items': [row], 'total': 1}
             def pinned_report(name):
                 reference = (body.get(name) or {}).get('report_ref')
                 if reference:
@@ -130,7 +194,9 @@ def register(app, application, scheduler):
                 return _enrich_theory(rep) if rep is not None else None
             if resource == "records" and view == "list":
                 from astroquery_ai.application.result_views import record_list
-                rows = record_list(body)
+                return {"delivery_id": delivery_id, "delivery_revision": body['revision'],
+                        "snapshot_ref": body["snapshot_ref"], "items": record_list(body, offset=start, limit=size),
+                        "total": len(body["measurements"])}
             elif resource == "records":
                 records = body["measurements"]
                 if record_id is not None:
@@ -175,19 +241,14 @@ def register(app, application, scheduler):
                     for item in body["provenance_bundle"].get("source_statements", [])
                 }
                 source_metadata={s['source_id']:s for s in body['sources']}
-                def report_checks(record):
-                    reference={'id':record['measurement_id'],'version':record['revision'],'content_sha256':record['content_sha256']}
-                    return [d for d in body.get('dispositions',[]) if d.get('report_only') is True
-                        and d.get('measurement_ref')==reference and d.get('snapshot_ref')==body['snapshot_ref']]
-                def report_status(record):
-                    statuses={d['status'] for d in report_checks(record)}
-                    return 'not_supported' if 'not_supported' in statuses else 'unresolved' if 'unresolved' in statuses else 'delivered'
+                from astroquery_ai.application.result_views import record_dispositions, report_dispositions, record_status
+                dispositions = report_dispositions(body)
                 rows = [
                     {
                         "source": record,
                         'source_title':source_metadata.get(record['source_ref']['id'],{}).get('title'),
                         'source_version_grade':source_metadata.get(record['source_ref']['id'],{}).get('version_grade'),
-                        'report_checks':report_checks(record),'record_status':report_status(record),
+                        'report_checks':record_dispositions(record, dispositions),'record_status':record_status(record, dispositions),
                         'uncertainty_units':{part['component_id']:next((u.get('unit_text') or u.get('unit_declaration',{}).get('canonical_symbol')
                             for u in body['provenance_bundle'].get('unit_records',[]) if u['unit_id']==(part.get('unit_ref') or {}).get('id')),None)
                             for part in record['uncertainty']['components']},
@@ -303,12 +364,8 @@ def register(app, application, scheduler):
                     ),
                 }
             elif resource == "figures":
-                # Never read incidental current objects into an old delivery.
-                rows = [{**figure,
-                         "image_url": f"/api/tasks/{task_id}/artifacts/{figure['image_artifact']['artifact_id']}",
-                         "page_url": f"/api/tasks/{task_id}/artifacts/{figure['page_artifact']['artifact_id']}",
-                         "pdf_url": f"/api/tasks/{task_id}/artifacts/{figure['pdf_artifact_id']}#page={figure['page']}"}
-                        for figure in body.get("figures", [])]
+                from astroquery_ai.application.material_workbench import figure_view
+                rows = [figure_view(task_id, figure) for figure in body.get("figures", [])]
             elif resource == 'coverage' and view == 'matrix':
                 rows = research_views.coverage_matrix(body, pinned_report('quality'), pinned_report('difference'), insight_report(),
                     research_views.process_facts(conn, source_task, cutoff))
@@ -333,7 +390,27 @@ def register(app, application, scheduler):
 
     @app.post("/api/tasks/{task_id}/exports")
     async def export(task_id: str, request: Request):
-        return application.delivery.export(task_id, await request.json(), origin=str(request.base_url))
+        from starlette.concurrency import run_in_threadpool
+        return await run_in_threadpool(application.delivery.export, task_id, await request.json(),
+                                       origin=str(request.base_url))
+
+    @app.post("/api/tasks/{task_id}/exports/preview")
+    async def export_preview(task_id: str, request: Request, path: str | None = None):
+        from starlette.concurrency import run_in_threadpool
+        from astroquery_ai.science.results.workbench_export import preview
+        return await run_in_threadpool(preview, application.delivery, task_id, await request.json(),
+                                       origin=str(request.base_url), path=path)
+
+    @app.post("/api/tasks/{task_id}/deliveries/{delivery_id}/material-summary")
+    async def generate_material_summary(task_id: str, delivery_id: str, request: Request):
+        from astroquery_ai.science.material_summaries import request_summary
+        body = await request.json()
+        if (not isinstance(body, dict) or set(body) != {'delivery_revision', 'material_id', 'property_id'}
+                or type(body['delivery_revision']) is not int or not isinstance(body['material_id'], str)
+                or (body['property_id'] is not None and not isinstance(body['property_id'], str))):
+            raise DomainError('INVALID_MATERIAL_SUMMARY', '资料总结请求无效', 422)
+        return await request_summary(application, task_id, delivery_id, body['delivery_revision'],
+                                     body['material_id'], body['property_id'])
 
     @app.get("/api/tasks/{task_id}/exports")
     def exports(task_id: str):

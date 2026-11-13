@@ -1,6 +1,7 @@
 import { useDismissTransition } from '@/hooks/useDismissTransition'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import BackToTop from '@/components/ui/BackToTop'
 import { useDialogFocus } from '@/hooks/useDialogFocus'
 
 const CHAPTERS = [['quick', '快速上手'], ['samples', '查询目录与只读回放'], ['query', '发起真实查询'], ['views', '理解三个主页面'], ['records', '阅读记录与来源'], ['export', '导出与常见状态']]
@@ -31,5 +32,5 @@ export default function HelpPage({ onReturn, onSamples, onQuery, onSettings, pen
       <section id="help-views"><h3>看进度与结果</h3><p>“对话”按时间显示八个阶段。点开进行中的卡片可以看当前步骤；文献下载按每项性质显示已取得的篇数。任务完成后，标题区的“查看数据结果”直接打开记录表。</p><p>“执行明细”可以查看各阶段进入的时间、耗时和局部异常。点击“在对话查看”可回到对应阶段。</p><GuideImage name="workflow" alt="各阶段用时与进入次数" caption="耗时概览使用这次任务保存的时间。" onZoom={setZoom}/></section>
       <section id="help-records"><h3>从测量追到原文</h3><p>在“数据结果 → 记录”按性质或来源筛选，再打开一行。详情依次展示性质、主值与单位、不确定度、主值处理、原文定位和参考资料。误差分量各自保留，展开可看分量、原单位和原式。</p><GuideImage name="record" alt="SN 2014J 的 9.80 mag 测量及 PDF 第 13 页" caption="点击“打开原PDF第13页”查看完整原件，点击缩略图放大保存的原页。" onZoom={setZoom}/><p>星表记录可核对表名、原行和单元格，官方附表还能追到所属论文。“资料与图像”汇集取得的资料、引用和研究图像。“质量与洞察”可查看任务分项、处理变更和每项性质的解释。</p></section>
       <section id="help-export"><h3>导出当前范围的记录</h3><p>点击“导出结果”，核对交付版本和勾选数量，再选格式。可用格式包括测量明细 CSV、研究数据包 ZIP、分组宽表 CSV、按性质 JSON 和完整 JSON。旧版归档显示它支持的格式。</p><GuideImage name="export" alt="选择导出记录和格式" caption="勾选只影响本次文件；此前生成的文件在“已生成文件”中。" onZoom={setZoom}/><p>导出使用已保存的交付版本。需要更换范围时回到记录表修改筛选，再重新打开导出。</p></section>
-    </article></div>{zoom && <Zoom image={zoom} onClose={() => setZoom(null)} />}</div>
+    </article></div><BackToTop />{zoom && <Zoom image={zoom} onClose={() => setZoom(null)} />}</div>
 }

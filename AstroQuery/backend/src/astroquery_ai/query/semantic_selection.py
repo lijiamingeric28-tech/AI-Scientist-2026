@@ -71,6 +71,11 @@ def selection_prompt(text, draft, bindings, *, previous_batches=None, full=False
         '没有选全部可替代定义不代表用户放弃要求。只有真实未覆盖的原意才partial/none和gap；'
         'partial的uncovered_text逐字引用用户额外要求的未覆盖部分；不可为了凑缺口虚构方法、范围或条件。'
         'final merge须保留用户明确选择/撤销意图，在全部合法候选中判断，不自动求并集。')
+    prompt['research_intent_rule'] = (
+        '用户表达研究主题而未给定具体物理量时，列出本对象适用库中可直接支持该主题的少量性质。'
+        '例如研究光变时可提出历元波段星等、峰值或衰减量，以实际适用列表为准。'
+        '把这些标成相关候选，不称等价；使用 show 和 choice，请用户选1至5项。'
+        '只有存在真正额外且无法执行的要求才报告缺口，不把研究意图当作未知命令。')
     mapping=selection_bindings(draft,bindings)['groups']['P']
     fields={k:mapping for k in ('property_id','candidate_property_ids','equivalent_property_ids',
         'current_selected_property_ids','allowed_candidate_ids')}

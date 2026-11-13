@@ -18,6 +18,23 @@ from .unified_quality import CatalogQualityItem, _catalog_input, _verify_batch, 
 from .workflow.attachment_service import LocalAttachmentCatalog
 
 
+def single_table_candidates(repo, conn, tid, candidates):
+    """Only explicitly bound single-object rows can share catalogue semantics."""
+    artifacts={c.get('evidence',{}).get('artifact_ref',{}).get('id') for c in candidates}
+    if len(artifacts)!=1 or None in artifacts or not candidates:
+        return False
+    refs={tuple((c.get('assembly_context',{}).get('object_binding_ref') or {}).get(k) for k in ('id','version')) for c in candidates}
+    for oid,version in refs:
+        if not oid or not version:
+            return False
+        proof=repo.object(conn,tid,'object_match',oid,version)
+        if (proof.get('schema_version')!='EvidencedTableSubjectBinding/1'
+            or proof.get('source_declaration',{}).get('scope')!='single_target_observations'
+            or not proof.get('model_attempt_ref')):
+            return False
+    return True
+
+
 SOURCE_TIME_LABELS = {'bjd', 'hjd', 'jd', 'mjd', 'epoch', 'obstime'}
 
 
@@ -289,12 +306,23 @@ async def verify_table(service, job, spec, binding, source, candidates, profile)
     with service.repo.read() as conn:
         attachment = next((a for a in service.repo.objects(conn, tid, 'attachment')
             if a['table_id'] == source['table_id'] and a['artifact']['sha256'] == source['artifact']['sha256']
-            and a['work_id'] == source['work_id'] and a['association'] == source['association']), None)
+            and a['work_id'] == source['work_id'] and a['association'] == source['association']), None) if source.get('kind')!='catalog' else None
         decisions = {d['candidate_ref']['content_sha256'] for d in service.repo.objects(conn, tid, 'quality_decision')}
     pending = [c for c in candidates if content_hash(c) not in decisions]
     columns = source['metadata']['columns']
     rows = {}
     missing_reason = 'attachment_original_unavailable'
+    if source.get('kind')=='catalog' and pending:
+        from .catalogs import parse_votable
+        try:
+            _,path=service.app.artifacts.read_owned(tid,source['artifact']['artifact_id'])
+            original=parse_votable(path.read_bytes())
+            tables=[t for r in original['resources'] for t in r['tables'] if t['table_id']==source['table_id']]
+            if len(tables)!=1 or tables[0]['columns']!=columns:
+                raise DomainError('CATALOG_SCHEMA_CHANGED','星表原件列结构与提取记录不一致')
+            rows=dict(enumerate(tables[0]['rows']))
+        except DomainError as exc:
+            missing_reason=exc.code
     if attachment and pending:
         try:
             original = await LocalAttachmentCatalog(service.app, tid, attachment).read_rows(source['table_id'])

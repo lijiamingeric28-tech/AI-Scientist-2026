@@ -42,7 +42,15 @@ def map_fields(value, mappings, *, expand=False, strict=True):
     """Only declared reference fields, never replace words in scientific text."""
     def mapped(item,mapping):
         if isinstance(item,list):return [mapped(v,mapping) for v in item]
-        if isinstance(item,dict):return map_fields(item,mappings,expand=expand,strict=strict)
+        if isinstance(item,dict):
+            result=map_fields(item,mappings,expand=expand,strict=strict)
+            # A reference field's JSON Schema must expose the same labels as
+            # its supplied values. Do not rewrite descriptions or other text.
+            if isinstance(item.get('enum'),list):result['enum']=[mapped(v,mapping) for v in item['enum']]
+            if 'const' in item:result['const']=mapped(item['const'],mapping)
+            if item.get('type')=='array' and isinstance(item.get('items'),dict):
+                result['items']=mapped(item['items'],mapping)
+            return result
         if item is None:return None
         if expand:return resolve(mapping,item) if strict else mapping.get(item,item)
         return invert(mapping).get(item,item)

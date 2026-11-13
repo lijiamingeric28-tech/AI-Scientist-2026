@@ -1,0 +1,24 @@
+.scroll-top-control {
+  position: sticky;
+  inset-block-end: 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  block-size: 0;
+  flex: 0 0 0;
+  z-index: 8;
+  pointer-events: none;
+}
+.scroll-top-control.in-drawer {
+  position: absolute;
+  inset-inline-end: 24px;
+  inset-block-end: 16px;
+}
+.scroll-top-control button {
+  pointer-events: auto;
+  gap: 5px;
+  background: var(--surface-bg);
+  box-shadow: var(--elev-card-shadow, 0 2px 8px #142d201a);
+  white-space: nowrap;
+}
+.scroll-top-control svg { width: 15px; height: 15px; transform: rotate(180deg); }

@@ -123,6 +123,17 @@ def calculate(repo,c,tid,spec,snapshot,*,delivery_verified,insight_report=None):
         'state':'pending' if insight_report is None else (insight_report or {})['status'],
         'qualified_properties':sorted(qualified),'requested_properties':len(pids)} if author_enabled else {
         'key':'insights','weight':5,'earned':None,'state':'deferred_by_scope'}
+    from ..material_summaries import enabled as summaries_enabled
+    if summaries_enabled(spec):
+        counts = (insight_report or {}).get('counts', {})
+        requested = sum(c['requested'] for c in counts.values())
+        ready = sum(c['ready'] for c in counts.values())
+        insight_component = {'key': 'material_summaries', 'weight': 5,
+            'earned': float(5*_ratio(ready, requested)) if requested else
+                5 if insight_report and insight_report['status'] == 'generated' else 0,
+            'state': (insight_report or {}).get('status', 'pending'),
+            'ready': ready, 'requested': requested,
+            'bibliography': sum(c['bibliography'] for c in counts.values())}
     components=[{'key':'request_materials','weight':30,'earned':float(coverage),
         'property_coverage':{'covered':len(covered),'requested':len(pids)},'readable_per_property':readable},
         {'key':'extraction','weight':20,'earned':float(20*execution),'materials':execution_details,
@@ -144,6 +155,7 @@ def calculate(repo,c,tid,spec,snapshot,*,delivery_verified,insight_report=None):
         'scope_ref':{'id':tid,'version':1,'content_sha256':digest(scope)},'readable_per_property':readable,
         'readable_target_per_property':scope.get('readable_target_per_property',readable_target(spec)),
         'property_coverage':{'covered':len(covered),'requested':len(pids)},
-        'meaning':'任务覆盖与闭环完成度；不是科学正确率；含新洞察覆盖' if author_enabled else '任务覆盖与闭环完成度；不是科学正确率；本轮不含洞察',
+        'meaning':'任务流程完成度，含资料总结' if summaries_enabled(spec) else
+            '任务覆盖与闭环完成度；不是科学正确率；含新洞察覆盖' if author_enabled else '任务覆盖与闭环完成度；不是科学正确率；本轮不含洞察',
         'measurement_scores':[],'incomplete':[x for x in components if x['earned'] is not None and x['earned']<x['weight']]}
     return report

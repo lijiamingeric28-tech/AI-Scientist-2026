@@ -215,7 +215,7 @@ class Repository:
                 initializer(conn, self.task(conn, task_id))
             return self.task(conn, task_id)
 
-    def mutate_task(self, conn, task_id: str, **changes) -> dict:
+    def mutate_task(self, conn, task_id: str, *, _budget_publication=False, **changes) -> dict:
         allowed = {
             "lifecycle",
             "phase",
@@ -234,7 +234,16 @@ class Repository:
         if "lifecycle" in changes and changes["lifecycle"] not in LIFECYCLES:
             raise ValueError("invalid lifecycle")
         if current["lifecycle"] in TERMINAL:
-            raise DomainError("TERMINAL_TASK", "该任务已经结束，只能查看")
+            can_publish = (_budget_publication and current["lifecycle"] == "budget_exhausted"
+                           and set(changes) <= {"science_state", "delivery_ref", "insight_ref"}
+                           and bool(changes.get("delivery_ref"))
+                           and changes.get("science_state", current["science_state"]) == "sealed")
+            if not can_publish:
+                raise DomainError("TERMINAL_TASK", "该任务已经结束，只能查看")
+            ref = loads(changes["delivery_ref"])
+            delivery = self.object(conn, task_id, "delivery", ref["id"], ref["version"])
+            if delivery["run_outcome"] != "budget_exhausted" or delivery["status"] != "partial":
+                raise DomainError("TERMINAL_TASK", "用量中止后只允许封存已有成果")
         if current["science_state"] == "sealed" and any(
             (key in changes for key in {"query_ref", "science_state"})
         ):

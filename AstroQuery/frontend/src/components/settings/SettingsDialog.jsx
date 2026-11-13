@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import BackToTop from '@/components/ui/BackToTop'
 import { Icon } from '@/components/icons'
 import { useToast } from '@/components/ui/toast'
 import { useDialogFocus } from '@/hooks/useDialogFocus'
@@ -21,7 +22,7 @@ const FIELDS = [
   { key: 'ads_api_token', label: 'ADS API Token', secret: true, group: '论文检索', note: 'NASA ADS 论文检索凭据。空值保持原 Token。' },
   { key: 'unpaywall_email', label: 'Unpaywall Email', group: '论文检索', note: '开放获取查询使用的联系邮箱。' },
 ]
-const MODELS = { text: '文字检索与性质选择', vision: '正文读取与原文质检', normalization: '清洗与标准化', property: '天体名称识别', insight: '科研洞察', dashscope_model: '任务理解', p1_model: '性质标准化', dashscope_vlm_model: 'VLM 提取', dashscope_bbox_model: '原文定位', dashscope_quality_model: '质量处理', default_research_domain: '研究领域' }
+const MODELS = { text: '文字检索与性质选择', vision: '正文读取与原文质检', normalization: '清洗与标准化', property: '天体名称识别', insight: '历史洞察', material_summary: '资料总结', dashscope_model: '任务理解', p1_model: '性质标准化', dashscope_vlm_model: 'VLM 提取', dashscope_bbox_model: '原文定位', dashscope_quality_model: '质量处理', default_research_domain: '研究领域' }
 export default function SettingsDialog({ open, onClose, onboarding = false, onConfigChange, theme, onToggleTheme }) {
   const [cfg, setCfg] = useState(null), [error, setError] = useState(''), [loading, setLoading] = useState(false)
   const [values, setValues] = useState({}), [baseline, setBaseline] = useState({}), [revealed, setRevealed] = useState({})
@@ -157,6 +158,7 @@ export default function SettingsDialog({ open, onClose, onboarding = false, onCo
           </div>
           <div {...panes.paneProps('system')}>{cfg && <div className="settings-group"><h3>当前生效模型</h3>{Object.entries(cfg.models || {}).map(([key, value]) => <div key={key} className="preference-row"><span>{MODELS[key] || key}</span><span className="model-value">{value || '未提供'}</span></div>)}<h3>系统信息</h3><div className="preference-row"><span>软件版本</span><span>{cfg.version || '未提供'}</span></div></div>}<LibraryStatus active={open && tab === 'system'}/></div>
           </div>
+          <BackToTop />
         </div>
       </div>
       {discardOpen && <div ref={discardRef} className="discard-notice" role="alert"><span>有未保存的设置修改，是否放弃？</span><Button variant="outline" size="sm" onClick={() => setDiscardOpen(false)}>继续编辑</Button><Button variant="destructive" size="sm" onClick={dismissal.close}>放弃修改</Button></div>}

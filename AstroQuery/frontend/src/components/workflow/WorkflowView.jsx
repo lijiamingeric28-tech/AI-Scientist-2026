@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSlidingPanes } from "@/hooks/useSlidingPanes";
 import { Icon } from "@/components/icons";
+import BackToTop from "@/components/ui/BackToTop";
 import { getExecution, executionReportUrl } from "@/services/api";
 import { useRememberedState, useScrollMemory } from "@/hooks/useViewMemory";
 import ExecutionTimeline from "./ExecutionTimeline";
@@ -1145,6 +1146,7 @@ function ExecutionWorkspace({
           </div>
         </>
       )}
+      <BackToTop active={active} />
     </div>
   );
 }

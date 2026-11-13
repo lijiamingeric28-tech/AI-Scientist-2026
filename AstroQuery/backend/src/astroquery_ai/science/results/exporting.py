@@ -28,6 +28,9 @@ def csv_display(value):
 
 
 def export(self, task_id: str, request: dict, *, origin: str | None = None) -> dict:
+    if isinstance(request, dict) and request.get("export_schema_version") == 3:
+        from .workbench_export import export as export_selection
+        return export_selection(self, task_id, request, origin=origin)
     allowed = {
         "operation_id",
         "task_id",

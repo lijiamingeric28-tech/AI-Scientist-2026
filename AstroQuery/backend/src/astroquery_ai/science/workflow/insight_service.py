@@ -17,6 +17,9 @@ class InsightService(ModuleService):
             task=self.repo.task(conn,tid)
             ref=loads(task['query_ref'])
             frozen=self.repo.object(conn,tid,'confirmed_query',ref['id'],ref['version'])
+        from .. import material_summaries
+        if material_summaries.enabled(frozen):
+            return await material_summaries.generate(self, job, frozen)
         from ..author_release import enabled
         if enabled(frozen):
             from ..property_insights import enabled as property_enabled

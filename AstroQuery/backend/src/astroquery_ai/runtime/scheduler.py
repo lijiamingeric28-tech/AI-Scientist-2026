@@ -107,7 +107,7 @@ class Scheduler:
                         operation.cancel()
                         with contextlib.suppress(asyncio.CancelledError, DomainError):
                             await operation
-                        raise DomainError('CATALOG_WINDOW_EXPIRED', '本次星表十分钟窗口已结束')
+                        raise DomainError('CATALOG_WINDOW_EXPIRED', '本次星表时间窗口已结束')
                     await asyncio.wait_for(asyncio.shield(operation), timeout=min(10, max(.02, left)) if left is not None else 10)
                 except TimeoutError:
                     task = self.repository.get_task(job["task_id"])
@@ -150,6 +150,8 @@ class Scheduler:
                     if released:
                         self.repository.event(conn,job['task_id'],'job_state_changed',
                             {'job_id':job['job_id'],'status':'cancelled','reason':'terminal_task_drain'})
+                        if task["lifecycle"] == "budget_exhausted":
+                            self.application.failures.publish_budget_result(conn, job["task_id"])
 
     def interrupt_task(self, task_id, error, *, job=None, operation, cause=None):
         if isinstance(error, DomainError) and error.code in {"TASK_DELETED", "TASK_NOT_FOUND"}:

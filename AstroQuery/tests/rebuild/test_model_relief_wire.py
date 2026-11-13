@@ -63,6 +63,28 @@ def test_native_scalar_is_server_copied_without_touching_error_interpretation():
     assert native[17]['x']==' 12.3000 '
 
 
+def test_structured_cell_omits_inapplicable_page_and_accepts_only_identical_unit_alias():
+    from astroquery_ai.science.measurements.contracts import validated_batch
+    binding=extraction_bindings(SPEC,rows=[0])
+    proposal={'property_id':'P1','row':'R1','column':'x','native_cell':True,
+        'location_kind':'catalog_cell','representation':'linear','limit':'none',
+        'unit':'K','source_unit':'K','subject_role':'target','result_role':'reported_result',
+        'errors':[],'conditions':[],'ambiguity':None}
+    raw={'results':[proposal],'coverage':'checked','limitations':[]}
+    fields=[{'name':'x','datatype':'double','unit_text':'K'}]
+    expanded=expand_extraction(raw,binding,rows={0:{'x':'12.3000'}},columns=fields)
+    batch,failures=validated_batch(expanded)
+    assert not failures and batch.results[0].page is None
+    assert batch.results[0].raw_value=='12.3000' and batch.results[0].unit=='K'
+    assert 'page' not in raw['results'][0] and raw['results'][0]['source_unit']=='K'
+    conflicting=deepcopy(raw);conflicting['results'][0]['source_unit']='m'
+    _,failures=validated_batch(expand_extraction(conflicting,binding,rows={0:{'x':'12.3000'}},columns=fields))
+    assert failures  # Contradictory metadata cannot be silently normalized.
+    paper={'results':[{'location_kind':'body','row':None,'column':None,'source_unit':'K','unit':'K'}]}
+    p=expand_extraction(paper,binding)['results'][0]
+    assert 'page' not in p and 'source_unit' in p
+
+
 @pytest.mark.parametrize('literal,limit,representation',[
     ('12.3 +/- .2','none','linear'),('NaN','none','linear'),('12.3','upper','linear'),
     ('log(12.3)','none','log10'),('NULL','none','linear')])

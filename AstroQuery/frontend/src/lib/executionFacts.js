@@ -26,8 +26,8 @@ export function taskSeconds(events, task, now = Date.now()) {
   const starts = events.filter(event => event.type === 'task_started' && Number.isFinite(event.ts))
   const ends = events.filter(event => ['task_completed','task_cancelled','task_failed'].includes(event.type) && Number.isFinite(event.ts))
   const start = starts[0]?.ts * 1000
-  const end = ends[0]?.ts * 1000
-  const terminal = ['completed','error','failed','cancelled'].includes(task?.status)
+  const terminal = ['completed','error','failed','cancelled','budget_exhausted'].includes(task?.status)
+  const end = terminal ? ends.at(-1)?.ts * 1000 : NaN
   if (Number.isFinite(start)) return { seconds: Math.max(0, ((Number.isFinite(end) ? end : terminal ? Date.parse(task.completed_at) : now) - start) / 1000), basis: '从开始执行到终止，含等待确认' }
   const created = Date.parse(task?.created_at), completed = Date.parse(task?.completed_at)
   if (!Number.isFinite(created) || (terminal && !Number.isFinite(completed))) return { seconds: null, basis: '该任务未提供完整计时' }

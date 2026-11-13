@@ -28,7 +28,7 @@ def extraction_wire(prompt,bindings,*,paper=False):
         properties['source_blocks']={'type':'array','items':{'type':'string'},'maxItems':6}
         value['native_copy_rule']='For a native excerpt select source_blocks from the supplied page block IDs instead of copying source_quote; if local_admission.role_evidence already selects those core-page blocks, the server reuses them without a duplicate source_blocks list. Still transcribe the main value/individual errors and interpret subject, quantity, unit, role and context. On scans or missing blocks, source_quote is necessary transcription and remains unverified until page verification. Do not use context-only blocks as new measurements.'
     else:
-        schema['required']=[k for k in schema.get('required',[]) if k not in {'value','raw_value','source_quote','unit'}]
+        schema['required']=[k for k in schema.get('required',[]) if k not in {'value','raw_value','source_quote','unit','page'}]
         properties['native_cell']={'type':'boolean'}
         properties['row']={'type':'string','enum':list(bindings['groups']['R'])}
         value['native_copy_rule']='Use supplied R row and real column names. For a plain finite scalar numeric POINT in its stated native coordinate (including a source-native log coefficient), set native_cell=true and omit value/raw_value/source_quote; the server copies the original coefficient unchanged. YOU must establish native representation from actual definitions, not the column name. This is no logarithm or other calculation. Omit unit only when the column declares it. Preserve subject/quantity/role, independent errors, source quality and context. Composite strings, limits and uncertain encoding require explicit interpretation. Never convert to a target coordinate.'
@@ -59,6 +59,13 @@ def expand_extraction(response,bindings,*,rows=None,columns=(),blocks=()):
     fields={c['name']:c for c in columns}
     for proposal in value.get('results',[]):
         if not isinstance(proposal,dict):continue
+        native_location = (rows is not None and type(proposal.get('row')) is int
+                           and proposal['row'] in rows and proposal.get('column') in fields
+                           and proposal.get('location_kind') == 'catalog_cell')
+        if native_location:
+            # A VOTable/structured cell has row and column coordinates, no PDF
+            # page. Omitting this inapplicable field must not discard a value.
+            proposal.setdefault('page', None)
         if rows is None:
             proposal.setdefault('row',None);proposal.setdefault('column',None)
             selected=proposal.pop('source_blocks',None)
@@ -90,6 +97,10 @@ def expand_extraction(response,bindings,*,rows=None,columns=(),blocks=()):
             proposal['raw_value']=literal
             proposal['source_quote']=''  # full immutable row is bound downstream
             if 'unit' not in proposal:proposal['unit']=field.get('unit_text',field.get('unit'))
+        if native_location and 'unit' in proposal and proposal.get('source_unit') == proposal['unit']:
+            # The header calls this source_unit; the measurement calls it unit.
+            # Only remove an exact duplicate. Conflicting units remain invalid.
+            proposal.pop('source_unit', None)
     return value
 
 

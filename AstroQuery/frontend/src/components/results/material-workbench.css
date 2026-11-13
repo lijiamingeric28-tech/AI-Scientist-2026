@@ -1,0 +1,56 @@
+.workbench-result .data-view-unified-header { flex-wrap: wrap; gap: 8px 16px; }
+.workbench-result .data-view-unified-header .data-tabs { max-width: 100%; overflow-x: auto; }
+.workbench-result .data-view-unified-header .tab-btn { flex: 0 0 auto; white-space: nowrap; }
+.workbench-result .data-header-right-tools { flex-wrap: wrap; min-width: 0; gap: 8px; }
+.workbench-result .result-summary { flex-wrap: wrap; }
+.workbench-result .data-section { min-width: 0; }
+.workbench-filter-selects,
+.workbench-summary-state, .workbench-section-heading {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+}
+.workbench-candidates .materials-unified-toolbar { flex-wrap: wrap; }
+.workbench-material-group { margin-top: 20px; }
+.workbench-material-group h3, .workbench-section-heading h3 { margin: 0 0 10px; }
+.workbench-material-page { min-width: 0; display: grid; gap: 16px; margin-top: 12px; }
+.workbench-material-page .research-material-detail { padding: 0 !important; overflow: visible; }
+.workbench-material-heading { display: flex; flex-wrap: wrap; align-items: start; justify-content: space-between; gap: 12px; }
+.workbench-material-heading > div { flex: 1 1 22rem; min-width: 0; }
+.workbench-material-heading h2 {
+  margin: 4px 0 0;
+  color: var(--title-strong);
+  font-size: var(--text-heading);
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.workbench-material-heading p { color: var(--content-fg-secondary); margin: 0; }
+.workbench-back { display: inline-flex; align-items: center; gap: 4px; justify-self: start; }
+.workbench-material-summary { min-width: 0; }
+.workbench-material-summary p {
+  margin: 8px 0 0;
+  max-inline-size: none;
+  line-height: 1.7;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  text-wrap: wrap;
+}
+.workbench-section-heading { justify-content: space-between; margin-bottom: 8px; }
+.workbench-attachment { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--surface-border); }
+.workbench-attachment-tools { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 10px; }
+.workbench-material-records { min-width: 0; overflow-wrap: anywhere; }
+.workbench-section-heading h4 { margin: 0; font-size: var(--text-ui); }
+.workbench-select-cell { width: 34px; padding-inline: 8px; }
+.workbench-select-cell input, .workbench-image-choice input { accent-color: var(--seed-accent); }
+.workbench-image-choice { display: inline-flex; align-items: center; gap: 6px; }
+.workbench-drawer-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.workbench-material-data .records-table-region { max-height: 560px; overflow: auto; }
+.workbench-query-details .records-table-region { max-height: 570px; overflow: auto; }
+.workbench-query-details { display: grid; gap: 18px; }
+@media (max-width: 700px) {
+  .workbench-result .data-view-unified-header .data-tabs { width: 100%; }
+  .workbench-result .data-header-right-tools { width: 100%; }
+  .workbench-filter-selects { gap: 8px; }
+  .workbench-filter-selects select { max-width: 100%; }
+  .workbench-material-page .catalog-structure-section { min-width: 0; }
+}

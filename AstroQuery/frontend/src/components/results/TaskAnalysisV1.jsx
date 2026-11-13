@@ -14,7 +14,8 @@ const names = {
   quality_cleaning: '原文质检与量纲规范化',
   comparison_review: '多方对照与交叉审核',
   delivery: '交付与归档',
-  insights: '天体物理洞察',
+  insights: '历史洞察',
+  material_summaries: '资料总结',
 }
 
 const stages = {
@@ -23,7 +24,7 @@ const stages = {
   quality: '原文质检',
   cleaning: '量纲清洗',
   comparison: '交叉对照',
-  insights: '科学洞察',
+  insights: '资料总结',
 }
 
 const tabAliases = { modifications: 'trace', sources: 'comparison' }
@@ -37,94 +38,20 @@ const QUALITY_SUBNAV_ITEMS = [
 
 // 辅助格式化矩阵单元格：规整学术术语，根除防御性工程师口吻
 function formatMatrixCell(cell, stageKey) {
-  if (!cell) {
-    return { state: '未核对', text: '与主流文献一致', cls: 'consistent' }
-  }
-  const stateLabel = stateText(cell.state)
-
-  // 1. 量纲清洗阶段：彻底重塑“0/70 条处理就绪或核验不变”
-  if (stageKey === 'cleaning') {
-    if (cell.count === 0 && cell.total > 0) {
-      return {
-        state: '确认采纳原报',
-        text: `直接沿用原报物理量 (${cell.total} 条无需换算)`,
-        cls: 'consistent'
-      }
-    }
-    if (cell.count === cell.total && cell.total > 0) {
-      return {
-        state: '已全量归一化',
-        text: `${cell.total} 条已完成物理量归一化`,
-        cls: 'complete'
-      }
-    }
-    if (cell.count > 0) {
-      return {
-        state: '部分归一化',
-        text: `${cell.count} / ${cell.total} 条已完成量纲统一`,
-        cls: 'partial'
-      }
-    }
-  }
-
-  // 2. 原文质检阶段：重塑“51/55 项根问题”
-  if (stageKey === 'quality') {
-    return {
-      state: stateLabel,
-      text: cell.total ? `${cell.count} / ${cell.total} 项论据已核验` : (cell.unit || '已完成事实核验'),
-      cls: cell.state === 'complete' ? 'complete' : 'partial'
-    }
-  }
-
-  // 3. 数据提取阶段：重塑“303/315 个核心页范围”
-  if (stageKey === 'extraction') {
-    return {
-      state: stateLabel,
-      text: cell.total ? `${cell.count} / ${cell.total} 处论述区段已解析` : (cell.unit || '已提取'),
-      cls: cell.state === 'complete' ? 'complete' : 'partial'
-    }
-  }
-
-  // 4. 科学洞察阶段：重塑“未核对 历史未记录”
-  if (stageKey === 'insights') {
-    if (cell.state === 'not_checked' || cell.count == null) {
-      return {
-        state: '与主流文献一致',
-        text: '各文献测量一致 (无需特殊洞察)',
-        cls: 'consistent'
-      }
-    }
-    return {
-      state: stateLabel,
-      text: cell.count ? `${cell.count} 项洞察已生成` : '已完成洞察分析',
-      cls: 'complete'
-    }
-  }
-
-  // 5. 交叉对照阶段
-  if (stageKey === 'comparison') {
-    if (cell.state === 'incomplete' || (cell.count === 0 && cell.total)) {
-      return {
-        state: '待多方交叉核验',
-        text: `待多方文献交叉核验 (0/${cell.total || 1})`,
-        cls: 'partial'
-      }
-    }
-  }
-
-  // 通用兜底
-  const fallbackCount = cell.count == null
-    ? '与主流文献一致'
-    : (cell.count + (cell.total == null ? '' : ' / ' + cell.total) + ' ' + (cell.unit || ''))
+  if (!cell) return { state: '未核对', text: '', cls: 'partial' }
+  const state = stageKey === 'cleaning' && ['not_run', 'not_checked'].includes(cell.state) ? '未执行' : stateText(cell.state)
+  const count = cell.count != null && cell.total != null ? `${cell.count} / ${cell.total}`
+    : cell.count != null ? String(cell.count) : ''
   return {
-    state: stateLabel,
-    text: fallbackCount,
-    cls: cell.state === 'complete' ? 'complete' : 'partial'
+    state,
+    text: count ? [count, cell.unit].filter(Boolean).join(' ') : '',
+    cls: cell.state === 'complete' ? 'complete' : 'partial',
   }
 }
 
 function ScoreBasis({ component: c }) {
   const highlights = []
+  if (c.key === 'material_summaries' && c.requested != null) highlights.push(`已总结 ${c.ready} / ${c.requested} 个资料与性质组合`)
   if (c.property_coverage) {
     highlights.push(`覆盖 ${c.property_coverage.covered} / ${c.property_coverage.requested} 项物理性质`)
   }
@@ -189,10 +116,12 @@ export default function TaskAnalysisV1({
   onRetry,
   onVisibleTab,
   active = true,
+  standaloneTab,
 }) {
-  const [tab, setTab] = useRememberedState(memory, 'tab', 'overview'),
+  const [savedTab, setTab] = useRememberedState(memory, 'tab', 'overview'),
     [property, setProperty] = useRememberedState(memory, 'property', 'all'),
     [action, setAction] = useRememberedState(memory, 'action', 'all')
+  const tab = standaloneTab || savedTab
   const [source, setSource] = useState('all'),
     [date, setDate] = useState(''),
     [effect, setEffect] = useState('all'),
@@ -315,91 +244,24 @@ export default function TaskAnalysisV1({
       }))
     }
 
-    const compMap = Object.fromEntries((report.components || []).map(c => [c.key, c]))
-    const cMat = compMap['request_materials'] || {}
-    const cExt = compMap['extraction'] || {}
-    const cQual = compMap['quality_cleaning'] || {}
-    const cComp = compMap['comparison_review'] || {}
-    const cIns = compMap['insights'] || {}
+    return (report.components || []).filter(component => component.earned != null && component.weight > 0)
+      .map(component => ({ key: component.key, label: names[component.key] || component.key,
+        score: Math.min(1, component.earned / component.weight) }))
+  }, [report, quality])
 
-    const matScore = cMat.weight ? Math.min(1, (cMat.earned || 0) / cMat.weight) : 0.98
-    const extScore = cExt.weight ? Math.min(1, (cExt.earned || 0) / cExt.weight) : 0.90
-    const verScore = cQual.candidate_roots > 0 ? (cQual.concluded_roots || 0) / cQual.candidate_roots : 0.96
-    const normScore = records.length > 0 ? 1.0 : (cQual.weight ? Math.min(1, (cQual.earned || 0) / cQual.weight) : 0.98)
-    const compScore = cComp.properties_with_data > 0 ? (cComp.properties_checked || 0) / cComp.properties_with_data : (cComp.weight ? Math.min(1, (cComp.earned || 0) / cComp.weight) : 0.78)
-    const insScore = cIns.weight && cIns.earned != null ? Math.min(1, cIns.earned / cIns.weight) : 1.0
-
-    return [
-      {
-        key: 'retrieval',
-        label: '检索覆盖',
-        desc: `覆盖 ${report.property_coverage?.covered || 3}/${report.property_coverage?.requested || 3} 项物理性质，研读 ${sources.length || 35} 篇核心文献`,
-        score: matScore,
-      },
-      {
-        key: 'extraction',
-        label: '提取解析',
-        desc: '重点论述区段精确研读，科学事实与观测参数深度结构化提取',
-        score: extScore,
-      },
-      {
-        key: 'verification',
-        label: '原文质检',
-        desc: `${cQual.concluded_roots || 158}/${cQual.candidate_roots || 165} 项事实论据已核验闭环，严谨对齐原文图表与上下文`,
-        score: verScore,
-      },
-      {
-        key: 'standardization',
-        label: '量纲规范',
-        desc: `${records.length || 154} 条测量值全部完成单位标准化归一与量纲规范化`,
-        score: normScore,
-      },
-      {
-        key: 'consensus',
-        label: '交叉对照',
-        desc: `${cComp.properties_checked || 2}/${cComp.properties_with_data || 3} 项物理性质已完成多方文献比对与疑似矛盾核验`,
-        score: compScore,
-      },
-      {
-        key: 'insights',
-        label: '科学洞察',
-        desc: '物理特征演化推断、误差区间对比与多波段综合观测总结全量收敛',
-        score: insScore,
-      },
-    ]
-  }, [report, quality, records, sources])
-
-  // 学习图二：构造来源评分分布柱状图数据
   const state = quality?.quality_report?.report_state?.quality
-  const rawScores = useMemo(() => {
-    if (state?.quality_scoring?.per_source_scores) {
-      const vals = Object.values(state.quality_scoring.per_source_scores).map(percentScore).filter(v => v != null)
-      if (vals.length) return vals
-    }
-    const totalSources = sources.length || 34
-    return Array.from({ length: totalSources }, (_, i) => (i % 3 === 0 ? 96 : i % 2 === 0 ? 92 : 86))
-  }, [state, sources])
-
-  const bins = useMemo(() => {
-    const total = rawScores.length || 34
-    const count80_90 = rawScores.filter(s => s >= 80 && s < 90).length || Math.round(total * 0.42)
-    const count90_100 = rawScores.filter(s => s >= 90).length || (total - count80_90)
-    return [
-      { label: '0–60', count: rawScores.filter(s => s < 60).length },
-      { label: '60–70', count: rawScores.filter(s => s >= 60 && s < 70).length },
-      { label: '70–80', count: rawScores.filter(s => s >= 70 && s < 80).length },
-      { label: '80–90', count: count80_90 },
-      { label: '90–100', count: count90_100 },
-    ]
-  }, [rawScores])
-
-  const modificationCount = useMemo(() => modificationReport(quality).count ?? 37, [quality])
-  const traceCount = useMemo(() => executionTraceCount(quality) ?? (activity.length || 65), [quality, activity])
+  const rawScores = useMemo(() => Object.values(state?.quality_scoring?.per_source_scores || {})
+    .map(percentScore).filter(value => value != null), [state])
+  const bins = useMemo(() => [[0, 60], [60, 70], [70, 80], [80, 90], [90, 101]].map(([min, max]) => ({
+    label: min + '–' + Math.min(max, 100), count: rawScores.filter(value => value >= min && value < max).length,
+  })), [rawScores])
+  const modificationCount = modificationReport(quality).count
+  const traceCount = executionTraceCount(quality) ?? (resourceLoading.activity ? null : activity.length)
 
   return (
     <div className="research-analysis">
       {/* 质量与洞察 极简学术高质感分段导航条 + 物理滑动胶囊 */}
-      <div className="quality-subnav-vessel">
+      {!standaloneTab && <div className="quality-subnav-vessel">
         <nav
           ref={navRef}
           className="quality-segmented-track data-tabs"
@@ -436,7 +298,7 @@ export default function TaskAnalysisV1({
             )
           })}
         </nav>
-      </div>
+      </div>}
 
       {Object.entries(resourceErrors)
         .filter(
@@ -467,52 +329,43 @@ export default function TaskAnalysisV1({
         <div className="analysis-pane quality-pane" {...panes.paneProps('overview')}>
           <section className="research-score-overview">
             {/* 双舱科学仪表盘 (学习图二布局) */}
-            <div className="quality-overview-grid">
+            <div className={`quality-overview-grid${rawScores.length ? '' : ' single-score-panel'}`}>
               {/* 左舱: 综合完成度与六维能力雷达 */}
               <section className="report-section quality-score-hero-panel">
                 <div className="panel-header-row">
-                  <h3 className="panel-title">综合质量</h3>
-                  <span className="panel-badge-score">
+                  <h3 className="panel-title">本次查询完成度</h3>
+                  {report.property_coverage && <span className="panel-badge-score">
                     <Icon.Check style={{ width: 12, height: 12, color: 'var(--seed-accent)' }} />
-                    <span>{report.property_coverage?.covered || 3} / {report.property_coverage?.requested || 3} 项物理性质已收敛</span>
-                  </span>
+                    <span>{report.property_coverage.covered} / {report.property_coverage.requested} 项性质取得测量</span>
+                  </span>}
                 </div>
 
                 <div className="quality-score-layout">
                   <div className="score-hero-col">
                     <div className="score-main-row">
-                      <span className="score-main-number">{report.score == null ? '85' : report.score}</span>
-                      <span className="score-max-number">/ 100</span>
+                      <span className="score-main-number">{report.score ?? '待汇总'}</span>
+                      {report.score != null && <span className="score-max-number">/ 100</span>}
                     </div>
-                    <div className="score-rating-badge">
-                      <Icon.Sparkle style={{ width: 12, height: 12 }} />
-                      <span>{report.score >= 80 ? 'A 级 · 极优交付' : report.score >= 60 ? 'B 级 · 良好收敛' : 'C 级 · 待收敛'}</span>
-                    </div>
-                    <div className="score-mini-track">
-                      <div
-                        className="score-mini-bar"
-                        style={{ width: `${report.score == null ? 85 : Math.min(100, report.score)}%` }}
-                      />
-                    </div>
-                    <span className="score-quality-level-text">质量等级 EXCELLENT</span>
+                    {report.score != null && <div className="score-mini-track">
+                      <div className="score-mini-bar" style={{ width: `${Math.min(100, report.score)}%` }} />
+                    </div>}
                   </div>
 
                   <div className="radar-col">
-                    <RadarChart dims={radarDims} size={250} />
+                    {radarDims.length >= 3 && <RadarChart dims={radarDims} size={250} />}
                   </div>
                 </div>
 
                 <div className="panel-footer-note">
-                  <span>按有效来源记录数与事实证据链加权</span>
-                  <span className="panel-footer-right">全流程核验闭环</span>
+                  <span>按本次检索、提取、核验和交付回执计分</span>
                 </div>
               </section>
 
               {/* 右舱: 来源评分分布与科研轨迹统计 */}
-              <section className="report-section quality-distribution-panel">
+              {rawScores.length > 0 && <section className="report-section quality-distribution-panel">
                 <div className="panel-header-row">
-                  <h3 className="panel-title">来源评分分布</h3>
-                  <span className="panel-subtitle-badge">{sources.length || 34} 个文献与星表来源</span>
+                  <h3 className="panel-title">来源与处理</h3>
+                  <span className="panel-subtitle-badge">{sources.length} 份来源资料</span>
                 </div>
 
                 <div className="distribution-bars">
@@ -531,10 +384,10 @@ export default function TaskAnalysisV1({
                 </div>
 
                 <div className="processing-counts">
-                  <span>修改操作 <strong>{modificationCount}</strong> 项</span>
-                  <span>执行轨迹 <strong>{traceCount}</strong> 条</span>
+                  {modificationCount != null && <span>修改操作 <strong>{modificationCount}</strong> 项</span>}
+                  {traceCount != null && <span>执行轨迹 <strong>{traceCount}</strong> 条</span>}
                 </div>
-              </section>
+              </section>}
             </div>
 
             {/* 下层: 2×2 核心评估维度与支撑依据精密卡片网格 */}
@@ -547,7 +400,7 @@ export default function TaskAnalysisV1({
               <div className="score-dimension-grid">
                 {report.components.map((component) => {
                   const c =
-                    component.key === 'insights' && report.status === 'pending'
+                    ['insights', 'material_summaries'].includes(component.key) && report.status === 'pending'
                       ? { ...component, earned: null }
                       : component
                   const pct = c.earned != null ? Math.min(100, Math.max(0, (c.earned / c.weight) * 100)) : 0
@@ -775,24 +628,32 @@ export default function TaskAnalysisV1({
             {Object.entries(propertyNames)
               .filter(([pid]) => property === 'all' || pid === property)
               .map(([pid, name]) => {
-                const check = checks.find((c) => c.property_id === pid),
-                  ownGroups = groups.filter((g) => g.property_id === pid)
+                const check = checks.find((c) => c.property_id === pid)
+                const legacyGroupIds = new Set(check?.duplicates?.map((g) => g.group_id))
+                const ownGroups = groups.filter((g) => g.property_id === pid || legacyGroupIds.has(g.group_id))
                 const human = activity.filter((a) => a.kind === 'human' && a.property_id === pid)
+                const expected = check?.coverage?.expected_members?.length
+                const checked = check?.coverage?.original_checked_members?.length
+                const hasCoverage = expected > 0 && checked != null
+                const status = check?.state === 'partial'
+                  ? (checked === 0 ? '未完成核对' : '部分核对')
+                  : check ? stateText(check.state) : '未核对'
 
                 return (
                   <div className="property-archive-card" key={pid}>
                     <div className="archive-card-header">
                       <h4>{name}</h4>
                       <span className={`archive-status-tag ${check?.state === 'checked' ? 'status-ok' : 'status-pending'}`}>
-                        {check ? (check.state === 'checked' ? '多方比对一致' : stateText(check.state)) : '待交叉核对'}
+                        {status}
                       </span>
                     </div>
+                    {hasCoverage && <p className="archive-empty-note">原件核对 {checked} / {expected} 条</p>}
 
                     {ownGroups.map((g) => (
                       <div className="archive-group-box" key={g.group_id}>
                         <div className="group-box-title">
                           <Icon.Layers style={{ width: 13, height: 13, color: 'var(--accent)' }} />
-                          <span>同源观测跨文献引用记录 · 共 {g.member_refs.length} 篇文献引用</span>
+                          <span>同源归档 · {g.member_refs.length} 条原报</span>
                         </div>
                         <p className="group-box-reason">{g.reason}</p>
                         <div className="group-records-row">
@@ -822,7 +683,7 @@ export default function TaskAnalysisV1({
                         </div>
                         <p className="suspicion-desc">{s.question || s.reason}</p>
                         <div className="group-records-row">
-                          {(s.measurement_refs || []).map((ref) => {
+                          {(s.member_refs || s.measurement_refs || []).map((ref) => {
                             const r = records.find((x) => x.record_id === ref.id)
                             return (
                               <button
@@ -848,16 +709,10 @@ export default function TaskAnalysisV1({
                       />
                     )}
 
-                    {!check && <p className="archive-empty-note">此性质未触发复杂跨文献差异判定，文献数据呈高度共识收敛。</p>}
-                    {check &&
-                      !(check.duplicates || []).length &&
-                      !(check.suspicions || []).length && (
-                        <p className="archive-empty-note">
-                          {check.state === 'checked'
-                            ? '已核验范围内多篇文献数据相互印证，未形成异常分歧。'
-                            : '已完成单篇文献有效性核验，待多篇文献汇集比对。'}
-                        </p>
-                      )}
+                    {!check && <p className="archive-empty-note">本次查询未保存对照报告。</p>}
+                    {check?.state === 'checked' && !ownGroups.length && !check.suspicions?.length && (
+                      <p className="archive-empty-note">核对范围内未记录同源归档或疑似差异。</p>
+                    )}
                   </div>
                 )
               })}
@@ -943,7 +798,7 @@ export default function TaskAnalysisV1({
                 ? '本轮物理量科学洞察正在汇总结算中…'
                 : insights?.generation_enabled === false
                   ? '本任务未启用扩展科学洞察。'
-                  : '本轮提取的物理量观测值与主流天体物理模型高度吻合，各文献结论一致，未发现异常矛盾。'}
+                  : '本次没有已保存的洞察报告。'}
             </div>
           )}
         </section>

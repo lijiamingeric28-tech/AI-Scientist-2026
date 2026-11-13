@@ -8,9 +8,8 @@ import pytest
 from astroquery_ai.runtime.codec import canonical, digest
 from astroquery_ai.runtime.errors import DomainError
 from astroquery_ai.runtime.run_policy import NORMAL_RUN_POLICY, ensure_window, guard, user_pause, sweep_ready, current_job, catalog_window, elapsed
-# Historical six-hundred-second task compatibility; the normal strategy no
-# longer has a module clock. Retain all clock assertions on an explicit frozen
-# historical fixture, not on the newly published default (spec section 1).
+# Historical six-hundred-second task compatibility. New requests use the
+# separately tested twenty-minute policy; saved tasks keep their own clock.
 NORMAL_RUN_POLICY = deepcopy(NORMAL_RUN_POLICY)
 NORMAL_RUN_POLICY['catalog'].update(discovery_seconds=120,stop_dispatch_seconds=540,end_seconds=600)
 
@@ -18,10 +17,10 @@ from astroquery_ai.runtime.repository import Repository
 from astroquery_ai.science.catalog.selection import fair_candidates, checked_ranking
 
 
-def controlled(repo):
+def controlled(repo, policy=None):
     tid = repo.create_task('SYNTHETIC catalog window')['task_id']
     with repo.transaction() as conn:
-        spec = {'run_policy': deepcopy(NORMAL_RUN_POLICY), 'dependencies': [], 'registry_release': {'id': 'synthetic'}, 'properties': []}
+        spec = {'run_policy': deepcopy(policy or NORMAL_RUN_POLICY), 'dependencies': [], 'registry_release': {'id': 'synthetic'}, 'properties': []}
         spec['spec_hash'] = digest(spec)
         ref = repo.put_object(conn, tid, 'confirmed_query', tid, 1, spec)
         repo.mutate_task(conn, tid, lifecycle='running', science_state='open', query_ref=canonical(ref).decode())
@@ -30,6 +29,29 @@ def controlled(repo):
         jid = repo.enqueue(conn, tid, 'M03', 'catalog_extract', {'table_id': 'synthetic'})
     job = repo.claim_job('worker')
     return tid, job
+
+
+def test_new_default_twenty_minute_clock_keeps_existing_results_and_does_not_restart(tmp_path):
+    from astroquery_ai.runtime.configuration import Configuration
+    from astroquery_ai.runtime.run_policy import request_policy
+    policy=request_policy(Configuration(tmp_path/'config'))
+    limit=policy['catalog']
+    assert (limit['resource_selection_seconds'],limit['selection_seconds'],
+            limit['stop_dispatch_seconds'],limit['end_seconds'])==(300,480,1140,1200)
+    repo=Repository(tmp_path/'clock.sqlite3');tid,job=controlled(repo,policy)
+    with repo.transaction() as conn:
+        ensure_window(repo,conn,job,now=1000)
+        repo.put_object(conn,tid,'candidate','saved',1,{'candidate_id':'saved','raw_value':'12.3'})
+        assert ensure_window(repo,conn,job,now=1800)['started_at']==1000
+        assert guard(repo,conn,job,now=2199)==1
+        with pytest.raises(DomainError,match='已停止派发'):
+            guard(repo,conn,job,dispatch=True,now=2140)
+        with pytest.raises(DomainError,match='时间窗口已结束'):
+            guard(repo,conn,job,now=2200)
+        from astroquery_ai.runtime.run_policy import stop_job
+        stop_job(repo,conn,job,'CATALOG_WINDOW_EXPIRED')
+        assert repo.object(conn,tid,'candidate','saved')['raw_value']=='12.3'
+        assert repo.objects(conn,tid,'coverage')[0]['outcome']=='not_checked_time_control'
 
 
 def test_one_clock_dispatch_commit_pause_restart(tmp_path):

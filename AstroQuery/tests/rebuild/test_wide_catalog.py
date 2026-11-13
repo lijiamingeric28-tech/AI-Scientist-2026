@@ -105,7 +105,9 @@ def test_fitting_wide_header_keeps_far_error_without_forced_batches(tmp_path, ar
             await run_until_wait(app, scheduler)
             state = app.view(state['task_id'])
         assert state['science_state'] == 'sealed' and state['lifecycle'] == 'completed'
-        assert len(schema_calls) == 1
+        # Full parent metadata may supply this exact schema without another
+        # table request; the far error must still survive the checks below.
+        assert len(schema_calls) <= 1
         assert list(map(len, app.models.targets)) == [65]
         assert {c for group in app.models.targets for c in group} == set(names)
         with app.repository.read() as conn:

@@ -27,6 +27,8 @@ export const getPresentation = (taskId, atSeq, options = {}) => request(`/tasks/
 export const getExecution = (taskId, query = {}, options = {}) => request(`/tasks/${id(taskId)}/execution?${new URLSearchParams(Object.fromEntries(Object.entries(query).filter(([,v])=>v!=null)))}`, options)
 export const executionReportUrl = (taskId, cursor, format) => `${BASE}/tasks/${id(taskId)}/execution/report?${new URLSearchParams({at_seq:cursor,format})}`
 export const draftAction = (taskId, body) => post(`/tasks/${id(taskId)}/draft-actions`, body)
+export const getPropertyCatalog = (taskId, questionId, options) =>
+  request(`/tasks/${id(taskId)}/property-catalog?question_id=${id(questionId)}`, options)
 export const reviewAnswer = (taskId, body) => post(`/tasks/${id(taskId)}/review-answers`, body)
 export async function controlTask(taskId, action, operation) {
   const state = operation ? null : await getState(taskId)
@@ -43,7 +45,12 @@ export function openEventStream(taskId, handlers, afterSeq = 0) {
   return source
 }
 export const getEvents = (taskId, afterSeq = 0) => request(`/tasks/${id(taskId)}/events?after_seq=${afterSeq}`)
-export const getDelivery = (taskId, revision, options) => request(`/tasks/${id(taskId)}/delivery${revision ? '?delivery_revision='+id(revision) : ''}`, options)
+export const getDelivery = (taskId, revision, { deliveryId, ...options } = {}) => {
+  const params = new URLSearchParams()
+  if (revision) params.set('delivery_revision', revision)
+  if (deliveryId) params.set('delivery_id', deliveryId)
+  return request(`/tasks/${id(taskId)}/delivery${params.size ? '?' + params : ''}`, options)
+}
 export async function getPreview(taskId, options) {
   const first = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500`, options)
   const items = [...first.items]
@@ -133,9 +140,26 @@ export const getActivity = (taskId, deliveryId, revision, options) => resource(t
 export const getCoverageMatrix = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'coverage', revision, '&view=matrix', options)
 export const getMaterial = async (taskId, deliveryId, revision, materialId, options) => (await resource(taskId, deliveryId, 'materials', revision, `&material_id=${id(materialId)}`, options))[0]
 export const getExports = async (taskId, deliveryId, revision, options) => (await request(`/tasks/${id(taskId)}/exports`, options)).filter(m=>(!deliveryId||m.delivery_id===deliveryId)&&(!revision||m.delivery_revision===revision)).flatMap(manifest => manifest.artifacts.map(artifact => ({ ...artifact,
-  name: artifact.artifact_id, display_name: `${manifest.format} · ${manifest.selected_count} 条`, size: artifact.byte_size,
+  name: artifact.filename || manifest.filename || artifact.artifact_id, display_name: artifact.filename || manifest.filename || `${manifest.format} · ${manifest.selected_count} 条`, size: artifact.byte_size,
   created_at:manifest.created_at, format:manifest.format, selected_count:manifest.selected_count, delivery_revision:manifest.delivery_revision, snapshot_ref:manifest.snapshot_ref, description: `交付修订 ${manifest.delivery_revision}`, delivery_id: manifest.delivery_id, export_id: manifest.export_id })))
 export const createExport = (taskId, body) => post(`/tasks/${id(taskId)}/exports`, body)
+export const previewExport = (taskId, body, { path, ...options } = {}) =>
+  request(`/tasks/${id(taskId)}/exports/preview${path ? '?' + new URLSearchParams({ path }) : ''}`,
+    { ...options, method: 'POST', body: JSON.stringify(body) })
+export const generateMaterialSummary = (taskId, deliveryId, body) =>
+  post(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/material-summary`, body)
+export async function getWorkbenchPage(taskId, deliveryId, revision, name, query, options) {
+  const params = new URLSearchParams(Object.fromEntries(Object.entries({
+    view: 'workbench', expected_delivery_revision: revision, delivery_revision: revision, ...query,
+  }).filter(([, value]) => value != null && value !== '' && value !== 'all')))
+  const result = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?${params}`, options)
+  if (result.delivery_id !== deliveryId || result.delivery_revision !== revision)
+    throw new Error('结果响应的交付版本不一致')
+  if (name === 'material_records') {
+    result.items = result.items.map(item => adaptRecord(item, deliveryId, revision, taskId))
+  }
+  return result
+}
 export const artifactUrl = (taskId, artifactId) => `${BASE}/tasks/${id(taskId)}/artifacts/${id(artifactId)}`
 export const exportFileUrl = artifactUrl
 export async function getConfig() { const result = await request('/config'); configRevision = result.saved_revision; return result }

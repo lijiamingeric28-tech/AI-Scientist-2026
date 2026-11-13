@@ -189,6 +189,19 @@ def register(app, application, scheduler):
         return Response(raw,media_type='application/pdf' if format == 'pdf' else 'application/json',
             headers={'Content-Disposition': f'attachment; filename="execution-{task_id}-{body["cursor"]}.{format}"'})
 
+    @app.get("/api/tasks/{task_id}/property-catalog")
+    def property_catalog(task_id: str, question_id: str):
+        from astroquery_ai.query.drafts import catalog_context
+        with application.repository.read() as conn:
+            task = application.repository.task(conn, task_id)
+            draft = application._draft(conn, task_id)
+            question = draft.get("pending_question") or {}
+            if (task["query_ref"] or draft["status"] != "waiting_input" or
+                question.get("question_id") != question_id or not question.get("full_property_catalog")):
+                raise DomainError("PROPERTY_CATALOG_CHANGED", "当前查询的适用性质已变化", 409)
+            return {"catalog_context_hash": catalog_context(draft), "question_id": question_id,
+                    "bindings": draft["property_support"]["bindings"]}
+
     @app.post("/api/tasks/{task_id}/draft-actions")
     async def draft_action(task_id: str, request: Request):
         result = application.draft_action(task_id, await request.json())

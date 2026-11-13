@@ -2000,6 +2000,20 @@
   gap: 20px;
   align-items: stretch;
 }
+.quality-overview-grid.single-score-panel { grid-template-columns: minmax(0, 1fr); }
+.catalog-structure-disclosure { margin-top: 24px; padding-block: 14px; border-top: 1px solid var(--surface-border); }
+.catalog-structure-disclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: var(--text-ui);
+  font-weight: 650;
+}
+.catalog-structure-disclosure > summary::-webkit-details-marker { display: none; }
+.catalog-structure-disclosure[open] > summary { margin-bottom: 12px; }
+.catalog-structure-chevron { margin-inline-start: auto; }
+.catalog-structure-disclosure[open] .catalog-structure-chevron { transform: rotate(180deg); }
 
 .quality-score-hero-panel,
 .quality-distribution-panel {

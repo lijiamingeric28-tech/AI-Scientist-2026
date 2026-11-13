@@ -274,6 +274,12 @@ def coverage_matrix(body, quality, difference, insight, facts):
             'comparison': cell('complete' if checks.get(pid, {}).get('state') == 'checked' else 'incomplete' if pid in checks else 'not_checked', 1 if checks.get(pid, {}).get('state') == 'checked' else 0, 1, '项性质核对'),
             'insights': cell('complete' if card and card.get('status') == 'generated' else 'technical_failure' if card and card.get('status') == 'failed' else 'not_applicable' if insight and insight.get('generation_enabled') is False else 'pending' if insight and insight.get('status') == 'pending' else 'not_checked', 1 if card and card.get('status') == 'generated' else None, 1, '项洞察'),
         }
+        if (insight or {}).get('schema_version') == 'MaterialSummaryReport/1':
+            summary = insight.get('counts', {}).get(pid)
+            cells['insights'] = (cell('pending') if insight['status'] == 'pending' else
+                cell('not_applicable') if not summary or not summary['requested'] else
+                cell('complete' if summary['ready'] == summary['requested'] else 'partial',
+                     summary['ready'], summary['requested'], '份资料总结'))
         own = [m for m in body['measurements'] if m['measurement_id'] in mids]
         stats = {
             'page': sum(any(evidence.get(r['id'], {}).get('locator', {}).get('page') for r in m.get('evidence_refs', [])) for m in own),

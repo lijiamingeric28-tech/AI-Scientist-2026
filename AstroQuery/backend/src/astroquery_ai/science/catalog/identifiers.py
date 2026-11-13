@@ -171,11 +171,13 @@ def identifier_selectors(alias, namespace, column=None):
     local = local_identifier(alias, namespace)
     # Navigation variants remove only SIMBAD's leading object-type marker.
     # Returned cells still require exact or source-evidenced identity checks.
-    unmarked = re.sub(r'^(?:V\*|\*\*?)\s+', '', alias.strip())
+    unmarked = re.sub(r'^(?:V\*|\*\*?|NAME|Cl)\s+', '', alias.strip())
     variant = (unmarked if unmarked != alias.strip() and column
                and column.get('datatype') in {'char','unicodeChar'} else None)
     if local is None:
         return [variant] if variant else []
+    if namespace is None and variant:
+        return list(dict.fromkeys([variant,local]))
     if namespace and namespace.casefold() == "2mass":
         return [local, "J" + local, "2MASS J" + local]
     if (
@@ -218,6 +220,14 @@ def navigation_patterns(aliases):
     """Literal numeric tokens from verified aliases, NOT an identity rule."""
     patterns = []
     for alias in aliases:
+        # This is retrieval navigation only. Returned names still go through
+        # exact or source-evidenced identity; no marker removal grants a match.
+        unmarked=re.sub(r'^(?:V\*|\*\*?|NAME|Cl)\s+','',alias.strip())
+        words=unmarked.split()
+        if re.fullmatch(r'[A-Za-z][A-Za-z0-9 +.\-]*',unmarked) and (
+                len(re.sub(r'[^A-Za-z]','',unmarked))>=3 or re.fullmatch(r'[A-Za-z]+\s*\d{1,2}[A-Za-z]?',unmarked)):
+            pattern='*'+'*'.join(words)+'*'
+            if pattern not in patterns:patterns.append(pattern)
         tokens = re.findall("[0-9]+", alias)
         if any((len(token) >= 3 for token in tokens)):
             pattern = "*" + "*".join(tokens) + "*"

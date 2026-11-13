@@ -139,7 +139,7 @@ function pageItems(page, totalPages) {
   return items
 }
 
-export function RecordsTable({ memory = {}, active = true, records, filterRecords = records, allRecordCount = records.length, onRowClick, searchText = '', onResetFilters, externalFiltered = false, filterKey = '', onDeleteRecord, dupIndex = null, sources: allSources = [], onFilteredChange, forcedSource, forcedRecord, forcedField, toolbarExtra, search = searchText, onSearchChange, quick = filterKey || 'target', onQuickChange }) {
+export function RecordsTable({ memory = {}, active = true, records, filterRecords = records, allRecordCount = records.length, onRowClick, searchText = '', onResetFilters, externalFiltered = false, filterKey = '', onDeleteRecord, dupIndex = null, sources: allSources = [], onFilteredChange, forcedSource, forcedRecord, forcedField, toolbarExtra, search = searchText, onSearchChange, quick = filterKey || 'target', onQuickChange, selection, externalPage = false, onOpenSource }) {
   const propertyLabel = usePropertyLabel()
   const [selectedRow, setSelectedRow] = useRememberedState(memory, 'selectedRow', null)
   const openRow = record => { setSelectedRow(record.record_id); onRowClick?.(record) }
@@ -206,7 +206,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
     return null
   }
 
-  const q = searchText.trim().toLowerCase()
+  const q = search.trim().toLowerCase()
   const previousSearch = useRef({ q, filterKey })
   useEffect(() => { if (previousSearch.current.q !== q || previousSearch.current.filterKey !== filterKey) { previousSearch.current = { q, filterKey }; setPage(1) } }, [q, filterKey])
   const hasFilters = !!q || fieldFilter !== 'all' || sourceFilter !== 'all' || externalFiltered
@@ -245,7 +245,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
   useEffect(() => { onFilteredChange?.(sortedRows) }, [sortedRows, onFilteredChange])
   // records 重拉后 totalPages 可能收缩（P0-2 兜底重拉翻页在末页时）——钳制当前页
   const cur = Math.min(page, totalPages)
-  const pageRows = displayRows.slice((cur - 1) * pageSize, cur * pageSize)
+  const pageRows = externalPage ? displayRows : displayRows.slice((cur - 1) * pageSize, cur * pageSize)
   const scrollKey = JSON.stringify([q, fieldFilter, sourceFilter, yearSort, filterKey, cur, pageSize])
   const previousScrollKey = useRef(scrollKey)
   const resetTablePosition = () => {
@@ -280,7 +280,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
   return (
     <div className="records-workspace">
       {/* Keep related controls together when the workspace is narrow. */}
-      {onSearchChange ? (
+      {!externalPage && (onSearchChange ? (
         <div className="record-filters-bar" hidden={narrowFilters && !filterOpen}>
           <div className="filter-search-box">
             <Icon.Search style={{ width: 13, height: 13, color: 'var(--content-fg-tertiary)', flexShrink: 0 }} />
@@ -402,18 +402,21 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
             </span>
           </div>
         </>
-      )}
+      ))}
 
       {/* 表格（科学 6 列：实体 | 性质(含条件) | 值 | 单位 | 来源 | 提取方式） */}
       <div ref={tableScrollRef} className="records-table-region" tabIndex={0} aria-label="测量记录表格" onScroll={event => { if (active) { memory.tableTop = event.currentTarget.scrollTop; memory.tableLeft = event.currentTarget.scrollLeft } }}>
-        <table className="records-table">
+        <table className={`records-table${selection ? ' has-record-selection' : ''}`}>
           <thead>
             <tr style={{ background: 'var(--surface-secondary)' }}>
+              {selection && <th className="workbench-select-cell"><input type="checkbox" aria-label="选择本页测量"
+                disabled={!pageRows.length} checked={!!pageRows.length && pageRows.every(r => selection.has('records', r.record_id))}
+                onChange={() => selection.toggle('records', pageRows)} /></th>}
               {['实体', '性质', '值', '单位', '来源', '提取方式', ...(onDeleteRecord ? ['操作'] : [])].map((h) => {
                 const isValue = h === '值'
                 const isUnit = h === '单位'
                 const thPadding = isValue ? '10px 4px 10px 12px' : isUnit ? '10px 12px 10px 4px' : '10px 12px'
-                if (h === '来源') {
+                if (h === '来源' && !externalPage) {
                   const sortIcon = yearSort === 'desc' ? ' ↓' : yearSort === 'asc' ? ' ↑' : ' ↕'
                   const sortTip = yearSort === 'none'
                     ? '点击按来源年份降序排序（最新优先）'
@@ -449,13 +452,14 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
             </tr>
           </thead>
           <tbody data-page-content>
-            {!pageRows.length && <tr><td colSpan={onDeleteRecord ? 7 : 6} className="records-no-match"><p>没有找到符合当前条件的记录</p>{hasFilters && <Button variant="outline" size="sm" onClick={clearFilters}>清除筛选，查看全部记录</Button>}</td></tr>}
+            {!pageRows.length && <tr><td colSpan={6 + Number(!!onDeleteRecord) + Number(!!selection)} className="records-no-match"><p>没有找到符合当前条件的记录</p>{hasFilters && <Button variant="outline" size="sm" onClick={clearFilters}>清除筛选，查看全部记录</Button>}</td></tr>}
             {pageRows.map((r) => {
               const rowDup = dupIndex?.byRecordId?.[r.record_id] || null
               // 仅非代表成员行追加徽标；组散（现存成员 <2）后不再标注
               const showDupBadge = !!rowDup && !rowDup.isRepresentative && rowDup.group.liveCount >= 2
               const condText = recordConditionText(r.context?.conditions, r.entity_name)
-              const condBadge = extractShortConditionBadge(condText)
+              const originalBand = r.native_coordinates?.bands?.length === 1 ? r.native_coordinates.bands[0].value : null
+              const condBadge = extractShortConditionBadge(condText) || (originalBand ? String(originalBand).replace(/^em\.opt\./, '') : null)
 
               return (
               <tr
@@ -472,6 +476,10 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
                 tabIndex={0}
                 onKeyDown={event => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openRow(r) } }}
               >
+                {selection && <td className="workbench-select-cell" onClick={event => event.stopPropagation()}>
+                  <input type="checkbox" aria-label={`选择测量 ${r.field_value} ${r.field_unit || ''}`}
+                    checked={selection.has('records', r.record_id)} onChange={() => selection.toggle('records', [r])} />
+                </td>}
                 {/* 1. 实体 */}
                 <td style={{ ...tdStyle, color: 'var(--seed-accent)', fontWeight: 550, whiteSpace: 'nowrap' }} title={r.entity_name}>
                   {r.entity_name}
@@ -499,10 +507,15 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
 
                 {/* 5. 来源（期刊缩写+年份） */}
                 <td style={{ ...tdStyle, color: 'var(--seed-accent)', fontSize: 12.5 }}>
-                  <span className="record-source-cell" title={sourceName(sourceMap.get(r.source_id), r.source_id)}>
+                  {onOpenSource ? <button type="button" className="text-link record-source-cell"
+                    title={sourceName(sourceMap.get(r.source_id), r.source_id)}
+                    onClick={event => { event.stopPropagation(); onOpenSource(r.source_id, r.property_id) }}>
+                    <Icon.FileText style={{ width: 11, height: 11, flexShrink: 0 }} />
+                    <span>{sourceName(sourceMap.get(r.source_id), r.source_id, true)}</span>
+                  </button> : <span className="record-source-cell" title={sourceName(sourceMap.get(r.source_id), r.source_id)}>
                     <Icon.FileText style={{ width: 11, height: 11, flexShrink: 0, color: 'var(--seed-accent)' }} />
                     <span>{sourceName(sourceMap.get(r.source_id), r.source_id, true)}</span>
-                  </span>
+                  </span>}
                 </td>
 
                 {/* 6. 提取方式 */}
@@ -550,7 +563,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
       </div>
 
       {/* 分页条（用户重设计：‹ 上一页 | 页码窗口 | 下一页 › | 每页显示 N 条） */}
-      <div className="records-pagination" style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 12, flexWrap: 'wrap' }}>
+      {!externalPage && <div className="records-pagination" style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 12, flexWrap: 'wrap' }}>
         <button className="pager-btn" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '0 10px' }} disabled={cur <= 1} onClick={() => goto(cur - 1)}>
           <Icon.ChevronLeft style={{ width: 11, height: 11 }} />上一页
         </button>
@@ -577,7 +590,7 @@ export function RecordsTable({ memory = {}, active = true, records, filterRecord
           </select>
           条
         </span>
-      </div>
+      </div>}
     </div>
   )
 }

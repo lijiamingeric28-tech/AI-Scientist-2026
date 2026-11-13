@@ -17,7 +17,7 @@ def zip_bytes(files):
     return output.getvalue()
 
 
-def test_container_hashes_files_but_never_executes_code_or_parses_supplement_pdf(tmp_path):
+def test_container_hashes_files_and_lists_supplement_pdf_without_parsing_or_running_code(tmp_path):
     path = tmp_path / "synthetic.zip"
     path.write_bytes(
         zip_bytes(
@@ -32,10 +32,10 @@ def test_container_hashes_files_but_never_executes_code_or_parses_supplement_pdf
     result = structured_archive(path, original_filename=path.name)
     assert result["state"] == "enumerated" and result["code_executed"] is False
     assert all(entry["sha256"] for entry in result["entries"])
-    assert [item["path"] for item in result["members"]] == ["data/table.csv", "data/ReadMe"]
+    assert [item["path"] for item in result["members"]] == ["data/table.csv", "data/ReadMe", "supplement.pdf"]
     assert (
         next(item for item in result["entries"] if item["path"].endswith(".pdf"))["role"]
-        == "excluded_supplementary_pdf"
+        == "supplementary_pdf"
     )
     assert not (tmp_path / "data").exists()
 

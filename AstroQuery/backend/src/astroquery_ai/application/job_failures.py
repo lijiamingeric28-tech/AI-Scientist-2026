@@ -9,6 +9,27 @@ class JobFailures:
     def __init__(self, application):
         self.application, self.repository = (application, application.repository)
 
+    def publish_budget_result(self, conn, tid):
+        """Seal the admitted records after all workers have released their leases."""
+        repo = self.repository
+        task = repo.task(conn, tid)
+        if task["lifecycle"] != "budget_exhausted" or task["delivery_ref"] or not task["query_ref"]:
+            return
+        if conn.execute(
+            "SELECT 1 FROM jobs WHERE task_id=? AND status='running' LIMIT 1", (tid,)
+        ).fetchone():
+            return
+        conn.execute("SAVEPOINT budget_delivery")
+        try:
+            self.application.delivery.seal(conn, tid, outcome="budget_exhausted")
+        except Exception as exc:
+            conn.execute("ROLLBACK TO budget_delivery")
+            repo.event(conn, tid, "delivery_failed", {
+                "reason": getattr(exc, "code", "budget_finalization_failed"),
+            })
+        finally:
+            conn.execute("RELEASE budget_delivery")
+
     def handle(self, conn, job, task, code, error):
         repo, tid = (self.repository, job["task_id"])
         if job["kind"] == "normalize":
@@ -182,14 +203,6 @@ class JobFailures:
                 "UPDATE reviews SET status=CASE WHEN status='accepted' THEN 'closed_unapplied' ELSE 'closed_unanswered' END WHERE task_id=? AND status IN ('pending','accepted')",
                 (tid,),
             )
-            conn.execute("SAVEPOINT budget_delivery")
-            try:
-                self.application.delivery.seal(conn, tid, outcome="budget_exhausted")
-                conn.execute("RELEASE budget_delivery")
-            except Exception:
-                conn.execute("ROLLBACK TO budget_delivery")
-                conn.execute("RELEASE budget_delivery")
-                repo.event(conn, tid, "delivery_failed", {"reason": "budget_finalization_failed"})
             repo.mutate_task(
                 conn,
                 tid,
@@ -197,6 +210,7 @@ class JobFailures:
                 terminal_reason=code,
                 generation=task["generation"] + 1,
             )
+            self.publish_budget_result(conn, tid)
         elif code in {
             "MODULE_MODEL_LIMIT",
             "MODULE_HTTP_LIMIT",
@@ -246,6 +260,13 @@ class JobFailures:
             delivery = self.application.delivery.get(conn, tid)
             from astroquery_ai.runtime.codec import loads
             qref=loads(task['query_ref']);spec=repo.object(conn,tid,'confirmed_query',qref['id'],qref['version'])
+            from astroquery_ai.science import material_summaries
+            if material_summaries.enabled(spec):
+                from astroquery_ai.science.results.publication import _unfinished_insights
+                report = _unfinished_insights(repo, conn, tid, delivery, spec, code)
+                self.application.delivery.finish_insights(conn, tid, report)
+                repo.event(conn, tid, 'job_state_changed', {'job_id': job['job_id'], 'status': 'failed', 'reason': code})
+                return
             from astroquery_ai.science.author_release import enabled as author_enabled
             if author_enabled(spec):
                 from astroquery_ai.science.property_insights import enabled as property_enabled

@@ -49,6 +49,13 @@ def replay_clock(application,task_id):
     """The clock needs event positions, not the execution log or the scientific result."""
     with application.repository.read() as conn:
         task,tid,_,_,events=history(application,conn,task_id)
+        # A supported recovery can produce another execution after an earlier
+        # terminal event. End at the current terminal, not the first one; later
+        # exports and follow-ups are still outside the recorded query clock.
+        terminal=next((e for e in reversed(events) if e['kind']=='task_state_changed'
+                       and e['payload'].get('lifecycle') in TERMINAL),None) if task['lifecycle'] in TERMINAL else None
+        if terminal:
+            events=[e for e in events if e['seq']<=terminal['seq']]
         timeline=[];milestones=[];terminal_at=None
         for e in events:
             p=e['payload'];kind=e['kind']
@@ -63,7 +70,8 @@ def replay_clock(application,task_id):
             timeline.append(point)
             if point.get('lifecycle') in TERMINAL:
                 terminal_at=point['at']
-                break  # subsequent exports do not extend a stored query
+            elif kind=='task_state_changed':
+                terminal_at=None
         # The only future information allowed in replay is a locked historical
         # choice. It never changes the as-of question, receipt or scientific data.
         gates=[]
@@ -216,8 +224,9 @@ def presentation(application,task_id,at_seq=None,include_chat_activity=False,act
         catalog_ops=[k for k,s in JOB_STAGE.items() if s=='catalog']
         material_ops=[k for k,s in JOB_STAGE.items() if s in {'literature','acquisition'} and k!='attachment_discover']
         reports=get('insight');insight=reports[-1] if reports else None
+        material_summary = spec.get('run_policy', {}).get('insights', {}).get('presentation') == 'material-summary/1'
         insight_state=operation_state('insights')
-        if insight:
+        if insight and insight.get('status') != 'pending':
             insight_state='skipped' if insight.get('status','').startswith('disabled') else 'partial' if insight.get('status')=='partial' else 'completed'
         prepared=(get('material_preparation') or [{}])[-1]
         literature_state=operation_state(*material_ops)
@@ -252,11 +261,18 @@ def presentation(application,task_id,at_seq=None,include_chat_activity=False,act
             'clean':[step('判定表示和单位'),step('转换或保留原报',sum(r.get('main_state')=='ready' for r in get('derived')),'条主值已处理'),step('核对主值与独立误差',detail='误差各成分的状态见记录详情')],
             'comparison':[step('按性质及必要条件归集',len(checks),'份核查'),step('核对重复记载',sum(len(x.get('duplicates',[])) for x in checks),'个归档组'),step('复核明显差异',detail='未检查范围不表示没有差异')],
             'deliver':[step('固定科学快照',detail='已封存' if delivery_ref else '尚未封存'),step('整理记录及原件入口',len(records),'条原报'),step('开放结果与导出',detail='可查看' if delivery_ref else '等待交付')],
-            'insight':[step('汇集已交付记录'),step('按性质生成解释'),step('关联证据与知识条目')],
+            'insight':[step('整理资料与性质'),step('生成资料总结'),step('关联原件与知识')]
+                if material_summary else [step('汇集已交付记录'),step('按性质生成解释'),step('关联证据与知识条目')],
             'done':[step('实际结局',detail=lifecycle),step('耗时和成果',len(records),'条原报')]}
         visited={x['stage_id'] for x in intervals};position=dict((k,i) for i,(k,_) in enumerate(STAGES))
         stages=[]
         for sid,name in STAGES:
+            if sid == 'insight' and material_summary:
+                name = '资料总结'
+                if insight and insight.get('counts'):
+                    ready = sum(c['ready'] for c in insight['counts'].values())
+                    requested = sum(c['requested'] for c in insight['counts'].values())
+                    blocks[sid][1] = step('生成资料总结', ready, '份', f'{ready} / {requested} 份资料总结')
             seen=sid=='understand' or sid in visited or sid=='done' and lifecycle in TERMINAL
             state='pending'
             if seen:
@@ -354,11 +370,16 @@ def presentation(application,task_id,at_seq=None,include_chat_activity=False,act
         if sealed:
             task_score=sealed.get('task_score') or {}
             insight_report=sealed.get('insight_report') or {}
+            overview=application.delivery.material_overview(conn,tid,sealed,as_of=cutoff)
             summary={'delivery_ref':delivery_ref,'snapshot_ref':sealed.get('snapshot_ref'),
                 'records':len(sealed.get('measurements',[])),'sources':len(sealed.get('sources',[])),
+                'materials':overview['total'],'material_overview':overview,
                 'figures':len(sealed.get('figures',[])),
                 'properties':len(sealed.get('definitions',[])),
                 'insights':len(insight_report.get('qualified_property_ids',[])),
+                **({'material_summaries':sum(c.get('ready', 0) for c in insight_report.get('counts', {}).values())}
+                   if insight_report.get('schema_version') == 'MaterialSummaryReport/1'
+                   and insight_report.get('status') != 'pending' else {}),
                 'score':task_score.get('score'),'score_state':task_score.get('status'),
                 'report_state':sealed.get('report_state'),'coverage_state':sealed.get('status'),
                 'components':[{k:item.get(k) for k in ('key','weight','earned','state')} for item in task_score.get('components',[])],
@@ -386,6 +407,7 @@ def presentation(application,task_id,at_seq=None,include_chat_activity=False,act
             'insight_properties':{e['payload']['property_id']:e['payload']['status'] for e in events
                                   if e['kind']=='insight_unit_updated' and e['payload'].get('property_id')},
             'stages':stages,'active_stage':active,'materials':material,'material_revision':(get('material_preparation') or [{}])[-1].get('revision'),
+            'material_summary_mode':material_summary,
             'unique_readable':len({w for p in pools.values() for w in p.get('acquired',[])}) if pools else None,
             'delivery_ref':delivery_ref,'insight_ref':({'id':get('insight')[-1]['report_id'],'version':1} if get('insight') and delivery_ref else None),
             'reviews':reviews,'review_receipts':receipts,'delivery_summary':summary,

@@ -14,6 +14,7 @@ export function runtimeStage(base, projection, snapshot) {
     target: snapshot.presentation?.target, lifecycle: snapshot.presentation?.lifecycle,
     activeStage: snapshot.presentation?.active_stage, wallSeconds: snapshot.presentation?.wall_seconds,
     activity: snapshot.presentation?.chat_activity, deliverySummary: snapshot.presentation?.delivery_summary,
+    materialSummaryMode: snapshot.presentation?.material_summary_mode,
     request: snapshot.presentation?.request,
     delivered: Boolean(snapshot.presentation?.delivery_ref), progress: snapshot.presentation?.chat_progress || {},
     recordCounts: snapshot.presentation?.records_per_property, insightStates: snapshot.presentation?.insight_properties || {},

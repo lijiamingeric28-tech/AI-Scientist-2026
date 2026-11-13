@@ -7,6 +7,7 @@ import { ToastProvider, useToast } from '@/components/ui/toast'
 import Sidebar from '@/components/layout/Sidebar'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { useTaskData } from '@/hooks/useTaskData'
+import { useWorkbenchSelection } from '@/hooks/useWorkbenchSelection'
 import { getConfig } from '@/services/api'
 import { loadReplaySpeed } from '@/lib/playbackPreferences'
 import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, pauseTask as apiPauseTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks, replayTask as apiReplayTask, updateTaskTitle as apiUpdateTaskTitle } from '@/services/api'
@@ -51,6 +52,7 @@ function AppInner() {
   const [executionRequest,setExecutionRequest]=useState(null)
   const [managementResults,setManagementResults]=useState([])
   const [dataRequest, setDataRequest] = useState(null)
+  const [followupRequest, setFollowupRequest] = useState(null)
   const viewMemory = useRef({})
   const uiMemory = useRef({})
   const [helpOpen, setHelpOpen] = useState(false)
@@ -395,6 +397,12 @@ function AppInner() {
   const pending = pipeline.pending
   const contextEpoch=useRef(0), contextRead = useRef(null)
   useEffect(() => { contextEpoch.current++; setDetail(null); return () => contextRead.current?.abort() }, [selectedId,dataTask?.delivery_ref?.version])
+  const resultSelection = useWorkbenchSelection(data.taskId, data.deliveryId)
+  const askFromResults = context => {
+    setFollowupRequest({ taskId: data.taskId, deliveryId: data.deliveryId, revision: data.deliveryRevision, context })
+    setDetail(null)
+    setView('chat')
+  }
   const closeDetail = () => { contextEpoch.current++; contextRead.current?.abort(); setDetail(null) }
   const openContext = async next => {
     const epoch = ++contextEpoch.current
@@ -453,12 +461,10 @@ function AppInner() {
   const deepRecord=useRef(null)
   useEffect(()=>{
     const params=new URLSearchParams(location.hash.slice(1)),id=params.get('record'),key=`${selectedId}:${id}:${routeRevision}`
-    if(!id||params.get('task')!==selectedId||deepRecord.current===key||!data.resources.records.data)return
-    const record=data.resources.records.data.find(r=>r.record_id===id)
-    if(!record)return
+    if(!id||params.get('task')!==selectedId||deepRecord.current===key||!data.deliveryId||view!=='data')return
     deepRecord.current=key
     setDataRequest({section:'records',recordId:id,seq:Date.now()})
-  },[selectedId,view,data.resources.records.data,routeRevision])
+  },[selectedId,view,data.deliveryId,routeRevision])
   const changeView = next => { setHelpOpen(false); setView(next); closeDetail() }
   const memoryKey = player ? 'playback:'+selectedId : selectedId || mode
   const taskMemory = uiMemory.current[memoryKey] ||= { chat: {}, data: {}, workflow: {} }
@@ -525,14 +531,14 @@ function AppInner() {
           {helpOpen && <ViewContent label="帮助"><HelpPage onReturn={() => setHelpOpen(false)} onSamples={() => { setHelpOpen(false);handleModeChange('sample') }} onQuery={() => { handleModeChange('user'); handleNew() }} onSettings={() => { setOnboarding(false); setSettingsOpen(true) }} pending={pending} onPending={() => { setHelpOpen(false); handleShowStageInChat(pending?.stageId || 'understand') }} /></ViewContent>}
           <div ref={viewsRef} data-sliding={views.moving || undefined} style={{ display: helpOpen ? 'none' : 'flex' }} key={memoryKey} className="task-views slide-panes">
             <div className="task-view" {...views.paneProps('chat', 'flex')}>
-              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView isReplaying={Boolean(player || playbackRequest || selected?.kind === 'replay')} theme={theme} config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
+              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView isReplaying={Boolean(player || playbackRequest || selected?.kind === 'replay')} followupRequest={followupRequest} onFollowupRequestHandled={() => setFollowupRequest(null)} theme={theme} config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
             </div>
-            <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
+            <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onAsk={askFromResults} selection={resultSelection} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
             <div className="task-view" {...views.paneProps('workflow', 'flex')}>{views.hasVisited('workflow') && <ViewContent label="执行明细"><WorkflowView request={executionRequest} memory={taskMemory.workflow} active={!helpOpen && view === 'workflow'} onOpenData={openData} task={selected} pipeline={pipeline} data={data} onGoChat={() => handleShowStageInChat(pending?.stageId || 'understand')} onShowStageInChat={handleShowStageInChat} onOpenDetail={openContext} /></ViewContent>}</div>
           </div>
           </div>
         </main>
-        {detail && <ViewContent label="详情" resetKey={memoryKey} onDismiss={closeDetail}><ContextDrawer onOpenResults={openData} detail={detail} data={data} pipeline={pipeline} onClose={closeDetail} onChange={setDetail} onShowStageInChat={handleShowStageInChat} /></ViewContent>}
+        {detail && <ViewContent label="详情" resetKey={memoryKey} onDismiss={closeDetail}><ContextDrawer selection={view === 'data' && !dataTask?.readOnly && !dataTask?.historicalRevision ? resultSelection : undefined} onOpenResults={openData} detail={detail} data={data} pipeline={pipeline} onClose={closeDetail} onChange={setDetail} onShowStageInChat={handleShowStageInChat} /></ViewContent>}
       </div>
     </div></PropertyNamesProvider>
   )

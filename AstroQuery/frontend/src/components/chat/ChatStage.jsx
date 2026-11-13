@@ -247,7 +247,7 @@ function Retrieval({stage}) {
       <Heading detail={<ProgressText progress={stage.progress.attachments} unit="篇父论文"/>}>官方补充材料</Heading>
       {attachments?.files>0&&<Count value={attachments.files} unit="份已取得附件"/>}
       <p className="process-muted" style={{ fontSize: 12.5, margin: '6px 0 0' }}>
-        {attachments?.files>0 ? `本轮共取得 ${attachments.files} 份官方补充附件并完成内容关联。` : '本轮官方附件检查已结束，未取得附加表格。'}
+        {attachments?.files>0 ? `本轮共取得 ${attachments.files} 份官方补充附件并完成内容关联。` : (isLive ? '随论文获取检查官方补充材料，取得后将在这里展示。' : '本轮未取得官方附表。')}
       </p>
     </section>
   </div>
@@ -563,141 +563,50 @@ function Delivery({stage, onOpenData, data}) {
   )
 }
 
-function Insights({stage, onOpenData, data, onOpenInsights}) {
-  const ended = chatStageState(stage) === 'completed' || ['cancelled', 'failed', 'error'].includes(stage.lifecycle)
-  const report = data?.resources?.insights?.data || stage.insightReport
-  const cards = report?.cards || []
-
-  const insightAgents = [
-    { id: 'FieldInsightAgent', label: '字段洞察 Agent', desc: '提炼物理参数分布与极值' },
-    { id: 'RelationshipAgent', label: '字段关系 Agent', desc: '多源模型关联与参考系统一' },
-    { id: 'RecommendationAgent', label: '使用建议 Agent', desc: '质量函数与演化输入建议' },
-    { id: 'SynthesisAgent', label: '综合分析 Agent', desc: '天体物理学核心结论合成' },
-  ]
-
-  const dimTitles = {
-    found: { title: '核心发现与物理演化规律', icon: '🔭' },
-    comparison: { title: '多源测光与模型跨文献对比', icon: '⚖️' },
-    uses: { title: '后续科学研究与使用建议', icon: '💡' },
-    limitations: { title: '测量局限与关键物理前提', icon: '⚠️' },
-  }
-
-  return (
-    <div className="insight-workspace">
-      {/* 1. 洞察生成 4 智能体工作流轨道 */}
-      <div className="insight-agent-track">
-        <div className="insight-track-header">
-          <Icon.Sparkle style={{ width: 13, height: 13, color: 'var(--seed-accent)' }} />
-          <span>天体物理洞察智能体管线</span>
-          <span className="insight-track-badge">
-            {ended ? '4 个评估 Agent 分析完成' : '多智能体流水线协同分析中'}
-          </span>
-        </div>
-        <div className="insight-agent-nodes">
-          {insightAgents.map((ag) => (
-            <div key={ag.id} className="insight-agent-node" data-done={ended}>
-              <div className="insight-node-status">
-                {ended ? <Icon.Check style={{ width: 11, height: 11 }} /> : <span className="agent-spinning-dot" />}
-              </div>
-              <div className="insight-node-content">
-                <span className="insight-node-label">{ag.label}</span>
-                <span className="insight-node-desc">{ag.desc}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 2. 天体物理多维科学洞察矩阵卡片群 */}
-      <div className="insight-cards-container">
-        {cards.length > 0 ? (
-          cards.map((card) => {
-            const prop = stage.properties?.find((p) => p.property_id === card.property_id) || { name: card.property_id }
-            const sections = card.sections || {}
-            const coverage = card.coverage || {}
-            return (
-              <div key={card.card_id || card.property_id} className="insight-property-card">
-                <div className="insight-card-header">
-                  <div className="insight-prop-title-group">
-                    <span className="insight-prop-name">{prop.name}</span>
-                    {prop.unit && <span className="insight-unit-pill font-mono">{prop.unit}</span>}
-                  </div>
-                  <span className="insight-status-tag">
-                    <Icon.Check style={{ width: 11, height: 11 }} />
-                    <span>天体物理学洞察已生成</span>
-                  </span>
-                </div>
-
-                <div className="insight-dimensions-grid">
-                  {Object.entries(sections).map(([key, paras]) => {
-                    if (!paras || !paras.length) return null
-                    const dimMeta = dimTitles[key] || { title: key, icon: '📌' }
-                    const text = paras.map((p) => p.text).join(' ')
-                    return (
-                      <div key={key} className={`insight-dim-box dim-${key}`}>
-                        <div className="insight-dim-title">
-                          <span className="insight-dim-icon">{dimMeta.icon}</span>
-                          <span>{dimMeta.title}</span>
-                        </div>
-                        <p className="insight-dim-text">{text}</p>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <div className="insight-card-footer">
-                  <span className="insight-coverage-pill font-mono">
-                    支撑测量记录: {coverage.target_record_count || card.representative_measurement_ids?.length || 15} 条 · 独立来源文献: {coverage.contributing_source_count || 4} 篇
-                  </span>
-                  {card.actual_model && (
-                    <span className="insight-model-badge font-mono">推导模型: {card.actual_model}</span>
-                  )}
-                </div>
-              </div>
-            )
-          })
-        ) : (
-          <div className="insight-fallback-list">
-            {(stage.properties || []).map((p) => {
-              const pState = stage.insightStates?.[p.property_id]
-              return (
-                <div key={p.property_id} className="insight-fallback-item">
-                  <div className="insight-fallback-left">
-                    <span className="section-indicator-bar" />
-                    <strong>{p.name}</strong>
-                    {p.unit && <span className="insight-unit-pill font-mono">{p.unit}</span>}
-                  </div>
-                  <span className="insight-fallback-status">
-                    {stage.status === 'skipped'
-                      ? '本次未启用'
-                      : ended && (!pState || pState === 'generated')
-                        ? '已完成多源天体物理学洞察'
-                        : ({ generated: '已生成洞察', pending: '多源分析中', running: '深度推导中' })[pState] || '等待生成'}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* 3. 深入成果分析中心操作入口 (翡翠绿胶囊按钮) */}
-      <div className="insight-action-container">
-        <button
-          type="button"
-          className="insight-deep-action-btn"
-          onClick={() => (onOpenInsights ? onOpenInsights() : onOpenData?.('analysis', { analysisTab: 'insights' }))}
-        >
-          <Icon.Sparkle style={{ width: 14, height: 14 }} />
-          <span>进入科研成果分析中心查看完整知识网络与天体物理推导报告</span>
-          <Icon.ArrowRight style={{ width: 14, height: 14 }} />
-        </button>
-      </div>
+function Insights({ stage, onOpenData }) {
+  const overview = stage.materialSummaryMode ? stage.deliverySummary?.material_overview : null
+  const status = chatStageState(stage)
+  if (!stage.materialSummaryMode) return <div className="stage-links">
+    <p>{status === 'running' ? '正在按性质生成解释…'
+      : (stage.deliverySummary?.insights != null ? `${stage.deliverySummary.insights} 项性质已有洞察` : '暂无洞察记录')}</p>
+    {stage.delivered && <Button variant="outline" size="sm" onClick={() => onOpenData?.('candidates')}>查看候选数据</Button>}
+  </div>
+  const generating = ['running', 'waiting'].includes(status)
+  const properties = overview?.properties ?? []
+  return <div className="stage-material-coverage">
+    <div className="stage-material-overview">
+      <strong>按性质整理资料</strong>
+      {overview && <span>{overview.total} 项资料</span>}
     </div>
-  )
+    {properties.length > 0 ? <ul>
+      {properties.map(property => {
+        const ready = property.ready ?? 0
+        const remaining = Math.max(0, property.total - ready - (property.failed ?? 0))
+        const label = property.total === 0 ? '暂无资料'
+          : ready === property.total ? '已生成'
+          : status === 'paused' ? '已暂停'
+          : status === 'cancelled' ? '已取消'
+          : generating ? (status === 'running' ? '生成中' : '待生成')
+          : property.ready == null || overview.state === 'not_recorded' ? '未记录'
+          : property.failed ? `${property.failed} 项未生成`
+          : remaining ? '未生成' : '已结束'
+        return <li key={property.property_id}>
+          <button type="button" className="stage-material-row"
+            onClick={() => onOpenData?.('candidates', { propertyId: property.property_id })}>
+            <span>{property.name}</span>
+            <span className="stage-material-count">{property.ready ?? '—'} / {property.total}</span>
+            <span className="stage-material-status">{label}</span>
+            <Icon.ChevronRight aria-hidden="true" />
+          </button>
+        </li>
+      })}
+    </ul> : <p>{generating ? '正在整理资料范围…' : '暂无资料总结'}</p>}
+    {stage.delivered && <div className="stage-links"><Button variant="outline" size="sm"
+      onClick={() => onOpenData?.('candidates')}>查看候选数据</Button></div>}
+  </div>
 }
 
-function Outcome({ stage, onOpenData, onReplay, onOpenInsights }) {
+function Outcome({ stage, onOpenData, onReplay }) {
   const s = stage.deliverySummary
   if (!s) {
     return (
@@ -713,7 +622,7 @@ function Outcome({ stage, onOpenData, onReplay, onOpenInsights }) {
   const targetOtype = stage.target?.primary_otype
   const durationText = elapsedTime(stage.wallSeconds)
   const propCount = stage.properties?.length ?? s.properties
-  const { records: recordsTotal, sources: sourcesTotal, figures: figuresTotal, insights: insightsTotal } = s
+  const { records: recordsTotal, materials: materialsTotal, figures: figuresTotal } = s
   const scoreValue = Number.isFinite(s.score) ? s.score.toFixed(Number.isInteger(s.score) ? 0 : 2) : null
 
   const propDist = (stage.properties || []).map(p => {
@@ -744,16 +653,6 @@ function Outcome({ stage, onOpenData, onReplay, onOpenInsights }) {
           </div>
         </div>
 
-        <div className="outcome-header-right">
-          <button
-            type="button"
-            className="outcome-primary-action-btn"
-            onClick={() => onOpenData?.('records')}
-          >
-            <span>查看科研数据结果</span>
-            <Icon.ArrowRight style={{ width: 14, height: 14 }} />
-          </button>
-        </div>
       </div>
 
       {/* 2. 横向一体化紧凑指标带 (Stat Strip) - 学习旧版 V4 风格，消除新版大黑字竖向堆叠的蠢笨感 */}
@@ -762,17 +661,13 @@ function Outcome({ stage, onOpenData, onReplay, onOpenInsights }) {
           <span className="outcome-stat-label">测量记录</span>
           <strong className="outcome-stat-val font-mono">{recordsTotal}</strong>
         </div>
-        <div className="outcome-stat-item">
-          <span className="outcome-stat-label">文献来源</span>
-          <strong className="outcome-stat-val font-mono">{sourcesTotal}</strong>
+        <div className="outcome-stat-item" title="同一份资料可计入多个已确认性质">
+          <span className="outcome-stat-label">资料</span>
+          <strong className="outcome-stat-val font-mono">{materialsTotal ?? '—'}</strong>
         </div>
         <div className="outcome-stat-item">
           <span className="outcome-stat-label">科研图像</span>
           <strong className="outcome-stat-val font-mono">{figuresTotal}</strong>
-        </div>
-        <div className="outcome-stat-item">
-          <span className="outcome-stat-label">性质洞察</span>
-          <strong className="outcome-stat-val font-mono">{insightsTotal}</strong>
         </div>
         {scoreValue != null && (
           <div className="outcome-stat-item outcome-stat-item-score">
@@ -825,36 +720,9 @@ function Outcome({ stage, onOpenData, onReplay, onOpenInsights }) {
 
       {/* 5. 科学工作栈二级操作舱 (Utility Action Bar) - 优雅收敛，次级轻量操作胶囊 */}
       <div className="outcome-natural-actions-bar">
-        <div className="outcome-secondary-capsules">
-          <button
-            type="button"
-            className="outcome-sub-action-capsule"
-            disabled={sourcesTotal === 0}
-            onClick={() => onOpenData?.('evidence')}
-          >
-            <Icon.FileText style={{ width: 13, height: 13 }} />
-            <span>浏览资料（{sourcesTotal} 份）</span>
-          </button>
-
-          <button
-            type="button"
-            className="outcome-sub-action-capsule"
-            disabled={insightsTotal === 0}
-            onClick={() => (onOpenInsights ? onOpenInsights() : onOpenData?.('analysis', { analysisTab: 'insights' }))}
-          >
-            <Icon.Sparkle style={{ width: 13, height: 13 }} />
-            <span>阅读科研洞察</span>
-          </button>
-
-          <button
-            type="button"
-            className="outcome-sub-action-capsule"
-            onClick={() => onOpenData?.('records', { export: true })}
-          >
-            <Icon.Download style={{ width: 13, height: 13 }} />
-            <span>导出研究成果</span>
-          </button>
-        </div>
+        <button type="button" className="outcome-primary-action-btn" onClick={() => onOpenData?.('candidates')}>
+          <span>查看候选数据</span><Icon.ArrowRight style={{ width: 14, height: 14 }} />
+        </button>
 
         {onReplay && (
           <button type="button" className="outcome-replay-capsule" onClick={onReplay}>
@@ -891,7 +759,9 @@ function summary(stage) {
   if(stage.id==='clean'&&Number.isFinite(a?.cleaning?.states?.changed))return a.cleaning.states.changed+' 项表示变更'
   if(stage.id==='comparison')return Object.values(stage.comparisonByProperty).filter(x=>x.state==='checked').length+' 项性质已核对'
   if(stage.id==='deliver'&&s)return s.records+' 条测量已发布'
-  if(stage.id==='insight'&&Object.keys(stage.insightStates).length)return Object.values(stage.insightStates).filter(x=>x==='generated').length+' 项已生成'
+  if(stage.id==='insight'&&stage.materialSummaryMode&&s?.material_overview?.properties.some(p=>p.ready!=null))
+    return s.material_overview.properties.reduce((total,p)=>total+(p.ready??0),0)+' 项已生成'
+  if(stage.id==='insight'&&Object.keys(stage.insightStates||{}).length)return Object.values(stage.insightStates).filter(x=>x==='generated').length+' 项已生成'
   return ''
 }
 function formatStageDuration(stage) {

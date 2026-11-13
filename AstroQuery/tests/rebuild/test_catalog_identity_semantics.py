@@ -94,7 +94,9 @@ def test_published_pair_must_be_same_row_or_one_actual_statement():
 
 
 def test_candidate_patterns_are_navigation_and_omissions_remain_unknown():
-    assert navigation_patterns([TARGET['main_id']]) == ['*1234*5678*']
+    patterns = navigation_patterns([TARGET['main_id']])
+    assert '*1234*5678*' in patterns
+    assert '*PSR*J1234+5678A*' in patterns  # Literal navigation retains the component.
     result, _ = check({'rows': []})
     assert result['state'] == 'unresolved'
     assert result['reason'] == 'row_not_interpreted'

@@ -101,7 +101,9 @@ class OrchestrationService(ModuleService):
                 job["task_id"],
                 "M11",
                 "insights",
-                {"delivery_id": loads(self.repo.task(conn, job["task_id"])["delivery_ref"])["id"]},
+                {"delivery_id": delivery["delivery_id"],
+                 **({"reuse_material_summaries_from": job["payload"]["reuse_material_summaries_from"]}
+                    if job["payload"].get("reuse_material_summaries_from") else {})},
             )
             from astroquery_ai.runtime.stages import current_stage, set_stage
             if current_stage(conn, job['task_id']):
@@ -338,7 +340,11 @@ class OrchestrationService(ModuleService):
             elif not active and not reviews and not conn.execute(
                 "SELECT 1 FROM producers WHERE task_id=? AND state<>'closed' LIMIT 1", (tid,)
             ).fetchone():
+                checkpoint = next(iter(self.repo.objects(conn, tid, 'comparison_recovery')), None)
+                summary_source = (checkpoint['prior_snapshot'] if checkpoint
+                                  and checkpoint['generation'] == task['generation'] else None)
                 self.repo.enqueue(
-                    conn, tid, "M13", "finalize", {"spec_ref": loads(task["query_ref"])}
+                    conn, tid, "M13", "finalize", {"spec_ref": loads(task["query_ref"]),
+                        **({'reuse_material_summaries_from': summary_source} if summary_source else {})}
                 )
             advance_stage(self.repo, conn, tid)

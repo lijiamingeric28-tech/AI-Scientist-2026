@@ -195,9 +195,14 @@ def header_prompt(table, spec, target_columns=None, *, required=()):
         " Each reason/limitation must be one brief source-grounded sentence. Do not include deliberation, self-questioning or alternate speculative plans."
     )
     prompt['verified_aliases']={'A'+str(i+1):a for i,a in enumerate(dict.fromkeys([spec['target']['main_id'],*spec['target'].get('aliases',[])]))}
+    prompt['response_schema']['properties']['identity_alias_ids']={'type':'array','maxItems':3,
+        'items':{'type':'string','enum':list(prompt['verified_aliases'])}}
+    prompt['response_schema']['required']=[*prompt['response_schema'].get('required',[]),'identity_alias_ids']
     prompt['instruction'] += (' Select identity_alias_ids: up to THREE supplied A labels best suited to the actual identifier column naming system, in query priority order. '
         'An internal row sequence/record counter is not an astronomical identifier without an explicit source cross-ID. '
-        'Use actual column definitions and available ReadMe/sample evidence, never model-memory identifiers.')
+        'Use actual column definitions and available ReadMe/sample evidence, never model-memory identifiers. '
+        'If an identifier column and requested values are present, select suitable supplied aliases even though no target row has been read yet. '
+        'Prefer naming systems present in the source over recent bibliographic aliases unrelated to the source.')
     prompt["instruction"] += (
         " For each proposed mapping set quantity_match=exact|different|unresolved. A clearly different quantity must not be used as a closest available substitute; omit it. Same units do not establish the same physical measurand. Missing requested main fields do not require choosing a derivative, projection, uncertainty or inverse quantity."
     )

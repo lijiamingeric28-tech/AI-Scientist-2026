@@ -36,7 +36,7 @@ function sourceKindOf(sourceId) {
 }
 
 /* 系统另存为（File System Access API）：WebView2/Edge 支持；不支持时降级 a[download] */
-async function saveAsDefault(blob, filename, chooseLocation = false) {
+export async function saveAsDefault(blob, filename, chooseLocation = false) {
   try {
     if (chooseLocation && window.showSaveFilePicker) {
       const handle = await window.showSaveFilePicker({ suggestedName: filename })

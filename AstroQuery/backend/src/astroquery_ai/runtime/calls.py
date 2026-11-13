@@ -190,7 +190,7 @@ class ModelGateway:
         from .throughput import DispatchDeferred, rate_token_estimate, shared_window_delay
         # Short business jobs yield their lease while rate-limited. An insight
         # coordinator owns multiple units, so only its waiting unit sleeps.
-        can_defer = job is not None and profile.operation != 'insights'
+        can_defer = job is not None and profile.operation != 'insights' and purpose != 'material_summary'
         if can_defer and (model_slot.locked() or self.semaphore.locked()):
             raise DispatchDeferred('model-slot:' + profile.model, 0.5)
         rate_wait_started = time.monotonic()
@@ -243,6 +243,7 @@ class ModelGateway:
                     profile_state=profile.state,
                     purpose=purpose,
                     wall_bound_seconds=profile.wall_seconds,
+                    defer_for_settlement=can_defer,
                 )
             except BaseException:
                 self.traffic.cancel(profile.model, rate_ticket)

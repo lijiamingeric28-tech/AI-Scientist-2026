@@ -14,6 +14,11 @@ from astroquery_ai.science.differences import compare
 
 
 def _unfinished_insights(repo,conn,tid,delivery,spec,reason):
+    from .. import material_summaries
+    if material_summaries.enabled(spec):
+        from astroquery_ai.application.material_workbench import MaterialIndex
+        counts = material_summaries.report_counts(repo, conn, tid, delivery, MaterialIndex(delivery))
+        return material_summaries.report(delivery, state='partial', counts=counts, reason=reason)
     from ..property_insights import enabled
     if enabled(spec):
         from ..property_insight_generation import unfinished_report
@@ -256,7 +261,8 @@ def delivery_provenance(snapshot):
             "pilot_scope",
         ]
     }
-    for key in ('attachment_quality_scopes', 'attachment_quality_summaries', 'attachment_role_exclusions'):
+    for key in ('attachment_quality_scopes', 'attachment_quality_summaries', 'attachment_role_exclusions',
+                'catalog_subject_checks', 'catalog_table_rows', 'catalog_screening_failures'):
         if key in snapshot:
             result[key] = snapshot[key]
     return result
@@ -290,7 +296,8 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         raise DomainError("SCIENCE_NOT_CLOSED", "生产、处理或审核事项尚未闭合")
     from astroquery_ai.runtime.stages import current_stage, set_stage
 
-    staged = current_stage(conn, task_id) is not None
+    stopped = task["lifecycle"] == "budget_exhausted" and outcome == "budget_exhausted"
+    staged = not stopped and current_stage(conn, task_id) is not None
     if staged:
         set_stage(self.repository, conn, task_id, "postcheck")
     query = self.repository.object(conn, task_id, "confirmed_query", loads(task["query_ref"])["id"])
@@ -448,6 +455,9 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         ("catalog_documents", "catalog_document"),
         ("catalog_document_observations", "catalog_document_observation"),
         ("catalog_identity_queries", "catalog_identity_query"),
+        ("catalog_subject_checks", "catalog_subject_check"),
+        ("catalog_table_rows", "catalog_table_rows"),
+        ("catalog_screening_failures", "catalog_screening_failure"),
         ("catalog_identity_limits", "catalog_identity_limitation"),
         ("target_astrometries", "target_astrometry"),
         ("object_matches", "object_match"),
@@ -611,13 +621,20 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         # Serializing the pre-score body as well doubled sealing work and
         # could expire the job lease before the final commit.
         quality=calculate(self.repository,conn,task_id,query,snapshot,delivery_verified=True)
+        if conn.execute("SELECT 1 FROM objects WHERE task_id=? AND kind='quality' AND object_id=? AND version=1",
+                        (task_id, quality['report_id'])).fetchone():
+            quality['report_id'] = 'task-score-' + digest([task_id, snapshot_ref])
         quality.update(snapshot_ref=snapshot_ref,difference_ref=difference_ref,
             archive_groups=snapshot['archive_groups'],comparison_checks=snapshot['archive_comparisons'])
         quality_ref=self.repository.put_object(conn,task_id,'quality',quality['report_id'],1,quality)
         delivery['quality']={'state':'available','report_ref':quality_ref}
         delivery['task_score']=quality
         from ..author_release import enabled as author_enabled
-        if author_enabled(query):
+        from .. import material_summaries
+        if material_summaries.enabled(query):
+            delivery['export_schema_version'] = 2
+            insight = material_summaries.report(delivery, state='pending')
+        elif author_enabled(query):
             from ..property_insights import enabled as property_enabled
             if property_enabled(query):
                 from ..property_insights import pending_report
@@ -637,15 +654,18 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         self.repository.put_object(conn,task_id,'delivery_serialization_check',delivery_id,1,verification)
     ref = self.repository.put_object(conn, task_id, "delivery", delivery_id, 1, delivery)
     self.repository.mutate_task(
-        conn, task_id, science_state="sealed", delivery_ref=canonical(ref).decode(), phase="insight",
+        conn, task_id, _budget_publication=stopped, science_state="sealed", delivery_ref=canonical(ref).decode(),
+        **({} if stopped else {"phase": "insight"}),
         **({'insight_ref':canonical(insight_ref).decode()} if unified and author_enabled(query) else {})
     )
     self.repository.event(conn, task_id, "science_sealed", {"snapshot_ref": snapshot_ref})
     self.repository.event(
         conn, task_id, "delivery_ready", {"delivery_ref": ref, "counts": delivery["counts"]}
     )
-    if unified and author_enabled(query) and outcome=='cancelled':
-        return finish_insights(self,conn,task_id,_unfinished_insights(self.repository,conn,task_id,delivery,query,'user_cancelled'),complete_task=False)
+    if unified and author_enabled(query) and outcome in {"cancelled", "budget_exhausted"}:
+        reason = "user_cancelled" if outcome == "cancelled" else task.get("terminal_reason") or outcome
+        report = _unfinished_insights(self.repository, conn, task_id, delivery, query, reason)
+        return finish_insights(self, conn, task_id, report, complete_task=False)
     return delivery
 
 
@@ -658,8 +678,9 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     task=self.repository.task(conn,task_id);delivery=self.get(conn,task_id)
     qref=loads(task['query_ref']);spec=self.repository.object(conn,task_id,'confirmed_query',qref['id'],qref['version'])
     from ..property_insights import enabled as property_enabled
+    from .. import material_summaries
     research=property_enabled(spec)
-    expected_schema='InsightReport/4' if research else 'InsightReport/3'
+    expected_schema='MaterialSummaryReport/1' if material_summaries.enabled(spec) else 'InsightReport/4' if research else 'InsightReport/3'
     if not enabled(spec) or report['schema_version']!=expected_schema or report['status']=='pending' or task['science_state']!='sealed':
         raise DomainError('INSIGHT_PUBLICATION_MODE','新洞察不能改写旧任务或未封口数据')
     if report['snapshot_ref']!=delivery['snapshot_ref'] or report['delivery_id']!=delivery['delivery_id']:
@@ -701,6 +722,7 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     insight_ref=self.repository.put_object(conn,task_id,'insight',report['report_id'],revision,report)
     snapref=delivery['snapshot_ref'];snapshot=self.repository.object(conn,task_id,'science_snapshot',snapref['id'],snapref['version'])
     score=calculate(self.repository,conn,task_id,spec,snapshot,delivery_verified=True,insight_report=report)
+    score['report_id'] = delivery['quality']['report_ref']['id']
     score.update(snapshot_ref=snapref,difference_ref=delivery['difference']['report_ref'],
         archive_groups=delivery['archive_groups'],comparison_checks=delivery['comparison_checks'])
     quality_ref=self.repository.put_object(conn,task_id,'quality',score['report_id'],revision,score)
@@ -710,8 +732,10 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     if verification['state']!='passed':raise DomainError('INSIGHT_EXPORT_INCONSISTENT','新洞察交付五格式不一致')
     self.repository.put_object(conn,task_id,'delivery_serialization_check',delivery['delivery_id'],revision,verification)
     ref=self.repository.put_object(conn,task_id,'delivery',delivery['delivery_id'],revision,updated)
-    self.repository.mutate_task(conn,task_id,delivery_ref=canonical(ref).decode(),insight_ref=canonical(insight_ref).decode(),
-        **({'lifecycle':'completed'} if complete_task else {}),phase='insight')
+    stopped = not complete_task and task["lifecycle"] == "budget_exhausted"
+    self.repository.mutate_task(conn, task_id, _budget_publication=stopped,
+        delivery_ref=canonical(ref).decode(), insight_ref=canonical(insight_ref).decode(),
+        **({"lifecycle": "completed"} if complete_task else {}), **({} if stopped else {"phase": "insight"}))
     self.repository.event(conn,task_id,'delivery_ready',{'delivery_ref':ref,'counts':updated['counts']})
     self.repository.event(conn,task_id,'insight_updated',{'report_ref':insight_ref,'status':report['status'],'delivery_ref':ref})
     if complete_task:self.repository.event(conn,task_id,'task_state_changed',{'lifecycle':'completed'})

@@ -66,14 +66,18 @@ def test_scope_changes_for_target_schema_hdu_file_or_property():
     assert observation_series_review({'1': ['s', 'JD', '100', 'em.opt.B'],
         '2': ['s', 'JD', '100', 'em.opt.V'], '3': ['s', 'JD', '100', 'em.opt.B'],
         '4': ['s', 'JD', '101', 'em.opt.B']}) == {'1', '3'}
+    assert observation_series_review({'1': ['s', 'JD', '100', 'B'],
+        '2': ['s', 'JD', '100', 'V'], '3': ['s', 'JD', '100', 'B'],
+        '4': ['s', 'JD', '101', 'B'], 'paper': None}) == {'1', '3', 'paper'}
 
 
 @pytest.mark.parametrize('size', [6, 10001])
-def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch, size):
+@pytest.mark.parametrize('source_kind', ['official_attachment','catalog'])
+def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch, size, source_kind):
     repo = Repository(tmp_path / 'runtime.sqlite3')
     tid = repo.create_task('SYNTHETIC table')['task_id']
     target = {'target_id': 'object', 'main_id': 'Target', 'aliases': []}
-    source = {'artifact': {'artifact_id': 'original', 'sha256': 'sha'}, 'table_id': 't', 'association': {'hdu': 1},
+    source = {'kind':source_kind,'artifact': {'artifact_id': 'original', 'sha256': 'sha'}, 'table_id': 't', 'association': {'hdu': 1},
         'metadata': {'columns': COLUMNS, 'description': 'Observations'}, 'source_id': 's', 'work_id': 'p'}
     rows = [{'Object': 'Target', 'Epoch': str(i), 'Band': 'R' if i % 2 else 'B',
         'Flux': str(-i), 'Error': '0.1'} for i in range(size)]
@@ -127,7 +131,14 @@ def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch
     monkeypatch.setattr(qa, 'apply_item', apply)
     monkeypatch.setattr(qa, '_verify_batch', fallback)
     monkeypatch.setattr(qa, '_catalog_input', lambda *a: ({}, {}))
-    asyncio.run(qa.verify_table(SimpleNamespace(repo=repo, app=None), job, {'target': target},
+    app=None
+    if source_kind=='catalog':
+        from astroquery_ai.science import catalogs
+        raw=tmp_path/'catalog.xml';raw.write_bytes(b'saved catalogue response')
+        monkeypatch.setattr(catalogs,'parse_votable',lambda data:{'resources':[{'tables':[
+            {'table_id':'t','columns':COLUMNS,'rows':rows}]}]})
+        app=SimpleNamespace(artifacts=SimpleNamespace(read_owned=lambda tid,aid:({},raw)))
+    asyncio.run(qa.verify_table(SimpleNamespace(repo=repo, app=app), job, {'target': target},
         {'property_id': 'flux'}, source, candidates, SimpleNamespace(model='test')))
     assert len(calls) == 2
     assert len(applied) == size - 1

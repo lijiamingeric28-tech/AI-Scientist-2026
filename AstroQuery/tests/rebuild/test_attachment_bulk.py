@@ -233,7 +233,7 @@ def test_declared_identifier_prefix_and_navigation_do_not_invent_aliases():
     assert declared_namespace(sao,None)=='SAO'
     name={'name':'Name','description':'Star name','datatype':'char','ucd':'meta.id;meta.main'}
     assert declared_namespace(name,None) is None
-    assert identifier_selectors('* bet Dor',None,name)==['* bet Dor','bet Dor']
+    assert identifier_selectors('* bet Dor',None,name)==['bet Dor','* bet Dor']
     # Retrieval navigation does not alter the verified names used for admission.
     assert exact_rows([{'Name':'bet Dor'}],['Name'],['* bet Dor'])==[]
 
