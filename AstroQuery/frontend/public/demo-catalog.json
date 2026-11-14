@@ -2,6 +2,35 @@
   "schema_version": "PublishedDemos/1",
   "samples": [
     {
+      "task_id": "827c01d6-0a9a-4e3e-bba8-db6a3aa3f5b5",
+      "name": "SN 2014J · 多波段光变与红化",
+      "object": "SN 2014J",
+      "otype": "SN*",
+      "query": "我想比较 SN 2014J 不同研究的光变和红化结果。请整理多波段历元视星等、各波段峰值视星等、视线色余 E(B−V) 和峰后15天衰减量 Δm15，保留原报误差、波段、历元、测量条件和来源，供我筛选对照。",
+      "properties": [
+        "历元波段视星等",
+        "视线E(B−V)消光",
+        "峰后15日波段衰减",
+        "原报极大视星等"
+      ],
+      "summary": "47 个资料性质解读范围与 4 项性质综合对照；960 条测量、52 幅图像，含真实科研追问、知识引用和交互试算。",
+      "record_count": 960,
+      "source_count": 49,
+      "figure_count": 52,
+      "quality_score": 0.87,
+      "status": "completed",
+      "created_at": "2026-11-13T04:41:26.259956+00:00",
+      "delivery_revision": 2,
+      "delivery_id": "delivery-401a48eeb2aae4ef75a3a282a3019176e95568da623de716155dd21d905e5696",
+      "snapshot_ref": {
+        "content_sha256": "beec51371f09c1b70e0f3b72ea65d7c75c76c1f4995d10bbf1245e2648d7dd2c",
+        "id": "science-beec51371f09c1b70e0f3b72ea65d7c75c76c1f4995d10bbf1245e2648d7dd2c",
+        "version": 1
+      },
+      "featured": true,
+      "followup_count": 1
+    },
+    {
       "task_id": "b4e7f77a-52b3-4005-bc7a-b3a674a4cc75",
       "name": "SN 2014J · 爆发峰值、红化与吸收线",
       "object": "SN 2014J",
