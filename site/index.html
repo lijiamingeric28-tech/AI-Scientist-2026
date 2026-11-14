@@ -2764,7 +2764,7 @@
     <div class="sec-head reveal">
       <div class="eyebrow">GET STARTED // 快速开始</div>
       <h2>科研探索，始于一句话。</h2>
-      <p class="lead">Python 3.10+ · 从自然语言科学提问到导出专业数据包 —— 体验确定性天文智能体流水线的强大威力。</p>
+      <p class="lead">Python 3.12–3.13 · Node.js 22.12+ · 从自然语言查询到可溯源的科研数据。</p>
     </div>
 
     <!-- 典型科研提问探针 (Research Query Chips) -->
@@ -2788,38 +2788,38 @@
         <span class="n">STEP 01</span>
         <h3>克隆并安装</h3>
         <code>git clone https://github.com/lijiamingeric28-tech/AI-Scientist-2026.git</code>
-        <code>cd AstroQuery_AI</code>
-        <code>pip install -r requirements.txt</code>
+        <code>cd AI-Scientist-2026</code>
+        <code>python -m pip install -e .</code>
       </div>
       <div class="step">
         <span class="n">STEP 02</span>
-        <h3>配置密钥</h3>
-        <code>AstroQuery_AI/.env</code>
-        <small>DASHSCOPE_API_KEY · DASHSCOPE_BASE_URL（必填）<br />ADS_API_TOKEN · UNPAYWALL_EMAIL（可选）</small>
+        <h3>构建前端</h3>
+        <code>cd frontend &amp;&amp; npm ci &amp;&amp; npm run build &amp;&amp; cd ..</code>
+        <small>完成构建后回到仓库根目录。</small>
       </div>
       <div class="step">
         <span class="n">STEP 03</span>
-        <h3>构建前端</h3>
-        <code>cd frontend &amp;&amp; npm install &amp;&amp; npm run build</code>
-        <small>仓库不含预编译产物，启动 Web 界面前必须执行</small>
+        <h3>打开桌面窗口</h3>
+        <code>astroquery-desktop</code>
+        <small>也可以按下方命令用浏览器打开。在「演示样例」可以直接浏览现有结果。</small>
       </div>
       <div class="step">
         <span class="n">STEP 04</span>
-        <h3>发起科研查询</h3>
-        <code>python -m astroquery_ai "M45 的年龄距离和金属丰度"</code>
-        <small>自动拉取星表文献、生成六维质量雷达并输出黄金数据</small>
+        <h3>开始自己的查询</h3>
+        <code>设置 → 服务连接</code>
+        <small>填写百炼接口和密钥、ADS Token 与 Unpaywall 联系邮箱。</small>
       </div>
     </div>
     <div class="terminal reveal">
-      <div class="terminal-bar"><i></i><i></i><i></i><span>AstroQuery_AI — research CLI &amp; desktop</span></div>
-      <pre><code><span class="c"># 1. 发起自然语言查询并直接导出标准 FITS / CSV / BibTeX</span>
-<span class="k">python -m astroquery_ai "M45 的年龄距离和金属丰度" --export fits,csv,bibtex</span>
+      <div class="terminal-bar"><i></i><i></i><i></i><span>AstroQuery AI — research CLI &amp; desktop</span></div>
+      <pre><code><span class="c"># 1. 从命令行发起自然语言查询</span>
+<span class="k">astroquery-ai "M45 的年龄、距离和金属丰度"</span>
 
-<span class="c"># 2. 启动交互式 Web 科研工作台（实时 SSE 流式事件 + 证据链可视化回放）</span>
-<span class="k">python -m web.main</span>        <span class="c"># http://127.0.0.1:8000</span>
+<span class="c"># 2. 在浏览器打开科研工作台</span>
+<span class="k">python -m uvicorn astroquery_ai.api.http:create_app --factory --host 127.0.0.1 --port 8781</span>
 
-<span class="c"># 3. 启动本地轻量原生桌面窗口（基于 WebView2 引擎）</span>
-<span class="k">python -m web.desktop</span></code></pre>
+<span class="c"># 3. 在 Windows 启动内置 WebView2 窗口</span>
+<span class="k">astroquery-desktop</span></code></pre>
     </div>
   </div>
 </section>

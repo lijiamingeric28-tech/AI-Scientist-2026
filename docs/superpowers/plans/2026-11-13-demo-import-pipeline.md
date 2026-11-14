@@ -28,6 +28,6 @@
 ## Tasks
 
 - [x] **1 测量与保全：** 保存 importer/tests 及哈希。用最新样例的隔离临时数据库，分别测原路径、缓冲和流水线；记录完整导入、提交、解压/解析时间。先运行现有导入回归，基线为 6 项通过。
-- [x] **2 测试先行：** 在 `AstroQuery/tests/rebuild/test_demo_loading_speed.py` 添加完整提交不等待 checkpoint 的并发测试、崩溃后 WAL 恢复、提交错误与 anchor 准备失败回退测试；覆盖有界预读、大行、读尾异常、写入失败和准备中断。新增行为均经过失败到通过验证。
-- [x] **3 最小实现：** 修改 `AstroQuery/backend/src/astroquery_ai/runtime/published_demos.py`，并在 `api/http.py` 的既有生命周期释放时等待维护退出；采用有效的有界预读及 checkpoint 重叠，保留返回值、锁、FULL 提交及事务边界。22 项专项测试和 Ruff 通过；增加 SQLite 修复版本守卫，独立复审通过。
+- [x] **2 测试先行：** 在 `tests/rebuild/test_demo_loading_speed.py` 添加完整提交不等待 checkpoint 的并发测试、崩溃后 WAL 恢复、提交错误与 anchor 准备失败回退测试；覆盖有界预读、大行、读尾异常、写入失败和准备中断。新增行为均经过失败到通过验证。
+- [x] **3 最小实现：** 修改 `backend/src/astroquery_ai/runtime/published_demos.py`，并在 `api/http.py` 的既有生命周期释放时等待维护退出；采用有效的有界预读及 checkpoint 重叠，保留返回值、锁、FULL 提交及事务边界。22 项专项测试和 Ruff 通过；增加 SQLite 修复版本守卫，独立复审通过。
 - [x] **4 验证与交付：** 最新样例 5 组独立进程首次导入前后比较；全部 7 份样例 API 及原始行指纹一致。后端离线全量 1428 项通过，专项 22 项通过。三个文件按哈希回写并重启后端，前端 HMR 保留；全部权威表与用户知识文件审计一致。实际收益及剩余成本见 `docs/performance/2026-11-13-demo-import.md`，完整可读 P95 仍为 8.499 秒，不宣称达标。

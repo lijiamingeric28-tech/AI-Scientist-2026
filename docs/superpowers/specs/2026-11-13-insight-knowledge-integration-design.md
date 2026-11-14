@@ -24,12 +24,12 @@
 
 ### 后端与前端证据
 
-- [run_policy.py](E:/数据/科创实践/挑战杯/AI-Scientist-2026/AstroQuery/backend/src/astroquery_ai/runtime/run_policy.py:109)：当前新请求的反馈检索策略把 presentation 设为资料总结模式。
-- [insight_service.py](E:/数据/科创实践/挑战杯/AI-Scientist-2026/AstroQuery/backend/src/astroquery_ai/science/workflow/insight_service.py:20)：M11 优先进入资料总结并返回，不继续执行性质洞察生成器。
-- [material_summaries.py](E:/数据/科创实践/挑战杯/AI-Scientist-2026/AstroQuery/backend/src/astroquery_ai/science/material_summaries.py:84)：读取固定知识发布、理论库及用户知识，按性质组织背景；输入包含 knowledge_background，保存结果包含完整 basis。
-- [DataView.jsx](E:/数据/科创实践/挑战杯/AI-Scientist-2026/AstroQuery/frontend/src/components/results/DataView.jsx:186)：新版“总结与洞察”仅显示资料总结完成数与“浏览资料”，没有展开知识依据及性质级卡片。
-- [MaterialWorkbench.jsx](E:/数据/科创实践/挑战杯/AI-Scientist-2026/AstroQuery/frontend/src/components/results/MaterialWorkbench.jsx:177)：资料详情的总结区域显示正文和生成状态，未展示 `basis.knowledge`。
-- [results.py](E:/数据/科创实践/挑战杯/AI-Scientist-2026/AstroQuery/backend/src/astroquery_ai/api/routes/results.py:213)：理论关系可在读取时增强；需要与任务封存依据区分。
+- [run_policy.py](../../../backend/src/astroquery_ai/runtime/run_policy.py)：当前新请求的反馈检索策略把 presentation 设为资料总结模式。
+- [insight_service.py](../../../backend/src/astroquery_ai/science/workflow/insight_service.py)：M11 优先进入资料总结并返回，不继续执行性质洞察生成器。
+- [material_summaries.py](../../../backend/src/astroquery_ai/science/material_summaries.py)：读取固定知识发布、理论库及用户知识，按性质组织背景；输入包含 knowledge_background，保存结果包含完整 basis。
+- [DataView.jsx](../../../frontend/src/components/results/DataView.jsx)：新版“总结与洞察”仅显示资料总结完成数与“浏览资料”，没有展开知识依据及性质级卡片。
+- [MaterialWorkbench.jsx](../../../frontend/src/components/results/MaterialWorkbench.jsx)：资料详情的总结区域显示正文和生成状态，未展示 `basis.knowledge`。
+- [results.py](../../../backend/src/astroquery_ai/api/routes/results.py)：理论关系可在读取时增强；需要与任务封存依据区分。
 
 逐样例事实保存在 `AstroQuery/scratch/insight-audit-2026-11-13/samples-audit.json`；实际接口补充情况保存在同目录 `http-insights-audit.json`。
 
