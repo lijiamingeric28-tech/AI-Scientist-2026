@@ -11,10 +11,11 @@ from .errors import DomainError
 
 
 def product_root() -> Path | None:
-    module = Path(__file__).resolve()
-    candidate = module.parents[4]
-    source_module = candidate / 'backend/src/astroquery_ai/runtime/paths.py'
-    if module == source_module and (candidate / 'pyproject.toml').is_file():
+    source = Path(__file__).resolve().parents[2]
+    if source.name != 'src' or source.parent.name != 'backend':
+        return None
+    candidate = source.parent.parent
+    if (candidate / 'pyproject.toml').is_file():
         return candidate
     return None
 
@@ -45,6 +46,11 @@ def local_paths() -> dict:
     value = json.loads(path.read_text(encoding='utf-8'))
     if not isinstance(value, dict):
         raise DomainError('PATH_CONFIGURATION_INVALID', '路径配置须为对象', 422)
+    if source is not None and not explicit and path.parent != source:
+        # The previous source layout resolved relative locations from AstroQuery/.
+        for key in ('data_root', 'dotenv_file', 'frontend_dist', 'build_root'):
+            if value.get(key):
+                value[key] = str(path.parent / Path(value[key]).expanduser())
     return value
 
 

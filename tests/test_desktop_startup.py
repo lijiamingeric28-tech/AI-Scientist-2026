@@ -45,11 +45,17 @@ def test_flattened_checkout_reads_existing_user_data_and_prefers_new_paths(monke
     old_data = old / "runtime-data"
     old_data.mkdir(parents=True)
     (old / ".env").touch()
-    (old / "paths.local.json").write_text('{"preserved": true}', encoding="utf-8")
+    old_config = old / "paths.local.json"
 
     assert paths.data_root() == old_data
     assert paths.dotenv_file() == old / ".env"
-    assert paths.local_paths() == {"preserved": True}
+    old_config.write_text(
+        '{"data_root": "runtime-data", "dotenv_file": ".env", "build_root": "local-build"}',
+        encoding="utf-8",
+    )
+    assert paths.data_root() == old_data
+    assert paths.dotenv_file() == old / ".env"
+    assert paths.build_root() == old / "local-build"
 
     new_data = tmp_path / "runtime-data"
     new_data.mkdir()
