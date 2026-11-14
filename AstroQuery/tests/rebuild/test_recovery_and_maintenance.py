@@ -9,6 +9,37 @@ from astroquery_ai.runtime.checkpoints import JobSteps
 from astroquery_ai.runtime.errors import DomainError
 
 
+def test_terminal_orphan_lease_cannot_block_next_query_after_recovery(tmp_path):
+    app=Application(tmp_path)
+    first=app.create('SYNTHETIC old terminal task',str(uuid4()))
+    job=app.repository.claim_job('old-worker')
+    with app.repository.transaction() as conn:
+        app.repository.mutate_task(conn,first['task_id'],lifecycle='budget_exhausted')
+    app.repository.recover()
+    second=app.create('SYNTHETIC next query',str(uuid4()))
+    claimed=app.repository.claim_job('new-worker')
+    assert claimed['task_id']==second['task_id']
+    with app.repository.read() as conn:
+        old=conn.execute('SELECT status,reason FROM jobs WHERE job_id=?',(job['job_id'],)).fetchone()
+        assert tuple(old)==('cancelled','terminal_task_recovery')
+
+
+def test_terminal_task_drains_live_worker_without_erasing_attempts(tmp_path):
+    from astroquery_ai.runtime.scheduler import Scheduler
+    async def run():
+        app=Application(tmp_path);task=app.create('SYNTHETIC terminal during execution',str(uuid4()))
+        job=app.repository.claim_job('worker');scheduler=Scheduler(app)
+        async def end_task(current):
+            with app.repository.transaction() as conn:
+                app.repository.mutate_task(conn,task['task_id'],lifecycle='budget_exhausted')
+        scheduler.execute=end_task
+        await scheduler.run_job(job)
+        with app.repository.read() as conn:
+            row=conn.execute('SELECT status,reason FROM jobs WHERE job_id=?',(job['job_id'],)).fetchone()
+            assert tuple(row)==('cancelled','terminal_task_drain')
+    asyncio.run(run())
+
+
 def cancelled(app, text="SYNTHETIC maintenance case"):
     task = app.create(text, str(uuid4()))
     app.repository.control(task["task_id"], "cancel", str(uuid4()), task["revision"])

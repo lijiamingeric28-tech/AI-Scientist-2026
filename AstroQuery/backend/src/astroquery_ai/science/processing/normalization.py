@@ -74,7 +74,8 @@ async def normalize(self, job):
     native_parameters_unknown=(source_parameters is None or source_parameters.get('native_coordinate_only') is True
         and source_parameters.get('reference_value') is None and source_parameters.get('reference_unit') is None
         and source_parameters.get('scale','1')=='1' and source_parameters.get('offset','0')=='0')
-    if native_parameters_unknown and (output['representation'].get('native_coordinate_only')
+    user_declared = bool(binding.get('user_execution_ref'))
+    if not user_declared and native_parameters_unknown and (output['representation'].get('native_coordinate_only')
             or record['source_kind']=='paper' and output['representation']['kind'] in {'log10','ln'}
             and (interpretation.get('paper_verification') or {}).get('state')=='passed'):
         from astroquery_ai.science.unit_declarations import output_coordinate_unit
@@ -86,9 +87,14 @@ async def normalize(self, job):
             # Scientific checks below must establish the actual source basis,
             # scale/zero point and exact quantity before this can execute.
             source_parameters = output['representation']
-    scientific, semantics = await self.scientific_permission(
-        job, spec, binding, record, interpretation, release, source_parameters
-    )
+    if user_declared:
+        from astroquery_ai.science.user_execution import user_permission
+        declared_permission = user_permission(self, spec, binding, record, policy, source_parameters)
+        scientific, semantics = None, None
+    else:
+        scientific, semantics = await self.scientific_permission(
+            job, spec, binding, record, interpretation, release, source_parameters
+        )
     requested_components = (
         [
             c["component_id"]
@@ -119,6 +125,8 @@ async def normalize(self, job):
         Representation.model_validate(source_parameters) if source_parameters else None,
         scientific_permission=scientific,
     )
+    if user_declared:
+        permission = declared_permission
     if not permission["allowed"]:
         result = not_run_representation(record, output, permission["reason"])
     elif not numeric or (output['representation'].get('native_coordinate_only') and source_parameters == output['representation']):
@@ -273,6 +281,12 @@ async def normalize(self, job):
                 if exc.code != "MODEL_NUMERIC_CHECK_FAILED":
                     raise
                 model_check.update(status="numeric_recomputed", reason=exc.code)
+    if user_declared:
+        result['user_execution_ref'] = binding['user_execution_ref']
+        result['authorization_origin'] = 'user_declared_local_publication'
+        result['scientific_review_granted'] = False
+        for issue in result.get('issues', []):
+            issue.setdefault('message', '来源对数或星等的参考值、单位或体系未明确，原始数据已保留' if issue['code'] == 'user_source_representation_reference_unresolved' else '当前来源无法按已验证配置转换，原始值、单位和不确定度已保留')
     if scientific is not None:
         result["scientific_condition_ref"] = {
             "id": semantics["check_id"],

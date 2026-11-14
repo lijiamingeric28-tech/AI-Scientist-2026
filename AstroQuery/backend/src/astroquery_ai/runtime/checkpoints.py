@@ -82,7 +82,9 @@ class JobSteps:
                 break
             except Exception as exc:
                 from .throughput import DispatchDeferred
-                if not isinstance(exc,DispatchDeferred) or execution['kind'] not in {'literature_discover','material_prepare','citation_enrich','insights'}:
+                if not isinstance(exc,DispatchDeferred) or execution['kind'] not in {
+                    'literature_discover','material_prepare','citation_enrich','compare_results','insights'
+                }:
                     raise
                 # Internal parallel units share a coordinator lease. Keep this
                 # exact pending call/input in place so siblings can checkpoint;
@@ -114,6 +116,7 @@ class JobHTTP:
     async def request(self, task_id, owner, service, method, url, **kwargs):
         import asyncio
         recover_cache=kwargs.pop('recover_unavailable_cache',False)
+        validator=kwargs.pop('_validate_response',None)
         identity = digest({'task': task_id, 'owner': owner, 'service': service,
                            'method': method, 'url': url,
                            'arguments': {k: v for k, v in kwargs.items() if k not in {'timeout', 'connect_timeout', 'read_timeout'}}})
@@ -126,10 +129,12 @@ class JobHTTP:
             if left is not None:
                 kwargs['timeout'] = min(kwargs.get('timeout', 45), left)
             return await self._request(task_id, owner, service, method, url,
-                                       recover_unavailable_cache=recover_cache, **kwargs)
+                                       recover_unavailable_cache=recover_cache, _validate_response=validator, **kwargs)
 
     async def _request(self, task_id, owner, service, method, url, **kwargs):
         recover_cache=kwargs.pop('recover_unavailable_cache',False)
+        validator=kwargs.pop('_validate_response',None)
+        protocol_errors={'SOURCE_PROTOCOL_UNAVAILABLE','CATALOG_NOT_FOUND','VOTABLE_PARSE_ERROR','CATALOG_SERVICE_ERROR'}
         invalid_cache=False
         if task_id != self.job["task_id"]:
             raise DomainError("STEP_TASK_MISMATCH", "作业步骤不属于该任务")
@@ -155,9 +160,11 @@ class JobHTTP:
             try:
                 _, path = self.steps.app.artifacts.read_owned(
                     task_id, previous["artifact"]["artifact_id"])
-                return path.read_bytes(), previous["metadata"]
+                raw=path.read_bytes()
+                if validator:validator(raw)
+                return raw, previous["metadata"]
             except DomainError as exc:
-                if not recover_cache or exc.code not in {'ARTIFACT_MISSING','ARTIFACT_CORRUPT'}:raise
+                if not (validator and exc.code in protocol_errors) and (not recover_cache or exc.code not in {'ARTIFACT_MISSING','ARTIFACT_CORRUPT'}):raise
                 invalid_cache=True
         if method.upper() == 'GET':
             with self.steps.repo.read() as conn:
@@ -173,17 +180,37 @@ class JobHTTP:
                     _, path = self.steps.app.artifacts.read_owned(task_id, cached['artifact']['artifact_id'])
                     raw = path.read_bytes()
                     if len(raw) <= kwargs.get('max_bytes', 16 * 1024**2):
+                        if validator:validator(raw)
                         metadata = {**cached['metadata'], 'same_task_response_reuse': True}
-                        self.steps.save(self.job, key, {'kind': 'http', 'artifact': cached['artifact'], 'metadata': metadata}, cached['artifact'])
+                        body={'kind':'http','artifact':cached['artifact'],'metadata':metadata}
+                        if invalid_cache:
+                            with self.steps.repo.transaction() as conn:
+                                self.steps.repo.validate_lease(conn,self.job,scientific=False)
+                                self.steps.app.artifacts.register(conn,task_id,key,cached['artifact'])
+                                version=conn.execute("select coalesce(max(version),0)+1 from objects where task_id=? and kind='job_step' and object_id=?",(task_id,key)).fetchone()[0]
+                                self.steps.repo.put_object(conn,task_id,'job_step',key,version,body)
+                        else:
+                            self.steps.save(self.job,key,body,cached['artifact'])
                         return raw, metadata
                 except DomainError as exc:
-                    if exc.code not in {'ARTIFACT_NOT_FOUND', 'ARTIFACT_UNAVAILABLE'} and not (
+                    if exc.code not in {'ARTIFACT_NOT_FOUND', 'ARTIFACT_UNAVAILABLE'} and not (validator and exc.code in protocol_errors) and not (
                             recover_cache and exc.code in {'ARTIFACT_MISSING','ARTIFACT_CORRUPT'}):
                         raise
                     invalid_cache=True
         raw, metadata = await self.steps.app.http.request(
             task_id, owner, service, method, url, **kwargs
         )
+        if validator:
+            try:validator(raw)
+            except DomainError as exc:
+                artifact=self.steps.app.artifacts.write(raw,metadata.get('media_type') or 'application/octet-stream')
+                with self.steps.repo.transaction() as conn:
+                    self.steps.repo.validate_lease(conn,self.job,scientific=False)
+                    identity='protocol-failure-'+digest([self.job['job_id'],metadata.get('attempt_id'),artifact['sha256']])
+                    self.steps.app.artifacts.register(conn,task_id,identity,artifact)
+                    self.steps.repo.put_object(conn,task_id,'http_protocol_failure',identity,1,
+                        {'artifact':artifact,'metadata':metadata,'reason':exc.code,'success_cache_written':False})
+                raise
         artifact = self.steps.app.artifacts.write(
             raw, metadata.get("media_type") or "application/octet-stream",
             repair_corrupt=recover_cache,

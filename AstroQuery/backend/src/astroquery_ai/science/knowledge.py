@@ -70,6 +70,9 @@ class KnowledgeService:
         if not manifest_path.is_file():
             raise DomainError("KB_MISSING_MANIFEST", "知识库缺少发布清单", 422)
         manifest = loads(manifest_path.read_bytes())
+        if manifest.get('schema_version') == 'insight-knowledge-workspace/1':
+            from astroquery_ai.registry.workspace_release import load_workspace_knowledge
+            return load_workspace_knowledge(self, directory, manifest)
         if (
             manifest.get("schema_version") not in {"insight-knowledge/1", "insight-knowledge/2", "insight-knowledge/3"}
             or manifest.get("status") != "ready_to_import"

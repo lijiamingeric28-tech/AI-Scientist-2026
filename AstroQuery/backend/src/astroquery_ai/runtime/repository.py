@@ -215,7 +215,7 @@ class Repository:
                 initializer(conn, self.task(conn, task_id))
             return self.task(conn, task_id)
 
-    def mutate_task(self, conn, task_id: str, **changes) -> dict:
+    def mutate_task(self, conn, task_id: str, *, _budget_publication=False, **changes) -> dict:
         allowed = {
             "lifecycle",
             "phase",
@@ -234,7 +234,16 @@ class Repository:
         if "lifecycle" in changes and changes["lifecycle"] not in LIFECYCLES:
             raise ValueError("invalid lifecycle")
         if current["lifecycle"] in TERMINAL:
-            raise DomainError("TERMINAL_TASK", "该任务已经结束，只能查看")
+            can_publish = (_budget_publication and current["lifecycle"] == "budget_exhausted"
+                           and set(changes) <= {"science_state", "delivery_ref", "insight_ref"}
+                           and bool(changes.get("delivery_ref"))
+                           and changes.get("science_state", current["science_state"]) == "sealed")
+            if not can_publish:
+                raise DomainError("TERMINAL_TASK", "该任务已经结束，只能查看")
+            ref = loads(changes["delivery_ref"])
+            delivery = self.object(conn, task_id, "delivery", ref["id"], ref["version"])
+            if delivery["run_outcome"] != "budget_exhausted" or delivery["status"] != "partial":
+                raise DomainError("TERMINAL_TASK", "用量中止后只允许封存已有成果")
         if current["science_state"] == "sealed" and any(
             (key in changes for key in {"query_ref", "science_state"})
         ):
@@ -365,6 +374,13 @@ class Repository:
         """Called only after the process instance lock is acquired. Never dispatches."""
         with self.transaction() as conn:
             conn.execute("UPDATE attempts SET status='unknown' WHERE status='dispatched'")
+            # A terminal task may have stopped while sibling workers were in
+            # flight. Their dead leases must not monopolize the next task.
+            for row in conn.execute("SELECT j.job_id,j.task_id,t.lifecycle FROM jobs j JOIN tasks t USING(task_id) WHERE j.status='running'").fetchall():
+                if row['lifecycle'] in TERMINAL:
+                    conn.execute("UPDATE jobs SET status='cancelled',reason='terminal_task_recovery',lease_token=NULL,lease_until=NULL WHERE job_id=?", (row['job_id'],))
+                    self.event(conn,row['task_id'],'job_state_changed',{'job_id':row['job_id'],
+                        'status':'cancelled','reason':'terminal_task_recovery','task_lifecycle':row['lifecycle']})
             conn.execute(
                 "UPDATE http_attempts SET status='unknown',error_code='process_interrupted' WHERE status='dispatched'"
             )

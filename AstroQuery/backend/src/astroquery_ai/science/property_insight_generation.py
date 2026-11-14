@@ -133,17 +133,50 @@ async def explain(service,job,current,delivery,spec,packed,bindings,*,key):
     return state
 
 
-async def generate(service,job):
+def apply_frozen_context(report, spec, context):
+    """Preserve source-grounded sections while reporting missing KB honestly."""
+    states = {p['property_id']: deepcopy(p) for p in (context or {}).get('properties', [])}
+    report['knowledge_context_ref'] = deepcopy(spec.get('knowledge_context_ref'))
+    report['knowledge_context_states'] = list(states.values())
+    unqualified = set()
+    for card in report['cards']:
+        state = states.get(card['property_id'], {'property_id': card['property_id'],
+            'state': 'unavailable', 'reason': 'task_knowledge_unreadable'})
+        card['knowledge_coverage'] = deepcopy(state)
+        for finding in card.get('findings', []):finding['owner_state'] = 'pending_review'
+        if state['state'] in {'missing', 'unavailable'}:
+            card['status'] = 'partial';unqualified.add(card['property_id'])
+    for state in report.get('property_states', []):
+        if state['property_id'] in unqualified:state.update(state='partial', qualified=False)
+    report['qualified_property_ids'] = [pid for pid in report['qualified_property_ids'] if pid not in unqualified]
+    if unqualified:
+        report['status'] = 'partial'
+        report['reason'] = report.get('reason') or 'knowledge_incomplete'
+    return report
+
+
+async def generate(service,job,*,publish=True,knowledge_context=None):
     tid=job['task_id'];repo=service.repo
     with repo.read() as conn:
         delivery=service.app.delivery.get(conn,tid,job['payload']['delivery_id'])
         task=repo.task(conn,tid);q=loads(task['query_ref'])
         spec=repo.object(conn,tid,'confirmed_query',q['id'],q['version'])
     reference=spec.get('knowledge_release')
-    if not reference:raise DomainError('INSIGHT_KB_PIN_MISSING','性质解释未绑定准确知识版本')
-    release=service.app.knowledge.load(reference)
-    if 'author' not in release:raise DomainError('INSIGHT_AUTHOR_RELEASE_REQUIRED','不能回退旧模板库')
-    units=cards.property_units(delivery,spec,release)
+    from . import task_knowledge
+    frozen = task_knowledge.enabled(spec)
+    if frozen:
+        if knowledge_context is None:
+            with repo.read() as conn:knowledge_context = task_knowledge.load(repo,conn,tid,spec)
+        if knowledge_context is None:raise DomainError('TASK_KNOWLEDGE_MISSING','任务知识快照缺失')
+        from .insight_inputs import measurement_input
+        units=[author.unit(delivery,b['property_id'],
+            [measurement_input(delivery,r) for r in delivery['measurements'] if r['property_ref']['id']==b['property_id']],
+            task_knowledge.blocks(knowledge_context,b['property_id'])) for b in spec['properties']]
+    else:
+        if not reference:raise DomainError('INSIGHT_KB_PIN_MISSING','性质解释未绑定准确知识版本')
+        release=service.app.knowledge.load(reference)
+        if 'author' not in release:raise DomainError('INSIGHT_AUTHOR_RELEASE_REQUIRED','不能回退旧模板库')
+        units=cards.property_units(delivery,spec,release)
     plan_body={'protocol':cards.PROTOCOL,'snapshot_ref':delivery['snapshot_ref'],'knowledge_ref':reference,
         'units':[{'unit_id':u['unit_id'],'property_id':u['property_id'],'claims':u['claims'],
                   'measurement_ids':[m['measurement_id'] for m in u['measurements']]} for u in units]}
@@ -178,18 +211,34 @@ async def generate(service,job):
         if repo.task(conn,tid)['lifecycle'] not in {'running','queued'}:
             raise DomainError('DISPATCH_FORBIDDEN','洞察已暂停，保留检查点并等待恢复')
     findings=[f for r in checkpoints.values() for f in r.get('card',{}).get('findings',[])]
-    owner_rechecks=await recheck(service,job,delivery,spec,findings)
+    owner_rechecks=[] if frozen else await recheck(service,job,delivery,spec,findings)
     with repo.transaction() as conn:
         repo.validate_lease(conn,job,scientific=False)
         if repo.task(conn,tid)['lifecycle'] not in {'running','queued'}:
             raise DomainError('DISPATCH_FORBIDDEN','等待恢复后再发布，不把暂停变为完成')
-        count=conn.execute("SELECT count(*) FROM attempts WHERE task_id=? AND owner='M11' AND status<>'not_dispatched'",(tid,)).fetchone()[0]
-        report=cards.final_report(delivery,spec,reference,units,checkpoints,owner_rechecks=owner_rechecks,calls=count)
-        repo.finish_job(conn,job)
-        service.app.delivery.finish_insights(conn,tid,report)
+        count=conn.execute("SELECT count(*) FROM attempts WHERE task_id=? AND owner='M11' AND status<>'not_dispatched' AND (?=0 OR root_id NOT LIKE 'material-summary-call-%')",(tid,int(frozen))).fetchone()[0]
+        report=cards.final_report(delivery,spec,reference,units,checkpoints,owner_rechecks=owner_rechecks,calls=count,knowledge_store=task_knowledge.frozen_user_store(knowledge_context) if frozen else service.app.user_knowledge,
+            theory_store=task_knowledge.frozen_theory_store(knowledge_context) if frozen else None,
+            include_background=not frozen or knowledge_context is not None)
+        if frozen:
+            failures=sorted({c["reason"] for c in checkpoints.values() if c.get("reason")})
+            report["failure_reasons"]=failures
+            if failures:report["reason"]=failures[0] if len(failures)==1 else "multiple_component_failures"
+            apply_frozen_context(report,spec,knowledge_context)
+        if publish:
+            repo.finish_job(conn,job)
+            service.app.delivery.finish_insights(conn,tid,report)
+        return report
 
 
-def unfinished_report(repo,conn,tid,delivery,spec,reason):
+def unfinished_report(repo,conn,tid,delivery,spec,reason, *, knowledge_store=None, knowledge_context=None):
+    from . import task_knowledge
+    frozen = task_knowledge.enabled(spec)
+    if frozen:
+        if knowledge_context is None:
+            try:knowledge_context = task_knowledge.load(repo,conn,tid,spec)
+            except DomainError:knowledge_context = None
+        knowledge_store = task_knowledge.frozen_user_store(knowledge_context)
     # No new model calls or library load on failure/cancel. Reconstruct only
     # available cards; all data remain in their original science snapshot.
     from .insight_inputs import measurement_input
@@ -202,8 +251,11 @@ def unfinished_report(repo,conn,tid,delivery,spec,reason):
         unit=author.unit(delivery,binding['property_id'],own,plan_unit.get('claims',[]) if plan_unit else [])
         if plan_unit:unit['unit_id']=plan_unit['unit_id']
         units.append(unit)
-    checks=[d for c in repo.objects(conn,tid,'insight_owner_recheck_checkpoint') for d in c['dispositions']]
-    count=conn.execute("SELECT count(*) FROM attempts WHERE task_id=? AND owner='M11' AND status<>'not_dispatched'",(tid,)).fetchone()[0]
-    report=cards.final_report(delivery,spec,spec.get('knowledge_release'),units,checkpoints,owner_rechecks=checks,calls=count)
+    checks=[] if frozen else [d for c in repo.objects(conn,tid,'insight_owner_recheck_checkpoint') for d in c['dispositions']]
+    count=conn.execute("SELECT count(*) FROM attempts WHERE task_id=? AND owner='M11' AND status<>'not_dispatched' AND (?=0 OR root_id NOT LIKE 'material-summary-call-%')",(tid,int(frozen))).fetchone()[0]
+    report=cards.final_report(delivery,spec,spec.get('knowledge_release'),units,checkpoints,owner_rechecks=checks,calls=count,knowledge_store=knowledge_store,
+        theory_store=task_knowledge.frozen_theory_store(knowledge_context) if frozen else None,
+        include_background=not frozen or knowledge_context is not None)
     report.update(status='partial',reason=reason)
+    if frozen:apply_frozen_context(report,spec,knowledge_context)
     return report

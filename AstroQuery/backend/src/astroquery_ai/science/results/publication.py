@@ -13,10 +13,19 @@ from astroquery_ai.science.quality import assess
 from astroquery_ai.science.differences import compare
 
 
-def _unfinished_insights(repo,conn,tid,delivery,spec,reason):
+def _unfinished_insights(repo,conn,tid,delivery,spec,reason, *, knowledge_store=None):
+    from .. import insight_bundle
+    if insight_bundle.enabled(spec):
+        return insight_bundle.unfinished_report(repo,conn,tid,delivery,spec,reason)
+    from .. import material_summaries
+    if material_summaries.enabled(spec):
+        from astroquery_ai.application.material_workbench import MaterialIndex
+        counts = material_summaries.report_counts(repo, conn, tid, delivery, MaterialIndex(delivery))
+        return material_summaries.report(delivery, state='partial', counts=counts, reason=reason)
     from ..property_insights import enabled
     if enabled(spec):
         from ..property_insight_generation import unfinished_report
+        return unfinished_report(repo,conn,tid,delivery,spec,reason,knowledge_store=knowledge_store)
     else:
         from ..author_insights import unfinished_report
     return unfinished_report(repo,conn,tid,delivery,spec,reason)
@@ -114,22 +123,47 @@ def current_derived_representations(records, bindings, history, selections):
     return current
 
 
-def preview(self, conn, task_id, *, offset=0, limit=100, expected_preview_id=None):
+def preview(self, conn, task_id, *, offset=0, limit=100, expected_preview_id=None, preview_protocol=1):
     """Read one transaction's provisional evidence; never publish or adjudicate."""
     repo = self.repository
     task = repo.task(conn, task_id)
+    if type(preview_protocol) is not int or preview_protocol not in {1, 2}:
+        raise DomainError('PREVIEW_PROTOCOL_INVALID', '临时数据预览协议无效', 422)
     if (
         task["kind"] in {"legacy", "replay"}
         or task["science_state"] == "sealed"
         or (not task["query_ref"])
     ):
         raise DomainError("PREVIEW_UNAVAILABLE", "当前任务不提供临时科学数据预览", 409)
+    page = slice(max(0, offset), max(0, offset) + min(max(1, limit), 500))
+    if preview_protocol == 2:
+        from .preview_revision import preview_revision
+        preview_id = preview_revision(conn, task)
+        if expected_preview_id is not None and expected_preview_id != preview_id:
+            raise DomainError("PREVIEW_CHANGED", "临时数据已有更新，请重新读取", 409)
     query_ref = loads(task["query_ref"])
     spec = repo.object(conn, task_id, "confirmed_query", query_ref["id"], query_ref["version"])
     bindings = {b["property_id"]: b for b in spec["properties"]}
-    records = repo.objects(conn, task_id, "measurement")
+    if preview_protocol == 2:
+        latest = ('FROM objects o WHERE task_id=? AND kind=? AND version='
+                  '(SELECT max(version) FROM objects i WHERE i.task_id=o.task_id '
+                  'AND i.kind=o.kind AND i.object_id=o.object_id)')
+        identities = [dict(row) for row in conn.execute(
+            "SELECT json_extract(CAST(payload AS TEXT),'$.measurement_id') AS measurement_id,"
+            "json_extract(CAST(payload AS TEXT),'$.revision') AS revision,content_sha256 " + latest,
+            (task_id, 'measurement'))]
+        records = [loads(row[0]) for row in conn.execute(
+            'SELECT payload ' + latest + ' ORDER BY object_id LIMIT ? OFFSET ?',
+            (task_id, 'measurement', page.stop - page.start, page.start))]
+        unresolved_candidates = conn.execute(
+            "SELECT count(*) " + latest + " AND json_extract(CAST(payload AS TEXT),'$.state')='review_candidate'",
+            (task_id, 'candidate')).fetchone()[0]
+    else:
+        records = repo.objects(conn, task_id, "measurement")
+        identities = records
+        unresolved_candidates = sum(c['state'] == 'review_candidate' for c in repo.objects(conn, task_id, 'candidate'))
     dispositions = repo.objects(conn, task_id, "admission_disposition")
-    eligible = {r["measurement_id"] for r in current_delivery_measurements(records, dispositions)}
+    eligible = {r["measurement_id"] for r in current_delivery_measurements(identities, dispositions)}
     reviews = [
         dict(r)
         for r in conn.execute(
@@ -177,12 +211,10 @@ def preview(self, conn, task_id, *, offset=0, limit=100, expected_preview_id=Non
             }
         )
     counts = {
-        "source_records": len(records),
+        "source_records": len(identities),
         "pending_questions": sum((r["status"] == "pending" for r in reviews)),
         "accepted_answers_awaiting_application": sum((r["status"] == "accepted" for r in reviews)),
-        "unresolved_candidates": sum(
-            (c["state"] == "review_candidate" for c in repo.objects(conn, task_id, "candidate"))
-        ),
+        "unresolved_candidates": unresolved_candidates,
     }
     basis = {
         "task_id": task_id,
@@ -192,27 +224,29 @@ def preview(self, conn, task_id, *, offset=0, limit=100, expected_preview_id=Non
         "items": rows,
         "counts": counts,
     }
-    preview_id = "preview-" + digest(basis)
+    if preview_protocol == 1:
+        preview_id = "preview-" + digest(basis)
     if expected_preview_id is not None and expected_preview_id != preview_id:
         raise DomainError("PREVIEW_CHANGED", "临时数据已有更新，请重新读取", 409)
     return {
-        "schema_version": "ProvisionalSciencePreview/1",
+        "schema_version": f"ProvisionalSciencePreview/{preview_protocol}",
         "task_id": task_id,
         "preview_id": preview_id,
+        **({'preview_revision': preview_id, 'preview_protocol': 2} if preview_protocol == 2 else {}),
         "task_revision": task["revision"],
         "event_cursor": task["last_event_seq"],
         "status": "provisional_read_only",
         "final_quality_available": False,
         "exportable": False,
         "counts": counts,
-        "items": rows[max(0, offset) : max(0, offset) + min(max(1, limit), 500)],
-        "total": len(rows),
+        "items": rows if preview_protocol == 2 else rows[page],
+        "total": len(identities),
     }
 
 
 def delivery_provenance(snapshot):
     """Project existing snapshot evidence; citation background grants no measurements."""
-    return {
+    result = {
         key: snapshot[key]
         for key in [
             "interpretations",
@@ -256,6 +290,11 @@ def delivery_provenance(snapshot):
             "pilot_scope",
         ]
     }
+    for key in ('attachment_quality_scopes', 'attachment_quality_summaries', 'attachment_role_exclusions',
+                'catalog_subject_checks', 'catalog_table_rows', 'catalog_screening_failures'):
+        if key in snapshot:
+            result[key] = snapshot[key]
+    return result
 
 
 def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
@@ -266,7 +305,7 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
             existing=self.repository.object(conn, task_id, "delivery", ref["id"], ref["version"])
             if outcome=='cancelled' and existing.get('report_state')=='pending_insights':
                 qref=loads(task['query_ref']);spec=self.repository.object(conn,task_id,'confirmed_query',qref['id'],qref['version'])
-                return finish_insights(self,conn,task_id,_unfinished_insights(self.repository,conn,task_id,existing,spec,'user_cancelled'),complete_task=False)
+                return finish_insights(self,conn,task_id,_unfinished_insights(self.repository,conn,task_id,existing,spec,'user_cancelled',knowledge_store=self.knowledge_store),complete_task=False)
             return existing
         raise DomainError("INCOMPLETE_PUBLICATION", "已封口数据尚未完成交付")
     if not task["query_ref"]:
@@ -286,7 +325,8 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         raise DomainError("SCIENCE_NOT_CLOSED", "生产、处理或审核事项尚未闭合")
     from astroquery_ai.runtime.stages import current_stage, set_stage
 
-    staged = current_stage(conn, task_id) is not None
+    stopped = task["lifecycle"] == "budget_exhausted" and outcome == "budget_exhausted"
+    staged = not stopped and current_stage(conn, task_id) is not None
     if staged:
         set_stage(self.repository, conn, task_id, "postcheck")
     query = self.repository.object(conn, task_id, "confirmed_query", loads(task["query_ref"])["id"])
@@ -444,6 +484,9 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         ("catalog_documents", "catalog_document"),
         ("catalog_document_observations", "catalog_document_observation"),
         ("catalog_identity_queries", "catalog_identity_query"),
+        ("catalog_subject_checks", "catalog_subject_check"),
+        ("catalog_table_rows", "catalog_table_rows"),
+        ("catalog_screening_failures", "catalog_screening_failure"),
         ("catalog_identity_limits", "catalog_identity_limitation"),
         ("target_astrometries", "target_astrometry"),
         ("object_matches", "object_match"),
@@ -457,6 +500,22 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         for kind in ('quality_candidate_root','quality_candidate_link','quality_decision','quality_reextraction_action',
                      'quality_reextraction_result','quality_batch_receipt','candidate','completion_scope'):
             snapshot[kind]=self.repository.objects(conn,task_id,kind)
+        scope_refs = {ref['id']: ref for decision in snapshot['quality_decision']
+                      if (ref := decision.get('shared_table_check_ref'))}
+        if scope_refs:
+            scopes = []
+            for ref in scope_refs.values():
+                scope = self.repository.object(conn, task_id, 'attachment_quality_scope', ref['id'], ref['version'])
+                if content_hash(scope) != ref['content_sha256']:
+                    raise DomainError('SNAPSHOT_REFERENCE_MISMATCH', '附表共享核验引用不一致')
+                scopes.append({'reference': ref, 'scope': scope})
+            snapshot['attachment_quality_scopes'] = scopes
+        attachment_summaries = self.repository.objects(conn, task_id, 'attachment_quality_summary')
+        if attachment_summaries:
+            snapshot['attachment_quality_summaries'] = attachment_summaries
+        exclusions = self.repository.objects(conn, task_id, 'attachment_role_exclusion')
+        if exclusions:
+            snapshot['attachment_role_exclusions'] = exclusions
     # Figures are evidence-only: they never enter numeric coverage, assessment
     # or comparisons. Their immutable payload is bound to this delivery.
     figures = self.repository.objects(conn, task_id, "figure")
@@ -591,13 +650,23 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         # Serializing the pre-score body as well doubled sealing work and
         # could expire the job lease before the final commit.
         quality=calculate(self.repository,conn,task_id,query,snapshot,delivery_verified=True)
+        if conn.execute("SELECT 1 FROM objects WHERE task_id=? AND kind='quality' AND object_id=? AND version=1",
+                        (task_id, quality['report_id'])).fetchone():
+            quality['report_id'] = 'task-score-' + digest([task_id, snapshot_ref])
         quality.update(snapshot_ref=snapshot_ref,difference_ref=difference_ref,
             archive_groups=snapshot['archive_groups'],comparison_checks=snapshot['archive_comparisons'])
         quality_ref=self.repository.put_object(conn,task_id,'quality',quality['report_id'],1,quality)
         delivery['quality']={'state':'available','report_ref':quality_ref}
         delivery['task_score']=quality
         from ..author_release import enabled as author_enabled
-        if author_enabled(query):
+        from .. import material_summaries, insight_bundle
+        if insight_bundle.enabled(query):
+            delivery['export_schema_version'] = 2
+            insight = insight_bundle.pending_report(delivery, query)
+        elif material_summaries.enabled(query):
+            delivery['export_schema_version'] = 2
+            insight = material_summaries.report(delivery, state='pending')
+        elif author_enabled(query):
             from ..property_insights import enabled as property_enabled
             if property_enabled(query):
                 from ..property_insights import pending_report
@@ -617,15 +686,18 @@ def seal(self, conn, task_id: str, *, outcome="completed") -> dict:
         self.repository.put_object(conn,task_id,'delivery_serialization_check',delivery_id,1,verification)
     ref = self.repository.put_object(conn, task_id, "delivery", delivery_id, 1, delivery)
     self.repository.mutate_task(
-        conn, task_id, science_state="sealed", delivery_ref=canonical(ref).decode(), phase="insight",
+        conn, task_id, _budget_publication=stopped, science_state="sealed", delivery_ref=canonical(ref).decode(),
+        **({} if stopped else {"phase": "insight"}),
         **({'insight_ref':canonical(insight_ref).decode()} if unified and author_enabled(query) else {})
     )
     self.repository.event(conn, task_id, "science_sealed", {"snapshot_ref": snapshot_ref})
     self.repository.event(
         conn, task_id, "delivery_ready", {"delivery_ref": ref, "counts": delivery["counts"]}
     )
-    if unified and author_enabled(query) and outcome=='cancelled':
-        return finish_insights(self,conn,task_id,_unfinished_insights(self.repository,conn,task_id,delivery,query,'user_cancelled'),complete_task=False)
+    if unified and author_enabled(query) and outcome in {"cancelled", "budget_exhausted"}:
+        reason = "user_cancelled" if outcome == "cancelled" else task.get("terminal_reason") or outcome
+        report = _unfinished_insights(self.repository, conn, task_id, delivery, query, reason, knowledge_store=self.knowledge_store)
+        return finish_insights(self, conn, task_id, report, complete_task=False)
     return delivery
 
 
@@ -638,8 +710,10 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     task=self.repository.task(conn,task_id);delivery=self.get(conn,task_id)
     qref=loads(task['query_ref']);spec=self.repository.object(conn,task_id,'confirmed_query',qref['id'],qref['version'])
     from ..property_insights import enabled as property_enabled
-    research=property_enabled(spec)
-    expected_schema='InsightReport/4' if research else 'InsightReport/3'
+    from .. import material_summaries, insight_bundle
+    bundle = insight_bundle.enabled(spec)
+    research=property_enabled(spec) and not bundle
+    expected_schema=insight_bundle.SCHEMA if bundle else 'MaterialSummaryReport/1' if material_summaries.enabled(spec) else 'InsightReport/4' if research else 'InsightReport/3'
     if not enabled(spec) or report['schema_version']!=expected_schema or report['status']=='pending' or task['science_state']!='sealed':
         raise DomainError('INSIGHT_PUBLICATION_MODE','新洞察不能改写旧任务或未封口数据')
     if report['snapshot_ref']!=delivery['snapshot_ref'] or report['delivery_id']!=delivery['delivery_id']:
@@ -647,6 +721,15 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     if delivery.get('report_state')=='final':
         if delivery['insight_report']==report:return delivery
         raise DomainError('INSIGHT_ALREADY_FINAL','已完成解释不可重复生成或覆盖')
+    if bundle:
+        if report.get('knowledge_context_ref') != spec.get('knowledge_context_ref'):
+            raise DomainError('TASK_KNOWLEDGE_HASH','报告知识引用与确认任务不一致')
+        if (report.get('generation_delivery_revision') != delivery['revision']
+                or report.get('delivery_revision') != delivery['revision'] + 1):
+            raise DomainError('DELIVERY_CHANGED','洞察所属交付修订已变化')
+        checked = insight_bundle.compose(delivery,spec,report['material_report'],report['property_report'])
+        if checked != report or report['property_report'].get('owner_rechecks'):
+            raise DomainError('INSIGHT_PUBLICATION_MODE','两层报告状态不一致或包含自动采用修改')
     updated=deepcopy(delivery);revision=delivery['revision']+1
     if research:
         records={r['measurement_id']:r for r in delivery['measurements']}
@@ -681,6 +764,7 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     insight_ref=self.repository.put_object(conn,task_id,'insight',report['report_id'],revision,report)
     snapref=delivery['snapshot_ref'];snapshot=self.repository.object(conn,task_id,'science_snapshot',snapref['id'],snapref['version'])
     score=calculate(self.repository,conn,task_id,spec,snapshot,delivery_verified=True,insight_report=report)
+    score['report_id'] = delivery['quality']['report_ref']['id']
     score.update(snapshot_ref=snapref,difference_ref=delivery['difference']['report_ref'],
         archive_groups=delivery['archive_groups'],comparison_checks=delivery['comparison_checks'])
     quality_ref=self.repository.put_object(conn,task_id,'quality',score['report_id'],revision,score)
@@ -690,8 +774,10 @@ def finish_insights(self,conn,task_id,report,*,complete_task=True):
     if verification['state']!='passed':raise DomainError('INSIGHT_EXPORT_INCONSISTENT','新洞察交付五格式不一致')
     self.repository.put_object(conn,task_id,'delivery_serialization_check',delivery['delivery_id'],revision,verification)
     ref=self.repository.put_object(conn,task_id,'delivery',delivery['delivery_id'],revision,updated)
-    self.repository.mutate_task(conn,task_id,delivery_ref=canonical(ref).decode(),insight_ref=canonical(insight_ref).decode(),
-        **({'lifecycle':'completed'} if complete_task else {}),phase='insight')
+    stopped = not complete_task and task["lifecycle"] == "budget_exhausted"
+    self.repository.mutate_task(conn, task_id, _budget_publication=stopped,
+        delivery_ref=canonical(ref).decode(), insight_ref=canonical(insight_ref).decode(),
+        **({"lifecycle": "completed"} if complete_task else {}), **({} if stopped else {"phase": "insight"}))
     self.repository.event(conn,task_id,'delivery_ready',{'delivery_ref':ref,'counts':updated['counts']})
     self.repository.event(conn,task_id,'insight_updated',{'report_ref':insight_ref,'status':report['status'],'delivery_ref':ref})
     if complete_task:self.repository.event(conn,task_id,'task_state_changed',{'lifecycle':'completed'})

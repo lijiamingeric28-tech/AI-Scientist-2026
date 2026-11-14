@@ -9,16 +9,16 @@ from astroquery_ai.runtime.codec import loads
 from astroquery_ai.runtime.errors import DomainError
 from astroquery_ai.runtime.run_policy import RESEARCH_DELIVERY_POLICY
 from astroquery_ai.science.property_insights import unpack_materials, PROTOCOL
-from tests.rebuild.scenario import application, confirmed_case
+from tests.rebuild.scenario import application, confirmed_case, synthetic_author_manifest
 
 
 @pytest.mark.parametrize('scenario', ['normal','local_repair','failure','pause','cancel','restart'])
 def test_normal_m11_property_card_publication_and_recovery(tmp_path, scenario):
     async def run():
         app=application(tmp_path/'data');ordinary=app.models.json;calls=[];controls=[];tid=[]
+        manifest=synthetic_author_manifest(app)
         def knowledge(reference=None):
-            manifest={'schema_version':'insight-knowledge/3','release_id':'synthetic-author','content_sha256':'a'*64}
-            if reference is None:return {'manifest':manifest}
+            if reference is None or not tid:return {'manifest':manifest}
             with app.repository.read() as c:spec=app.repository.objects(c,tid[0],'confirmed_query')[0]
             b=spec['properties'][0];d=b['definition'];p=b['output_profile'];otype=spec['target']['primary_otype']
             return {'manifest':manifest,'sources':{},'author':{'sources':[],

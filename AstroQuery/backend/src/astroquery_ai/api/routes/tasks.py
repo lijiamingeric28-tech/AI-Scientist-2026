@@ -149,6 +149,8 @@ def register(app, application, scheduler):
     @app.get("/api/tasks/{task_id}")
     @app.get("/api/tasks/{task_id}/state")
     def state(task_id: str, view: str | None = None):
+        if view == 'chat':
+            return application.view(task_id, for_chat=True)
         if view == 'workspace':
             return application.view(task_id, for_workspace=True)
         if view == 'conversation':
@@ -188,6 +190,19 @@ def register(app, application, scheduler):
         raw = pdf_bytes(body) if format == 'pdf' else json_bytes(body)
         return Response(raw,media_type='application/pdf' if format == 'pdf' else 'application/json',
             headers={'Content-Disposition': f'attachment; filename="execution-{task_id}-{body["cursor"]}.{format}"'})
+
+    @app.get("/api/tasks/{task_id}/property-catalog")
+    def property_catalog(task_id: str, question_id: str):
+        from astroquery_ai.query.drafts import catalog_context
+        with application.repository.read() as conn:
+            task = application.repository.task(conn, task_id)
+            draft = application._draft(conn, task_id)
+            question = draft.get("pending_question") or {}
+            if (task["query_ref"] or draft["status"] != "waiting_input" or
+                question.get("question_id") != question_id or not question.get("full_property_catalog")):
+                raise DomainError("PROPERTY_CATALOG_CHANGED", "当前查询的适用性质已变化", 409)
+            return {"catalog_context_hash": catalog_context(draft), "question_id": question_id,
+                    "bindings": draft["property_support"]["bindings"]}
 
     @app.post("/api/tasks/{task_id}/draft-actions")
     async def draft_action(task_id: str, request: Request):

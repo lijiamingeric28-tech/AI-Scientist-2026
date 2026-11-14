@@ -1,6 +1,7 @@
 """Formal release seams. Synthetic HTTP/PDF tests are not scientific validation."""
 import asyncio
 from copy import deepcopy
+from types import SimpleNamespace
 
 import httpx
 import pymupdf
@@ -74,7 +75,14 @@ def test_four_properties_can_freeze_eighty_disjoint_works_without_global_forty_c
     asyncio.run(run())
 
 
-def test_task_url_budget_survives_recovery_but_does_not_exhaust_next_task(tmp_path):
+def test_task_url_budget_survives_recovery_but_does_not_exhaust_next_task(tmp_path,monkeypatch):
+    from astroquery_ai.science.papers import download_support
+    # Application construction can outlast this one-second TTL under load.
+    # Advance only the acquisition helper's clock, preserving its actual guards.
+    clock=[1800000000.0]
+    async def advance(delay):clock[0]+=delay
+    monkeypatch.setattr(download_support,'time',SimpleNamespace(time=lambda:clock[0]))
+    monkeypatch.setattr(download_support,'asyncio',SimpleNamespace(Lock=asyncio.Lock,sleep=advance))
     async def run():
         app,tid,work,pdf=carrier(tmp_path);calls=[]
         def fail(request):
@@ -98,7 +106,7 @@ def test_task_url_budget_survives_recovery_but_does_not_exhaust_next_task(tmp_pa
         with pytest.raises(DomainError) as cooldown:
             await bounded_download(svc2,job2,work2,url)
         assert cooldown.value.code=='DOWNLOAD_URL_COOLDOWN'
-        await asyncio.sleep(1.05)
+        clock[0]+=1.05
         results=await asyncio.gather(*(bounded_download(svc2,job2,work2,url) for _ in range(2)))
         assert all(raw==pdf for raw,_ in results)
         assert len(calls)==3  # same-task concurrent duplicate reuses normal HTTP receipt

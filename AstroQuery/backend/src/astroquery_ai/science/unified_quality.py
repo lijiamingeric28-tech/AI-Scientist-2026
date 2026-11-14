@@ -477,6 +477,7 @@ def _catalog_input(spec,binding,source,candidates):
             'original_row':row,'original_row_text':p['source_quote'] if row is None else None,
             'object_binding_ref':c['assembly_context'].get('object_binding_ref')})
     body={'schema':CatalogQualityReply.model_json_schema(),'target':{k:spec['target'].get(k) for k in ('main_id','aliases','primary_otype')},
+        'table_description':{k:source['metadata'].get(k) for k in ('description','resource_description','file_subject_context')},
         'property':property_view(binding),'columns':source['metadata']['columns'],'source_materials':aliases,'items':items,
         'instruction':'Independently verify each real catalogue/official structured-table candidate. Identify actual quantity, '
         'subject scale, native coordinate and author role, then compare to the selected quantity. The object binding is '
@@ -525,13 +526,20 @@ def plan_checks(service,conn,tid,spec):
                 context_blocks=notes,context_neighbors=True,table_layout=True)
             batches=[[candidates[r['id']] for r in group] for group in groups_for_input]
         else:batches=[items]
-        batches=[part for batch in batches for part in output_groups(batch,paper=source['kind']=='paper')]
+        shared = (source['kind'] == 'official_attachment'
+                  and spec.get('run_policy', {}).get('quality', {}).get('official_table_review') == 'shared_semantics/1')
+        if (source['kind']=='catalog' and spec.get('run_policy',{}).get('quality',{}).get('catalog_table_review')=='shared_semantics/1'):
+            from .structured_quality import single_table_candidates
+            shared=single_table_candidates(repo,conn,tid,items)
+        if not shared:
+            batches=[part for batch in batches for part in output_groups(batch,paper=source['kind']=='paper')]
         for batch in batches:
             refs=[_reference(c) for c in batch];identity=digest(refs)
             if identity in plans:continue
             repo.put_object(conn,tid,'quality_plan','quality-plan-'+identity,1,
                 {'input_hash':identity,'source_id':sid,'property_id':pid,'items':refs})
-            repo.enqueue(conn,tid,'M07','quality_verify',{'work_id':sid,'property_id':pid,'items':refs,'root_id':'quality-'+identity})
+            repo.enqueue(conn,tid,'M07','quality_verify',{'work_id':sid,'property_id':pid,'items':refs,
+                'root_id':'quality-'+identity, **({'shared_table': True} if shared else {})})
 
 
 def advance_quality(service,conn,tid,spec):
@@ -589,6 +597,17 @@ async def verify(self,job):
         version='unified-paper-quality-20' if paper else 'unified-catalog-quality-2',
         source_format='pdf' if paper else 'votable',max_input_tokens=96000,max_output_tokens=8192,
         max_images=4 if paper else 0,wall_seconds=480,inactivity_seconds=120)
+    if payload.get('shared_table') and source['kind'] in {'official_attachment','catalog'}:
+        from .structured_quality import verify_table
+        if source['kind']=='catalog':
+            artifact_ids={c['evidence']['artifact_ref']['id'] for c in candidates}
+            if len(artifact_ids)!=1:
+                raise DomainError('QUALITY_INPUT_CHANGED','共享表核验必须绑定同一实际原件')
+            artifact,_=self.app.artifacts.read_owned(tid,next(iter(artifact_ids)))
+            source={**source,'artifact':{**artifact,'sha256':artifact['sha256']},
+                    'association':{'origin':'dynamic_catalogue','table_id':source['table_id']}}
+        await verify_table(self, job, spec, binding, source, candidates, profile)
+        return
     if paper:
         plans,failures=await plan_paper_inputs(self,tid,spec,binding,source,index,candidates,notes,profile)
         aliases=None
@@ -621,7 +640,7 @@ async def verify(self,job):
         self.repo.finish_job(c,job)
 
 
-async def _verify_batch(self,job,spec,binding,source,candidates,body,pages,blocks,visual,images,profile,root_id,*,catalog_material=None):
+async def _verify_batch(self,job,spec,binding,source,candidates,body,pages,blocks,visual,images,profile,root_id,*,catalog_material=None,table_problems=None,table_row_checks=None):
     tid=job['task_id']
     by_label={'I'+str(i+1):x for i,x in enumerate(candidates)};checks={};diagnostics=[];receipts={}
     all_items=body['items']
@@ -645,6 +664,13 @@ async def _verify_batch(self,job,spec,binding,source,candidates,body,pages,block
             diagnostics.append({'code':type(ex).__name__,'attempt':attempt+1})
             continue
         except DomainError as ex:
+            if ex.code == 'ATTEMPT_LIMIT' and (attempt > 0 or table_row_checks is not None):
+                # A resumed repair can replay a saved first response even
+                # though the second dispatch already used the call allowance.
+                missing_reason = ('quality_exception_retry_budget_exhausted' if table_row_checks is not None
+                                  else 'quality_repair_attempt_limit')
+                diagnostics.append({'code': ex.code, 'attempt': attempt + 1})
+                break
             if ex.code not in {'INVALID_MODEL_JSON','INCOMPLETE_MODEL_RESPONSE','PROVIDER_INACTIVITY_TIMEOUT','PROVIDER_TIMEOUT'}:raise
             missing_reason='quality_model_transport_incomplete' if 'TIMEOUT' in ex.code else 'quality_item_missing_after_protocol_repair'
             diagnostics.append({'code':ex.code,'attempt':attempt+1});continue
@@ -707,26 +733,31 @@ async def _verify_batch(self,job,spec,binding,source,candidates,body,pages,block
         if len(checks)==len(by_label):break
     for label,candidate in by_label.items():
         item=checks.get(label)
+        extra = {'table_problem': table_problems[candidate['candidate_id']]} if table_problems and candidate['candidate_id'] in table_problems else {}
+        if table_row_checks and candidate['candidate_id'] in table_row_checks:
+            extra['table_checks'] = table_row_checks[candidate['candidate_id']]
         await apply_item(self,job,spec,binding,source,candidate,item,receipts.get(label),
             paper_material=(pages,blocks,visual) if source['kind']=='paper' else None,
-            catalog_material=catalog_material, missing_reason=missing_reason)
+            catalog_material=catalog_material, missing_reason=missing_reason, **extra)
     return {'items':[_reference(c) for c in candidates],'checked':len(checks),'protocol_diagnostics':diagnostics,'root_id':root_id}
 
 
-async def apply_item(self,job,spec,binding,source,candidate,item,receipt,*,paper_material=None,catalog_material=None,missing_reason='quality_item_missing_after_protocol_repair'):
+async def apply_item(self,job,spec,binding,source,candidate,item,receipt,*,paper_material=None,catalog_material=None,missing_reason='quality_item_missing_after_protocol_repair',table_checks=None,table_problem=None,proposal_override=None):
     """The evidence adapters below share one routing/application boundary."""
     from .papers.reconciliation import reviewed_native_fields
     from .paper_admission import check_local_evidence
     from .processing.assessment import scientific_candidate_question
     tid=job['task_id'];cid=candidate['candidate_id'];ref={k:v for k,v in _reference(candidate).items() if k!='kind'}
     with self.repo.read() as c:
-        link=next(x for x in self.repo.objects(c,tid,'quality_candidate_link') if x['candidate_ref']['id']==cid)
+        link=self.repo.object(c,tid,'quality_candidate_link',cid)
         root=link['root_id'];actions=self.repo.objects(c,tid,'quality_reextraction_action')
-    proposal=MeasurementProposal.model_validate(candidate['proposal']);verification=None;problem=None;result=None
+    proposal=MeasurementProposal.model_validate(proposal_override or candidate['proposal']);verification=None;problem=None;result=None
     state='technical_failure' if item is None else 'not_passed';reason=missing_reason
     native_unit_receipt=None
     base=candidate.get('current_measurement_ref') if candidate.get('comparison_problem') else None
-    if item is not None and source['kind']=='paper':
+    if table_checks and table_checks.get('source_role_rule') in {'explicit_model_declaration', 'verified_model_curve'}:
+        state='not_applicable';reason='original_declares_model_generated_data'
+    elif item is not None and source['kind']=='paper':
         pages,blocks,visual=paper_material;check=item.assessment
         if check.subject=='other' or check.quantity_match=='different' or check.result_role not in {'reported_result','adopted_measurement','unresolved'}:
             state='not_applicable';reason='source_reports_other_subject_quantity_or_nonresult'
@@ -779,12 +810,31 @@ async def apply_item(self,job,spec,binding,source,candidate,item,receipt,*,paper
         elif item.review_issue is not None:
             proposal=proposal.model_copy(update={'catalog_review_issue':item.review_issue});state='needs_human';reason='actionable_scientific_ambiguity'
         else:state='not_passed';reason='catalog_evidence_insufficient'
+    if table_problem and state != 'not_applicable':
+        state = 'not_passed'
+        problem = {'reason': table_problem, 'evidence_columns': [proposal.column],
+            'instruction': 'Re-extract only the affected record using the exact original cells and column definitions.'}
     decision={'schema_version':'UnifiedQualityDecision/1','root_id':root,'candidate_ref':ref,
         'state':state,'reason':reason,'original_source_ref':candidate['assembly_context']['source']['source_id'],
         'model_attempt_ref':receipt['attempt_id'] if receipt else None,
         'assessment':item.model_dump(mode='json') if item else None,'raw_original_preserved':True}
+    if table_checks:
+        decision.update(table_checks)
     if native_unit_receipt:
         decision['native_unit_transcription']=native_unit_receipt
+
+    def save_decision(conn):
+        if base and decision['state'] in {'not_applicable','not_passed','technical_failure','reextraction_requested'}:
+            disposition={'measurement_id':base['id'],'measurement_ref':base,
+                'status':'not_supported' if decision['state']=='not_applicable' else 'unresolved_main',
+                'reason':'comparison_directed_quality_'+decision['state'],'quality_candidate_ref':ref}
+            disposition['disposition_id']='quality-hold-'+digest(disposition)
+            self.repo.put_object(conn,tid,'admission_disposition',disposition['disposition_id'],1,disposition)
+        self.repo.put_object(conn,tid,'quality_decision','quality-'+digest(decision),1,decision)
+        if decision['state']=='technical_failure':
+            self.repo.put_object(conn,tid,'coverage','quality-gap-'+digest(ref),1,
+                {'owner':'M07','state':'partial','reason':decision['reason'],'candidate_ref':ref})
+
     if problem:
         if any(x['root_id']==root for x in actions):
             decision.update(state='not_passed',reason='directed_reextraction_already_used')
@@ -796,6 +846,8 @@ async def apply_item(self,job,spec,binding,source,candidate,item,receipt,*,paper
                     'source_id':source['source_id'],'maximum_scientific_actions':1}
                 self.repo.put_object(c,tid,'quality_reextraction_action',root,1,action)
                 self.repo.enqueue(c,tid,candidate['assembly_context']['owner'],'quality_reextract',action)
+                save_decision(c)
+            return
     elif state in {'supported','needs_human'}:
         assembly={**candidate['assembly_context'],'spec':spec,'batch_id':job['job_id'],
                   'quality_verification':decision,'paper_verification':verification}
@@ -860,18 +912,11 @@ async def apply_item(self,job,spec,binding,source,candidate,item,receipt,*,paper
                         child=self.repo.object(c,tid,'candidate',next_id)
                         closed={**decision,'candidate_ref':{k:v for k,v in _reference(child).items() if k!='kind'}}
                         self.repo.put_object(c,tid,'quality_decision','quality-'+digest(closed),1,closed)
+                save_decision(c)
+            return
     with self.repo.transaction() as c:
         self.repo.validate_lease(c,job)
-        if base and decision['state'] in {'not_applicable','not_passed','technical_failure','reextraction_requested'}:
-            disposition={'measurement_id':base['id'],'measurement_ref':base,
-                'status':'not_supported' if decision['state']=='not_applicable' else 'unresolved_main',
-                'reason':'comparison_directed_quality_'+decision['state'],'quality_candidate_ref':ref}
-            disposition['disposition_id']='quality-hold-'+digest(disposition)
-            self.repo.put_object(c,tid,'admission_disposition',disposition['disposition_id'],1,disposition)
-        self.repo.put_object(c,tid,'quality_decision','quality-'+digest(decision),1,decision)
-        if decision['state']=='technical_failure':
-            self.repo.put_object(c,tid,'coverage','quality-gap-'+digest(ref),1,
-                {'owner':'M07','state':'partial','reason':decision['reason'],'candidate_ref':ref})
+        save_decision(c)
 
 
 async def reextract(self,job):

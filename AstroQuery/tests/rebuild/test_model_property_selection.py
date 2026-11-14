@@ -105,7 +105,9 @@ def test_normal_draft_runs_model_selection_even_for_canonical_name_and_alias(tmp
     # This request-selection test uses an explicit synthetic installed release;
     # new normal confirmation also pins the active author knowledge version.
     monkeypatch.setattr(app.knowledge, 'load', lambda *args: {'manifest':{
-        'schema_version':'insight-knowledge/3','release_id':'synthetic-author','content_sha256':'a'*64}})
+        'schema_version':'insight-knowledge/3','release_id':'synthetic-author','content_sha256':'a'*64,
+        'registry_release_ref': {'id':'synthetic-release','version':1,'content_sha256':'synthetic-release-hash'}},
+        'author': {'entries': [], 'bindings': [], 'sources': []}, 'sources': {}})
     monkeypatch.setattr(app, '_profile_state', lambda owner: 'validated')
     artifact = app.artifacts.write(b'SYNTHETIC identity response', 'text/plain')
     async def identity(*args):

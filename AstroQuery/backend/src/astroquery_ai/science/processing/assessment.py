@@ -30,6 +30,16 @@ def scientific_candidate_question(candidate, definition, spec):
     if assembly.get('owner')=='M03':
         shared_scope={'columns':shared_scope,'row':candidate['proposal'].get('row')
                       if issue.get('scope_kind','matched_row')=='matched_row' else None}
+        if source.get('kind') == 'official_attachment' and (assembly.get('quality_verification') or {}).get('row_check'):
+            from ..structured_quality import shared_review_issue
+            from ..measurements.admission_contracts import CatalogScientificIssue
+            quality = assembly['quality_verification']
+            scope_ref = quality.get('shared_table_check_ref')
+            if scope_ref and shared_review_issue(CatalogScientificIssue.model_validate(
+                    candidate['proposal']['catalog_review_issue'])):
+                shared_scope['shared_table_check_ref'] = scope_ref
+            else:
+                shared_scope['row'] = candidate['proposal'].get('row')
     return {
         'origin': assembly['owner'], 'owner': assembly['owner'],
         'issue_kind': issue['issue_kind'], 'issue_key': issue['issue_key'],

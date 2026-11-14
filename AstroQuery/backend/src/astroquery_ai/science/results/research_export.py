@@ -28,6 +28,8 @@ FIELDS = (
     'uncertainty_components_json', 'export_schema_version', 'delivery_id',
     'delivery_revision', 'snapshot_id', 'snapshot_sha256', 'selected_count',
 )
+COORDINATE_FIELDS = ('native_epoch', 'native_epoch_column', 'native_epoch_unit',
+                     'native_epoch_definition', 'native_band', 'native_coordinates_json')
 
 
 def numeric(value):
@@ -64,12 +66,19 @@ def metadata(body):
     selected = body.get('export_selection', {}).get('selected_ids')
     if selected is None:
         selected = sorted(m['measurement_id'] for m in body['measurements'])
-    return {'export_schema_version': VERSION, 'delivery_id': body['delivery_id'],
+    result = {'export_schema_version': body.get('export_metadata', {}).get('export_schema_version', VERSION),
+        'delivery_id': body['delivery_id'],
         'delivery_revision': body['revision'], 'snapshot_ref': body['snapshot_ref'],
         'selected_ids': selected, 'selected_count': len(selected),
         'report_scope': 'Task-level summaries describe the whole frozen task, not just selected rows.',
         'insight_ref': body.get('insight', {}).get('report_ref'),
         'quality_ref': body.get('quality', {}).get('report_ref')}
+    report = body.get('insight_report') or {}
+    if report.get('schema_version') == 'InsightBundle/1':
+        from copy import deepcopy
+        result.update(knowledge_context_ref=deepcopy(report.get('knowledge_context_ref')),
+                      insight_components=deepcopy(report.get('components', {})))
+    return result
 
 
 def artifact_url(body, artifact_id, page=None):
@@ -85,7 +94,8 @@ def source_rows(body):
             'original_in_package': False} for s in body.get('sources', [])]
 
 
-def locations(body, record, evidence):
+def locations(body, record, evidence, sources=None):
+    from ..evidence_views import attachment_location
     result = []
     for ref in record.get('evidence_refs', []):
         item = evidence.get(ref['id'])
@@ -93,8 +103,11 @@ def locations(body, record, evidence):
             continue
         locator = item.get('locator') or {}
         aid = (item.get('artifact_ref') or {}).get('id')
+        source = (sources or {}).get(item.get('source_id'), {})
         result.append({'evidence_id': ref['id'], 'source_id': item.get('source_id'),
             'kind': item.get('kind'), **locator,
+            **({'attachment_location': attachment_location(source)}
+               if source.get('kind') == 'official_attachment' or source.get('official_supplement') else {}),
             'original_url': artifact_url(body, aid, locator.get('page')) if aid else None})
     return result
 
@@ -155,9 +168,10 @@ def tables(body):
     interpretations = {i['interpretation_id']: i for i in provenance.get('interpretations', [])}
     units = {u['unit_id']: u for u in provenance.get('unit_records', [])}
     statements = {s['statement_id']: s for s in provenance.get('source_statements', [])}
-    annotations = {d.get('measurement_id'): d for d in body.get('dispositions', [])}
+    from astroquery_ai.application.result_views import report_dispositions, record_status
+    annotations = report_dispositions(body)
     meta = metadata(body)
-    common = {'export_schema_version': VERSION, 'delivery_id': body['delivery_id'],
+    common = {'export_schema_version': meta['export_schema_version'], 'delivery_id': body['delivery_id'],
         'delivery_revision': body['revision'], 'snapshot_id': body['snapshot_ref']['id'],
         'snapshot_sha256': body['snapshot_ref']['content_sha256'], 'selected_count': meta['selected_count']}
     rows, errors, location_index = [], [], []
@@ -178,7 +192,7 @@ def tables(body):
         own_statements = [statements[ref['id']] for ref in context.get('source_statements', []) if ref['id'] in statements]
         detail = uncertainty_rows(record, output, units, record['unit'], unit)
         errors.extend(detail)
-        loc = locations(body, record, evidence)
+        loc = locations(body, record, evidence, sources)
         location_index.append({'measurement_id': mid, 'locations': loc})
         def unique(key):
             return '; '.join(dict.fromkeys(text(x[key]) for x in loc if x.get(key) is not None))
@@ -203,17 +217,28 @@ def tables(body):
             'result_role': proposal.get('result_role') or interpretation.get('result_role', ''),
             'context': '; '.join(f"{c['key']}: {text(c.get('value'))}" for c in known),
             'processing_status': output.get('status', 'not_run'),
-            'record_status': annotations.get(mid, {}).get('status', 'delivered'),
+            'record_status': record_status(record, annotations),
             'review_status': 'human_reviewed' if interpretation.get('human_answer_ref') else '',
             'evidence_ids': '; '.join(r['id'] for r in record.get('evidence_refs', [])),
             'original_url': next((x['original_url'] for x in loc if x.get('original_url')), ''),
             'evidence_locations_json': canonical(loc).decode(),
             'uncertainty_components_json': canonical(detail).decode()}
-        rows.append({key: row.get(key, '') for key in FIELDS})
+        fields = FIELDS
+        if meta['export_schema_version'] == 3:
+            from .native_coordinates import table_coordinates
+            coordinates = table_coordinates(record, evidence)
+            epoch = coordinates['epochs'][0] if len(coordinates['epochs']) == 1 else {}
+            band = coordinates['bands'][0] if len(coordinates['bands']) == 1 else {}
+            row.update(native_epoch=epoch.get('value'), native_epoch_column=epoch.get('column'),
+                       native_epoch_unit=epoch.get('unit'), native_epoch_definition=epoch.get('definition'),
+                       native_band=band.get('value'),
+                       native_coordinates_json=canonical(coordinates).decode() if any(coordinates.values()) else '')
+            fields += COORDINATE_FIELDS
+        rows.append({key: row.get(key, '') for key in fields})
     return rows, errors, location_index
 
 
-def wide_rows(body, rows):
+def wide_rows(body, rows, coordinates=None):
     """A common source alone never licenses pairing.
 
     Accept only a producer's explicit, evidence-backed joint observation/model
@@ -239,8 +264,9 @@ def wide_rows(body, rows):
     groups.extend((r['measurement_id'], 'unpaired_record', [r]) for r in rows if r['measurement_id'] not in used)
     fields = ['group_id', 'group_basis', 'target', 'delivery_id', 'delivery_revision', 'snapshot_id', 'snapshot_sha256', 'selected_count', 'export_schema_version']
     props = list(dict.fromkeys(r['property_id'] for r in rows))
-    coordinates = ('measurement_id', 'value', 'unit', 'error_minus', 'error_plus', 'error_unit', 'limit',
-                   'lower_bound', 'upper_bound', 'raw_value', 'source_id', 'processing_status', 'uncertainty_components_json')
+    if coordinates is None:
+        coordinates = ('measurement_id', 'value', 'unit', 'error_minus', 'error_plus', 'error_unit', 'limit',
+                       'lower_bound', 'upper_bound', 'raw_value', 'source_id', 'processing_status', 'uncertainty_components_json')
     fields += [pid + ':' + key for pid in props for key in coordinates]
     result = []
     for gid, basis, own in groups:

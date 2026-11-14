@@ -6,16 +6,16 @@ import pytest
 from astroquery_ai.runtime.codec import loads
 from astroquery_ai.runtime.errors import DomainError
 from astroquery_ai.runtime.run_policy import NORMAL_RUN_POLICY
-from tests.rebuild.scenario import application,confirmed_case
+from tests.rebuild.scenario import application,confirmed_case,synthetic_author_manifest
 
 
 @pytest.mark.parametrize('scenario',['normal','failure','pause','cancel','restart'])
 def test_normal_new_task_seals_data_then_generates_and_revises_reports(tmp_path,scenario):
  async def run():
     app=application(tmp_path/'data');ordinary=app.models.json;calls=[];controls=[];failure=scenario=='failure'
+    manifest=synthetic_author_manifest(app)
     def knowledge(reference=None):
-        manifest={'schema_version':'insight-knowledge/3','release_id':'synthetic-author','content_sha256':'a'*64}
-        if reference is None:return {'manifest':manifest}
+        if reference is None or not tid:return {'manifest':manifest}
         with app.repository.read() as c:
             spec=app.repository.objects(c,tid[0],'confirmed_query')[0]
         b=spec['properties'][0];d=b['definition'];p=b['output_profile'];otype=spec['target']['primary_otype']

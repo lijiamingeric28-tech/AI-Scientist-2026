@@ -143,13 +143,22 @@ def activities(body, difference=None, reviews=None):
                             'page': evidence.get('locator', {}).get('page')},
             property_id=candidates.get(cid, {}).get('proposal', {}).get('property_id'),
             source_ids=[candidates.get(cid, {}).get('assembly_context', {}).get('source', {}).get('source_id')])
-    for answer in bundle.get('human_answers', []):
+    # Match every saved interpretation for an ID, as the former any() scan
+    # did, while preserving native measurement order within each answer.
+    interpretation_answers = defaultdict(set)
+    answer_measurements = defaultdict(list)
+    human_answers = bundle.get('human_answers', [])
+    if human_answers and bundle.get('interpretations'):
+        for interpretation in bundle['interpretations']:
+            interpretation_answers[interpretation.get('interpretation_id')].add(
+                (interpretation.get('human_answer_ref') or {}).get('id'))
+        for mid, measurement in native.items():
+            for answer_id in interpretation_answers.get(measurement['interpretation_ref']['id'], ()):
+                answer_measurements[answer_id].append(mid)
+    for answer in human_answers:
         receipt = next((r for r in bundle.get('review_applications', []) if r.get('answer_id') == answer['answer_id']), {})
         mids = [r.get('measurement_id') for r in receipt.get('results', [])]
-        mids += [mid for mid, m in native.items() if any(
-            i.get('interpretation_id') == m['interpretation_ref']['id']
-            and (i.get('human_answer_ref') or {}).get('id') == answer['answer_id']
-            for i in bundle.get('interpretations', []))]
+        mids += answer_measurements[answer['answer_id']]
         add(answer['answer_id'], 'human', '人工判断与复检', mids,
             at=answer.get('received_at'), status=receipt.get('status', 'received'),
             reason=answer.get('reason'), outcome=answer.get('comparison_outcome') or answer.get('action'),
@@ -274,6 +283,12 @@ def coverage_matrix(body, quality, difference, insight, facts):
             'comparison': cell('complete' if checks.get(pid, {}).get('state') == 'checked' else 'incomplete' if pid in checks else 'not_checked', 1 if checks.get(pid, {}).get('state') == 'checked' else 0, 1, '项性质核对'),
             'insights': cell('complete' if card and card.get('status') == 'generated' else 'technical_failure' if card and card.get('status') == 'failed' else 'not_applicable' if insight and insight.get('generation_enabled') is False else 'pending' if insight and insight.get('status') == 'pending' else 'not_checked', 1 if card and card.get('status') == 'generated' else None, 1, '项洞察'),
         }
+        if (insight or {}).get('schema_version') == 'MaterialSummaryReport/1':
+            summary = insight.get('counts', {}).get(pid)
+            cells['insights'] = (cell('pending') if insight['status'] == 'pending' else
+                cell('not_applicable') if not summary or not summary['requested'] else
+                cell('complete' if summary['ready'] == summary['requested'] else 'partial',
+                     summary['ready'], summary['requested'], '份资料总结'))
         own = [m for m in body['measurements'] if m['measurement_id'] in mids]
         stats = {
             'page': sum(any(evidence.get(r['id'], {}).get('locator', {}).get('page') for r in m.get('evidence_refs', [])) for m in own),

@@ -67,6 +67,7 @@ def test_candidate_consumer_builds_exact_reviewed_composition_with_generic_types
           ('object_scales','object-scales'),('evidence','evidence'),('reviews','reviews'),
           ('conversion_policies','conversion-policies')]}}}
     class Reader:
+        def __init__(self,release=None):pass
         def inspect(self,package):return deepcopy(candidate)
         def select_context(self,release,**kwargs):return kwargs
     class Projection:

@@ -1,20 +1,30 @@
 import asyncio
 from uuid import uuid4
 
+import pytest
+
 from astroquery_ai.runtime.codec import canonical
 from astroquery_ai.runtime.errors import DomainError
 from astroquery_ai.runtime.scheduler import Scheduler
 from tests.rebuild.scenario import application, run_until_wait
 
 
+@pytest.mark.parametrize('local_publication', [False, True])
 def test_transitive_conversion_policy_revocation_closes_work_and_quarantines_without_losing_original(
-    tmp_path, monkeypatch,
+    tmp_path, monkeypatch, local_publication,
 ):
     from copy import deepcopy
     from astroquery_ai.runtime import run_policy
     monkeypatch.setattr(run_policy, 'request_policy', lambda _, preferences=None: deepcopy(run_policy.LEGACY_RUN_POLICY))
     async def run():
         app = application(tmp_path / "data")
+        if local_publication:
+            bench = app.registry_workbench
+            for _ in range(2):
+                workspace = bench.create_workspace()['workspace']
+                validation = bench.validate(workspace['id'], expected_revision=1)['validation']
+                bench.publish(workspace['id'], expected_revision=1, validation_id=validation['id'],
+                    expected_active_bundle_id=bench.registry.active_bundle()['id'], idempotency_key=workspace['id'])
         scheduler = Scheduler(app)
         tid = app.create("SYNTHETIC_AQ 测试长度", str(uuid4()))["task_id"]
         await run_until_wait(app, scheduler)

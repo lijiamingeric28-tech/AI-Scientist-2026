@@ -162,6 +162,22 @@ def test_report_is_read_only_and_post_terminal_exports_do_not_add_time(task):
     assert report(app, tid)['terminal_seq'] == terminal['seq']
 
 
+def test_replay_uses_recovered_terminal_and_ignores_later_exports(task):
+    from astroquery_ai.application.presentation import replay_clock
+    _,app,tid=task
+    event(app,tid,'task_state_changed',lifecycle='failed')
+    event(app,tid,'task_state_changed',lifecycle='running')
+    resumed=event(app,tid,'execution_stage_changed',stage_id='postcheck')
+    with app.repository.transaction() as c:
+        app.repository.mutate_task(c,tid,lifecycle='completed')
+        terminal=app.repository.event(c,tid,'task_state_changed',{'lifecycle':'completed'})
+    event(app,tid,'export_updated',format='csv')
+    clock=replay_clock(app,tid)
+    assert clock['terminal_at']==terminal['committed_at']
+    assert clock['timeline'][-1]['seq']==terminal['seq']
+    assert any(p['seq']==resumed['seq'] for p in clock['timeline'])
+
+
 def test_interval_union_counts_overlap_once():
     pairs=[{'start':'2026-11-02T00:00:00+00:00','end':'2026-11-02T00:00:10+00:00'},
            {'start':'2026-11-02T00:00:05+00:00','end':'2026-11-02T00:00:20+00:00'}]

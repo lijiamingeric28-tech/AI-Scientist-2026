@@ -12,6 +12,43 @@ ENDPOINTS=['https://vizier.cds.unistra.fr/viz-bin/votable',
            'https://vizier.idia.ac.za/viz-bin/votable']
 
 
+def test_http_200_database_error_falls_back_before_admitting_data(tmp_path):
+    from astroquery_ai.science.catalogs import VizierCatalogs
+    async def run():
+        visited=[]
+        good=b'<VOTABLE><RESOURCE name="SYNTHETIC"><TABLE name="SYNTHETIC/T"><FIELD name="v" datatype="double"/><DATA><TABLEDATA><TR><TD>12</TD></TR></TABLEDATA></DATA></TABLE></RESOURCE></VOTABLE>'
+        async def handler(request):
+            visited.append(request.url.host)
+            if request.url.host=='vizier.cds.unistra.fr':
+                return httpx.Response(200,content=b'<VOTABLE><INFO name="QUERY_STATUS" value="ERROR">database unavailable</INFO></VOTABLE>')
+            return httpx.Response(200,content=good)
+        app,tid,routes=setup(tmp_path,handler)
+        state=routes.state(tid,'vizier','votable_data');state.update(preferred=ENDPOINTS[0],probed=True)
+        raw,meta=await routes.request(tid,'M03','vizier','votable_data',ENDPOINTS,'GET',
+            validate_response=VizierCatalogs.validate_response)
+        assert raw==good and visited==['vizier.cds.unistra.fr','vizier.cfa.harvard.edu']
+        assert meta['prior_endpoint_failures'][0]['protocol_error']=='CATALOG_SERVICE_ERROR'
+        assert len(meta['prior_endpoint_failures'][0]['response_sha256'])==64
+    asyncio.run(run())
+
+
+def test_absent_paper_dataset_does_not_poison_other_papers(tmp_path):
+    from astroquery_ai.science.catalogs import VizierCatalogs
+    async def run():
+        async def handler(request):
+            if request.url.params.get('-source')=='missing':
+                return httpx.Response(200,content=b'<VOTABLE><INFO name="Error" value="Table or Catalog not found: missing"/><RESOURCE/></VOTABLE>')
+            return httpx.Response(200,content=b'<VOTABLE><RESOURCE name="found"/></VOTABLE>')
+        app,tid,routes=setup(tmp_path,handler)
+        state=routes.state(tid,'vizier','votable_metadata');state.update(preferred=ENDPOINTS[0],probed=True)
+        with pytest.raises(DomainError) as e:
+            await routes.request(tid,'M03','vizier','votable_metadata',ENDPOINTS,'GET',params={'-source':'missing'},validate_response=VizierCatalogs.validate_response)
+        assert e.value.code=='CATALOG_NOT_FOUND' and not state.get('unavailable_until')
+        raw,_=await routes.request(tid,'M03','vizier','votable_metadata',ENDPOINTS,'GET',params={'-source':'found'},validate_response=VizierCatalogs.validate_response)
+        assert b'name="found"' in raw
+    asyncio.run(run())
+
+
 def setup(tmp_path,handler):
     app=Application(tmp_path);tid=app.repository.create_task('SYNTHETIC mirror transport',kind='validation')['task_id']
     with app.repository.transaction() as c:

@@ -65,6 +65,7 @@ class Followup(BaseModel):
     selected_answers: list[str] = Field(default_factory=list, max_length=24)
     retry_of: str | None = None
     repair_block: str | None = None
+    material_analysis_ref: dict | None = None
 
 
 def _conversation(rows, preferences):
@@ -241,7 +242,17 @@ def register(app, application, scheduler):
                               for p in block["parameters"] if p["name"] in selection.values
                               and p["min"] <= selection.values[p["name"]] <= p["max"]]
                 selected.append({"expression": block["expression"], "parameters": parameters})
-        return {key: value for key, value in {"records": records, "references": references, "parameters": selected}.items() if value}
+        context = {key: value for key, value in {"records": records, "references": references, "parameters": selected}.items() if value}
+        if getattr(bundle, 'material_analysis', None):
+            report = bundle.material_analysis
+            context['material_analysis_ref'] = bundle.material_analysis_ref
+            context['material_analysis'] = {'scope': report['scope'], 'generated_at': report['generated_at'],
+                'sections': report['sections'], 'recommendations': report['recommendations'],
+                'warnings': report.get('warnings', []), 'unverified_advice': report.get('unverified_advice', []),
+                'reading_caution': '待核对说明不作为测量事实、推荐基准或自动处理规则。',
+                'coverage': {key: len(ids) for key, ids in report['coverage'].items()},
+                'notice': '这是所选版本的辅助解读，不是原文或新测量；所有原件与知识须通过同一快照引用核对。'}
+        return context
 
     def legacy_citations(message, bundle):
         text, citations = GroundingVerifier(bundle).verify_and_clean(message["content"])
@@ -325,8 +336,16 @@ def register(app, application, scheduler):
         content = (body.content or body.query).strip()
         if not content and not body.retry_of:
             raise DomainError("AGENT_QUESTION_EMPTY", "请输入要追问的问题", 422)
+        analysis_ref = body.material_analysis_ref
+        if body.retry_of:
+            previous = store.get_message(task_id, body.retry_of)
+            prior_ref = (previous.get('context') or {}).get('material_analysis_ref')
+            if analysis_ref is not None and analysis_ref != prior_ref:
+                raise DomainError('MATERIAL_ANALYSIS_REFERENCE', '重试必须保留原补充解读版本', 409)
+            analysis_ref = prior_ref
         bundle = await asyncio.to_thread(load_task_bundle, task_id, application,
-                                         body.delivery_id, body.delivery_revision, body.snapshot_ref)
+                                         body.delivery_id, body.delivery_revision, body.snapshot_ref,
+                                         **({"material_analysis_ref": analysis_ref} if analysis_ref is not None else {}))
         context = message_context(task_id, body, bundle)
         if body.retry_of:
             previous = store.get_message(task_id, body.retry_of)

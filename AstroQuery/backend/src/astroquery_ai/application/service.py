@@ -51,6 +51,11 @@ class Application:
         self.knowledge = KnowledgeService(
             self.root / "knowledge" / "insights", self.repository, self.registry
         )
+        from astroquery_ai.registry.workbench import RegistryWorkbench
+        self.registry_workbench = RegistryWorkbench(self.registry, self.repository, self.knowledge)
+        from astroquery_ai.science.user_knowledge_store import UserKnowledgeStore
+
+        self.user_knowledge = UserKnowledgeStore(data_dir=self.root)
         self.http = ScientificHTTP(self.repository)
         from astroquery_ai.runtime.profiles import ProfileAuthority
 
@@ -66,11 +71,13 @@ class Application:
         from astroquery_ai.runtime.parsing import Parsers
 
         self.parsers = Parsers()
-        self.delivery = DeliveryService(self.repository, self.artifacts)
+        self.delivery = DeliveryService(self.repository, self.artifacts, knowledge_store=self.user_knowledge)
         from astroquery_ai.runtime.history import History
         from astroquery_ai.runtime.maintenance import Maintenance
 
         self.history, self.maintenance = (History(self), Maintenance(self))
+        from astroquery_ai.application.material_analysis import MaterialAnalysisService
+        self.material_analysis = MaterialAnalysisService(self)
         from astroquery_ai.runtime.legacy import LegacyHistory
 
         self.legacy = LegacyHistory(self)

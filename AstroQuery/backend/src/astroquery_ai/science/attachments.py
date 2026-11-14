@@ -235,13 +235,17 @@ def structured_table(
     aliases=None,
     candidate_patterns=None,
     maximum_rows=1000,
+    row_offset=0,
     readme_text=None,
     original_filename=None,
+    hdu=None,
 ):
     if path.stat().st_size > 32 * 1024**2 or format not in set(FORMATS.values()):
         raise DomainError("ATTACHMENT_FORMAT_LIMIT", "附件格式或大小超出支持范围")
     if type(maximum_rows) is not int or not 1 <= maximum_rows <= 1000:
         raise DomainError("ATTACHMENT_ROW_LIMIT", "附件返回行数上限无效")
+    if type(row_offset) is not int or not 0 <= row_offset <= 1_000_000:
+        raise DomainError('ATTACHMENT_ROW_OFFSET', '附件续读起点无效')
     if candidate_patterns is not None and (not id_column or not isinstance(candidate_patterns, list)
             or any(not isinstance(p, str) or not p or any(c not in '*0123456789' for c in p)
                    for p in candidate_patterns)):
@@ -260,8 +264,17 @@ def structured_table(
     if raw.startswith(b"%PDF-"):
         raise DomainError("SUPPLEMENTARY_PDF_EXCLUDED", "补充PDF不进入结构化附件通道")
     columns, all_rows, row_numbers = [], [], []
+    matched_count = 0
+
+    def append_selected(row, number):
+        nonlocal matched_count
+        matched_count += 1
+        if matched_count > row_offset and len(all_rows) < maximum_rows + 1:
+            all_rows.append(row)
+            row_numbers.append(number)
     literal_rows, literal_units, source_formats, source_nulls = None, {}, {}, {}
     total = None if header_only else 0
+    file_subject_context = None
     if format in {"csv", "tsv"}:
         reader = csv.DictReader(
             io.StringIO(raw.decode("utf-8-sig"), newline=""),
@@ -294,9 +307,7 @@ def structured_table(
                     raise DomainError("ATTACHMENT_ROW_SHAPE", "附件行结构或解析行数超限")
                 if not selected(row):
                     continue
-                if len(all_rows) < maximum_rows + 1:
-                    all_rows.append(row)
-                    row_numbers.append(total - 1)
+                append_selected(row, total - 1)
     else:
         from astropy.table import Table
 
@@ -334,14 +345,17 @@ def structured_table(
                                 {
                                     **original,
                                     "table_id": table_id,
-                                    "rows": all_rows[:maximum_rows],
-                                    "source_row_numbers": row_numbers[:maximum_rows],
+                                    "rows": all_rows[row_offset:row_offset+maximum_rows],
+                                    "source_row_numbers": row_numbers[row_offset:row_offset+maximum_rows],
                                 }
                             ],
                         }
                     ],
                     "response_sha256": hashlib.sha256(raw).hexdigest(),
-                    "overflow": parsed["overflow"] or len(all_rows) > maximum_rows,
+                    "overflow": parsed["overflow"] or len(all_rows) > row_offset + maximum_rows,
+                    "source_overflow": parsed['overflow'],
+                    "next_row_offset": row_offset + maximum_rows if len(all_rows) > row_offset + maximum_rows else None,
+                    "matched_rows": len(all_rows),
                     "total_rows": total,
                 }
             table = Table.read(io.BytesIO(raw), format="votable")
@@ -349,14 +363,24 @@ def structured_table(
             from astropy.io import fits
 
             with fits.open(io.BytesIO(raw), memmap=False) as file:
-                tables = [hdu for hdu in file if isinstance(hdu, (fits.BinTableHDU, fits.TableHDU))]
+                tables = [(i, extension) for i, extension in enumerate(file)
+                          if isinstance(extension, (fits.BinTableHDU, fits.TableHDU))]
+                if hdu is not None:
+                    if type(hdu) is not int:
+                        raise DomainError('ATTACHMENT_HDU_SELECTION','FITS扩展标识必须是原文件中的整数位置')
+                    tables = [(i, extension) for i, extension in tables if i == hdu]
                 if len(tables) != 1:
                     raise DomainError("ATTACHMENT_TABLE_SELECTION", "FITS附件须有唯一明确的科学表")
-                table = Table(tables[0].data)
-                for column in tables[0].columns:
+                selected_hdu, extension = tables[0]
+                table = Table(extension.data)
+                file_subject_context = {'hdu':selected_hdu,'extension_name':extension.name,
+                    'primary_header':[{ 'key':k,'value':str(file[0].header[k]),'comment':file[0].header.comments[k]}
+                                      for k in ('OBJECT','NAME','TARGET','GAIA_DR3_SOURCE_ID') if k in file[0].header]}
+                for n,column in enumerate(extension.columns,1):
                     literal_units[column.name] = column.unit
                     if column.unit:
                         table[column.name].unit = column.unit
+                    table[column.name].description = extension.header.comments['TTYPE'+str(n)] or column.name
         else:
             from astropy.io import ascii
 
@@ -446,9 +470,7 @@ def structured_table(
                     row = literal_rows[number]
                 if not selected(row):
                     continue
-                if len(all_rows) < maximum_rows + 1:
-                    all_rows.append(row)
-                    row_numbers.append(number)
+                append_selected(row, number)
     return {
         "resources": [
             {
@@ -462,11 +484,14 @@ def structured_table(
                         "rows": all_rows[:maximum_rows],
                         "source_row_numbers": row_numbers[:maximum_rows],
                         "binary_data": False,
+                        **({'file_subject_context':file_subject_context} if file_subject_context else {}),
                     }
                 ],
             }
         ],
         "response_sha256": hashlib.sha256(raw).hexdigest(),
         "overflow": len(all_rows) > maximum_rows,
+        "next_row_offset": row_offset + maximum_rows if len(all_rows) > maximum_rows else None,
+        "matched_rows": matched_count,
         "total_rows": total,
     }

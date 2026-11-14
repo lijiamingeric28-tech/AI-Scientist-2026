@@ -93,8 +93,10 @@ def test_repair_merge_retains_good_groups_and_unresolved_state(monkeypatch,repai
     @contextmanager
     def transaction():yield None
     repo=SimpleNamespace(read=transaction,transaction=transaction,validate_lease=lambda *a:None,
-        put_object=lambda *a:saved.append(a[-1]),finish_job=lambda *a:None)
-    monkeypatch.setattr(archive,'comparison_input',lambda *a:({'answered_questions':[]},labels,evidence))
+        put_object=lambda *a:saved.append(a[-1]),finish_job=lambda *a:None,objects=lambda *a:[])
+    monkeypatch.setattr(archive,'comparison_input',lambda *a:(
+        {'answered_questions': [], 'items': [{'record': label} for label in labels], 'evidence': evidence},
+        labels, evidence))
     async def model(*args,**kw):
         calls.append(kw);return responses[len(calls)-1],{'attempt_id':str(len(calls))}
     service=SimpleNamespace(repo=repo,spec=lambda *a:{},steps=SimpleNamespace(model=model),

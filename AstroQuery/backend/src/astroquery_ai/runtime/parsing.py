@@ -16,6 +16,10 @@ class Parsers:
     def __init__(self):
         from .stages import EXECUTION_POLICY
         self.semaphore = asyncio.Semaphore(EXECUTION_POLICY['parse'])
+        import hashlib
+        worker_source = Path(__file__).with_name('parser_worker.py')
+        self.worker_sha256 = (hashlib.sha256(worker_source.read_bytes()).hexdigest()
+                              if not getattr(sys,'frozen',False) and worker_source.is_file() else None)
 
     async def run(self, operation: str, path: Path, *, page=None, dpi=150, timeout=90, **options):
         if "display_only" in options and (operation != "page_image" or type(options["display_only"]) is not bool):
@@ -29,6 +33,8 @@ class Parsers:
             "aliases",
             "candidate_patterns",
             "maximum_rows",
+            "row_offset",
+            "hdu",
             "readme_text",
             "original_filename",
             "bbox",
@@ -53,6 +59,13 @@ class Parsers:
                     "astroquery_ai.runtime.parser_worker",
                 ]
             environment = os.environ.copy()
+            if not getattr(sys,'frozen',False):
+                # The parent can have been imported from a source checkout via
+                # sys.path while this interpreter is editable-installed elsewhere.
+                # The worker must execute this same package, never that older copy.
+                package_root = str(Path(__file__).resolve().parents[2])
+                environment['PYTHONPATH'] = os.pathsep.join(filter(None,
+                    (package_root, environment.get('PYTHONPATH'))))
             environment.update({name: '1' for name in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'NUMEXPR_NUM_THREADS')})
             process = await asyncio.create_subprocess_exec(
                 *command,
@@ -95,6 +108,8 @@ class Parsers:
                         body.get("code", "PARSER_FAILED"), "隔离解析未成功，原件已保留",
                         parser_error_type=body.get('error_type'), process_exit_code=code,
                     )
+                if self.worker_sha256 and body.get('worker_sha256') != self.worker_sha256:
+                    raise DomainError('PARSER_VERSION_MISMATCH','解析子进程版本与当前服务不一致，请重启服务后重试')
                 if operation in {"page_image", "figure_crop"}:
                     return base64.b64decode(body["result"]["png"], validate=True)
                 return body["result"]

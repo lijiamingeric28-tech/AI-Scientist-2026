@@ -39,12 +39,19 @@ def operation_eligibility(app, conn, task_id, spec, operation, *, record=None):
     scope = verification_scope(app.repository, conn, task_id, spec)
     if scope is not None and not scope.get('production_processing') and operation in scope.get("operations", []):
         return {"allowed": True, "mode": "bounded_fixed_input_verification", "scope_hash": content_hash(scope)}
-    row = conn.execute("SELECT payload FROM settings WHERE key=?", ("science_capabilities:" + spec["registry_release"]["id"],)).fetchone()
+    registry_ref = spec['registry_release']
+    row = conn.execute("SELECT payload FROM settings WHERE key=?", ("science_capabilities:" + registry_ref['id'],)).fetchone()
+    if not row:
+        from astroquery_ai.query.registry_context import qualification_reference
+        base_ref = qualification_reference(app, spec)
+        if base_ref and base_ref != registry_ref:
+            registry_ref = base_ref
+            row = conn.execute("SELECT payload FROM settings WHERE key=?", ("science_capabilities:" + registry_ref['id'],)).fetchone()
     if not row:
         return {"allowed": False, "reason": "software_operation_not_verified"}
     ref = loads(row[0])
     receipt = app.repository.object(conn, ref["task_id"], "software_capability_validation", ref["id"], ref["version"])
-    if (content_hash(receipt) != ref["content_sha256"] or receipt.get("registry_ref") != spec["registry_release"]
+    if (content_hash(receipt) != ref["content_sha256"] or receipt.get("registry_ref") != registry_ref
             or receipt.get("state") != "passed" or not receipt.get("evidence_refs")):
         return {"allowed": False, "reason": "software_capability_receipt_invalid"}
     for evidence_ref in receipt['evidence_refs']:

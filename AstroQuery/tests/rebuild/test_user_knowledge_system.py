@@ -129,7 +129,7 @@ def test_graph_topology_generation(store):
 
 def test_api_routes(tmp_path):
     """Verify all FastAPI routes under /api/knowledge."""
-    app = create_app(root=tmp_path / "app_data", start_worker=False)
+    app = create_app(root=tmp_path / "app_data", start_worker=False, allow_synthetic=True)
     client = TestClient(app)
 
     # GET /api/knowledge
@@ -196,9 +196,8 @@ def test_api_routes(tmp_path):
     assert res_404.status_code == 404
 
 
-def test_agent_harness_integration():
+def test_agent_harness_integration(store):
     """Verify agent harness get_scientific_theory marks and prioritizes user preferred theories."""
-    store = UserKnowledgeStore.get_instance()
     store.set_preference("radius_temp_luminosity", "preferred", 3.0)
 
     bundle = MagicMock()
@@ -208,7 +207,7 @@ def test_agent_harness_integration():
     bundle.resolve_property_id.return_value = "effective_temperature"
     bundle.index_theory = MagicMock()
 
-    tools = DomainTools(bundle)
+    tools = DomainTools(bundle, knowledge_store=store)
     ans = tools.execute_tool("get_scientific_theory", {"property_name": "温度"})
     assert "★ [科研优先理论 (User Preferred)]" in ans
     assert "[THEORY:" in ans

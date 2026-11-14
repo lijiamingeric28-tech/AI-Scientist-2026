@@ -98,6 +98,25 @@ def request_policy(configuration, preferences=None):
     selected = resolve_preferences(configuration, preferences)
     policy['literature'].update(selected_limit=selected['papers_per_property'], sort=selected['ads_sort'])
     policy['scoring']['readable_target_per_property'] = selected['papers_per_property']
+    if version == FEEDBACK_RELEASE:
+        policy['catalog'].update(discovery_protocol='dynamic-metadata/2',
+            metadata_result_limits=[100,300], maximum_feedback_queries=2,
+            time_policy='initial-catalog-20min/1', discovery_seconds=150,
+            resource_selection_seconds=300, selection_seconds=480,
+            stop_dispatch_seconds=1140, end_seconds=1200)
+        policy['quality']['official_table_review'] = 'shared_semantics/1'
+        policy['quality']['catalog_table_review'] = 'shared_semantics/1'
+        policy['insights'].update(presentation='material-summary/1', final_model='qwen3.8-flash')
+        policy['delivery'] = {'export_schema_version': 2}
+    # Only new current-release confirmations adopt the composite presentation.
+    # Explicit legacy releases and historical frozen policies stay literal.
+    if version == FEEDBACK_RELEASE:
+        policy['insights'].update(presentation='research-workbench/2', final_model='qwen3.8-max')
+    # Local experiment launch only; no public create/draft action gains overrides.
+    import os
+    if os.environ.get('ASTROQUERY_STOP_AFTER_EXTRACTION') == '1':
+        from .extraction_experiment import VERSION
+        policy['execution'] = {'experiment': VERSION, 'stop_after_extraction': True}
     return policy
 
 
@@ -188,7 +207,7 @@ def guard(repo, conn, job, *, dispatch=False, now=None):
     left = remaining(repo, conn, job, dispatch=dispatch, now=now)
     if left is not None and left <= 0:
         raise DomainError("CATALOG_DISPATCH_CLOSED" if dispatch else "CATALOG_WINDOW_EXPIRED",
-                          "本次星表为控制耗时已停止派发" if dispatch else "本次星表十分钟窗口已结束")
+                          "本次星表为控制耗时已停止派发" if dispatch else "本次星表时间窗口已结束")
     return remaining(repo, conn, job, now=now)
 
 
@@ -230,7 +249,7 @@ def stop_job(repo, conn, job, reason):
 
 
 def sweep_ready(repo, conn, *, task_id=None, now=None):
-    """Close throttled/future eligible jobs too; their backoff cannot extend 600s."""
+    """Close throttled/future jobs too; backoff cannot extend the frozen limit."""
     changed = set()
     rows = conn.execute("SELECT j.* FROM jobs j JOIN tasks t USING(task_id) WHERE j.kind IN ('catalog_discover','catalog_extract') AND j.status IN ('ready','waiting_dependency') AND t.lifecycle IN ('running','queued') AND (? IS NULL OR j.task_id=?)", (task_id, task_id)).fetchall()
     for row in rows:

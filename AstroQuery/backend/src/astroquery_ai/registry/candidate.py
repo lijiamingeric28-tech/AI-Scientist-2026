@@ -5,7 +5,9 @@ from __future__ import annotations
 import hashlib
 import os
 from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
+from types import MappingProxyType
 
 from astroquery_ai.runtime.codec import content_hash, loads, digest
 from astroquery_ai.runtime.errors import DomainError
@@ -45,32 +47,71 @@ def load_record(path):
     return value
 
 
+def _reference_identity(ref):
+    """The exact identity used by reference_key, without serializing it again."""
+    return ref['id'], str(ref['version']), ref['content_sha256']
+
+
+@dataclass(frozen=True)
+class _SelectionIndexes:
+    definitions: object
+    profiles: object
+    rules_by_group: object
+    tables_by_subject: object
+    rule_profiles: object
+    declared_profiles: object
+
+
+def _selection_indexes(release):
+    from .amendments import reference_key
+
+    data = release['data']
+    definitions = {_reference_identity({'id': item['property_id'],
+        'version': item['definition_version'], 'content_sha256': item['content_sha256']}): item
+        for item in data['definitions']}
+    profiles = {_reference_identity({'id': item['profile_id'],
+        'version': item['version'], 'content_sha256': item['content_sha256']}): item
+        for item in data['output_profiles']}
+    aliases = release.get('reference_aliases', {})
+    rules_by_group, rule_profiles = defaultdict(list), {}
+    for rule in data['unapproved_aggregate_composition_and_rules']['rules']:
+        rules_by_group[(rule['definition_ref']['id'], rule['subject_class_id'])].append(rule)
+        key = reference_key(rule['profile_ref']) if aliases else None
+        resolved = aliases.get(key, rule['profile_ref'])
+        rule_profiles[id(rule)] = resolved, digest(resolved), key in aliases
+    tables_by_subject, declared_profiles = defaultdict(list), {}
+    for table in data['build_only_symbolic_support']['tables']:
+        nodes = MappingProxyType({node['id']: node for node in table['nodes']})
+        tables_by_subject[table['subject_class_id']].append((table, nodes))
+        for partition in table['partitions']:
+            declared_profiles[id(partition)] = frozenset(digest(ref) for ref in partition['candidate_profile_refs'])
+    return _SelectionIndexes(
+        MappingProxyType(definitions), MappingProxyType(profiles),
+        MappingProxyType({key: tuple(value) for key, value in rules_by_group.items()}),
+        MappingProxyType({key: tuple(value) for key, value in tables_by_subject.items()}),
+        MappingProxyType(rule_profiles), MappingProxyType(declared_profiles))
+
+
 class CandidateRegistry:
+    def __init__(self, release=None):
+        """Optionally prepare indexes for one immutable compilation input.
+
+        Unprepared readers continue to observe each supplied source anew. The
+        prepared indexes live only on this reader, never on a returned release.
+        """
+        self._prepared_release = release
+        self._indexes = _selection_indexes(release) if release is not None else None
+
     def select_context(self, release, *, accepted_otypes, subject_class_id):
         """Read declared symbolic outcomes and independently compare source ASTs.
 
         Accepted target assertions remain the caller's responsibility. This
         candidate result grants no production/model/source execution permission.
         """
-        data = release["data"]
-        compiled = data["build_only_symbolic_support"]
         types = set(accepted_otypes)
-        from .amendments import reference_key
-        definitions = {reference_key({'id':item['property_id'],'version':item['definition_version'],
-            'content_sha256':item['content_sha256']}):item for item in data['definitions']}
-        profiles = {reference_key({'id':item['profile_id'],'version':item['version'],
-            'content_sha256':item['content_sha256']}):item for item in data['output_profiles']}
-        rules = data["unapproved_aggregate_composition_and_rules"]["rules"]
-        rules_by_group=defaultdict(list)
-        for rule in rules:rules_by_group[(rule['definition_ref']['id'],rule['subject_class_id'])].append(rule)
-        from .amendments import reference_key
-        aliases=release.get('reference_aliases',{})
-        def resolve_profile(ref):return aliases.get(reference_key(ref),ref)
+        indexes = self._indexes if release is self._prepared_release else _selection_indexes(release)
         bindings, gaps = [], []
-        for table in compiled["tables"]:
-            if table["subject_class_id"] != subject_class_id:
-                continue
-            nodes = {node["id"]: node for node in table["nodes"]}
+        for table, nodes in indexes.tables_by_subject.get(subject_class_id, ()):
 
             def evaluate(root):
                 seen = set()
@@ -91,13 +132,13 @@ class CandidateRegistry:
             partition = partitions[0]
             active = [
                 rule
-                for rule in rules_by_group[(table['property_id'],subject_class_id)]
+                for rule in indexes.rules_by_group.get((table['property_id'],subject_class_id), ())
                 if matches(rule["when"], types, subject_class_id)
             ]
             if any(rule["kind"] != "include" for rule in active):
                 raise DomainError("CANDIDATE_RULE_DIALECT", "此版本消费者尚未支持该规则类别", 422)
-            independently_selected = {digest(resolve_profile(rule["profile_ref"])) for rule in active}
-            declared = {digest(ref) for ref in partition["candidate_profile_refs"]}
+            independently_selected = {indexes.rule_profiles[id(rule)][1] for rule in active}
+            declared = indexes.declared_profiles[id(partition)]
             if independently_selected != declared:
                 raise DomainError(
                     "CANDIDATE_SYMBOLIC_AST_MISMATCH", "决策产物与原规则在当前上下文不一致", 422
@@ -117,14 +158,14 @@ class CandidateRegistry:
                     )
                 continue
             reference = partition["winner_profile_ref"]
-            profile = profiles.get(reference_key(reference))
-            definition_refs={reference_key(r['definition_ref']):r['definition_ref'] for r in active
-                if resolve_profile(r['profile_ref'])==reference}
+            profile = indexes.profiles.get(_reference_identity(reference))
+            definition_refs={_reference_identity(r['definition_ref']):r['definition_ref'] for r in active
+                if indexes.rule_profiles[id(r)][0]==reference}
             if len(definition_refs)>1:
                 gaps.append({'property_id':table['property_id'],'reason':'reviewed_definition_versions_conflict',
                     'definition_refs':list(definition_refs.values()),'no_version_chosen':True})
                 continue
-            definition=definitions.get(next(iter(definition_refs))) if len(definition_refs)==1 else None
+            definition=indexes.definitions.get(next(iter(definition_refs))) if len(definition_refs)==1 else None
             if (
                 not profile
                 or not definition
@@ -141,7 +182,7 @@ class CandidateRegistry:
                     "source_package_manifest_hash": release["report"]["manifest_content_sha256"],
                     "current_context_ast_agrees": True,
                     **({'reference_alignment_ref':release['reference_alignment_ref']} if any(
-                        reference_key(rule['profile_ref']) in aliases for rule in active) else {}),
+                        indexes.rule_profiles[id(rule)][2] for rule in active) else {}),
                     "runtime_authorized": False,
                 }
             )

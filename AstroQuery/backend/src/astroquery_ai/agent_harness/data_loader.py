@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import logging
 import re
+from copy import deepcopy
 from typing import Any, Dict, List, Optional
 
 from astroquery_ai.runtime.errors import DomainError
+from astroquery_ai.runtime.codec import content_hash
 
 logger = logging.getLogger("agent_harness.data_loader")
 
@@ -156,6 +158,14 @@ class TaskDataBundle:
 
         # 8. 科学洞察与理论知识底座 (insights & theories)
         insight_obj = delivery_body.get("insight_report") or delivery_body.get("insight") or {}
+        self.insight_bundle = insight_obj if isinstance(insight_obj, dict) and insight_obj.get('schema_version') == 'InsightBundle/1' else None
+        self.material_report = (self.insight_bundle or {}).get('material_report') or {}
+        if self.insight_bundle:
+            insight_obj = self.insight_bundle.get('property_report') or {}
+        self.knowledge_context = deepcopy(delivery_body.get('knowledge_context'))
+        self.material_analysis = deepcopy(delivery_body.get('material_analysis'))
+        self.material_analysis_ref = deepcopy(delivery_body.get('material_analysis_ref'))
+        self.knowledge_scoped = self.knowledge_context is not None
         if isinstance(insight_obj, dict):
             self.insight_report = insight_obj
             self.theories: List[Dict[str, Any]] = list(insight_obj.get("knowledge_blocks") or [])
@@ -166,6 +176,11 @@ class TaskDataBundle:
             self.theories = []
             self.insight_cards = []
             self.cross_field_relationships = []
+
+        if self.knowledge_context is not None:
+            from astroquery_ai.science.task_knowledge import blocks
+            # Sealed task fragments take precedence over mutable cached overlays.
+            self.theories = blocks(self.knowledge_context)
 
         # 构建高密度极速索引
         self._build_indexes()
@@ -217,6 +232,8 @@ class TaskDataBundle:
         # D. 理论知识块索引
         self.theories_by_prop: Dict[str, List[Dict[str, Any]]] = {}
         self.theories_by_id: Dict[str, Dict[str, Any]] = {}
+        self.theories_by_version: Dict[tuple, Dict[str, Any]] = {}
+        self.theory_versions_by_claim: Dict[str, set] = {}
 
         for block in self.theories:
             self.index_theory(block)
@@ -224,12 +241,29 @@ class TaskDataBundle:
     def index_theory(self, block):
         claim = block.get("claim") or {}
         cid = claim.get("claim_id") or block.get("theory_id")
-        if cid and cid not in self.theories_by_id:
-            self.theories_by_id[cid] = block
+        if cid:
+            fragment_hash = content_hash(block)
+            version_id = cid + '#' + fragment_hash
+            self.theories_by_id[version_id] = block
+            versions = self.theory_versions_by_claim.setdefault(cid, set())
+            versions.add(version_id)
+            if len(versions) == 1:
+                self.theories_by_id[cid] = block
+            else:
+                # A bare archived claim ID is ambiguous. Stable runtime keys
+                # distinguish editions without changing any saved claim text.
+                self.theories_by_id.pop(cid, None)
+            citation_id = version_id if len(versions) > 1 else cid
+            identity = (cid, fragment_hash)
+            if identity in self.theories_by_version:
+                return citation_id
+            self.theories_by_version[identity] = block
             pids = {claim.get("property_id"), block.get("property_id"),
+                    *block.get('property_ids', []),
                     *((mapping.get("definition_ref") or {}).get("id") for mapping in block.get("applicable_mappings", []))}
             for pid in pids - {None, ""}:
                 self.theories_by_prop.setdefault(pid.lower(), []).append(block)
+            return citation_id
 
     def source(self, key):
         return self.sources_by_id.get(key) or self.sources_by_bibcode.get(key)
@@ -259,7 +293,7 @@ class TaskDataBundle:
         props_str = "、".join(prop_labels) if prop_labels else "多项天体物理量"
 
         lines = [
-            f"【当前任务事实基底 (Grounded Task Facts)】",
+            "【当前任务事实基底 (Grounded Task Facts)】",
             f"- 目标天体: {self.target_name} (常用别名: {', '.join(self.aliases[:4]) if self.aliases else '无'})",
             f"- 天体类型: {self.primary_otype or '未明确指定'}",
             f"- 检索物理量约定: {props_str}",
@@ -271,7 +305,7 @@ class TaskDataBundle:
         return "\n".join(lines)
 
 
-def load_task_bundle(task_id: str, application, delivery_id=None, revision=None, snapshot_ref=None) -> TaskDataBundle:
+def load_task_bundle(task_id: str, application, delivery_id=None, revision=None, snapshot_ref=None, *, material_analysis_ref=None) -> TaskDataBundle:
     """Pin this turn to one published delivery, including its reports."""
     with application.repository.read() as conn:
         task = application.repository.task(conn, task_id)
@@ -287,4 +321,30 @@ def load_task_bundle(task_id: str, application, delivery_id=None, revision=None,
                 body[kind + "_report"] = application.repository.object(
                     conn, source_task, kind, ref["id"], ref["version"]
                 )
+        from astroquery_ai.runtime.codec import loads, digest
+        from astroquery_ai.science import task_knowledge
+        source = application.repository.task(conn, source_task)
+        reference = loads(source['query_ref']) if source.get('query_ref') else None
+        spec = application.repository.object(conn, source_task, 'confirmed_query', reference['id'], reference['version']) if reference else {}
+        if spec and spec.get('spec_hash') != digest({k: v for k, v in spec.items() if k != 'spec_hash'}):
+            raise DomainError('FROZEN_SPEC_CORRUPT', '冻结规格哈希不匹配', 409)
+        context = task_knowledge.load(application.repository, conn, source_task, spec)
+        if context is None and task_knowledge.enabled(spec):
+            raise DomainError('TASK_KNOWLEDGE_MISSING', '任务知识快照不存在', 409)
+        if context is None:
+            # A historical material-summary run has no context object. Its saved
+            # basis is readable without importing today's library into the task.
+            report = body.get('insight_report') or {}
+            if report.get('schema_version') == 'MaterialSummaryReport/1':
+                from astroquery_ai.application.insight_views import historical_knowledge_context
+                scope = application.delivery.display_scope(conn, task_id, delivery_id, revision)
+                context = historical_knowledge_context(application.repository, conn, source_task, body, spec,
+                                                       before=scope['summary_before'])
+        if material_analysis_ref is not None:
+            report = application.material_analysis.resolve_followup(conn, source_task, body, material_analysis_ref)
+            body['material_analysis'] = report
+            body['material_analysis_ref'] = deepcopy(material_analysis_ref)
+            context = report['knowledge_context']
+        if context is not None:
+            body['knowledge_context'] = context
         return TaskDataBundle(task_id, body, raw_task=task)

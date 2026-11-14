@@ -4,13 +4,15 @@ Jobs are mutable scheduler rows. Their statuses and running intervals must come
 from events, never from the current row when inspecting a past cursor.
 """
 from collections import Counter, defaultdict
+from contextlib import nullcontext
+from copy import deepcopy
 from datetime import datetime
 import re
 
 from astroquery_ai.runtime.codec import loads
 from astroquery_ai.runtime.errors import DomainError
 from astroquery_ai.runtime.stages import JOB_STAGE
-from .presentation import EXECUTION, STAGES, TERMINAL, history, seconds
+from .presentation import EXECUTION, STAGES, TERMINAL, history, history_scope, seconds
 
 OPERATIONS = {
     'prepare': '理解查询', 'catalog_discover': '发现星表', 'catalog_extract': '读取星表',
@@ -124,9 +126,24 @@ def object_links(payload):
 
 
 def project(application, task_id, at_seq=None):
+    return deepcopy(_cached_project(application, task_id, at_seq))
+
+
+def _cached_project(application, task_id, at_seq=None):
+    from .execution_cache import reconstruction
+    return reconstruction(application, task_id, at_seq,
+                          lambda conn, rows: _project(application, task_id, at_seq, conn, rows))
+
+
+def _project(application, task_id, at_seq=None, snapshot=None, event_payloads=None):
     """All data in the returned model is safe for JSON, copying and PDF reports."""
-    with application.repository.read() as conn:
-        task, source, cursor, cutoff, events = history(application, conn, task_id, at_seq)
+    with (nullcontext(snapshot) if snapshot is not None else application.repository.read()) as conn:
+        if event_payloads is None:
+            task, source, cursor, cutoff, events = history(application, conn, task_id, at_seq)
+        else:
+            task, source, cursor, _ = history_scope(application, conn, task_id, at_seq)
+            events = [loads(raw) for raw in event_payloads]
+            cutoff = events[-1]['committed_at'] if events else task['created_at']
         metadata = {r['job_id']: dict(r) for r in conn.execute(
             'SELECT job_id,kind,payload,created_at FROM jobs WHERE task_id=? AND created_at<?',
             (source, cutoff))}
@@ -417,7 +434,11 @@ def project(application, task_id, at_seq=None):
 def read(application, task_id, at_seq=None, section='overview', stage_id=None, category=None,
          offset=0, limit=50, focus_seq=None, job_id=None, status=None, search=None,
          start=None, end=None, sort='time'):
-    data = project(application, task_id, at_seq)
+    return deepcopy(_read(_cached_project(application, task_id, at_seq), section, stage_id, category,
+                          offset, limit, focus_seq, job_id, status, search, start, end, sort))
+
+
+def _read(data, section, stage_id, category, offset, limit, focus_seq, job_id, status, search, start, end, sort):
     identity = {key: data[key] for key in ('schema_version', 'task_id', 'cursor', 'as_of', 'delivery_ref')}
     if section == 'overview':
         return {k: v for k, v in data.items() if k not in {'events', 'issues', 'services', 'jobs'}}

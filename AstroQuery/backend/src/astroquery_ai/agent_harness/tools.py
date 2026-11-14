@@ -13,8 +13,13 @@ from .data_loader import TaskDataBundle, source_metadata
 class DomainTools:
     """专精天体物理数据缓存调阅工具集。"""
 
-    def __init__(self, bundle: TaskDataBundle):
+    def __init__(self, bundle: TaskDataBundle, knowledge_store=None):
         self.bundle = bundle
+        context = vars(bundle).get('knowledge_context')
+        if context is not None:
+            from astroquery_ai.science.task_knowledge import frozen_user_store
+            knowledge_store = frozen_user_store(context)
+        self.knowledge_store = knowledge_store
 
     def get_tool_definitions(self) -> List[Dict[str, Any]]:
         """返回 OpenAI-Compatible Function Calling 工具定义。"""
@@ -444,23 +449,31 @@ class DomainTools:
     # ── 7. 统一理论知识库与公式调阅 (集成用户优先理论与派生模型) ───────
     def _get_scientific_theory(self, property_name: str, theory_id: Optional[str]) -> str:
         matched = []
-        user_store = None
-        try:
-            from astroquery_ai.science.user_knowledge_store import UserKnowledgeStore
-            user_store = UserKnowledgeStore.get_instance()
-        except Exception:
-            pass
+        user_store = self.knowledge_store
+        cached = []
+        for block in self.bundle.theories:
+            active = user_store.resolve_cached_block(block) if user_store else block
+            if active is not None:
+                cached.append(active)
 
         if theory_id:
             tid_clean = theory_id.strip().lower()
+            if vars(self.bundle).get('knowledge_scoped', False):
+                exact = self.bundle.theories_by_id.get(theory_id)
+                candidates = [b for b in cached if tid_clean in {
+                    str(b.get('entry_id') or '').lower(), str(b.get('claim', {}).get('claim_id') or '').lower()}]
+                if exact is not None:
+                    matched.append(exact)
+                elif len(candidates) > 1:
+                    return '任务保存了该知识标识的多个版本，请按具体性质调阅。'
             if user_store:
                 entry = user_store.get_entry(theory_id)
                 if entry:
                     matched.append(user_store.to_knowledge_block(entry))
-            for b in self.bundle.theories:
+            for b in cached:
                 claim = b.get("claim") or {}
                 cid = str(claim.get("claim_id") or b.get("theory_id") or "").lower()
-                if tid_clean in cid and not any(m.get("entry_id") == b.get("theory_id") for m in matched):
+                if tid_clean in {cid, str(b.get("entry_id") or "").lower(), str(b.get("theory_id") or "").lower(), cid.removeprefix("kb-theory-").removeprefix("kb-")} and not any(m.get("entry_id") == b.get("entry_id", b.get("theory_id")) for m in matched):
                     matched.append(b)
         else:
             pid = self.bundle.resolve_property_id(property_name)
@@ -475,12 +488,15 @@ class DomainTools:
                     matched.append(user_store.to_knowledge_block(c))
 
             if pid and pid.lower() in self.bundle.theories_by_prop:
-                for b in self.bundle.theories_by_prop[pid.lower()]:
-                    if not any(m.get("entry_id") == b.get("theory_id") for m in matched):
+                for cached_block in self.bundle.theories_by_prop[pid.lower()]:
+                    b = user_store.resolve_cached_block(cached_block) if user_store else cached_block
+                    if b is None:
+                        continue
+                    if not any(m == b for m in matched):
                         matched.append(b)
-            else:
+            elif not vars(self.bundle).get('knowledge_scoped', False):
                 kw = property_name.strip().lower()
-                for b in self.bundle.theories:
+                for b in cached:
                     claim = b.get("claim") or {}
                     title = str(claim.get("title") or b.get("title") or "").lower()
                     mech = str(b.get("physical_mechanism") or "").lower()
@@ -488,10 +504,10 @@ class DomainTools:
                         if not any(m.get("entry_id") == b.get("theory_id") for m in matched):
                             matched.append(b)
 
-        if not matched:
-            matched = self.bundle.theories[:3]
+        if not matched and not theory_id and not vars(self.bundle).get('knowledge_scoped', False):
+            matched = cached[:3]
 
-        if not matched and user_store:
+        if not matched and user_store and not theory_id and not vars(self.bundle).get('knowledge_scoped', False):
             pids = list(self.bundle.definitions_by_id.keys())
             cands = user_store.search(field_names=pids, top_k=3)
             matched = [user_store.to_knowledge_block(c) for c in cands]
@@ -509,9 +525,9 @@ class DomainTools:
 
         lines = ["【天体物理学理论底座与推演公式调阅】"]
         for idx, b in enumerate(matched[:4], 1):
-            self.bundle.index_theory(b)
+            runtime_id = self.bundle.index_theory(b)
             claim = b.get("claim") or {}
-            cid = claim.get("claim_id") or b.get("theory_id") or f"THEORY-{idx}"
+            cid = runtime_id if isinstance(runtime_id, str) else claim.get("claim_id") or b.get("theory_id") or f"THEORY-{idx}"
             title = claim.get("title") or b.get("title") or "经典天体物理规律"
             formula = b.get("formula") or {}
             latex = formula if isinstance(formula, str) else formula.get("latex") or formula.get("expression") or ""

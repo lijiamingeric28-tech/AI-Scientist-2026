@@ -7,7 +7,7 @@ from astroquery_ai.registry.compiler import compile_rules
 from astroquery_ai.runtime.codec import canonical, content_hash, digest
 
 
-def make_release(path: Path, *, dimensionless=False):
+def make_release(path: Path, *, dimensionless=False, native_only_policy=False):
     path.mkdir(parents=True)
     reviews = []
 
@@ -75,7 +75,9 @@ def make_release(path: Path, *, dimensionless=False):
         {
             "policy_id": "synthetic-same-length",
             "version": 1,
-            "allowed_operators": ["linear", "log10"],
+            **({'allowed_transforms': ['identity', 'affine'], 'numeric_paths_state': 'not_published',
+                'description': 'SYNTHETIC source-specific scientific conditions; no generic execution authority'}
+               if native_only_policy else {'allowed_operators': ['linear', 'log10']}),
             "evidence_refs": [ev],
         },
         "policy_id",

@@ -213,7 +213,8 @@ def final_report(delivery,spec,knowledge_ref,materials,units,calls):
         qualified_now=complete and bool(m['measurements']) and bool(m['claims'])
         if qualified_now:qualified.append(m['property_id'])
         property_states.append({'property_id':m['property_id'],'state':'complete' if qualified_now else 'background_only' if complete and not m['measurements'] else 'partial',
-            'units':len(own),'generated':sum(u['status']=='generated' for u in own),'qualified':qualified_now})
+            'units':len(own),'generated':sum(u['status']=='generated' for u in own),'qualified':qualified_now,
+            'knowledge_coverage':knowledge_coverage(m['claims'])})
     used={cid for u in units for p in u['paragraphs'] for cid in p['claim_ids']}
     blocks={c['claim']['claim_id']:c for m in materials for c in m['claims'] if c['claim']['claim_id'] in used}
     report_units=[{**{k:u[k] for k in ('unit_id','property_id','status','paragraphs','reason')},
@@ -222,8 +223,16 @@ def final_report(delivery,spec,knowledge_ref,materials,units,calls):
     report.update(status='complete' if len(qualified)==len(spec['properties']) else 'partial' if delivery['measurements'] else 'not_applicable',
         units=report_units,knowledge_blocks=list(blocks.values()),qualified_property_ids=qualified,
         property_states=property_states,model_calls=calls,
+        knowledge_coverage={'available':sum(bool(m['claims']) for m in materials),
+                            'missing':sum(not m['claims'] for m in materials)},
         limitations=['知识解释不构成对测量正确性、来源独立性或最佳值的再次认证。'])
     return report
+
+
+def knowledge_coverage(claims):
+    return {'state': 'available' if claims else 'missing',
+            'reason': None if claims else 'no_exact_compatible_knowledge_binding',
+            'message': None if claims else '暂无准确匹配的解释知识；测量结果与来源事实仍保留。'}
 
 
 async def generate(service,job):

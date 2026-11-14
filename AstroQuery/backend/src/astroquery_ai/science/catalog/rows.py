@@ -20,7 +20,33 @@ from astroquery_ai.science.prompt_contracts import (
 from astroquery_ai.science.catalog_transcription import preserve_catalog_fields
 
 
-async def extract_verified_rows(
+def bounded_row_batches(matched, plans, maximum_results=4):
+    """Bound row × field output, including wide multi-band observations."""
+    for plan in plans:
+        for field_start in range(0,len(plan['properties']),maximum_results):
+            field_plan={**plan,'properties':plan['properties'][field_start:field_start+maximum_results]}
+            row_count=max(1,maximum_results//len(field_plan['properties']))
+            for start in range(0,len(matched),row_count):
+                yield matched[start:start+row_count],field_plan
+
+
+async def extract_verified_rows(self, **kwargs):
+    """Bound output as well as input; every batch keeps its original row indices.
+
+    Durable model-step keys include the batch, so restart/retry reuses completed
+    calls instead of exhausting one root or re-admitting sibling records.
+    """
+    from .literal_rows import collect_literal_rows
+    remainder=await collect_literal_rows(self,kwargs)
+    groups=remainder if remainder is not None else [(kwargs['matched'],p) for p in kwargs['pending_plans']]
+    for matched,plan in groups:
+        for indices,field_plan in bounded_row_batches(matched,[plan]):
+            await _extract_row_batch(self, **{**kwargs, 'matched': indices,
+                'alias': {'navigation': kwargs['alias'], 'row_batch': indices, 'batch_protocol':'cells4/1'},
+                'pending_plans': [field_plan]})
+
+
+async def _extract_row_batch(
     self,
     *,
     actual,

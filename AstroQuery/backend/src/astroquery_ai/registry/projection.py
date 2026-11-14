@@ -45,6 +45,34 @@ class CandidateProjection:
         self.reviews = {
             (item["review_id"], str(item["version"])): item for item in release["data"]["reviews"]
         }
+        self._definition_views, self._profile_views = {}, {}
+        self._conversion_policies = {}
+        for item in release['data']['conversion_policies']:
+            self._conversion_policies.setdefault(
+                (item['policy_id'], str(item['version']), item['content_sha256']), item)
+
+    def _review_dependencies(self, source):
+        dependencies = {}
+        def visit(value):
+            if isinstance(value, list):
+                for item in value:
+                    visit(item)
+            elif isinstance(value, dict):
+                if set(value) == {'review_id', 'version'}:
+                    key = value['review_id'], str(value['version'])
+                    dependencies[str(key)] = self.reviews.get(key)
+                else:
+                    for item in value.values():
+                        visit(item)
+        visit(source)
+        return dependencies
+
+    def _definition_records(self, source, source_profile):
+        candidates = self.release.get('science', {}).get('variants', {}).get(source['property_id'])
+        if candidates:
+            return [v['record'] for v in candidates if source_profile is None
+                or v['record']['profile_ref']['content_sha256'] == source_profile['content_sha256']]
+        return [self.science.get(source['property_id'], {})]
 
     def reference(self, value):
         if isinstance(value, list):
@@ -69,7 +97,25 @@ class CandidateProjection:
         return {key: self.reference(item) for key, item in value.items()}
 
     def definition(self, source, source_profile=None):
-        view = self.reference(deepcopy(source))
+        records = self._definition_records(source, source_profile)
+        # Only these contract fields affect the definition view. Scientific
+        # permissions, operations and audit bodies are independently retained
+        # and checked by their own consumers, not copied into this model.
+        scopes = [[{'key': c['key'], **({'required_scope': c['required_scope']}
+            if 'required_scope' in c else {})} for c in record.get('context_contracts', [])]
+            for record in records]
+        key = digest({'protocol': self.version, 'source': source,
+            'profile_hash': source_profile['content_sha256'] if source_profile is not None else None,
+            'science_enabled': bool(self.science), 'contract_scopes': scopes,
+            'reviews': self._review_dependencies(source)})
+        if key not in self._definition_views:
+            self._definition_views[key] = self._definition(source, records)
+        # No binding or caller may mutate another context's cached model.
+        return deepcopy(self._definition_views[key])
+
+    def _definition(self, source, source_records):
+        # reference() already recursively builds independent JSON containers.
+        view = self.reference(source)
         view["definition_version"] = positive_version(view["definition_version"])
         distinctions = view["explanation"]["distinctions"]
         if isinstance(distinctions, str):
@@ -93,8 +139,6 @@ class CandidateProjection:
             value_type = item["value_type"]
             if value_type == "category" or value_type == "text" and item.get("allowed_values"):
                 value_type = "enum"
-            candidates=self.release.get('science',{}).get('variants',{}).get(source['property_id'])
-            source_records=[v['record'] for v in candidates if source_profile is None or v['record']['profile_ref']['content_sha256']==source_profile['content_sha256']] if candidates else [self.science.get(source['property_id'],{})]
             scopes={c.get('required_scope',item.get('required_scope','all_sources')) for record in source_records
                     for c in record.get('context_contracts',[]) if c['key']==item['key']}
             scope=next(iter(scopes)) if len(scopes)==1 else item.get('required_scope','all_sources')
@@ -121,7 +165,14 @@ class CandidateProjection:
         return view
 
     def profile(self, source):
-        view = self.reference(deepcopy(source))
+        key = digest({'protocol': self.version, 'source': source,
+            'reviews': self._review_dependencies(source)})
+        if key not in self._profile_views:
+            self._profile_views[key] = self._profile(source)
+        return deepcopy(self._profile_views[key])
+
+    def _profile(self, source):
+        view = self.reference(source)
         for key in ("version", "definition_version"):
             view[key] = positive_version(view[key])
         if view["unit"].get("parser_format"):
@@ -156,16 +207,9 @@ class CandidateProjection:
     def binding(self, binding):
         source_definition, source_profile = binding["definition"], binding["output_profile"]
         definition, profile = self.definition(source_definition,source_profile), self.profile(source_profile)
-        policy = next(
-            (
-                item
-                for item in self.release["data"]["conversion_policies"]
-                if item['policy_id']==source_profile['conversion_policy_ref']['id']
-                and str(item['version'])==str(source_profile['conversion_policy_ref']['version'])
-                and item['content_sha256']==source_profile['conversion_policy_ref']['content_sha256']
-            ),
-            None,
-        )
+        policy_ref = source_profile['conversion_policy_ref']
+        policy = self._conversion_policies.get(
+            (policy_ref['id'], str(policy_ref['version']), policy_ref['content_sha256']))
         if (
             not policy
             or policy["content_sha256"] != source_profile["conversion_policy_ref"]["content_sha256"]

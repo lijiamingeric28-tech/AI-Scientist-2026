@@ -194,3 +194,37 @@ def test_distinct_work_operations_have_no_cumulative_clock_quota(tmp_path):
         )
     assert attempt['status'] == 'reserved'
     assert budget.summary()["unknown_count"] == 5
+
+
+def test_budget_publication_waits_for_sibling_worker_to_drain(tmp_path, monkeypatch):
+    async def run():
+        app = application(tmp_path)
+        state, scheduler = await confirmed_case(app, ambiguous=True)
+        tid = state["task_id"]
+        with app.repository.transaction() as conn:
+            app.repository.mutate_task(conn, tid, lifecycle="queued")
+            for suffix in ("A", "B"):
+                app.repository.enqueue(conn, tid, "M03", "catalog_extract", {"table_id": "SYNTHETIC/" + suffix})
+        failure = app.repository.claim_job(scheduler.owner_id)
+        sibling = app.repository.claim_job(scheduler.owner_id)
+        assert sibling is not None
+        scheduler.fail(failure, DomainError("CAMPAIGN_BUDGET_EXHAUSTED", "SYNTHETIC global cap"))
+        before = app.view(tid)
+        assert before["lifecycle"] == "budget_exhausted"
+        assert before["delivery_ref"] is None
+
+        async def already_stopped(job):
+            raise DomainError("DISPATCH_FORBIDDEN", "SYNTHETIC sibling stopped")
+
+        monkeypatch.setattr(scheduler, "execute", already_stopped)
+        await scheduler.run_job(sibling)
+        after = app.view(tid)
+        assert after["lifecycle"] == "budget_exhausted"
+        assert after["science_state"] == "sealed"
+        assert after["delivery_ref"]
+        with app.repository.read() as conn:
+            delivery = app.delivery.get(conn, tid)
+            assert delivery["status"] == "partial"
+            assert delivery["run_outcome"] == "budget_exhausted"
+
+    asyncio.run(run())

@@ -479,7 +479,7 @@ def apply_repairs(response, repair_response, slots, current, bindings):
     return updated,card
 
 
-def final_report(delivery, spec, knowledge_ref, units, checkpoints, *, owner_rechecks=(), calls=0):
+def final_report(delivery, spec, knowledge_ref, units, checkpoints, *, owner_rechecks=(), calls=0, knowledge_store=None, theory_store=None, include_background=True):
     """A report revision over the same science, not a replacement measurement.
 
 Only exact, owner-verified adverse dispositions with source-recheck references
@@ -506,6 +506,7 @@ in this report, and every original measurement remains in the science snapshot.
             'recommendations': {},
             'status': 'not_completed', 'reason': checkpoint.get('reason')})
         card.update(property_id=current['property_id'], card_id=current['unit_id'],
+                    knowledge_coverage=author.knowledge_coverage(current['claims']),
                     coverage=coverage(delivery, current, excluded),
                     actual_attempt_ref=checkpoint.get('actual_attempt_ref'),
                     actual_model=checkpoint.get('actual_model'),
@@ -556,20 +557,26 @@ in this report, and every original measurement remains in the science snapshot.
         states.append({'property_id': current['property_id'], 'state': card['status'],
                        'qualified': qualified})
         report['cards'].append(card)
-    from .theory_knowledge import TheoryKnowledgeStore
-    theory_store = TheoryKnowledgeStore.get_instance()
+    if include_background and theory_store is None:
+        from .theory_knowledge import TheoryKnowledgeStore
+        theory_store = TheoryKnowledgeStore.get_instance()
     pids = [u['property_id'] for u in units]
-    relationships = theory_store.derive_network_relationships(pids)
+    relationships = deepcopy(theory_store.derive_network_relationships(pids)) if include_background else []
+    if knowledge_store is not None:
+        relationships = [relation for relation in relationships if
+            knowledge_store.resolve_cached_block({'theory_id': relation.get('theory_id')}) is not None]
     theory_blocks = {}
     for rel in relationships:
         tid = rel.get('theory_id')
         if tid and tid in theory_store.by_id:
             tblk = theory_store.to_knowledge_block(theory_store.by_id[tid])
-            theory_blocks[tblk['claim']['claim_id']] = tblk
+            if knowledge_store is not None:
+                tblk = knowledge_store.resolve_cached_block(tblk)
+            if tblk is not None:
+                theory_blocks[tblk['claim']['claim_id']] = tblk
 
-    try:
-        from .user_knowledge_store import UserKnowledgeStore
-        user_store = UserKnowledgeStore.get_instance()
+    if knowledge_store is not None:
+        user_store = knowledge_store
         pref_ids = user_store.get_preferred_ids()
 
         user_cands = user_store.search(field_names=pids, top_k=6)
@@ -585,7 +592,7 @@ in this report, and every original measurement remains in the science snapshot.
 
         for rel in relationships:
             tid = rel.get('theory_id')
-            if tid in pref_ids or any(p in str(tid) for p in pref_ids):
+            if tid in pref_ids:
                 rel['user_preferred'] = True
                 rel['ranking_boost'] = 2.0
             else:
@@ -603,8 +610,6 @@ in this report, and every original measurement remains in the science snapshot.
                 blk['user_preferred'] = True
                 blk['preferred'] = True
                 blk['weight_boost'] = blk.get('weight_boost', 2.0)
-    except Exception:
-        pass
 
     # Card-cited claims remain primary in knowledge_blocks, followed by preference-ranked theory blocks
     sorted_theory_blocks = sorted(
@@ -619,6 +624,8 @@ in this report, and every original measurement remains in the science snapshot.
     combined_blocks = list(blocks.values()) + sorted_theory_blocks
 
     report.update(owner_rechecks=deepcopy(list(owner_rechecks)), knowledge_blocks=combined_blocks,
+        knowledge_coverage={'available':sum(bool(u['claims']) for u in units),
+                            'missing':sum(not u['claims'] for u in units)},
         cross_field_relationships=relationships,
         property_states=states, qualified_property_ids=[s['property_id'] for s in states if s['qualified']],
         actual_models=sorted({c['actual_model'] for c in report['cards'] if c.get('actual_model')}),

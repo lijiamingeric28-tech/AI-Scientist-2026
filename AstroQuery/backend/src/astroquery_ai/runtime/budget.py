@@ -108,6 +108,7 @@ class Budget:
         profile_state="trial",
         purpose="calibration",
         wall_bound_seconds=480,
+        defer_for_settlement=False,
     ) -> dict:
         if (
             type(input_bound) is not int
@@ -126,7 +127,7 @@ class Budget:
             or not 1 <= root_limit <= 1200
         ):
             raise DomainError("INVALID_ATTEMPT_LIMIT", "调用必须有有效且有限的时间与次数上限", 422)
-        if profile_state != "validated" and purpose not in {'calibration', 'pilot', 'verification'}:
+        if profile_state != "validated" and purpose not in {'calibration', 'pilot', 'verification', 'material_summary'}:
             raise DomainError("PROFILE_NOT_VALIDATED", "运行配置尚未校准，只允许有界校准调用")
         # M04 uses the separately qualified bibliographic expression/relevance
         # operation. It still has no measurement admission authority.
@@ -142,6 +143,18 @@ class Budget:
                 raise DomainError("PROVIDER_DISABLED", "已检测到费用上界问题，当前禁止新调用")
             task = self.repository.task(conn, task_id)
             self.repository.guard_definitions(conn, task)
+            material_summary = False
+            if purpose == "material_summary":
+                from astroquery_ai.science.material_summaries import MODEL, PROFILE, permit_matches
+                material_summary = (
+                    profile_state == PROFILE.state and model == MODEL and not smoke and root_limit == 1
+                    and input_bound <= PROFILE.max_input_tokens and output_bound <= PROFILE.max_output_tokens
+                    and wall_bound_seconds <= PROFILE.wall_seconds and request.get("enable_thinking") is False
+                    and permit_matches(self.repository, conn, task, owner, model, root_id,
+                                       messages=request.get("messages"))
+                )
+                if not material_summary:
+                    raise DomainError("MATERIAL_SUMMARY_SCOPE", "调用与已保存资料总结输入不匹配")
             if purpose == "verification":
                 from .science_capabilities import verification_scope
                 if not task["query_ref"]:
@@ -179,7 +192,17 @@ class Budget:
             permitted_kind = (
                 task["kind"] == "live" or task["kind"] == "validation" and purpose == "calibration"
             )
-            if not permitted_kind or task["lifecycle"] in TERMINAL | {
+            read_only_analysis = False
+            if root_id.startswith('material-analysis-call-'):
+                from astroquery_ai.application.material_analysis import permit_matches as analysis_permit
+                read_only_analysis = (purpose == 'production' and profile_state == 'validated' and not job
+                    and analysis_permit(self.repository, conn, task, owner, model, root_id,
+                                        messages=request.get('messages')))
+                if not read_only_analysis:
+                    raise DomainError('MATERIAL_ANALYSIS_PERMIT', '补充分析缺少准确运行许可', 409)
+            read_only_summary = (material_summary and not job and task["science_state"] == "sealed"
+                                 and task["lifecycle"] in {"completed", "budget_exhausted"})
+            if not permitted_kind or not (read_only_summary or read_only_analysis) and task["lifecycle"] in TERMINAL | {
                 "paused",
                 "interrupted",
                 "pausing",
@@ -240,14 +263,25 @@ class Budget:
             ).fetchone()[0]
             if count >= root_limit:
                 raise DomainError("ATTEMPT_LIMIT", "该逻辑事项调用次数已用完")
-            if not self.uncapped(conn) and self._used(conn, self.campaign_id) + reservation > min(
-                campaign["cap_micros"], campaign["funded_cap_micros"]
-            ):
-                raise DomainError(
-                    "CAMPAIGN_BUDGET_EXHAUSTED",
-                    "本轮验证剩余额度不足",
-                    requested_micros=reservation,
-                )
+            if not self.uncapped(conn):
+                limit = min(campaign["cap_micros"], campaign["funded_cap_micros"])
+                committed = self._used(conn, self.campaign_id)
+                if committed + reservation > limit:
+                    if defer_for_settlement:
+                        in_flight = conn.execute(
+                            "SELECT coalesce(sum(reserved_micros),0) FROM attempts "
+                            "WHERE campaign_id=? AND status IN ('reserved','dispatched')",
+                            (self.campaign_id,),
+                        ).fetchone()[0]
+                        if committed - in_flight + reservation <= limit:
+                            from .throughput import DispatchDeferred
+
+                            raise DispatchDeferred("campaign-model-settlement", 2)
+                    raise DomainError(
+                        "CAMPAIGN_BUDGET_EXHAUSTED",
+                        "本轮验证剩余额度不足",
+                        requested_micros=reservation,
+                    )
             if (
                 smoke
                 and self._used(conn, self.campaign_id, True) + reservation
@@ -311,7 +345,19 @@ class Budget:
                 raise DomainError("INVALID_ATTEMPT", "请求没有有效预留")
             task = self.repository.task(conn, row["task_id"])
             self.repository.guard_definitions(conn, task)
-            if task["generation"] != row["generation"] or task["lifecycle"] in TERMINAL | {
+            summary_permit = False
+            material_call = row["root_id"].startswith("material-summary-call-")
+            analysis_call = row['root_id'].startswith('material-analysis-call-')
+            analysis_permit = False
+            if analysis_call:
+                from astroquery_ai.application.material_analysis import permit_matches as check_analysis
+                analysis_permit = check_analysis(self.repository, conn, task, row['owner'], row['model'], row['root_id'])
+            if material_call:
+                from astroquery_ai.science.material_summaries import permit_matches
+                summary_permit = permit_matches(self.repository, conn, task, row["owner"], row["model"], row["root_id"])
+            read_only_summary = (summary_permit and not row["job_id"] and task["science_state"] == "sealed"
+                                 and task["lifecycle"] in {"completed", "budget_exhausted"})
+            if task["generation"] != row["generation"] or (material_call and not summary_permit) or (analysis_call and not analysis_permit) or not (read_only_summary or analysis_permit) and task["lifecycle"] in TERMINAL | {
                 "paused",
                 "pausing",
                 "interrupted",

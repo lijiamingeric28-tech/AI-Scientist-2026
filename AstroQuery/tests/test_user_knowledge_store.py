@@ -274,7 +274,7 @@ def test_rest_api_endpoints(tmp_path):
     - POST /api/knowledge/{entry_id}/preference (set preference)
     - DELETE /api/knowledge/{entry_id} (delete / restore)
     """
-    app = create_app(root=tmp_path / "app_data", start_worker=False)
+    app = create_app(root=tmp_path / "app_data", start_worker=False, allow_synthetic=True)
     client = TestClient(app)
 
     # 1. GET /api/knowledge with limit & pagination
@@ -374,7 +374,7 @@ def test_insights_and_agent_tools_incorporate_user_preferred_knowledge(clean_sto
     mock_bundle.resolve_property_id.return_value = "effective_temperature"
     mock_bundle.index_theory = MagicMock()
 
-    tools = DomainTools(mock_bundle)
+    tools = DomainTools(mock_bundle, knowledge_store=store)
     theory_out = tools.execute_tool("get_scientific_theory", {"property_name": "温度"})
     assert "[THEORY:" in theory_out
     assert "★ [科研优先理论 (User Preferred)]" in theory_out
@@ -397,7 +397,7 @@ def test_insights_and_agent_tools_incorporate_user_preferred_knowledge(clean_sto
     ]
     checkpoints = {}
 
-    report = final_report(delivery, spec, knowledge_ref, units, checkpoints)
+    report = final_report(delivery, spec, knowledge_ref, units, checkpoints, knowledge_store=store)
     k_blocks = report.get("knowledge_blocks", [])
     assert len(k_blocks) > 0
     # User preferred block should be present and flagged

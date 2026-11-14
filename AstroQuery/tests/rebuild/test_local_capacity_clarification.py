@@ -182,8 +182,10 @@ def test_comparison_failed_repair_preserves_valid_original_group(monkeypatch):
     labels,evidence,good=material();saved=[];calls=[]
     @contextmanager
     def tx():yield None
-    repo=SimpleNamespace(read=tx,transaction=tx,validate_lease=lambda *a:None,put_object=lambda *a:saved.append(a[-1]),finish_job=lambda *a:None)
-    monkeypatch.setattr(archive,'comparison_input',lambda *a:({'answered_questions':[]},labels,evidence))
+    repo=SimpleNamespace(read=tx,transaction=tx,validate_lease=lambda *a:None,put_object=lambda *a:saved.append(a[-1]),finish_job=lambda *a:None,objects=lambda *a:[])
+    monkeypatch.setattr(archive,'comparison_input',lambda *a:(
+        {'answered_questions': [], 'items': [{'record': label} for label in labels], 'evidence': evidence},
+        labels, evidence))
     async def model(*a,**kw):
         calls.append(kw)
         if len(calls)==2:raise httpx.ReadTimeout('SYNTHETIC repair transport failure')
@@ -233,36 +235,132 @@ def test_normal_parser_clarification_finishes_with_a_question_not_repo_attribute
         assert c.execute('select status from jobs where job_id=?',(job['job_id'],)).fetchone()[0]=='succeeded'
 
 
-@pytest.mark.parametrize('maximum,expected_groups',[(26000,1),(22000,0)])
-def test_comparison_partition_keeps_global_index_crosslinks_and_partial(monkeypatch,maximum,expected_groups):
+@pytest.mark.parametrize('failed_cross_group', [False, True])
+def test_comparison_partition_finishes_only_after_supported_crosslinks(monkeypatch, failed_cross_group):
     body,labels,evidence=comparison_material();saved=[];calls=[]
-    profile=ModelProfile('qwen3.7-plus',max_input_tokens=maximum)
+    profile=ModelProfile('qwen3.7-plus',max_input_tokens=22000)
     plan=archive.plan_comparison_inputs(body,profile)
     assert plan['mode']=='evidence_windows_with_global_index' and len(plan['windows'])>1
     assert not plan['unplanned'] and all(w['capacity']['repair']['fits'] for w in plan['windows'])
     @contextmanager
     def tx():yield None
-    repo=SimpleNamespace(read=tx,transaction=tx,validate_lease=lambda *a:None,put_object=lambda *a:saved.append(a[-1]),finish_job=lambda *a:None)
+    repo=SimpleNamespace(read=tx,transaction=tx,validate_lease=lambda *a:None,put_object=lambda *a:saved.append(a[-1]),finish_job=lambda *a:None,objects=lambda *a:[])
     monkeypatch.setattr(archive,'comparison_input',lambda *a:(body,labels,evidence))
     async def model(*a,**kw):
+        import httpx
         value=loads(kw['messages'][0]['content']);calls.append(value)
         if value['schema'].get('title')=='ComparisonNavigation':
+            assert {item['record'] for item in value['all_record_index']['items']} == set(labels)
             return dict(index_members=list(labels),evidence_groups=[['R1','R12']],limitations=[]),{'attempt_id':str(len(calls))}
-        assert len(value['all_record_index'])==12
+        assert 'all_record_index' not in value
         own=[i['record'] for i in value['items']]
         duplicates=[]
-        if {'R1','R12'}<=set(own):duplicates=[dict(members=['R1','R12'],evidence=['E1','E12'],
-            member_evidence={'R1':['E1'],'R12':['E12']},reason='SYNTHETIC explicit original adoption',basis='explicit_adoption')]
+        if {'R1','R12'}<=set(own):
+            if failed_cross_group:
+                raise httpx.ReadTimeout('Synthetic cross-original timeout')
+            duplicates=[dict(members=['R1','R12'],evidence=['E1','E12'],
+                member_evidence={'R1':['E1'],'R12':['E12']},reason='SYNTHETIC explicit original adoption',basis='explicit_adoption')]
         return dict(checked_members=own,duplicates=duplicates),{'attempt_id':str(len(calls))}
     service=SimpleNamespace(repo=repo,spec=lambda *a:{},steps=SimpleNamespace(model=model),model_profile=lambda *a,**k:profile)
     asyncio.run(archive.compare_results(service,{'task_id':'synthetic','payload':dict(property_id='p',input_hash='hash',measurement_refs=[])}))
     report=saved[-1]
-    assert report['state']=='partial' and set(report['checked_members'])==set(labels)
-    assert report['coverage']['uncovered_cross_window_scope'] is True
+    assert report['state']==('partial' if failed_cross_group else 'checked')
+    assert set(report['checked_members'])==set(labels)
+    assert report['coverage']['uncovered_cross_window_scope'] is failed_cross_group
     assert report['coverage']['global_index']['state']=='indexed_not_scientifically_checked'
-    assert len(report['duplicates'])==expected_groups
-    if expected_groups:
+    assert len(report['duplicates']) == (0 if failed_cross_group else 1)
+    if not failed_cross_group:
         assert set(report['duplicates'][0]['member_evidence'])=={'m1','m12'}
+        assert report['duplicates'][0]['property_id']=='p'
     else:
-        assert report['coverage']['cross_group_links'][0]['reason']=='cross_group_originals_input_limit'
-    assert all('all_record_index' in c for c in calls)
+        assert report['coverage']['cross_group_links'][0]['reason']=='cross_group_original_window_incomplete'
+    assert sum('all_record_index' in c for c in calls) == 1
+
+
+def test_oversize_navigation_index_preserves_original_windows(monkeypatch):
+    body, labels, evidence = comparison_material()
+    for item in body['items']:
+        item['context'] = [{'note': 'SYNTHETIC carried condition ' * 180}]
+    profile = ModelProfile('qwen3.7-plus', max_input_tokens=22000)
+    plan = archive.plan_comparison_inputs(body, profile)
+    assert len(plan['global_index']['items']) == len(labels)
+    assert not plan['unplanned']
+    assert {label for window in plan['windows'] for label in window['members']} == set(labels)
+    assert all(window['capacity']['repair']['fits'] for window in plan['windows'])
+
+    @contextmanager
+    def transaction():
+        yield None
+
+    saved = []
+    repo = SimpleNamespace(read=transaction, transaction=transaction,
+                           validate_lease=lambda *args: None, finish_job=lambda *args: None,
+                           objects=lambda *args: [],
+                           put_object=lambda *args: saved.append(args[-1]))
+    monkeypatch.setattr(archive, 'comparison_input', lambda *args: (body, labels, evidence))
+
+    async def model(*args, **kwargs):
+        request = loads(kwargs['messages'][0]['content'])
+        assert request.get('all_record_index') is None
+        members = [item['record'] for item in request['items']]
+        return {'checked_members': members}, {'attempt_id': 'synthetic-window'}
+
+    service = SimpleNamespace(repo=repo, spec=lambda *args: {},
+                              steps=SimpleNamespace(model=model), model_profile=lambda *args, **kw: profile)
+    asyncio.run(archive.compare_results(service, {
+        'task_id': 'synthetic',
+        'payload': {'property_id': 'p', 'input_hash': 'hash', 'measurement_refs': []},
+    }))
+    report = saved[-1]
+    assert report['state'] == 'partial'
+    assert set(report['checked_members']) == set(labels)
+    assert report['coverage']['global_index']['reason'] == 'comparison_global_index_input_limit'
+    assert report['coverage']['uncovered_cross_window_scope'] is True
+
+
+def test_comparison_window_repair_keeps_prior_version_and_publishes_new_findings(monkeypatch):
+    body, labels, evidence = comparison_material()
+    done = list(labels)[2:]
+    initial = {
+        'duplicates': [], 'suspicions': [], 'interpretation_issues': [], 'state': 'partial',
+        'checked_members': done, 'diagnostics': [],
+        'coverage': {
+            'windows': [
+                {'members': ['R1', 'R2'], 'checked_members': [], 'state': 'partial'},
+                {'members': done, 'checked_members': done, 'state': 'checked'},
+            ],
+            'mode': 'evidence_windows_with_global_index',
+            'global_index': {'state': 'indexed_not_scientifically_checked'},
+            'cross_group_links': [],
+        },
+    }
+    saved = []
+
+    @contextmanager
+    def tx():
+        yield None
+
+    repo = SimpleNamespace(read=tx, transaction=tx, validate_lease=lambda *a: None,
+                           object=lambda *a: deepcopy(initial), objects=lambda *a: [],
+                           put_object=lambda *a: saved.append((a[-2], a[-1])), finish_job=lambda *a: None)
+    monkeypatch.setattr(archive, 'comparison_input', lambda *a: (body, labels, evidence))
+
+    async def model(*args, **kwargs):
+        request = loads(kwargs['messages'][0]['content'])
+        assert [item['record'] for item in request['items']] == ['R1', 'R2']
+        return {
+            'checked_members': ['R1', 'R2'],
+            'duplicates': [{'members': ['R1', 'R2'], 'evidence': ['E1', 'E2'],
+                            'member_evidence': {'R1': ['E1'], 'R2': ['E2']},
+                            'reason': 'Explicit adoption in the two originals', 'basis': 'explicit_adoption'}],
+        }, {'attempt_id': 'saved-repair'}
+
+    service = SimpleNamespace(repo=repo, spec=lambda *a: {}, steps=SimpleNamespace(model=model),
+                              model_profile=lambda *a, **kw: ModelProfile('qwen3.7-plus', **kw))
+    asyncio.run(archive.compare_results(service, {'task_id': 'synthetic', 'payload': {
+        'property_id': 'p', 'input_hash': 'hash', 'measurement_refs': [], 'repair_windows': True}}))
+    (version, updated), = saved
+    assert version == 2 and updated['state'] == 'checked'
+    assert set(updated['checked_members']) == set(labels)
+    assert updated['duplicates'][0]['member_refs'] == [archive.reference(labels['R1']), archive.reference(labels['R2'])]
+    assert initial['state'] == 'partial' and initial['coverage']['windows'][0]['state'] == 'partial'

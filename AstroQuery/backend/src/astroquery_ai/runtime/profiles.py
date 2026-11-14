@@ -77,6 +77,7 @@ class ProfileAuthority:
         return report, ref
 
     def authorize(self, task_id, owner, profile, input_bound):
+        user_bindings, user_refs = set(), []
         with self.app.repository.read() as conn:
             report, reference = self.load(conn, owner)
             def string_list(value):
@@ -150,13 +151,20 @@ class ProfileAuthority:
                 spec = self.app.repository.object(
                     conn, task_id, "confirmed_query", spec_ref["id"], spec_ref["version"]
                 )
+                if any(b.get('user_execution_ref') for b in spec['properties']):
+                    from astroquery_ai.registry.user_execution import verified_user_bindings
+                    user_bindings = verified_user_bindings(self.app, spec)
+                    user_refs = [b['user_execution_ref'] for b in spec['properties'] if b.get('user_execution_ref') and b.get('property_id') in user_bindings]
                 registry_refs = scope.get('registry_release_refs', [scope.get('registry_release_ref')])
                 if (not isinstance(registry_refs, list) or not registry_refs
                         or 'registry_release_refs' in scope and any(r is None for r in registry_refs)
                         or any(not isinstance(r, dict) for r in registry_refs if r is not None)):
                     raise DomainError('PROFILE_SCOPE_UNAVAILABLE', '科学基线资格范围格式无效')
-                if None not in registry_refs and spec['registry_release'] not in registry_refs:
-                    raise DomainError('PROFILE_REGISTRY_NOT_VALIDATED', '当前科学基线不在运行资格范围内')
+                if None not in registry_refs and spec['registry_release'] not in registry_refs and len(user_bindings) != len(spec['properties']):
+                    from astroquery_ai.query.registry_context import qualification_reference
+                    base_ref = qualification_reference(self.app, spec)
+                    if base_ref is None or base_ref not in registry_refs:
+                        raise DomainError('PROFILE_REGISTRY_NOT_VALIDATED', '当前科学基线不在运行资格范围内')
                 primary = spec["target"]["primary_otype"]
                 allowed_confirmed = scope.get('confirmed_otypes', [])
                 if allowed_confirmed and not string_list(allowed_confirmed):
@@ -190,7 +198,9 @@ class ProfileAuthority:
                         ) from exc
                 approved = {digest(ref) for ref in scope.get("definition_refs", [])}
                 approved_outputs = {digest(ref) for ref in scope.get("output_profile_refs", [])}
-                for binding in spec["properties"]:
+                for binding in spec['properties']:
+                    if binding.get('user_execution_ref') and binding.get('property_id') in user_bindings:
+                        continue
                     definition = binding["definition"]
                     exact = {
                         "id": definition["property_id"],
@@ -212,6 +222,8 @@ class ProfileAuthority:
                             "PROFILE_OUTPUT_NOT_VALIDATED", "当前输出单位/表示配置未被科学校准覆盖"
                         )
             return {
+                **({'user_execution_refs': user_refs, 'authorization_origin': 'user_declared_local_publication',
+                    'scientific_review_granted': False} if user_refs else {}),
                 "qualification_ref": reference,
                 "model": profile.model,
                 "operation": profile.operation,

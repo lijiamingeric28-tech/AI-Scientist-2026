@@ -39,6 +39,24 @@ def test_source_notation_keeps_original_cells_and_is_never_exact_binding():
     assert proof['general_alias_rule_granted'] is False
 
 
+def test_repeated_identifier_inputs_reuse_decision_with_each_rows_own_evidence():
+    from astroquery_ai.science.catalog_identity import identity_equivalence_groups,rebind_identity_check
+    table=deepcopy(TABLE)
+    table['rows']=[{**table['rows'][0],'Value':str(i)} for i in range(1032)]
+    table['rows'].append({**table['rows'][0],'Cross':'PSR J9999+9999'})
+    groups,names=identity_equivalence_groups(table,'Object')
+    assert groups[0]==list(range(1032)) and groups[1032]==[1032] and 'Value' not in names
+    _,spans=identity_prompt(TARGET,table,table['rows'],[0],'Object')
+    original=checked_identities(verdict(notation_option_id=None,target_alias_id='A1'),TARGET,table,table['rows'],[0],'Object',spans)[0]
+    rebound=rebind_identity_check(original,1031,TARGET,table,'Object',spans)
+    assert rebound['state']=='accepted' and rebound['row']==1031
+    assert 'cell:1031:Object' in rebound['anchors'] and 'cell:0:Object' not in rebound['anchors']
+    assert rebound['reused_from_row']==0
+    with pytest.raises(ValueError):rebind_identity_check(original,1032,TARGET,table,'Object',spans)
+    table['description']='SYNTHETIC: rows 1-3 have special subject meanings'
+    assert len(identity_equivalence_groups(table,'Object')[0])==1033
+
+
 def test_model_frame_component_exclusions_and_actual_alias_scope_are_preserved():
     # v3 asks the model for source naming meaning, replacing the approved old
     # prefix-only gate. The program preserves exclusions and actual ID scope;
@@ -76,7 +94,9 @@ def test_published_pair_must_be_same_row_or_one_actual_statement():
 
 
 def test_candidate_patterns_are_navigation_and_omissions_remain_unknown():
-    assert navigation_patterns([TARGET['main_id']]) == ['*1234*5678*']
+    patterns = navigation_patterns([TARGET['main_id']])
+    assert '*1234*5678*' in patterns
+    assert '*PSR*J1234+5678A*' in patterns  # Literal navigation retains the component.
     result, _ = check({'rows': []})
     assert result['state'] == 'unresolved'
     assert result['reason'] == 'row_not_interpreted'

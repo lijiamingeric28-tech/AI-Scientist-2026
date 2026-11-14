@@ -59,6 +59,7 @@ def create_app(
                 return
             if start_worker and not closing.is_set():
                 await scheduler.start()
+                await application.material_analysis.start()
 
         warmup = None
         try:
@@ -73,6 +74,7 @@ def create_app(
             closing.set()
             try:
                 await app.state.close_followups()
+                await application.material_analysis.close()
                 if warmup:
                     await warmup
             finally:
@@ -80,7 +82,10 @@ def create_app(
                     if start_worker:
                         await scheduler.stop()
                 finally:
-                    lock.release()
+                    try:
+                        await asyncio.to_thread(published.close)
+                    finally:
+                        lock.release()
 
     app = FastAPI(title="AstroQuery AI", version="3.0.0-dev", lifespan=lifespan)
     app.state.application, app.state.scheduler = (application, scheduler)
@@ -104,7 +109,9 @@ def create_app(
                         raise ValueError("JSON object required")
                     if "expected_revision" in document and (
                         type(document["expected_revision"]) is not int
-                        or document["expected_revision"] < 1
+                        or document["expected_revision"] < (
+                            0 if request.url.path == "/api/knowledge" or request.url.path.startswith("/api/knowledge/") else 1
+                        )
                     ):
                         raise ValueError("positive integer revision required")
                 except (ValueError, UnicodeError):
@@ -153,6 +160,8 @@ def create_app(
             return JSONResponse({"detail": error.as_dict()}, status_code=error.status)
         return await call_next(request)
 
+    from .routes import registry_workbench
+    registry_workbench.register(app, application, scheduler)
     settings.register(app, application, scheduler)
     control = tasks.register(app, application, scheduler)
     events.register(app, application, scheduler)

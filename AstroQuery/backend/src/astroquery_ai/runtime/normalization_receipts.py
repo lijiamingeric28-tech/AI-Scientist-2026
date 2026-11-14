@@ -52,6 +52,8 @@ def record_normalization_outcome(repo, conn, task_id, record, output, result, de
         'output_profile_ref': result['output_profile_ref'], 'method': result.get('method'),
         'interpretation_receipt_ref': result.get('interpretation_receipt_ref'),
         'actual_attempt_refs': attempts, 'committed_revision': revision, 'timestamp': timestamp}
+    if result.get('user_execution_ref'):
+        receipt.update(user_execution_ref=result['user_execution_ref'], authorization_origin='user_declared_local_publication', scientific_review_granted=False)
     receipt['model_proposal_checks'] = [check for check in repo.objects(conn, task_id, 'normalization_proposal_check')
         if job and check['job_id'] == job['job_id']]
     receipt_ref = repo.put_object(conn, task_id, 'processing_receipt', receipt_id, 1, receipt)

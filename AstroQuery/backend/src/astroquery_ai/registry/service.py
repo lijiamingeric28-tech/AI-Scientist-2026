@@ -61,6 +61,9 @@ class RegistryService:
     def _validate(self, directory: Path) -> dict:
         directory = directory.resolve()
         manifest = loads(self._file(directory, "manifest.json").read_bytes())
+        if manifest.get("schema_version") == "registry-workspace/1":
+            from .workspace_release import load_workspace_release
+            return load_workspace_release(self, directory, manifest)
         if manifest.get("schema_version") == "registry-candidate-consumer/1":
             return self._validate_consumer(directory, manifest)
         if manifest.get("schema_version") != "property-registry/1" or not manifest.get(
@@ -401,6 +404,10 @@ class RegistryService:
             "synthetic": manifest.get("synthetic", False),
         }
 
+    def active_bundle(self, conn=None):
+        from .workspace_release import active_bundle
+        return active_bundle(self.repository, conn)
+
     def load(self, release_id: str | None = None) -> dict:
         with self.repository.read() as conn:
             if release_id is None:
@@ -423,13 +430,9 @@ class RegistryService:
         return verified
 
     def check_eligibility(self, conn, release_id: str, dependency_refs: list[dict]) -> dict:
+        from astroquery_ai.runtime.registry_eligibility import registry_revocations
         ids = {r["id"] for r in dependency_refs}
-        rows = [
-            dict(r)
-            for r in conn.execute(
-                "SELECT * FROM revocations WHERE release_id=? ORDER BY revision", (release_id,)
-            )
-        ]
+        rows = registry_revocations(conn, release_id)
         impacts = [r for r in rows if r["dependency_id"] is None or r["dependency_id"] in ids]
         return {
             "state": "blocked" if impacts else "eligible",
@@ -438,7 +441,12 @@ class RegistryService:
         }
 
     @staticmethod
-    def support(release: dict, otypes: list[str], subject_class_id: str) -> dict:
+    def support(release: dict, otypes: list[str], subject_class_id: str, *, user_type_ref=None) -> dict:
+        if release["manifest"].get("schema_version") == "registry-workspace/1":
+            from .workspace_release import workspace_support
+            return workspace_support(release, otypes, subject_class_id, user_type_ref=user_type_ref)
+        if user_type_ref:
+            raise DomainError('USER_TYPE_INCOMPATIBLE', '当前发布不包含用户子类型', 422)
         if release["manifest"].get("schema_version") == "registry-candidate-consumer/1":
             from .consumer import consumer_support
             return consumer_support(release, otypes, subject_class_id)

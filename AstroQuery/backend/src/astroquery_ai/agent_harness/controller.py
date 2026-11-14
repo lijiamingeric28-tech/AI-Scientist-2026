@@ -101,7 +101,12 @@ class AgentController:
         self.bundle = bundle
         self.application = application
         self.memory = AgentMemory(bundle)
-        self.tools = DomainTools(bundle)
+        knowledge_store = getattr(application, 'user_knowledge', None)
+        context = vars(bundle).get('knowledge_context')
+        if context is not None:
+            from astroquery_ai.science.task_knowledge import frozen_user_store
+            knowledge_store = frozen_user_store(context)
+        self.tools = DomainTools(bundle, knowledge_store=knowledge_store)
         self.verifier = GroundingVerifier(bundle)
         self.projection = AnswerProjection(bundle, self.verifier)
 

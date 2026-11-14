@@ -95,7 +95,8 @@ def dispatch_delay(self, default=1.0):
 
 def claim_job(self, owner_id: str, lease_seconds=60, *, task_id=None, material_scope=None) -> dict | None:
     import time
-    from astroquery_ai.runtime.stages import EXECUTION_POLICY, current_stage, eligible, record_locks
+    from collections import Counter
+    from astroquery_ai.runtime.stages import EXECUTION_POLICY, JOB_STAGE, current_stage, eligible, record_locks
 
     with self.transaction() as conn:
         running = [dict(r) for r in conn.execute("SELECT * FROM jobs WHERE status='running'")]
@@ -123,10 +124,23 @@ def claim_job(self, owner_id: str, lease_seconds=60, *, task_id=None, material_s
             (task_id, task_id, time.time(), int(parallel_materials)),
         ).fetchall()
         row = None
+        checkpoints = {}
+        running_owners = Counter(j['owner'] for j in running)
         for candidate in candidates:
+            tid = candidate['task_id']
+            if tid not in checkpoints:
+                checkpoints[tid] = current_stage(conn, tid)
+            checkpoint = checkpoints[tid]
+            if checkpoint:
+                stage = JOB_STAGE.get(candidate['kind'])
+                if ((stage and stage != checkpoint['stage_id'])
+                        or running_owners[candidate['owner']] >= EXECUTION_POLICY['owners'].get(candidate['owner'], 1)):
+                    continue
             job = dict(candidate)
             job["payload"] = loads(job["payload"])
-            checkpoint = current_stage(conn, job["task_id"])
+            from astroquery_ai.runtime.extraction_experiment import permits_job
+            if not permits_job(self, conn, job):
+                continue
             if checkpoint:
                 job["record_locks"] = record_locks(self, conn, job)
                 if not eligible(job, running, checkpoint):
@@ -203,10 +217,8 @@ def guard_definitions(self, conn, task: dict):
         conn, task["task_id"], "confirmed_query", spec_ref["id"], spec_ref["version"]
     )
     deps = {ref["id"] for ref in spec["dependencies"]}
-    for event in conn.execute(
-        "SELECT dependency_id,reason FROM revocations WHERE release_id=?",
-        (spec["registry_release"]["id"],),
-    ):
+    from astroquery_ai.runtime.registry_eligibility import registry_revocations
+    for event in registry_revocations(conn, spec["registry_release"]["id"]):
         if event["dependency_id"] is None or event["dependency_id"] in deps:
             raise DomainError(
                 "DEFINITION_INVALIDATED", "冻结请求依赖的科学定义已失效", reason=event["reason"]

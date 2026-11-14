@@ -64,7 +64,7 @@ def consume_candidate(package, config_path, *, manifest_sha256, config_sha256, a
 def compile_verified_inputs(candidate, manifest_sha256, config_sha256, amendment, consumer_protocol):
     """Compile the same runtime view for an audited source tree or its pinned distribution."""
     from .amendments import amend_view
-    reader = CandidateRegistry()
+    reader = CandidateRegistry(candidate)
     science = candidate["science"]
     projection = CandidateProjection(candidate)
     profiles = candidate["data"]["type_profiles"]
@@ -72,14 +72,22 @@ def compile_verified_inputs(candidate, manifest_sha256, config_sha256, amendment
     # A type profile's default subject cannot hide its reviewed nuclear/member
     # rules. Add only subjects actually selected by that type's source ASTs.
     rules_for_context = candidate['data']['unapproved_aggregate_composition_and_rules']['rules']
-    from .compiler import matches
+    from .compiler import condition_variables, matches
+    context_rules = [r for r in rules_for_context if 'when' in r and 'subject_class_id' in r]
+    # Validate every source condition, including rules that do not add a new
+    # subject. Existing contexts need no discovery evaluation; their AST/BDD
+    # agreement is still checked independently below for every context.
+    for rule in context_rules:
+        condition_variables(rule['when'])
     for p in profiles:
-        for r in rules_for_context:
-            if 'when' in r and 'subject_class_id' in r and matches(r['when'], {p['otype']}, r['subject_class_id']):
-                contexts.add((p['otype'], r['subject_class_id']))
+        for r in context_rules:
+            context = p['otype'], r['subject_class_id']
+            if context not in contexts and matches(r['when'], {p['otype']}, r['subject_class_id']):
+                contexts.add(context)
     compositions = reviewed_compositions(science['config'], contexts)
     views, context_bindings = {}, {}
     composition_bindings = {}
+    rules = {r['rule_id']: r for r in rules_for_context}
     requested = [((otype,), subject) for otype, subject in sorted(contexts)] + list(compositions)
     for types, subject in requested:
         selected = reader.select_context(candidate, accepted_otypes=list(types), subject_class_id=subject)
@@ -87,7 +95,6 @@ def compile_verified_inputs(candidate, manifest_sha256, config_sha256, amendment
         if support["gaps"]:
             raise DomainError("CANDIDATE_CONSUMER_GAPS", "审定配置存在未接通的消费视图", 422, gaps=support["gaps"])
         bindings = []
-        rules = {r["rule_id"]: r for r in candidate["data"]["unapproved_aggregate_composition_and_rules"]["rules"]}
         for view in support["bindings"]:
             view = amend_view(view, amendment)
             pid = view["property_id"]
@@ -127,15 +134,16 @@ def compile_verified_inputs(candidate, manifest_sha256, config_sha256, amendment
             if {digest(x) for x in expected} != {digest(x) for x in actual}:
                 raise DomainError('COMPOSITION_BINDING_MISMATCH', '组合实际规则结果与准确审定绑定不符', 422)
             composition_bindings[(types, subject)] = bindings
+    consumer_view_hash = digest({str(k): v for k, v in context_bindings.items()})
     manifest = {
         "schema_version": "registry-candidate-consumer/1",
-        "release_id": "consumer-" + manifest_sha256[:16] + "-" + digest({str(k): v for k, v in context_bindings.items()})[:12],
+        "release_id": "consumer-" + manifest_sha256[:16] + "-" + consumer_view_hash[:12],
         "source_manifest_sha256": manifest_sha256,
         "science_config_sha256": config_sha256,
         "source_candidate_flags_unchanged": True,
         "runtime_capabilities": "separate_local_receipts_required",
         "projection_version": projection.version,
-        "consumer_view_hash": digest({str(k): v for k, v in context_bindings.items()}),
+        "consumer_view_hash": consumer_view_hash,
     }
     if consumer_protocol:
         manifest['support_policy']=consumer_protocol

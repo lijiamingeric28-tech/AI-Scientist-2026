@@ -28,6 +28,9 @@ def csv_display(value):
 
 
 def export(self, task_id: str, request: dict, *, origin: str | None = None) -> dict:
+    if isinstance(request, dict) and request.get("export_schema_version") == 3:
+        from .workbench_export import export as export_selection
+        return export_selection(self, task_id, request, origin=origin)
     allowed = {
         "operation_id",
         "task_id",
@@ -48,13 +51,25 @@ def export(self, task_id: str, request: dict, *, origin: str | None = None) -> d
         old = self.repository.replay_operation(conn, task_id, request["operation_id"], request)
         if old is not None:
             return old
+        if self.repository.task(conn, task_id)['kind'] in {'legacy', 'replay'}:
+            raise DomainError('TASK_READ_ONLY', '历史回放仅可下载既有导出', 409)
         delivery = self.get(conn, task_id, request["delivery_id"])
         if request["expected_delivery_revision"] != delivery["revision"]:
             raise DomainError("DELIVERY_CHANGED", "交付版本已变化")
         selection = request["selection"]
-        if set(selection) != {"mode", "measurement_ids"} or selection["mode"] not in {"all", "ids"}:
+        if not isinstance(selection, dict):
             raise DomainError("INVALID_EXPORT_SELECTION", "导出选择无效", 422)
-        ids = selection["measurement_ids"]
+        filtered = selection.get('mode') == 'filtered'
+        if filtered:
+            if (set(selection) != {'mode', 'filter_version', 'filters', 'excluded_measurement_ids'}
+                    or type(selection['filter_version']) is not int or selection['filter_version'] != 1
+                    or not isinstance(selection['filters'], dict)):
+                raise DomainError('INVALID_EXPORT_SELECTION', '导出筛选协议无效', 422)
+            ids = selection['excluded_measurement_ids']
+        else:
+            if set(selection) != {'mode', 'measurement_ids'} or selection.get('mode') not in {'all', 'ids'}:
+                raise DomainError('INVALID_EXPORT_SELECTION', '导出选择无效', 422)
+            ids = selection['measurement_ids']
         if (
             not isinstance(ids, list)
             or any((not isinstance(mid, str) for mid in ids))
@@ -66,7 +81,20 @@ def export(self, task_id: str, request: dict, *, origin: str | None = None) -> d
         available = {m["measurement_id"] for m in delivery["measurements"]}
         if set(ids) - available:
             raise DomainError("EXPORT_ID_NOT_IN_DELIVERY", "选择含其他版本或任务的记录", 422)
-        selected = available if selection["mode"] == "all" else set(ids)
+        if filtered:
+            from astroquery_ai.application.result_views import record_list
+            from astroquery_ai.runtime.result_index import ResultReadIndex
+            quality_ref = (delivery.get('quality') or {}).get('report_ref')
+            quality = self.repository.object(conn, delivery['task_id'], 'quality',
+                quality_ref['id'], quality_ref['version']) if quality_ref else None
+            matching = set(ResultReadIndex.matching_ids(record_list(delivery, quality=quality), selection['filters']))
+            if set(ids) - matching:
+                raise DomainError('EXPORT_ID_NOT_IN_SELECTION', '排除记录必须属于本次筛选结果', 422)
+            selected = matching - set(ids)
+            if not selected:
+                raise DomainError('EMPTY_EXPORT_SELECTION', '未勾选任何记录', 422)
+        else:
+            selected = available if selection['mode'] == 'all' else set(ids)
         body = {
             **delivery,
             "post_delivery_validation": self.repository.objects(

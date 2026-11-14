@@ -65,6 +65,16 @@ def application(root):
     return app
 
 
+def synthetic_author_manifest(app):
+    """Install the protocol fixture before query creation now that pairs pin then."""
+    manifest = {'schema_version': 'insight-knowledge/3', 'release_id': 'synthetic-author',
+        'content_sha256': 'a' * 64, 'registry_release_ref': app.registry.active_bundle()['registry_ref']}
+    with app.repository.transaction() as conn:
+        conn.execute('INSERT OR REPLACE INTO settings VALUES(?,?,1)', ('active_knowledge', canonical({
+            'id': manifest['release_id'], 'version': 1, 'content_sha256': manifest['content_sha256']})))
+    return manifest
+
+
 async def run_until_wait(app, scheduler):
     count = 0
     while job := app.repository.claim_job(scheduler.owner_id, lease_seconds=600):

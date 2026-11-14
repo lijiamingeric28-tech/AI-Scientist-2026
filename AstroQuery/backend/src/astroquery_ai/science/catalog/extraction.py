@@ -273,8 +273,15 @@ async def extract_catalog(self, job):
 
     by_property = {b["property_id"]: b for b in spec["properties"]}
     mapped, dimensional_rejections = ([], [])
+    model_columns = set()
+    shared_review = attachment and spec.get('run_policy', {}).get('quality', {}).get('official_table_review') == 'shared_semantics/1'
     for mapping in plan["properties"]:
         field = next((c for c in table["columns"] if c["name"] == mapping["value_column"]))
+        if shared_review:
+            from ..structured_quality import explicit_model_source
+            if explicit_model_source(table, field['name']):
+                model_columns.add(field['name'])
+                continue
         if mapping.get("quantity_match") == "different":
             dimensional_rejections.append(
                 {
@@ -299,6 +306,8 @@ async def extract_catalog(self, job):
     column_resolution = [
         {**c, "role": "not_relevant", "reason": "proven_dimension_conflict"}
         if c["column"] in rejected_columns
+        else {**c, 'role': 'not_relevant', 'reason': 'original_declares_model_generated_data'}
+        if c['column'] in model_columns
         else c
         for c in column_resolution
     ]
@@ -405,7 +414,31 @@ async def extract_catalog(self, job):
         self.repo.put_object(
             conn, tid, "qualification", qualification["qualification_id"], 1, qualification
         )
+        if model_columns:
+            self.repo.put_object(conn, tid, 'attachment_role_exclusion', job['job_id'], 1,
+                {'source_id': source['source_id'], 'table_id': table_id, 'columns': sorted(model_columns),
+                 'artifact_sha256': schema_artifact['sha256'], 'reason': 'original_declares_model_generated_data'})
+            if not plan['properties']:
+                self.repo.put_object(conn, tid, 'coverage', job['job_id'], 1,
+                    {'owner': 'M03', 'table_id': table_id, 'state': 'processed', 'verified_row_count': 0,
+                     'reason': 'original_declares_model_generated_data'})
+                self.repo.finish_job(conn, job)
+                return
     seen_rows = set()
+    if plan['id_column'] is None and plan['properties']:
+        from .table_subject import extract_table_subject
+        await extract_table_subject(self, job, spec, table, plan, catalogs, attachment, source, qualification)
+        return
+    if plan['id_column'] is None:
+        # A nameless multi-object catalogue has no verified identity route.
+        # Finish with an explicit gap instead of dereferencing a missing column.
+        with self.repo.transaction() as conn:
+            self.repo.validate_lease(conn, job)
+            self.repo.put_object(conn, tid, 'coverage', job['job_id'], 1,
+                {'owner':'M03','table_id':table_id,'state':'partial','reason':'no_object_identifier',
+                 'verified_row_count':0,'field_plan_gaps':plan_gaps})
+            self.repo.finish_job(conn, job)
+        return
     aliases=list(dict.fromkeys([spec['target']['main_id'],*spec['target'].get('aliases',[])]))
     alias_labels={'A'+str(i+1):a for i,a in enumerate(aliases)}
     chosen_aliases=[alias_labels[a] for a in plan.get('identity_alias_ids',[]) if a in alias_labels]
@@ -425,6 +458,9 @@ async def extract_catalog(self, job):
             )
         )
     )[:3]
+    if namespace and not selectors:
+        id_field = next((c for c in table['columns'] if c['name']==plan['id_column']), None)
+        selectors = list(dict.fromkeys(s for a in aliases for s in identifier_selectors(a, namespace, id_field)))[:3]
     pilot = getattr(self.app, "pilot", None)
     if pilot and pilot.applies(tid):
         selectors = pilot.crossid_selector(tid, table_id, plan["id_column"]) or selectors
@@ -454,9 +490,12 @@ async def extract_catalog(self, job):
         patterns = []
     fallback_queries = (
         [{"candidate_pattern": p} for p in ([None] if attachment else patterns) or [None]]
-        if plan["properties"]
+        if plan["properties"] and native_id_type in {'char','unicodeChar'}
         else []
     )
+    # An unfiltered numeric-ID catalogue adds no cross-identification evidence.
+    # The exact namespace-qualified key is already queried above. Do not scan
+    # 1000 unrelated numbered stars with the model after a genuine empty match.
     identity_queries=[*selectors,*fallback_queries]
     access_stopped=False
     for alias in identity_queries:
