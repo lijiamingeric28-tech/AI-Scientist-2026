@@ -34,7 +34,7 @@ export const stateLabels = {
   error: '处理失败',
   unresolved: '含义待核实',
   pending: '待汇总',
-  not_recorded: '与主流文献一致',
+  not_recorded: '未记录',
   partial: '部分完成',
   incomplete: '未完成',
   not_checked: '未核对',

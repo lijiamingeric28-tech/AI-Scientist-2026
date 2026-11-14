@@ -113,11 +113,14 @@ export default function MeasurementDetailV1({
   onOpenSource,
   onOpenRecord,
   onOpenComparison,
+  selection,
 }) {
   const source = sources.find((s) => s.source_id === record.source_id)
   const native = record.source,
     ready = record.derived?.main_state === 'ready'
   const processing = record.activity?.find((a) => a.kind === 'representation')
+  const disposition = { delivered: '已交付', unresolved: '待核实', not_supported: '原文不支持' }[record.record_status]
+  const representation = ready && (processing?.status ?? record.derived?.status) === 'converted' ? '已归一转换' : '保留原报'
   const unit =
     native.unit ??
     native.unit_declaration?.canonical_symbol ??
@@ -143,10 +146,11 @@ export default function MeasurementDetailV1({
           </div>
           <div className="drawer-header-meta">
             <span className="drawer-meta-pill entity">{record.entity_name}</span>
-            <span className="drawer-meta-pill revision">交付修订 {record.delivery_revision}</span>
-            {ready && <span className="drawer-meta-pill verified">已核实</span>}
           </div>
         </div>
+        <div className="workbench-drawer-actions">
+        {selection && <Button variant="outline" size="sm" aria-pressed={selection.has('records', record.record_id)}
+          onClick={() => selection.toggle('records', [record])}>{selection.has('records', record.record_id) ? '取消选择' : '选择测量'}</Button>}
         <button
           type="button"
           className="drawer-close-btn"
@@ -156,6 +160,7 @@ export default function MeasurementDetailV1({
         >
           <Icon.Close style={{ width: 14, height: 14 }} />
         </button>
+        </div>
       </header>
       <div className="record-detail-body">
         {/* 一体化科研测量核心看板（Hero Measurement Card） */}
@@ -166,13 +171,8 @@ export default function MeasurementDetailV1({
               <span className="hero-value-unit">{record.field_unit ?? '单位未注明'}</span>
             </div>
             <div className="hero-badge-wrap">
-              {ready ? (
-                <span className="hero-status-tag verified">
-                  {processing?.status === 'converted' ? '已归一转换' : '保留原报'}
-                </span>
-              ) : (
-                <span className="hero-status-tag unverified">待核实</span>
-              )}
+              {disposition && <span className={`hero-status-tag ${record.record_status === 'delivered' ? 'verified' : 'unverified'}`}>{disposition}</span>}
+              <span className="hero-status-tag limit">{representation}</span>
               {native.limit === 'upper' && <span className="hero-status-tag limit">上限</span>}
               {native.limit === 'lower' && <span className="hero-status-tag limit">下限</span>}
               {roleLabel && <span className="hero-status-tag limit">{roleLabel}</span>}

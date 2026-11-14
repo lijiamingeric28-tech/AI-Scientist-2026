@@ -1,0 +1,121 @@
+/* Shared modal shell owns overlay, focus management, and dismissal animation. */
+.settings-overlay.workbench-export-overlay {
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+.export-center.selecting.workbench-export-dialog {
+  display: flex; flex-direction: column; width: min(1160px, 100%); height: min(86dvh, 820px);
+  border-radius: var(--radius-xl); color: var(--content-fg); font-family: var(--font-custom-override, var(--font-ui));
+  background: var(--surface-card) !important;
+  box-shadow: var(--shadow-modal) !important;
+}
+.workbench-export-dialog > :is(.settings-header, .export-tabs, .settings-footer) { flex-shrink: 0; }
+.workbench-export-dialog > .settings-header { padding: 18px 22px; border-color: var(--border-subtle); }
+.workbench-export-dialog > .settings-header h2 {
+  margin: 0; color: var(--title-strong); font-family: var(--font-custom-override, var(--font-display));
+  font-size: var(--text-heading); line-height: 1.5; font-weight: 650;
+}
+.workbench-export-dialog .workbench-export-body { flex: 1; min-height: 0; overflow: auto; padding: 20px 22px 24px; }
+.workbench-export-dialog > .export-tabs { margin-bottom: 0; padding: 12px 22px; border-bottom: 1px solid var(--border-subtle); }
+.workbench-export-dialog .workspace-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.workbench-export-dialog .workspace-chips > .filter-chip {
+  min-height: var(--size-h-s); padding: 5px 12px; border: 1px solid var(--border-default); border-radius: var(--radius-pill);
+  background: var(--surface-card); color: var(--content-fg-secondary); font-size: var(--text-note); font-weight: 500;
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+.workbench-export-dialog .workspace-chips > .filter-chip:hover:not(:disabled) { background: var(--surface-hover); color: var(--accent-text); }
+.workbench-export-dialog .workspace-chips > .filter-chip[aria-pressed="true"] { color: var(--accent-text); border-color: var(--border-accent); background: var(--surface-selected); font-weight: 650; }
+.workbench-export-dialog .export-split { display: grid; grid-template-columns: minmax(255px, 315px) minmax(0, 1fr); gap: 24px; }
+.workbench-export-dialog :is(.export-configure, .export-preview) { min-width: 0; }
+.workbench-export-dialog .export-preview { padding-inline-start: 24px; border-inline-start: 1px solid var(--border-subtle); }
+.workbench-export-dialog :is(.export-configure, .export-preview) h3 { margin: 0; color: var(--title-section); font-size: var(--text-section); font-weight: 650; line-height: 1.6; }
+.workbench-export-dialog .export-selection-heading { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.workbench-export-dialog .export-selection-heading > div { display: flex; flex-wrap: wrap; gap: 12px; }
+.workbench-export-dialog .export-selection-list {
+  max-height: 185px; overflow: auto; margin-top: 14px; padding: 4px 12px;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-muted);
+}
+.workbench-export-dialog .export-selection-list details + details { border-top: 1px solid var(--border-subtle); }
+.workbench-export-dialog .export-selection-list summary { padding: 9px 0; cursor: pointer; color: var(--content-fg); font-size: var(--text-ui); line-height: 1.6; overflow-wrap: anywhere; }
+.workbench-export-dialog .export-selection-list summary::marker { color: var(--content-fg-secondary); }
+.workbench-export-dialog .export-selection-list ul,
+.workbench-export-dialog .export-file-list,
+.workbench-export-dialog .export-download-list { margin: 0; padding: 0; list-style: none; }
+.workbench-export-dialog .export-selection-list li,
+.workbench-export-dialog .export-file-list li,
+.workbench-export-dialog .export-download-list li {
+  display: flex; align-items: baseline; gap: 12px; padding: 10px 2px;
+  border-bottom: 1px solid var(--border-subtle); font-size: var(--text-ui); line-height: 1.6;
+}
+.workbench-export-dialog .export-selection-list li { padding-inline-start: 12px; font-size: var(--text-note); }
+.workbench-export-dialog :is(.export-selection-list, .export-file-list, .export-download-list) li:last-child { border-bottom: 0; }
+.workbench-export-dialog :is(.export-selection-list, .export-file-list, .export-download-list) li > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.workbench-export-dialog .export-selection-list li > button { flex: 0 0 auto; }
+.workbench-export-dialog .export-options { display: grid; gap: 14px; margin-top: 22px; padding: 0; min-width: 0; border: 0; }
+.workbench-export-dialog .export-options legend,
+.workbench-export-dialog .export-field-options h4 { margin: 0 0 10px; color: var(--title-section); font-size: var(--text-ui); font-weight: 650; }
+.workbench-export-dialog .export-options > label:not(.export-originals),
+.workbench-export-dialog .export-data-preview > label { display: grid; gap: 6px; font-size: var(--text-note); color: var(--content-fg-secondary); }
+.workbench-export-dialog .export-options select,
+.workbench-export-dialog .export-data-preview select {
+  min-width: 0; width: 100%; min-height: var(--size-h-m); padding: 7px 10px; border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm); background: var(--surface-card); color: var(--content-fg); font: inherit; font-size: var(--text-ui);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.workbench-export-dialog .export-field-options {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 14px 12px;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-muted);
+}
+.workbench-export-dialog .export-field-options :is(h4, span) { grid-column: 1 / -1; margin: 0; }
+.workbench-export-dialog .export-field-options span { color: var(--content-fg-secondary); font-size: var(--text-note); line-height: 1.6; }
+.workbench-export-dialog .export-field-options label,
+.workbench-export-dialog .export-originals { display: flex; align-items: center; gap: 7px; color: var(--content-fg); font-size: var(--text-note); line-height: 1.6; cursor: pointer; }
+.workbench-export-dialog .export-field-options input,
+.workbench-export-dialog .export-originals input { flex-shrink: 0; accent-color: var(--accent); }
+.workbench-export-dialog .export-preview nav { margin-block: 12px 16px; }
+.workbench-export-dialog .export-preview-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; margin: 12px 0; overflow-wrap: anywhere; }
+.workbench-export-dialog .export-preview-caption strong { font-size: var(--text-ui); font-weight: 600; }
+.workbench-export-dialog .export-preview-caption span { color: var(--content-fg-secondary); font-size: var(--text-note); font-variant-numeric: tabular-nums; }
+.workbench-export-dialog .export-preview-table-wrap,
+.workbench-export-dialog .export-preview-code { overflow: auto; max-height: 380px; border: 1px solid var(--border-default); border-radius: var(--radius-md); background: var(--surface-card); }
+.workbench-export-dialog .export-preview-table { min-width: 100%; border-spacing: 0; font-size: var(--text-ui); }
+.workbench-export-dialog .export-preview-table :is(th, td) { max-width: 240px; padding: 10px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: start; border-bottom: 1px solid var(--border-subtle); }
+.workbench-export-dialog .export-preview-table th { position: sticky; top: 0; background: var(--surface-muted); color: var(--content-fg-secondary); font-size: var(--text-note); font-weight: 650; }
+.workbench-export-dialog .export-preview-table td { font-variant-numeric: tabular-nums; }
+.workbench-export-dialog .export-preview-table tbody tr:nth-child(even) { background: var(--surface-muted); }
+.workbench-export-dialog .export-preview-code { margin: 0; padding: 14px 16px; font-family: var(--font-mono); font-size: var(--text-note); line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+.workbench-export-dialog .export-image-picker { display: flex; overflow: auto; gap: 10px; padding: 4px 4px 12px; }
+.workbench-export-dialog .export-image-thumb {
+  flex: 0 0 70px; height: 58px; display: grid; place-items: center; padding: 3px;
+  border: 1px solid var(--border-default); border-radius: var(--radius-sm); background: var(--surface-card); cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+.workbench-export-dialog .export-image-thumb:hover { border-color: var(--border-accent); background: var(--surface-hover); }
+.workbench-export-dialog .export-image-thumb[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--border-accent); background: var(--surface-selected); }
+.workbench-export-dialog .export-image-thumb img { width: 100%; height: 50px; object-fit: contain; }
+.workbench-export-dialog .export-image-thumb > svg { width: 20px; height: 20px; color: var(--content-fg-secondary); }
+.workbench-export-dialog .export-image-preview figure { margin: 0; }
+.workbench-export-dialog .export-image-preview figure > a { display: grid; place-items: center; min-height: 140px; padding: 12px; background: var(--surface-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); }
+.workbench-export-dialog .export-image-preview figure > a img { max-height: 330px; max-width: 100%; object-fit: contain; }
+.workbench-export-dialog .export-image-preview figcaption { margin-top: 14px; color: var(--content-fg); font-size: var(--text-ui); overflow-wrap: anywhere; }
+.workbench-export-dialog .workbench-section-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.workbench-export-dialog .export-image-preview figcaption p { color: var(--content-fg-secondary); font-family: var(--font-custom-override, var(--font-reading)); line-height: 1.75; margin-top: 8px; }
+.workbench-export-dialog .export-file-list svg,
+.workbench-export-dialog .export-download-list svg { flex: 0 0 16px; width: 16px; height: 16px; align-self: center; color: var(--accent-text); }
+.workbench-export-dialog .export-file-list strong { color: var(--status-error); font-size: var(--text-note); }
+.workbench-export-dialog .export-download-list li { align-items: center; padding: 14px 4px; }
+.workbench-export-dialog > .settings-footer { flex-wrap: wrap; gap: 10px; padding: 16px 22px; border-color: var(--border-subtle); }
+.workbench-export-dialog .export-download-status { flex: 1; min-width: min(100%, 160px); font-size: var(--text-note); line-height: 1.6; overflow-wrap: anywhere; }
+.workbench-export-dialog .ui-button { border-radius: var(--radius-pill); }
+.workbench-export-dialog :is(button, input, select, summary, a, [tabindex="0"]):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.workbench-export-dialog :is(button, input, select):disabled { cursor: not-allowed; opacity: .5; }
+.workbench-export-dialog :is(.hint, [role="status"]) { color: var(--content-fg-secondary); font-size: var(--text-ui); line-height: 1.75; }
+.workbench-export-dialog .resource-error { font-size: var(--text-ui); line-height: 1.7; overflow-wrap: anywhere; }
+@media (max-width: 740px) {
+  .workbench-export-dialog .workbench-export-body { padding-inline: 14px; }
+  .workbench-export-dialog .export-split { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .workbench-export-dialog .export-preview { padding: 12px 0 0; border-inline-start: none; border-top: 1px solid var(--border-subtle); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workbench-export-dialog :is(.filter-chip, .export-options select, .export-data-preview select, .export-image-thumb) { transition: none; }
+}

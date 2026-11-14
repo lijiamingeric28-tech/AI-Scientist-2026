@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import BackToTop from '@/components/ui/BackToTop'
 import { Icon } from '@/components/icons'
 import { useToast } from '@/components/ui/toast'
 import { useDialogFocus } from '@/hooks/useDialogFocus'
@@ -9,6 +10,8 @@ import RetrievalPreferences from './RetrievalPreferences'
 import ThemePaletteSettings from './ThemePaletteSettings'
 import LibraryStatus from './LibraryStatus'
 import SettingsKnowledgeStudio from './SettingsKnowledgeStudio'
+import SettingsRegistry from './SettingsRegistry'
+import SettingsRegistryStudio from './SettingsRegistryStudio'
 import { papersValue } from '@/lib/retrievalPreferences'
 import { loadReplaySpeed, saveReplaySpeed } from '@/lib/playbackPreferences'
 import * as api from '@/services/api'
@@ -53,7 +56,8 @@ const MODELS = {
   vision: '正文读取与原文质检',
   normalization: '清洗与标准化',
   property: '天体名称识别',
-  insight: '科研洞察',
+  insight: '历史洞察',
+  material_summary: '资料总结',
   copilot: '科研助手 (Copilot)',
   dashscope_model: '任务理解',
   p1_model: '性质标准化',
@@ -76,6 +80,7 @@ const NAV_GROUPS = [
     items: [
       ['connections', '服务连接', Icon.Link],
       ['knowledge', '知识库与图谱', Icon.Atom],
+      ['registry', '天体与性质规范', Icon.Sliders],
     ],
   },
   {
@@ -84,7 +89,7 @@ const NAV_GROUPS = [
   },
 ]
 
-const TAB_ORDER = ['preferences', 'theme', 'connections', 'knowledge', 'system']
+const TAB_ORDER = ['preferences', 'theme', 'connections', 'knowledge', 'registry', 'system']
 
 export default function SettingsDialog({
   open,
@@ -108,6 +113,7 @@ export default function SettingsDialog({
   const [discardOpen, setDiscardOpen] = useState(false)
   const [tab, setTab] = useState(initialTab || 'preferences')
   const [studioMode, setStudioMode] = useState(initialStudioMode || null)
+  const [knowledgeEntry, setKnowledgeEntry] = useState(null)
   const [speed, setSpeed] = useState(loadReplaySpeed)
   const { toast } = useToast()
 
@@ -293,12 +299,18 @@ export default function SettingsDialog({
 
   if (!open) return null
 
+  if (studioMode === 'registry') {
+    return <SettingsRegistryStudio open={open} dismissal={dismissal} onBackToSettings={() => { setStudioMode(null); setTab('registry') }} onClose={close} onKnowledge={entryId => { setKnowledgeEntry(entryId); setTab('knowledge'); setStudioMode('graph') }} />
+  }
+
   if (studioMode) {
     return (
       <SettingsKnowledgeStudio
         open={open}
+        dismissal={dismissal}
         initialMode={studioMode}
         knowledgeContext={knowledgeContext}
+        initialEntryId={knowledgeEntry}
         onBackToSettings={() => {
           setStudioMode(null)
           setTab('knowledge')
@@ -618,6 +630,10 @@ export default function SettingsDialog({
                 />
               </div>
 
+              <div {...panes.paneProps('registry')}>
+                <SettingsRegistry active={open && tab === 'registry' && !studioMode} onLaunchStudio={() => setStudioMode('registry')} />
+              </div>
+
               {/* 5. 模型与系统 */}
               <div {...panes.paneProps('system')}>
                 {cfg && (
@@ -683,6 +699,7 @@ export default function SettingsDialog({
               </div>
             </div>
           </div>
+          <BackToTop />
         </div>
 
         {discardOpen && (

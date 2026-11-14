@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { LatexMath, LatexText } from '@/components/results/LatexMath'
 import { BlockHeader } from './AnswerData'
-import { ChartCanvas, chartTheme } from './AnswerPlot'
+import { ChartCanvas } from './AnswerPlot'
+import { useAnswerChartTheme } from '@/hooks/useAnswerChartTheme'
 
 const precision = value => Number(value.toPrecision(7)).toString()
 
@@ -28,6 +29,7 @@ function ParameterInput({ parameter: p, value, onChange }) {
 }
 
 export default function ExploreBlock({ block, state, change, onAsk, onRepair, dark, instanceId }) {
+  const colors=useAnswerChartTheme()
   const worker = useRef(null)
   const latest = useRef(0)
   const [result, setResult] = useState(null)
@@ -45,8 +47,7 @@ export default function ExploreBlock({ block, state, change, onAsk, onRepair, da
   }, [block, values])
   const axis = block.parameters.find(p => p.name === block.x)
   const options = useMemo(() => {
-    if (!result?.points?.some(([, y]) => y !== null)) return null
-    const colors = chartTheme(dark)
+    if (!colors || !result?.points?.some(([, y]) => y !== null)) return null
     return {
       animation: false, backgroundColor: colors.paper, color: [colors.accent], aria: { enabled: true },
       grid: { top: 34, bottom: 58, left: 66, right: 24 },
@@ -58,7 +59,7 @@ export default function ExploreBlock({ block, state, change, onAsk, onRepair, da
         ...(result.current !== null ? [{ type: 'scatter', data: [[result.xValue, result.current]], symbolSize: 10, z: 4 }] : []),
       ],
     }
-  }, [result, block.y_unit, axis, dark])
+  }, [result, block.y_unit, axis, colors])
   return <div className="research-component research-explore">
     <BlockHeader title={block.title || '参数探索'}><span className="research-pill">按公式试算</span>
       {state.values && <button type="button" className="research-action" onClick={() => change({ values: null })}>重置参数</button>}

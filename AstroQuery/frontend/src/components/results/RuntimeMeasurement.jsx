@@ -1,9 +1,24 @@
 const ROLES = { stat: '统计误差', sys: '系统误差', total: '原文总误差', unspecified: '未说明类别' }
 const STATUS = { exact: '精确转换', approximate: '近似传播', identity: '原表示', source_unresolved: '原文语义未解', unsupported: '暂不支持转换', failed: '转换失败', not_run: '未处理', check_failed: '核验未完成' }
+const CONVERSION_REASONS = {
+  user_numeric_examples_required_native_retained:'该输出配置尚无通过的转换样例，已保留原报值、单位与误差。',
+  user_source_representation_reference_unresolved:'来源对数或星等的基准参数（参考值、参考单位或体系）未明确，原始数据已保留。',
+  source_representation_parameters_unresolved:'来源对数或星等表示缺少明确基准参数，已保留原报数据。',
+  SOURCE_REPRESENTATION_UNRESOLVED:'来源对数或星等表示缺少明确基准参数，已保留原报数据。',
+  user_source_conversion_unsupported:'现有转换引擎暂不支持此来源的单位、表示或取值范围，已保留原报数据。',
+  UNIT_CONVERSION_UNSUPPORTED:'来源单位与目标单位无法使用现有同量转换，已保留原报单位和数值。',
+  NATIVE_COORDINATE_ONLY:'此配置仅保留来源坐标，未执行额外换算。',
+  TRANSFORM_DOMAIN:'原报值或范围不满足对数或星等转换的有效取值要求，原始数据已保留。',
+  numeric_execution_not_published:'当前转换策略尚未开放这条数值路径，已保留原报数据。',
+  transform_not_explicitly_published:'当前策略未包含所需转换，已保留原报数据。',
+  representation_operator_not_approved:'来源与目标表示之间的转换尚未就绪，已保留原报数据。',
+}
 export default function RuntimeMeasurement({ record }) {
-  return <section><h3>{record.property_binding.definition.name_cn}</h3>
+  const conversionIssues=record.derived?.main_state!=='ready'?(record.derived?.issues||[]):[]
+  return <section><h3>{record.property_binding.display_name||record.property_binding.definition.name_cn}</h3>
     {record.report_checks?.length > 0 && <section><h4>交付后责任复检</h4>{record.report_checks.map(check => <p key={check.disposition_id}>{check.status === 'not_supported' ? '不再作为目标对象的示例结论；原报与历史保留。' : check.status === 'passed' ? '责任复检支持原记录。' : '仍待核实，未擅自修改原报。'} {check.reason}</p>)}</section>}
     <p>原报值：{record.source.raw_value} {record.source.unit_declaration?.kind === 'dimensionless' ? '无量纲' : record.source.unit ?? record.source.unit_declaration?.canonical_symbol}</p><p>当前显示：{String(record.field_value)} {record.field_unit} {record.derived?.main_state !== 'ready' && '（尚未得到规定表示，显示原报值）'}</p>
+    {conversionIssues.length>0&&<section><h4>未转换原因</h4><ul>{conversionIssues.map((issue,index)=><li key={index}>{CONVERSION_REASONS[typeof issue==='string'?issue:issue.code]||issue.message||'当前来源未满足转换条件，原报数据已保留。'}</li>)}</ul><details><summary>转换条件与执行记录</summary><ul>{conversionIssues.map((issue,index)=><li key={index}><code>{typeof issue==='string'?issue:issue.code}</code></li>)}</ul></details></section>}
     {record.source.unit_declaration && <details><summary>原报单位声明</summary><p>原表单位字段留空；ReadMe明确声明为{record.source.unit_declaration.kind === 'dimensionless' ? '无量纲（计算单位1）' : record.source.unit_declaration.canonical_symbol}。原表空字段另行保留。</p><blockquote>{record.source.unit_declaration.raw_quote}</blockquote><a href={artifactUrl(record.source.task_id, record.source.unit_declaration.artifact_ref.id)} target="_blank" rel="noreferrer">查看单位声明原件</a></details>}
     {record.human_answer && <section><h4>人工解释记录{record.human_answer.simulation && '（测试模拟）'}</h4>{record.human_answer.simulation && <p className="hint">非用户本人答案，不代表独立科学审定。</p>}<p>依据：{record.human_answer.reason}</p><p>原件说明：{record.human_answer.correction?.quote || '确认已有解释'}</p><p className="hint">人工判断已由来源责任模块执行权限与结构复检；数值转换另行核验。</p></section>}
     <p className="hint">主值：{record.derived?.main_state === 'ready' ? '已完成处理' : '尚未完成规定表示'}；各误差分量的处理状态在下方单独列出。</p><h4>不确定度</h4>{!record.source.uncertainty.components.length ? <p>已检查范围未报告不确定度。</p> : record.source.uncertainty.components.map(component => {
@@ -16,7 +31,7 @@ export default function RuntimeMeasurement({ record }) {
     {!!record.source_statements?.length && <section><h4>原文携带的测量上下文</h4>{record.source_statements.map(item => <details key={item.statement_id}><summary>{{ method: '方法', epoch: '历元', band: '波段', fiducial: '测量标记点', source_caution: '作者限制', result_identity: '来源结果身份', source_reported_table_uncertainty_context: '原表误差关联字段' }[item.kind] || '来源上下文'}：{item.text}</summary><p>{Number.isInteger(item.page) ? `PDF第${item.page}页` : Number.isInteger(item.row) ? `原表第${item.row + 1}行，列 ${item.column}` : '位置见原始证据'}</p><blockquote style={{ whiteSpace: 'pre-wrap' }}>{item.raw_quote}</blockquote></details>)}</section>}
     <h4>原始证据</h4>{record.evidence?.map(evidence => <EvidenceSource key={evidence.evidence_id} evidence={evidence} taskId={record.source.task_id} view={record.evidence_views?.find(view => view.evidence_id === evidence.evidence_id)} />)}
     {record.reported_references?.length > 0 && <section><h4>这条值的引用来历</h4>{record.reported_references.map(reference => <details key={reference.reference_id}><summary>{reference.raw_code} · {{ adopted_measurement: '本文采用或转引的测量', method: '方法引用', background: '背景引用', comparison: '比较引用', unknown: '作用未确认' }[reference.role || 'unknown']} · {reference.resolution_state === 'resolved' ? '题录已匹配' : '题录尚未确定'}</summary><p>{reference.location}</p>{reference.link_quote && <blockquote style={{ whiteSpace: 'pre-wrap' }}>{reference.link_quote}</blockquote>}<p className="hint">{reference.link_state === 'original_quote_verified' ? '已核对原文连接句。' : '引用与数值的原文关联仍有限制。'} 不据此声称是独立观测。</p>{reference.cited_work && <><p>{reference.cited_work.title?.join('；')}</p><a href={`https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(reference.cited_work.bibcode)}`} target="_blank" rel="noreferrer">查看ADS题录</a><p className="hint">以下仅为一层摘要背景，不是此测量值、误差或独立性的证明。</p><p style={{ whiteSpace: 'pre-wrap' }}>{reference.cited_work.abstract || '未取得摘要'}</p></>}</details>)}</section>}
-    <details><summary>性质定义与边界</summary><p>{record.property_binding.definition.description}</p>{Object.values(record.property_binding.definition.explanation).map((value, index) => <p key={index}>{Array.isArray(value) ? value.join('；') : value}</p>)}</details>
+    <details><summary>性质定义与边界</summary><p>{record.property_binding.definition.description}</p>{Object.values(record.property_binding.definition.explanation||{}).map((value, index) => <p key={index}>{Array.isArray(value) ? value.join('；') : value}</p>)}</details>
   </section>
 }
 

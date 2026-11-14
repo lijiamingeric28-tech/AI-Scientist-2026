@@ -1,0 +1,11 @@
+.registry-query-scope { margin-block: 0 16px; padding: 12px 14px; border: 1px solid var(--surface-border); border-radius: 12px; background: var(--surface-secondary); color: var(--content-fg); }
+.registry-query-version { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: var(--text-caption); }
+.registry-query-version code { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 32ch; color: var(--accent-text); }
+.registry-query-version button { margin-left: auto; font-size: inherit; }
+.registry-query-subtype { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 6px 12px; margin-top: 10px; }
+.registry-query-subtype select { min-width: 0; padding: 7px 10px; border: 1px solid var(--surface-border); border-radius: 8px; background: var(--surface-bg); color: var(--content-fg); }
+.registry-query-subtype small { grid-column: 1 / -1; color: var(--content-fg-secondary); }
+.registry-query-gaps { margin-top: 10px; font-size: var(--text-caption); color: var(--content-fg-secondary); }
+.registry-query-gaps summary { cursor: pointer; color: var(--accent-text); }
+.registry-query-gaps p { margin-block: 8px; }
+.registry-query-gaps ul { margin: 0; padding-left: 20px; overflow-wrap: anywhere; }

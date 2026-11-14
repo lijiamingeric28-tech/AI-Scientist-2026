@@ -439,8 +439,8 @@ function deriveAdaptiveRecommendations(card, blocks = {}, propLabel = '') {
 }
 
 
-function DataRecommendationsPanel({ card, recommendations, blocks = {}, onOpenKnowledge, propertyName = '' }) {
-  const effectiveRec = deriveAdaptiveRecommendations(card || {}, blocks, propertyName);
+function DataRecommendationsPanel({ card, recommendations, blocks = {}, onOpenKnowledge, propertyName = '', savedOnly = false }) {
+  const effectiveRec = savedOnly ? recommendations : deriveAdaptiveRecommendations(card || {}, blocks, propertyName);
   if (!effectiveRec) return null;
   const { benchmark, data_cleaning, application_guidance } = effectiveRec;
   const hasBenchmark = benchmark && (benchmark.recommended_value || benchmark.reason);
@@ -735,7 +735,8 @@ export default function PropertyInsightCards({
   onOpenRecord,
   onOpenRecords,
   onOpenKnowledge,
-  relations = false
+  relations = false,
+  savedOnly = false
 }) {
   const propertyLabel = usePropertyLabel()
   const [localProperty, setLocalProperty] = useState('all')
@@ -813,7 +814,7 @@ export default function PropertyInsightCards({
           </div>
           <span className="hero-status-pill">
             <Icon.Check width="11" height="11" />
-            已收敛同行评议权威洞察
+            {savedOnly ? (report?.status==='complete'?'本任务已保存洞察':'本任务洞察部分完成或未完成') : '已收敛同行评议权威洞察'}
           </span>
         </div>
         <p className="insight-overview-prose">
@@ -859,7 +860,7 @@ export default function PropertyInsightCards({
           <Icon.Sparkle width="14" height="14" />
           <span>逐性质深入卡片</span>
         </button>
-        <button
+        {!savedOnly && <button
           type="button"
           role="tab"
           aria-selected={viewMode === 'network'}
@@ -868,7 +869,7 @@ export default function PropertyInsightCards({
         >
           <Icon.Network width="14" height="14" />
           <span>天体物理拓扑网络</span>
-        </button>
+        </button>}
         <button
           type="button"
           role="tab"
@@ -953,15 +954,18 @@ export default function PropertyInsightCards({
                     {targetEntity && <span className="property-entity-pill">{targetEntity}</span>}
                     <span className="property-status-pill">
                       <Icon.Check width="10" height="10" />
-                      已收敛权威洞察
+                      {card.knowledge_coverage?.state === 'missing' ? '来源事实阅读' : card.status === 'generated' ? '已生成洞察' : '部分完成'}
                     </span>
                   </div>
                   <p className="property-coverage-subline">
                     {card.coverage?.target_record_count || 0} 条关联测量 ·{' '}
-                    {card.coverage?.contributing_source_count || 0} 份实际贡献文献 · 权威模型综合归纳
+                    {card.coverage?.contributing_source_count || 0} 份实际贡献文献{savedOnly ? ' · 已保存报告覆盖范围' : ' · 权威模型综合归纳'}
                   </p>
                 </div>
               </header>
+              {card.knowledge_coverage?.state === 'missing' && <div className="insight-academic-note">
+                <Icon.Bookmark width="13" height="13" /><span>{card.knowledge_coverage.message}</span>
+              </div>}
 
               {/* Exclusion / Multi-target identification note */}
               {card.coverage?.owner_excluded_count > 0 && (
@@ -998,7 +1002,7 @@ export default function PropertyInsightCards({
                 })}
               </div>
 
-              <DataRecommendationsPanel card={card} recommendations={card.recommendations} blocks={blocks} onOpenKnowledge={onOpenKnowledge} propertyName={propTitle} />
+              <DataRecommendationsPanel savedOnly={savedOnly} card={card} recommendations={card.recommendations} blocks={blocks} onOpenKnowledge={onOpenKnowledge} propertyName={propTitle} />
 
               {/* Consolidated Literature & Evidence Vessel for the entire property card */}
               {cardTotalEvidence > 0 && (

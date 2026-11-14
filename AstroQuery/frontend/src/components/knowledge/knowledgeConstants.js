@@ -44,8 +44,8 @@ export function normalizeCategory(cat, dynamicList = []) {
 export function getCategoryInfo(categoryId, dynamicList = []) {
   const norm = normalizeCategory(categoryId, dynamicList)
   const builtIn = KNOWLEDGE_CATEGORIES.find(c => c.id === norm)
-  if (builtIn) return builtIn
   const custom = dynamicList.find(c => c.id === norm || c.label === norm)
+  if (builtIn) return { ...builtIn, ...custom, color: custom?.color || builtIn.color }
   if (custom) return { ...custom, color: custom.color || getCustomCategoryColor(custom.label || custom.id) }
   return {
     id: norm,

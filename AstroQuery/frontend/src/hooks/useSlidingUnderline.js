@@ -8,9 +8,10 @@ export function useSlidingUnderline(ref, selection) {
     const place = () => {
       const selected = nav.querySelector(':scope > button.active')
       if (!selected) return
-      nav.style.setProperty('--indicator-x', `${selected.offsetLeft}px`)
-      nav.style.setProperty('--indicator-width', `${selected.offsetWidth}px`)
-      nav.style.setProperty('--indicator-y', `${selected.offsetTop + selected.offsetHeight - 3}px`)
+      const box=nav.getBoundingClientRect(),item=selected.getBoundingClientRect()
+      nav.style.setProperty('--indicator-x', `${item.left-box.left-nav.clientLeft+nav.scrollLeft}px`)
+      nav.style.setProperty('--indicator-width', `${item.width}px`)
+      nav.style.setProperty('--indicator-y', `${item.bottom-box.top-nav.clientTop+nav.scrollTop-3}px`)
       nav.dataset.slidingUnderline = ''
     }
     place()

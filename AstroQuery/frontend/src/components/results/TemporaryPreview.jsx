@@ -5,6 +5,7 @@ const ROLES = { stat: '统计误差', sys: '系统误差', total: '原文总误�
 export default function TemporaryPreview({ preview }) {
   if (!preview) return null
   if (preview.status === 'error') return <p role="status">临时数据暂不可读：{preview.error}</p>
+  if (preview.status !== 'success') return <p role="status">正在读取临时数据…</p>
   const { items, counts } = preview.data
   return <section aria-label="临时只读数据">
     <h3>临时只读数据</h3>
@@ -22,5 +23,6 @@ export default function TemporaryPreview({ preview }) {
       {item.evidence.map(e=><EvidenceSource key={e.evidence_id} evidence={e} taskId={item.source.task_id} view={item.evidence_views?.find(v=>v.evidence_id===e.evidence_id)}/>)}
       {item.source_statements.map(statement => <p key={statement.statement_id}>来源上下文：{statement.raw_quote || statement.text}</p>)}
     </details>)}
+    {preview.onPage && <div className="records-pagination"><button className="pager-btn" disabled={!preview.data.offset} onClick={()=>preview.onPage(Math.max(0,(preview.data.offset||0)-50))}>上一页</button><span>{Math.floor((preview.data.offset||0)/50)+1} / {Math.max(1,Math.ceil(preview.data.total/50))} 页 · {preview.data.total} 条</span><button className="pager-btn" disabled={(preview.data.offset||0)+items.length>=preview.data.total} onClick={()=>preview.onPage((preview.data.offset||0)+50)}>下一页</button></div>}
   </section>
 }

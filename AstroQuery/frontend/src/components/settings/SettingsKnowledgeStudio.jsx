@@ -2,20 +2,22 @@ import { Suspense, lazy, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/icons'
 import { useDialogFocus } from '@/hooks/useDialogFocus'
-import { useDismissTransition } from '@/hooks/useDismissTransition'
+import '@/components/knowledge/knowledgeWorkspace.css'
 
 const KnowledgeWorkspace = lazy(() => import('@/components/knowledge/KnowledgeWorkspace'))
 
 export default function SettingsKnowledgeStudio({
   open,
+  dismissal,
   initialMode = 'graph',
   knowledgeContext,
+  initialEntryId = null,
   onBackToSettings,
   onClose,
 }) {
-  const dismissal = useDismissTransition(() => onClose?.(), { active: open })
-  const studioRef = useDialogFocus(open, () => onBackToSettings?.())
-  const studioMemory = useMemo(() => ({}), [])
+  // SettingsDialog owns the entire exit; do not chain a second dismissal here.
+  const studioRef = useDialogFocus(open, onClose)
+  const studioMemory = useMemo(() => initialEntryId ? { selectedId: initialEntryId, detailOpen: true } : {}, [initialEntryId])
 
   if (!open) return null
 
@@ -27,7 +29,7 @@ export default function SettingsKnowledgeStudio({
     <div
       className="settings-overlay"
       data-closing={dismissal.closing || undefined}
-      onClick={dismissal.close}
+      onClick={onClose}
     >
       <section
         ref={studioRef}
@@ -38,47 +40,9 @@ export default function SettingsKnowledgeStudio({
         role="dialog"
         aria-modal="true"
         aria-labelledby="settings-studio-title"
-        className="settings-studio-dialog animate-modal-in"
+        className="settings-studio-dialog kwb-studio animate-modal-in"
         onClick={event => event.stopPropagation()}
       >
-        <header className="settings-studio-header">
-          <div className="settings-studio-header-left">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onBackToSettings}
-              aria-label="返回设置"
-            >
-              <Icon.ArrowLeft style={{ width: 14, height: 14 }} />
-              <span>返回设置</span>
-            </Button>
-
-            <nav className="settings-studio-breadcrumb" aria-label="设置导航路径">
-              <span>设置</span>
-              <span aria-hidden="true">/</span>
-              <strong id="settings-studio-title">知识图谱与理论库配置</strong>
-            </nav>
-
-            {taskLabel && (
-              <span className="settings-studio-context-pill" title={taskLabel}>
-                当前背景任务：{taskLabel}
-              </span>
-            )}
-          </div>
-
-          <div className="settings-studio-header-right">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={dismissal.close}
-              aria-label="关闭设置工作台"
-            >
-              <Icon.Close style={{ width: 13, height: 13 }} />
-              <span>关闭</span>
-            </Button>
-          </div>
-        </header>
-
         <div className="settings-studio-body">
           <Suspense
             fallback={
@@ -93,6 +57,22 @@ export default function SettingsKnowledgeStudio({
               active={open}
               initialMode={initialMode}
               memory={studioMemory}
+              renderHeader={({ total, readOnly, pending, stale, onCreate }) => (
+                <header className="kwb-studio-header">
+                  <div className="kwb-title-group">
+                    <button type="button" className="kwb-back-button" onClick={onBackToSettings} aria-label="返回设置"><Icon.ArrowLeft /><span>返回设置</span></button>
+                    <span className="kwb-header-divider" aria-hidden="true" />
+                    <Icon.Network />
+                    <h2 id="settings-studio-title">知识图谱与理论库</h2>
+                    <span className="kwb-header-count">{Number.isFinite(total) ? total.toLocaleString('zh-CN') : '—'} 条{pending ? ' · 更新中' : stale ? ' · 上次读取' : ''}</span>
+                    {taskLabel && <span className="kwb-task-context" title={`当前任务：${taskLabel}`}>{taskLabel}</span>}
+                  </div>
+                  <div className="kwb-header-actions">
+                    <Button variant="accent" size="sm" disabled={readOnly} onClick={onCreate}><Icon.Plus /><span>新增知识</span></Button>
+                    <button type="button" className="kwb-close-button" onClick={onClose} aria-label="关闭设置工作台"><Icon.Close /></button>
+                  </div>
+                </header>
+              )}
             />
           </Suspense>
         </div>

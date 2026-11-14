@@ -523,7 +523,7 @@ function SourceQualityChart({ sourceScores }) {
 /* 卡「数据洞察」完成态产出（来自 /state 的 output_state.insights，结构见 hydrateInsights） */
 function InsightOutput({ insights, onOpenInsights }) {
   const fields = insights?.field_insights || [], relations = insights?.cross_field_relationships || insights?.relationships || []
-  return <div className="stage-insight-output"><p>已生成 {fields.length} 条性质观察与 {relations.length} 条字段关系。</p><Button variant="outline" size="sm" onClick={onOpenInsights}>查看研究洞察</Button></div>
+  return <div className="stage-insight-output"><p>已生成 {fields.length} 条性质观察与 {relations.length} 条字段关系。</p><Button variant="outline" size="sm" onClick={onOpenInsights}>查阅资料解读</Button></div>
 }
 
 /* 2026-08-27：memo——stage 引用不变时跳过重渲染。usePipeline 每 100ms 批量

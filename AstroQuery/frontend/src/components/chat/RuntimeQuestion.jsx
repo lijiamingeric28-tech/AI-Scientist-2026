@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import PropertyChoices from './PropertyChoices'
+import RegistryQueryScope from './RegistryQueryScope'
 import { Button } from '@/components/ui/button'
 import ReviewCorrection, { useCorrection } from './ReviewCorrection'
 import ReviewReading from './ReviewReading'
@@ -73,7 +74,8 @@ export default function RuntimeQuestion({ payload, onSubmit }) {
         {targetChoices.length ? <div className="stage-links">{targetChoices.map(target =>
           <Button key={target.target_id} variant="outline" disabled={sending} onClick={() => submit({ type: 'select_target', candidate_id: target.target_id })}>
             {target.main_id} · {target.primary_otype}</Button>)}</div> : <p>输入这个天体的名称或目录编号。</p>}</>}
-      {question && hasTarget && <PropertyChoices key={question.question_id} state={state} sending={sending} submit={submit}/>}
+      {question && hasTarget && <><RegistryQueryScope draft={state.draft} question={question} sending={sending} submit={submit}/>
+        <PropertyChoices key={question.question_id} state={state} sending={sending} submit={submit}/></>}
       {!state.query_ref && question && <div className="draft-secondary">
         <details className="draft-edit" open={!hasTarget && !targetChoices.length || undefined}><summary>修改问题</summary>
           <form onSubmit={event => { event.preventDefault(); if (text.trim()) submit({ type: 'submit_text', text }) }}>

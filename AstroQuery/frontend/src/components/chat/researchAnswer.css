@@ -5,6 +5,7 @@
   border-top: 1px solid var(--surface-border);
   color: var(--content-fg);
 }
+.research-chart-theme-probe { position:fixed;visibility:hidden;pointer-events:none;color:var(--content-fg);background:var(--surface-bg);border-color:var(--surface-border);outline-color:var(--accent-text,var(--seed-accent));font-family:var(--font-custom-override,var(--font-ui)); }
 .research-copilot > h2 { margin: 0 0 14px; font-size: 1.1rem; font-weight: 670; }
 .research-turn { margin-block: 0 28px; min-width: 0; }
 .research-user-message {
@@ -248,15 +249,6 @@
 }
 .research-composer-preferences { display: flex; flex-wrap: wrap; gap: 6px; padding-inline: 5px; }
 .research-hero-composer, .hero-composer-container { width: min(100%, 670px); margin: 0 auto; }
-.hero-flowing-border-wrap > .research-composer {
-  position: relative;
-  z-index: 1;
-  border: none;
-  box-shadow: none;
-  border-radius: 28px;
-  background: var(--surface-bg);
-  padding: 8px 12px 10px 16px;
-}
 .research-reference { font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
 .research-reference > h3, .research-reference-definition h3 { margin: 0 0 8px; font-size: 1.14rem; }
 .research-reference-nav, .research-reference-definition { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 9px; }

@@ -100,7 +100,7 @@ export function useFollowup(taskId, deliveryId, deliveryRevision, enabled) {
     }
   }
 
-  async function ask({ text, recordIds = [], markers = [], selections = [], retryOf, repairBlock, requestId, resend = false }) {
+  async function ask({ text, recordIds = [], markers = [], selections = [], materialAnalysisRef, retryOf, repairBlock, requestId, resend = false }) {
     if (!identity || busy || sessionRef.current?.key === identity) return false
     const resume = resend && lastSend.current?.key === identity ? lastSend.current : null
     const body = resume?.body || {
@@ -108,6 +108,7 @@ export function useFollowup(taskId, deliveryId, deliveryRevision, enabled) {
       record_ids: recordIds.slice(0, 40), markers: markers.slice(0, 16), selections: selections.slice(0, 6),
       selected_answers: Object.values(selectedAnswers).slice(-24),
       retry_of: retryOf || null, repair_block: repairBlock || null,
+      ...(materialAnalysisRef ? {material_analysis_ref:materialAnalysisRef} : {}),
     }
     const controller = new AbortController()
     const running = { key: identity, controller, message: null, action: '', question: null }

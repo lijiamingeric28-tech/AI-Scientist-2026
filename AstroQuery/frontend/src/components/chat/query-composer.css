@@ -1,0 +1,42 @@
+/* One capsule for the homepage, task chat and contextual followups. */
+.research-composer{position:relative;width:100%;max-width:760px;margin:0 auto;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.research-composer:focus-within{border-color:transparent;box-shadow:none}
+.research-composer-shell{position:relative;isolation:isolate;overflow:hidden;padding:10.5px 13.5px;border:0;border-radius:999px;background:color-mix(in srgb,var(--accent) 18%,var(--surface-border));box-shadow:0 5px 22px color-mix(in srgb,var(--accent) 7%,transparent);transition:box-shadow 180ms ease}
+.research-composer-shell::before{content:'';position:absolute;z-index:-2;left:50%;top:50%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,transparent 0deg,transparent 120deg,color-mix(in srgb,var(--accent) 35%,transparent) 170deg,color-mix(in srgb,var(--accent) 80%,var(--surface-bg)) 225deg,var(--accent) 255deg,var(--accent) 315deg,color-mix(in srgb,var(--accent) 60%,transparent) 345deg,transparent 360deg);animation:query-composer-border-flow 4s linear infinite;pointer-events:none}
+/* Leave the rotating layer visible around the opaque input surface. */
+.research-composer-shell::after{content:'';position:absolute;z-index:-1;inset:3px;border-radius:inherit;background:var(--surface-bg);pointer-events:none}
+.research-composer-shell:focus-within{border-color:transparent;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 9%,transparent),0 5px 22px color-mix(in srgb,var(--accent) 8%,transparent)}
+@keyframes query-composer-border-flow{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.research-composer .research-composer-row{display:flex;align-items:center;gap:10px;min-width:0}
+.research-composer textarea{display:block;flex:1;min-width:0;min-height:40px;max-height:126px;padding:8px 2px;margin:0;border:0;outline:none;resize:none;overflow-y:auto;line-height:24px;font:inherit;font-size:1rem;line-height:24px;color:var(--content-fg);background:transparent}
+.research-composer textarea::placeholder{color:var(--content-fg-secondary);opacity:1}
+.research-composer-options,.research-composer .research-send{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;padding:0;border:0;border-radius:50%;cursor:pointer}
+.research-composer-options{color:var(--accent-text);background:transparent;transition:background 180ms ease}
+.research-composer-options:hover,.research-composer-options[aria-expanded=true]{background:var(--accent-light)}
+.research-composer-options:disabled{opacity:.65;cursor:default;background:transparent}
+.research-composer-star{width:20px;height:20px;transition:transform 280ms cubic-bezier(.22,.61,.36,1)}
+.research-composer .research-send{color:var(--accent-on);background:var(--accent);transition:background 180ms ease,transform 180ms ease}
+.research-composer .research-send:not(:disabled):hover{background:var(--accent-hover)}
+.research-composer .research-send:disabled{color:var(--content-fg-secondary);background:var(--surface-secondary);cursor:default}
+.research-composer .research-composer-context{display:flex;align-items:center;gap:8px;max-width:100%;width:fit-content;margin:0 18px 8px;padding:3px 6px 3px 12px;border:1px solid var(--surface-border);border-radius:999px;color:var(--accent-text);background:var(--surface-secondary);font-size:.8125rem}
+.research-composer-context .research-action{display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:transparent}
+.research-composer-context .research-action:hover{background:var(--surface-bg)}
+.chat-column>.empty-state.research-query-start{max-width:760px;width:100%}
+.research-query-start .hero-composer-container.research-hero-composer{width:100%;max-width:760px;margin:12px auto 0}
+.research-composer-popover{position:fixed;z-index:100;width:min(420px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:17px 18px;overflow:auto;border:1px solid var(--surface-border);border-radius:16px;color:var(--content-fg);background:var(--surface-bg);box-shadow:0 12px 44px color-mix(in srgb,var(--content-fg) 15%,transparent);text-align:start;font-family:var(--font-ui,inherit)}
+.research-composer-popover>header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px}
+.research-composer-popover>header>div{display:flex;flex-direction:column;gap:5px}
+.research-composer-popover>header strong{font-size:.9375rem;font-weight:600;color:var(--accent-text)}
+.research-composer-popover>header span{font-size:.75rem;color:var(--content-fg-secondary)}
+.research-popover-close{display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:50%;background:var(--surface-secondary);color:var(--content-fg-secondary);cursor:pointer;flex-shrink:0}
+.research-composer-modes{display:flex;gap:5px;padding:4px;border:1px solid var(--surface-border);border-radius:10px;background:var(--surface-secondary);margin-bottom:14px}
+.research-composer-modes button{flex:1;padding:8px 6px;border:0;border-radius:7px;font:inherit;font-size:.8125rem;background:transparent;color:var(--content-fg-secondary);cursor:pointer}
+.research-composer-modes button[aria-pressed=true]{background:var(--surface-bg);color:var(--accent-text);box-shadow:0 1px 4px color-mix(in srgb,var(--content-fg) 6%,transparent)}
+.research-composer-settings .preference-setting{display:block;padding:10px 0}
+.research-composer-settings .preference-setting>label{display:block;margin-bottom:9px;font-size:.8125rem}
+.research-composer-settings .paper-target-control{justify-content:space-between}
+.research-composer-settings .paper-presets{gap:5px}
+.research-composer-settings .paper-number input{width:76px}
+.research-composer-menu-hint{font-size:.8125rem;line-height:1.7;color:var(--content-fg-secondary);margin:0}
+.research-composer-popover :is(button,input,select):focus-visible,.research-composer-options:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.research-composer-star,.research-composer-shell,.research-composer-options,.research-composer .research-send{transition:none}.research-composer-shell::before{animation:none}}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSlidingPanes } from "@/hooks/useSlidingPanes";
 import { Icon } from "@/components/icons";
+import BackToTop from "@/components/ui/BackToTop";
 import { getExecution, executionReportUrl } from "@/services/api";
 import { useRememberedState, useScrollMemory } from "@/hooks/useViewMemory";
 import ExecutionTimeline from "./ExecutionTimeline";
@@ -22,7 +23,7 @@ function useExecution(taskId, query, active, version) {
   useEffect(() => {
     if (!taskId || !active || loaded.current === key) return;
     const controller = new AbortController();
-    getExecution(taskId, query, { signal: controller.signal })
+    getExecution(taskId, query, { signal: controller.signal, readVersion:version })
       .then((data) => {
         if (!controller.signal.aborted) {
           loaded.current = key;
@@ -99,6 +100,8 @@ function ExecutionWorkspace({
   );
   const [stage, setStage] = useRememberedState(memory, "executionStage", "");
   const [search, setSearch] = useRememberedState(memory, "executionSearch", "");
+  const [searchQuery,setSearchQuery]=useState(search);
+  useEffect(()=>{const timer=setTimeout(()=>setSearchQuery(search),250);return()=>clearTimeout(timer)},[search]);
   const [eventCategory, setEventCategory] = useRememberedState(
     memory,
     "executionEventCategory",
@@ -207,7 +210,7 @@ function ExecutionWorkspace({
   const query = {
     ...base,
     stage_id: stage || undefined,
-    search: search || undefined,
+    search: searchQuery || undefined,
     start: range ? new Date(range[0]).toISOString() : undefined,
     end: range ? new Date(range[1]).toISOString() : undefined,
     limit: 30,
@@ -1145,6 +1148,7 @@ function ExecutionWorkspace({
           </div>
         </>
       )}
+      <BackToTop active={active} />
     </div>
   );
 }

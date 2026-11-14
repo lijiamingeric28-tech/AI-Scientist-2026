@@ -1,0 +1,8 @@
+.task-insight-tabs { margin-bottom: var(--space-4, 16px); }
+.task-insights [role="tabpanel"] { min-width: 0; }
+.task-knowledge-property { margin-block: var(--space-4, 16px); }
+.task-knowledge-entry { padding: var(--space-4, 16px); margin-block: 10px; border: 1px solid var(--surface-border); border-radius: var(--radius-md, 10px); background: var(--surface-bg); }
+.task-knowledge-entry h4 { margin: 0; color: var(--text-primary); }
+.task-knowledge-entry p { overflow-wrap: anywhere; }
+.summary-basis-links { display: flex; gap: 12px; flex-wrap: wrap; margin-block: 12px; }
+.task-archive-meta { overflow-wrap: anywhere; color: var(--text-secondary); }

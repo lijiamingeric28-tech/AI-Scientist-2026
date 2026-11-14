@@ -31,7 +31,7 @@ export default function BusinessStage({stage,expanded,onToggle,onOpenData,onOpen
         {['retrieval','extraction'].includes(stage.id) && <button className="text-link" onClick={()=>onOpenData?.('evidence')}>查看已取得资料</button>}
         {['quality_check','clean','comparison'].includes(stage.id) && <button className="text-link" onClick={()=>onOpenData?.('analysis',{analysisTab:stage.id==='clean'?'modifications':'overview'})}>查看处理范围与依据</button>}
         {['deliver','done'].includes(stage.id) && <><Button onClick={()=>onOpenData?.('records')}>查看记录</Button><Button variant="outline" onClick={()=>onOpenData?.('records',{export:true})}>导出</Button></>}
-        {stage.id==='insight' && <button className="text-link" onClick={()=>onOpenData?.('analysis',{analysisTab:'insights'})}>查看逐性质洞察</button>}
+        {stage.id==='insight' && <button className="text-link" onClick={()=>onOpenData?.('candidates')}>查看资料总结</button>}
         <>{onOpenAgent&&<button className="text-link" onClick={()=>onOpenAgent({id:null},stage)}>执行明细</button>}</>
       </div>
     </div>}

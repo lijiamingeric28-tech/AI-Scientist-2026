@@ -1,3 +1,5 @@
+import { useRecordsPage } from '@/hooks/useRecordsPage'
+import { filteredSelection } from '@/services/resultPages'
 import { usePropertyLabel } from '@/lib/propertyLabel'
 import { sourceType, extractionLabel, sourceName } from '@/lib/readableData'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -36,7 +38,7 @@ function sourceKindOf(sourceId) {
 }
 
 /* 系统另存为（File System Access API）：WebView2/Edge 支持；不支持时降级 a[download] */
-async function saveAsDefault(blob, filename, chooseLocation = false) {
+export async function saveAsDefault(blob, filename, chooseLocation = false) {
   try {
     if (chooseLocation && window.showSaveFilePicker) {
       const handle = await window.showSaveFilePicker({ suggestedName: filename })
@@ -60,7 +62,7 @@ async function saveAsDefault(blob, filename, chooseLocation = false) {
   return 'fallback'
 }
 
-export default function ExportDialog({ open, taskId, records, sources = [], onClose, embedded = false, readOnly = false, readOnlyReason }) {
+export default function ExportDialog({ serverScope, initialFilters, open, taskId, records, sources = [], onClose, embedded = false, readOnly = false, readOnlyReason }) {
   const propertyLabel = usePropertyLabel()
   const narrow=useMediaQuery('(max-width:767px)'),[filtersOpen,setFiltersOpen]=useState(false)
   const { toast } = useToast()
@@ -69,37 +71,46 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
   const [exporting, setExporting] = useState(false)
   const [fields, setFields] = useState(null)         // null=全选，Set=勾选子集
   const [sourceGroup, setSourceGroup] = useState('all')
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = useState(initialFilters?.q || '')
   const [format, setFormat] = useState('csv_long'), [previewPage,setPreviewPage]=useState(1)
   const [deliveryBinding, setDeliveryBinding] = useState(null)
   // 选中集：默认全选（null=全选，Set=用户点掉后的子集）
   const [selected, setSelected] = useState(null)
+  const [excluded,setExcluded]=useState(new Set())
+  const exportFilters={...(initialFilters||{}),q:searchText,fields:fields===null?undefined:[...fields],source_group:sourceGroup}
+  const remote=useRecordsPage(serverScope,{...exportFilters,offset:(previewPage-1)*50,limit:50,collapse_duplicates:false},open&&!readOnly&&!!serverScope)
+  const total=serverScope ? remote.data?.total ?? 0 : records.length
+  const serverRows=remote.data?.items || []
+  const facets=remote.data?.aggregates
+  const exportFilterKey=JSON.stringify(filteredSelection(exportFilters).filters)
+  useEffect(()=>{if(serverScope){setPreviewPage(1);setSelected(null);setExcluded(new Set())}},[exportFilterKey])
 
   // 任务/弹窗打开时重置
   useEffect(() => {
     if (!open || !taskId) return
     setFields(null)
     setSourceGroup('all')
-    setSearchText('')
+    setSearchText(initialFilters?.q || '')
     setFormat('csv_long')
-    setSelected(new Set(records.map(r=>r.record_id)))
+    setSelected(serverScope?null:new Set(records.map(r=>r.record_id)));setExcluded(new Set())
   }, [open, taskId])
 
   useEffect(() => {
     let cancelled = false
     setDeliveryBinding(null)
-    if (open && taskId && records.some(record => record.protocol_version === 2)) {
-      api.getDelivery(taskId).then(binding => { if (!cancelled) setDeliveryBinding(binding) }).catch(() => {})
+    if (open && taskId && (serverScope || records.some(record => record.protocol_version === 2))) {
+      api.getDelivery(taskId,serverScope?.revision).then(binding => { if (!cancelled) setDeliveryBinding(binding) }).catch(() => {})
     }
     return () => { cancelled = true }
-  }, [open, taskId])
+  }, [open, taskId,serverScope?.revision])
 
-  const allFields = useMemo(() => [...new Set((records || []).map((r) => r.field_name))], [records])
+  const allFields = useMemo(() => facets?.fields?.map(item=>item.field) || [...new Set((records || []).map((r) => r.field_name))], [records,facets])
   const byField = useMemo(() => {
     const m = {}
+    if(facets?.fields) return Object.fromEntries(facets.fields.map(item=>[item.field,item.count]))
     for (const r of records || []) m[r.field_name] = (m[r.field_name] || 0) + 1
     return m
-  }, [records])
+  }, [records,facets])
 
   useEffect(()=>setPreviewPage(1),[fields,sourceGroup,searchText])
   const isFieldOn = (f) => fields === null || fields.has(f)
@@ -115,17 +126,18 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
 
   const q = searchText.trim().toLowerCase()
   // 先按左侧条件筛选（性质的种类/来源/搜索）→ 结果记录集
-  const filtered = useMemo(() => (records || []).filter((r) => {
+  const filtered = useMemo(() => serverScope ? serverRows : (records || []).filter((r) => {
     if (!isFieldOn(r.field_name)) return false
     const kind = r.protocol_version === 2 ? { catalog: 'database', official_attachment: 'supplement', paper: 'paper' }[r.source_kind] : sourceType(sources.find(source => source.source_id === r.source_id)?.source_type || sourceKindOf(r.source_id))
     if (sourceGroup !== 'all' && kind !== sourceGroup) return false
     if (!matchesRecordSearch(r, q, sources.find(source => source.source_id === r.source_id), propertyLabel)) return false
     return true
-  }), [records, fields, sourceGroup, q, allFields, sources, propertyLabel])
+  }), [records, fields, sourceGroup, q, allFields, sources, propertyLabel,serverScope,remote.data])
 
   // 选中状态：null=全选（随筛选变化整体全选）；用户点掉某行后变 Set
-  const isRowOn = (rid) => selected === null || selected.has(rid)
+  const isRowOn = (rid) => selected === null ? !excluded.has(rid) : selected.has(rid)
   const toggleRow = (rid) => {
+    if(serverScope && selected===null){setExcluded(prev=>{const next=new Set(prev);next.has(rid)?next.delete(rid):next.add(rid);return next});return}
     setSelected((prev) => {
       const base = prev === null ? new Set(filtered.map((r) => r.record_id)) : new Set(prev)
       if (base.has(rid)) base.delete(rid)
@@ -135,8 +147,9 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
   }
   // 全选/全不选（针对当前筛选结果）
   const filteredIds = filtered.map((r) => r.record_id)
-  const allOn = filtered.length > 0 && filtered.every((r) => isRowOn(r.record_id))
+  const allOn = serverScope ? total > 0 && selected===null && excluded.size===0 : filtered.length > 0 && filtered.every((r) => isRowOn(r.record_id))
   const toggleAllRows = () => {
+    if(serverScope){setSelected(allOn?new Set():null);setExcluded(new Set());return}
     setSelected((prev) => {
       if (allOn) {
         // 全不选：从基础集去掉所有 filtered 行
@@ -152,7 +165,7 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
     })
   }
 
-  const exportCount = useMemo(() => records.filter((r) => isRowOn(r.record_id)).length, [filtered, selected])
+  const exportCount = serverScope ? (selected===null ? Math.max(0,total-excluded.size) : selected.size) : records.filter((r) => isRowOn(r.record_id)).length
 
   /* 长表 CSV 头部：与后端导出的 records_long 全列对齐（实体/性质/值/单位/来源/页/定位/置信度/方法/溯源） */
   const LONG_HEAD = ['记录 ID', '实体', '性质', '值', '单位', '来源', '页码', '定位框', '置信度', '提取方式', '原文摘要']
@@ -161,19 +174,19 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
     if (exportingRef.current) return
     const chosen = records.filter((r) => isRowOn(r.record_id))
     if(readOnly){toast(readOnlyReason||'回放时点只读；请打开原任务最终结果后显式导出','info');return}
-    if (!chosen.length) {
+    if (!exportCount) {
       toast('没有选中的记录可导出', 'info')
       return
     }
-    if (chosen[0].protocol_version === 2) {
+    if (serverScope || chosen[0].protocol_version === 2) {
       exportingRef.current = true; setExporting(true)
       try {
         const binding = await api.getDelivery(taskId)
         setDeliveryBinding(binding)
-        if (chosen.some(record => record.delivery_id !== binding.delivery_id || (record.delivery_revision && record.delivery_revision !== binding.revision))) throw new Error('交付版本已变化，请关闭并重新选择导出记录')
+        if (serverScope ? (serverScope.deliveryId !== binding.delivery_id || serverScope.revision !== binding.revision) : chosen.some(record => record.delivery_id !== binding.delivery_id || (record.delivery_revision && record.delivery_revision !== binding.revision))) throw new Error('交付版本已变化，请关闭并重新选择导出记录')
         const manifest = await api.createExport(taskId, { operation_id: api.newOperationId(), task_id: taskId,
           delivery_id: binding.delivery_id, expected_delivery_revision: binding.revision,
-          selection: { mode: 'ids', measurement_ids: chosen.map(record => record.record_id) }, format, export_schema_version: 2 })
+          selection: serverScope ? (selected===null ? filteredSelection(exportFilters,excluded) : {mode:'ids',measurement_ids:[...selected]}) : { mode: 'ids', measurement_ids: chosen.map(record => record.record_id) }, format, export_schema_version: 2 })
         const response = await fetch(api.artifactUrl(taskId, manifest.artifacts[0].artifact_id))
         if (!response.ok) throw new Error('导出文件当前不可用')
         const extension = { json: 'json', json_wide: 'json', package: 'zip', csv_long: 'csv', csv_wide: 'csv' }[format]
@@ -234,7 +247,7 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
           <Icon.Download style={{ color: 'var(--accent)' }} />
           <span style={{ fontSize: 'var(--text-body)', fontWeight: 600 }}>选择导出记录</span>
           <span style={{ fontSize: 'var(--text-ui)', color: 'var(--content-fg-tertiary)' }}>
-            已选 <b style={{ color: 'var(--accent)' }}>{exportCount}</b> / 共 <b>{records?.length ?? 0}</b> 条
+            已选 <b style={{ color: 'var(--accent)' }}>{exportCount}</b> / 共 <b>{serverScope ? facets?.total ?? total : records?.length ?? 0}</b> 条
           </span>
           {deliveryBinding && <span className="hint">交付修订 {deliveryBinding.revision}</span>}
           <span style={{ flex: 1 }} />
@@ -286,7 +299,7 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
               <span style={{ fontSize: 'var(--text-ui)', color: 'var(--content-fg-tertiary)' }}></span>
             </div>
             <div style={{ flex: 1, overflow: 'auto', padding: '10px 14px' }}>
-              {filtered.length === 0 ? (
+              {serverScope && remote.status !== 'success' ? <p role="status">{remote.status==='error'?remote.error:'正在读取导出记录…'}{remote.status==='error'&&<button onClick={remote.reload}>重试</button>}</p> : filtered.length === 0 ? (
                 <div style={{ padding: '30px 0', textAlign: 'center', fontSize: 'var(--text-ui)', color: 'var(--content-fg-tertiary)' }}>无记录（可调整左侧筛选或搜索）</div>
               ) : (
                 <table className="export-records" style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--text-ui)' }}>
@@ -300,7 +313,7 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
                     </tr>
                   </thead>
                   <tbody>
-                    {filtered.slice((previewPage-1)*20,previewPage*20).map((r) => (
+                    {(serverScope?filtered:filtered.slice((previewPage-1)*20,previewPage*20)).map((r) => (
                       <tr key={r.record_id} style={{ borderTop: '1px solid var(--surface-border-subtle)', opacity: isRowOn(r.record_id) ? 1 : 0.5 }}>
                         <td style={{ padding: '7px 10px' }}>
                           <input data-record-id={r.record_id} type="checkbox" aria-label={`选择导出：${r.entity_name} ${propertyLabel(r.field_name)} ${r.field_value} ${r.field_unit || ''}`} checked={isRowOn(r.record_id)} onChange={() => toggleRow(r.record_id)} style={{ accentColor: 'var(--accent)' }} />
@@ -308,7 +321,7 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
                         <td className="font-mono" style={{ padding: '7px 10px', fontWeight: 510 }}>{propertyLabel(r.field_name)}</td>
                         <td className="font-mono" style={{ padding: '7px 10px' }}>{String(r.field_value).slice(0, 40)}</td>
                         <td style={{ padding: '7px 10px', color: 'var(--content-fg-secondary)' }}>{r.field_unit}</td>
-                        <td style={{ padding: '7px 10px', color: 'var(--content-fg-secondary)', fontSize: 'var(--text-note)' }} title={r.source_id}>{sourceName(sources.find(source => source.source_id === r.source_id), r.source_id, true)}</td>
+                        <td style={{ padding: '7px 10px', color: 'var(--content-fg-secondary)', fontSize: 'var(--text-note)' }} title={r.source_id}>{sourceName(r.source_label || sources.find(source => source.source_id === r.source_id), r.source_id, true)}</td>
                         <td style={{ padding: '7px 10px', fontSize: 'var(--text-note)' }}>{extractionLabel(r.extraction_method)}</td>
                         <td style={{ padding: '7px 10px', maxWidth: 200 }}><span className="caption-clamp" title={r.context_snippet || r.raw_text || ''}>{r.context_snippet || r.raw_text || '该记录未提供'}</span></td>
                       </tr>
@@ -320,14 +333,14 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
           </div>
         </div>
 
-        <div className="stage-links" style={{padding:'4px 18px'}}><button aria-label="导出上一页" disabled={previewPage===1} onClick={()=>setPreviewPage(n=>n-1)}>上一页</button><span>{previewPage} / {Math.max(1,Math.ceil(filtered.length/20))} 页 · {filtered.length} 条匹配</span><button aria-label="导出下一页" disabled={previewPage*20>=filtered.length} onClick={()=>setPreviewPage(n=>n+1)}>下一页</button></div>
+        <div className="stage-links" style={{padding:'4px 18px'}}><button aria-label="导出上一页" disabled={previewPage===1} onClick={()=>setPreviewPage(n=>n-1)}>上一页</button><span>{previewPage} / {Math.max(1,Math.ceil((serverScope?total:filtered.length)/(serverScope?50:20)))} 页 · {serverScope?total:filtered.length} 条匹配</span><button aria-label="导出下一页" disabled={previewPage*(serverScope?50:20)>=(serverScope?total:filtered.length)} onClick={()=>setPreviewPage(n=>n+1)}>下一页</button></div>
         <p className="hint" style={{padding:'4px 18px'}}>{({csv_long:'每条测量一行；原报、处理值和误差分别保留。',csv_wide:'按性质与来源分组，不平均多来源测量。',json_wide:'按性质组织测量及其出处，适合程序读取。',json:'完整结构化数据及本次选择范围。',package:'打包本次选定数据与索引，不是全部论文原文包。'})[format]}</p>
-        <p className="hint" style={{padding:'8px 18px'}}>{readOnly?'此回放时点只读，已有归档可下载；新导出请打开最终结果。':`已选 ${exportCount} 条 / 当前筛选 ${filtered.length} 条。更换筛选不会自动加入新记录。`}</p>
+        <p className="hint" style={{padding:'8px 18px'}}>{readOnly?'此回放时点只读，已有归档可下载；新导出请打开最终结果。':`已选 ${exportCount} 条 / 当前筛选 ${serverScope?total:filtered.length} 条。${serverScope?'导出包含全部匹配页，取消勾选的记录除外。':'更换筛选不会自动加入新记录。'}`}</p>
         {/* 底部：格式 + 导出 */}
         <div className="export-dialog-footer" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 18px', borderTop: '1px solid var(--surface-border)', flexShrink: 0 }}>
           <span style={{ fontSize: 'var(--text-ui)', color: 'var(--content-fg-secondary)' }}>格式</span>
           <div className="export-formats" style={{ display: 'flex', gap: 2, padding: 3, borderRadius: 8, background: 'var(--surface-secondary)' }}>
-            {(records.some(record => record.protocol_version === 2) ? [
+            {((serverScope || records.some(record => record.protocol_version === 2)) ? [
               { key: 'csv_long', label: '测量明细 CSV' },
               { key: 'package', label: '研究数据包 ZIP' },
               { key: 'csv_wide', label: '分组宽表 CSV' },
@@ -343,8 +356,8 @@ export default function ExportDialog({ open, taskId, records, sources = [], onCl
             ))}
           </div>
           <span style={{ flex: 1 }} />
-          {window.showSaveFilePicker && <Button variant="outline" size="sm" disabled={readOnly || !exportCount || exporting} onClick={() => exportFile(true)}>另存为…</Button>}
-          <Button size="sm" onClick={() => exportFile(false)} disabled={readOnly || !exportCount || exporting} style={{ background: 'var(--accent)', color: 'var(--seed-surface)' }}>
+          {window.showSaveFilePicker && <Button variant="outline" size="sm" disabled={readOnly || !exportCount || exporting || (serverScope && remote.status!=='success')} onClick={() => exportFile(true)}>另存为…</Button>}
+          <Button size="sm" onClick={() => exportFile(false)} disabled={readOnly || !exportCount || exporting || (serverScope && remote.status!=='success')} style={{ background: 'var(--accent)', color: 'var(--seed-surface)' }}>
             <Icon.Download /> {exporting ? '正在导出…' : `生成并下载 ${exportCount} 条`}
           </Button>
         </div>

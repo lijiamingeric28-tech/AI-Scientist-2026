@@ -6,13 +6,10 @@ import { CanvasRenderer } from 'echarts/renderers'
 import { Icon } from '@/components/icons'
 import { errorEndpoint, plotBounds, plotNumber } from '@/lib/numericPlot'
 import { AnswerTable, BlockHeader, CiteButton, recordText } from './AnswerData'
+import { useAnswerChartTheme } from '@/hooks/useAnswerChartTheme'
 
 echarts.use([BarChart, CustomChart, LineChart, ScatterChart, AriaComponent, DataZoomComponent, GridComponent, TooltipComponent, CanvasRenderer])
 
-const themes = {
-  light: { ink: '#283f34', line: '#cfdcd4', accent: '#287257', soft: '#dcece3', paper: '#fff' },
-  dark: { ink: '#deeee4', line: '#3b5648', accent: '#8cd5ae', soft: '#385448', paper: '#18251e' },
-}
 const finite = value => plotNumber(typeof value === 'number' ? String(value) : value)
 const axisNumber = value => Number(Number(value).toPrecision(7)).toString()
 
@@ -44,10 +41,6 @@ export const ChartCanvas = memo(function ChartCanvas({ options, onClick, chartRe
   }, [options])
   return <div ref={container} role="img" aria-label={label} className={'research-plot' + (expanded ? ' is-expanded' : '')} data-dark={dark || undefined} />
 })
-
-export function chartTheme(dark) {
-  return themes[dark ? 'dark' : 'light']
-}
 
 function rangeFor(centre, error) {
   const v = error.values || {}
@@ -84,8 +77,7 @@ function drawRange(params, api) {
   return { type: 'group', children: [line(x, y1, x, y2), line(x - 4, y1, x + 4, y1), line(x - 4, y2, x + 4, y2)] }
 }
 
-function buildOptions(points, block, dark) {
-  const theme = chartTheme(dark)
+function buildOptions(points, block, theme) {
   const xByYear = block.x === 'year' && points.every(({ row }) => Number.isFinite(row.year))
   const data = xByYear ? [...points].sort((a, b) => a.row.year - b.row.year) : points
   const x = (point, i) => xByYear ? point.row.year : i
@@ -128,6 +120,7 @@ function buildOptions(points, block, dark) {
 }
 
 export default function AnswerPlot({ block, state, change, onCite, onAsk, dark }) {
+  const theme=useAnswerChartTheme()
   const chartRef = useRef(null)
   const groups = useMemo(() => {
     const result = new Map()
@@ -145,11 +138,11 @@ export default function AnswerPlot({ block, state, change, onCite, onAsk, dark }
   const rows = useMemo(() => group.rows.filter(row => (!state.source || state.source === row.source) &&
     (state.condition == null || state.condition === (row.conditions || ''))), [group, state.source, state.condition])
   const points = useMemo(() => createPoints(rows), [rows])
-  const options = useMemo(() => points.length ? buildOptions(points, block, dark) : null, [points, block, dark])
+  const options = useMemo(() => points.length && theme ? buildOptions(points, block, theme) : null, [points, block, theme])
   const selected = rows.find(row => row.id === state.recordIds?.[0])
   const missingErrors = points.filter(point => !point.row.error && !point.row.error_components?.length).length
   function exportPng() {
-    const image = chartRef.current?.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: chartTheme(dark).paper })
+    const image = chartRef.current?.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: theme?.paper })
     if (!image) return
     const link = document.createElement('a')
     link.href = image

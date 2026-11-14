@@ -1,427 +1,95 @@
-import React, { useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Icon } from '@/components/icons'
-import { LatexMath, LatexText } from '@/components/results/LatexMath'
-import {
-  getCategoryInfo,
-  isValidFormula,
-  translateProperty,
-  translateEdgeLabel,
-} from './knowledgeConstants'
+import { translateEdgeLabel, translateProperty } from './knowledgeConstants'
+import { knowledgeRelationEvidence } from './knowledgeReading'
+import { EntryActions, EntryBadges, EntryOverview, SourcesList, DeleteConfirmation, useReadingFocus } from './knowledgeReadingParts'
+import { useDismissTransition } from '@/hooks/useDismissTransition'
+import './knowledgeReading.css'
 
 export default function KnowledgeDrawer({
-  item,
-  categories = [],
-  allNodes = [],
-  topologyLinks = [],
-  onClose,
-  onSelectNode,
-  onTogglePreference,
-  onEdit,
-  onFork,
-  onDelete,
-  onRestore,
+  item, categories = [], allNodes = [], topologyLinks = [], loading = false, readOnly = false, pending = false,
+  onClose, onSelectNode, onTogglePreference, onEdit, onFork, onDelete, onRestore, onFocus, onShowAllRelations,
+  loadError, onRetry, onManageRelations,
 }) {
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
-
-  const nodeById = useMemo(() => {
-    const map = new Map()
-    for (const n of allNodes) {
-      if (n?.id) map.set(n.id, n)
-    }
-    return map
-  }, [allNodes])
-
+  const [tab, setTab] = useState('overview')
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [error, setError] = useState('')
+  const ref = useRef(null)
+  const tabsRef = useRef(null)
+  const dismissal = useDismissTransition(onClose, { duration: 180, active: Boolean(item), identity: item?.id })
+  useReadingFocus(ref, Boolean(item), dismissal.close, true)
+  useEffect(() => { setTab('overview'); setDeleteOpen(false); setError('') }, [item?.id])
   if (!item) return null
-
-  const isPropertyHub = Boolean(item.is_property)
-  const isPreferred = Boolean(item.preferred || item.user_preference === 'preferred')
-  const catInfo = getCategoryInfo(item.category, categories)
-
-  // 过滤内部英文枚举伪假定，只保留真正学术物理条件
-  const validConditions = Array.isArray(item.conditions)
-    ? item.conditions.filter(c => {
-        const s = String(typeof c === 'string' ? c : c?.text || '').trim().toLowerCase()
-        return s && !['established', 'consensus', 'provisional', 'empirical'].includes(s)
-      })
-    : []
-
-  // 关联拓扑连线
-  const relatedLinks = topologyLinks.filter(
-    l => (l.source?.id || l.source) === item.id || (l.target?.id || l.target) === item.id
-  )
-
-  return (
-    <>
-      {/* 全屏毛玻璃背景遮罩 */}
-      <div
-        className="kw-drawer-backdrop"
-        onClick={onClose}
-        aria-label="关闭侧边栏"
-      />
-
-      {/* 560px 宽度统一 ContextDrawer 风格抽屉 */}
-      <aside
-        className="kw-graph-drawer"
-        role="dialog"
-        aria-label={item.label || item.title || item.name || '理论详情'}
-      >
-        <header className="kw-drawer-header">
-          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <span
-                className="kw-badge"
-                style={{
-                  background: `${catInfo.color}20`,
-                  color: catInfo.color,
-                  border: `1px solid ${catInfo.color}40`,
-                }}
-              >
-                {catInfo.label}
-              </span>
-              {item.confidence_label && (
-                <span
-                  className="kw-badge"
-                  style={{
-                    background: 'rgba(16, 185, 129, 0.12)',
-                    color: '#059669',
-                    border: '1px solid rgba(16, 185, 129, 0.28)',
-                  }}
-                >
-                  {item.confidence_label}
-                </span>
-              )}
-              {isPreferred && (
-                <span
-                  className="kw-badge"
-                  style={{
-                    background: 'rgba(234, 179, 8, 0.15)',
-                    color: '#d97706',
-                    border: '1px solid rgba(234, 179, 8, 0.35)',
-                  }}
-                >
-                  科研优选
-                </span>
-              )}
-              {item.is_override && (
-                <span
-                  className="kw-badge"
-                  style={{
-                    background: 'rgba(59, 130, 246, 0.15)',
-                    color: '#2563eb',
-                    border: '1px solid rgba(59, 130, 246, 0.35)',
-                  }}
-                >
-                  用户自定义已修改
-                </span>
-              )}
-              {item.is_user && !item.is_override && (
-                <span
-                  className="kw-badge"
-                  style={{
-                    background: 'rgba(234, 179, 8, 0.15)',
-                    color: '#d97706',
-                    border: '1px solid rgba(234, 179, 8, 0.35)',
-                  }}
-                >
-                  自建理论
-                </span>
-              )}
-            </div>
-            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 650, color: 'var(--content-fg)', lineHeight: 1.4 }}>
-              {item.title || item.label || item.name}
-            </h3>
-          </div>
-          <button
-            type="button"
-            className="kw-icon-btn"
-            onClick={onClose}
-            aria-label="关闭详情"
-          >
-            <Icon.Close style={{ width: 16, height: 16 }} />
-          </button>
-        </header>
-
-        <div className="kw-drawer-body">
-          {/* Universal 操作按钮行：科研优选、编辑理论、派生理论、删除、恢复默认 (非物理量枢纽节点可见) */}
-          {!isPropertyHub && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-              <button
-                type="button"
-                className={`kw-filter-pref-btn ${isPreferred ? 'active' : ''}`}
-                style={{ flex: 1, minWidth: 140, justifyContent: 'center' }}
-                onClick={() => onTogglePreference?.(item.id, !isPreferred)}
-              >
-                {isPreferred ? (
-                  <Icon.StarFilled style={{ width: 14, height: 14 }} />
-                ) : (
-                  <Icon.Star style={{ width: 14, height: 14 }} />
-                )}
-                <span>{isPreferred ? '已设为科研优选' : '设为科研优选'}</span>
-              </button>
-
-              {/* 编辑理论 */}
-              <button
-                type="button"
-                className="kw-filter-pref-btn"
-                onClick={() => onEdit?.(item)}
-                title="直接修改该理论内容与分类"
-              >
-                <Icon.Edit style={{ width: 14, height: 14 }} />
-                <span>编辑理论</span>
-              </button>
-
-              {/* 派生理论 */}
-              <button
-                type="button"
-                className="kw-filter-pref-btn"
-                onClick={() => onFork?.(item)}
-                title="以此理论为模板派生新知识"
-              >
-                <Icon.Fork style={{ width: 14, height: 14 }} />
-                <span>派生</span>
-              </button>
-
-              {/* 删除理论 */}
-              <button
-                type="button"
-                className="kw-filter-pref-btn"
-                style={{ color: 'var(--status-error, #ef4444)' }}
-                onClick={() => setDeleteConfirmOpen(true)}
-                title="从理论知识库中删除此条目"
-              >
-                <Icon.Trash style={{ width: 14, height: 14 }} />
-                <span>删除</span>
-              </button>
-
-              {/* 仅在用户实际修改过内置条目时才显示恢复出厂默认按钮 */}
-              {Boolean(item.is_override) && (
-                <button
-                  type="button"
-                  className="kw-filter-pref-btn"
-                  onClick={() => {
-                    onRestore?.(item.id)
-                    onClose?.()
-                  }}
-                  title="清除全部修改，重置为系统出厂预置状态"
-                >
-                  <Icon.History style={{ width: 14, height: 14 }} />
-                  <span>恢复默认</span>
-                </button>
-              )}
-            </div>
-          )}
-
-          {isPropertyHub && (
-            <div
-              style={{
-                padding: '10px 12px',
-                borderRadius: 8,
-                background: 'var(--surface-secondary, rgba(0, 0, 0, 0.02))',
-                border: '1px solid var(--surface-border)',
-                fontSize: 12.5,
-                lineHeight: 1.6,
-                color: 'var(--content-fg-secondary)',
-              }}
-            >
-              天体物理核心观测量拓扑枢纽 —— 汇集知识图谱中约束、推演或依赖该物理量的理论定律与检验方法。点击下方关联条目可直接跳转浏览详情。
-            </div>
-          )}
-
-          {/* 删除确认对话框 */}
-          {deleteConfirmOpen && (
-            <div
-              style={{
-                padding: 12,
-                background: 'rgba(239, 68, 68, 0.08)',
-                border: '1px solid rgba(239, 68, 68, 0.3)',
-                borderRadius: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <div style={{ fontSize: 13, color: 'var(--content-fg)', fontWeight: 500 }}>
-                确定要从知识库中删除「{item.title || item.label || item.name}」吗？
-              </div>
-              <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-                <button
-                  type="button"
-                  className="kw-mode-btn"
-                  style={{ padding: '4px 10px', fontSize: 12 }}
-                  onClick={() => setDeleteConfirmOpen(false)}
-                >
-                  取消
-                </button>
-                <button
-                  type="button"
-                  style={{
-                    padding: '4px 12px',
-                    fontSize: 12,
-                    background: 'var(--status-error, #ef4444)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: 6,
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    setDeleteConfirmOpen(false)
-                    onDelete?.(item.id)
-                    onClose?.()
-                  }}
-                >
-                  确认删除
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* 纯正 LaTeX 数学公式 */}
-          {item.formula && isValidFormula(item.formula) && (
-            <div className="kw-formula-box">
-              <LatexMath math={item.formula} displayMode />
-            </div>
-          )}
-
-          {/* 核心理论机制阐述 */}
-          {(item.description || (item.formula && !isValidFormula(item.formula))) && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                核心理论机制阐述
-              </span>
-              <div
-                style={{
-                  margin: 0,
-                  fontSize: 13,
-                  lineHeight: 1.68,
-                  color: 'var(--content-fg)',
-                  whiteSpace: 'pre-line',
-                  wordBreak: 'break-word',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                <LatexText text={item.description || item.formula} />
-              </div>
-            </div>
-          )}
-
-          {/* 适用物理条件与假定 */}
-          {validConditions.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                适用物理条件与边界假定
-              </span>
-              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, lineHeight: 1.6, color: 'var(--content-fg)' }}>
-                {validConditions.map((cond, ci) => (
-                  <li key={ci}><LatexText text={typeof cond === 'string' ? cond : cond.text || cond.description} /></li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* 参数区间定义表格 */}
-          {Array.isArray(item.parameters) && item.parameters.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                参数区间与物理量定义
-              </span>
-              <div className="kw-param-grid">
-                {item.parameters.map((p, i) => (
-                  <div key={i} className="kw-param-row">
-                    <span className="kw-param-name">
-                      {p.symbol ? <LatexMath math={p.symbol} /> : p.name}
-                      {p.desc ? ` (${p.desc})` : ''}
-                    </span>
-                    <span className="kw-param-val">
-                      {p.range} {p.unit || ''}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 关联物理量与天体性质 */}
-          {Array.isArray(item.properties) && item.properties.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                关联物理量与天体性质
-              </span>
-              <div className="kw-tag-list">
-                {item.properties.map((prop, i) => {
-                  const cleanProp = typeof prop === 'string' ? prop : prop.name || prop.id || ''
-                  const displayProp = translateProperty(cleanProp)
-                  return (
-                    <span key={i} className="kw-tag">
-                      <Icon.Tag style={{ width: 10, height: 10 }} />
-                      <span>{displayProp}</span>
-                    </span>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* 文献出处 */}
-          {item.sources && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                文献出处与权威依据
-              </span>
-              <div style={{ fontSize: 12, color: 'var(--content-fg)', lineHeight: 1.5, overflowWrap: 'anywhere' }}>
-                {typeof item.sources === 'string' ? item.sources : item.sources?.[0]?.title || ''}
-              </div>
-            </div>
-          )}
-
-          {/* 图谱拓扑关联 */}
-          {relatedLinks.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--content-fg-secondary)' }}>
-                图谱拓扑关联 ({relatedLinks.length})
-              </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 12 }}>
-                {relatedLinks.map((link, idx) => {
-                  const sourceId = link.source?.id || link.source
-                  const targetId = link.target?.id || link.target
-                  const otherId = sourceId === item.id ? targetId : sourceId
-                  const matchedNode = nodeById.get(otherId)
-                  const rawLabel =
-                    (link.source?.id === otherId ? (link.source?.label || link.source?.title) : null) ||
-                    (link.target?.id === otherId ? (link.target?.label || link.target?.title) : null) ||
-                    matchedNode?.title ||
-                    matchedNode?.label ||
-                    translateProperty(otherId)
-                  const relationLabel = translateEdgeLabel(link.label)
-                  return (
-                    <div
-                      key={idx}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: 10,
-                        padding: '6px 10px',
-                        borderRadius: 6,
-                        background: 'var(--surface-secondary, rgba(0,0,0,0.02))',
-                        border: '1px solid var(--surface-border)',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => onSelectNode?.(otherId)}
-                    >
-                      <span style={{ fontWeight: 500, color: 'var(--content-fg)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {rawLabel}
-                      </span>
-                      <span style={{ fontSize: 11, color: 'var(--accent)', flexShrink: 0 }}>
-                        {relationLabel} →
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      </aside>
-    </>
-  )
+  const hub = item.is_property || ['category', 'property', 'aggregate'].includes(item.kind)
+  const relation = item.relations
+  const properties = relation?.properties || []
+  const derived = relation?.derived || []
+  const related = relation?.related || []
+  const base = relation?.base
+  const legacy = !relation ? topologyLinks.filter(link => (link.source?.id || link.source) === item.id || (link.target?.id || link.target) === item.id).map(link => {
+    const source = link.source?.id || link.source, target = link.target?.id || link.target
+    const id = source === item.id ? target : source
+    return { ...(allNodes.find(node => node.id === id) || { id, label: id }), relationLabel: translateEdgeLabel(link.label), provenance: link.provenance }
+  }) : []
+  const title = item.title || item.name || item.label || item.id
+  const relationButton = (node, prefix = '') => {
+    const normalized = typeof node === 'string' ? { id: node, label: node } : node
+    const id = normalized.id || normalized.entry_id || normalized.property_id
+    const entry = ['related','base','derived'].includes(prefix)
+    return <button key={`${prefix}-${id}`} type="button" className="kr-relation" disabled={normalized.unavailable} onClick={() => onSelectNode?.(entry ? { ...normalized, id, kind:'entry' } : id)}>
+      <span><strong>{normalized.title || normalized.label || normalized.name || translateProperty(id)}</strong>{normalized.unavailable && <small>当前不可用 · {id}</small>}{normalized.binding_state === 'unreviewed' && <small>未绑定</small>}{normalized.relationLabel && <small>{normalized.relationLabel}</small>}<small>{knowledgeRelationEvidence(normalized, prefix, { isOverride: item.is_override })}{prefix === 'related' && normalized.direction === 'incoming' ? ' · 由该知识关联到本条目' : prefix === 'related' && normalized.direction === 'both' ? ' · 双向关联' : ''}</small></span><Icon.ChevronRight />
+    </button>
+  }
+  const tabs = [['overview', '概览'], ['relations', '关联'], ['sources', '来源']]
+  return <>
+    <button type="button" className="kr-drawer-backdrop" data-closing={dismissal.closing || undefined} onClick={dismissal.close} aria-label="关闭详情遮罩" tabIndex={-1} />
+    <aside className="kr-drawer" ref={ref} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} aria-busy={loading}
+      data-closing={dismissal.closing || undefined} onAnimationEnd={dismissal.onAnimationEnd} onKeyDownCapture={dismissal.onKeyDownCapture}>
+      <header className="kr-drawer-header"><div>{hub ? <span className="kr-badge">{item.kind === 'category' ? '分类导航' : '物理量导航'}</span> : !item.loading_only && <EntryBadges item={item} categories={categories} showCategory={Boolean(item.category)} />}
+        <h3>{title}</h3></div><button type="button" className="kr-icon-button" data-initial-focus aria-label="关闭详情" onClick={dismissal.close}><Icon.Close /></button></header>
+      <div className="kr-drawer-command">{hub ? <p className="kr-muted">浏览关联条目，保持当前筛选和返回路径。</p> : <>
+        <span className="kr-muted">条目详情</span><EntryActions item={item} readOnly={readOnly || loading} pending={pending} onTogglePreference={onTogglePreference}
+          onEdit={onEdit} onFork={onFork} onDelete={onDelete ? () => setDeleteOpen(true) : undefined} onRestore={onRestore} onError={setError} />
+      </>}</div>
+      {error && <p className="kr-error" role="alert">{error}</p>}
+      {loadError && <div className="kwb-detail-error" role="alert"><span>无法读取条目详情：{loadError}</span><button type="button" onClick={onRetry}>重试</button></div>}
+      <div className="kr-detail-tabs" role="tablist" aria-label="知识详情" ref={tabsRef} onKeyDown={event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+        event.preventDefault()
+        let index = tabs.findIndex(([id]) => id === tab)
+        index = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : 2)) % 3
+        setTab(tabs[index][0]); tabsRef.current.children[index].focus()
+      }}>{tabs.map(([id, label]) => <button key={id} type="button" role="tab" id={`kr-tab-${id}`} aria-controls={`kr-panel-${id}`} aria-selected={tab === id} tabIndex={tab === id ? 0 : -1} onClick={() => setTab(id)}>{label}</button>)}</div>
+      <div className="kr-drawer-body">
+        {loading && <p className="kr-muted" role="status">正在载入完整详情…</p>}
+        {!loading && <><section hidden={tab !== 'overview'} role="tabpanel" id="kr-panel-overview" aria-labelledby="kr-tab-overview">
+          {hub ? <div className="kr-overview"><p>此节点汇集相关知识条目。请选择关联条目阅读完整科学内容。</p><button type="button" className="kr-button kr-button-accent" onClick={() => onShowAllRelations?.(item.id)}>浏览关联条目<Icon.ChevronRight /></button>{item.count != null && <p className="kr-muted">关联 {item.count} 条</p>}</div> : <>
+            {item.is_override && <div className="kr-notice">当前内容包含用户修改。下方来源记录不代表修改内容已经过学术审校。</div>}
+            {item.is_user && !item.is_override && <div className="kr-notice">用户条目 · 来源与物理量绑定请自行核验。</div>}
+            <EntryOverview item={item} />
+          </>}
+        </section>
+        <section hidden={tab !== 'relations'} role="tabpanel" id="kr-panel-relations" aria-labelledby="kr-tab-relations" className="kr-relations">
+          <div className="kr-relation-tools">{onFocus && !hub && <button type="button" className="kr-button" onClick={() => onFocus(item.id)}><Icon.Focus />聚焦图谱</button>}
+            {onShowAllRelations && <button type="button" className="kr-button" onClick={() => onShowAllRelations(item.id)}>查看全部关联</button>}</div>
+          <h4>关联物理量</h4>{properties.length ? properties.map(node => relationButton(node, 'property')) : <p className="kr-missing">未提供已绑定物理量</p>}
+          <div className="kr-related-heading"><h4>关联知识</h4>{!hub && onManageRelations && <button type="button" className="kr-button" disabled={readOnly || pending || loading || item.loading_only} onClick={() => onManageRelations(item)}><Icon.Link />管理关联</button>}</div>{related.length ? related.map(node => relationButton(node, 'related')) : <p className="kr-missing">未建立知识条目关联</p>}
+          <h4>基础条目</h4>{base ? relationButton(base, 'base') : <p className="kr-missing">{relation?.base_unavailable ? '基础条目当前不可用；派生内容已保留。' : '未提供基础条目'}</p>}
+          <h4>派生条目</h4>{derived.length ? derived.map(node => relationButton(node, 'derived')) : <p className="kr-missing">未提供派生条目</p>}
+          {legacy.length > 0 && <><h4>图中关联</h4>{legacy.map(node => relationButton(node, 'graph'))}</>}
+        </section>
+        <section hidden={tab !== 'sources'} role="tabpanel" id="kr-panel-sources" aria-labelledby="kr-tab-sources">
+          <h4>{item.is_override || item.is_user ? '当前用户内容的来源' : '内置条目来源'}</h4>
+          {(item.is_override || item.is_user) && <p className="kr-muted">用户填写的引用与内置审校记录分别展示。</p>}<SourcesList sources={item.sources || item.source} />
+          {item.reviewed_sources && <><h4>内置审校来源</h4><SourcesList sources={item.reviewed_sources} /></>}
+          {!item.reviewed_sources && item.is_override && base?.sources && <><h4>内置条目来源（修改前）</h4><SourcesList sources={base.sources} /></>}
+          <dl className="kr-entry-meta"><div><dt>条目编号</dt><dd>{item.id}</dd></div><div><dt>条目修订</dt><dd>{item.revision ?? '未提供'}</dd></div><div><dt>更新时间</dt><dd>{item.updated_at || '未提供'}</dd></div></dl>
+        </section></>}
+      </div>
+    </aside>
+    {deleteOpen && <DeleteConfirmation item={item} pending={pending} onCancel={() => setDeleteOpen(false)} onConfirm={async id => {
+      if (readOnly) throw new Error('当前知识库为只读状态')
+      await onDelete?.(id); onClose?.()
+    }} />}
+  </>
 }

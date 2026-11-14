@@ -153,7 +153,7 @@ function SectionSkeleton({ rows = 2 }) {
 }
 
 
-export default function RecordDetailDialog({ record, quality, sources = [], loading, onClose, onOpenRecord, onOpenSource, onOpenComparison, dup = null, embedded = false }) {
+export default function RecordDetailDialog({ record, quality, sources = [], loading, onClose, onOpenRecord, onOpenSource, onOpenComparison, dup = null, embedded = false, selection }) {
   const propertyLabel = usePropertyLabel()
   useEffect(() => {
     const onKey = event => { if (!embedded && event.key === 'Escape') onClose() }
@@ -170,10 +170,16 @@ export default function RecordDetailDialog({ record, quality, sources = [], load
   const isDb = isDatabaseRecord(record, source)
   const isSupplement = ['supplement', 'supplementary'].includes(source?.source_type) || prov.source_kind === 'supplement'
   const doi = source?.doi
-  if (record.protocol_version === 2) return <MeasurementDetailV1 {...{record,sources,onClose,onOpenSource,onOpenRecord,onOpenComparison}} />
+  if (record.protocol_version === 2) return <MeasurementDetailV1 {...{record,sources,onClose,onOpenSource,onOpenRecord,onOpenComparison,selection}} />
   return <div onClick={embedded ? undefined : onClose} className={embedded ? 'record-detail-embedded' : 'record-detail-backdrop'}>
     <section onClick={event => event.stopPropagation()} className="record-detail-panel" data-component="record-detail">
-      <header className="record-detail-heading" data-detail-heading tabIndex={-1}><div><div className="record-property-title"><strong>{record.entity_name}</strong><span>{propertyLabel(record.field_name)}</span><DefinitionNote definition={fieldDef} /></div><p className="record-measurement"><strong>{readableText(record.field_value) || '未提供'}</strong>{record.field_unit && <span>{record.field_unit}</span>}</p></div><Button variant="ghost" size="icon" aria-label="关闭记录详情" onClick={onClose}><Icon.Close /></Button></header>
+      <header className="record-detail-heading" data-detail-heading tabIndex={-1}><div><div className="record-property-title"><strong>{record.entity_name}</strong><span>{propertyLabel(record.field_name)}</span><DefinitionNote definition={fieldDef} /></div><p className="record-measurement"><strong>{readableText(record.field_value) || '未提供'}</strong>{record.field_unit && <span>{record.field_unit}</span>}</p></div>
+        <div className="workbench-drawer-actions">
+          {selection && <Button variant="outline" size="sm" aria-pressed={selection.has('records', record.record_id)}
+            onClick={() => selection.toggle('records', [record])}>{selection.has('records', record.record_id) ? '取消选择' : '选择测量'}</Button>}
+          <Button variant="ghost" size="icon" aria-label="关闭记录详情" onClick={onClose}><Icon.Close /></Button>
+        </div>
+      </header>
       <div className="record-detail-body">
         {record.protocol_version === 2 && <RuntimeMeasurement record={record} />}
         <section className="record-source"><h3>出处与证据</h3><div className="provenance-part"><h4>数据出处</h4><p className="record-source-title">{sourceName(source, record.source_id)}</p>{[source?.journal, source?.year].filter(Boolean).length > 0 && <p className="hint">{[source.journal, source.year].filter(Boolean).join(' · ')}</p>}

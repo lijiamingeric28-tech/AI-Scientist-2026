@@ -1,6 +1,7 @@
 import AstroQueryLogo from '@/components/icons/AstroQueryLogo'
 import { Fragment, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import BackToTop from '@/components/ui/BackToTop'
 import { Icon } from '@/components/icons'
 import { chatStageState } from '@/lib/chatStageState'
 import { useToast } from '@/components/ui/toast'
@@ -72,7 +73,7 @@ const EXAMPLE_PROMPTS = [
   '收集 M31 球状星团系统的金属丰度数据',
 ]
 
-function getStageNarrative(stageId, stages, targetName) {
+function getStageNarrative(stageId, stages, targetName, materialSummary) {
   const understandStage = stages.find((s) => s.id === 'understand')
   const actualTarget = understandStage?.target?.main_id || understandStage?.target?.name || (targetName && targetName.length <= 16 ? targetName : null)
   const retrievalStage = stages.find((s) => s.id === 'retrieval')
@@ -108,18 +109,18 @@ function getStageNarrative(stageId, stages, targetName) {
     case 'deliver':
       return '已完成多源数据对照与核验，下面整理交付数据集。'
     case 'insight':
-      return '已完成数据集交付，下面生成天体物理学洞察报告。'
+      return materialSummary ? '已完成数据集交付，下面对每个资料源生成洞察报告。'
+        : '已完成数据集交付，下面生成天体物理学洞察报告。'
     default:
       return null
   }
 }
 
-export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail,
+export default function ChatView({ memory = {}, active = true, task, pipeline, data, config, onNewTask, beforeCreate, focusStage, onOpenInsights, onOpenData, onOpenDetail, followupRequest, onFollowupRequestHandled,
   mode = 'user', isReplaying = false, theme, samplesExpanded = false, samples = [], onOpenSample, onReplaySample, onSwitchToUser }) {
   const { messages, stages, timeline, pending, started, taskDone, sourceScores, submitQuery, submitAnswer } = pipeline
   const [input, setInput] = useState(memory.input || '')
   const [queryPreferences, setQueryPreferences] = useState(memory.retrievalPreferences || null)
-  const [preferencesOpen, setPreferencesOpen] = useState(false)
   const effectivePreferences = queryPreferences || preferencesFromConfig(config)
   const changePreferences = value => { setQueryPreferences(value); memory.retrievalPreferences = value }
   useEffect(() => { memory.input = input }, [input, memory])
@@ -180,6 +181,12 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
     if (selection.prompt && !followupText.trim()) saveFollowupText(selection.prompt)
     requestAnimationFrame(() => textarea.current?.focus())
   }, [followupText, saveFollowupText])
+  useEffect(() => {
+    if (!active || !followupEnabled || !followupRequest || followupRequest.taskId !== task?.task_id
+      || followupRequest.deliveryId !== data.deliveryId || followupRequest.revision !== data.deliveryRevision) return
+    askContext(followupRequest.context)
+    onFollowupRequestHandled?.()
+  }, [active, followupEnabled, followupRequest, task?.task_id, data.deliveryId, data.deliveryRevision, askContext])
   const { toast } = useToast()
   // 历史阶段默认折叠；当前阶段自动展开，用户手动操作优先。
   const [expandedByUser, setExpandedByUser] = useState(memory.expanded || {})
@@ -285,7 +292,6 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
         if (beforeCreate && !(await beforeCreate())) return
         const taskId = await submitQuery(text, { ...effectivePreferences, papers_per_property: count })
         changePreferences(null)
-        setPreferencesOpen(false)
         onNewTask?.(taskId)
       }
       setInput('')
@@ -306,11 +312,9 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
     onSubmit={handleSubmit} selectionCount={context?.recordIds?.length || context?.markers?.length || context?.selections?.length || (context?.prompt ? 1 : 0)}
     onClearSelection={() => setContext({})}
     placeholder={clarifying ? '请在上方回答问题…' : (running && !pending) ? '查询正在运行…' : undefined}
-    preferenceControls={!task && mode === 'user' || followupEnabled && !activeDraft && !pending ?
-      <><button type="button" className="research-action" aria-expanded={preferencesOpen} onClick={() => setPreferencesOpen(value => !value)}>
-        每项 {effectivePreferences.papers_per_property} 篇 · {ADS_SORTS.find(([key]) => key === effectivePreferences.ads_sort)?.[1] || '相关度'}
-      </button>
-      {preferencesOpen && <RetrievalPreferences id="query-retrieval" value={effectivePreferences} onChange={changePreferences} disabled={submitting} />}</> : null}
+    preferenceSummary={`每项 ${effectivePreferences.papers_per_property} 篇 · ${ADS_SORTS.find(([key]) => key === effectivePreferences.ads_sort)?.[1] || '相关度优先'}`}
+    preferenceControls={(!task && mode === 'user') || (followupEnabled && !activeDraft && !pending) ?
+      <RetrievalPreferences id="query-retrieval" value={effectivePreferences} onChange={changePreferences} disabled={submitting} /> : null}
   />
 
   return (
@@ -356,7 +360,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
               }
               const stage = stages.find((s) => s.id === entry.id)
               if (!stage || pipeline.snapshot?.legacy_version || (stage.id === 'done' && !pipeline.presentation)) return null
-              const narrative = getStageNarrative(stage.id, stages, pipeline.presentation?.target_name || task?.title)
+              const narrative = getStageNarrative(stage.id, stages, pipeline.presentation?.target_name || task?.title, pipeline.presentation?.material_summary_mode)
               return (
                 <Fragment key={`s-${entry.id}`}>
                   {narrative && <AiMessage content={narrative} />}
@@ -408,7 +412,7 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                 </div>
               )
             ) : (
-              <div className="empty-state" style={{ paddingTop: 96, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 14 }}>
+              <div className="empty-state research-query-start" style={{ paddingTop: 96, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 14 }}>
                 <AstroQueryLogo width={124} height={91} style={{ marginBottom: 4 }} />
                 <div
                   style={{
@@ -435,77 +439,8 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
                   描述目标天体与想查询的物理性质，智能体将自动完成意图确认、文献检索、数据提取与质检。
                 </div>
 
-                {/* 中央英雄窄胶囊输入舱（外圈顺时针流动深绿光环） */}
-                <div className="hero-composer-container">
-                  <div className="hero-flowing-border-wrap">
-                    <div
-                      className="composer"
-                      style={{
-                        position: 'relative',
-                        zIndex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        padding: '7px 8px 7px 18px',
-                        borderRadius: 28,
-                        background: 'var(--surface-bg)',
-                        border: 'none',
-                        boxShadow: 'none',
-                      }}
-                    >
-                      <Icon.Sparkle style={{ width: 17, height: 17, color: 'var(--accent)', flexShrink: 0 }} />
-                      <textarea
-                        ref={textarea}
-                        rows={1}
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
-                            e.preventDefault()
-                            handleSubmit()
-                          }
-                        }}
-                        disabled={submitting}
-                        placeholder="输入天体名称和想了解的物理性质…"
-                        style={{
-                          flex: 1,
-                          minWidth: 0,
-                          padding: '9px 4px',
-                          fontSize: 14.5,
-                          lineHeight: 1.5,
-                          color: 'var(--content-fg)',
-                          background: 'transparent',
-                          border: 'none',
-                          outline: 'none',
-                          resize: 'none',
-                          minHeight: 22,
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={handleSubmit}
-                        disabled={!input.trim() || submitting}
-                        title="开始查询"
-                        className="active-press"
-                        style={{
-                          width: 38,
-                          height: 38,
-                          borderRadius: '50%',
-                          flexShrink: 0,
-                          border: !input.trim() || submitting ? '1px solid var(--surface-border)' : '1px solid transparent',
-                          cursor: !input.trim() || submitting ? 'not-allowed' : 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          background: !input.trim() || submitting ? 'var(--surface-secondary)' : 'var(--accent)',
-                          color: !input.trim() || submitting ? 'var(--content-fg-tertiary)' : '#ffffff',
-                          transition: 'background .15s, color .15s, transform .12s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }}
-                      >
-                        <Icon.Send style={{ width: 16, height: 16 }} />
-                      </button>
-                    </div>
-                  </div>
+                <div className="hero-composer-container research-hero-composer">
+                  {composer}
                 </div>
 
                 {/* 居中 Prompt 示例药丸 */}
@@ -539,6 +474,12 @@ export default function ChatView({ memory = {}, active = true, task, pipeline, d
             )
           )}
         </div>
+        <BackToTop active={active} onBeforeScroll={() => {
+          userScroll.current = performance.now() + 1200
+          stickToBottomRef.current = false
+          memory.follow = false
+          setReadingHistory(true)
+        }} />
       </div>
 
       {readingHistory && (running || followup.busy) && !clarifying &&

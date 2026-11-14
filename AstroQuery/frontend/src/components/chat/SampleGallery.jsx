@@ -49,6 +49,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
           return (
             <div
               key={s.task_id}
+              data-sample-id={s.task_id}
               onClick={() => {
                 const sel = window.getSelection()
                 if (sel && sel.toString().trim().length > 0) return
@@ -128,6 +129,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                       {prop}
                     </span>
                   ))}
+                  {s.followup_count>0&&<span className="sample-prop-tag">含 {s.followup_count} 轮科研追问 · 可交互试算</span>}
                 </div>
               )}
 

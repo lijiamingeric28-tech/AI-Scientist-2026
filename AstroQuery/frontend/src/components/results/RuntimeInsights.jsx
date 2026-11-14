@@ -15,10 +15,10 @@ function TheoryBasis({ ids, theory }) {
   </section>)
 }
 
-export default function RuntimeInsights({ report, records, relations = false, onOpenRecord }) {
+export default function RuntimeInsights({ report, records, relations = false, onOpenRecord, onOpenKnowledge, savedOnly = false }) {
   if (!report) return <p className="hint">洞察尚未生成；已交付的数据可正常查看和导出。</p>
   if (report.status === 'disabled_pending_content') return <p className="hint">新洞察待知识内容接入，本轮未启用。数据、原文及导出可正常查看；没有调用旧洞察模型。</p>
-  if (report.schema_version === 'InsightReport/4') return <PropertyInsightCards report={report} records={records} onOpenRecord={onOpenRecord} relations={relations} />
+  if (report.schema_version === 'InsightReport/4') return <PropertyInsightCards savedOnly={savedOnly} report={report} records={records} onOpenRecord={onOpenRecord} onOpenKnowledge={onOpenKnowledge} relations={relations} />
   if (report.schema_version === 'InsightReport/3') return <AuthorInsights report={report} records={records} />
   const labels = Object.fromEntries(records.map(record => [record.property_id, record.field_name]))
   if (relations) return <section><p>以下为有条件的一般理论背景，不表示本任务已验证相关性。</p><RelationshipGraph insights={report} /></section>
@@ -34,6 +34,8 @@ function AuthorInsights({ report, records }) {
   const facts = Object.fromEntries(records.map((r, index) => [r.record_id, { ...r, readable: `记录${index + 1} · ${r.field_name}` }]))
   const blocks = Object.fromEntries((report.knowledge_blocks || []).map(b => [b.claim.claim_id, b]))
   return <section><p>解释状态：{{ pending: '正在生成，数据已可查看', complete: '已生成', partial: '部分完成', not_applicable: '无可解释的测量结果' }[report.status] || '尚未完成'}</p>
+    {report.property_states?.filter(item => item.knowledge_coverage?.state === 'missing').map(item =>
+      <p className="hint" key={item.property_id}>{names[item.property_id] || propertyLabel(item.property_id)}：{item.knowledge_coverage.message}</p>)}
     {report.units?.map(unit => <article key={unit.unit_id}><h4>{names[unit.property_id] || propertyLabel(unit.property_id)}</h4>
       {unit.paragraphs.length ? unit.paragraphs.map((p, index) => <section key={index}><strong>{{ source_fact: '本次来源事实', property_definition: '性质含义', theory_background: '知识背景', usage_limit: '条件与使用限制' }[p.kind]}</strong><p>{p.text}</p>
         <details><summary>原文与知识依据</summary>{p.measurement_ids.map(mid => <p key={mid}>{facts[mid]?.readable || '本次原记录'}：原报 {facts[mid]?.source?.raw_value} {facts[mid]?.source?.unit}；原页/行列见该记录详情。</p>)}

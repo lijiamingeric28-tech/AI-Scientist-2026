@@ -53,4 +53,7 @@ test('whole-task timing unions parallel intervals and excludes quality wrapper t
   assert.equal(timingEvent({type:'agent_completed',stage_id:'deliver',agent:'SynthesisAgent'}).stage_id,'insight')
   assert.equal(taskSeconds([{type:'task_started',ts:10},{type:'task_completed',ts:110}],{status:'completed'}).seconds,100)
   assert.equal(taskSeconds([],{status:'completed'}).seconds,null)
+  const recovered = [{type:'task_started',ts:10},{type:'task_failed',ts:30},{type:'task_completed',ts:110}]
+  assert.equal(taskSeconds(recovered,{status:'completed'}).seconds,100)
+  assert.equal(taskSeconds(recovered.slice(0,2),{status:'running'},60000).seconds,50)
 })

@@ -7,8 +7,10 @@ import { ToastProvider, useToast } from '@/components/ui/toast'
 import Sidebar from '@/components/layout/Sidebar'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { useTaskData } from '@/hooks/useTaskData'
+import { useWorkbenchSelection } from '@/hooks/useWorkbenchSelection'
 import { getConfig } from '@/services/api'
 import { loadReplaySpeed } from '@/lib/playbackPreferences'
+import { registryLaunch } from '@/lib/registryWorkbench'
 import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, pauseTask as apiPauseTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks, replayTask as apiReplayTask, updateTaskTitle as apiUpdateTaskTitle } from '@/services/api'
 import { usePipeline } from '@/hooks/usePipeline'
 import { useTheme } from '@/hooks/useTheme'
@@ -51,6 +53,7 @@ function AppInner() {
   const [executionRequest,setExecutionRequest]=useState(null)
   const [managementResults,setManagementResults]=useState([])
   const [dataRequest, setDataRequest] = useState(null)
+  const [followupRequest, setFollowupRequest] = useState(null)
   const viewMemory = useRef({})
   const uiMemory = useRef({})
   const [helpOpen, setHelpOpen] = useState(false)
@@ -69,12 +72,10 @@ function AppInner() {
   const player = usePlayback(playbackRequest)
   const [filter, setFilter] = useState('all')
   const [settingsOpen, setSettingsOpen] = useState(
-    () => initialRoute.current.get('view') === 'knowledge' || initialRoute.current.get('settings') === 'knowledge',
+    () => Boolean(registryLaunch(location.hash).tab),
   )
   const [settingsLaunch, setSettingsLaunch] = useState(() =>
-    initialRoute.current.get('view') === 'knowledge' || initialRoute.current.get('settings') === 'knowledge'
-      ? { tab: 'knowledge', studioMode: 'graph' }
-      : { tab: null, studioMode: null },
+    registryLaunch(location.hash),
   )
   const [view, setView] = useState(() => {
     const initialView = initialRoute.current.get('view')
@@ -93,16 +94,24 @@ function AppInner() {
   // 2026-09-02：侧栏双模式 —— user=我的查询（真实任务）/ sample=演示样例（内嵌样例）
   const [mode, setMode] = useState('user')
   const [publishedDemos,setPublishedDemos]=useState([]),[demoError,setDemoError]=useState('')
-  useEffect(()=>{let disposed=false;fetch(`${import.meta.env.BASE_URL}demo-catalog.json`,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error('演示目录暂不可读');return r.json()}).then(v=>{if(!Array.isArray(v.samples))throw new Error('演示目录格式无效');if(!disposed)setPublishedDemos(v.samples.map(s=>({...s,title:s.name||s.title,status:s.status||'completed'})))}).catch(e=>{if(!disposed)setDemoError(e.message)});return()=>{disposed=true}},[])
   // The gallery and sidebar use the curator's published order.
   const [samplesExpanded, setSamplesExpanded] = useState(false)
+  useEffect(()=>{
+    if((mode!=='sample'&&!samplesExpanded)||publishedDemos.length)return
+    const controller=new AbortController();let disposed=false
+    Promise.resolve().then(()=>{
+      if(controller.signal.aborted)return
+      return fetch(`${import.meta.env.BASE_URL}demo-catalog.json`,{cache:'no-cache',signal:controller.signal}).then(r=>{if(!r.ok)throw new Error('演示目录暂不可读');return r.json()}).then(v=>{if(!Array.isArray(v.samples))throw new Error('演示目录格式无效');if(!disposed){setPublishedDemos(v.samples.map(s=>({...s,title:s.name||s.title,status:s.status||'completed'})));setDemoError('')}})
+    }).catch(e=>{if(!disposed&&e.name!=='AbortError')setDemoError(e.message)})
+    return()=>{disposed=true;controller.abort()}
+  },[mode,samplesExpanded,publishedDemos.length])
   const { toast } = useToast()
   const { theme, toggleTheme } = useTheme()
   const isNarrow = useMediaQuery('(max-width: 1023px)')
 
   const selected = tasks.find((t) => t.task_id === selectedId) || (directTask?.task_id === selectedId ? directTask : selectedId ? {task_id:selectedId,title:'正在读取任务…'} : null)  // CR-03: 契约 D8-4 键名 task_id
   useEffect(()=>{
-    const restore=()=>{const route=new URLSearchParams(location.hash.slice(1));setPlaybackRequest(null);setSelectedId(route.get('task'));if(route.get('view')==='knowledge'||route.get('settings')==='knowledge'){setView('chat');setSettingsLaunch({tab:'knowledge',studioMode:'graph'});setSettingsOpen(true)}else{setView(['chat','data','workflow'].includes(route.get('view'))?route.get('view'):'chat')}setDetail(null);setRouteRevision(n=>n+1)}
+    const restore=()=>{const route=new URLSearchParams(location.hash.slice(1));const launch=registryLaunch(location.hash);setPlaybackRequest(null);setSelectedId(route.get('task'));if(launch.tab){setView('chat');setSettingsLaunch(launch);setSettingsOpen(true)}else{setView(['chat','data','workflow'].includes(route.get('view'))?route.get('view'):'chat')}setDetail(null);setRouteRevision(n=>n+1)}
     window.addEventListener('hashchange',restore);window.addEventListener('popstate',restore)
     return()=>{window.removeEventListener('hashchange',restore);window.removeEventListener('popstate',restore)}
   },[])
@@ -357,7 +366,7 @@ function AppInner() {
     setView('data'); setDetail(null)
     setDataRequest(prev => ({ section, ...extra, seq: (prev?.seq || 0) + 1 }))
   }
-  const handleOpenInsights = () => openData('analysis')
+  const handleOpenInsights = () => openData('candidates')
   const acceptConfig = next => { setConfig(next); setConfigError('') }
   const refreshConfig = async (guide = false) => {
     try {
@@ -391,7 +400,7 @@ function AppInner() {
   const ended = ['completed', 'cancelled', 'failed', 'error', 'budget_exhausted', 'definition_invalidated'].includes(selected?.status) || (pipelineState.taskId === selected?.task_id && pipelineState.taskDone)
   const pipeline = ended ? { ...pipelineState, pending: null } : pipelineState
 
-  const revisionScope = `${selectedId}:${Boolean(player)}`
+  const revisionScope = `${selectedId}:${Boolean(player)}:${pipeline.snapshot?.delivery_ref?.id||selected?.delivery_ref?.id||''}`
   const [revisionChoice, setRevisionChoice] = useState(null)
   const resultRevision = revisionChoice?.scope === revisionScope ? revisionChoice.revision : null
   const setResultRevision = revision => setRevisionChoice({scope: revisionScope, revision})
@@ -405,6 +414,12 @@ function AppInner() {
   const pending = pipeline.pending
   const contextEpoch=useRef(0), contextRead = useRef(null)
   useEffect(() => { contextEpoch.current++; setDetail(null); return () => contextRead.current?.abort() }, [selectedId,dataTask?.delivery_ref?.version])
+  const resultSelection = useWorkbenchSelection(data.taskId, data.deliveryId, data.deliveryRevision)
+  const askFromResults = context => {
+    setFollowupRequest({ taskId: data.taskId, deliveryId: data.deliveryId, revision: data.deliveryRevision, context })
+    setDetail(null)
+    setView('chat')
+  }
   const closeDetail = () => { contextEpoch.current++; contextRead.current?.abort(); setDetail(null) }
   const openContext = async next => {
     const epoch = ++contextEpoch.current
@@ -431,8 +446,6 @@ function AppInner() {
           detail = { type: 'knowledge', block: payload.block }
         }
         if (controller.signal.aborted || epoch !== contextEpoch.current) return
-        if (detail.type === 'source') data.ensure('materials')
-        if (detail.type === 'record') data.ensure('sources', 'quality')
         setDetail({ ...detail, agentContext: true, answerScope: scope })
       } catch (error) {
         if (!controller.signal.aborted && epoch === contextEpoch.current)
@@ -440,9 +453,11 @@ function AppInner() {
       }
       return
     }
-    if (next?.type === 'source') data.ensure('records', 'sources', 'materials')
-    if (next?.type === 'figure') data.ensure('sources', 'figures')
-    if (next?.type === 'record') data.ensure('sources', 'quality')
+    if (dataTask?.legacy_version) {
+      if (next?.type === 'source') data.ensure('records', 'sources', 'materials')
+      if (next?.type === 'figure') data.ensure('sources', 'figures')
+      if (next?.type === 'record') data.ensure('sources', 'quality')
+    }
     if (next?.type === 'record' && next.record.details_loaded === false) {
       setDetail({type:'loading-record',record:next.record})
       const controller = new AbortController()
@@ -450,12 +465,28 @@ function AppInner() {
       try {
         const targetTaskId = selectedId || next.record.task_id || next.record.source?.task_id
         const record = await getRecord(targetTaskId,next.record.delivery_id,next.record.delivery_revision,next.record.record_id,{signal:controller.signal})
+        if(!record) throw new Error('当前修订没有此记录')
+        const linkedSource = await data.getDetail('source',record.source_id,{signal:controller.signal})
         if (controller.signal.aborted || epoch !== contextEpoch.current) return
-        next = {...next,record}
+        next = {...next,record,linkedSource}
       } catch (error) {
         if (!controller.signal.aborted && epoch === contextEpoch.current) { setDetail(null); toast('记录详情读取失败：'+error.message,'error') }
         return
       }
+    }
+    if (!dataTask?.legacy_version && ['source','figure'].includes(next?.type)) {
+      const controller=new AbortController()
+      contextRead.current=controller
+      try {
+        const type=next.type, item=next[type], identifier=item[`${type}_id`]
+        if(identifier) {
+          const full=await data.getDetail(type,identifier,{signal:controller.signal})
+          if(!full)throw new Error('当前修订没有此详情')
+          const linkedSource=type==='figure'&&full.source_id?await data.getDetail('source',full.source_id,{signal:controller.signal}):next.linkedSource
+          if(controller.signal.aborted||epoch!==contextEpoch.current)return
+          next={...next,[type]:{...item,...full},linkedSource}
+        }
+      } catch(error){if(!controller.signal.aborted&&epoch===contextEpoch.current)toast('详情读取失败：'+error.message,'error');return}
     }
     if (next?.type === 'stage') { setView('workflow'); setDetail(null); setExecutionRequest({id:next.stageId,seq:Date.now()}) }
     else setDetail(next)
@@ -463,12 +494,10 @@ function AppInner() {
   const deepRecord=useRef(null)
   useEffect(()=>{
     const params=new URLSearchParams(location.hash.slice(1)),id=params.get('record'),key=`${selectedId}:${id}:${routeRevision}`
-    if(!id||params.get('task')!==selectedId||deepRecord.current===key||!data.resources.records.data)return
-    const record=data.resources.records.data.find(r=>r.record_id===id)
-    if(!record)return
+    if(!id||params.get('task')!==selectedId||deepRecord.current===key||!data.deliveryId||view!=='data')return
     deepRecord.current=key
     setDataRequest({section:'records',recordId:id,seq:Date.now()})
-  },[selectedId,view,data.resources.records.data,routeRevision])
+  },[selectedId,view,data.deliveryId,routeRevision])
   const changeView = next => { setHelpOpen(false); setView(next); closeDetail() }
   const memoryKey = player ? 'playback:'+selectedId : selectedId || mode
   const taskMemory = uiMemory.current[memoryKey] ||= { chat: {}, data: {}, workflow: {} }
@@ -578,15 +607,15 @@ function AppInner() {
           {helpOpen && <ViewContent label="帮助"><HelpPage onReturn={() => setHelpOpen(false)} onSamples={() => { setHelpOpen(false);handleModeChange('sample') }} onQuery={() => { handleModeChange('user'); handleNew() }} onSettings={() => { setOnboarding(false); setSettingsOpen(true) }} pending={pending} onPending={() => { setHelpOpen(false); handleShowStageInChat(pending?.stageId || 'understand') }} /></ViewContent>}
           <div ref={viewsRef} data-sliding={views.moving || undefined} style={{ display: helpOpen ? 'none' : 'flex' }} key={memoryKey} className="task-views slide-panes">
             <div className="task-view" {...views.paneProps('chat', 'flex')}>
-              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView isReplaying={Boolean(player || playbackRequest || selected?.kind === 'replay')} theme={theme} config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
+              {views.hasVisited('chat') && <ViewContent label="对话">{!selected || pipeline.conversationReady ? <ChatView isReplaying={Boolean(player || playbackRequest || selected?.kind === 'replay')} followupRequest={followupRequest} onFollowupRequestHandled={() => setFollowupRequest(null)} theme={theme} config={config} memory={taskMemory.chat} active={!helpOpen && view === 'chat'} task={selected} pipeline={pipeline} data={data} onNewTask={handleNewTask} beforeCreate={ensureLiveReady} focusStage={focusStage} onOpenInsights={handleOpenInsights} onOpenData={openData} onOpenDetail={openContext} mode={mode} samples={publishedDemos} samplesExpanded={samplesExpanded} onOpenSample={id=>{handleSelect(id);setView('data')}} onReplaySample={handleReplay} onSwitchToUser={() => handleModeChange('user')} /> : <ViewLoading label={player ? '回放' : '对话'} />}</ViewContent>}
             </div>
-            <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
+            <div className="task-view" {...views.paneProps('data', 'flex')}>{views.hasVisited('data') && <ViewContent label="数据结果" resetKey={`${data.deliveryId}:${data.deliveryRevision}`}><DataView memory={taskMemory.data} task={dataTask} data={data} pipeline={pipeline} request={dataRequest} onOpenDetail={openContext} onSelectRevision={setResultRevision} onAsk={askFromResults} selection={resultSelection} active={!helpOpen && view === 'data'} /></ViewContent>}</div>
             <div className="task-view" {...views.paneProps('workflow', 'flex')}>{views.hasVisited('workflow') && <ViewContent label="执行明细"><WorkflowView request={executionRequest} memory={taskMemory.workflow} active={!helpOpen && view === 'workflow'} onOpenData={openData} task={selected} pipeline={pipeline} data={data} onGoChat={() => handleShowStageInChat(pending?.stageId || 'understand')} onShowStageInChat={handleShowStageInChat} onOpenDetail={openContext} /></ViewContent>}</div>
           </div>
           </div>
         </main>
       </div>
-      {detail && <ViewContent label="详情" resetKey={memoryKey} onDismiss={closeDetail}><ContextDrawer onOpenResults={openData} detail={detail} data={data} pipeline={pipeline} onClose={closeDetail} onChange={setDetail} onShowStageInChat={handleShowStageInChat} /></ViewContent>}
+      {detail && <ViewContent label="详情" resetKey={memoryKey} onDismiss={closeDetail}><ContextDrawer selection={view === 'data' && !dataTask?.readOnly && !dataTask?.historicalRevision && (!detail.answerScope || (detail.answerScope.delivery_id === data.deliveryId && detail.answerScope.delivery_revision === data.deliveryRevision)) ? resultSelection : undefined} onOpenResults={openData} detail={detail} data={data} pipeline={pipeline} onClose={closeDetail} onChange={setDetail} onShowStageInChat={handleShowStageInChat} /></ViewContent>}
     </div></PropertyNamesProvider>
   )
 }

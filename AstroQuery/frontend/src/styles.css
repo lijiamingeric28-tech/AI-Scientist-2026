@@ -1650,7 +1650,7 @@ details[open] > .excerpt-toggle .excerpt-collapse { display:inline; }
 @keyframes modal-out { to { opacity:0; transform:translateY(6px); } }
 @keyframes drawer-out { to { opacity:0; transform:translateX(14px); } }
 @keyframes backdrop-out { to { opacity:0; } }
-.settings-dialog[data-closing],.export-center[data-closing],.confirm-dialog[data-closing],.help-image-backdrop section[data-closing],.glass.animate-modal-in[data-closing],
+.settings-dialog[data-closing],.settings-studio-dialog[data-closing],.export-center[data-closing],.confirm-dialog[data-closing],.help-image-backdrop section[data-closing],.glass.animate-modal-in[data-closing],
 [data-component='figure-lightbox'][data-closing],[aria-label='原文定位图'][data-closing] { animation:modal-out .14s var(--motion-ease) forwards; pointer-events:none; }
 .context-drawer[data-closing] { animation:drawer-out .16s var(--motion-ease) forwards; pointer-events:none; }
 .settings-overlay[data-closing],.context-backdrop[data-closing],.help-image-backdrop[data-closing] { animation:backdrop-out .14s var(--motion-ease) forwards; }

@@ -26,12 +26,16 @@ const roles = {
 export default function ResearchMaterialDetail({
   source,
   records = [],
+  recordsTotal,
+  recordsStatus = 'success',
   materials = [],
   sources = [],
   scope,
   onOpenRecord,
   onOpenSource,
   onOpenFigure,
+  embeddedInfo = false,
+  summary,
 }) {
   const initial = materials.find((m) => m.material_id === (source.material_id || source.source_id))
   const [loaded, setLoaded] = useState(null)
@@ -43,13 +47,14 @@ export default function ResearchMaterialDetail({
     let valid = true
     setLoaded(null)
     setError('')
-    if (scope?.deliveryId)
+    if (scope?.deliveryId && !embeddedInfo)
       api
         .getMaterial(
           scope.taskId,
           scope.deliveryId,
           scope.deliveryRevision,
           source.material_id || source.source_id,
+          {atSeq:scope.atSeq,sealedOnly:scope.sealedOnly},
         )
         .then((row) => {
           if (valid) setLoaded(row)
@@ -64,9 +69,12 @@ export default function ResearchMaterialDetail({
     scope?.taskId,
     scope?.deliveryId,
     scope?.deliveryRevision,
+    scope?.atSeq,
+    scope?.sealedOnly,
     source.material_id,
     source.source_id,
     retry,
+    embeddedInfo,
   ])
 
   const item = { ...source, ...initial, ...loaded, task_id: scope?.taskId || source.task_id }
@@ -76,6 +84,7 @@ export default function ResearchMaterialDetail({
   const chosen = records.filter(
     (r) => (item.record_ids || []).includes(r.record_id) || r.source_id === item.source_id,
   )
+  const linkedRecord = id => records.find(record=>record.record_id===id) || {record_id:id,task_id:scope?.taskId,delivery_id:scope?.deliveryId,delivery_revision:scope?.deliveryRevision,details_loaded:false}
   const cited = item.citations || []
   const tableViews = [
     ...new Map(
@@ -112,15 +121,16 @@ export default function ResearchMaterialDetail({
             )}
           </div>
 
-          <h3 className="citation-hero-title">
+          {!embeddedInfo && <h3 className="citation-hero-title">
             {titleText({ title: item.title })}
-          </h3>
+          </h3>}
 
           <p className="citation-subtitle">
             本条目为从原作者论文正文中提取的第三方参考文献证据，记录原作者在参数测算、消光改正或方法对照时所依赖的原始引文依据。
           </p>
         </div>
 
+        {summary}
         {/* 原文引用关系与金句证据舱 */}
         {cited.length > 0 && (
           <section className="citation-relations-section" style={{ marginTop: 20 }}>
@@ -163,19 +173,19 @@ export default function ResearchMaterialDetail({
                   <p className="hint">原文中未抓取到上下文金句。</p>
                 )}
 
-                {records.some((m) => m.record_id === r.measurement_id) && (
+                {r.measurement_id && (
                   <div className="citation-record-link-row">
                     <button
                       type="button"
                       className="citation-jump-record-btn active-press"
                       onClick={() =>
-                        onOpenRecord?.(records.find((m) => m.record_id === r.measurement_id))
+                        onOpenRecord?.(linkedRecord(r.measurement_id))
                       }
                     >
                       <span>
                         查看此引用支撑的天体测量：
                         <strong>
-                          {records.find((m) => m.record_id === r.measurement_id)?.field_name} (
+                          {records.find((m) => m.record_id === r.measurement_id)?.field_name || '查看完整测量'} (
                           {records.find((m) => m.record_id === r.measurement_id)?.field_value}{' '}
                           {records.find((m) => m.record_id === r.measurement_id)?.field_unit})
                         </strong>
@@ -245,7 +255,7 @@ export default function ResearchMaterialDetail({
           )}
         </div>
 
-        <h3 className="research-hero-title">{titleText(item)}</h3>
+        {!embeddedInfo && <h3 className="research-hero-title">{titleText(item)}</h3>}
 
         {!!authors.length && (
           <div className="research-hero-authors-row">
@@ -395,6 +405,7 @@ export default function ResearchMaterialDetail({
         )}
       </div>
 
+      {summary}
       {/* 4. 原摘要专属阅读舱 */}
       {(item.kind === 'paper' || item.kind === 'cited') && (item.abstract || meta.abstract) && (
         <section className="abstract-section">
@@ -479,13 +490,12 @@ export default function ResearchMaterialDetail({
 
       {/* 7. 数据表结构与核验依据 (星表或补充材料) */}
       {['catalog', 'official_attachment'].includes(item.kind) && (
-        <section className="catalog-structure-section" style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--surface-border)' }}>
-          <div className="section-title-row" style={{ marginBottom: 12 }}>
-            <h4 style={{ fontSize: 15.5, fontWeight: 650, color: 'var(--content-fg)', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Icon.Database style={{ width: 16, height: 16, color: 'var(--accent)' }} />
-              <span>数据表结构与核验依据</span>
-            </h4>
-          </div>
+        <details className="catalog-structure-section catalog-structure-disclosure">
+          <summary>
+            <Icon.Database style={{ width: 16, height: 16, color: 'var(--accent)' }} />
+            数据表结构与核验依据
+            <Icon.ChevronDown className="catalog-structure-chevron" style={{ width: 16, height: 16 }} />
+          </summary>
 
           {tableViews.length ? (
             tableViews.map((v) => (
@@ -549,7 +559,7 @@ export default function ResearchMaterialDetail({
               </div>
             </div>
           )}
-        </section>
+        </details>
       )}
 
       {/* 8. 本轮性质关联阶段进度 */}
@@ -583,12 +593,12 @@ export default function ResearchMaterialDetail({
       )}
 
       {/* 9. 实际贡献测量 */}
-      {item.kind !== 'cited' && (
+      {!embeddedInfo && item.kind !== 'cited' && (
         <section style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--surface-border)' }}>
           <div className="section-title-row">
             <h4>
               <Icon.FileText style={{ width: 16, height: 16, color: 'var(--accent)' }} />
-              实际贡献测量 · {chosen.length} 条
+              实际贡献测量 · {recordsStatus==='success' ? recordsTotal ?? chosen.length : '…'} 条
             </h4>
           </div>
           {chosen.length ? (
@@ -619,7 +629,7 @@ export default function ResearchMaterialDetail({
               ))}
             </div>
           ) : (
-            <p className="hint">此资料没有测量进入当前交付修订。</p>
+            <p className="hint">{recordsStatus==='success'?'此资料没有测量进入当前交付修订。':recordsStatus==='error'?'关联记录读取失败，请重试。':'正在读取关联记录…'}</p>
           )}
         </section>
       )}
@@ -658,12 +668,12 @@ export default function ResearchMaterialDetail({
                   </blockquote>
                 </div>
               )}
-              {records.some((m) => m.record_id === r.measurement_id) && (
+              {r.measurement_id && (
                 <button
                   type="button"
                   className="citation-jump-record-btn active-press"
                   onClick={() =>
-                    onOpenRecord?.(records.find((m) => m.record_id === r.measurement_id))
+                    onOpenRecord?.(linkedRecord(r.measurement_id))
                   }
                   style={{ marginTop: 8 }}
                 >
@@ -676,7 +686,7 @@ export default function ResearchMaterialDetail({
       )}
 
       {/* 11. 研究图像 */}
-      {item.figures?.length > 0 && (
+      {!embeddedInfo && item.figures?.length > 0 && (
         <section style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--surface-border)' }}>
           <div className="section-title-row">
             <h4>

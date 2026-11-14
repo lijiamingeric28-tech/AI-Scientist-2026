@@ -1,476 +1,215 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '@/components/icons'
-import { LatexMath } from '@/components/results/LatexMath'
-import { KNOWLEDGE_CATEGORIES, isValidFormula } from './knowledgeConstants'
+import { KNOWLEDGE_CATEGORIES } from './knowledgeConstants'
+import { getKnowledgeItem, getKnowledgeCategories, createKnowledgeCategory as createCategoryRequest } from '@/services/api'
+import { categoryMutationResult } from '@/lib/knowledgeCategories'
+import { acceptKnowledgeConflict, buildKnowledgePayload, createKnowledgeCategory, createKnowledgeDraft, createSaveGate, knowledgeDraftComparison, loadKnowledgeConflict, propertyChoices, splitValues } from './knowledgeReading'
+import { EntryOverview, SourcesList, useReadingFocus } from './knowledgeReadingParts'
+import KnowledgeLinkPicker from './KnowledgeLinkPicker'
+import './knowledgeReading.css'
 
 export default function KnowledgeEditorModal({
-  isOpen,
-  initialData,
-  mode = 'create',
-  existingCategories = [],
-  onSave,
-  onClose,
+  isOpen, initialData, mode = 'create', existingCategories, knownProperties = [],
+  readOnly = false, pending = false, connecting = false, onSave, onClose, onReloadLatest, onCreateCategory, categoryCatalogReady, onReconnect,
 }) {
-  if (!isOpen) return null
-
-  const isFork = mode === 'fork'
-  const isEdit = mode === 'edit'
-  const isOverrideBase = isEdit && initialData && initialData.is_user === false
-
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('user_private')
-  const [isCustomCategory, setIsCustomCategory] = useState(false)
-  const [customCategoryName, setCustomCategoryName] = useState('')
-  const [formula, setFormula] = useState('')
-  const [description, setDescription] = useState('')
-  const [conditionsText, setConditionsText] = useState('')
-  const [propertiesText, setPropertiesText] = useState('')
-  const [tagsText, setTagsText] = useState('')
-  const [sources, setSources] = useState('')
-  const [preferred, setPreferred] = useState(false)
-  const [paramsList, setParamsList] = useState([
-    { name: '', symbol: '', range: '', unit: '', desc: '' },
-  ])
-  const [errorMsg, setErrorMsg] = useState('')
-
-  // Build combined available category list
-  const availableCategories = useMemo(() => {
-    const list = [...KNOWLEDGE_CATEGORIES.filter(c => c.id !== 'all')]
-    const ids = new Set(list.map(c => c.id))
-    for (const c of existingCategories) {
-      if (c.id && c.id !== 'all' && !ids.has(c.id)) {
-        ids.add(c.id)
-        list.push({ id: c.id, label: c.label || c.id, is_custom: true })
-      }
-    }
-    return list
-  }, [existingCategories])
-
+  const [draft, setDraft] = useState(() => createKnowledgeDraft(initialData, mode))
+  const [editingBase, setEditingBase] = useState(initialData)
+  const [conflict, setConflict] = useState(null)
+  const [loadingLatest, setLoadingLatest] = useState(false)
+  const [recoveryError, setRecoveryError] = useState('')
+  const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [discardOpen, setDiscardOpen] = useState(false)
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [propertySearch, setPropertySearch] = useState('')
+  const [createdCategories, setCreatedCategories] = useState([])
+  const [categoryCreateOpen, setCategoryCreateOpen] = useState(false)
+  const [categoryName, setCategoryName] = useState('')
+  const [categoryError, setCategoryError] = useState('')
+  const [categorySaving, setCategorySaving] = useState(false)
+  const [standaloneCatalog, setStandaloneCatalog] = useState(null)
+  const [categoryLoadError, setCategoryLoadError] = useState('')
+  const [categoryReload, reloadCategories] = useState(0)
+  const categoryGate = useRef(createSaveGate())
+  const categoryInput = useRef(null), categorySelect = useRef(null)
+  const baseline = useRef(JSON.stringify(createKnowledgeDraft(initialData, mode)))
+  const gate = useRef(createSaveGate())
+  const recoverySequence = useRef(0)
+  const ref = useRef(null)
+  const discardRef = useRef(null)
+  const locked = readOnly || pending || saving || categorySaving
+  const categoriesReady = categoryCatalogReady ?? (Array.isArray(existingCategories) || standaloneCatalog !== null)
+  const dirty = JSON.stringify(draft) !== baseline.current || Boolean(categoryName.trim())
+  const requestClose = () => {
+    if (saving || categorySaving || gate.current.pending || categoryGate.current.pending) return
+    if (dirty) setDiscardOpen(true)
+    else onClose?.()
+  }
+  useReadingFocus(ref, Boolean(isOpen), requestClose, true)
+  useReadingFocus(discardRef, discardOpen, () => setDiscardOpen(false), true)
   useEffect(() => {
-    if (initialData) {
-      setTitle(
-        isFork
-          ? `${initialData.title || initialData.name || ''} (派生版)`
-          : initialData.title || initialData.name || ''
-      )
-      const rawCat = initialData.category || 'physical_laws'
-      const matched = availableCategories.some(c => c.id === rawCat || c.label === rawCat)
-      if (matched) {
-        setCategory(rawCat)
-        setIsCustomCategory(false)
-        setCustomCategoryName('')
-      } else {
-        setCategory('__custom__')
-        setIsCustomCategory(true)
-        setCustomCategoryName(rawCat)
-      }
-
-      setFormula(initialData.formula || initialData.claim?.formula || '')
-      setDescription(initialData.description || initialData.claim?.text || initialData.content || '')
-      setConditionsText(Array.isArray(initialData.conditions) ? initialData.conditions.join('\n') : (initialData.conditions || ''))
-      setPropertiesText(Array.isArray(initialData.properties) ? initialData.properties.join(', ') : (initialData.properties || ''))
-      setTagsText(Array.isArray(initialData.tags) ? initialData.tags.join(', ') : (initialData.tags || ''))
-      setSources(typeof initialData.sources === 'string' ? initialData.sources : initialData.sources?.[0]?.title || initialData.source || '')
-      setPreferred(Boolean(initialData.user_preference === 'preferred' || initialData.preferred))
-      if (Array.isArray(initialData.parameters) && initialData.parameters.length > 0) {
-        setParamsList(initialData.parameters.map(p => ({
-          name: p.name || '',
-          symbol: p.symbol || '',
-          range: p.range || '',
-          unit: p.unit || '',
-          desc: p.desc || p.description || '',
-        })))
-      } else {
-        setParamsList([{ name: '', symbol: '', range: '', unit: '', desc: '' }])
-      }
-    } else {
-      setTitle('')
-      setCategory(availableCategories[0]?.id || 'physical_laws')
-      setIsCustomCategory(false)
-      setCustomCategoryName('')
-      setFormula('')
-      setDescription('')
-      setConditionsText('')
-      setPropertiesText('')
-      setTagsText('')
-      setSources('')
-      setPreferred(false)
-      setParamsList([{ name: '', symbol: '', range: '', unit: '', desc: '' }])
+    if (!isOpen) return
+    const next = createKnowledgeDraft(initialData, mode)
+    setDraft(next); baseline.current = JSON.stringify(next)
+    setEditingBase(initialData); setConflict(null); setLoadingLatest(false); setRecoveryError('')
+    setError(''); setDiscardOpen(false); setPreviewOpen(false); setPropertySearch('')
+    setCreatedCategories([]); setCategoryCreateOpen(false); setCategoryName(''); setCategoryError('')
+    return () => { recoverySequence.current += 1 }
+  }, [isOpen, initialData?.id, mode])
+  useEffect(() => {
+    if (!isOpen || existingCategories) return undefined
+    const controller = new AbortController()
+    setCategoryLoadError('')
+    getKnowledgeCategories({ signal: controller.signal }).then(result => {
+      if (!Array.isArray(result?.items)) throw new Error('分类目录响应不完整')
+      if (!controller.signal.aborted) setStandaloneCatalog(result.items)
+    }).catch(failure => { if (!controller.signal.aborted) setCategoryLoadError(failure.message || '无法读取分类目录') })
+    return () => controller.abort()
+  }, [isOpen, existingCategories, categoryReload])
+  const categories = useMemo(() => {
+    const catalog = existingCategories || standaloneCatalog || KNOWLEDGE_CATEGORIES
+    const unique = new Map(catalog.filter(category => category.id !== 'all').map(category => [category.id, category]))
+    for (const category of createdCategories) if (category.id !== 'all') unique.set(category.id, category)
+    return [...unique.values()]
+  }, [existingCategories, standaloneCatalog, createdCategories])
+  const categoryUnavailable = categoriesReady && !categories.some(category => category.id === draft.category)
+  useEffect(() => { if (categoryCreateOpen) categoryInput.current?.focus() }, [categoryCreateOpen])
+  const properties = propertyChoices(splitValues(draft.propertiesText), knownProperties)
+  const matchingProperties = knownProperties.filter(property => !propertySearch || `${property.id} ${property.label}`.toLocaleLowerCase().includes(propertySearch.toLocaleLowerCase()))
+  const change = (field, value) => setDraft(previous => ({ ...previous, [field]: value }))
+  const cancelCategory = () => { setCategoryCreateOpen(false); setCategoryName(''); setCategoryError(''); categorySelect.current?.focus() }
+  const confirmCategory = async () => {
+    if (locked || !categoriesReady || categoryGate.current.pending) return
+    try {
+      const proposed = createKnowledgeCategory(categoryName, categories)
+      setCategorySaving(true); setCategoryError('')
+      const result = await categoryGate.current.run(async () => categoryMutationResult(
+        await (onCreateCategory ? onCreateCategory(proposed.label) : createCategoryRequest({ label: proposed.label })), 'create'))
+      const category = result.value.category
+      setCreatedCategories(previous => [...previous, category]); change('category', category.id); cancelCategory()
+    } catch (failure) { setCategoryError(failure.message); categoryInput.current?.focus() }
+    finally { setCategorySaving(false) }
+  }
+  const changeParam = (index, field, value) => setDraft(previous => ({ ...previous, parameters: previous.parameters.map((parameter, current) => current === index ? { ...parameter, [field]: value } : parameter) }))
+  const addProperty = value => {
+    if (!value.trim()) return
+    const property = propertyChoices([value.trim()], knownProperties)[0]
+    change('propertiesText', [...new Set([...splitValues(draft.propertiesText), property.id])].join(', '))
+    setPropertySearch('')
+  }
+  const submit = async event => {
+    event.preventDefault()
+    if (locked || conflict || categoryCreateOpen || !categoriesReady || categoryUnavailable || gate.current.pending) return
+    setError('')
+    let payload
+    try { payload = buildKnowledgePayload(draft, editingBase, mode) }
+    catch (failure) { setError(failure.message); return }
+    setSaving(true)
+    try {
+      const result = await gate.current.run(() => {
+        if (!onSave) throw new Error('保存服务不可用，请稍后重试')
+        return onSave(payload, mode)
+      })
+      if (result.saved) { baseline.current = JSON.stringify(draft); onClose?.() }
+    } catch (failure) {
+      setError(failure.message || '保存失败。编辑内容已保留，请重试。')
+      if (failure.status === 409 && mode === 'edit') { setConflict({ latest: null }); setRecoveryError('') }
     }
-    setErrorMsg('')
-  }, [initialData, isFork, isOpen, availableCategories])
-
-  const handleAddParam = () => {
-    setParamsList(prev => [...prev, { name: '', symbol: '', range: '', unit: '', desc: '' }])
+    finally { setSaving(false) }
   }
-
-  const handleRemoveParam = (index) => {
-    setParamsList(prev => prev.filter((_, i) => i !== index))
+  const reloadLatest = async () => {
+    if (loadingLatest || !editingBase?.id) return
+    const sequence = ++recoverySequence.current
+    setLoadingLatest(true); setRecoveryError('')
+    try {
+      const latest = await loadKnowledgeConflict(editingBase, onReloadLatest || getKnowledgeItem)
+      if (sequence === recoverySequence.current) setConflict({ latest })
+    } catch (failure) { if (sequence === recoverySequence.current) setRecoveryError(failure.message || '读取最新版本失败，请重试') }
+    finally { if (sequence === recoverySequence.current) setLoadingLatest(false) }
   }
-
-  const handleParamChange = (index, field, value) => {
-    setParamsList(prev => {
-      const copy = [...prev]
-      copy[index] = { ...copy[index], [field]: value }
-      return copy
-    })
+  const acceptLatest = () => {
+    try {
+      const accepted = acceptKnowledgeConflict(draft, editingBase, conflict.latest)
+      setEditingBase(accepted.base); setConflict(null); setRecoveryError(''); setError('')
+    } catch (failure) { setRecoveryError(failure.message) }
   }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!title.trim()) {
-      setErrorMsg('请填写理论知识标题')
-      return
-    }
-
-    const finalCategory = isCustomCategory
-      ? (customCategoryName.trim() || '用户自定义分类')
-      : category
-
-    const cleanedParams = paramsList.filter(p => p.name.trim() || p.symbol.trim() || p.range.trim())
-    const conditions = conditionsText
-      .split('\n')
-      .map(s => s.trim())
-      .filter(Boolean)
-    const properties = propertiesText
-      .split(/[,，]/)
-      .map(s => s.trim())
-      .filter(Boolean)
-    const tags = tagsText
-      .split(/[,，]/)
-      .map(s => s.trim())
-      .filter(Boolean)
-
-    const payload = {
-      ...(initialData && !isFork ? { id: initialData.id } : { id: `user_${Date.now()}` }),
-      title: title.trim(),
-      category: finalCategory,
-      formula: formula.trim(),
-      description: description.trim(),
-      conditions,
-      parameters: cleanedParams,
-      properties,
-      tags,
-      sources: sources.trim(),
-      preferred,
-      user_preference: preferred ? 'preferred' : 'neutral',
-      is_user: true,
-      ...(isOverrideBase ? { is_override: true, base_id: initialData.id } : {}),
-      ...(isFork ? { base_id: initialData?.id } : {}),
-      updated_at: new Date().toISOString(),
-    }
-
-    onSave(payload, isFork ? 'fork' : isEdit ? 'edit' : 'create')
+  if (!isOpen) return null
+  const preview = {
+    title: draft.title, formula: draft.formula, description: draft.description,
+    conditions: draft.conditionsText.split('\n').filter(Boolean), parameters: draft.parameters,
+    properties: splitValues(draft.propertiesText), sources: draft.sourcesText,
   }
-
-  return (
-    <div className="kw-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="kw-modal-dialog" onClick={e => e.stopPropagation()}>
-        <header className="kw-modal-header">
-          <h3>
-            <Icon.Edit style={{ width: 18, height: 18, color: 'var(--accent)' }} />
-            <span>
-              {isFork
-                ? '派生自已有理论知识'
-                : isEdit
-                ? isOverrideBase
-                  ? '修改系统内置理论 (保存为用户覆盖版)'
-                  : '编辑理论知识'
-                : '新增理论知识'}
-            </span>
-          </h3>
-          <button
-            type="button"
-            className="kw-icon-btn"
-            onClick={onClose}
-            aria-label="关闭"
-          >
-            <Icon.Close style={{ width: 16, height: 16 }} />
-          </button>
-        </header>
-
-        <form onSubmit={handleSubmit} className="kw-modal-body">
-          {errorMsg && (
-            <div className="app-notice error" role="alert">
-              {errorMsg}
-            </div>
-          )}
-
-          {isOverrideBase && (
-            <div
-              style={{
-                padding: '8px 12px',
-                background: 'rgba(59, 130, 246, 0.08)',
-                border: '1px solid rgba(59, 130, 246, 0.25)',
-                borderRadius: 6,
-                fontSize: 12.5,
-                color: 'var(--content-fg)',
-                lineHeight: 1.5,
-              }}
-            >
-              您正在编辑系统预置理论。保存后将作为您的专属增量覆盖层生效，随时可通过详情侧边栏中的「恢复默认」一键还原出厂设置。
-            </div>
-          )}
-
-          <div className="kw-form-group">
-            <label className="kw-form-label">
-              <span>理论名称与定律标题</span>
-              <span className="kw-form-hint">必填</span>
-            </label>
-            <input
-              type="text"
-              className="kw-input"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="例如：斯特藩-玻尔兹曼定律 / 修正光度极限模型"
-              autoFocus
-            />
+  const title = mode === 'fork' ? '派生理论知识' : mode === 'edit' ? '编辑理论知识' : '新增理论知识'
+  return <div className="kr-editor-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) requestClose() }}>
+    <div className="kr-editor" ref={ref} role="dialog" aria-modal="true" aria-labelledby="kr-editor-title" tabIndex={-1} aria-busy={saving}>
+      <header className="kr-editor-header"><div><span className="kr-eyebrow">知识工作台</span><h3 id="kr-editor-title">{title}</h3></div>
+        <button type="button" className="kr-icon-button" disabled={saving} aria-label="关闭编辑器" onClick={requestClose}><Icon.Close /></button></header>
+      {mode === 'edit' && !initialData?.is_user && <p className="kr-editor-notice">保存为用户修改版本，内置来源保留原有归属；可从条目操作中恢复默认。</p>}
+      {readOnly && !connecting && <div className="kr-editor-notice" role="status">当前知识库为只读状态，草稿已保留。<button type="button" className="kr-button" disabled={saving || categorySaving} onClick={onReconnect || (() => reloadCategories(value => value + 1))}>重新连接知识库</button></div>}
+      {initialData?.report_copy && <p className="kr-editor-notice">原条目当前不可用。本次从报告复制为独立用户知识，报告来源记录保留在参考来源中。</p>}
+      {error && <div role="alert" className="kr-error">{error}<span>编辑内容已保留。</span></div>}
+      {conflict && <section className="kr-conflict" aria-label="修订冲突恢复">
+        <div className="kr-conflict-header"><div><strong>条目已被其他修改更新</strong><p>当前草稿基于修订 {editingBase?.revision ?? 0}。读取并核对最新内容后，可保留草稿继续编辑。</p></div>
+          <button type="button" className="kr-button" disabled={loadingLatest || saving} onClick={reloadLatest}>{loadingLatest ? '正在读取最新版本…' : conflict.latest ? '重新读取最新版本' : '读取最新版本进行比较'}</button></div>
+        {recoveryError && <p className="kr-error" role="alert">{recoveryError}</p>}
+        {conflict.latest && <><div className="kr-conflict-comparison"><table><caption>最新版本（修订 {conflict.latest.revision}）与当前草稿比较</caption><thead><tr><th>字段</th><th>最新版本</th><th>当前草稿</th></tr></thead><tbody>
+          {knowledgeDraftComparison(draft, conflict.latest).map(row => <tr key={row.field}><th scope="row">{row.label}</th><td><pre>{row.latest || '未提供'}</pre></td><td><pre>{row.draft || '未提供'}</pre></td></tr>)}
+        </tbody></table>{knowledgeDraftComparison(draft, conflict.latest).length === 0 && <p>当前草稿与最新版本内容相同。</p>}</div>
+          <button type="button" className="kr-button kr-button-accent" disabled={saving || loadingLatest || readOnly} onClick={acceptLatest}>保留草稿，基于最新版本继续</button></>}
+      </section>}
+      <div className="kr-mobile-preview-switch"><button className="kr-button" type="button" aria-pressed={!previewOpen} onClick={() => setPreviewOpen(false)}><Icon.Edit />编辑</button>
+        <button className="kr-button" type="button" aria-pressed={previewOpen} onClick={() => setPreviewOpen(true)}><Icon.Eye />预览</button></div>
+      <form className={`kr-editor-form ${previewOpen ? 'kr-show-preview' : ''}`} onSubmit={submit}>
+        <div className="kr-editor-columns">
+          <div className="kr-editor-fields">
+            <fieldset className="kr-form-section" disabled={locked}><legend>基本信息</legend>
+              <label className="kr-field">理论名称与定律标题 <span className="kr-muted">必填</span><input className="kr-input" data-initial-focus value={draft.title} onChange={event => change('title', event.target.value)} placeholder="填写科学理论或模型名称" required /></label>
+              <div className="kr-form-row"><div className="kr-field"><label htmlFor="kr-category-select">知识分类</label><div className="kr-category-control"><select id="kr-category-select" ref={categorySelect} className="kr-select" aria-label="知识分类" value={draft.category} onChange={event => change('category', event.target.value)}>{categoryUnavailable && <option value={draft.category} disabled>{initialData?.category_label || draft.category}（分类不可用）</option>}{categories.map(category => <option key={category.id} value={category.id}>{category.label}{category.is_custom ? ' · 自定义' : ''}</option>)}</select><button className="kr-button" type="button" disabled={categoryCreateOpen || !categoriesReady} aria-expanded={categoryCreateOpen} aria-controls="kr-category-create" onClick={() => setCategoryCreateOpen(true)}><Icon.Plus />新建分类</button></div>{createdCategories.some(category => category.id === draft.category) && <small className="kr-category-note">分类已独立保存，关闭编辑器后仍会保留</small>}{!categoriesReady && <small className="kr-muted">正在读取分类目录…</small>}{categoryUnavailable && <small className="kr-category-error">该分类当前不可用，请重新选择，知识草稿已保留。</small>}{categoryLoadError && <span role="alert" className="kr-category-error">{categoryLoadError}<button className="kr-button" type="button" onClick={() => reloadCategories(value => value + 1)}>重新读取分类</button></span>}</div>
+                <label className="kr-field">科研优选<span className="kr-checkbox-row"><input type="checkbox" checked={draft.preferred} onChange={event => change('preferred', event.target.checked)} />优先用于科研推理</span></label></div>
+              {categoryCreateOpen && <section className="kr-category-create" id="kr-category-create" aria-label="新建知识分类" onKeyDownCapture={event => {
+                if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); cancelCategory() }
+              }}><div className="kr-category-create-heading"><Icon.Grid /><strong>新建知识分类</strong></div>
+                <label className="kr-field">分类名称<input ref={categoryInput} className="kr-input" value={categoryName} maxLength={40} aria-invalid={Boolean(categoryError)} aria-describedby={`kr-category-create-hint${categoryError ? ' kr-category-create-error' : ''}`} placeholder="例如：星系演化笔记" onChange={event => { setCategoryName(event.target.value); setCategoryError('') }} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent?.isComposing) { event.preventDefault(); confirmCategory() } }} /></label>
+                <p id="kr-category-create-hint">创建后立即保存并自动选中，无需保存知识条目。</p>
+                {categoryError && <p className="kr-category-error" id="kr-category-create-error" role="alert">{categoryError}</p>}
+                <div className="kr-category-create-actions"><button type="button" className="kr-button" onClick={cancelCategory}>取消新建</button><button type="button" className="kr-button kr-button-accent" onClick={confirmCategory}><Icon.Check />{categorySaving ? '正在创建…' : '创建并选用'}</button></div>
+              </section>}
+              <label className="kr-field">核心理论阐述<textarea className="kr-textarea" rows={4} value={draft.description} onChange={event => change('description', event.target.value)} placeholder="说明物理机制、适用边界与观测意义" /></label>
+            </fieldset>
+            <fieldset className="kr-form-section" disabled={locked}><legend>公式与参数</legend>
+              <label className="kr-field">LaTeX 科学公式<textarea className="kr-textarea kr-formula-input" rows={3} value={draft.formula} onChange={event => change('formula', event.target.value)} placeholder="例如：L = 4\\pi R^2 \\sigma T^4" /></label>
+              <p className="kr-muted">预览保留无法解析的原始公式。</p>
+              <div className="kr-parameter-editor">{draft.parameters.map((parameter, index) => <div className="kr-parameter-fields" key={index}>
+                {[['name', '参数名'], ['symbol', '符号'], ['range', '取值范围'], ['unit', '单位'], ['desc', '物理说明']].map(([field, label]) => <label className={`kr-field kr-param-${field}`} key={field}>{label}<input className="kr-input" value={parameter[field] || ''} onChange={event => changeParam(index, field, event.target.value)} /></label>)}
+                <button type="button" className="kr-icon-button kr-danger" aria-label={`移除参数 ${index + 1}`} onClick={() => change('parameters', draft.parameters.filter((_, current) => current !== index))}><Icon.Trash /></button>
+              </div>)}</div>
+              <button className="kr-button" type="button" onClick={() => change('parameters', [...draft.parameters, { name: '', symbol: '', range: '', unit: '', desc: '' }])}><Icon.Plus />添加参数</button>
+            </fieldset>
+            <fieldset className="kr-form-section" disabled={locked}><legend>适用条件</legend><label className="kr-field">物理假定与边界 <span className="kr-muted">每行一条</span>
+              <textarea className="kr-textarea" rows={4} value={draft.conditionsText} onChange={event => change('conditionsText', event.target.value)} placeholder="说明适用条件、约束与限制" /></label></fieldset>
+            <fieldset className="kr-form-section" disabled={locked}><legend>关联知识</legend>
+              <KnowledgeLinkPicker key={`${mode}:${initialData?.id || 'new'}`} value={draft.relatedIds} summaries={editingBase?.relations?.related} categories={categories} excludeId={mode === 'edit' ? editingBase?.id : undefined} disabled={locked} onChange={value => change('relatedIds', value)} />
+            </fieldset>
+            <fieldset className="kr-form-section" disabled={locked}><legend>物理量与来源</legend>
+              <label className="kr-field">搜索已知物理量<input className="kr-input" value={propertySearch} onChange={event => setPropertySearch(event.target.value)} placeholder="按名称或编号搜索，也可添加自定义值" onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addProperty(propertySearch) } }} /></label>
+              {propertySearch && <div className="kr-property-results">{matchingProperties.slice(0, 12).map(property => <button className="kr-button" key={property.id} type="button" onClick={() => addProperty(property.property_id || property.id)}>{property.label || property.id}</button>)}
+                <button className="kr-button" type="button" onClick={() => addProperty(propertySearch)}>添加「{propertySearch}」</button></div>}
+              <label className="kr-field">关联物理量 <span className="kr-muted">逗号分隔；自定义值保持未绑定</span><input className="kr-input" value={draft.propertiesText} onChange={event => change('propertiesText', event.target.value)} /></label>
+              <div className="kr-tags">{properties.map(property => <span key={property.id} className={`kr-tag ${property.bound ? '' : 'kr-unbound'}`}>{property.label}{property.bound ? '' : ' · 未绑定'}</span>)}</div>
+              <label className="kr-field">学术标签<input className="kr-input" value={draft.tagsText} onChange={event => change('tagsText', event.target.value)} placeholder="逗号分隔" /></label>
+              <label className="kr-field">参考文献与来源<textarea className="kr-textarea" rows={5} value={draft.sourcesText} onChange={event => change('sourcesText', event.target.value)} placeholder="完整引用、DOI、资料出处或科研笔记" /></label>
+            </fieldset>
           </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            {/* Category selection with custom category support */}
-            <div className="kw-form-group">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                <label className="kw-form-label" style={{ margin: 0 }}>
-                  <span>知识分类</span>
-                </label>
-                <button
-                  type="button"
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--accent)',
-                    fontSize: 12,
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                  onClick={() => setIsCustomCategory(prev => !prev)}
-                >
-                  {isCustomCategory ? '← 选择已有分类' : '+ 新增自定义分类'}
-                </button>
-              </div>
-
-              {isCustomCategory ? (
-                <input
-                  type="text"
-                  className="kw-input"
-                  value={customCategoryName}
-                  onChange={e => setCustomCategoryName(e.target.value)}
-                  placeholder="输入自定义新分类名称 (如：引力波天文学)"
-                  autoFocus
-                />
-              ) : (
-                <select
-                  className="kw-select"
-                  value={category}
-                  onChange={e => {
-                    if (e.target.value === '__custom__') {
-                      setIsCustomCategory(true)
-                    } else {
-                      setCategory(e.target.value)
-                    }
-                  }}
-                >
-                  {availableCategories.map(c => (
-                    <option key={c.id} value={c.id}>
-                      {c.label} {c.is_custom ? '(自定义)' : ''}
-                    </option>
-                  ))}
-                  <option value="__custom__">+ 新增自定义分类…</option>
-                </select>
-              )}
-            </div>
-
-            <div className="kw-form-group">
-              <label className="kw-form-label">
-                <span>科研优先标记</span>
-              </label>
-              <button
-                type="button"
-                className={`kw-filter-pref-btn ${preferred ? 'active' : ''}`}
-                style={{ height: 38, justifyContent: 'center' }}
-                onClick={() => setPreferred(p => !p)}
-              >
-                {preferred ? <Icon.StarFilled style={{ width: 14, height: 14 }} /> : <Icon.Star style={{ width: 14, height: 14 }} />}
-                <span>{preferred ? '已设为科研优先理论' : '设为科研优先理论'}</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="kw-form-group">
-            <label className="kw-form-label">
-              <span>LaTeX 科学公式与数学表达式</span>
-              <span className="kw-form-hint">支持标准 KaTeX 语法（纯理论描述请在下方阐述填写）</span>
-            </label>
-            <input
-              type="text"
-              className="kw-input"
-              value={formula}
-              onChange={e => setFormula(e.target.value)}
-              placeholder="例如：L = 4\pi R^2 \sigma T_{\text{eff}}^4"
-            />
-            {formula.trim() && (
-              <div style={{ marginTop: 8 }}>
-                <span style={{ fontSize: 11, color: 'var(--content-fg-secondary)', marginBottom: 4, display: 'block' }}>实时渲染预览：</span>
-                <div className="kw-latex-preview-card">
-                  {isValidFormula(formula) ? (
-                    <LatexMath math={formula} displayMode />
-                  ) : (
-                    <span style={{ fontSize: 12, color: 'var(--content-fg-secondary)' }}>
-                      （提示：输入内容将被作为文本解析）
-                    </span>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="kw-form-group">
-            <label className="kw-form-label">
-              <span>核心理论机制阐述</span>
-            </label>
-            <textarea
-              className="kw-textarea"
-              rows={3}
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              placeholder="阐述该理论在天体物理中的物理意义、适用边界与观测验证意义…"
-            />
-          </div>
-
-          <div className="kw-form-group">
-            <label className="kw-form-label">
-              <span>适用物理条件与边界假定</span>
-              <span className="kw-form-hint">每行一条</span>
-            </label>
-            <textarea
-              className="kw-textarea"
-              rows={2}
-              value={conditionsText}
-              onChange={e => setConditionsText(e.target.value)}
-              placeholder="局域热动平衡(LTE)&#10;极端相对论费米气体&#10;消光比值 R_V = 3.1"
-            />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div className="kw-form-group">
-              <label className="kw-form-label">
-                <span>关联物理量</span>
-                <span className="kw-form-hint">逗号分隔</span>
-              </label>
-              <input
-                type="text"
-                className="kw-input"
-                value={propertiesText}
-                onChange={e => setPropertiesText(e.target.value)}
-                placeholder="例如：luminosity, teff, radius"
-              />
-            </div>
-
-            <div className="kw-form-group">
-              <label className="kw-form-label">
-                <span>领域学术标签 (Tags)</span>
-                <span className="kw-form-hint">逗号分隔</span>
-              </label>
-              <input
-                type="text"
-                className="kw-input"
-                value={tagsText}
-                onChange={e => setTagsText(e.target.value)}
-                placeholder="例如：恒星物理, 热辐射, 黑体"
-              />
-            </div>
-          </div>
-
-          <div className="kw-form-group">
-            <label className="kw-form-label">
-              <span>参考文献与权威来源</span>
-            </label>
-            <input
-              type="text"
-              className="kw-input"
-              value={sources}
-              onChange={e => setSources(e.target.value)}
-              placeholder="例如：Carroll & Ostlie (2017) §3.2 / Gaia DR3 Documentation"
-            />
-          </div>
-
-          {/* Theoretical Parameters Configuration Table */}
-          <div className="kw-form-group">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-              <label className="kw-form-label" style={{ margin: 0 }}>
-                <span>关键特征参数表</span>
-              </label>
-              <Button type="button" variant="ghost" size="sm" onClick={handleAddParam}>
-                <Icon.Plus style={{ width: 12, height: 12 }} />
-                <span>添加参数</span>
-              </Button>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {paramsList.map((param, index) => (
-                <div key={index} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1.2fr 0.8fr 2fr 30px', gap: 6, alignItems: 'center' }}>
-                  <input
-                    type="text"
-                    className="kw-input"
-                    placeholder="参数名"
-                    value={param.name}
-                    onChange={e => handleParamChange(index, 'name', e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    className="kw-input"
-                    placeholder="符号"
-                    value={param.symbol}
-                    onChange={e => handleParamChange(index, 'symbol', e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    className="kw-input"
-                    placeholder="取值范围"
-                    value={param.range}
-                    onChange={e => handleParamChange(index, 'range', e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    className="kw-input"
-                    placeholder="单位"
-                    value={param.unit}
-                    onChange={e => handleParamChange(index, 'unit', e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    className="kw-input"
-                    placeholder="物理说明"
-                    value={param.desc}
-                    onChange={e => handleParamChange(index, 'desc', e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="kw-icon-btn"
-                    onClick={() => handleRemoveParam(index)}
-                    title="移除参数"
-                    disabled={paramsList.length === 1 && !param.name}
-                  >
-                    <Icon.Trash style={{ width: 14, height: 14, color: 'var(--status-error)' }} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <footer className="kw-modal-footer">
-            <Button type="button" variant="outline" onClick={onClose}>
-              取消
-            </Button>
-            <Button type="submit" variant="accent">
-              <Icon.Check style={{ width: 14, height: 14 }} />
-              <span>{isFork ? '保存派生理论' : isEdit ? '保存理论修改' : '确认入库'}</span>
-            </Button>
-          </footer>
-        </form>
-      </div>
+          <aside className="kr-editor-preview" aria-label="实时预览"><span className="kr-eyebrow">实时预览</span><h3>{draft.title || '未命名理论'}</h3><EntryOverview item={preview} /><h4>参考来源</h4><SourcesList sources={draft.sourcesText} /></aside>
+        </div>
+        <footer className="kr-editor-footer"><span className="kr-muted">{saving ? '正在保存…' : dirty ? '有未保存的修改' : '内容已同步至编辑器'}</span><div>
+          <button className="kr-button" type="button" disabled={saving || categorySaving || pending} onClick={requestClose}>取消</button><button className="kr-button kr-button-accent" type="submit" disabled={locked || Boolean(conflict) || categoryCreateOpen || !categoriesReady || categoryUnavailable}><Icon.Check />{saving ? '正在保存…' : mode === 'fork' ? '保存派生理论' : '保存知识条目'}</button>
+        </div></footer>
+      </form>
+      {discardOpen && <div className="kr-discard-backdrop"><div className="kr-confirm" ref={discardRef} role="alertdialog" aria-modal="true" aria-labelledby="kr-discard-title" tabIndex={-1}>
+        <h3 id="kr-discard-title">放弃未保存的修改？</h3><p>关闭后，本次知识编辑的内容将丢失。{createdCategories.length > 0 && '已独立创建的分类会保留。'}</p><div className="kr-confirm-actions"><button type="button" className="kr-button" data-initial-focus onClick={() => setDiscardOpen(false)}>继续编辑</button>
+          <button type="button" className="kr-button kr-danger-button" onClick={() => { setDiscardOpen(false); onClose?.() }}>放弃修改</button></div>
+      </div></div>}
     </div>
-  )
+  </div>
 }

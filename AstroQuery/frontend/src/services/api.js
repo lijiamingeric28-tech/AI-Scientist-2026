@@ -1,55 +1,55 @@
 import {limitedValueText} from '@/lib/valueDisplay'
+import { createKnowledgeApi } from './knowledgeApi'
+import { createJsonReads } from './jsonReads'
+import { createExecutionReads } from './executionReads'
+import { createWorkbenchReads, readCurrentWorkbench } from './workbenchReads'
 const BASE = (import.meta.env?.VITE_API_BASE || '/api').replace(/\/+$/, '')
 let configRevision = null
 export const newOperationId = () => crypto.randomUUID()
+const jsonReads=createJsonReads((url,options)=>fetch(url,options))
+const workbenchReads=createWorkbenchReads((scope,name,query,options)=>readWorkbenchPage(scope.taskId,scope.deliveryId,scope.revision,name,query,options))
 
 export async function request(path, options = {}) {
-  const response = await fetch(`${BASE}${path}`, { ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers } })
-  if (!response.ok) {
-    let detail
-    try { detail = (await response.json()).detail } catch { detail = response.statusText }
-    const error = new Error(typeof detail === 'string' ? detail : detail?.message || JSON.stringify(detail))
-    error.code = detail?.code; error.status = response.status; error.details = detail
-    throw error
-  }
-  return response.json()
+  const result=await jsonReads.request(`${BASE}${path}`,{...options,headers:{...(options.body?{'Content-Type':'application/json'}:{}),...options.headers}})
+  if ((options.method || 'GET').toUpperCase() !== 'GET') workbenchReads.invalidate()
+  return result
 }
 const post = (path, body, options = {}) => request(path, { ...options, method: 'POST', body: JSON.stringify(body) })
 const put = (path, body, options = {}) => request(path, { ...options, method: 'PUT', body: JSON.stringify(body) })
 const del = (path, options = {}) => request(path, { ...options, method: 'DELETE' })
 const id = encodeURIComponent
 
-export const getKnowledge = (filters = {}, options = {}) => {
-  const query = new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([, v]) => v != null && v !== '')))
-  const qs = query.toString()
-  return request(`/knowledge${qs ? `?${qs}` : ''}`, options)
-}
-export const getKnowledgeItem = (entryId, options = {}) => request(`/knowledge/${id(entryId)}`, options)
-export const createKnowledge = (data, options = {}) => post('/knowledge', data, options)
-export const updateKnowledge = (entryId, data, options = {}) => put(`/knowledge/${id(entryId)}`, data, options)
-export const deleteKnowledge = (entryId, options = {}) => del(`/knowledge/${id(entryId)}`, options)
-export const setKnowledgePreference = (entryId, preferenceOrObj, weightBoost, options = {}) => {
-  const body = typeof preferenceOrObj === 'object' && preferenceOrObj !== null
-    ? preferenceOrObj
-    : { preference: preferenceOrObj, ...(weightBoost != null ? { weight_boost: weightBoost } : {}) }
-  return post(`/knowledge/${id(entryId)}/preference`, body, options)
-}
-export const getKnowledgeGraph = (filters = {}, options = {}) => {
-  const query = new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([, v]) => v != null && v !== '')))
-  const qs = query.toString()
-  return request(`/knowledge/graph${qs ? `?${qs}` : ''}`, options)
-}
+const knowledgeApi = createKnowledgeApi(request)
+export const getKnowledgeCategories = knowledgeApi.getKnowledgeCategories
+export const reorderKnowledgeCategories = knowledgeApi.reorderKnowledgeCategories
+export const createKnowledgeCategory = knowledgeApi.createKnowledgeCategory
+export const updateKnowledgeCategory = knowledgeApi.updateKnowledgeCategory
+export const deleteKnowledgeCategory = knowledgeApi.deleteKnowledgeCategory
+export const getKnowledge = knowledgeApi.getKnowledge
+export const getKnowledgeSummary = knowledgeApi.getKnowledgeSummary
+export const getKnowledgeItem = knowledgeApi.getKnowledgeItem
+export const createKnowledge = knowledgeApi.createKnowledge
+export const updateKnowledge = knowledgeApi.updateKnowledge
+export const updateKnowledgeRelations = knowledgeApi.updateKnowledgeRelations
+export const deleteKnowledge = knowledgeApi.deleteKnowledge
+export const restoreKnowledge = knowledgeApi.restoreKnowledge
+export const setKnowledgePreference = knowledgeApi.setKnowledgePreference
+export const getKnowledgeGraph = knowledgeApi.getKnowledgeGraph
 export const getState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state`, options)
 export const getConversationState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=conversation`, options)
+export const getChatState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=chat`, options)
 export const getWorkspaceState = (taskId, options = {}) => request(`/tasks/${id(taskId)}/state?view=workspace`, options)
 export const getTask = getState
 export const getReplayClock = (taskId, options = {}) => request(`/tasks/${id(taskId)}/replay-clock`, options)
 export const createTask = (query, operationId = newOperationId(), retrievalPreferences) => post('/tasks', { query, operation_id: operationId, ...(retrievalPreferences ? {retrieval_preferences:retrievalPreferences} : {}) })
 export const listTasks = (limit = 50, offset = 0, status, source) => request(`/tasks?${new URLSearchParams({ limit, offset, include_replays: false, ...(['active','attention','ended','error'].includes(status) ? {category:status} : status ? { status } : {}), ...(source ? { source } : {}) })}`)
 export const getPresentation = (taskId, atSeq, options = {}) => request(`/tasks/${id(taskId)}/presentation?include_chat_activity=true${atSeq == null ? '' : `&at_seq=${atSeq}`}`, options)
-export const getExecution = (taskId, query = {}, options = {}) => request(`/tasks/${id(taskId)}/execution?${new URLSearchParams(Object.fromEntries(Object.entries(query).filter(([,v])=>v!=null)))}`, options)
+const executionReads=createExecutionReads((taskId,query,options)=>request(`/tasks/${id(taskId)}/execution?${new URLSearchParams(Object.fromEntries(Object.entries(query).filter(([,v])=>v!=null)))}`,{...options,retainBody:false}))
+export const getExecution = (taskId, query = {}, options = {}) => executionReads.read(taskId,query,options)
 export const executionReportUrl = (taskId, cursor, format) => `${BASE}/tasks/${id(taskId)}/execution/report?${new URLSearchParams({at_seq:cursor,format})}`
 export const draftAction = (taskId, body) => post(`/tasks/${id(taskId)}/draft-actions`, body)
+export const getPropertyCatalog = (taskId, questionId, options) =>
+  request(`/tasks/${id(taskId)}/property-catalog?question_id=${id(questionId)}`, options)
 export const reviewAnswer = (taskId, body) => post(`/tasks/${id(taskId)}/review-answers`, body)
 export async function controlTask(taskId, action, operation) {
   const state = operation ? null : await getState(taskId)
@@ -66,18 +66,21 @@ export function openEventStream(taskId, handlers, afterSeq = 0) {
   return source
 }
 export const getEvents = (taskId, afterSeq = 0) => request(`/tasks/${id(taskId)}/events?after_seq=${afterSeq}`)
-export const getDelivery = (taskId, revision, options) => request(`/tasks/${id(taskId)}/delivery${revision ? '?delivery_revision='+id(revision) : ''}`, options)
-export async function getPreview(taskId, options) {
-  const first = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500`, options)
-  const items = [...first.items]
-  while (items.length < first.total) {
-    const page = await request(`/tasks/${id(taskId)}/preview?view=ui&limit=500&offset=${items.length}&expected_preview_id=${id(first.preview_id)}`, options)
-    if (page.preview_id !== first.preview_id || !page.items.length) throw new Error('临时数据已有更新，请重新读取')
-    items.push(...page.items)
-  }
-  return { ...first, items }
+export const getDelivery = (taskId, revision, {deliveryId,...options} = {}) => {
+  const params=new URLSearchParams();if(revision)params.set('delivery_revision',revision);if(deliveryId)params.set('delivery_id',deliveryId)
+  return request(`/tasks/${id(taskId)}/delivery${params.size?'?'+params:''}`,options)
 }
-async function resource(taskId, deliveryId, name, revision, query='', options) {
+import { createResultPages, resultPageKey } from './resultPages'
+const resultPages = createResultPages(request)
+export const getPreview = resultPages.getPreview
+export const readResourcePage = resultPages.readResourcePage
+export async function getRecordsPage(taskId, deliveryId, revision, query = {}, {atSeq,sealedOnly,...options} = {}) {
+  query={...query,...(atSeq!=null?{at_seq:atSeq}:{}),...(sealedOnly?{sealed_only:true}:{})}
+  const page = await readResourcePage(taskId,deliveryId,'records',revision,{view:'list',quick:'target',collapse_duplicates:true,...query},options)
+  return {...page,request_key:resultPageKey({taskId,deliveryId,revision},query),items:page.items.map(item=>adaptRecord(page.legacy_version===1?{...item,legacy_version:1}:item,deliveryId,revision,taskId))}
+}
+async function resource(taskId, deliveryId, name, revision, query='', {atSeq,sealedOnly,...options} = {}) {
+  query += `${atSeq!=null?'&at_seq='+encodeURIComponent(atSeq):''}${sealedOnly?'&sealed_only=true':''}`
   if (!deliveryId) throw new Error('读取结果必须指定交付版本')
   const suffix = revision ? `&expected_delivery_revision=${revision}&delivery_revision=${revision}` : ''
   const first = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?limit=500${suffix}${query}`, options)
@@ -97,6 +100,7 @@ async function resource(taskId, deliveryId, name, revision, query='', options) {
   return items
 }
 function adaptRecord(item,deliveryId,revision,taskId) {
+  if (!item) return null
   if (item.legacy_version === 1) return { ...item, task_id: taskId || item.task_id }
   const { source, derived, property_binding: binding } = item
   const ready = derived?.main_state === 'ready'
@@ -123,6 +127,14 @@ export const getRecords = async (taskId,deliveryId,revision,options)=>{
   result.snapshot_ref=rows.snapshot_ref
   return result
 }
+// Only the analysis workspace requests this compact scientific projection.
+// Ordinary tables and export previews always use getRecordsPage.
+export const getAnalysisRecords = async (taskId,deliveryId,revision,options)=>{
+  const rows=await resource(taskId,deliveryId,'records',revision,'&view=analysis&collapse_duplicates=false',options)
+  const result=rows.map(item=>adaptRecord(item,deliveryId,revision,taskId))
+  result.snapshot_ref=rows.snapshot_ref
+  return result
+}
 export const getRecord = async (taskId,deliveryId,revision,recordId,options)=>adaptRecord((await resource(taskId,deliveryId,'records',revision,`&record_id=${id(recordId)}`,options))[0],deliveryId,revision,taskId)
 async function readSources(taskId, deliveryId, revision, query, options) {
   const rows = await resource(taskId, deliveryId, 'sources', revision, query, options)
@@ -132,6 +144,8 @@ async function readSources(taskId, deliveryId, revision, query, options) {
 }
 export const getSources = (taskId, deliveryId, revision, options) => readSources(taskId, deliveryId, revision, '', options)
 export const getSourceList = (taskId, deliveryId, revision, options) => readSources(taskId, deliveryId, revision, '&view=list', options)
+export const getSource = async (taskId, deliveryId, revision, sourceId, options) => (await readSources(taskId, deliveryId, revision, `&source_id=${id(sourceId)}`, options))[0]
+export const getFigure = async (taskId, deliveryId, revision, figureId, options) => (await resource(taskId, deliveryId, 'figures', revision, `&figure_id=${id(figureId)}`, options))[0]
 export const getFigures = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'figures', revision, '', options)
 export const getCoverage = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'coverage', revision, '', options)
 export const getQuality = async (taskId, deliveryId, revision, options) => {
@@ -144,6 +158,14 @@ export const getInsights = async (taskId, deliveryId, revision, options) => {
   if (!report) return { status:'not_recorded', cards:[], delivery_id:deliveryId, delivery_revision:revision, snapshot_ref:reports.snapshot_ref }
   return report.legacy_report || report
 }
+export async function getTaskKnowledgeContext(taskId, deliveryId, revision, {atSeq,sealedOnly,entryId,claimId,entryHash,...options} = {}) {
+  if (!deliveryId || !revision) throw new Error('读取知识依据必须指定交付版本')
+  const query=new URLSearchParams({delivery_revision:revision,expected_delivery_revision:revision,...(atSeq!=null?{at_seq:atSeq}:{}),...(sealedOnly?{sealed_only:true}:{})})
+  if(entryId&&claimId&&entryHash){query.set('view','reference');query.set('entry_id',entryId);query.set('claim_id',claimId);query.set('entry_hash',entryHash)}
+  const result=await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/knowledge_context?${query}`,options)
+  if(result.delivery_id!==deliveryId||result.delivery_revision!==revision)throw new Error('知识依据响应的交付版本不一致')
+  return result
+}
 export const getDifferences = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'differences', revision, '', options)
 export const getMaterials = async (taskId, deliveryId, revision, options) => {
   const rows=await resource(taskId,deliveryId,'materials',revision,'',options)
@@ -153,12 +175,45 @@ export const getMaterials = async (taskId, deliveryId, revision, options) => {
 }
 export const getChanges = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '', options)
 export const getActivity = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '&view=activity', options)
+export const getReviewActivity = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'changes', revision, '&view=activity&activity_kind=human', options)
 export const getCoverageMatrix = (taskId, deliveryId, revision, options) => resource(taskId, deliveryId, 'coverage', revision, '&view=matrix', options)
 export const getMaterial = async (taskId, deliveryId, revision, materialId, options) => (await resource(taskId, deliveryId, 'materials', revision, `&material_id=${id(materialId)}`, options))[0]
 export const getExports = async (taskId, deliveryId, revision, options) => (await request(`/tasks/${id(taskId)}/exports`, options)).filter(m=>(!deliveryId||m.delivery_id===deliveryId)&&(!revision||m.delivery_revision===revision)).flatMap(manifest => manifest.artifacts.map(artifact => ({ ...artifact,
-  name: artifact.artifact_id, display_name: `${manifest.format} · ${manifest.selected_count} 条`, size: artifact.byte_size,
+  name: artifact.filename || manifest.filename || artifact.artifact_id, display_name: artifact.filename || manifest.filename || `${manifest.format} · ${manifest.selected_count} 条`, size: artifact.byte_size,
   created_at:manifest.created_at, format:manifest.format, selected_count:manifest.selected_count, delivery_revision:manifest.delivery_revision, snapshot_ref:manifest.snapshot_ref, description: `交付修订 ${manifest.delivery_revision}`, delivery_id: manifest.delivery_id, export_id: manifest.export_id })))
 export const createExport = (taskId, body) => post(`/tasks/${id(taskId)}/exports`, body)
+export const previewExport = (taskId, body, { path, ...options } = {}) =>
+  request(`/tasks/${id(taskId)}/exports/preview${path ? '?' + new URLSearchParams({ path }) : ''}`,
+    { ...options, method: 'POST', body: JSON.stringify(body) })
+export const generateMaterialSummary = (taskId, deliveryId, body) =>
+  post(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/material-summary`, body)
+export async function getMaterialAnalysis(scope,{materialId,propertyId,kind='material',reportVersion,projection},options={}) {
+  const query=new URLSearchParams(Object.fromEntries(Object.entries({delivery_revision:scope.revision,expected_delivery_revision:scope.revision,material_id:materialId,property_id:propertyId,scope:kind,report_version:reportVersion,projection,at_seq:scope.atSeq,sealed_only:scope.sealedOnly||undefined}).filter(([,v])=>v!=null)))
+  const result=await request(`/tasks/${id(scope.taskId)}/deliveries/${id(scope.deliveryId)}/material-analysis?${query}`,{...options,retainBody:false})
+  if(result.delivery_id!==scope.deliveryId||result.delivery_revision!==scope.revision||(kind==='material'&&result.scope?.material_id!==materialId)||result.scope?.property_id!==propertyId||result.scope?.kind!==kind)throw new Error('补充解读响应范围不一致')
+  return result
+}
+export const createMaterialAnalysis=(scope,{materialId,propertyId,kind='material'})=>post(`/tasks/${id(scope.taskId)}/deliveries/${id(scope.deliveryId)}/material-analysis`,{operation_id:newOperationId(),expected_delivery_revision:scope.revision,material_id:materialId,property_id:propertyId,scope:kind})
+export const getMaterialAnalysisRun=(taskId,runId,options)=>request(`/tasks/${id(taskId)}/material-analysis-runs/${id(runId)}`,{...options,retainBody:false})
+export const stopMaterialAnalysis=(taskId,runId)=>post(`/tasks/${id(taskId)}/material-analysis-runs/${id(runId)}/stop`,{})
+async function readWorkbenchPage(taskId, deliveryId, revision, name, query, {revalidate, protocol, ...options} = {}) {
+  const params = new URLSearchParams(Object.fromEntries(Object.entries({
+    view: 'workbench', expected_delivery_revision: revision, delivery_revision: revision, ...query,
+  }).filter(([, value]) => value != null && value !== '' && value !== 'all')))
+  // Static material pages have one bounded owner; do not retain a second raw
+  // copy in the shared validator cache. Lightweight summaries can revalidate.
+  const result = await request(`/tasks/${id(taskId)}/deliveries/${id(deliveryId)}/${name}?${params}`,
+    {...options,retainBody:query?.projection === 'summary'})
+  if (result.delivery_id !== deliveryId || result.delivery_revision !== revision)
+    throw new Error('结果响应的交付版本不一致')
+  if (name === 'material_records') {
+    return { ...result, items: result.items.map(item => adaptRecord(item, deliveryId, revision, taskId)) }
+  }
+  if(name==='changes'&&Array.isArray(result.records))return {...result,records:result.records.map(item=>adaptRecord(item,deliveryId,revision,taskId))}
+  return result
+}
+export const getWorkbenchPage = (taskId, deliveryId, revision, name, query, options = {}) =>
+  readCurrentWorkbench(() => workbenchReads.read({taskId,deliveryId,revision,protocol:options.protocol},name,query,options),options.signal)
 export const artifactUrl = (taskId, artifactId) => `${BASE}/tasks/${id(taskId)}/artifacts/${id(artifactId)}`
 export const exportFileUrl = artifactUrl
 export async function getConfig() { const result = await request('/config'); configRevision = result.saved_revision; return result }

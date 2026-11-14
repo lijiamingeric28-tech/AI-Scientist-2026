@@ -18,10 +18,10 @@ test('ContextDrawer always renders as a top-layer overlay with focus trap and re
   assert.doesNotMatch(drawer, /research-docked/)
   assert.doesNotMatch(drawer, /useMediaQuery/)
   assert.match(drawer, /useDialogFocus\(!!detail,\s*dismissal\.close,\s*\{\s*trap:\s*true\s*\}\)/)
-  assert.match(drawer, /<div className="context-backdrop"/)
+  assert.match(drawer, /context-backdrop/);assert.match(drawer, /knowledge-blur-backdrop/)
   assert.match(drawer, /aria-modal="true"/)
   assert.match(drawer, /className="context-drawer animate-drawer-in overlay"/)
-  assert.match(drawer, /style=\{\{\s*width\s*\}\}/)
+  assert.match(drawer, /Math.max\(640,width\)/)
 })
 
 test('App mounts ContextDrawer outside .task-workspace as an .app-shell overlay sibling', () => {

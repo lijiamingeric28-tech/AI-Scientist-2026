@@ -3,6 +3,7 @@ import * as api from '@/services/api'
 import { makeInitialStages } from '@/lib/stages'
 import { runtimeStage } from '@/lib/runtimeStages'
 import { conversationTimeline } from '@/lib/conversationTimeline'
+import {readPipelineSnapshot} from '@/lib/pipelineReads'
 
 const TERMINAL = new Set(['completed', 'failed', 'error', 'cancelled', 'budget_exhausted', 'definition_invalidated'])
 const DELAYS = [1000, 2000, 5000, 10000, 30000]
@@ -14,7 +15,7 @@ export function usePipeline(task, { onTaskDone, onTaskUpdate, playback = null, c
   const [connectionStatus, setConnection] = useState('connected')
   const active = useRef({ id: null, epoch: 0, revision: 0, cursor: 0 })
   const source = useRef(null), timer = useRef(null), updateTimer = useRef(null), loading = useRef(null), again = useRef(false)
-  const callbacks = useRef(null); callbacks.current = { onTaskDone, onTaskUpdate, status: task?.status }
+  const callbacks = useRef(null); callbacks.current = { onTaskDone, onTaskUpdate, status: task?.status ?? task?.lifecycle }
   const lastDone = useRef(null), retries = useRef(0), submitted = useRef(null), creation = useRef(null)
   const playbackRef = useRef(playback); playbackRef.current = playback
   const conversationRef = useRef(conversation); conversationRef.current = conversation
@@ -36,16 +37,8 @@ export function usePipeline(task, { onTaskDone, onTaskUpdate, playback = null, c
     try {
       const options = {signal: operation.controller.signal}
       let state, shown
-      if (full) {
-        [state, shown] = await Promise.all([
-          player ? {task_id:id,revision:0} : api.getConversationState(id,options),
-          (player && frames.current.get(seq)) || api.getPresentation(id,seq,options),
-        ])
-      } else {
-        state = await api.getWorkspaceState(id, options)
-        shown = state.presentation || await api.getPresentation(id, null, options)
-      }
-      state.presentation = shown
+      state=await readPipelineSnapshot(api,{id,conversation:full,player:!!player,seq,frame:player&&frames.current.get(seq),signal:options.signal})
+      shown=state.presentation
       if (player) {
         if(operation.controller.signal.aborted || active.current.epoch!==epoch)return
         frames.current.set(seq,shown)
@@ -67,7 +60,7 @@ export function usePipeline(task, { onTaskDone, onTaskUpdate, playback = null, c
         if (TERMINAL.has(state.lifecycle) && lastDone.current !== id) {
           lastDone.current = id
           source.current?.close(); clearTimeout(timer.current); clearTimeout(updateTimer.current); updateTimer.current = null
-          if (!TERMINAL.has(status)) done?.()
+          if (status != null && !TERMINAL.has(status)) done?.()
         }
       }
     } catch (err) {

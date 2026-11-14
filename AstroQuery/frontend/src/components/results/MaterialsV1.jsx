@@ -11,6 +11,171 @@ const kinds = {
   cited: '引用资料',
 }
 
+const getKindInfo = (m) => {
+    if (m.kind === 'catalog') return { label: '星表目录', icon: Icon.Table, cls: 'catalog' }
+    if (m.kind === 'official_attachment') return { label: '官方补充材料', icon: Icon.Bookmark, cls: 'attachment' }
+    if (m.kind === 'cited') return { label: '第三方引文', icon: Icon.Quote, cls: 'cited' }
+    return { label: '论文档案', icon: Icon.FileText, cls: 'paper' }
+  }
+
+export function MaterialArchiveCard({ m, onOpenSource }) {
+  const kindInfo = getKindInfo(m)
+  const KindIcon = kindInfo.icon
+  const isAvailable = m.availability && (m.availability.includes('已取得') || m.availability.includes('已归档') || m.availability === 'available')
+  return (
+  <article
+    className="material-archive-card active-press"
+    key={m.material_id || m.group_id}
+    onClick={() => onOpenSource({ ...m, protocol_version: m.protocol_version || 2 })}
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onOpenSource({ ...m, protocol_version: m.protocol_version || 2 }) }}
+  >
+    <div className="material-card-header">
+      <div className="material-badges-row">
+        <span className={`material-badge kind ${kindInfo.cls}`}>
+          <KindIcon style={{ width: 12, height: 12 }} />
+          <span>{kindInfo.label}</span>
+        </span>
+        {m.roles?.includes('cited') && m.kind !== 'cited' && (
+          <span className="material-badge cited-role">
+            <Icon.Quote style={{ width: 11, height: 11 }} />
+            <span>被引用文献</span>
+          </span>
+        )}
+        {m.availability && (
+          <span className={`material-badge ${isAvailable ? 'status-ok' : 'year'}`}>
+            {isAvailable && <Icon.Check style={{ width: 11, height: 11, color: 'var(--accent)' }} />}
+            <span>{m.availability}</span>
+          </span>
+        )}
+        {m.year && (
+          <span className="material-badge year">
+            <span>{m.year}</span>
+          </span>
+        )}
+      </div>
+    </div>
+
+    <h3 className="material-card-title">{titleText(m)}</h3>
+
+    <div className="material-meta-row">
+      {m.authors?.[0] && (
+        <span className="material-author">
+          <Icon.User style={{ width: 13, height: 13 }} />
+          <span>{m.authors[0]}{m.authors.length > 1 ? ` 等 (${m.authors.length} 位作者)` : ''}</span>
+        </span>
+      )}
+      {m.table_id && (
+        <span className="material-table-badge">
+          表格: {m.table_id}
+        </span>
+      )}
+      {m.association?.catalog_id && (
+        <span className="material-table-badge">
+          星表: {m.association.catalog_id}
+        </span>
+      )}
+    </div>
+
+    <div className="material-card-footer">
+      <div className="material-contrib-tags">
+        {m.record_count != null ? (
+                    <span className="contrib-pill">{m.record_count} 条测量 · {m.figure_count} 幅图像</span>
+                  ) : m.properties?.length ? (
+          m.properties.map((p) => (
+            <span key={p.property_id} className="contrib-pill">
+              {p.name} · {p.count} 条测量
+            </span>
+          ))
+        ) : (
+          <span className="contrib-pill zero">
+            {m.kind === 'cited' ? '引用关联已保存' : '本修订贡献 0 条直接测量'}
+          </span>
+        )}
+      </div>
+      <span className="material-action-affordance">
+        <span>查阅资料</span>
+        <Icon.ArrowRight style={{ width: 13, height: 13 }} />
+      </span>
+    </div>
+  </article>
+  )
+}
+
+export function FigureGallery({ figures, galleryIds = figures.map(f => f.figure_id), selection, onOpenFigure }) {
+  return (
+  <div className="figure-gallery-grid">
+    {figures.map((f) => (
+      <article
+        className="figure-gallery-card"
+        data-figure-id={f.figure_id}
+        data-crop-precision={f.crop_precision}
+        key={f.figure_id}
+      >
+        <div
+          className="figure-image-container"
+          role="button"
+          tabIndex={0}
+          aria-label={'查看研究图像 ' + (f.label || '') + ' 第' + f.page + '页'}
+          onClick={() => onOpenFigure({ ...f, galleryIds: galleryIds })}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') onOpenFigure({ ...f, galleryIds: galleryIds })
+          }}
+        >
+          <img
+            loading="lazy"
+            decoding="async"
+            src={
+              f.image_url ||
+              (f.task_id && f.image_artifact?.artifact_id
+                ? artifactUrl(f.task_id, f.image_artifact.artifact_id)
+                : f.page_url || '')
+            }
+            alt={f.label || '研究图像'}
+          />
+          <span className="figure-hover-badge">
+            <Icon.Maximize style={{ width: 12, height: 12 }} />
+            <span>放大预览与定位</span>
+          </span>
+        </div>
+
+        <div className="figure-card-content">
+          <div>
+            <div className="figure-meta-bar">
+              <span className="figure-label-badge">{f.label || '研究图像'}</span>
+              <span className="figure-page-chip">
+                <Icon.FileText style={{ width: 11, height: 11 }} />
+                <span>物理第 {f.page} 页</span>
+              </span>
+            </div>
+
+            <p className="figure-caption-text" title={f.caption}>
+              {f.caption || '（论文未附加独立图注或由页面解析直接提取）'}
+            </p>
+          </div>
+
+          <div className="figure-action-row">
+            {selection && <label className="workbench-image-choice"><input type="checkbox"
+              aria-label={'选择图像 ' + (f.label || f.figure_id)}
+              checked={selection.has('figures', f.figure_id)}
+              onChange={() => selection.toggle('figures', [f])} />选择</label>}
+            <button
+              type="button"
+              className="figure-action-btn"
+              onClick={() => onOpenFigure({ ...f, galleryIds })}
+            >
+              <span>图像与原页</span>
+              <Icon.ArrowRight style={{ width: 13, height: 13 }} />
+            </button>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+  )
+}
+
 export default function MaterialsV1({
   materials = [],
   figures = [],
@@ -24,8 +189,11 @@ export default function MaterialsV1({
   figuresLoading = false,
   figuresError = false,
   onRetryFigures,
+  mode,
+  selection,
 }) {
-  const [tab, setTab] = useRememberedState(memory, 'tab', 'materials')
+  const [selectedTab, setTab] = useRememberedState(memory, 'tab', 'materials')
+  const tab = mode || selectedTab
   useEffect(() => { if (active) onVisibleTab?.(tab) }, [active, tab, onVisibleTab])
   const [kind, setKind] = useRememberedState(memory, 'kind', 'all')
   const [search, setSearch] = useRememberedState(memory, 'search', '')
@@ -84,18 +252,12 @@ export default function MaterialsV1({
     setFigurePage(1)
   }
 
-  const getKindInfo = (m) => {
-    if (m.kind === 'catalog') return { label: '星表目录', icon: Icon.Table, cls: 'catalog' }
-    if (m.kind === 'official_attachment') return { label: '官方补充材料', icon: Icon.Bookmark, cls: 'attachment' }
-    if (m.kind === 'cited') return { label: '第三方引文', icon: Icon.Quote, cls: 'cited' }
-    return { label: '论文档案', icon: Icon.FileText, cls: 'paper' }
-  }
 
   return (
     <div className="materials-browser research-materials">
       {/* 统一单行工具栏：视图切换药丸 + 搜索框 + 下拉筛选组 */}
       <div className="materials-unified-toolbar">
-        <div className="materials-segmented-bar" role="tablist" aria-label="资料与图像浏览方式">
+        {!mode && <div className="materials-segmented-bar" role="tablist" aria-label="资料与图像浏览方式">
           <button
             type="button"
             role="tab"
@@ -116,7 +278,7 @@ export default function MaterialsV1({
             <Icon.Image style={{ width: 13, height: 13 }} />
             <span>研究图像</span>
           </button>
-        </div>
+        </div>}
 
         {tab === 'materials' && (
           <div className="materials-search-box">
@@ -214,94 +376,19 @@ export default function MaterialsV1({
           </>
         )}
       </div>
+      {tab === 'figures' && selection && chosen.length > 0 && <div className="workbench-selection-actions">
+        <button type="button" className="text-link" onClick={() => selection.toggle('figures', chosen)}>
+          {chosen.every(f => selection.has('figures', f.figure_id)) ? '取消当前筛选的图像' : `选择当前筛选的全部 ${chosen.length} 幅图像`}
+        </button>
+      </div>}
 
       {tab === 'materials' ? (
         <>
 
           {/* 资料档案卡片列表 */}
           <div className="materials-cards-grid">
-            {rows.slice((current - 1) * 20, current * 20).map((m) => {
-              const kindInfo = getKindInfo(m)
-              const KindIcon = kindInfo.icon
-              const isAvailable = m.availability && (m.availability.includes('已取得') || m.availability.includes('已归档') || m.availability === 'available')
-              return (
-                <article
-                  className="material-archive-card active-press"
-                  key={m.material_id}
-                  onClick={() => onOpenSource({ ...m, protocol_version: m.protocol_version || 2 })}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter') onOpenSource({ ...m, protocol_version: m.protocol_version || 2 }) }}
-                >
-                  <div className="material-card-header">
-                    <div className="material-badges-row">
-                      <span className={`material-badge kind ${kindInfo.cls}`}>
-                        <KindIcon style={{ width: 12, height: 12 }} />
-                        <span>{kindInfo.label}</span>
-                      </span>
-                      {m.roles?.includes('cited') && m.kind !== 'cited' && (
-                        <span className="material-badge cited-role">
-                          <Icon.Quote style={{ width: 11, height: 11 }} />
-                          <span>被引用文献</span>
-                        </span>
-                      )}
-                      {m.availability && (
-                        <span className={`material-badge ${isAvailable ? 'status-ok' : 'year'}`}>
-                          {isAvailable && <Icon.Check style={{ width: 11, height: 11, color: 'var(--accent)' }} />}
-                          <span>{m.availability}</span>
-                        </span>
-                      )}
-                      {m.year && (
-                        <span className="material-badge year">
-                          <span>{m.year}</span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <h3 className="material-card-title">{titleText(m)}</h3>
-
-                  <div className="material-meta-row">
-                    {m.authors?.[0] && (
-                      <span className="material-author">
-                        <Icon.User style={{ width: 13, height: 13 }} />
-                        <span>{m.authors[0]}{m.authors.length > 1 ? ` 等 (${m.authors.length} 位作者)` : ''}</span>
-                      </span>
-                    )}
-                    {m.table_id && (
-                      <span className="material-table-badge">
-                        表格: {m.table_id}
-                      </span>
-                    )}
-                    {m.association?.catalog_id && (
-                      <span className="material-table-badge">
-                        星表: {m.association.catalog_id}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="material-card-footer">
-                    <div className="material-contrib-tags">
-                      {m.properties?.length ? (
-                        m.properties.map((p) => (
-                          <span key={p.property_id} className="contrib-pill">
-                            {p.name} · {p.count} 条测量
-                          </span>
-                        ))
-                      ) : (
-                        <span className="contrib-pill zero">
-                          {m.kind === 'cited' ? '引用关联已保存' : '本修订贡献 0 条直接测量'}
-                        </span>
-                      )}
-                    </div>
-                    <span className="material-action-affordance">
-                      <span>查阅档案</span>
-                      <Icon.ArrowRight style={{ width: 13, height: 13 }} />
-                    </span>
-                  </div>
-                </article>
-              )
-            })}
+            {rows.slice((current - 1) * 20, current * 20).map(m =>
+              <MaterialArchiveCard key={m.material_id} m={m} onOpenSource={onOpenSource} />)}
           </div>
 
           {!rows.length && <div className="materials-empty-box">当前筛选条件下未检索到匹配的学术资料档案。</div>}
@@ -333,70 +420,7 @@ export default function MaterialsV1({
         <>
 
           {/* 研究图像画廊网格 */}
-          <div className="figure-gallery-grid">
-            {chosen.slice((currentFigure - 1) * 12, currentFigure * 12).map((f) => (
-              <article
-                className="figure-gallery-card"
-                data-figure-id={f.figure_id}
-                data-crop-precision={f.crop_precision}
-                key={f.figure_id}
-              >
-                <div
-                  className="figure-image-container"
-                  role="button"
-                  tabIndex={0}
-                  aria-label={'查看研究图像 ' + (f.label || '') + ' 第' + f.page + '页'}
-                  onClick={() => onOpenFigure({ ...f, galleryIds: chosen.map((x) => x.figure_id) })}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') onOpenFigure({ ...f, galleryIds: chosen.map((x) => x.figure_id) })
-                  }}
-                >
-                  <img
-                    loading="lazy"
-                    decoding="async"
-                    src={
-                      f.image_url ||
-                      (f.task_id && f.image_artifact?.artifact_id
-                        ? artifactUrl(f.task_id, f.image_artifact.artifact_id)
-                        : f.page_url || '')
-                    }
-                    alt={f.label || '研究图像'}
-                  />
-                  <span className="figure-hover-badge">
-                    <Icon.Maximize style={{ width: 12, height: 12 }} />
-                    <span>放大预览与定位</span>
-                  </span>
-                </div>
-
-                <div className="figure-card-content">
-                  <div>
-                    <div className="figure-meta-bar">
-                      <span className="figure-label-badge">{f.label || '研究图像'}</span>
-                      <span className="figure-page-chip">
-                        <Icon.FileText style={{ width: 11, height: 11 }} />
-                        <span>物理第 {f.page} 页</span>
-                      </span>
-                    </div>
-
-                    <p className="figure-caption-text" title={f.caption}>
-                      {f.caption || '（论文未附加独立图注或由页面解析直接提取）'}
-                    </p>
-                  </div>
-
-                  <div className="figure-action-row">
-                    <button
-                      type="button"
-                      className="figure-action-btn"
-                      onClick={() => onOpenFigure(f)}
-                    >
-                      <span>图像与原页</span>
-                      <Icon.ArrowRight style={{ width: 13, height: 13 }} />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <FigureGallery figures={chosen.slice((currentFigure - 1) * 12, currentFigure * 12)} galleryIds={chosen.map(f => f.figure_id)} onOpenFigure={onOpenFigure} selection={selection} />
 
           {figuresLoading && <p className="materials-empty-box" role="status">正在读取研究图像…</p>}
           {figuresError && <p className="resource-error" role="alert">研究图像读取失败。 <button className="text-link" onClick={onRetryFigures}>重新读取</button></p>}
