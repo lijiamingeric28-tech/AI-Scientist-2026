@@ -22,4 +22,6 @@ connection-status.json
 *.local
 scratch/
 frontend/scratch/
+# Local implementation ledger; usage and public tooling remain tracked.
+/tools/demo/PROGRESS.md
 !tools/packaging/windows.spec

@@ -136,7 +136,7 @@ diff 证据（combine → final 唯一破坏性改动）：
   ```yaml
   llm:
     base_url: "https://ws-mgdvntda5u9ipv2t.cn-beijing.maas.aliyuncs.com/compatible-mode/v1"
-    api_key: "sk-ws-H.EDIIHIY.9cun.MEUCIE8kl0mOSYBF9LRUMCtGJAop8bFeWLPoYzODMZqZbGZlAiEA2HGXz7Z8sMfsmgzv0Kt0BgKPNoTfeDabpFEtH4X1Yj4"
+    api_key: "<REDACTED: configure credentials locally>"
     model: "qwen3.7-flash"
   ```
 - 根 `.env:3` 与 `astroquery_ai/.env` 存放同一密钥 → 三处重复

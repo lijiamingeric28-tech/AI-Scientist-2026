@@ -18,7 +18,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # 设置环境变量
-os.environ['OPENAI_API_KEY'] = 'sk-ws-H.EDIIHIY.9cun.MEUCIE8kl0mOSYBF9LRUMCtGJAop8bFeWLPoYzODMZqZbGZlAiEA2HGXz7Z8sMfsmgzv0Kt0BgKPNoTfeDabpFEtH4X1Yj4'
+os.environ.setdefault('OPENAI_API_KEY', os.getenv('DASHSCOPE_API_KEY', ''))
 os.environ['OPENAI_BASE_URL'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
 
 from models.clarified_intent import ClarifiedIntent

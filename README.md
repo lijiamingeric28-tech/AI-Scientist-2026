@@ -6,20 +6,22 @@
 
 **2026 挑战杯 · 阿里云 AI 科研助手 | 赛题方向 1 · 科学数据整合与影响力分析**
 
-[![Python](https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.12%E2%80%933.13-3776AB?logo=python&logoColor=white)](https://python.org)
 [![LangGraph](https://img.shields.io/badge/LangGraph-编排引擎-10a37f?logo=python&logoColor=white)](https://langchain.com)
 [![Qwen-VLM](https://img.shields.io/badge/Qwen--VLM-多模态提取-8b5cf6?logo=openai&logoColor=white)](https://dashscope.aliyun.com)
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-实时后端-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev)
 
-[![Tests](https://img.shields.io/badge/tests-521%20passed%20FULLY-2ea44f)](#-测试与质量)
+[![Tests](https://img.shields.io/badge/tests-local%20verification-2ea44f)](AstroQuery/README.md#验证和构建)
 [![Desktop](https://img.shields.io/badge/桌面内置引擎-WebView2-1f6feb)](#--内置窗口模式)
 [![Website](https://img.shields.io/badge/🌌-网站落地页-8b5cf6)](https://lijiamingeric28-tech.github.io/AI-Scientist-2026/)
 
 **EXPLORE · ANALYZE · EVOLVE** — *查询 → 检索 → 提取 → 质检 → 数据科学可用*
 
 </div>
+
+当前应用位于 **[AstroQuery/](AstroQuery/README.md)**，包含七个真实样例；首位为 SN 2014J 多波段光变与红化，支持资料解读、性质对照、知识引用及交互追问。源码启动、桌面打包和验证命令以该目录说明为准；[自动演示脚本](AstroQuery/tools/demo/README.md)使用原生内嵌窗口。本页保留的架构图与历史版本介绍供项目演进参考。
 
 > **作品定位**：面向天文科研数据获取的智能检索与数据整合系统 —— 研究者输入一句自然语言查询目标天体参数（如「M31 的距离和金属丰度」），系统自动完成意图解析与目标确认，并行检索多源专业星表与海量文献库；依托多模态大模型，从论文正文、复杂表格及科学图表中提取相关数值与图文佐证，并为每条数据生成可精确定位回溯的原文证据链。随后数据进入闭环质检流水线：多维校验单位格式与物理合理性，给出置信评分；自动规范清洗并全程修改留痕；对多源数据展开冲突分析与分歧归因，疑难异常流转人工复核。最终结合字段洞察在前端可视化呈现，并支持导出高可信度的结构化科研数据。
 

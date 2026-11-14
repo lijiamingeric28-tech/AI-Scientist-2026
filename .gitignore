@@ -148,6 +148,9 @@ activemq-data/
 
 # Environments
 .env
+.env.*
+!.env.example
+!.env.sample
 .envrc
 .venv
 env/
@@ -242,3 +245,8 @@ CLAUDE.md
 _site/
 
 .docs/
+
+# Local agent workspaces and browser-check output
+.superpowers/
+playwright-report/
+test-results/
