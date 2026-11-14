@@ -227,6 +227,7 @@ export default function AggregatedReviewCard({
                 <div
                   key={r.review_id || idx}
                   data-review-id={r.review_id}
+                  data-replay-gate={locked?gate.key:undefined}
                   style={{
                     background: '#ffffff',
                     border: `1px solid ${isPending ? 'var(--status-waiting)' : 'var(--surface-border)'}`,

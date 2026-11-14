@@ -1,0 +1,15 @@
+[
+ {"id":"home","seconds":5,"edit":3,"caption":"用自然语言发起天文科研查询","beats":{"input":1.8,"options":1.5}},
+ {"id":"gallery","seconds":4,"edit":2,"caption":"一个真实样例，串联完整科研流程","beats":{"sample":2.2}},
+ {"id":"replay","seconds":40,"edit":12,"caption":"完整科研流程可回放，关键判断保留人工审核","beats":{"firstReview":8,"reviewChoice":2,"reviewReceipt":1.5,"complete":1}},
+ {"id":"execution","seconds":9,"edit":4,"caption":"从执行全景追溯每一步处理","beats":{"overview":2.4,"node":2.4,"events":1.2,"jobs":1}},
+ {"id":"data","seconds":16,"edit":7,"caption":"从全任务数据到性质筛选，再查看关联图像","beats":{"overview":2.2,"filtered":3.2,"selection":1.4,"images":1.5,"image":3.2}},
+ {"id":"material","seconds":23,"edit":12,"caption":"单篇资料：主解读、引用依据、测量与原文","beats":{"directory":1.3,"identity":2.2,"main":6,"advice":3.5,"citation":2.2,"records":2.7,"source":2}},
+ {"id":"comparison","seconds":11,"edit":5,"caption":"转到本任务同一性质，比较不同来源的条件与结果","beats":{"summary":5,"sources":3.5}},
+ {"id":"quality","seconds":8,"edit":4,"caption":"检查完成情况、真实处理记录与覆盖差异","beats":{"overview":2,"processing":2,"coverage":2}},
+ {"id":"followup","seconds":29,"edit":19,"caption":"继续追问：用真实测量、知识公式和参数试算回答","beats":{"question":2.5,"table":4,"chart":3,"record":2,"knowledge":4,"formula":1.8,"trialLow":2,"trialHigh":2,"trialRestore":1}},
+ {"id":"knowledge","seconds":13,"edit":6,"caption":"从引用依据进入知识管理，探索理论与公式的联系","beats":{"overview":3,"category":2,"matrix":1.5,"detail":3}},
+ {"id":"registry","seconds":10,"edit":5,"caption":"天体与性质规范连接科学定义和执行能力","beats":{"graph":2.5,"table":1.5,"detail":3}},
+ {"id":"theme","seconds":5,"edit":2,"caption":"界面跟随系统配色，保持统一阅读风格","beats":{"before":1,"changed":1.6,"restored":1}},
+ {"id":"export","seconds":7,"edit":5,"caption":"带着可追溯数据与依据，导出科研成果","beats":{"scope":1.2,"formats":4}}
+]
