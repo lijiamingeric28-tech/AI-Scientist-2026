@@ -1766,6 +1766,24 @@ html:not([data-theme='dark']) .eyebrow { color: var(--seed-accent); }
 .workflow-panes { flex:1; min-height:0; display:flex; flex-direction:column; }
 .workflow-panes > [hidden] { display:none!important; }
 .help-reading > section { border-bottom:0; }
+.help-subsection { margin-top:32px; }
+.help-reading .help-steps { list-style:decimal; margin-top:20px; }
+.help-subsection h4 { margin-bottom:12px; }
+.help-reading details { margin:20px 0; padding:16px 0; border-top:1px solid var(--surface-border); }
+.help-reading summary { cursor:pointer; font-weight:600; }
+.help-reading details p { margin:12px 0 0; }
+.help-image-backdrop header > span { min-width:0; overflow-wrap:anywhere; }
+.help-image-backdrop .help-actions { align-items:center; flex-shrink:0; }
+.help-image-backdrop a { color:var(--accent-text); text-underline-offset:3px; }
+@container task-workspace (max-width:850px) {
+  .help-layout > nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 18px; overflow:visible; }
+  .help-layout > nav a { white-space:normal; min-width:0; }
+}
+@container task-workspace (max-width:600px) {
+  .help-image-backdrop { padding:12px; }
+  .help-image-backdrop section { max-width:100%; padding:14px; }
+  .help-image-backdrop header { flex-wrap:wrap; gap:12px; }
+}
 
 /* ===== 答辩展示录屏专用：高亮演示光标与导览视觉系统 ===== */
 #demo-spotlight-cursor {
