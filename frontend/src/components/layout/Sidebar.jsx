@@ -417,7 +417,8 @@ export default function Sidebar({
                 t.display_identity)
             const title = taskTitle(t, meta)
             const isSample = mode === 'sample' && !t.replay_of
-            const queryTime = formatQueryTime(t.created_at, now)
+            const queryTime = !isSample && formatQueryTime(t.created_at, now)
+            const sampleScore = Number.isFinite(t.quality_score) ? Number((t.quality_score * 100).toFixed(2)) : '—'
             const statusLabel = !isSample && (STATUS_LABELS[t.status] || t.status)
 
             return (
@@ -499,7 +500,11 @@ export default function Sidebar({
                       )}
                     </div>
 
-                    {(queryTime || statusLabel) && (
+                    {isSample ? (
+                      <div className="task-list-meta">
+                        <span title="原任务完成度与质检评分">任务评分 {sampleScore} / 100</span>
+                      </div>
+                    ) : (queryTime || statusLabel) && (
                       <div className="task-list-meta">
                         {queryTime && <time dateTime={t.created_at} title={queryTime.exact}>{queryTime.label}</time>}
                         {queryTime && statusLabel && <span aria-hidden="true">·</span>}
