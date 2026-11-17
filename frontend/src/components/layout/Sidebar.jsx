@@ -502,7 +502,7 @@ export default function Sidebar({
 
                     {isSample ? (
                       <div className="task-list-meta">
-                        <span title="原任务完成度与质检评分">任务评分 {sampleScore} / 100</span>
+                        <span title="原任务完成度与质检评分">任务评分 {sampleScore}</span>
                       </div>
                     ) : (queryTime || statusLabel) && (
                       <div className="task-list-meta">
