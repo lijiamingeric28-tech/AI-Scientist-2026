@@ -6,6 +6,31 @@ from .table_metadata import coordinate_groups
 from .identity_consistency import row_identifier_conflicts
 
 
+def structured_row_binding_kind(proof):
+    """Classify an existing row anchor, without granting column ownership/QC.
+
+    Assemblers and independent table checks still verify the exact proof hash,
+    target, source artifact and row. A matching row identifier alone is never a
+    scientific verdict about a value column (which might describe a calibrator).
+    """
+    schema = proof.get('schema_version')
+    if (schema == 'EvidencedTableSubjectBinding/1'
+            and proof.get('source_declaration', {}).get('scope') == 'single_target_observations'
+            and proof.get('model_attempt_ref')):
+        return 'single_table_subject'
+    if not proof.get('measurement_subject_validation_required'):
+        return None
+    if (schema == 'ExactIdentifierBinding/1' and proof.get('id_column')
+            and proof.get('relation') == 'same_entity_identifier_anchor'):
+        return 'row_identifier'
+    checked = proof.get('checked_source_interpretation') or {}
+    if (schema == 'EvidencedIdentifierBinding/1' and proof.get('model_attempt_ref')
+            and proof.get('relation') == 'same_entity' and checked.get('state') == 'accepted'
+            and checked.get('source_column')):
+        return 'row_identifier'
+    return None
+
+
 def exact_binding(target, table, rows, matches, id_column, namespace, artifact, *, source_rows=None, response_sha256=None, query_execution=None):
     aliases = [target['main_id'], *target.get('aliases', [])]
     checked = set(exact_rows(rows, [id_column], aliases, {id_column: namespace} if namespace else None))

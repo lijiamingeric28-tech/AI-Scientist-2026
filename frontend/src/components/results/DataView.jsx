@@ -304,7 +304,10 @@ export default function DataView({ memory = {}, task, data, pipeline, request, o
       if (scroll.ref.current) scroll.ref.current.scrollTop = 0
       if (request.propertyId) setPropertyRequest({ id: request.propertyId, seq: request.seq })
     }
-    if (request.fieldName) setFieldRequest({ id: request.fieldName, seq: request.seq })
+    if (request.resetFilters) {
+      setSearch(''); setQuick('target'); setSourceRequest({ id: 'all', seq: request.seq }); setRecordRequest(null)
+    }
+    if (request.fieldName) setFieldRequest({ id: request.fieldName, seq: request.seq, resetFilters: request.resetFilters })
     if (request.sourceId) setSourceRequest({ id: request.sourceId, seq: request.seq })
     if (request.recordId) setRecordRequest({ id: request.recordId, seq: request.seq })
     if (request.materialId) openMaterial(request.materialId, request.propertyId)

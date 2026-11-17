@@ -90,6 +90,15 @@ class Budget:
                 "SELECT coalesce(sum(actual_micros),0) FROM attempts WHERE campaign_id=? AND status='settled'",
                 (self.campaign_id,),
             ).fetchone()[0]
+            cached = conn.execute("""SELECT count(*),
+                coalesce(sum(json_extract(CAST(receipt AS TEXT),'$.cost_estimate.list_price_micros')),0),
+                coalesce(sum(json_extract(CAST(receipt AS TEXT),'$.cost_estimate.net_cache_savings_micros')),0)
+                FROM attempts WHERE campaign_id=? AND json_extract(CAST(receipt AS TEXT),'$.cost_estimate.version') IS NOT NULL""",
+                (self.campaign_id,)).fetchone()
+            if cached[0]:
+                campaign.update(cost_basis='mixed_historical_list_and_provider_usage_estimates_not_invoice',
+                    cache_accounted_calls=cached[0], cache_accounted_list_price_micros=cached[1],
+                    recorded_net_cache_savings_micros=cached[2])
             return campaign
 
     def reserve(
@@ -134,7 +143,8 @@ class Budget:
         if owner in {"M05", "M07", "M09", "M10", "M12"}:
             raise DomainError("MODEL_CALL_FORBIDDEN", "该模块没有模型调用权限")
         price = price_for(model, input_bound)
-        reservation = price.cost(input_bound, output_bound)
+        from .cache_pricing import reservation_cost
+        reservation = reservation_cost(model, input_bound, output_bound, request)
         with self.repository.transaction() as conn:
             enabled = conn.execute(
                 "SELECT payload FROM settings WHERE key='provider_dispatch_enabled'"
@@ -288,6 +298,9 @@ class Budget:
                 > campaign["smoke_cap_micros"]
             ):
                 raise DomainError("SMOKE_BUDGET_EXHAUSTED", "协议验证额度不足")
+            from .run_budget import check as check_run_budget
+            check_run_budget(self.repository, conn, task, reservation,
+                             defer_for_settlement=defer_for_settlement)
             attempt_id = new_id()
             conn.execute(
                 """INSERT INTO attempts(attempt_id,campaign_id,task_id,job_id,root_id,owner,model,request_hash,price_version,status,reserved_micros,input_bound,output_bound,smoke,created_at,generation,work_scope,wall_bound_seconds)
@@ -383,7 +396,8 @@ class Budget:
             raise DomainError("DISPATCH_FORBIDDEN", "任务已停止派发新请求")
 
     def settle(
-        self, attempt_id: str, *, input_tokens: int | None, output_tokens: int | None, receipt: dict
+        self, attempt_id: str, *, input_tokens: int | None, output_tokens: int | None, receipt: dict,
+        completed_step: dict | None = None,
     ):
         with self.repository.transaction() as conn:
             row = conn.execute(
@@ -397,11 +411,16 @@ class Budget:
                     raise DomainError("SETTLEMENT_CONFLICT", "同一调用不能重复结算不同用量")
                 return
             known = all(type(n) is int and n >= 0 for n in (input_tokens, output_tokens))
-            actual = (
-                price_for(row["model"], input_tokens).cost(input_tokens, output_tokens)
-                if known
-                else None
-            )
+            actual = None
+            if known:
+                from .cache_pricing import usage_estimate
+                # Historical receipts are immutable. New calls carry their original
+                # provider usage and report list and cache-adjusted estimates separately.
+                if 'usage' in receipt:
+                    receipt['cost_estimate'] = usage_estimate(row['model'], input_tokens, output_tokens, receipt)
+                    actual = receipt['cost_estimate']['estimated_micros']
+                else:
+                    actual = price_for(row['model'], input_tokens).cost(input_tokens, output_tokens)
             status = "settled" if known else "unknown"
             conn.execute(
                 "UPDATE attempts SET status=?,actual_micros=?,input_tokens=?,output_tokens=?,receipt=?,settled_at=? WHERE attempt_id=?",
@@ -420,6 +439,17 @@ class Budget:
                 or output_tokens > row["output_bound"]
                 or actual > row["reserved_micros"]
             )
+            if not violation and completed_step and isinstance(completed_step.get('response'), dict) and row['job_id']:
+                # Charge and retain the completed response atomically. A process dying
+                # before JobSteps.save must not cause this same paid operation to repeat.
+                saved_id = completed_step['key'] + '-' + str(row['generation'])
+                existing = conn.execute("SELECT 1 FROM objects WHERE task_id=? AND kind='model_success' AND object_id=?",
+                    (row['task_id'], saved_id)).fetchone()
+                if not existing:
+                    self.repository.put_object(conn, row['task_id'], 'model_success', saved_id, 1,
+                        {'schema_version': 'CompletedModelStep/1', 'step_key': completed_step['key'],
+                         'job_id': row['job_id'], 'generation': row['generation'],
+                         'response': completed_step['response'], 'receipt': receipt})
             if violation:
                 # Preserve actual cost rather than silently clipping to the reservation.
                 conn.execute(

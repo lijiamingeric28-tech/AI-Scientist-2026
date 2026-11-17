@@ -1,7 +1,7 @@
 AstroQuery AI · Windows 内置浏览器版
 
 1. 将整个 ZIP 解压到可写文件夹。打开 AstroQueryAI 文件夹，双击 AstroQueryAI.exe。
-2. 左侧「演示样例」可直接使用。首选 SN 2014J，也可回放 HD 209458 b、织女星、PSR J0437−4715、M45 和大角星。首次查看未缓存的论文原页或研究图像需要联网。
+2. 左侧「演示样例」提供 SN 2014J 主案例，以及 HD 209458、HD 189733 b、δ Cep、PSR B0531+21、NGC 7027、M67、LMC、NGC 4151、Abell 1656 九个真实案例。首次查看未缓存的论文原页或图像需要联网。
 3. 运行自己的查询，在「设置 → 服务连接」填写所用服务的凭证。「使用偏好」可以调整文献篇数和排序。
 4. 应用使用系统的 Microsoft Edge WebView2 Runtime。电脑如缺少此组件，可从微软官网下载 Evergreen Runtime 的 x64 安装程序，安装后再打开应用。
    https://developer.microsoft.com/microsoft-edge/webview2/

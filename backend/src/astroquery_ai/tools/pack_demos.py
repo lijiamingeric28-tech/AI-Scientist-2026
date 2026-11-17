@@ -29,7 +29,7 @@ qualification quality quality_batch_receipt quality_candidate_link quality_candi
 quality_input_plan quality_plan quality_reextraction_action quality_reextraction_result read_ledger
 reading_allocation reading_batch_state reading_context_note reading_figure_hint reported_source_ref request_parse
 request_resolution review_answer review_application science_condition_check science_snapshot source source_check
-source_statement stage_checkpoint target_astrometry uncertainty unit validation_receipt work draft insight material_analysis
+source_statement stage_checkpoint target_astrometry task_knowledge uncertainty unit validation_receipt work draft insight material_analysis
 """.split())
 
 

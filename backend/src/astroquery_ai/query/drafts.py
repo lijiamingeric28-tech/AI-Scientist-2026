@@ -51,6 +51,9 @@ def create(self, query: str, operation_id: str, retrieval_preferences=None) -> d
     }
 
     def initialize(conn, task):
+        if getattr(self, 'execution_run_id', None):
+            from astroquery_ai.runtime.run_budget import bind
+            bind(repo, conn, operation_id, self.execution_run_id)
         pin_bundle(self, draft, conn)
         repo.put_object(conn, operation_id, "draft", operation_id, 1, draft)
         repo.enqueue(

@@ -25,6 +25,32 @@ from astroquery_ai.science.normalization_prompt import normalization_prompt
 from astroquery_ai.science.unit_declarations import execution_unit, unit_record_text
 
 
+def referenced_error_inputs(repo, conn, tid, record):
+    """Load only this measurement's immutable error-unit/basis references.
+
+    A table may create thousands of unit records. Scanning/deserializing all of
+    them for every row is quadratic and also risks reading a newer unrelated
+    revision. Missing references retain the existing unknown/error path.
+    """
+    bases, units = {}, {}
+    for key, kind, destination, value in (
+        ('basis_ref', 'error_basis', bases, lambda item: item['value']),
+        ('unit_ref', 'unit', units, unit_record_text),
+    ):
+        refs = {(ref['id'], ref['version']) for c in record['uncertainty']['components']
+                if (ref := c.get(key))}
+        for oid, version in refs:
+            try:
+                item = repo.object(conn, tid, kind, oid, version)
+            except DomainError as exc:
+                if exc.code != 'OBJECT_NOT_FOUND':
+                    raise
+                continue
+            if kind != 'unit' or 'unit_text' in item:
+                destination[oid] = value(item)
+    return bases, units
+
+
 async def normalize(self, job):
     tid, mid = (job["task_id"], job["payload"]["measurement_id"])
     model_check = None
@@ -37,12 +63,7 @@ async def normalize(self, job):
         binding = next(
             (b for b in spec["properties"] if b["property_id"] == record["property_ref"]["id"])
         )
-        bases = {b["basis_id"]: b["value"] for b in self.repo.objects(conn, tid, "error_basis")}
-        component_units = {
-            u["unit_id"]: unit_record_text(u)
-            for u in self.repo.objects(conn, tid, "unit")
-            if "unit_text" in u
-        }
+        bases, component_units = referenced_error_inputs(self.repo, conn, tid, record)
     if record["content_sha256"] != job["payload"]["source_hash"]:
         raise DomainError("NORMALIZATION_SOURCE_CHANGED", "标准化输入版本已变化")
     output = binding["output_profile"]

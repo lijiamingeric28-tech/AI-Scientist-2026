@@ -46,7 +46,10 @@ class ScientificHTTP:
         remaining_catalog = dispatch_remaining(self.repository)
         if remaining_catalog is not None:
             timeout = min(timeout, remaining_catalog)
-        if endpoint_cooling(self.repository, task_id, service, url):
+        # Managed routes own bounded per-capability recovery/cooldown. The
+        # historical task-wide endpoint guard would poison all later metadata
+        # requests after one keyword-search timeout and abort sibling probes.
+        if not managed_routes and endpoint_cooling(self.repository, task_id, service, url):
             raise DomainError('SOURCE_ENDPOINT_COOLDOWN', '本任务已确认该来源入口暂不可用，未重复探测')
         if type(max_redirects) is not int or not 0 <= max_redirects <= 5:
             raise DomainError("REDIRECT_POLICY", "重定向上限无效", 422)
@@ -86,15 +89,17 @@ class ScientificHTTP:
                     managed_routes=managed_routes,
                 )
             except (TimeoutError, httpx.TimeoutException) as exc:
-                cool_endpoint(self.repository, task_id, service, url, 'SOURCE_HTTP_TIMEOUT')
+                if not managed_routes:
+                    cool_endpoint(self.repository, task_id, service, url, 'SOURCE_HTTP_TIMEOUT')
                 raise DomainError("SOURCE_HTTP_TIMEOUT", "来源请求超时，失败尝试已保留") from exc
             except httpx.TransportError as exc:
-                cool_endpoint(self.repository, task_id, service, url, 'SOURCE_TRANSPORT_ERROR')
+                if not managed_routes:
+                    cool_endpoint(self.repository, task_id, service, url, 'SOURCE_TRANSPORT_ERROR')
                 raise DomainError(
                     "SOURCE_TRANSPORT_ERROR", "来源连接未完成，失败尝试已保留"
                 ) from exc
             except DomainError as exc:
-                if exc.code == 'SOURCE_HTTP_ERROR' and (exc.details.get('provider_status') == 429 or (exc.details.get('provider_status') or 0) >= 500):
+                if not managed_routes and exc.code == 'SOURCE_HTTP_ERROR' and (exc.details.get('provider_status') == 429 or (exc.details.get('provider_status') or 0) >= 500):
                     cool_endpoint(self.repository, task_id, service, url, exc.code)
                 raise
             if metadata["status"] == 200:

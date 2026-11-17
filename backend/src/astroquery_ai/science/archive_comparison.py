@@ -4,7 +4,7 @@ This consumer deliberately performs no statistics, retrieval or source genealogy
 Every group is bound to exact current versions; originals are never removed.
 """
 import httpx
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from typing import Literal
 from copy import deepcopy
 from pydantic import Field,ValidationError
@@ -186,7 +186,8 @@ def observation_coordinate(source, interpretation):
     band = next((tag for tag in (field.get('ucd') or '').split(';') if tag.startswith('em.opt.')), None)
     if not band:
         passbands = [str(contexts[c['name']]).strip() for c in columns
-                     if c['name'].casefold() in {'band', 'filter', 'passband', 'filter_name', 'photometric_band'}
+                     if (c['name'].casefold() in {'band', 'filter', 'filt', 'passband', 'filter_name', 'photometric_band'}
+                         or 'instr.filter' in (c.get('ucd') or '').split(';'))
                      and contexts.get(c['name'])]
         if len(passbands) == 1:
             band = passbands[0]
@@ -198,9 +199,16 @@ def different_observations(left, right):
                 and (left[2] != right[2] or (left[3] and right[3] and left[3] != right[3])))
 
 
-def observation_series_review(coordinates):
+def observation_series_review(coordinates, *, local_only=False):
     axes = list(coordinates.values())
     if len(axes) < 2 or not any(axes):
+        return None
+    # Distinct epochs prove separation only inside one original table/time
+    # field. Across sources (or an unlocated paper record), every member must
+    # remain available to the normal full-evidence/global-index comparison.
+    # Otherwise even identical cross-source observations bypass navigation.
+    if not local_only and (any(not axis for axis in axes)
+            or len({tuple(axis[:2]) for axis in axes if axis}) != 1):
         return None
     samples = defaultdict(list)
     for label, axis in coordinates.items():
@@ -208,9 +216,9 @@ def observation_series_review(coordinates):
             samples[tuple(axis[:3])].append((label, axis[3]))
     review = {label for label, axis in coordinates.items() if not axis}
     for sample in samples.values():
-        bands = [band for _, band in sample]
+        bands = Counter(band for _, band in sample)
         review.update(label for label, band in sample
-                      if len(sample) > 1 and (not all(bands) or bands.count(band) > 1))
+                      if len(sample) > 1 and (not all(bands) or bands[band] > 1))
     return review
 
 
@@ -466,6 +474,9 @@ def _pack_original_windows(body, profile):
 
 
 def plan_comparison_inputs(body, profile):
+    if not body['items']:
+        return {'mode': 'evidence_windows_with_global_index', 'windows': [], 'unplanned': [],
+                'global_index': comparison_index(body)}
     capacity = comparison_capacity(body, profile)
     if (len(body['items']) <= ORIGINAL_WINDOW_MEMBERS and capacity['repair']['fits']
             and capacity['repair']['input_bound'] <= ORIGINAL_WINDOW_BOUND):
@@ -585,7 +596,12 @@ async def compare_results(self,job):
         inactivity_seconds=90,wall_seconds=480)
     receipt=None;reply=None;diagnostics=[];pending=[];checked=set();window_results=[];cross_results=[]
     coordinates = {item['record']: item.get('observation_coordinate') for item in body['items']}
-    series_review = observation_series_review(coordinates)
+    single_table_review = observation_series_review(coordinates)
+    # For large properties, separate only the already verified intra-table
+    # series, then navigate the COMPLETE property index across sources. Small
+    # mixed-source tables retain their normal whole-original comparison.
+    series_review = (observation_series_review(coordinates, local_only=True)
+                     if len(labels) > ORIGINAL_WINDOW_MEMBERS else single_table_review)
     if previous:
         coverage = deepcopy(previous['coverage'])
         windows = [w for w in coverage['windows'] if w['state'] != 'checked']
@@ -634,7 +650,7 @@ async def compare_results(self,job):
                   'repair_windows': [w['members'] for w in windows],
                   'model_attempt_ref': receipt['attempt_id'] if receipt else previous.get('model_attempt_ref')}
         reply = ComparisonReply(checked_members=sorted(covered), **findings)
-    elif series_review == set():
+    elif single_table_review == set():
         reply=ComparisonReply(checked_members=list(labels),limitations=['distinct_original_observation_epochs'])
         checked.update(labels);plan={'mode':'verified_observation_series','windows':[],'unplanned':[],'global_index':None}
         navigation={'state':'checked_original_epoch_column','coordinates':coordinates}

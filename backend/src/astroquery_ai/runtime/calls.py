@@ -137,6 +137,8 @@ class ModelGateway:
                                  for model, limit in EXECUTION_POLICY['models'].items()}
         from .throughput import ModelTraffic
         self.traffic = ModelTraffic()
+        from .prompt_cache import PromptCache
+        self.prompt_cache = PromptCache()
 
     async def json(
         self,
@@ -151,6 +153,7 @@ class ModelGateway:
         purpose="calibration",
         root_limit=3,
         dispatch_guard=None,
+        step_key=None,
     ):
         values = self.config.runtime
         if not values.get("dashscope_api_key") or not values.get("dashscope_base_url"):
@@ -213,6 +216,11 @@ class ModelGateway:
             if catalog_left is not None:
                 profile = replace(profile, wall_seconds=min(profile.wall_seconds, catalog_left),
                                   inactivity_seconds=min(profile.inactivity_seconds, catalog_left))
+            from .prompt_cache import public_metadata
+            from .provider import provider_identity
+            future_calls = 0
+            cache_context = {'mode': 'implicit', 'reordered': False,
+                             'logical_input_hash': digest(messages)}
             qualification = None
             if purpose == "verification":
                 if self.verification_authorizer is None:
@@ -229,6 +237,19 @@ class ModelGateway:
                         "SYNTHETIC_PROFILE_DISPATCH_FORBIDDEN", "合成校准资格不能授权真实模型调用"
                     )
             try:
+                # Read-only analyses have exact message permits. Only normal scientific
+                # jobs and isolated calibration inputs enter the lossless prefix planner.
+                if purpose == 'calibration' or job and job['kind'] in {'paper_batch', 'quality_verify', 'compare_results'}:
+                    if job:
+                        with self.budget.repository.read() as conn:
+                            future_calls = conn.execute("SELECT count(*) FROM jobs WHERE task_id=? AND kind=? AND job_id<>? AND status IN ('ready','running','waiting_dependency')",
+                                (task_id, job['kind'], job['job_id'])).fetchone()[0]
+                    wire, cache_context = self.prompt_cache.prepare(messages, task_id=task_id,
+                        profile=profile, values=values, future_calls=future_calls,
+                        allow_explicit=bound + 65 <= profile.max_input_tokens)
+                    body['messages'] = wire
+                    if cache_context['mode'] == 'explicit':
+                        bound = input_upper_bound(wire)
                 attempt = self.budget.reserve(
                     task_id=task_id,
                     owner=owner,
@@ -247,6 +268,7 @@ class ModelGateway:
                 )
             except BaseException:
                 self.traffic.cancel(profile.model, rate_ticket)
+                self.prompt_cache.observe(cache_context, None, success=False)
                 raise
 
             dispatch_context_ref = None
@@ -291,7 +313,12 @@ class ModelGateway:
                     },
                 )
 
-            self.budget.dispatch(attempt["attempt_id"], authorize=authorize_dispatch)
+            try:
+                self.budget.dispatch(attempt["attempt_id"], authorize=authorize_dispatch)
+            except BaseException:
+                self.prompt_cache.observe(cache_context, None, success=False)
+                self.traffic.cancel(profile.model, rate_ticket)
+                raise
             usage = None
             content, thinking_chars, finish, done = [], 0, None, False
             provider_id = None
@@ -331,6 +358,8 @@ class ModelGateway:
                                 lowered = error_body.lower()
                                 if b'json' in lowered and (b'messages' in lowered or b'response_format' in lowered):
                                     provider_rejection = 'json_mode_request_rejected'
+                                elif b'cache_control' in lowered or b'context cache' in lowered:
+                                    provider_rejection = 'cache_control_request_rejected'
                                 # Do not include provider response text: it may contain credentials.
                                 raise DomainError(
                                     "PROVIDER_HTTP_ERROR",
@@ -418,6 +447,7 @@ class ModelGateway:
                 error = exc
             finally:
                 receipt = {
+                    'attempt_id': attempt['attempt_id'],
                     "endpoint_sha256": digest(values["dashscope_base_url"].rstrip("/")),
                     "provider_id": provider_id,
                     "model": profile.model,
@@ -446,6 +476,9 @@ class ModelGateway:
                     'provider_rejection': provider_rejection,
                     'transport_events': transport_events,
                     'environment_proxy_enabled': self.trust_env,
+                    'provider_identity': provider_identity(values['dashscope_base_url']),
+                    'prompt_cache': public_metadata(cache_context),
+                    'job_step_key': step_key,
                 }
                 receipt['partial_complete_items'] = bool(partial_result)
                 if (error or partial_result) and content:
@@ -469,12 +502,18 @@ class ModelGateway:
                     # ambiguous request. Root/work attempt counts still apply.
                     usage = {'prompt_tokens': 0, 'completion_tokens': 0}
                     receipt['usage_basis'] = 'native_transport_failed_before_request_headers'
+                receipt['usage'] = usage
                 self.budget.settle(
                     attempt["attempt_id"],
                     input_tokens=usage.get("prompt_tokens") if usage else None,
                     output_tokens=usage.get("completion_tokens") if usage else None,
                     receipt=receipt,
+                    completed_step=({'key': step_key, 'response': result}
+                        if step_key and not error and not partial_result and done and finish == 'stop' else None),
                 )
+                self.prompt_cache.observe(cache_context, usage,
+                    success=not error and done and finish == 'stop',
+                    rejected=provider_status == 400 and 'cache' in str(provider_rejection).lower())
                 self.traffic.settle(profile.model, rate_ticket, usage,
                     limited=provider_status == 429,
                     retry_after=error.details.get('retry_after_seconds') if isinstance(error, DomainError) else None)

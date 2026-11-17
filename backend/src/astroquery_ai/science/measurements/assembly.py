@@ -38,7 +38,11 @@ class EvidenceExtractor:
         component_parent_ids: dict[str, str] | None = None,
         object_binding_ref: dict | None = None,
         human_context_keys: list[str] | None = None,
+        literal_transcription: dict | None = None,
     ) -> dict:
+        # Persisted routing annotations may return through quality re-extraction
+        # or human review. They grant no admission and are not copied into a
+        # freshly interpreted candidate; all ordinary evidence gates still run.
         if owner == "M06":
             from astroquery_ai.science.paper_admission import preserve_parenthetical_errors
 

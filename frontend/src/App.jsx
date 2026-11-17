@@ -10,6 +10,7 @@ import { useTaskData } from '@/hooks/useTaskData'
 import { useWorkbenchSelection } from '@/hooks/useWorkbenchSelection'
 import { getConfig } from '@/services/api'
 import { loadReplaySpeed } from '@/lib/playbackPreferences'
+import { isCustomTitle, taskTitle } from '@/lib/taskTitle'
 import { registryLaunch } from '@/lib/registryWorkbench'
 import { listTasks as apiListTasks, retryTask as apiRetryTask, cancelTask as apiCancelTask, pauseTask as apiPauseTask, deleteTask as apiDeleteTask, deleteTaskData as apiDeleteTaskData, batchDeleteTasks as apiBatchDeleteTasks, replayTask as apiReplayTask, updateTaskTitle as apiUpdateTaskTitle } from '@/services/api'
 import { usePipeline } from '@/hooks/usePipeline'
@@ -264,8 +265,8 @@ function AppInner() {
     if (!selected || !draft || draft === selected.title) return
     try {
       const r = await apiUpdateTaskTitle(selected.task_id, draft)
-      setTasks((prev) => prev.map((t) => (t.task_id === r.task_id ? { ...t, title: r.title } : t)))
-      setDirectTask(prev=>prev?.task_id===r.task_id?{...prev,title:r.title}:prev)
+      setTasks((prev) => prev.map((t) => (t.task_id === r.task_id ? { ...t, title: r.title, title_origin: r.title_origin } : t)))
+      setDirectTask(prev=>prev?.task_id===r.task_id?{...prev,title:r.title,title_origin:r.title_origin}:prev)
       toast('任务名已更新', 'success')
     } catch (err) {
       toast(`改名失败：${err.message}`, 'error')
@@ -394,7 +395,7 @@ function AppInner() {
   // （放在各 handler 定义之后，避免 const 暂时性死区）
   const pipelineState = usePipeline(selected, { onTaskDone: handleTaskDone,
     playback: player, conversation: !helpOpen && view === 'chat',
-    onTaskUpdate: state => {const facts={title:state.title,status:state.lifecycle,revision:state.revision,delivery_ref:state.delivery_ref,query_ref:state.query_ref};setTasks(prev=>prev.map(item=>item.task_id===state.task_id?{...item,...facts}:item));setDirectTask(prev=>({...((prev?.task_id===state.task_id && prev)||{}),task_id:state.task_id,kind:state.kind,legacy_version:state.legacy_version,...facts}))},
+    onTaskUpdate: state => {const facts={title:state.title,title_origin:state.title_origin,status:state.lifecycle,revision:state.revision,delivery_ref:state.delivery_ref,query_ref:state.query_ref};setTasks(prev=>prev.map(item=>item.task_id===state.task_id?{...item,...facts}:item));setDirectTask(prev=>({...((prev?.task_id===state.task_id && prev)||{}),task_id:state.task_id,kind:state.kind,legacy_version:state.legacy_version,...facts}))},
   })
   // Terminal tasks keep clarification history, but no longer offer a live reply.
   const ended = ['completed', 'cancelled', 'failed', 'error', 'budget_exhausted', 'definition_invalidated'].includes(selected?.status) || (pipelineState.taskId === selected?.task_id && pipelineState.taskDone)
@@ -506,8 +507,8 @@ function AppInner() {
   const displayName = facts?.target?.user_mentions?.[0] || targetName
   const propertyNames = facts?.properties?.map(property => property.name).filter(Boolean) || []
   const originalQuestion = facts?.request?.original_query || pipeline.messages.find(message => message.role === 'user')?.content
-  const customTitle = originalQuestion && selected?.title && originalQuestion !== selected.title
-  const heading = helpOpen ? '使用帮助' : (customTitle ? selected.title : displayName) || selected?.title || (mode === 'sample' ? '演示样例' : '新建科研查询')
+  const customTitle = isCustomTitle(selected, originalQuestion)
+  const heading = helpOpen ? '使用帮助' : taskTitle(selected, { target: displayName, question: originalQuestion }) || (mode === 'sample' ? '演示样例' : '新建科研查询')
   const openHelp = () => { setDetail(null); setHelpOpen(true) }
   const openSettings = ({ tab = null, studioMode = null, isOnboarding = false } = {}) => {
     setOnboarding(isOnboarding)

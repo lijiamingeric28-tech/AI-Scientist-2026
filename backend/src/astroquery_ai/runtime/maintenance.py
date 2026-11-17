@@ -21,7 +21,7 @@ class Maintenance:
                 (title.strip(), utcnow(), tid),
             )
             self.repo.event(conn, tid, "task_title_updated", {"title": title.strip()})
-        return {"task_id": tid, "title": title.strip()}
+        return {"task_id": tid, "title": title.strip(), "title_origin": "custom"}
 
     def cleanup(self, tid, *, operation_id, whole=False, parts=None):
         parts = parts or []

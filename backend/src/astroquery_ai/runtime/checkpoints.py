@@ -63,7 +63,29 @@ class JobSteps:
                 **({'bindings': bindings} if bindings is not None else {}),
             }
         )
+        import asyncio
+        locks = self.app.__dict__.setdefault('_model_step_locks', {})
+        lock_key = (execution['task_id'], execution['generation'], key)
+        entry = locks.setdefault(lock_key, {'lock': asyncio.Lock(), 'users': 0})
+        entry['users'] += 1
+        try:
+            async with entry['lock']:
+                return await self._model_step(execution, key, kwargs, bindings, cache_only)
+        finally:
+            entry['users'] -= 1
+            if not entry['users']:
+                locks.pop(lock_key, None)
+
+    async def _model_step(self, execution, key, kwargs, bindings, cache_only):
         previous = self.load(execution, key)
+        if previous is None:
+            with self.repo.read() as conn:
+                self.repo.validate_lease(conn, execution, scientific=False)
+                saved = conn.execute("SELECT payload FROM objects WHERE task_id=? AND kind='model_success' AND object_id=? AND version=1",
+                    (execution['task_id'], key + '-' + str(execution['generation']))).fetchone()
+                if saved:
+                    from .codec import loads
+                    previous = loads(saved[0])
         if previous:
             return previous["response"], previous["receipt"]
         if cache_only:
@@ -78,7 +100,7 @@ class JobSteps:
                     raise DomainError('CATALOG_TABLE_REPAIR_EXHAUSTED', '本表已用一次备用或修复，保留原件及已完成结果')
         while True:
             try:
-                response, receipt = await self.app.models.json(**kwargs)
+                response, receipt = await self.app.models.json(**kwargs, step_key=key)
                 break
             except Exception as exc:
                 from .throughput import DispatchDeferred

@@ -16,7 +16,9 @@ from astroquery_ai.tools.pack_demos import work_pdf_urls
 def test_published_history_is_pinned_and_read_only(tmp_path):
     samples = json.loads((source_product() / 'frontend/public/demo-catalog.json').read_bytes())['samples']
     sample = samples[0]
-    assert len(samples) == 7 and sample['object'] == 'SN 2014J'
+    assert len(samples) == 10 and sample['object'] == 'SN 2014J'
+    assert len({s['task_id'] for s in samples}) == 10
+    assert all(0 <= s['quality_score'] <= 1 for s in samples if 'quality_score' in s)
     assert [s['task_id'] for s in samples if s.get('featured')] == [sample['task_id']]
     prefix = '/api/tasks/' + sample['task_id']
     with TestClient(create_app(root=tmp_path, start_worker=False)) as client:

@@ -205,12 +205,13 @@ def check_local_evidence(
         profile=(property_binding or {}).get('output_profile',{})
         dimensionless_coordinate=(profile.get('unit',{}).get('kind')=='dimensionless'
             and profile.get('representation',{}).get('kind')==proposal.representation
-            and proposal.representation in {'log10','ln'} and proposal.unit is None
+            and proposal.representation in {'linear','log10','ln'} and proposal.unit is None
+            and check.subject=='target' and check.result_role in {'reported_result','adopted_measurement'}
             and check.native_unit is None and check.unit_match=='not_applicable'
             and check.quantity_match=='exact' and bool(check.quantity_evidence)
             and all(map(anchored,check.quantity_evidence)))
         if dimensionless_coordinate:
-            result['dimensionless_native_coordinate']={'kind':'source_evidenced_log_ratio',
+            result['dimensionless_native_coordinate']={'kind':'source_evidenced_linear_ratio' if proposal.representation=='linear' else 'source_evidenced_log_ratio',
                 'raw_unit_literal':None,'quantity_evidence':[a.model_dump(mode='json') for a in check.quantity_evidence]}
         if require_units and not count_coordinate and not dimensionless_coordinate and (check.unit_match != 'exact' or not check.native_unit or not unit_grounded):
             result['reason'] = 'native_unit_not_verified'

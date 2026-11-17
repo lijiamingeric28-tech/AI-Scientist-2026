@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { queryKey, sidebarIdentity } from '@/hooks/useSidebarIdentity'
+import { taskTitle } from '@/lib/taskTitle'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Icon } from '@/components/icons'
@@ -414,8 +415,7 @@ export default function Sidebar({
               mode === 'user' &&
               ((activeIdentity && t.task_id === currentPresentation?.task_id && activeIdentity) ||
                 t.display_identity)
-            const title =
-              meta && (!meta.question || t.title === meta.question) ? meta.target : t.title || t.query
+            const title = taskTitle(t, meta)
             const isSample = mode === 'sample' && !t.replay_of
             const queryTime = formatQueryTime(t.created_at, now)
             const statusLabel = !isSample && (STATUS_LABELS[t.status] || t.status)

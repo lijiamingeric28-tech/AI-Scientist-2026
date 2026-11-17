@@ -3,6 +3,7 @@ import * as api from '@/services/api'
 import { previewReadKey } from '@/services/resultPages'
 
 const READERS = { reviewActivity:api.getReviewActivity, analysisRecords:api.getAnalysisRecords, records: api.getRecords, sources: api.getSources, sourceList: api.getSourceList, figures: api.getFigures, coverage: api.getCoverage, quality: api.getQuality, exports: api.getExports, materials:api.getMaterials, changes:api.getChanges, insights:api.getInsights, differences:api.getDifferences, activity:api.getActivity, matrix:api.getCoverageMatrix }
+READERS.head = (taskId, deliveryId, revision, options) => api.getDelivery(taskId, revision, { deliveryId, ...options })
 const empty = (status, ended = false) => Object.fromEntries(Object.keys(READERS).map(key => [key, { status, data: null, error: null, ended }]))
 
 // Every read uses the delivery visible to this task or replay. The epoch and

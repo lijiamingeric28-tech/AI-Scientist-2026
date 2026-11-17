@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from astroquery_ai.runtime.codec import loads
+from astroquery_ai.runtime.task_titles import title_origin
 from astroquery_ai.science.evidence_views import review_evidence
 from astroquery_ai.science.results.preview_revision import preview_revision
 
@@ -28,10 +29,11 @@ def view(self, task_id, *, for_conversation=False, for_workspace=False, for_chat
 def view_in_snapshot(self, conn, task_id, *, for_conversation=False, for_workspace=False, for_chat=False):
     repo = self.repository
     task = repo.task(conn, task_id)
+    task['title_origin'] = title_origin(conn, task)
     if task["kind"] == "replay":
-        return self.history.view(conn, task)
+        return {**self.history.view(conn, task), 'title_origin': task['title_origin']}
     if task["kind"] == "legacy":
-        return self.legacy.view(conn, task)
+        return {**self.legacy.view(conn, task), 'title_origin': task['title_origin']}
     # Fixed-input and imported histories can have a confirmed request and
     # reviews without ever passing through the interactive draft editor.
     row = conn.execute("SELECT payload FROM objects WHERE task_id=? AND kind='draft' AND object_id=? "
@@ -200,7 +202,7 @@ def _workspace_view(self, conn, task, draft):
                for review in self.reviews.list(conn, task_id)] if task['lifecycle'] == 'waiting_review' else []
     return {
         'workspace_only': True,
-        **{key: task[key] for key in ('task_id', 'kind', 'title', 'lifecycle', 'revision', 'science_state')},
+        **{key: task[key] for key in ('task_id', 'kind', 'title', 'title_origin', 'lifecycle', 'revision', 'science_state')},
         'status': task['lifecycle'], 'query_ref': task['query_ref'], 'delivery_ref': delivery_ref,
         'pending': {'title': pending.get('title')} if pending else None,
         'reviews': reviews, 'core_event_cursor': cursor,

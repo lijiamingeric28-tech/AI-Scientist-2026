@@ -4,6 +4,7 @@ Children checkpoint without publishing. The parent alone crosses the delivery
 publication barrier after both terminal component reports have been saved.
 """
 from copy import deepcopy
+import httpx
 from astroquery_ai.runtime.codec import canonical, digest, loads
 from astroquery_ai.runtime.errors import DomainError
 from . import material_summaries, property_insight_generation, property_insights, task_knowledge
@@ -151,8 +152,8 @@ async def generate(service, job, spec):
                 report = await material_summaries.generate(service, job, spec, publish=False, knowledge_context=context)
             else:
                 report = await property_insight_generation.generate(service, job, publish=False, knowledge_context=context)
-        except (DomainError, OSError) as exc:
-            reason = exc.code if isinstance(exc, DomainError) else "COMPONENT_IO_ERROR"
+        except (DomainError, OSError, httpx.TransportError) as exc:
+            reason = exc.code if isinstance(exc, DomainError) else type(exc).__name__
             if reason in STOP_CODES:raise
             with repo.read() as conn:
                 partial = unfinished_report(repo, conn, tid, delivery, spec, reason)

@@ -5,6 +5,7 @@ from __future__ import annotations
 from fastapi import Request
 
 from astroquery_ai.runtime.codec import loads
+from astroquery_ai.runtime.task_titles import title_origin
 
 from astroquery_ai.runtime.errors import DomainError
 
@@ -74,6 +75,7 @@ def register(app, application, scheduler):
                 )
             ]
             for row in rows:
+                row['title_origin'] = title_origin(conn, row)
                 ref = loads(row['query_ref']) if row.get('query_ref') else None
                 if not isinstance(ref, dict):
                     continue

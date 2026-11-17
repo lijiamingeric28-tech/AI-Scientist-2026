@@ -176,6 +176,7 @@ export function RecordsTable({ serverScope, onServerQuery, memory = {}, active =
     const applySource = forcedSource && memory.appliedSource !== forcedSource.seq
     if (applyField) {
       memory.appliedField = forcedField.seq
+      if (forcedField.resetFilters) { setRecordFilter(''); setYearSort('none') }
       setFieldFilter(facets?.fields?.find(item=>item.property_id===forcedField.id)?.field || records.find(row => row.property_id === forcedField.id)?.field_name || forcedField.id)
       if (!applySource) setSourceFilter('all')
     }

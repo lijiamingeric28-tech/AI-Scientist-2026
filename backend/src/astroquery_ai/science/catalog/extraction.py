@@ -257,7 +257,19 @@ async def extract_catalog(self, job):
     )
     if reuse_header:
         header = {**previous_header, "receipt": {"attempt_id": previous_header["model_attempt_id"]}}
+        # Old checkpoints may have spent only the initial header call before
+        # falling back to hundreds of row interpretations. Reuse that paid
+        # result and spend at most the one remaining shared call on semantics.
+        from astroquery_ai.science.catalog_header import QUANTITY_RECHECK_VERSION, unresolved_quantities
+        recheck_header = bool(unresolved_quantities(header['plan'])
+            and not header['shared_followup_used']
+            and (header.get('quantity_recheck') or {}).get('version') != QUANTITY_RECHECK_VERSION)
+        if recheck_header:
+            header = await interpret_header(table, spec, target_columns,
+                prompt_factory=self.header_prompt, validate=self.validate_column_plan,
+                ask=ask_header, initial=previous_header)
     else:
+        recheck_header = False
         header = await interpret_header(
             table,
             spec,
@@ -269,11 +281,17 @@ async def extract_catalog(self, job):
     plan, plan_gaps, column_resolution, receipt = (
         header[k] for k in ("plan", "gaps", "column_resolution", "receipt")
     )
+    # Keep the paid header interpretation separate from routing exclusions.
+    # On restart, reapply the same deterministic filter to the original plan;
+    # a filtered empty plan must not erase its exclusion reasons.
+    interpreted_plan = header.get('interpreted_plan', plan)
+    plan = interpreted_plan
     from astroquery_ai.science.native_dimensions import contradiction
 
     by_property = {b["property_id"]: b for b in spec["properties"]}
-    mapped, dimensional_rejections = ([], [])
-    model_columns = set()
+    mapped, dimensional_rejections = ([], list(header.get('dimensional_rejections', []))
+        if 'interpreted_plan' not in header else [])
+    model_columns = set(header.get('model_columns', [])) if 'interpreted_plan' not in header else set()
     shared_review = attachment and spec.get('run_policy', {}).get('quality', {}).get('official_table_review') == 'shared_semantics/1'
     for mapping in plan["properties"]:
         field = next((c for c in table["columns"] if c["name"] == mapping["value_column"]))
@@ -302,9 +320,10 @@ async def extract_catalog(self, job):
         else:
             mapped.append(mapping)
     plan = {**plan, "properties": mapped}
-    rejected_columns = {r["column"] for r in dimensional_rejections}
+    rejected_columns = {r["column"]: r['reason'] for r in dimensional_rejections
+                        if r['column'] not in {m['value_column'] for m in mapped}}
     column_resolution = [
-        {**c, "role": "not_relevant", "reason": "proven_dimension_conflict"}
+        {**c, "role": "not_relevant", "reason": rejected_columns[c['column']]}
         if c["column"] in rejected_columns
         else {**c, 'role': 'not_relevant', 'reason': 'original_declares_model_generated_data'}
         if c['column'] in model_columns
@@ -314,7 +333,7 @@ async def extract_catalog(self, job):
     columns = {column["name"] for column in table["columns"]}
     with self.repo.transaction() as conn:
         self.repo.validate_lease(conn, job)
-        if not reuse_header:
+        if not reuse_header or recheck_header:
             self.repo.put_object(
                 conn,
                 tid,
@@ -333,6 +352,10 @@ async def extract_catalog(self, job):
                     "metadata_visible_columns": header["metadata_visible_columns"],
                     "shared_followup_used": header["shared_followup_used"],
                     "source_preservation_checks": header["source_preservation_checks"],
+                    "quantity_recheck": header.get("quantity_recheck"),
+                    "interpreted_plan": interpreted_plan,
+                    "dimensional_rejections": dimensional_rejections,
+                    "model_columns": sorted(model_columns),
                     "plan": plan,
                     "gaps": plan_gaps,
                     "model_attempt_id": receipt["attempt_id"],
@@ -424,6 +447,21 @@ async def extract_catalog(self, job):
                      'reason': 'original_declares_model_generated_data'})
                 self.repo.finish_job(conn, job)
                 return
+        if not plan['properties'] and dimensional_rejections:
+            # The original column definitions have already established that no
+            # planned quantity is applicable. An absent object identifier is
+            # irrelevant here; do not read every row to rediscover this fact.
+            self.repo.put_object(conn, tid, 'coverage', job['job_id'], 1,
+                {'owner': 'M03', 'table_id': table_id,
+                 'state': 'partial' if plan_gaps else 'checked_no_value',
+                 'matching_state': 'not_required_no_property_columns',
+                 'reason': 'original_column_definitions_exclude_planned_quantities',
+                 'dimensional_rejections': dimensional_rejections,
+                 'column_plan_gaps': plan_gaps, 'verified_row_count': 0,
+                 'source_artifact_ref': schema_artifact,
+                 'raw_source_preserved': True})
+            self.repo.finish_job(conn, job)
+            return
     seen_rows = set()
     if plan['id_column'] is None and plan['properties']:
         from .table_subject import extract_table_subject

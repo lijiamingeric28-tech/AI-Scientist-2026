@@ -57,12 +57,23 @@ def execution_unit(record):
 def dimensionless_coordinate_declaration(proposal, binding, verification, artifact_ref):
     """Keep an absent printed unit absent; bind the evidenced ratio coordinate."""
     check = (verification or {}).get('check', {})
-    if (proposal.get('unit') is not None or proposal.get('representation') not in {'log10','ln'}
+    linear = proposal.get('representation') == 'linear'
+    if (proposal.get('unit') is not None or proposal.get('representation') not in {'linear','log10','ln'}
             or binding.get('output_profile',{}).get('unit',{}).get('kind') != 'dimensionless'
             or (verification or {}).get('state') != 'passed' or check.get('quantity_match') != 'exact'
             or not (check.get('native_unit')=='1' and check.get('unit_match')=='exact'
                     and check.get('unit_evidence') or verification.get('dimensionless_native_coordinate'))):
         return None
+    if linear:
+        # A missing printed unit alone is not a dimensionless declaration.
+        # Only the independent original-evidence verifier may establish this
+        # coordinate, under the exact author-reviewed output profile.
+        basis = verification.get('dimensionless_native_coordinate', {})
+        if (basis.get('kind') != 'source_evidenced_linear_ratio'
+                or binding.get('output_profile',{}).get('representation',{}).get('kind') != 'linear'
+                or check.get('subject') != 'target'
+                or check.get('result_role') not in {'reported_result','adopted_measurement'}):
+            return None
     anchors=check.get('unit_evidence') or check.get('quantity_evidence',[])
     blocks = {b['block_id']:b for b in verification.get('source_information_blocks',[])}
     quotes = [blocks[k]['text'] for a in anchors for k in a.get('block_ids',[])
@@ -76,7 +87,7 @@ def dimensionless_coordinate_declaration(proposal, binding, verification, artifa
         'raw_unit_text':None,'source_literal':None,'artifact_ref':artifact_ref,
         'locator':{'page':anchors[0]['page'],'basis':'independent_original_coordinate_definition'},
         'raw_quote':'\n'.join(dict.fromkeys(quotes)),
-        'rule':'independently_evidenced_dimensionless_log_coordinate-1',
+        'rule':'independently_evidenced_dimensionless_linear_coordinate-1' if linear else 'independently_evidenced_dimensionless_log_coordinate-1',
         'format_basis':'Exact reviewed quantity and independent original coordinate definition; no printed unit invented.'}
 
 

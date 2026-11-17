@@ -4,6 +4,7 @@ The repository/checkpoint gateway owns execution and resumes. No new scheduler,
 retrieval path, scientific score or measurement storage is introduced here.
 """
 import asyncio
+import httpx
 from copy import deepcopy
 
 from astroquery_ai.runtime.calls import input_upper_bound
@@ -117,14 +118,16 @@ async def explain(service,job,current,delivery,spec,packed,bindings,*,key):
                     updated,card=cards.apply_repairs(response,fixed,slots,current,bindings)
                     state.update(card=card,local_repair={'attempt_ref':local_receipt['attempt_id'],
                         'initial_issues':state['card']['validation_issues'],'response':fixed},repaired_response=updated)
-                except DomainError as exc:
-                    if exc.code in STOP:raise
-                    state['local_repair']={'state':'not_completed','reason':exc.code}
+                except (DomainError, OSError, httpx.TransportError) as exc:
+                    reason = exc.code if isinstance(exc, DomainError) else type(exc).__name__
+                    if reason in STOP:raise
+                    state['local_repair']={'state':'not_completed','reason':reason}
             else:state['local_repair']={'state':'not_completed','reason':'local_material_exceeds_validated_capacity'}
         state['status']='generated' if state['card']['sections']['found'] else 'partial'
-    except DomainError as exc:
-        if exc.code in STOP:raise
-        state.update(status='not_completed',reason=exc.code,details=exc.details)
+    except (DomainError, OSError, httpx.TransportError) as exc:
+        reason = exc.code if isinstance(exc, DomainError) else type(exc).__name__
+        if reason in STOP:raise
+        state.update(status='not_completed',reason=reason,details=getattr(exc,'details',{}))
     with repo.transaction() as conn:
         repo.validate_lease(conn,job,scientific=False)
         checkpoint(repo,conn,tid,key,state)

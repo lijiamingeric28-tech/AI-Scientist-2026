@@ -4,6 +4,7 @@ from copy import deepcopy
 from uuid import uuid4
 
 import pytest
+import httpx
 
 from astroquery_ai.runtime.codec import loads
 from astroquery_ai.runtime.errors import DomainError
@@ -12,7 +13,7 @@ from astroquery_ai.science.property_insights import unpack_materials, PROTOCOL
 from tests.rebuild.scenario import application, confirmed_case, synthetic_author_manifest
 
 
-@pytest.mark.parametrize('scenario', ['normal','failure','material_failure','pause','cancel','restart','unqualified','material_io','no_knowledge','tampered_context','budget','findings'])
+@pytest.mark.parametrize('scenario', ['normal','failure','material_failure','pause','cancel','restart','unqualified','material_io','no_knowledge','tampered_context','budget','findings','material_transport','material_transport_once','property_transport'])
 def test_bundle_real_publication_and_recovery(tmp_path, scenario, monkeypatch):
     async def run():
         app=application(tmp_path/'data');ordinary=app.models.json;calls=[];controls=[];tid=[];capture_specs=[];material_calls=[]
@@ -126,6 +127,8 @@ def test_bundle_real_publication_and_recovery(tmp_path, scenario, monkeypatch):
                         assert background['applicability_state']=='conditional'
                         assert background['origin']=='formal_release' and background['claim_id']
                 material_calls.append(kwargs['root_id'])
+                if scenario=='material_transport' or scenario=='material_transport_once' and len(material_calls)==1:
+                    raise httpx.ConnectTimeout('SYNTHETIC before provider connection')
                 if scenario=='material_io':raise OSError('synthetic material storage read failure')
                 if scenario=='budget':raise DomainError('BUDGET_EXHAUSTED','synthetic exhausted budget')
                 if scenario=='material_failure':raise DomainError('PROVIDER_TIMEOUT','synthetic material timeout')
@@ -133,6 +136,7 @@ def test_bundle_real_publication_and_recovery(tmp_path, scenario, monkeypatch):
             if kwargs['owner']=='M11':
                 assert kwargs['profile'].model=='qwen3.8-max' and version==PROTOCOL
                 body=unpack_materials(body);calls.append(kwargs['root_id'])
+                if scenario=='property_transport':raise httpx.ReadTimeout('SYNTHETIC property transport failure')
                 if scenario in {'failure','unqualified'}:raise DomainError('PROFILE_NOT_VALIDATED' if scenario=='unqualified' else 'PROVIDER_TIMEOUT','SYNTHETIC technical failure')
                 row=body['record_index'][0]
                 entry={'text':'本轮结果保留原单位和原文，按实际条件比较。',
@@ -167,18 +171,25 @@ def test_bundle_real_publication_and_recovery(tmp_path, scenario, monkeypatch):
             assert bundle['schema_version']=='InsightBundle/1'
             assert bundle['delivery_revision']==delivery['revision']==2
             assert bundle['generation_delivery_revision']==old['revision']==1
-            assert bundle['material_report']['status']==('partial' if scenario in {'cancel','material_failure','material_io','tampered_context','budget'} else 'generated')
-            assert bundle['status']==('partial' if scenario in {'failure','material_failure','material_io','cancel','unqualified','tampered_context','budget','no_knowledge'} else 'complete')
+            assert bundle['material_report']['status']==('partial' if scenario in {'cancel','material_failure','material_io','material_transport','tampered_context','budget'} else 'generated')
+            assert bundle['status']==('partial' if scenario in {'failure','material_failure','material_io','material_transport','property_transport','cancel','unqualified','tampered_context','budget','no_knowledge'} else 'complete')
             if scenario in {'failure','unqualified'}:
                 assert bundle['components']['property']['reason']==('PROFILE_NOT_VALIDATED' if scenario=='unqualified' else 'PROVIDER_TIMEOUT')
             if scenario in {'material_failure','budget'}:
                 assert bundle['components']['material']['reason']==('BUDGET_EXHAUSTED' if scenario=='budget' else 'PROVIDER_TIMEOUT')
+            if scenario=='material_transport':
+                assert bundle['components']['material']['reason']=='ConnectTimeout'
+                assert bundle['components']['property']['status']=='complete'
+            if scenario=='property_transport':
+                assert bundle['components']['property']['reason']=='ReadTimeout'
+                assert bundle['components']['material']['status']=='generated'
+            if scenario=='material_transport_once':assert len(material_calls)==2
             assert bundle['knowledge_context_ref']==old['insight_report']['knowledge_context_ref']
             assert delivery.get('dispositions')==old.get('dispositions')
             report=bundle['property_report']
             assert report['schema_version']=='InsightReport/4' and len(report['cards'])==1
-            assert report['status']==('partial' if scenario in {'failure','cancel','unqualified','tampered_context','no_knowledge'} else 'complete')
-            if scenario not in {'failure','cancel','unqualified','tampered_context'}:
+            assert report['status']==('partial' if scenario in {'failure','property_transport','cancel','unqualified','tampered_context','no_knowledge'} else 'complete')
+            if scenario not in {'failure','property_transport','cancel','unqualified','tampered_context'}:
                 assert report['cards'][0]['actual_model']=='qwen3.8-max'
                 if scenario!='no_knowledge':assert report['knowledge_blocks'][0]['conditions']==['SYNTHETIC method condition']
             if scenario=='findings':

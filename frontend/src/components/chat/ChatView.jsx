@@ -98,7 +98,7 @@ function getStageNarrative(stageId, stages, targetName, materialSummary) {
     }
     case 'clean': {
       const roots = qualityStage?.activity?.quality?.roots
-      const dataStr = roots ? `${roots} 项候选通过质检` : null
+      const dataStr = roots ? `已检查 ${roots} 项初始候选` : null
       return `已完成「质量检查${dataStr ? `（${dataStr}）` : ''}」，下面开始「数据清洗」。`
     }
     case 'comparison': {

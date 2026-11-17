@@ -68,27 +68,56 @@ def test_scope_changes_for_target_schema_hdu_file_or_property():
         '4': ['s', 'JD', '101', 'em.opt.B']}) == {'1', '3'}
     assert observation_series_review({'1': ['s', 'JD', '100', 'B'],
         '2': ['s', 'JD', '100', 'V'], '3': ['s', 'JD', '100', 'B'],
-        '4': ['s', 'JD', '101', 'B'], 'paper': None}) == {'1', '3', 'paper'}
+        '4': ['s', 'JD', '101', 'B'], 'paper': None}) is None
+
+
+@pytest.mark.parametrize('other', [['other-source', 'JD', '100', 'B'],
+                                  ['s', 'MJD', '100', 'B'], None])
+def test_cross_source_or_time_basis_never_uses_the_single_table_shortcut(other):
+    assert observation_series_review({'1': ['s', 'JD', '100', 'B'], '2': other}) is None
+    assert observation_series_review({'1': ['s', 'JD', '100', 'B'],
+        '2': ['s', 'JD', '101', 'B'], 'other': other}) is None
 
 
 @pytest.mark.parametrize('size', [6, 10001])
 @pytest.mark.parametrize('source_kind', ['official_attachment','catalog'])
-def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch, size, source_kind):
+@pytest.mark.parametrize('literal', [False, True])
+@pytest.mark.parametrize('quality_flags', [False, True])
+def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch, size, source_kind, literal, quality_flags):
+    columns = [*COLUMNS, {'name': 'Flag', 'datatype': 'char', 'unit_text': None,
+        'description': '0 = reported detection; U = upper limit'}] if quality_flags else COLUMNS
     repo = Repository(tmp_path / 'runtime.sqlite3')
     tid = repo.create_task('SYNTHETIC table')['task_id']
     target = {'target_id': 'object', 'main_id': 'Target', 'aliases': []}
     source = {'kind':source_kind,'artifact': {'artifact_id': 'original', 'sha256': 'sha'}, 'table_id': 't', 'association': {'hdu': 1},
-        'metadata': {'columns': COLUMNS, 'description': 'Observations'}, 'source_id': 's', 'work_id': 'p'}
+        'metadata': {'columns': columns, 'description': 'Observations'}, 'source_id': 's', 'work_id': 'p'}
     rows = [{'Object': 'Target', 'Epoch': str(i), 'Band': 'R' if i % 2 else 'B',
         'Flux': str(-i), 'Error': '0.1'} for i in range(size)]
+    if quality_flags:
+        for row in rows:
+            row['Flag'] = 'U' if row['Band'] == 'R' else '0'
     proof = {'source_rows': list(range(size)), 'target_id': 'object', 'target_content_sha256': content_hash(target),
         'table_id': 't', 'source_artifact_ref': {'id': 'original', 'content_sha256': 'sha'}, 'id_column': 'Object'}
     ref = {'id': 'proof', 'version': 1, 'content_sha256': content_hash(proof)}
     candidates = []
     for i, row in enumerate(rows):
-        raw = canonical({'cells': row, 'columns': COLUMNS}).decode()
-        candidates.append({'candidate_id': str(i), 'assembly_context': {'object_binding_ref': ref},
-            'proposal': {**proposal(row, i), 'source_quote': raw},
+        raw = canonical({'cells': row, 'columns': columns}).decode()
+        p = {**proposal(row, i), 'source_quote': raw}
+        if quality_flags and not literal:
+            p['conditions'].append({'key': 'source_field:Flag', 'value': row['Flag'],
+                'state': 'known', 'raw_text': 'Flag: ' + row['Flag']})
+            p['limit'] = 'upper' if row['Flag'] == 'U' else 'none'
+        context = {'object_binding_ref': ref}
+        if literal:
+            from astroquery_ai.science.catalog.literal_rows import literal_proposal
+            p = literal_proposal(row, i, columns, {'property_id': 'flux', 'value_column': 'Flux',
+                'quantity_match': 'exact', 'source_representation': 'linear', 'source_unit': 'Jy',
+                'error_columns': ['Error'], 'context_columns': ['Epoch', 'Band'],
+                'quality_columns': ['Flag'] if quality_flags else []}, shared_flags=quality_flags)[0].model_dump(mode='json')
+            context['literal_transcription'] = {'scientific_admission_granted': False,
+                'pending_flag_columns': ['Flag'] if quality_flags else []}
+        candidates.append({'candidate_id': str(i),
+            'proposal': p, 'assembly_context': context,
             'evidence': {'source_id': 's', 'locator': {'row': i, 'column': 'Flux', 'table': 't'},
                 'artifact_ref': {'id': 'original', 'content_sha256': 'sha'}, 'raw_text': raw}})
     candidates[1]['proposal']['errors'] = []
@@ -106,18 +135,27 @@ def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch
             pass
 
         async def read_rows(self, table_id):
-            return {'resources': [{'tables': [{'columns': COLUMNS, 'rows': rows, 'source_row_numbers': list(range(size))}]}]}
+            return {'resources': [{'tables': [{'columns': columns, 'rows': rows, 'source_row_numbers': list(range(size))}]}]}
 
     async def semantics(service, job, spec, binding, source, members, regime, profile, key, science):
         calls.append(regime['cells']['Band'])
+        templates = []
+        if literal:
+            e = members[0]['proposal']['errors'][0]
+            templates = [{**e, 'kind': 'symmetric_delta', 'interpretation_state': 'parsed',
+                'values': {'delta': e['raw_text']}, 'meaning': 'reported_error', 'reason': None}]
         return qa.TableReply.model_validate({
             'scope': {'reusable': True, 'table_role': 'observation', 'error_columns': ['Error'],
-                'context_columns': ['Epoch', 'Band'], 'limit': 'none', 'reason': 'Verified column definitions'},
+                'context_columns': ['Epoch', 'Band', *(['Flag'] if quality_flags else [])],
+                'limit': 'upper' if quality_flags and regime['cells']['Flag'][1] == 'U' else 'none',
+                'reason': 'Verified column definitions', 'error_templates': templates,
+                'flag_rules': [{'column': 'Flag', 'raw_token': regime['cells']['Flag'][1], 'evidence_id': 'E1',
+                    'source_quote': '0 = reported detection; U = upper limit'}] if quality_flags and literal else []},
             'item': {'item_id': 'I1', 'subject': 'target', 'quantity_relation': 'same', 'reported_quantity': 'flux',
                 'subject_scale': 'target', 'result_role': 'reported_result', 'native_representation': 'linear',
                 'value_match': 'exact', 'unit_match': 'exact', 'errors_match': 'exact', 'evidence_columns': ['Flux'],
                 'checked_ids': ['E1'], 'reason': 'Actual saved column'},
-        }), {'attempt_id': key}, {}
+        }), {'attempt_id': key}, {'E1': {'native_id': 'column:Flag', 'text': columns[-1].get('description', '')}}
 
     async def apply(service, job, spec, binding, source, candidate, item, receipt, **kwargs):
         assert candidate['candidate_id'] not in applied
@@ -136,7 +174,7 @@ def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch
         from astroquery_ai.science import catalogs
         raw=tmp_path/'catalog.xml';raw.write_bytes(b'saved catalogue response')
         monkeypatch.setattr(catalogs,'parse_votable',lambda data:{'resources':[{'tables':[
-            {'table_id':'t','columns':COLUMNS,'rows':rows}]}]})
+            {'table_id':'t','columns':columns,'rows':rows}]}]})
         app=SimpleNamespace(artifacts=SimpleNamespace(read_owned=lambda tid,aid:({},raw)))
     asyncio.run(qa.verify_table(SimpleNamespace(repo=repo, app=app), job, {'target': target},
         {'property_id': 'flux'}, source, candidates, SimpleNamespace(model='test')))
@@ -145,6 +183,15 @@ def test_every_row_checked_and_one_call_per_semantic_scope(tmp_path, monkeypatch
     assert exceptions == ['1']
     assert applied[str(size - 1)]['missing_reason'] == 'attachment_original_binding_mismatch'
     assert applied['0']['table_checks']['row_check']['locator']['row'] == 0
+    if literal:
+        p = applied['0']['proposal_override']
+        assert p['errors'][0]['interpretation_state'] == 'parsed'
+        assert p['errors'][0]['values'] == {'delta': '0.1'}
+        assert p['errors'][0]['level_kind'] is None and p['errors'][0]['role'] == 'unspecified'
+        if quality_flags:
+            p = applied['3']['proposal_override']
+            assert p['raw_value'] == '-3' and p['limit'] == 'upper'
+            assert any(c['key'] == 'source_field:Flag' and c['value'] == 'U' for c in p['conditions'])
 
 
 def test_shared_correction_rechecks_only_the_question_scope(tmp_path):

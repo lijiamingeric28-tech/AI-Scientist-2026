@@ -13,7 +13,7 @@ from .insight_inputs import context_quotations, explanation_bindings, explanatio
 MODE = 'research-property/1'
 PROTOCOL = 'research-property-short-2'
 INPUT_LIMIT = 256000
-OUTPUT_LIMIT = 8192
+OUTPUT_LIMIT = 4096
 SECTIONS = ('found', 'comparison', 'uses', 'limitations')
 FINDING_KINDS = {'explicit_counterevidence', 'needs_check', 'ordinary_difference'}
 FINDING_ISSUES = {'subject', 'result_role', 'duplicate', 'uncertainty', 'context', 'other'}
@@ -358,7 +358,9 @@ def _finding(raw, current, bindings):
 
 
 def validate_reply(response, current, bindings=None):
-    if not isinstance(response, dict) or not set((*SECTIONS, 'findings')).issubset(set(response)):
+    # Findings are optional in the prompt protocol; omitting an empty list
+    # must not discard otherwise valid, evidence-bound property sections.
+    if not isinstance(response, dict) or not set(SECTIONS).issubset(set(response)):
         raise DomainError('INSIGHT_CARD_SCHEMA', '每性质返回四组短条目和可选疑点')
     card = {'sections': {k: [] for k in SECTIONS}, 'findings': [], 'validation_issues': [],
             'recommendations': {},

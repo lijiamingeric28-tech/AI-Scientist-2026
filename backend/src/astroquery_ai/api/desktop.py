@@ -106,6 +106,9 @@ def run_embedded(host: str = HOST, port: int | None = None) -> None:
                 "AstroQuery AI", f"http://{host}:{port}",
                 **desktop_geometry(),
             )
+            if sys.platform == 'win32':
+                from .windows_frame import install
+                window.events.shown += lambda: install(window)
             window.events.closed += lambda: setattr(server, "should_exit", True)
             webview.settings["ALLOW_DOWNLOADS"] = True
             webview.start(

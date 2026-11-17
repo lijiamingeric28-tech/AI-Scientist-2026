@@ -175,7 +175,7 @@ export default function SampleGallery({ samples = [], onOpen, onReplay, onSwitch
                 <div className="sample-metric-pill">
                   <span><strong>{s.record_count || 0}</strong> 条测量</span>
                   <span>·</span>
-                  <span><strong>{s.source_count || 0}</strong> 篇来源</span>
+                  <span><strong>{s.material_count ?? s.source_count ?? 0}</strong> {s.material_count != null ? '份去重资料' : '条来源记录'}</span>
                   <span>·</span>
                   <span><strong>{s.figure_count || 0}</strong> 幅图像</span>
                 </div>

@@ -15,7 +15,7 @@ from astroquery_ai.runtime.application import Application
 from astroquery_ai.runtime.errors import DomainError
 from astroquery_ai.runtime.published_demos import PublishedDemos
 
-SAMPLE_TASK_ID = "e030fefb-3db1-479e-af8b-eb710233e539"
+SAMPLE_TASK_ID = "9bb77884-c3e4-46fe-ae02-c4a7b72e5381"
 
 
 @pytest.fixture(scope="module")

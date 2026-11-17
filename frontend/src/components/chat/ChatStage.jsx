@@ -1,8 +1,9 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { Icon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { StatusDot } from '@/components/status'
 import { chatStageState, elapsedTime } from '@/lib/chatStageState'
+import { completionSummary } from '@/lib/completionSummary'
 import { useInPlaceDisclosure } from '@/hooks/useInPlaceDisclosure'
 import { fmtRaDec } from '@/lib/format'
 import { PropertyDefinition } from './PropertyChoices'
@@ -468,13 +469,14 @@ function Comparison({stage,onOpenData}) {
 }
 
 function Delivery({stage, onOpenData, data}) {
-  const summary = stage.deliverySummary
-  const recordsCount = summary?.records ?? data?.resources?.records?.data?.length ?? 154
-  const sourcesCount = summary?.sources ?? data?.resources?.sources?.data?.length ?? 35
-  const figuresCount = summary?.figures ?? data?.resources?.figures?.data?.length ?? 55
-  const score = summary?.score ?? 98
-  const version = summary?.delivery_ref?.version ?? 2
-  const hasDelivery = !!summary || recordsCount > 0
+  useEffect(() => { if (stage.delivered) data?.ensure('head') }, [stage.delivered, data?.ensure])
+  const { summary } = completionSummary(stage, data?.resources)
+  const recordsCount = summary?.records ?? '—'
+  const sourcesCount = summary?.materials ?? '—'
+  const figuresCount = summary?.figures ?? '—'
+  const score = summary?.score ?? '—'
+  const version = summary?.delivery_ref?.version ?? '—'
+  const hasDelivery = Boolean(stage.delivered || summary)
 
   return (
     <div className="delivery-workspace">
@@ -503,18 +505,18 @@ function Delivery({stage, onOpenData, data}) {
         </div>
         <div className="delivery-stat-card">
           <div className="delivery-stat-num font-mono">{sourcesCount}</div>
-          <div className="delivery-stat-label">份溯源学术文献</div>
-          <div className="delivery-stat-sub">同行评议论文与星表</div>
+          <div className="delivery-stat-label">份去重资料</div>
+          <div className="delivery-stat-sub">星表、论文与官方附表</div>
         </div>
         <div className="delivery-stat-card">
           <div className="delivery-stat-num font-mono">{figuresCount}</div>
           <div className="delivery-stat-label">幅科研关键图像</div>
-          <div className="delivery-stat-sub">高精光谱与光变曲线</div>
+          <div className="delivery-stat-sub">原始科研图像与图注</div>
         </div>
         <div className="delivery-stat-card">
           <div className="delivery-stat-num font-mono delivery-score">{score} <small>/ 100</small></div>
-          <div className="delivery-stat-label">流程严谨度评分</div>
-          <div className="delivery-stat-sub">可信度与复核通过率</div>
+          <div className="delivery-stat-label">流程质量评分</div>
+          <div className="delivery-stat-sub">流程覆盖与处理记录</div>
         </div>
       </div>
 
@@ -606,8 +608,9 @@ function Insights({ stage, onOpenData }) {
   </div>
 }
 
-function Outcome({ stage, onOpenData, onReplay }) {
-  const s = stage.deliverySummary
+function Outcome({ stage, onOpenData, onReplay, data }) {
+  useEffect(() => { if (stage.delivered) data?.ensure('records', 'head') }, [stage.delivered, data?.ensure])
+  const { summary: s, recordCounts } = completionSummary(stage, data?.resources)
   if (!s) {
     return (
       <div className="chat-outcome chat-outcome-natural">
@@ -626,7 +629,7 @@ function Outcome({ stage, onOpenData, onReplay }) {
   const scoreValue = Number.isFinite(s.score) ? s.score.toFixed(Number.isInteger(s.score) ? 0 : 2) : null
 
   const propDist = (stage.properties || []).map(p => {
-    const count = stage.recordCounts?.[p.property_id] ?? stage.recordCounts?.[p.name]
+    const count = recordCounts[p.property_id] ?? recordCounts[p.name]
     return {
       ...p,
       count,
@@ -661,8 +664,8 @@ function Outcome({ stage, onOpenData, onReplay }) {
           <span className="outcome-stat-label">测量记录</span>
           <strong className="outcome-stat-val font-mono">{recordsTotal}</strong>
         </div>
-        <div className="outcome-stat-item" title="同一份资料可计入多个已确认性质">
-          <span className="outcome-stat-label">资料</span>
+        <div className="outcome-stat-item" title="与数据结果页一致，按不同资料分组计数">
+          <span className="outcome-stat-label">去重资料</span>
           <strong className="outcome-stat-val font-mono">{materialsTotal ?? '—'}</strong>
         </div>
         <div className="outcome-stat-item">
@@ -694,7 +697,7 @@ function Outcome({ stage, onOpenData, onReplay }) {
                 key={item.property_id || item.name}
                 type="button"
                 className="outcome-dist-row"
-                onClick={() => onOpenData?.('records', { fieldName: item.property_id || item.name })}
+                onClick={() => onOpenData?.('records', { fieldName: item.property_id || item.name, resetFilters: true })}
                 title={`查看 ${item.name} 的测量记录`}
               >
                 <div className="dist-row-label">
@@ -745,7 +748,7 @@ function StageBody({stage, onOpenData, onReplay, data, onOpenInsights}) {
     case 'comparison':return <Comparison stage={stage} onOpenData={onOpenData}/>
     case 'deliver':return <Delivery stage={stage} onOpenData={onOpenData} data={data}/>
     case 'insight':return <Insights stage={stage} onOpenData={onOpenData} data={data} onOpenInsights={onOpenInsights}/>
-    case 'done':return <Outcome stage={stage} onOpenData={onOpenData} onReplay={onReplay} onOpenInsights={onOpenInsights}/>
+    case 'done':return <Outcome stage={stage} onOpenData={onOpenData} onReplay={onReplay} data={data}/>
     default:return null
   }
 }

@@ -32,3 +32,15 @@ def test_every_plain_observation_survives_more_than_one_thousand_rows():
     result=[literal_proposal({'RV':str(i/100),'e_RV':'0.003','BJD':str(2450000+i/2)},i,COLS,PLAN)[0] for i in range(1032)]
     assert all(result) and len({p.row for p in result})==1032
     assert result[-1].raw_value=='10.31' and result[-1].conditions[0].value=='2450515.5'
+
+
+@pytest.mark.parametrize('flag', ['0', '1', 'U', '?'])
+def test_source_defined_flags_are_only_pending_copy_never_scientific_approval(flag):
+    columns = [*COLS[:-1], {**COLS[-1], 'description': '0=valid; 1=caution; U=upper limit; ?=unknown'}]
+    plan = {**PLAN, 'quality_columns': ['flag']}
+    p, state = literal_proposal({'RV': '0.000', 'e_RV': '0.0050', 'flag': flag}, 0, columns, plan, shared_flags=True)
+    assert state == 'literal_scalar' and p.raw_value == '0.000'
+    assert p.source_quality is None and p.subject_role == p.result_role == 'unresolved'
+    assert any(c.key == 'source_field:flag' and c.value == flag for c in p.conditions)
+    # An absent definition still goes through the normal original-source reader.
+    assert literal_proposal({'RV': '0.000', 'flag': flag}, 0, COLS, plan, shared_flags=True)[0] is None

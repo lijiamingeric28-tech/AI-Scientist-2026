@@ -46,6 +46,32 @@ def test_zero_quote_output_binds_actual_original_and_same_record_values():
     assert u['measurements'][0]['source_value']['value']['value']=='2'
 
 
+def test_optional_findings_omission_preserves_valid_sections_without_mutation():
+    _,_,current=example(); response=reply(current);response.pop('findings')
+    original=deepcopy(response)
+    card=cards.validate_reply(response,current)
+    assert card['status']=='generated' and card['sections']['found']
+    assert card['findings']==[] and not card['validation_issues']
+    assert response==original
+
+
+@pytest.mark.parametrize('invalid', [None, {}, 'no findings'])
+def test_present_findings_must_still_be_an_array(invalid):
+    _,_,current=example(); response=reply(current);response['findings']=invalid
+    with pytest.raises(DomainError,match='条目字段须为数组'):
+        cards.validate_reply(response,current)
+
+
+def test_optional_findings_does_not_weaken_required_sections_or_evidence_scope():
+    _,_,current=example(); response=reply(current);response.pop('findings')
+    response['found'][0]['measurement_ids']=['foreign-record']
+    card=cards.validate_reply(response,current)
+    assert not card['sections']['found'] and card['validation_issues']
+    response.pop('comparison')
+    with pytest.raises(DomainError,match='每性质返回四组短条目'):
+        cards.validate_reply(response,current)
+
+
 def test_finding_uses_real_location_without_model_quote_and_needs_owner():
     d,s,u=example();r=reply(u);mid=u['measurements'][0]['measurement_id']
     r['findings']=[{'classification':'explicit_counterevidence','issue':'subject',
