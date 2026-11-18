@@ -153,6 +153,47 @@ function pageItems(page, totalPages) {
   return items
 }
 
+const RECORD_SOURCE_TYPES = { database: '星表', supplement: '官方附表', paper: '论文', other: '其他来源' }
+
+function recordSourceType(source, id) {
+  const type = sourceType(source?.kind || source?.source_type)
+  if (type === 'catalog' || type === 'database_query') return 'database'
+  if (type === 'database' || type === 'supplement' || type === 'paper') return type
+  if (id?.startsWith('SRC_DB')) return 'database'
+  if (id?.startsWith('SRC_SUPPL')) return 'supplement'
+  if (/^\d{4}[A-Za-z&]/.test(id || '')) return 'paper'
+  return 'other'
+}
+
+function recordSourceLabel(source, id, type) {
+  const name = sourceName(source, id)
+  if (type !== 'database' && type !== 'supplement') return name
+  const catalog = source?.catalog_id || source?.metadata?.catalog_id
+  const table = type === 'database' ? source?.table_id || catalog : source?.association?.source_table_id || catalog
+  return [RECORD_SOURCE_TYPES[type], table, name].filter(Boolean).join(' · ')
+}
+
+function RecordSourceSelect({ sources, sourceMap, value, ...props }) {
+  const groups = { database: [], supplement: [], paper: [], other: [] }
+  for (const id of sources) {
+    const source = sourceMap.get(id)
+    const type = recordSourceType(source, id)
+    groups[type].push({ id, label: recordSourceLabel(source, id, type) })
+  }
+  const selected = sourceMap.get(value)
+  return (
+    <select {...props} aria-label="按来源筛选" value={value}
+      title={value === 'all' ? '按记录出处筛选' : recordSourceLabel(selected, value, recordSourceType(selected, value))}>
+      <option value="all">全部来源 ({sources.length})</option>
+      {Object.entries(groups).filter(([, options]) => options.length).map(([type, options]) => (
+        <optgroup key={type} label={`${RECORD_SOURCE_TYPES[type]} (${options.length})`}>
+          {options.map(({ id, label }) => <option key={id} value={id} title={label}>{label}</option>)}
+        </optgroup>
+      ))}
+    </select>
+  )
+}
+
 export function RecordsTable({ serverScope, onServerQuery, memory = {}, active = true, records, filterRecords = records, allRecordCount = records.length, onRowClick, searchText = '', onResetFilters, externalFiltered = false, filterKey = '', onDeleteRecord, dupIndex = null, sources: allSources = [], onFilteredChange, forcedSource, forcedRecord, forcedField, toolbarExtra, search = searchText, onSearchChange, quick = filterKey || 'target', onQuickChange, selection, externalPage = false, onOpenSource }) {
   const propertyLabel = usePropertyLabel()
   const [selectedRow, setSelectedRow] = useRememberedState(memory, 'selectedRow', null)
@@ -203,7 +244,14 @@ export function RecordsTable({ serverScope, onServerQuery, memory = {}, active =
 
   const fields = useMemo(() => facets?.fields?.map(item=>item.field) || [...new Set(filterRecords.map((r) => r.field_name))], [filterRecords,facets])
   const sources = useMemo(() => facets?.sources?.map(item=>item.source_id) || [...new Set(filterRecords.map((r) => r.source_id))], [filterRecords,facets])
-  const sourceMap = useMemo(() => new Map([...allSources,...(facets?.sources||[]),...remoteRows.map(row=>row.source_label).filter(Boolean)].map(source => [source.source_id, source])), [allSources,facets,remote.data])
+  const sourceMap = useMemo(() => {
+    const map = new Map()
+    const rowLabels = remoteRows.map(row => row.source_label).filter(Boolean)
+    for (const source of [...allSources, ...rowLabels, ...(facets?.sources || [])]) {
+      map.set(source.source_id, { ...map.get(source.source_id), ...source })
+    }
+    return map
+  }, [allSources, facets, remote.data])
 
   // 来源年份映射（优先读取 sources 接口中的 year 字段，兜底从 bibcode 中解析前四位年份）
   const sourceYearMap = useMemo(() => {
@@ -328,16 +376,13 @@ export function RecordsTable({ serverScope, onServerQuery, memory = {}, active =
             <option value="all">全部性质 ({fields.length})</option>
             {fields.map((f) => <option key={f} value={f}>{propertyLabel(f)}</option>)}
           </select>
-          <select
-            aria-label="按来源筛选"
-            title={sourceFilter === 'all' ? '按记录出处筛选' : sourceName(sourceMap.get(sourceFilter), sourceFilter)}
+          <RecordSourceSelect
+            sources={sources}
+            sourceMap={sourceMap}
             value={narrowFilters ? draftFilters.source || sourceFilter : sourceFilter}
             onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, source: e.target.value })) : resetPage(setSourceFilter)(e.target.value)}
             className="filter-select"
-          >
-            <option value="all">全部来源 ({sources.length})</option>
-            {sources.map((s) => <option key={s} value={s} title={s}>{sourceName(sourceMap.get(s), s)}</option>)}
-          </select>
+          />
           <select
             value={narrowFilters ? draftFilters.year || yearSort : yearSort}
             onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, year: e.target.value })) : resetPage(setYearSort)(e.target.value)}
@@ -403,16 +448,13 @@ export function RecordsTable({ serverScope, onServerQuery, memory = {}, active =
               <option value="all">全部性质 ({fields.length})</option>
               {fields.map((f) => <option key={f} value={f}>{propertyLabel(f)}</option>)}
             </select>
-            <select
-              aria-label="按来源筛选"
-              title={sourceFilter === 'all' ? '按记录出处筛选' : sourceName(sourceMap.get(sourceFilter), sourceFilter)}
+            <RecordSourceSelect
+              sources={sources}
+              sourceMap={sourceMap}
               value={narrowFilters ? draftFilters.source || sourceFilter : sourceFilter}
               onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, source: e.target.value })) : resetPage(setSourceFilter)(e.target.value)}
               style={selectStyle}
-            >
-              <option value="all">全部来源 ({sources.length})</option>
-              {sources.map((s) => <option key={s} value={s} title={s}>{sourceName(sourceMap.get(s), s)}</option>)}
-            </select>
+            />
             <select
               value={narrowFilters ? draftFilters.year || yearSort : yearSort}
               onChange={(e) => narrowFilters ? setDraftFilters(v => ({ ...v, year: e.target.value })) : resetPage(setYearSort)(e.target.value)}

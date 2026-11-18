@@ -23,6 +23,21 @@ test('records page retains compact flags/source labels and does not read second 
   assert.equal(calls.length,1);assert.equal(page.items.length,50);assert.equal(page.total,601)
   assert.equal(page.items[0].flags.modified,true);assert.equal(page.items[0].source_label.title,'论文');assert.equal(page.items[0].duplicate_group.live_count,2)
 })
+test('record source selector separates catalogs and official attachments even when titles match a paper',async()=>{
+  const {RecordsTable}=await server.ssrLoadModule('/src/components/results/ResultTabs.jsx')
+  const title='同一篇测光研究'
+  const records=Object.assign([], {aggregates:{sources:[
+    {source_id:'catalog-attachment',kind:'official_attachment',association:{source_table_id:'J/ApJ/805/74/table1'},title},
+    {source_id:'catalog-vizier',kind:'catalog',table_id:'J/ApJ/788/L21/table1',title},
+    {source_id:'work-paper',kind:'paper',title},
+    {source_id:'SRC_SUPPL_old',title:'历史附表'},
+  ]}})
+  const html=renderToStaticMarkup(React.createElement(RecordsTable,{records,onSearchChange:()=>{}}))
+  assert.match(html,/全部来源 \(4\)/)
+  assert.match(html,/<optgroup label="星表 \(1\)"><option value="catalog-vizier"[^>]*>星表 · J\/ApJ\/788\/L21\/table1 · 同一篇测光研究<\/option>/)
+  assert.match(html,/<optgroup label="官方附表 \(2\)"><option value="catalog-attachment"[^>]*>官方附表 · J\/ApJ\/805\/74\/table1 · 同一篇测光研究<\/option><option value="SRC_SUPPL_old"[^>]*>官方附表 · 历史附表<\/option>/)
+  assert.match(html,/<optgroup label="论文 \(1\)"><option value="work-paper"[^>]*>同一篇测光研究<\/option>/)
+})
 test('analysis alone reads complete compact projection, preserving exact uncertainties across page boundary',async()=>{
   calls=[];const rows=await api.getAnalysisRecords('api-analysis','d',7)
   assert.equal(rows.length,601);assert.equal(rows[600].record_id,'m600')
